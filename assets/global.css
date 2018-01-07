@@ -25,5 +25,15 @@ h1 {
 }
 
 a {
-	color: inherit;
+	color: royalblue;
+}
+
+a:visited {
+	color: royalblue;
+}
+
+@media (max-width: 767px) {
+	p {
+		font-size: 1.3em;
+	}
 }

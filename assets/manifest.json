@@ -1,8 +1,8 @@
 {
 	"background_color": "#ffffff",
-	"theme_color": "#aa1e1e",
-	"name": "TODO",
-	"short_name": "TODO",
+	"theme_color": "#4169e1",
+	"name": "Pinafore for Mastodon",
+	"short_name": "Pinafore",
 	"display": "minimal-ui",
 	"start_url": "/",
 	"icons": [
