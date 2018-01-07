@@ -35,7 +35,6 @@
 <style>
 	nav {
 		border-bottom: 1px solid rgba(170,30,30,0.1);
-		font-weight: 300;
 		padding: 0 15px;
 	}
 
@@ -57,7 +56,11 @@
 
 	a {
 		text-decoration: none;
-		padding: 1em 0.5em;
+    padding: 15px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
 	}
 
   a:hover {
@@ -72,12 +75,23 @@
 		width: 20px;
 		height: 20px;
 		display: inline-block;
-		margin-right: 3px;
+		padding: 0px 10px;
 	}
+
+  span {
+    font-size: 16px;
+  }
 
 	@media (max-width: 767px) {
     span {
       display: none;
+    }
+    li {
+      flex-basis: 100%;
+    }
+    img {
+      width: 25px;
+      height: 25px;
     }
 	}
 
