@@ -8,9 +8,8 @@ body {
 
 main {
 	position: relative;
-	max-width: 56em;
-	background-color: white;
-	padding: 2em;
+	max-width: 800px;
+	padding: 25px;
 	margin: 0 auto;
 	box-sizing: border-box;
 }
@@ -27,13 +26,4 @@ h1 {
 
 a {
 	color: inherit;
-}
-
-code {
-	font-family: menlo, inconsolata, monospace;
-	font-size: calc(1em - 2px);
-	color: #555;
-	background-color: #f0f0f0;
-	padding: 0.2em 0.4em;
-	border-radius: 2px;
 }
