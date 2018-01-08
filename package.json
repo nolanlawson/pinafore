@@ -27,6 +27,7 @@
     "svelte": "^1.50.0",
     "svelte-loader": "^2.3.3",
     "uglifyjs-webpack-plugin": "^1.1.5",
+    "url-search-params": "^0.10.0",
     "webpack": "^3.10.0"
   },
   "engines": {
