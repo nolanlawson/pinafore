@@ -16,7 +16,14 @@
   <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
 </Layout>
 <style>
+  @media (max-width: 767px) {
+    input {
+      width: 90%;
+    }
+  }
+
   input {
+    width: 250px;
   }
 
   form {
@@ -30,11 +37,39 @@
     display: block;
     margin: 20px 5px;
   }
+
+
+
 </style>
 <script>
   import Layout from '../_components/Layout.html';
+  import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../_utils/mastodon'
+  import { databasePromise } from '../_utils/database'
 
   export default {
+    oncreate: function () {
+      if (process.browser) {
+        (async () => {
+          let params = new URLSearchParams(location.search)
+          if (params.has('code')) {
+            let db = await databasePromise
+            let instanceData = await db.get('instance')
+            this.set({instanceName: instanceData.instanceName})
+            let code = params.get('code')
+            instanceData.code = code
+            let response = await (await getAccessTokenFromAuthCode(
+              instanceData.instanceName,
+              instanceData.client_id,
+              instanceData.client_secret,
+              instanceData.code
+            )).json()
+            instanceData = Object.assign(instanceData, response)
+            await db.set(`instance`, instanceData)
+            console.log('response', response)
+          }
+        })()
+      }
+    },
     components: {
       Layout
     },
@@ -42,11 +77,17 @@
       instanceName: ''
     }),
     methods: {
-      handleSubmit(event) {
+      handleSubmit: async function(event) {
         event.preventDefault()
         let instanceName = this.get('instanceName')
-        alert(instanceName)
-      }
+        instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
+        let data = await (await registerApplication(instanceName)).json()
+        let db = await databasePromise
+        data.instanceName = instanceName
+        await db.set(`instance`, data)
+        let oauthUrl = generateAuthLink(instanceName, data.client_id)
+        document.location.href = oauthUrl
+      },
     }
   }
 </script>

@@ -10,7 +10,9 @@
 	<link rel='icon' type='image/png' href='/favicon.png'>
 
 	<script>
-		if (!location.origin.match('localhost') && 'serviceWorker' in navigator) {
+		if (!location.origin.match('localhost') &&
+      !location.origin.match('127.0.0.1') &&
+			  'serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/service-worker.js');
 		}
 	</script>
