@@ -32,8 +32,51 @@ a:visited {
 	color: royalblue;
 }
 
+input {
+	border: 1px solid #dadada;
+	padding: 5px;
+}
+
+label {
+	font-size: 1.1em;
+}
+
+input {
+	font-size: 1.1em;
+}
+
+button {
+	font-size: 1.2em;
+	border: 1px solid #333;
+	background: #ededed;
+	border-radius: 2px;
+	padding: 10px 15px;
+}
+
+button:hover {
+	background: #ddd;
+}
+
+button:active {
+	background: #fafafa;
+}
+
+button.primary {
+	border: 1px solid #1e3066;
+	background: #668cff;
+	color: white;
+}
+
+button.primary:hover {
+	background: #446add;
+}
+
+button.primary:active {
+	background: #99b3ff;
+}
+
 @media (max-width: 767px) {
-	p {
+	p, label, input {
 		font-size: 1.3em;
 	}
 }

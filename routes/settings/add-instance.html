@@ -1,0 +1,52 @@
+<:Head>
+  <title>Instance Wizard</title>
+</:Head>
+
+<Layout page='settings'>
+  <h1>Add an instance</h1>
+
+  <p>Log in to your instance to use Pinafore.</p>
+
+  <form on:submit='handleSubmit(event)'>
+    <label for="instanceInput">Instance name:</label>
+    <input type="text" id="instanceInput" bind:value='instanceName' placeholder=''>
+    <button class="primary" type="submit" id="submitButton">Add instance</button>
+  </form>
+
+  <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+</Layout>
+<style>
+  input {
+  }
+
+  form {
+    background: #fafafa;
+    padding: 5px 10px 15px;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+  }
+
+  form label, form input, form button {
+    display: block;
+    margin: 20px 5px;
+  }
+</style>
+<script>
+  import Layout from '../_components/Layout.html';
+
+  export default {
+    components: {
+      Layout
+    },
+    data: () => ({
+      instanceName: ''
+    }),
+    methods: {
+      handleSubmit(event) {
+        event.preventDefault()
+        let instanceName = this.get('instanceName')
+        alert(instanceName)
+      }
+    }
+  }
+</script>

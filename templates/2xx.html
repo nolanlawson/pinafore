@@ -10,7 +10,7 @@
 	<link rel='icon' type='image/png' href='/favicon.png'>
 
 	<script>
-		if ('serviceWorker' in navigator) {
+		if (!location.origin.match('localhost') && 'serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/service-worker.js');
 		}
 	</script>
@@ -33,5 +33,6 @@
 	     and anything else it needs to hydrate the app and
 	     initialise the router -->
 	<script src='%sapper.main%'></script>
+<!-- Icon thanks to sailboat by Gregor Cresnar from the Noun Project -->
 </body>
 </html>
