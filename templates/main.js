@@ -2,7 +2,7 @@ import { init } from 'sapper/runtime.js';
 
 // polyfills
 Promise.all([
-  typeof URLSearchParams === 'undefined' && import('url-search-params').then(Params => {
+  typeof URLSearchParams === 'undefined' && import(/* webpackChunkName: 'url-search-params' */ 'url-search-params').then(Params => {
     window.URLSearchParams = Params
     Object.defineProperty(window.URL.prototype, 'searchParams', {
       get() {
@@ -11,7 +11,6 @@ Promise.all([
     })
   })
 ]).then(() => {
-  console.log('done')
   // `routes` is an array of route objects injected by Sapper
   init(document.querySelector('#sapper'), __routes__)
 })
