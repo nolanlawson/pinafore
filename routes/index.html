@@ -16,24 +16,23 @@
 
 <script>
 	import Layout from './_components/Layout.html'
-	import { databasePromise } from './_utils/database'
+  import { store } from './_utils/store'
   import { getHomeTimeline } from './_utils/mastodon'
 
 	export default {
 	  oncreate: function () {
       if (process.browser) {
         (async () => {
-          let db = await databasePromise
-          let instanceData = await db.get('instance')
+          let instanceData = this.store.get('currentOauthInstance')
           if (!instanceData) {
             return
           }
           let response = await (await getHomeTimeline(instanceData.instanceName, instanceData.access_token)).json()
           console.log(response)
-
         })()
       }
     },
+		store: () => store,
 		components: {
 			Layout
 		}

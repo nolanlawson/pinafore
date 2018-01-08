@@ -9,7 +9,7 @@
 
   <form on:submit='handleSubmit(event)'>
     <label for="instanceInput">Instance name:</label>
-    <input type="text" id="instanceInput" bind:value='instanceName' placeholder=''>
+    <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
     <button class="primary" type="submit" id="submitButton">Add instance</button>
   </form>
 
@@ -45,6 +45,7 @@
   import Layout from '../_components/Layout.html';
   import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../_utils/mastodon'
   import { databasePromise } from '../_utils/database'
+  import { store } from '../_utils/store'
   import { goto } from 'sapper/runtime.js'
 
   export default {
@@ -53,20 +54,7 @@
         (async () => {
           let params = new URLSearchParams(location.search)
           if (params.has('code')) {
-            let db = await databasePromise
-            let instanceData = await db.get('instance')
-            this.set({instanceName: instanceData.instanceName})
-            let code = params.get('code')
-            instanceData.code = code
-            let response = await (await getAccessTokenFromAuthCode(
-              instanceData.instanceName,
-              instanceData.client_id,
-              instanceData.client_secret,
-              instanceData.code
-            )).json()
-            instanceData = Object.assign(instanceData, response)
-            await db.set(`instance`, instanceData)
-            goto('/')
+            this.onReceivedOauthCode(params.get('code'))
           }
         })()
       }
@@ -74,18 +62,33 @@
     components: {
       Layout
     },
-    data: () => ({
-      instanceName: ''
-    }),
+    store: () => store,
     methods: {
+      onReceivedOauthCode: async function(code) {
+        let instanceData = this.store.get('currentOauthInstance')
+        instanceData.code = code
+        let response = await (await getAccessTokenFromAuthCode(
+          instanceData.instanceName,
+          instanceData.client_id,
+          instanceData.client_secret,
+          instanceData.code
+        )).json()
+        instanceData = Object.assign(instanceData, response)
+        this.store.set({
+          'currentOauthInstance': instanceData,
+          'instanceNameInSearch': '',
+        })
+        this.store.save()
+        goto('/')
+      },
       handleSubmit: async function(event) {
         event.preventDefault()
-        let instanceName = this.get('instanceName')
+        let instanceName = this.store.get('instanceNameInSearch')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
         let data = await (await registerApplication(instanceName)).json()
-        let db = await databasePromise
         data.instanceName = instanceName
-        await db.set(`instance`, data)
+        this.store.set({'currentOauthInstance': data})
+        this.store.save()
         let oauthUrl = generateAuthLink(instanceName, data.client_id)
         document.location.href = oauthUrl
       },
