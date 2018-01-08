@@ -49,3 +49,14 @@ export function getAccessTokenFromAuthCode(instanceName, clientId, clientSecret,
     })
   })
 }
+
+export function getHomeTimeline(instanceName, accessToken) {
+  let url = `https://${instanceName}/api/v1/timelines/home`
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
+}

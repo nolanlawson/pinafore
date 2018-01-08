@@ -15,13 +15,29 @@
 </Layout>
 
 <script>
-	import Layout from './_components/Layout.html';
+	import Layout from './_components/Layout.html'
+	import { databasePromise } from './_utils/database'
+  import { getHomeTimeline } from './_utils/mastodon'
 
 	export default {
+	  oncreate: function () {
+      if (process.browser) {
+        (async () => {
+          let db = await databasePromise
+          let instanceData = await db.get('instance')
+          if (!instanceData) {
+            return
+          }
+          let response = await (await getHomeTimeline(instanceData.instanceName, instanceData.access_token)).json()
+          console.log(response)
+
+        })()
+      }
+    },
 		components: {
 			Layout
 		}
-	};
+	}
 </script>
 <style>
   .banner {

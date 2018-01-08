@@ -45,6 +45,7 @@
   import Layout from '../_components/Layout.html';
   import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../_utils/mastodon'
   import { databasePromise } from '../_utils/database'
+  import { goto } from 'sapper/runtime.js'
 
   export default {
     oncreate: function () {
@@ -65,7 +66,7 @@
             )).json()
             instanceData = Object.assign(instanceData, response)
             await db.set(`instance`, instanceData)
-            console.log('response', response)
+            goto('/')
           }
         })()
       }
