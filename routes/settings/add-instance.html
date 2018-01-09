@@ -37,9 +37,6 @@
     display: block;
     margin: 20px 5px;
   }
-
-
-
 </style>
 <script>
   import Layout from '../_components/Layout.html';
@@ -81,7 +78,7 @@
         this.store.save()
         goto('/')
       },
-      handleSubmit: async function(event) {
+      onSubmit: async function(event) {
         event.preventDefault()
         let instanceName = this.store.get('instanceNameInSearch')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
