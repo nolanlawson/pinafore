@@ -1,0 +1,29 @@
+<ul>
+  {{#each statuses as status}}
+  <div>{{JSON.stringify(status, null, '  ')}}</div>
+  {{/each}}
+</ul>
+<script>
+  import { store } from '../_utils/store'
+  import { getHomeTimeline } from '../_utils/mastodon'
+
+  export default {
+    oncreate: function () {
+      if (process.browser) {
+        (async () => {
+          let instanceData = this.store.get('currentOauthInstance')
+          if (!instanceData) {
+            return
+          }
+          let response = await (await getHomeTimeline(instanceData.instanceName, instanceData.access_token)).json()
+          this.set({'statuses': response})
+        })()
+      }
+    },
+    data: () => ({
+      target: 'home',
+      statuses: []
+    }),
+    store: () => store
+  }
+</script>

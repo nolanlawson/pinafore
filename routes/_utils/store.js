@@ -24,8 +24,14 @@ const store = new LocalStorageStore({
   instanceNameInSearch: ''
 })
 
-if (process.browser) {
-  window.store = store
+store.compute(
+  'isUserLoggedIn',
+  ['currentOauthInstance'],
+  currentOauthInstance => !!currentOauthInstance && currentOauthInstance.access_token
+)
+
+if (process.browser && process.env.NODE_ENV !== 'production') {
+  window.store = store // for debugging
 }
 
 export { store }
