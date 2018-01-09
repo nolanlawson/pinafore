@@ -3,17 +3,19 @@
 </:Head>
 
 <Layout page='settings'>
-  <h1>Add an instance</h1>
+  <SettingsLayout page='add-instance'>
+    <h1>Add an instance</h1>
 
-  <p>Log in to your instance to use Pinafore.</p>
+    <p>Log in to your instance to use Pinafore.</p>
 
-  <form on:submit='handleSubmit(event)'>
-    <label for="instanceInput">Instance name:</label>
-    <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
-    <button class="primary" type="submit" id="submitButton">Add instance</button>
-  </form>
+    <form on:submit='handleSubmit(event)'>
+      <label for="instanceInput">Instance name:</label>
+      <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
+      <button class="primary" type="submit" id="submitButton">Add instance</button>
+    </form>
 
-  <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+    <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+  </SettingsLayout>
 </Layout>
 <style>
   @media (max-width: 767px) {
@@ -40,6 +42,7 @@
 </style>
 <script>
   import Layout from '../_components/Layout.html';
+  import SettingsLayout from './_components/SettingsLayout.html'
   import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../_utils/mastodon'
   import { databasePromise } from '../_utils/database'
   import { store } from '../_utils/store'
@@ -57,7 +60,8 @@
       }
     },
     components: {
-      Layout
+      Layout,
+      SettingsLayout
     },
     store: () => store,
     methods: {

@@ -1,0 +1,42 @@
+<nav>
+  <ul>
+    <li>
+      <a class='{{page === "home"  ? "selected" : ""}}' href='/settings'>
+        Settings
+      </a>
+    </li>
+    <li>
+      <a class='{{page === "about"  ? "selected" : ""}}' href='/settings/about'>
+        About
+      </a>
+    </li>
+    <li>
+      <a class='{{page === "add-instance" ? "selected" : ""}}' href='/settings/add-instance'>
+        Add an instance
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+
+  li {
+    margin: 10px 15px 20px;
+  }
+
+  a {
+    font-size: 1.2em;
+  }
+
+  a.selected {
+    font-weight: bold;
+  }
+
+</style>

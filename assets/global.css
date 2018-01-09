@@ -25,6 +25,7 @@ h1 {
 
 a {
 	color: royalblue;
+	text-decoration: none;
 }
 
 a:visited {
