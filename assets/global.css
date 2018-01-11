@@ -4,6 +4,7 @@ body {
 	font-size: 14px;
 	line-height: 1.5;
 	color: #333;
+	background: white;
 }
 
 main {
@@ -11,6 +12,7 @@ main {
 	max-width: 800px;
 	padding: 25px;
 	box-sizing: border-box;
+	margin: 0 auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -32,6 +34,10 @@ a:visited {
 	color: royalblue;
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 input {
 	border: 1px solid #dadada;
 	padding: 5px;
@@ -43,6 +49,10 @@ button {
 	background: #ededed;
 	border-radius: 2px;
 	padding: 10px 15px;
+}
+
+button {
+	cursor: pointer;
 }
 
 button:hover {
@@ -69,4 +79,14 @@ button.primary:active {
 
 p, label, input {
 	font-size: 1.3em;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+p {
+	margin: 0;
+	padding: 0;
 }
