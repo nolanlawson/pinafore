@@ -40,7 +40,13 @@
 <style>
 	nav {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background: royalblue;
+		background: royalblue;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		z-index: 10;
+		will-change: transform; /* avoids "repaints on scroll" for fixed position header */
 	}
 
 	ul {
