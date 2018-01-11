@@ -10,7 +10,7 @@ body {
 main {
 	position: relative;
 	max-width: 800px;
-	padding: 25px;
+	padding: 20px 15px;
 	box-sizing: border-box;
 	margin: 0 auto;
 }
@@ -45,10 +45,10 @@ input {
 
 button {
 	font-size: 1.2em;
-	border: 1px solid #333;
 	background: #ededed;
 	border-radius: 2px;
 	padding: 10px 15px;
+	border: 1px solid #ededed;
 }
 
 button {
@@ -89,4 +89,10 @@ ul {
 p {
 	margin: 0;
 	padding: 0;
+}
+
+@media (max-width: 767px) {
+	main {
+		padding: 15px 5px;
+	}
 }
