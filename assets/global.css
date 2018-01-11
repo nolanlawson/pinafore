@@ -10,7 +10,7 @@ body {
 main {
 	position: relative;
 	max-width: 800px;
-	padding: 20px 15px;
+	padding: 15px 15px;
 	box-sizing: border-box;
 	margin: 0 auto;
 }
@@ -93,6 +93,6 @@ p {
 
 @media (max-width: 767px) {
 	main {
-		padding: 15px 5px;
+		padding: 5px 5px;
 	}
 }
