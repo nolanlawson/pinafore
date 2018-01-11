@@ -1,7 +1,7 @@
-<article>
+<article on:click="alert(event)">
     {{#if status.reblog}}
       <div class="header">
-        {{status.account.username}} boosted
+        <a href="{{status.account.url}}">{{status.account.username}}</a> boosted
       </div>
     {{/if}}
   <div class="sidebar">
@@ -26,6 +26,7 @@
 
 <style>
   article {
+    pointer-events: none;
     padding: 10px 0;
     max-width: 600px;
     margin: 0 auto;
@@ -51,6 +52,15 @@
     white-space: pre-wrap;
   }
 
+  :global(.content a) {
+    pointer-events: auto;
+  }
+
+  :global(.header a) {
+    pointer-events: auto;
+    color: #333;
+  }
+
   .header {
     grid-area: header;
     margin: 5px;
@@ -62,11 +72,13 @@
   }
 
   .footer button {
+    pointer-events: auto;
     margin: auto;
     padding: 7px 10px 5px;
   }
 
   .footer svg {
+    pointer-events: none;
     width: 25px;
     height: 25px;
     fill: royalblue;
@@ -81,6 +93,12 @@
     },
     data: () => ({
       status: null
-    })
+    }),
+    methods: {
+      alert: function (e) {
+        e.preventDefault()
+        window.alert(e.target)
+      }
+    }
   }
 </script>
