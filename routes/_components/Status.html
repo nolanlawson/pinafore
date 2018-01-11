@@ -27,9 +27,9 @@
 <style>
   article {
     pointer-events: none;
-    padding: 10px 0;
     max-width: 600px;
     margin: 0 auto;
+    padding: 10px 0;
     border-bottom: 1px solid #ededed;
     display: grid;
     width: 100%;
@@ -50,6 +50,7 @@
     word-wrap: break-word;
     overflow: hidden;
     white-space: pre-wrap;
+    font-size: 0.9em;
   }
 
   :global(.content a) {
@@ -61,27 +62,33 @@
     color: #333;
   }
 
+  :global(.content p) {
+    margin: 0 0 10px;
+  }
+
   .header {
     grid-area: header;
-    margin: 5px;
+    margin: 5px 5px;
   }
   .footer {
     grid-area: footer;
     display: flex;
     margin: 5px;
+    justify-content: space-between;
   }
 
   .footer button {
     pointer-events: auto;
-    margin: auto;
-    padding: 7px 10px 5px;
+    padding: 0;
+    background: none;
+    border: none;
   }
 
   .footer svg {
     pointer-events: none;
-    width: 25px;
-    height: 25px;
-    fill: royalblue;
+    width: 24px;
+    height: 24px;
+    fill: #859ede;
   }
 </style>
 <script>

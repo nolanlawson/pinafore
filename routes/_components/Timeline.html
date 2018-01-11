@@ -1,8 +1,16 @@
 <ul>
   {{#each statuses as status}}
-  <Status :status />
+  <li>
+    <Status :status />
+  </li>
   {{/each}}
 </ul>
+<style>
+  ul {
+    list-style: none;
+    padding-right: 10px;
+  }
+</style>
 <script>
   import { store } from '../_utils/store'
   import { getHomeTimeline } from '../_utils/mastodon'
