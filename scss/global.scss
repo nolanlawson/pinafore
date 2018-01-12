@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #333;
+  background: #ebeffb;
+}
+
+#svelte {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  max-width: 800px;
+  padding: 15px 15px;
+  box-sizing: border-box;
+  margin: 85px auto;
+  background: white;
+  border: 1px solid #ededed;
+  border-radius: 1px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5em 0;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+a {
+  color: royalblue;
+  text-decoration: none;
+}
+
+a:visited {
+  color: royalblue;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input {
+  border: 1px solid #dadada;
+  padding: 5px;
+}
+
+button {
+  font-size: 1.2em;
+  background: #ededed;
+  border-radius: 2px;
+  padding: 10px 15px;
+  border: 1px solid #ededed;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ddd;
+}
+
+button:active {
+  background: #fafafa;
+}
+
+button.primary {
+  border: 1px solid #1e3066;
+  background: #668cff;
+  color: white;
+}
+
+button.primary:hover {
+  background: #446add;
+}
+
+button.primary:active {
+  background: #99b3ff;
+}
+
+p, label, input {
+  font-size: 1.3em;
+}
+
+ul, li, p {
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  main {
+    padding: 5px 5px;
+    margin: 75px auto;
+  }
+}
