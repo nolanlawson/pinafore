@@ -4,7 +4,7 @@ body {
   font-size: 14px;
   line-height: 1.2;
   color: #333;
-  background: #ebeffb;
+  background: var(--body-bg);
 }
 
 #svelte {
@@ -21,8 +21,8 @@ main {
   padding: 15px 15px;
   box-sizing: border-box;
   margin: 85px auto;
-  background: white;
-  border: 1px solid #ededed;
+  background: var(--main-bg);
+  border: 1px solid var(--main-border);
   border-radius: 1px;
 }
 
@@ -37,12 +37,12 @@ h1 {
 }
 
 a {
-  color: royalblue;
+  color: var(--anchor-text);
   text-decoration: none;
 }
 
 a:visited {
-  color: royalblue;
+  color: var(--anchor-text);
 }
 
 a:hover {
@@ -50,42 +50,40 @@ a:hover {
 }
 
 input {
-  border: 1px solid #dadada;
+  border: 1px solid var(--input-border);
   padding: 5px;
 }
 
 button {
   font-size: 1.2em;
-  background: #ededed;
+  background: var(--button-bg);
   border-radius: 2px;
   padding: 10px 15px;
-  border: 1px solid #ededed;
-}
-
-button {
+  border: 1px solid var(--button-border);
   cursor: pointer;
+  color: var(--button-text);
 }
 
 button:hover {
-  background: #ddd;
+  background: var(--button-bg-hover);
 }
 
 button:active {
-  background: #fafafa;
+  background: var(--button-bg-active);
 }
 
 button.primary {
-  border: 1px solid #1e3066;
-  background: #668cff;
-  color: white;
+  border: 1px solid var(--button-primary-border);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
 }
 
 button.primary:hover {
-  background: #446add;
+  background: var(--button-primary-bg-hover);
 }
 
 button.primary:active {
-  background: #99b3ff;
+  background: var(--button-primary-bg-active);
 }
 
 p, label, input {

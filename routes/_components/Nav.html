@@ -39,8 +39,8 @@
 
 <style>
 	nav {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-		background: royalblue;
+		border-bottom: 1px solid var(--nav-border);
+		background: var(--nav-bg);
 		position: fixed;
 		left: 0;
 		right: 0;
@@ -58,12 +58,12 @@
 	}
 
   a {
-    border-bottom: 1px solid royalblue;
+    border-bottom: 1px solid var(--nav-a-border);
   }
 
 	a.selected {
-    border-bottom: 1px solid white;
-    background: #7e93e9;
+    border-bottom: 1px solid var(--nav-a-selected-border);
+    background: var(--nav-a-selected-bg);
 	}
 
 	a {
@@ -75,27 +75,27 @@
 	}
 
   a:hover {
-    background-color: #a3b1f0;
-    border-bottom: 1px solid #a3b1f0;
+    background-color: var(--nav-a-bg-hover);
+    border-bottom: 1px solid var(--nav-a-border-hover);
   }
 
   a:hover span {
-    color: #f6f7fd;
+    color: var(--nav-text-color-hover);
   }
   a:hover svg {
-    fill: #f6f7fd;
+    fill: var(--nav-svg-fill-hover);
   }
 
 	svg {
 		width: 20px;
 		height: 20px;
 		display: inline-block;
-    fill: white;
+    fill: var(--nav-svg-fill);
 	}
 
   span {
     font-size: 16px;
-    color: white;
+    color: var(--nav-text-color);
     padding-left: 10px;
   }
 
