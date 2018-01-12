@@ -3,7 +3,7 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
   font-size: 14px;
   line-height: 1.2;
-  color: #333;
+  color: var(--body-text-color);
   background: var(--body-bg);
 }
 
