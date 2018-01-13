@@ -19,7 +19,7 @@
     </form>
 
     {{#if !$isUserLoggedIn}}
-    <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+    <p>Don't have an instance? <a rel="noopener" target="_blank" href="https://joinmastodon.org">Join Mastodon!</a></p>
     {{/if}}
   </SettingsLayout>
 </Layout>
@@ -49,8 +49,7 @@
 <script>
   import Layout from '../../_components/Layout.html';
   import SettingsLayout from '../_components/SettingsLayout.html'
-  import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon'
-  import { databasePromise } from '../../_utils/database'
+  import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon/oauth'
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
 
@@ -74,12 +73,12 @@
       onReceivedOauthCode: async function(code) {
         let currentRegisteredInstanceName = this.store.get('currentRegisteredInstanceName')
         let currentRegisteredInstance = this.store.get('currentRegisteredInstance')
-        let instanceData = await (await getAccessTokenFromAuthCode(
+        let instanceData = await getAccessTokenFromAuthCode(
           currentRegisteredInstanceName,
           currentRegisteredInstance.client_id,
           currentRegisteredInstance.client_secret,
           code
-        )).json()
+        )
         // TODO: handle error
         let loggedInInstances = this.store.get('loggedInInstances')
         let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')

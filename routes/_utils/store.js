@@ -65,6 +65,15 @@ store.compute(
   }
 )
 
+store.compute(
+  'currentInstanceData',
+  ['currentInstance', 'loggedInInstances'],
+  (currentInstance, loggedInInstances) => {
+    return Object.assign({
+      name: currentInstance
+    }, loggedInInstances[currentInstance])
+})
+
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging
 }

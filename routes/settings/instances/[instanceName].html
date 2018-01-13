@@ -5,18 +5,78 @@
 <Layout page='settings'>
   <SettingsLayout page='settings/instances/{{params.instanceName}}' label="{{params.instanceName}}">
     <h1>{{params.instanceName}}</h1>
+
+    {{#if currentUser}}
+    <h2>Logged in as:</h2>
+    <div class="current-user">
+      <img src="{{currentUser.avatar}}" />
+      <a rel="noopener" target="_blank" href="{{currentUser.url}}">@{{currentUser.acct}}</a>
+      <span class="acct-name">{{currentUser.display_name}}</span>
+    </div>
+    <h2>Theme:</h2>
+    <form class="theme-chooser">
+      <div class="theme-group">
+        <input type="radio" name="current-theme" id="theme-default" value="default">
+        <label for="theme-default">Royal (default)</label>
+      </div>
+      <div class="theme-group">
+        <input type="radio" name="current-theme" id="theme-crimson"
+               value="crimson">
+        <label for="theme-crimson">Crimson and Clover</label>
+      </div>
+      <div class="theme-group">
+        <input type="radio" name="current-theme" id="theme-hotpants"
+               value="hotpants">
+        <label for="theme-hotpants">Hot Pants</label>
+      </div>
+    </form>
+    {{/if}}
   </SettingsLayout>
 </Layout>
+<style>
+  .current-user {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 1.3em;
+  }
+  .current-user img {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+  }
+  .current-user img, .current-user a, .current-user span {
+    margin-right: 20px;
+  }
+  .theme-chooser {
+    display: block;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .theme-group {
+    display: flex;
+    align-items: center;
+  }
+  .theme-chooser label {
+    margin: 2px 10px 0;
+  }
+</style>
 <script>
   import { store } from '../../_utils/store'
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
+  import { getCurrentUser } from '../../_utils/mastodon/user'
 
   export default {
     components: {
       Layout,
       SettingsLayout
     },
-    store: () => store
+    store: () => store,
+    oncreate: async function () {
+      let currentInstanceData = this.store.get('currentInstanceData')
+      let currentUser = await getCurrentUser(currentInstanceData.name, currentInstanceData.access_token)
+      this.set({currentUser: currentUser})
+    }
   }
 </script>
