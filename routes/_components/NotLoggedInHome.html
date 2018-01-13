@@ -1,4 +1,4 @@
-<div class="free-text">
+<FreeTextLayout>
   <div class="banner">
     <svg alt="Pinafore logo" class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M92.12 59.93H59.87V8.23C70.4 14.9 87.34 30 92.12 59.93zM31 26.9A122.4 122.4 0 0 1 9.39 60.35H31zM37.76 99h24.48a30.67 30.67 0 0 0 30.67-30.67H50.52V6.27a5.27 5.27 0 0 0-10.52 0v62.06H7.09A30.67 30.67 0 0 0 37.76 99z"/></svg>
     <h1>Pinafore</h1>
@@ -8,14 +8,8 @@
   <p>To get started, <a href="/settings/add-instance">log in to an instance</a>.</p>
 
   <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
-</div>
+</FreeTextLayout>
 <style>
-  .free-text {
-    margin: 20px;
-  }
-  .free-text p {
-    margin: 20px 0;
-  }
   .banner {
     display: flex;
     align-items: center;
@@ -39,3 +33,11 @@
     }
   }
 </style>
+<script>
+  import FreeTextLayout from './FreeTextLayout.html'
+  export default {
+    components: {
+      FreeTextLayout
+    }
+  }
+</script>

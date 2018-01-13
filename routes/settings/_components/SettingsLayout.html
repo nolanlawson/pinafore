@@ -1,13 +1,17 @@
 <SettingsNav page={{page}} />
 
 <div class="settings">
-  <slot></slot>
+  <FreeTextLayout>
+    <slot></slot>
+  </FreeTextLayout>
 </div>
 <script>
   import SettingsNav from './SettingsNav.html';
+  import FreeTextLayout from '../../_components/FreeTextLayout'
 
   export default {
     components: {
+      FreeTextLayout,
       SettingsNav
     }
   };
