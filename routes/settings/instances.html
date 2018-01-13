@@ -6,15 +6,29 @@
   <SettingsLayout page='instances'>
     <h1>Instances</h1>
 
+    {{#if $isUserLoggedIn}}
+      <ul class="instances-list">
+        {{#each $loggedInInstancesAsList as instance}}
+          <li class="instance-card">
+            <span>{{instance.name}}</span>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
     <p>Connect to an instance to start using Pinafore.</p>
+    {{/if}}
 
-    <form on:submit='onSubmit(event)'>
-      <label for="instanceInput">Instance name:</label>
-      <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
-      <button class="primary" type="submit" id="submitButton">Add instance</button>
-    </form>
+    {{#if !$isUserLoggedIn}}
+      <form class="add-new-instance" on:submit='onSubmit(event)'>
+        <label for="instanceInput">Instance name:</label>
+        <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
+        <button class="primary" type="submit" id="submitButton">Add instance</button>
+      </form>
+    {{/if}}
 
-    <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+    {{#if !$isUserLoggedIn}}
+      <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+    {{/if}}
   </SettingsLayout>
 </Layout>
 <style>
@@ -28,14 +42,14 @@
     width: 250px;
   }
 
-  form {
+  form.add-new-instance {
     background: var(--form-bg);
     padding: 5px 10px 15px;
     margin: 20px auto;
     border: 1px solid var(--form-border);
   }
 
-  form label, form input, form button {
+  form.add-new-instance label, form.add-new-instance input, form.add-new-instance button {
     display: block;
     margin: 20px 5px;
   }

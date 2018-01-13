@@ -52,6 +52,19 @@ store.compute(
   (currentInstance, loggedInInstances) => !!(currentInstance && Object.keys(loggedInInstances).includes(currentInstance))
 )
 
+store.compute(
+  'loggedInInstancesAsList',
+  ['currentInstance', 'loggedInInstances', 'loggedInInstancesInOrder'],
+  (currentInstance, loggedInInstances, loggedInInstancesInOrder) => {
+    return loggedInInstancesInOrder.map(instanceName => {
+      return Object.assign({
+        current: currentInstance === instanceName,
+        name: instanceName
+      }, loggedInInstances[instanceName])
+    })
+  }
+)
+
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging
 }
