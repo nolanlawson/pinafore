@@ -82,9 +82,10 @@
           loggedInInstancesInOrder.push(currentRegisteredInstanceName)
         }
         this.store.set({
-          'loggedInInstances': loggedInInstances,
-          'currentInstance': currentRegisteredInstanceName,
-          'loggedInInstancesInOrder': loggedInInstancesInOrder
+          instanceNameInSearch: '',
+          loggedInInstances: loggedInInstances,
+          currentInstance: currentRegisteredInstanceName,
+          loggedInInstancesInOrder: loggedInInstancesInOrder
         })
         this.store.save()
         goto('/')
