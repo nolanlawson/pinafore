@@ -1,35 +1,48 @@
 :root {
-  --button-primary-bg: #668cff;
-  --button-primary-text: white;
-  --button-primary-border: #1e3066;
-  --button-primary-bg-active: #99b3ff;
-  --button-primary-bg-hover:  #446add;
+  $main-theme-color: royalblue;
+  $main-text-color: #333;
+  $border-color: #dadada;
+  $main-bg-color: white;
+  $secondary-text-color: white;
 
-  --button-bg: #ededed;
-  --button-text: #333;
-  --button-border: #ededed;
-  --button-bg-active: #fafafa;
-  --button-bg-hover: #ddd;
+  --button-primary-bg: lighten($main-theme-color, 7%);
+  --button-primary-text: $secondary-text-color;
+  --button-primary-border: darken($main-theme-color, 30%);
+  --button-primary-bg-active: lighten($main-theme-color, 1%);
+  --button-primary-bg-hover: lighten($main-theme-color, 9%);
 
-  --input-border: #dadada;
-  --anchor-text: royalblue;
-  --main-bg: white;
-  --body-bg: #ebeffb;
-  --body-text-color: #333;
-  --main-border: #ededed;
+  --button-bg: darken($main-bg-color, 10%);
+  --button-text: $main-text-color;
+  --button-border: darken($border-color, 20%);
+  --button-bg-active: darken($main-bg-color, 25%);
+  --button-bg-hover: darken($main-bg-color, 5%);
 
-  --form-bg: #fafafa;
-  --form-border: #ccc;
+  --input-border: $border-color;
+  --anchor-text: $main-theme-color;
+  --main-bg: $main-bg-color;
+  --body-bg: lighten($main-theme-color, 38%);
+  --body-text-color: $main-text-color;
+  --main-border: $border-color;
 
-  --nav-bg: royalblue;
-  --nav-border: #3a5eca;
-  --nav-a-border: royalblue;
-  --nav-a-selected-border: white;
-  --nav-a-selected-bg: #7e93e9;
-  --nav-a-bg-hover: #a3b1f0;
-  --nav-a-border-hover: #a3b1f0;
-  --nav-text-color-hover: #f6f7fd;
-  --nav-svg-fill-hover: #f6f7fd;
-  --nav-svg-fill: white;
-  --nav-text-color: white;
+  --form-bg: darken($main-bg-color, 3%);
+  --form-border: darken($border-color, 10%);
+
+  --nav-bg: $main-theme-color;
+  --nav-border: darken($main-theme-color, 10%);
+  --nav-a-border: $main-theme-color;
+  --nav-a-selected-border: $secondary-text-color;
+  --nav-a-selected-bg: lighten($main-theme-color, 10%);
+  --nav-svg-fill: $secondary-text-color;
+  --nav-text-color: $secondary-text-color;
+
+  --nav-a-selected-border-hover: $secondary-text-color;
+  --nav-a-selected-bg-hover: lighten($main-theme-color, 15%);
+  --nav-a-bg-hover: lighten($main-theme-color, 5%);
+  --nav-a-border-hover: $main-theme-color;
+  --nav-svg-fill-hover: $secondary-text-color;
+  --nav-text-color-hover: $secondary-text-color;
+
+  --action-button-fill-color: lighten($main-theme-color, 15%);
+  --action-button-fill-color-hover: lighten($main-theme-color, 20%);
+  --action-button-fill-color-active: lighten($main-theme-color, 5%);
 }

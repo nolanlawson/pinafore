@@ -30,7 +30,7 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 10px 0;
-    border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid var(--border-color);
     display: grid;
     width: 100%;
     grid-template-areas:
@@ -84,11 +84,19 @@
     border: none;
   }
 
-  .footer svg {
+  .footer button svg {
     pointer-events: none;
     width: 24px;
     height: 24px;
-    fill: #859ede;
+    fill: var(--action-button-fill-color);
+  }
+
+  .footer button:hover svg {
+    fill: var(--action-button-fill-color-hover);
+  }
+
+  .footer button:active svg {
+    fill: var(--action-button-fill-color-active);
   }
 </style>
 <script>

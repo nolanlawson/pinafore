@@ -59,6 +59,11 @@
 
   a {
     border-bottom: 1px solid var(--nav-a-border);
+		text-decoration: none;
+		padding: 25px 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
   }
 
 	a.selected {
@@ -66,12 +71,9 @@
     background: var(--nav-a-selected-bg);
 	}
 
-	a {
-		text-decoration: none;
-    padding: 25px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	a.selected:hover {
+		border-bottom: 1px solid var(--nav-a-selected-border-hover);
+		background: var(--nav-a-selected-bg-hover);
 	}
 
   a:hover {
