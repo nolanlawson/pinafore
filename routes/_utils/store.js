@@ -38,13 +38,19 @@ class LocalStorageStore extends Store {
 }
 
 const store = new LocalStorageStore({
-  instanceNameInSearch: ''
+  instanceNameInSearch: '',
+  currentRegisteredInstance: null,
+  currentRegisteredInstanceName: '',
+  currentInstance: null,
+  loggedInInstances: {},
+  loggedInInstancesInOrder: [],
+  instanceThemes: {}
 })
 
 store.compute(
   'isUserLoggedIn',
-  ['currentOauthInstance'],
-  currentOauthInstance => !!currentOauthInstance && currentOauthInstance.access_token
+  ['currentInstance', 'loggedInInstances'],
+  (currentInstance, loggedInInstances) => !!(currentInstance && Object.keys(loggedInInstances).includes(currentInstance))
 )
 
 if (process.browser && process.env.NODE_ENV !== 'production') {

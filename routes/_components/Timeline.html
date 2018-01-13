@@ -20,7 +20,7 @@
   export default {
     oncreate: async function () {
       if (process.browser) {
-        let instanceData = this.store.get('currentOauthInstance')
+        let instanceData = this.store.get('currentInstance')
         if (!instanceData) {
           return
         }

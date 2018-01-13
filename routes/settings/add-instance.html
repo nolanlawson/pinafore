@@ -66,18 +66,25 @@
     store: () => store,
     methods: {
       onReceivedOauthCode: async function(code) {
-        let instanceData = this.store.get('currentOauthInstance')
-        instanceData.code = code
-        let response = await (await getAccessTokenFromAuthCode(
-          instanceData.instanceName,
-          instanceData.client_id,
-          instanceData.client_secret,
-          instanceData.code
+        let currentRegisteredInstanceName = this.store.get('currentRegisteredInstanceName')
+        let currentRegisteredInstance = this.store.get('currentRegisteredInstance')
+        let instanceData = await (await getAccessTokenFromAuthCode(
+          currentRegisteredInstanceName,
+          currentRegisteredInstance.client_id,
+          currentRegisteredInstance.client_secret,
+          code
         )).json()
-        instanceData = Object.assign(instanceData, response)
+        // TODO: handle error
+        let loggedInInstances = this.store.get('loggedInInstances')
+        let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
+        loggedInInstances[currentRegisteredInstanceName] = instanceData
+        if (!loggedInInstancesInOrder.includes(currentRegisteredInstanceName)) {
+          loggedInInstancesInOrder.push(currentRegisteredInstanceName)
+        }
         this.store.set({
-          'currentOauthInstance': instanceData,
-          'instanceNameInSearch': '',
+          'loggedInInstances': loggedInInstances,
+          'currentInstance': currentRegisteredInstanceName,
+          'loggedInInstancesInOrder': loggedInInstancesInOrder
         })
         this.store.save()
         goto('/')
@@ -86,11 +93,14 @@
         event.preventDefault()
         let instanceName = this.store.get('instanceNameInSearch')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
-        let data = await (await registerApplication(instanceName)).json()
-        data.instanceName = instanceName
-        this.store.set({'currentOauthInstance': data})
+        let instanceData = await (await registerApplication(instanceName)).json()
+        // TODO: handle error
+        this.store.set({
+          currentRegisteredInstanceName: instanceName,
+          currentRegisteredInstance: instanceData
+        })
         this.store.save()
-        let oauthUrl = generateAuthLink(instanceName, data.client_id)
+        let oauthUrl = generateAuthLink(instanceName, instanceData.client_id)
         document.location.href = oauthUrl
       },
     }
