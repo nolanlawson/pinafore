@@ -1,6 +1,5 @@
 import { Store } from 'svelte/store.js'
 
-const key = 'ui-store'
 const LS = process.browser && localStorage
 class LocalStorageStore extends Store {
 
