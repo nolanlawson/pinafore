@@ -1,5 +1,6 @@
 :root {
   $main-theme-color: royalblue; // also: crimson, forestgreen, hotpink
+  $anchor-color: $main-theme-color;
   $main-text-color: #333;
   $border-color: #dadada;
   $main-bg-color: white;
@@ -18,7 +19,7 @@
   --button-bg-hover: darken($main-bg-color, 5%);
 
   --input-border: $border-color;
-  --anchor-text: $main-theme-color;
+  --anchor-text: $anchor-color;
   --main-bg: $main-bg-color;
   --body-bg: lighten($main-theme-color, 38%);
   --body-text-color: $main-text-color;
@@ -45,4 +46,11 @@
   --action-button-fill-color: lighten($main-theme-color, 15%);
   --action-button-fill-color-hover: lighten($main-theme-color, 20%);
   --action-button-fill-color-active: lighten($main-theme-color, 5%);
+
+  --settings-list-item-bg: $main-bg-color;
+  --settings-list-item-text: $main-theme-color;
+  --settings-list-item-text-hover: $main-theme-color;
+  --settings-list-item-border: $border-color;
+  --settings-list-item-bg-active: darken($main-bg-color, 10%);
+  --settings-list-item-bg-hover: darken($main-bg-color, 2%);
 }

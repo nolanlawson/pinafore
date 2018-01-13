@@ -1,20 +1,10 @@
 <nav>
   <ul>
+    {{#each navItems as navItem}}
     <li>
-      <a class='{{page === "home"  ? "selected" : ""}}' href='/settings'>
-        Settings
-      </a>
+      <SettingsNavItem :page name="{{navItem.name}}" href="{{navItem.href}}" label="{{navItem.label}}"/>
     </li>
-    <li>
-      <a class='{{page === "about"  ? "selected" : ""}}' href='/settings/about'>
-        About
-      </a>
-    </li>
-    <li>
-      <a class='{{page === "add-instance" ? "selected" : ""}}' href='/settings/add-instance'>
-        Add an instance
-      </a>
-    </li>
+    {{/each}}
   </ul>
 </nav>
 
@@ -28,15 +18,57 @@
   }
 
   li {
-    margin: 10px 15px 20px;
+    margin: 10px 0;
+    font-size: 1em;
   }
 
-  a {
-    font-size: 1.2em;
+  li::after {
+    content: '>';
+    margin: 0 15px;
+    color: var(--anchor-text);
   }
 
-  a.selected {
-    font-weight: bold;
+  li:last-child::after {
+    content: '';
+    margin-left: 0;
+    font-size: 1em;
   }
 
 </style>
+<script>
+  import SettingsNavItem from './SettingsNavItem.html'
+
+  const NAV_ITEMS = {
+    home: {
+      name: 'home',
+      href: '/settings',
+      label: 'Settings'
+    },
+    about: {
+      name: 'about',
+      href: '/settings/about',
+      label: 'About Pinafore'
+    },
+    instances: {
+      name: 'instances',
+      href: '/settings/instances',
+      label: 'Instances'
+    }
+  }
+
+  export default {
+    components: {
+      SettingsNavItem
+    },
+    computed: {
+      navItems: page => {
+        let res = [NAV_ITEMS.home]
+        if (page === 'home') {
+          return res
+        }
+        res.push(NAV_ITEMS[page])
+        return res
+      }
+    }
+  }
+</script>

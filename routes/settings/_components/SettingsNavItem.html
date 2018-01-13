@@ -1,0 +1,24 @@
+<a class='{{getCurrentClass(page, name)}}' aria-label='{{getAriaLabel(page, name, label)}}' href='{{href}}'>
+  {{label}}
+</a>
+<style>
+  a {
+    font-size: 1.2em;
+  }
+
+  a.selected {
+    font-weight: 600;
+  }
+</style>
+<script>
+  export default {
+    helpers: {
+      getCurrentClass(page, name) {
+        return page === name  ? "selected" : ""
+      },
+      getAriaLabel(page, name, label) {
+        return page === name ? "Current page" : label
+      }
+    }
+  }
+</script>

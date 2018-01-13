@@ -6,9 +6,13 @@
   <SettingsLayout page='home'>
     <h1>Settings</h1>
 
+    <ul>
+      <li><a href="/settings/instances">Instances</a></li>
+      <li><a href="/settings/about">About Pinafore</a></li>
+    </ul>
+
   </SettingsLayout>
 </Layout>
-
 <script>
   import Layout from '../_components/Layout.html';
   import SettingsLayout from './_components/SettingsLayout.html'
@@ -20,3 +24,30 @@
     }
   };
 </script>
+<style>
+  ul {
+    list-style: none;
+    width: 80%;
+    border: 1px solid var(--settings-list-item-border);
+    margin: 20px auto;
+  }
+  li {
+    border: 1px solid var(--settings-list-item-border);
+    font-size: 1.3em;
+    display: flex;
+    flex-direction: column;
+  }
+  a, a:visited {
+    color: var(--settings-list-item-text);
+    background: var(--settings-list-item-bg);
+    padding: 20px;
+  }
+  a:hover {
+    text-decoration: none;
+    background: var(--settings-list-item-bg-hover);
+    color: var(--settings-list-item-text-hover);
+  }
+  a:active {
+    background: var(--settings-list-item-bg-active);
+  }
+</style>

@@ -1,5 +1,5 @@
 const WEBSITE = 'https://pinafore.social'
-const REDIRECT_URI = (typeof location !== 'undefined' ? location.origin : 'https://pinafore.social') + '/settings/add-instance'
+const REDIRECT_URI = (typeof location !== 'undefined' ? location.origin : 'https://pinafore.social') + '/settings/instances'
 const SCOPES = 'read write follow'
 const CLIENT_NAME = 'Pinafore'
 
