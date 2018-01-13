@@ -1,0 +1,64 @@
+<a class='{{page === name ? "selected" : ""}}' aria-label='{{page === name ? "Current page" : label}}' href='{{href}}'>
+  <svg>
+    <use xlink:href="{{svg}}" />
+  </svg>
+  <span>{{label}}</span>
+</a>
+<style>
+  a {
+    border-bottom: 1px solid var(--nav-a-border);
+    text-decoration: none;
+    padding: 25px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  a.selected {
+    border-bottom: 1px solid var(--nav-a-selected-border);
+    background: var(--nav-a-selected-bg);
+  }
+
+  a.selected:hover {
+    border-bottom: 1px solid var(--nav-a-selected-border-hover);
+    background: var(--nav-a-selected-bg-hover);
+  }
+
+  a:hover {
+    background-color: var(--nav-a-bg-hover);
+    border-bottom: 1px solid var(--nav-a-border-hover);
+  }
+
+  a:hover span {
+    color: var(--nav-text-color-hover);
+  }
+  a:hover svg {
+    fill: var(--nav-svg-fill-hover);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    fill: var(--nav-svg-fill);
+  }
+
+  span {
+    font-size: 16px;
+    color: var(--nav-text-color);
+    padding-left: 10px;
+  }
+
+  @media (max-width: 767px) {
+    span {
+      display: none;
+    }
+    svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+</style>
+<script>
+
+</script>
