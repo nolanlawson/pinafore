@@ -14,7 +14,7 @@ body {
 
 main {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
   max-width: 800px;
