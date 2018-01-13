@@ -1,0 +1,22 @@
+<:Head>
+  <title>{{params.instanceName}}</title>
+</:Head>
+
+<Layout page='settings'>
+  <SettingsLayout page='settings/instances/{{params.instanceName}}' label="{{params.instanceName}}">
+    <h1>{{params.instanceName}}</h1>
+  </SettingsLayout>
+</Layout>
+<script>
+  import { store } from '../../_utils/store'
+  import Layout from '../../_components/Layout.html'
+  import SettingsLayout from '../_components/SettingsLayout.html'
+
+  export default {
+    components: {
+      Layout,
+      SettingsLayout
+    },
+    store: () => store
+  }
+</script>

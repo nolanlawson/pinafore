@@ -2,9 +2,12 @@
   <ul>
     {{#each navItems as navItem}}
     <li>
-      <SettingsNavItem :page name="{{navItem.name}}" href="{{navItem.href}}" label="{{navItem.label}}"/>
+      <SettingsNavItem :page name="{{navItem.name}}" href="{{navItem.href}}" label="{{navItem.label}}" />
     </li>
     {{/each}}
+    <li>
+      <SettingsNavItem :page name="{{page}}" href="/{{page}}" :label />
+    </li>
   </ul>
 </nav>
 
@@ -39,21 +42,10 @@
   import SettingsNavItem from './SettingsNavItem.html'
 
   const NAV_ITEMS = {
-    home: {
-      name: 'home',
-      href: '/settings',
-      label: 'Settings'
-    },
-    about: {
-      name: 'about',
-      href: '/settings/about',
-      label: 'About Pinafore'
-    },
-    instances: {
-      name: 'instances',
-      href: '/settings/instances',
-      label: 'Instances'
-    }
+    'settings': 'Settings',
+    'settings/about': 'About Pinafore',
+    'settings/instances': 'Instances',
+    'settings/instances/add': 'Add an instance',
   }
 
   export default {
@@ -62,11 +54,19 @@
     },
     computed: {
       navItems: page => {
-        let res = [NAV_ITEMS.home]
-        if (page === 'home') {
-          return res
+        let res = []
+        let breadcrumbs = page.split('/')
+        let path = ''
+        for (let i = 0; i < breadcrumbs.length - 1; i++) {
+          let currentPage = breadcrumbs[i]
+          path += currentPage
+          res.push({
+            label: NAV_ITEMS[path],
+            href: `/${path}`,
+            name: path
+          })
+          path += '/'
         }
-        res.push(NAV_ITEMS[page])
         return res
       }
     }

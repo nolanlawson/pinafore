@@ -1,0 +1,22 @@
+<li><a :href>{{label}}</a></li>
+<style>
+  li {
+    border: 1px solid var(--settings-list-item-border);
+    font-size: 1.3em;
+    display: flex;
+    flex-direction: column;
+  }
+  a, a:visited {
+    color: var(--settings-list-item-text);
+    background: var(--settings-list-item-bg);
+    padding: 20px;
+  }
+  a:hover {
+    text-decoration: none;
+    background: var(--settings-list-item-bg-hover);
+    color: var(--settings-list-item-text-hover);
+  }
+  a:active {
+    background: var(--settings-list-item-bg-active);
+  }
+</style>

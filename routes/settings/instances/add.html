@@ -1,33 +1,25 @@
 <:Head>
-  <title>Instances</title>
+  <title>Add an Instance</title>
 </:Head>
 
 <Layout page='settings'>
-  <SettingsLayout page='instances'>
-    <h1>Instances</h1>
+  <SettingsLayout page='settings/instances/add' label="Add an Instance">
+    <h1>Add an Instance</h1>
 
     {{#if $isUserLoggedIn}}
-      <ul class="instances-list">
-        {{#each $loggedInInstancesAsList as instance}}
-          <li class="instance-card">
-            <span>{{instance.name}}</span>
-          </li>
-        {{/each}}
-      </ul>
+    <p>Connect to an instance to log in.</p>
     {{else}}
-    <p>Connect to an instance to start using Pinafore.</p>
+    <p>Log in to an instance to start using Pinafore.</p>
     {{/if}}
 
-    {{#if !$isUserLoggedIn}}
-      <form class="add-new-instance" on:submit='onSubmit(event)'>
-        <label for="instanceInput">Instance name:</label>
-        <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
-        <button class="primary" type="submit" id="submitButton">Add instance</button>
-      </form>
-    {{/if}}
+    <form class="add-new-instance" on:submit='onSubmit(event)'>
+      <label for="instanceInput">Instance name:</label>
+      <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
+      <button class="primary" type="submit" id="submitButton">Add instance</button>
+    </form>
 
     {{#if !$isUserLoggedIn}}
-      <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
+    <p>Don't have an instance? <a href="https://joinmastodon.org">Join Mastodon!</a></p>
     {{/if}}
   </SettingsLayout>
 </Layout>
@@ -55,11 +47,11 @@
   }
 </style>
 <script>
-  import Layout from '../_components/Layout.html';
-  import SettingsLayout from './_components/SettingsLayout.html'
-  import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../_utils/mastodon'
-  import { databasePromise } from '../_utils/database'
-  import { store } from '../_utils/store'
+  import Layout from '../../_components/Layout.html';
+  import SettingsLayout from '../_components/SettingsLayout.html'
+  import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon'
+  import { databasePromise } from '../../_utils/database'
+  import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
 
   export default {
