@@ -31,7 +31,7 @@
         {{#if $loggedInInstancesInOrder.length > 1}}
           <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
             on:click="onSwitchToThisInstance()">
-            {{$currentInstance === params.instanceName ? 'Current instance' : 'Switch to this instance'}}
+            {{$currentInstance === params.instanceName ? 'This is your current instance' : 'Switch to this instance'}}
           </button>
         {{/if}}
         <button on:click="onLogOut()">Log out</button>
