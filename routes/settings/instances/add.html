@@ -57,7 +57,6 @@
   import { switchToTheme } from '../../_utils/themeEngine'
   import { toast } from '../../_utils/toast'
   import LoadingMask from '../../_components/LoadingMask'
-  import { fade } from 'svelte-transitions'
 
   const REDIRECT_URI = (typeof location !== 'undefined' ?
       location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -79,9 +78,6 @@
       LoadingMask
     },
     store: () => store,
-    transitions: {
-      fade
-    },
     methods: {
       onSubmit: async function(event) {
         event.preventDefault()
