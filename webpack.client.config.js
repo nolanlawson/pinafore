@@ -35,10 +35,15 @@ module.exports = {
 			},
 			!isDev && {
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({
+				/* disable while https://github.com/sveltejs/sapper/issues/79 is open */
+				/*use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: [{ loader: 'css-loader', options: { sourceMap:isDev } }]
-				})
+				}) */
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ]
 			}
 		].filter(Boolean)
 	},
@@ -51,7 +56,8 @@ module.exports = {
 	].concat(isDev ? [
 		new webpack.HotModuleReplacementPlugin()
 	] : [
-		new ExtractTextPlugin('main.css'),
+		/* disable while https://github.com/sveltejs/sapper/issues/79 is open */
+    //new ExtractTextPlugin('main.css'),
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		new UglifyJSPlugin()
 	]).filter(Boolean),
