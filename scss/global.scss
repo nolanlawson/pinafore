@@ -62,29 +62,37 @@ button {
   border: 1px solid var(--button-border);
   cursor: pointer;
   color: var(--button-text);
+
+  &:hover {
+    background: var(--button-bg-hover);
+  }
+
+  &:active {
+    background: var(--button-bg-active);
+  }
+
+  &[disabled] {
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    border: 1px solid var(--button-primary-border);
+    background: var(--button-primary-bg);
+    color: var(--button-primary-text);
+
+    &:hover {
+      background: var(--button-primary-bg-hover);
+    }
+
+    &:active {
+      background: var(--button-primary-bg-active);
+    }
+  }
 }
 
-button:hover {
-  background: var(--button-bg-hover);
-}
 
-button:active {
-  background: var(--button-bg-active);
-}
-
-button.primary {
-  border: 1px solid var(--button-primary-border);
-  background: var(--button-primary-bg);
-  color: var(--button-primary-text);
-}
-
-button.primary:hover {
-  background: var(--button-primary-bg-hover);
-}
-
-button.primary:active {
-  background: var(--button-primary-bg-active);
-}
 
 p, label, input {
   font-size: 1.3em;

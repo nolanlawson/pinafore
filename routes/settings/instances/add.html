@@ -70,6 +70,21 @@
     },
     store: () => store,
     methods: {
+      onSubmit: async function(event) {
+        event.preventDefault()
+        let instanceName = this.store.get('instanceNameInSearch')
+        instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
+        // TODO: show toast error if you're already logged into this instance
+        let instanceData = await (await registerApplication(instanceName)).json()
+        // TODO: handle error
+        this.store.set({
+          currentRegisteredInstanceName: instanceName,
+          currentRegisteredInstance: instanceData
+        })
+        this.store.save()
+        let oauthUrl = generateAuthLink(instanceName, instanceData.client_id)
+        document.location.href = oauthUrl
+      },
       onReceivedOauthCode: async function(code) {
         let currentRegisteredInstanceName = this.store.get('currentRegisteredInstanceName')
         let currentRegisteredInstance = this.store.get('currentRegisteredInstance')
@@ -88,26 +103,14 @@
         }
         this.store.set({
           instanceNameInSearch: '',
+          currentRegisteredInstanceName: null,
+          currentRegisteredInstance: null,
           loggedInInstances: loggedInInstances,
           currentInstance: currentRegisteredInstanceName,
           loggedInInstancesInOrder: loggedInInstancesInOrder
         })
         this.store.save()
         goto('/')
-      },
-      onSubmit: async function(event) {
-        event.preventDefault()
-        let instanceName = this.store.get('instanceNameInSearch')
-        instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
-        let instanceData = await (await registerApplication(instanceName)).json()
-        // TODO: handle error
-        this.store.set({
-          currentRegisteredInstanceName: instanceName,
-          currentRegisteredInstance: instanceData
-        })
-        this.store.save()
-        let oauthUrl = generateAuthLink(instanceName, instanceData.client_id)
-        document.location.href = oauthUrl
       },
     }
   }

@@ -10,6 +10,7 @@ const pify = require('pify')
 const writeFile = pify(fs.writeFile.bind(fs))
 const readdir = pify(fs.readdir.bind(fs))
 const render = pify(sass.render.bind(sass))
+const now = require('performance-now')
 
 const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
@@ -19,9 +20,15 @@ const themesScssDir = path.join(__dirname, '../scss/themes')
 const assetsDir = path.join(__dirname, '../assets')
 
 function doWatch() {
+  var start = now()
   chokidar.watch(scssDir).on('change', debounce(() => {
-    compileGlobalSass()
-    compileThemesSass()
+    console.log('Recompiling SCSS...')
+    Promise.all([
+      compileGlobalSass(),
+      compileThemesSass()
+    ]).then(() => {
+      console.log('Recompiled SCSS in ' + (now() - start) + 'ms')
+    })
   }, 500))
   chokidar.watch()
 }
@@ -41,7 +48,8 @@ async function compileThemesSass() {
   let files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
   await Promise.all(files.map(async file => {
     let res = await render({file: path.join(themesScssDir, file)})
-    await writeFile(path.join(assetsDir, path.basename(file).replace(/\.scss$/, '.css')), res.css, 'utf8')
+    let outputFilename = 'theme-' + path.basename(file).replace(/\.scss$/, '.css')
+    await writeFile(path.join(assetsDir, outputFilename), res.css, 'utf8')
   }))
 }
 

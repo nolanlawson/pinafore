@@ -25,6 +25,19 @@
 	%sapper.head%
 </head>
 <body>
+  <script>
+		<!-- load theme on startup (handled outside of Sapper/Svelte) -->
+		if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
+		  let theme = JSON.parse(localStorage.store_instanceThemes)[JSON.parse(localStorage.store_currentInstance)]
+			if (theme !== 'default') {
+        document.body.classList.add(`theme-${theme}`)
+				let link = document.createElement('link')
+				link.rel = 'stylesheet'
+				link.href = `/theme-${theme}.css`
+				document.head.appendChild(link)
+      }
+		}
+	</script>
 	<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
 
 		<symbol id="pinafore-logo" viewBox="0 0 100 100">

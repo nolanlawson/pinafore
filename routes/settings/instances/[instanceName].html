@@ -7,23 +7,30 @@
     <h1>{{params.instanceName}}</h1>
 
     {{#if currentUser}}
-    <h2>Logged in as:</h2>
-    <div class="current-user">
-      <img src="{{currentUser.avatar}}" />
-      <a rel="noopener" target="_blank" href="{{currentUser.url}}">@{{currentUser.acct}}</a>
-      <span class="acct-name">{{currentUser.display_name}}</span>
-    </div>
-    <h2>Theme:</h2>
-    <form class="theme-chooser">
-      {{#each themes as theme}}
-        <div class="theme-group">
-          <input type="radio" id="choice-theme-{{theme.name}}"
-                 value="{{theme.name}}" checked="$currentTheme === theme.name"
-                 bind:group="selectedTheme" on:change="onThemeChange()">
-          <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
-        </div>
-      {{/each}}
-    </form>
+      <h2>Logged in as:</h2>
+      <div class="current-user">
+        <img src="{{currentUser.avatar}}" />
+        <a rel="noopener" target="_blank" href="{{currentUser.url}}">@{{currentUser.acct}}</a>
+        <span class="acct-name">{{currentUser.display_name}}</span>
+      </div>
+      <h2>Theme:</h2>
+      <form class="theme-chooser">
+        {{#each themes as theme}}
+          <div class="theme-group">
+            <input type="radio" id="choice-theme-{{theme.name}}"
+                   value="{{theme.name}}" checked="$currentTheme === theme.name"
+                   bind:group="selectedTheme" on:change="onThemeChange()">
+            <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
+          </div>
+        {{/each}}
+      </form>
+
+      <form class="instance-actions">
+        <button class="primary" disabled="$currentInstance === params.instanceName">
+          Switch to this instance
+        </button>
+        <button>Log out</button>
+      </form>
     {{/if}}
   </SettingsLayout>
 </Layout>
@@ -54,6 +61,15 @@
   .theme-chooser label {
     margin: 2px 10px 0;
   }
+  .instance-actions {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+  }
+  .instance-actions button {
+    margin: 0 20px;
+    flex-basis: 100%;
+  }
 </style>
 <script>
   import { store } from '../../_utils/store'
@@ -61,6 +77,7 @@
   import SettingsLayout from '../_components/SettingsLayout.html'
   import { getCurrentUser } from '../../_utils/mastodon/user'
   import { themes } from '../../_static/themes'
+  import { switchToTheme } from '../../_utils/themeEngine'
 
   export default {
     components: {
@@ -87,6 +104,9 @@
         instanceThemes[instanceName] = newTheme
         this.store.set({instanceThemes: instanceThemes})
         this.store.save()
+        if (this.get('params').instanceName === this.store.get('currentInstance')) {
+          switchToTheme(newTheme)
+        }
       }
     }
   }
