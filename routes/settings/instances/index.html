@@ -7,7 +7,7 @@
     <h1>Instances</h1>
 
     {{#if $isUserLoggedIn}}
-    <p>Instances you've connected to:</p>
+    <p>Instances you've logged in to:</p>
     <SettingsList>
       {{#each $loggedInInstancesAsList as instance}}
         <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
@@ -18,7 +18,8 @@
     </SettingsList>
     <p><a href="/settings/instances/add">Add another instance</a></p>
     {{else}}
-    <p><a href="/settings/instances/add">Connect to an instance</a> to start using Pinafore.</p>
+    <p>You're not logged in to any instances.</p>
+    <p><a href="/settings/instances/add">Log in to an instance</a> to start using Pinafore.</p>
     {{/if}}
   </SettingsLayout>
 </Layout>

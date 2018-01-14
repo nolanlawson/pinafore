@@ -28,17 +28,22 @@
       </form>
 
       <form class="instance-actions">
-        <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
-          on:click="onSwitchToThisInstance()">
-          Switch to this instance
-        </button>
-        <button>Log out</button>
+        {{#if $loggedInInstancesInOrder.length > 1}}
+          <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
+            on:click="onSwitchToThisInstance()">
+            {{$currentInstance === params.instanceName ? 'Current instance' : 'Switch to this instance'}}
+          </button>
+        {{/if}}
+        <button on:click="onLogOut()">Log out</button>
       </form>
     {{/if}}
   </SettingsLayout>
 </Layout>
 <style>
   .acct-current-user {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
     padding: 20px;
     display: grid;
     align-items: center;
@@ -58,6 +63,9 @@
     grid-area: handle;
   }
   .theme-chooser {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
     display: block;
     padding: 20px;
     line-height: 2em;
@@ -73,6 +81,7 @@
     width: 100%;
     display: flex;
     justify-content: right;
+    margin: 20px 0;
   }
   .instance-actions button {
     margin: 0 5px;
@@ -86,6 +95,8 @@
   import { getThisUserAccount } from '../../_utils/mastodon/user'
   import { themes } from '../../_static/themes'
   import { switchToTheme } from '../../_utils/themeEngine'
+  import { goto } from 'sapper/runtime.js'
+  import { toast } from '../../_utils/toast'
 
   export default {
     components: {
@@ -127,6 +138,29 @@
         })
         this.store.save()
         switchToTheme(instanceThemes[instanceName])
+      },
+      onLogOut() {
+        let loggedInInstances = this.store.get('loggedInInstances')
+        let instanceThemes = this.store.get('instanceThemes')
+        let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
+        let instanceName = this.get('params').instanceName
+        let currentInstance = this.store.get('currentInstance')
+        loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
+        let newInstance = instanceName === currentInstance ?
+          loggedInInstancesInOrder[0] :
+          currentInstance
+        delete loggedInInstances[instanceName]
+        delete instanceThemes[instanceName]
+        this.store.set({
+          loggedInInstances: loggedInInstances,
+          instanceThemes: instanceThemes,
+          loggedInInstancesInOrder: loggedInInstancesInOrder,
+          currentInstance: newInstance
+        })
+        this.store.save()
+        switchToTheme(instanceThemes[newInstance] || 'default')
+        toast.say(`Logged out of ${instanceName}`)
+        goto('/settings/instances')
       }
     }
   }
