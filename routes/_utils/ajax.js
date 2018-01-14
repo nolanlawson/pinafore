@@ -12,7 +12,7 @@ export async function post(url, body) {
 export function paramsString(paramsObject) {
   let params = new URLSearchParams()
   Object.keys(paramsObject).forEach(key => {
-    params.set(key, paramsObject[value])
+    params.set(key, paramsObject[key])
   })
   return params.toString()
 }

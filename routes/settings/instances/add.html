@@ -53,6 +53,9 @@
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
 
+  const REDIRECT_URI = (typeof location !== 'undefined' ?
+      location.origin : 'https://pinafore.social') + '/settings/instances/add'
+
   export default {
     oncreate: function () {
       if (process.browser) {
@@ -75,14 +78,18 @@
         let instanceName = this.store.get('instanceNameInSearch')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
         // TODO: show toast error if you're already logged into this instance
-        let instanceData = await (await registerApplication(instanceName)).json()
+        let instanceData = await registerApplication(instanceName, REDIRECT_URI)
         // TODO: handle error
         this.store.set({
           currentRegisteredInstanceName: instanceName,
           currentRegisteredInstance: instanceData
         })
         this.store.save()
-        let oauthUrl = generateAuthLink(instanceName, instanceData.client_id)
+        let oauthUrl = generateAuthLink(
+          instanceName,
+          instanceData.client_id,
+          REDIRECT_URI
+        )
         document.location.href = oauthUrl
       },
       onReceivedOauthCode: async function(code) {
@@ -92,7 +99,8 @@
           currentRegisteredInstanceName,
           currentRegisteredInstance.client_id,
           currentRegisteredInstance.client_secret,
-          code
+          code,
+          REDIRECT_URI
         )
         // TODO: handle error
         let loggedInInstances = this.store.get('loggedInInstances')
