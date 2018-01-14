@@ -24,6 +24,7 @@ main {
   background: var(--main-bg);
   border: 1px solid var(--main-border);
   border-radius: 1px;
+  min-height: 50vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -101,6 +102,10 @@ p, label, input {
 ul, li, p {
   padding: 0;
   margin: 0;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 @media (max-width: 767px) {
