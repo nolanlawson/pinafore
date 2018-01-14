@@ -53,7 +53,6 @@
     oncreate () {
       this._queue = Promise.resolve()
       this.observe('messages', (messages) => {
-        console.log('messages', messages)
         if (messages.length) {
           this.onNewToast(messages[0])
           this.splice('messages', 0, 1)
