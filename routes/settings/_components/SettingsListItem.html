@@ -1,4 +1,15 @@
-<li><a :href>{{label}}</a></li>
+<li>
+  <a :href>
+    {{#if icon}}
+    <svg>
+      <use xlink:href="{{icon}}" />
+    </svg>
+    {{/if}}
+    <span class="{{offsetForIcon ? 'offset-for-icon' : ''}}">
+      {{label}}
+    </span>
+  </a>
+</li>
 <style>
   li {
     border: 1px solid var(--settings-list-item-border);
@@ -6,10 +17,13 @@
     display: flex;
     flex-direction: column;
   }
+  a {
+    display: flex;
+    padding: 20px;
+    background: var(--settings-list-item-bg);
+  }
   a, a:visited {
     color: var(--settings-list-item-text);
-    background: var(--settings-list-item-bg);
-    padding: 20px;
   }
   a:hover {
     text-decoration: none;
@@ -19,4 +33,15 @@
   a:active {
     background: var(--settings-list-item-bg-active);
   }
+  svg {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin-right: 20px;
+    fill: var(--svg-fill);
+  }
+  .offset-for-icon {
+    margin-left: 44px;
+  }
+
 </style>

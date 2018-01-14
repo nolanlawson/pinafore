@@ -6,12 +6,12 @@
   <SettingsLayout page='settings/instances/{{params.instanceName}}' label="{{params.instanceName}}">
     <h1>{{params.instanceName}}</h1>
 
-    {{#if currentUser}}
+    {{#if instanceUserAccount}}
       <h2>Logged in as:</h2>
       <div class="current-user">
-        <img src="{{currentUser.avatar}}" />
-        <a rel="noopener" target="_blank" href="{{currentUser.url}}">@{{currentUser.acct}}</a>
-        <span class="acct-name">{{currentUser.display_name}}</span>
+        <img src="{{instanceUserAccount.avatar}}" />
+        <a rel="noopener" target="_blank" href="{{instanceUserAccount.url}}">@{{instanceUserAccount.acct}}</a>
+        <span class="acct-name">{{instanceUserAccount.display_name}}</span>
       </div>
       <h2>Theme:</h2>
       <form class="theme-chooser">
@@ -26,7 +26,8 @@
       </form>
 
       <form class="instance-actions">
-        <button class="primary" disabled="$currentInstance === params.instanceName">
+        <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
+          on:click="onSwitchToThisInstance()">
           Switch to this instance
         </button>
         <button>Log out</button>
@@ -75,7 +76,7 @@
   import { store } from '../../_utils/store'
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
-  import { getCurrentUser } from '../../_utils/mastodon/user'
+  import { getThisUserAccount } from '../../_utils/mastodon/user'
   import { themes } from '../../_static/themes'
   import { switchToTheme } from '../../_utils/themeEngine'
 
@@ -89,17 +90,20 @@
       themes: themes
     }),
     oncreate: async function () {
-      let currentInstanceData = this.store.get('currentInstanceData')
-      let currentUser = await getCurrentUser(currentInstanceData.name, currentInstanceData.access_token)
+      let instanceName = this.get('params').instanceName
+      let loggedInInstances = this.store.get('loggedInInstances')
+      let instanceThemes = this.store.get('instanceThemes')
+      let instanceData = loggedInInstances[instanceName]
+      let instanceUserAccount = await getThisUserAccount(instanceName, instanceData.access_token)
       this.set({
-        currentUser: currentUser,
-        selectedTheme: this.store.get('currentTheme')
+        instanceUserAccount: instanceUserAccount,
+        selectedTheme: instanceThemes[instanceName]
       })
     },
     methods: {
-      onThemeChange () {
+      onThemeChange() {
         let newTheme = this.get('selectedTheme')
-        let instanceName = this.store.get('currentInstance')
+        let instanceName = this.get('params').instanceName
         let instanceThemes = this.store.get('instanceThemes')
         instanceThemes[instanceName] = newTheme
         this.store.set({instanceThemes: instanceThemes})
@@ -107,6 +111,15 @@
         if (this.get('params').instanceName === this.store.get('currentInstance')) {
           switchToTheme(newTheme)
         }
+      },
+      onSwitchToThisInstance() {
+        let instanceName = this.get('params').instanceName
+        let instanceThemes = this.store.get('instanceThemes')
+        this.store.set({
+          currentInstance: instanceName
+        })
+        this.store.save()
+        switchToTheme(instanceThemes[instanceName])
       }
     }
   }

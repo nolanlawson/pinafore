@@ -105,6 +105,8 @@
         // TODO: handle error
         let loggedInInstances = this.store.get('loggedInInstances')
         let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
+        let instanceThemes = this.store.get('instanceThemes')
+        instanceThemes[currentRegisteredInstanceName] = 'default'
         loggedInInstances[currentRegisteredInstanceName] = instanceData
         if (!loggedInInstancesInOrder.includes(currentRegisteredInstanceName)) {
           loggedInInstancesInOrder.push(currentRegisteredInstanceName)
@@ -115,7 +117,8 @@
           currentRegisteredInstance: null,
           loggedInInstances: loggedInInstances,
           currentInstance: currentRegisteredInstanceName,
-          loggedInInstancesInOrder: loggedInInstancesInOrder
+          loggedInInstancesInOrder: loggedInInstancesInOrder,
+          instanceThemes: instanceThemes
         })
         this.store.save()
         goto('/')

@@ -10,7 +10,10 @@
     <p>Instances you've connected to:</p>
     <SettingsList>
       {{#each $loggedInInstancesAsList as instance}}
-        <SettingsListItem href="/settings/instances/{{instance.name}}" label="{{instance.name}}"/>
+        <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
+                          icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
+                          href="/settings/instances/{{instance.name}}"
+                          label="{{instance.name}}" />
       {{/each}}
     </SettingsList>
     <p><a href="/settings/instances/add">Add another instance</a></p>
