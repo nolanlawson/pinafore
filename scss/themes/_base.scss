@@ -47,4 +47,11 @@
   --settings-list-item-border: $border-color;
   --settings-list-item-bg-active: darken($main-bg-color, 10%);
   --settings-list-item-bg-hover: darken($main-bg-color, 2%);
+
+  --toast-bg: $toast-bg;
+  --toast-border: $toast-border;
+  --toast-text: $secondary-text-color;
+
+  --mask-bg: $toast-bg;
+  --mask-svg-fill: $secondary-text-color;
 }

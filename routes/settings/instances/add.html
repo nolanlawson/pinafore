@@ -6,6 +6,8 @@
   <SettingsLayout page='settings/instances/add' label="Add an Instance">
     <h1>Add an Instance</h1>
 
+    <LoadingMask show="{{loading}}"/>
+
     {{#if $isUserLoggedIn}}
     <p>Connect to an instance to log in.</p>
     {{else}}
@@ -15,7 +17,7 @@
     <form class="add-new-instance" on:submit='onSubmit(event)'>
       <label for="instanceInput">Instance name:</label>
       <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
-      <button class="primary" type="submit" id="submitButton">Add instance</button>
+      <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>
     </form>
 
     {{#if !$isUserLoggedIn}}
@@ -53,6 +55,9 @@
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
   import { switchToTheme } from '../../_utils/themeEngine'
+  import { toast } from '../../_utils/toast'
+  import LoadingMask from '../../_components/LoadingMask'
+  import { fade } from 'svelte-transitions'
 
   const REDIRECT_URI = (typeof location !== 'undefined' ?
       location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -70,17 +75,37 @@
     },
     components: {
       Layout,
-      SettingsLayout
+      SettingsLayout,
+      LoadingMask
     },
     store: () => store,
+    transitions: {
+      fade
+    },
     methods: {
       onSubmit: async function(event) {
         event.preventDefault()
+        this.set({loading: true})
+        try {
+          await this.redirectToOauth()
+        } catch (err) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.error(err)
+          }
+          toast.say(`Error: ${err.message || err.name}. Is this a valid Mastodon instance?`)
+        } finally {
+          this.set({loading: false})
+        }
+      },
+      redirectToOauth: async function() {
         let instanceName = this.store.get('instanceNameInSearch')
+        let loggedInInstances = this.store.get('loggedInInstances')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
-        // TODO: show toast error if you're already logged into this instance
+        if (Object.keys(loggedInInstances).includes(instanceName)) {
+          toast.say(`You've already logged in to ${instanceName}`)
+          return
+        }
         let instanceData = await registerApplication(instanceName, REDIRECT_URI)
-        // TODO: handle error
         this.store.set({
           currentRegisteredInstanceName: instanceName,
           currentRegisteredInstance: instanceData
@@ -94,6 +119,16 @@
         document.location.href = oauthUrl
       },
       onReceivedOauthCode: async function(code) {
+        try {
+          this.set({loading: true})
+          await this.registerNewInstance(code)
+        } catch (err) {
+          toast.say(`Error: ${err.message || err.name}. Failed to connect to instance.`)
+        } finally {
+          this.set({loading: false})
+        }
+      },
+      registerNewInstance: async function (code) {
         let currentRegisteredInstanceName = this.store.get('currentRegisteredInstanceName')
         let currentRegisteredInstance = this.store.get('currentRegisteredInstance')
         let instanceData = await getAccessTokenFromAuthCode(
@@ -103,7 +138,6 @@
           code,
           REDIRECT_URI
         )
-        // TODO: handle error
         let loggedInInstances = this.store.get('loggedInInstances')
         let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
         let instanceThemes = this.store.get('instanceThemes')
@@ -124,7 +158,7 @@
         this.store.save()
         switchToTheme('default')
         goto('/')
-      },
+      }
     }
   }
 </script>

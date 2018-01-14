@@ -4,8 +4,15 @@
 <style>
   ul {
     list-style: none;
-    width: 80%;
+    width: 100%;
     border: 1px solid var(--settings-list-item-border);
     margin: 20px auto;
   }
+
+  @media (min-width: 768px) {
+    ul {
+      max-width: 80%;
+    }
+  }
+
 </style>

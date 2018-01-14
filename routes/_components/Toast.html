@@ -1,0 +1,96 @@
+<div class="toast-modal {{shown ? 'shown' : ''}}">
+  <div class="toast-container">
+    {{text}}
+  </div>
+</div>
+<style>
+  .toast-modal {
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 333ms linear;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .toast-container {
+    max-width: 600px;
+    max-height: 20vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid var(--toast-border);
+    background: var(--toast-bg);
+    border-radius: 5px;
+    margin: 0 40px;
+    padding: 20px;
+    font-size: 1.3em;
+    color: var(--toast-text);
+  }
+
+  .toast-modal.shown {
+    opacity: 1;
+  }
+
+  @media (max-width: 767px) {
+    .toast-container {
+      max-width: 80vw;
+    }
+  }
+</style>
+<script>
+  import { splice, push } from 'svelte-extras'
+
+  const TIME_TO_SHOW_TOAST = 5000
+  const DELAY_BETWEEN_TOASTS = 1000
+
+  export default {
+    oncreate () {
+      this._queue = Promise.resolve()
+      this.observe('messages', (messages) => {
+        console.log('messages', messages)
+        if (messages.length) {
+          this.onNewToast(messages[0])
+          this.splice('messages', 0, 1)
+        }
+      })
+    },
+    ondestroy () {
+    },
+    data: () => ({
+      text: '',
+      shown: false,
+      messages: []
+    }),
+    methods: {
+      push,
+      splice,
+      say(text) {
+        this.push('messages', text)
+      },
+      onNewToast(text) {
+        this._queue = this._queue.then(() => {
+          this.set({
+            'text': text,
+            shown: true
+          })
+          return new Promise(resolve => {
+            setTimeout(resolve, TIME_TO_SHOW_TOAST)
+          })
+        }).then(() => {
+          this.set({
+            shown: false
+          })
+          return new Promise(resolve => {
+            setTimeout(resolve, DELAY_BETWEEN_TOASTS)
+          })
+        })
+      }
+    }
+  }
+</script>
