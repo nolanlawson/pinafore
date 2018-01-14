@@ -8,8 +8,20 @@ const themes = [
     label: 'Scarlet'
   },
   {
+    name: 'seafoam',
+    label: 'Seafoam'
+  },
+  {
     name: 'hotpants',
     label: 'Hotpants'
+  },
+  {
+    name: 'oaken',
+    label: 'Oaken'
+  },
+  {
+    name: 'majesty',
+    label: 'Majesty'
   }
 ]
 

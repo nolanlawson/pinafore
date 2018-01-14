@@ -1,5 +1,5 @@
-$main-theme-color: hotpink;
-$body-bg-color: lighten($main-theme-color, 25%);
+$main-theme-color: blueviolet;
+$body-bg-color: lighten($main-theme-color, 40%);
 $anchor-color: $main-theme-color;
 $main-text-color: #333;
 $border-color: #dadada;
@@ -8,6 +8,6 @@ $secondary-text-color: white;
 
 @import "_base.scss";
 
-body.theme-hotpants {
+body.theme-majesty {
   @include baseTheme();
 }

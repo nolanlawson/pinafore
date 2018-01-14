@@ -1,4 +1,5 @@
 $main-theme-color: royalblue;
+$body-bg-color: lighten($main-theme-color, 38%);
 $anchor-color: $main-theme-color;
 $main-text-color: #333;
 $border-color: #dadada;
@@ -8,5 +9,5 @@ $secondary-text-color: white;
 @import "_base.scss";
 
 :root {
-  @include baseTheme()
+  @include baseTheme();
 }
