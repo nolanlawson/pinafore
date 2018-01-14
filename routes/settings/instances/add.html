@@ -52,6 +52,7 @@
   import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon/oauth'
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
+  import { switchToTheme } from '../../_utils/themeEngine'
 
   const REDIRECT_URI = (typeof location !== 'undefined' ?
       location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -121,6 +122,7 @@
           instanceThemes: instanceThemes
         })
         this.store.save()
+        switchToTheme('default')
         goto('/')
       },
     }
