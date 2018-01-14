@@ -9,12 +9,13 @@ const fs = require('fs')
 const pify = require('pify')
 const writeFile = pify(fs.writeFile.bind(fs))
 const readdir = pify(fs.readdir.bind(fs))
+const readFile = pify(fs.readFile.bind(fs))
 const render = pify(sass.render.bind(sass))
 const now = require('performance-now')
 
 const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
-const globalCss = path.join(__dirname, '../assets/global.css')
+const html2xxFile = path.join(__dirname, '../templates/2xx.html')
 const scssDir = path.join(__dirname, '../scss')
 const themesScssDir = path.join(__dirname, '../scss/themes')
 const assetsDir = path.join(__dirname, '../assets')
@@ -35,13 +36,17 @@ function doWatch() {
 
 async function compileGlobalSass() {
   let results = await Promise.all([
-    render({file: defaultThemeScss}),
-    render({file: globalScss})
+    render({file: defaultThemeScss, outputStyle: argv.watch ? 'nested': 'compressed'}),
+    render({file: globalScss, outputStyle: argv.watch ? 'nested': 'compressed'})
   ])
 
-  let css = results.map(_ => _.css).join('\n')
+  let css = results.map(_ => _.css).join('')
 
-  await writeFile(globalCss, css, 'utf8')
+  let html = await readFile(html2xxFile, 'utf8')
+  html = html.replace(/<style>[\s\S]+?<\/style>/,
+    `<style>\n/* auto-generated w/ build-sass.js */\n${css}\n</style>`)
+
+  await writeFile(html2xxFile, html, 'utf8')
 }
 
 async function compileThemesSass() {
