@@ -20,10 +20,14 @@ main {
   max-width: 800px;
   padding: 15px 15px;
   box-sizing: border-box;
-  margin: 85px auto;
+  margin: 85px auto 15px;
   background: var(--main-bg);
   border: 1px solid var(--main-border);
   border-radius: 1px;
+  @media (max-width: 767px) {
+    padding: 5px 5px;
+    margin: 75px auto 15px;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -105,11 +109,4 @@ ul, li, p {
 
 .hidden {
   opacity: 0;
-}
-
-@media (max-width: 767px) {
-  main {
-    padding: 5px 5px;
-    margin: 75px auto;
-  }
 }
