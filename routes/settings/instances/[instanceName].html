@@ -15,20 +15,14 @@
     </div>
     <h2>Theme:</h2>
     <form class="theme-chooser">
-      <div class="theme-group">
-        <input type="radio" name="current-theme" id="theme-default" value="default">
-        <label for="theme-default">Royal (default)</label>
-      </div>
-      <div class="theme-group">
-        <input type="radio" name="current-theme" id="theme-crimson"
-               value="crimson">
-        <label for="theme-crimson">Crimson and Clover</label>
-      </div>
-      <div class="theme-group">
-        <input type="radio" name="current-theme" id="theme-hotpants"
-               value="hotpants">
-        <label for="theme-hotpants">Hot Pants</label>
-      </div>
+      {{#each themes as theme}}
+        <div class="theme-group">
+          <input type="radio" id="choice-theme-{{theme.name}}"
+                 value="{{theme.name}}" checked="$currentTheme === theme.name"
+                 bind:group="selectedTheme" on:change="onThemeChange()">
+          <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
+        </div>
+      {{/each}}
     </form>
     {{/if}}
   </SettingsLayout>
@@ -66,6 +60,7 @@
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
   import { getCurrentUser } from '../../_utils/mastodon/user'
+  import { themes } from '../../_static/themes'
 
   export default {
     components: {
@@ -73,10 +68,26 @@
       SettingsLayout
     },
     store: () => store,
+    data: () => ({
+      themes: themes
+    }),
     oncreate: async function () {
       let currentInstanceData = this.store.get('currentInstanceData')
       let currentUser = await getCurrentUser(currentInstanceData.name, currentInstanceData.access_token)
-      this.set({currentUser: currentUser})
+      this.set({
+        currentUser: currentUser,
+        selectedTheme: this.store.get('currentTheme')
+      })
+    },
+    methods: {
+      onThemeChange () {
+        let newTheme = this.get('selectedTheme')
+        let instanceName = this.store.get('currentInstance')
+        let instanceThemes = this.store.get('instanceThemes')
+        instanceThemes[instanceName] = newTheme
+        this.store.set({instanceThemes: instanceThemes})
+        this.store.save()
+      }
     }
   }
 </script>

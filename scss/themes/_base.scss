@@ -1,11 +1,4 @@
-:root {
-  $main-theme-color: royalblue; // also: crimson, forestgreen, hotpink
-  $anchor-color: $main-theme-color;
-  $main-text-color: #333;
-  $border-color: #dadada;
-  $main-bg-color: white;
-  $secondary-text-color: white;
-
+@mixin baseTheme() {
   --button-primary-bg: lighten($main-theme-color, 7%);
   --button-primary-text: $secondary-text-color;
   --button-primary-border: darken($main-theme-color, 30%);

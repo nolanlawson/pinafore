@@ -74,6 +74,14 @@ store.compute(
     }, loggedInInstances[currentInstance])
 })
 
+store.compute(
+  'currentTheme',
+  ['currentInstance', 'instanceThemes'],
+  (currentInstance, instanceThemes) => {
+    return instanceThemes[currentInstance] || 'default'
+  }
+)
+
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging
 }
