@@ -36,8 +36,8 @@ function doWatch() {
 
 async function compileGlobalSass() {
   let results = await Promise.all([
-    render({file: defaultThemeScss, outputStyle: argv.watch ? 'nested': 'compressed'}),
-    render({file: globalScss, outputStyle: argv.watch ? 'nested': 'compressed'})
+    render({file: defaultThemeScss, outputStyle: 'compressed'}),
+    render({file: globalScss, outputStyle: 'compressed'})
   ])
 
   let css = results.map(_ => _.css).join('')
