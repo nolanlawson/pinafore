@@ -15,7 +15,7 @@
     {{/if}}
 
     <form class="add-new-instance" on:submit='onSubmit(event)'>
-      <label for="instanceInput">Instance name:</label>
+      <label for="instanceInput">Instance:</label>
       <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
       <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>
     </form>
