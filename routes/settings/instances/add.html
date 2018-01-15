@@ -57,7 +57,7 @@
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
   import { switchToTheme } from '../../_utils/themeEngine'
-  import { importToast } from '../../_utils/asyncModules'
+  import { toast } from '../../_utils/toast'
   import LoadingMask from '../../_components/LoadingMask'
 
   const REDIRECT_URI = (typeof location !== 'undefined' ?
@@ -90,8 +90,10 @@
           if (process.env.NODE_ENV !== 'production') {
             console.error(err)
           }
-          const toast = await importToast()
-          toast.say(`Error: ${err.message || err.name}. Is this a valid Mastodon instance?`)
+          toast.say(`Error: ${err.message || err.name}. ` +
+            (navigator.onLine ?
+              `Is this a valid Mastodon instance?` :
+              `Are you offline?`))
         } finally {
           this.set({loading: false})
         }
@@ -101,7 +103,6 @@
         let loggedInInstances = this.store.get('loggedInInstances')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
         if (Object.keys(loggedInInstances).includes(instanceName)) {
-          const toast = await importToast()
           toast.say(`You've already logged in to ${instanceName}`)
           return
         }
@@ -123,7 +124,6 @@
           this.set({loading: true})
           await this.registerNewInstance(code)
         } catch (err) {
-          const toast = await importToast()
           toast.say(`Error: ${err.message || err.name}. Failed to connect to instance.`)
         } finally {
           this.set({loading: false})

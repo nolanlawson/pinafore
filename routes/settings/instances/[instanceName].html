@@ -96,7 +96,7 @@
   import { themes } from '../../_static/themes'
   import { switchToTheme } from '../../_utils/themeEngine'
   import { goto } from 'sapper/runtime.js'
-  import { importToast } from '../../_utils/asyncModules'
+  import { toast } from '../../_utils/toast'
 
   export default {
     components: {
@@ -159,7 +159,7 @@
         })
         this.store.save()
         switchToTheme(instanceThemes[newInstance] || 'default')
-        importToast().then(toast => toast.say(`Logged out of ${instanceName}`))
+        toast.say(`Logged out of ${instanceName}`)
         goto('/settings/instances')
       }
     }
