@@ -36,8 +36,18 @@ self.addEventListener('activate', event => {
   )
 })
 
+const NETWORK_ONLY = [
+  '/oauth'
+]
+
+const CACHE_FIRST = [
+  '/api/v1/accounts/verify_credentials',
+  '/system/accounts/avatars'
+]
+
 self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url)
+  const req = event.request
+  const url = new URL(req.url)
 
   // don't try to handle e.g. data: URIs
   if (!url.protocol.startsWith('http')) {
@@ -46,7 +56,7 @@ self.addEventListener('fetch', event => {
 
   // always serve assets and webpack-generated files from cache
   if (cached.has(url.pathname)) {
-    event.respondWith(caches.match(event.request))
+    event.respondWith(caches.match(req))
     return
   }
 
@@ -55,30 +65,59 @@ self.addEventListener('fetch', event => {
   // app, but if it's right for yours then uncomment this section
 
   if (url.origin === self.origin && routes.find(route => route.pattern.test(url.pathname))) {
-    event.respondWith(caches.match('/index.html'));
-    return;
+    event.respondWith(caches.match('/index.html'))
+    return
+  }
+
+  // Non-GET and for certain endpoints (e.g. OAuth), go network-only
+  if (req.method !== 'GET' ||
+      NETWORK_ONLY.some(pattern => url.pathname.startsWith(pattern))) {
+    console.log('Using network-only for', url.href)
+    event.respondWith(fetch(req))
+    return
+  }
+
+  // For these, go cache-first.
+  if (CACHE_FIRST.some(pattern => url.pathname.startsWith(pattern))) {
+    console.log('Using cache-first for', url.href)
+    event.respondWith(caches
+      .open(`offline${timestamp}`)
+      .then(async cache => {
+        let response = await cache.match(req)
+        if (response) {
+          // update asynchronously
+          fetch(req).then(response => {
+            cache.put(req, response.clone())
+          })
+          return response
+        }
+        response = await fetch(req)
+        cache.put(req, response.clone())
+        return response
+      }))
+    return
   }
 
 
   // for everything else, try the network first, falling back to
   // cache if the user is offline. (If the pages never change, you
   // might prefer a cache-first approach to a network-first one.)
-  event.respondWith(
-    caches
-      .open(`offline${timestamp}`)
-      .then(async cache => {
-        try {
-          const response = await fetch(event.request)
-          cache.put(event.request, response.clone())
+  event.respondWith(caches
+    .open(`offline${timestamp}`)
+    .then(async cache => {
+      try {
+        console.log('Using network-first for', url.href)
+        const response = await fetch(req)
+        cache.put(req, response.clone())
+        return response
+      } catch (err) {
+        const response = await cache.match(req)
+        if (response) {
           return response
-        } catch (err) {
-          const response = await cache.match(event.request)
-          if (response) {
-            return response
-          }
-
-          throw err
         }
-      })
+
+        throw err
+      }
+    })
   )
 })
