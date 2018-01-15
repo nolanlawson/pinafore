@@ -24,6 +24,7 @@
     "font-awesome-svg-png": "^1.2.2",
     "glob": "^7.1.2",
     "idb": "^2.0.4",
+    "intl-relativeformat": "^2.1.0",
     "lodash": "^4.17.4",
     "node-fetch": "^1.7.3",
     "node-sass": "^4.7.2",

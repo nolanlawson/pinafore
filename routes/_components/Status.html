@@ -1,14 +1,32 @@
-<article on:click="alert(event)">
+<article>
     {{#if status.reblog}}
-      <div class="header">
-        <a href="{{status.account.url}}">{{status.account.username}}</a> boosted
+      <div class="boosted">
+        <svg>
+          <use xlink:href="#fa-retweet" />
+        </svg>
+        <span>
+          <a href="/accounts/{{status.account.id}}">
+            {{status.account.username}}
+          </a> boosted
+        </span>
       </div>
     {{/if}}
+  <div class="author">
+    <a class="author-name" href="/accounts/{{status.account.id}}">
+      {{status.account.display_name}}
+    </a>
+    <span class="author-handle">
+      {{status.account.acct}}
+    </span>
+    <a class="author-relative-date" rel="noopener" target="_blank" href="{{status.url}}">
+      {{relativeDate}}
+    </a>
+  </div>
   <div class="sidebar">
     <Avatar account={{status.reblog ? status.reblog.account : status.account}} />
   </div>
   <div class="content">{{{status.content}}}</div>
-  <div class="footer">
+  <div class="toolbar">
     <button aria-label="Reply" aria-pressed="false" type="button">
       <svg>
         <use xlink:href="#fa-reply" />
@@ -34,7 +52,6 @@
 
 <style>
   article {
-    pointer-events: none;
     max-width: 600px;
     margin: 0 auto;
     padding: 10px 0;
@@ -42,9 +59,10 @@
     display: grid;
     width: 100%;
     grid-template-areas:
-        "....... header"
+        "....... boosted"
+        "sidebar author"
         "sidebar content"
-        "....... footer";
+        "....... toolbar";
     grid-template-columns: 70px 1fr;
   }
   .sidebar {
@@ -52,8 +70,52 @@
     display: flex;
   }
 
+  .author {
+    max-width: 525px; /* have to spell this out to avoid overflows from long text */
+    grid-area: author;
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    font-size: 1.1em;
+  }
+
+  .author a, .author a:visited, .author a:hover, .author .author-handle {
+    color: var(--deemphasized-text-color);
+  }
+
+  .author .author-name {
+    color: var(--body-text-color);
+    min-width: 0;
+    flex-shrink: 1;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .author .author-name:hover {
+    color: var(--body-text-color);
+  }
+
+  .author-handle {
+    min-width: 0;
+    flex: 1;
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .author-relative-date {
+    min-width: 0;
+    flex-shrink: 1;
+    text-align: right;
+    margin-left: 5px;
+    white-space: nowrap;
+  }
+
   .content {
-    margin: 5px;
+    margin: 20px 5px;
     grid-area: content;
     word-wrap: break-word;
     overflow: hidden;
@@ -61,62 +123,84 @@
     font-size: 0.9em;
   }
 
-  :global(.content a) {
-    pointer-events: auto;
-  }
-
-  :global(.header a) {
-    pointer-events: auto;
-    color: #333;
-  }
-
   :global(.content p) {
-    margin: 0 0 10px;
+    margin: 0 0 20px;
   }
 
-  .header {
-    grid-area: header;
-    margin: 5px 5px;
+  :global(.content p:first-child) {
+    margin: 0 0 20px;
   }
-  .footer {
-    grid-area: footer;
+
+  :global(.content p:last-child) {
+    margin: 0;
+  }
+
+  .boosted span {
+    margin-left: 5px;
+  }
+
+  .boosted span, .boosted a, .boosted a:visited, .boosted a:hover {
+    color: var(--deemphasized-text-color);
+  }
+
+  .boosted {
+    grid-area: boosted;
+    margin: 5px 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .boosted svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--deemphasized-text-color)
+  }
+
+  .toolbar {
+    grid-area: toolbar;
     display: flex;
     margin: 5px;
     justify-content: space-between;
   }
 
-  .footer button {
-    pointer-events: auto;
+  .toolbar button {
     padding: 0;
     background: none;
     border: none;
   }
 
-  .footer button svg {
-    pointer-events: none;
+  .toolbar button svg {
     width: 24px;
     height: 24px;
     fill: var(--action-button-fill-color);
   }
 
-  .footer button:hover svg {
+  .toolbar button:hover svg {
     fill: var(--action-button-fill-color-hover);
   }
 
-  .footer button:active svg {
+  .toolbar button:active svg {
     fill: var(--action-button-fill-color-active);
   }
 </style>
 <script>
   import Avatar from './Avatar.html'
+  import IntlRelativeFormat from 'intl-relativeformat'
+  const relativeFormat = new IntlRelativeFormat('en-US');
 
   export default {
     components: {
       Avatar
     },
     data: () => ({
-      status: null
+      status: null,
     }),
+    computed: {
+      relativeDate: (status) => {
+        let date = new Date(status.created_at)
+        return relativeFormat.format(date)
+      }
+    },
     methods: {
       alert: function (e) {
         e.preventDefault()

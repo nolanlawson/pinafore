@@ -19,18 +19,19 @@
 
   export default {
     oncreate: async function () {
-      if (process.browser) {
-        let instanceData = this.store.get('currentInstance')
-        if (!instanceData) {
-          return
-        }
-        let response = fixture
-        // let response = await (await getHomeTimeline(instanceData.instanceName, instanceData.access_token)).json()
-        if (process.env.NODE_ENV !== 'production') {
-          console.log(response)
-        }
-        this.set({'statuses': response})
+      if (!process.browser) {
+        return
       }
+      let instanceData = this.store.get('currentInstance')
+      if (!instanceData) {
+        return
+      }
+      let response = fixture
+      // let response = await (await getHomeTimeline(instanceData.instanceName, instanceData.access_token)).json()
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(response)
+      }
+      this.set({'statuses': response})
     },
     data: () => ({
       target: 'home',
