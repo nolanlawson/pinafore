@@ -1,7 +1,8 @@
-const webpack = require('webpack');
-const config = require('sapper/webpack/config.js');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack')
+const config = require('sapper/webpack/config.js')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const isDev = config.dev;
 
@@ -56,10 +57,24 @@ module.exports = {
 	].concat(isDev ? [
 		new webpack.HotModuleReplacementPlugin()
 	] : [
+    new webpack.DefinePlugin({
+			'process.browser': true,
+			'process.env.NODE_ENV': '"production"'
+    }),
 		/* disable while https://github.com/sveltejs/sapper/issues/79 is open */
     //new ExtractTextPlugin('main.css'),
 		new webpack.optimize.ModuleConcatenationPlugin(),
-		new UglifyJSPlugin()
+		new UglifyJSPlugin(),
+    new BundleAnalyzerPlugin({ // generates report.html and stats.json
+      analyzerMode: 'static',
+      generateStatsFile: true,
+      statsOptions: {
+        // allows usage with http://chrisbateman.github.io/webpack-visualizer/
+        chunkModules: true,
+      },
+      openAnalyzer: false,
+      logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
+    }),
 	]).filter(Boolean),
 	devtool: isDev && 'inline-source-map'
 };

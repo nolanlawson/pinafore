@@ -9,6 +9,11 @@ const importURLSearchParams = () => import(
   })
 })
 
+const importToast = () => import(
+  /* webpackChunkName: 'toast' */ './toast'
+  ).then(mod => mod.toast)
+
 export {
-  importURLSearchParams
+  importURLSearchParams,
+  importToast
 }

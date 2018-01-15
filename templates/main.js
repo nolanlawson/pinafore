@@ -1,5 +1,4 @@
 import { init } from 'sapper/runtime.js'
-import toast from '../routes/_utils/toast.js'
 
 // polyfills
 Promise.all([
@@ -11,7 +10,7 @@ Promise.all([
   if (navigator.serviceWorker && navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.onstatechange = (e) => {
       if (e.target.state === 'redundant') {
-        toast.say('App update available. Reload to update.');
+        importToast().then(toast => toast.say('App update available. Reload to update.'));
       }
     }
   }
