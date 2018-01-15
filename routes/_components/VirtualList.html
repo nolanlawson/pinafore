@@ -1,0 +1,70 @@
+<div class="virtual-list" ref:node style="height: {{height}}px;">
+  {{#each visibleItems as visibleItem, index}}
+    <VirtualListItem :component
+                     :intersectionObserver
+                     virtualOffset="{{visibleItem.offset}}"
+                     virtualProps="{{visibleItem.props}}"
+                     virtualIndex="{{index}}" />
+  {{/each}}
+</div>
+<style>
+  .virtual-list {
+    position: relative;
+  }
+</style>
+<script>
+  import VirtualListItem from './VirtualListItem'
+
+  function sum(arr) {
+    return arr.reduce((a, b) => a + b, 0)
+  }
+
+  export default {
+    oncreate() {
+      let intersectionObserver = new IntersectionObserver((entries) => {
+        let totalHeight = sum(entries.map(entry => entry.boundingClientRect.height))
+        let offset = 0
+        let offsets = []
+        entries.forEach(entry => {
+          offsets.push(offset)
+          offset += entry.boundingClientRect.height
+        })
+        this.set({
+          height: totalHeight,
+          offsets: offsets
+        })
+        console.log('entries', entries.map(entry => entry.target.getAttribute('data-virtual-index')))
+      }, {
+        root: this.refs.node
+      })
+      this.set({
+        intersectionObserver: intersectionObserver
+      })
+    },
+    ondestroy() {
+      let intersectionObserver = this.get('intersectionObserver')
+      if (intersectionObserver) {
+        intersectionObserver.disconnect()
+      }
+    },
+    computed: {
+      visibleItems: (items, offsets) => {
+        return items.map((item, idx) => ({
+          props: item,
+          offset: offsets[idx]
+        }))
+      }
+    },
+    data: () => ({
+      scrollHeight: 0,
+      component: null,
+      intersectionObserver: null,
+      items: [],
+      offsets: [],
+      height: 400
+    }),
+    components: {
+      VirtualListItem
+    }
+  }
+</script>

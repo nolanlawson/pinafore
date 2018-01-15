@@ -1,0 +1,29 @@
+<div class="virtual-list-item"
+     ref:node
+     style="transform: translate3d(0, {{virtualOffset}}px, 0);"
+     data-virtual-index="{{virtualIndex}}">
+  <:Component {component} :virtualProps :virtualIndex :intersectionObserver />
+</div>
+<style>
+  .virtual-list-item {
+    position: absolute;
+    top: 0;
+    will-change: transform;
+  }
+</style>
+<script>
+  export default {
+    oncreate() {
+      this.observe('intersectionObserver', (intersectionObserver) => {
+        if (intersectionObserver) {
+          intersectionObserver.observe(this.refs.node)
+        }
+      })
+    },
+    methods: {
+      showRefs () {
+        console.log(this.refs)
+      }
+    }
+  }
+</script>

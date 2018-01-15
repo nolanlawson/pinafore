@@ -1,33 +1,27 @@
-<ul>
-  {{#each statuses as status}}
-  <li>
-    <Status :status />
-  </li>
-  {{/each}}
-</ul>
+<div class="timeline">
+  <VirtualList component="{{StatusListItem}}" items="{{statuses}}" />
+</div>
 <style>
-  ul {
-    list-style: none;
+  .timeline {
     padding-right: 10px;
-  }
-  li {
-    border-bottom: 1px solid var(--main-border);
   }
 </style>
 <script>
   import { store } from '../_utils/store'
   import { getHomeTimeline } from '../_utils/mastodon/oauth'
   import fixture from '../_utils/fixture.json'
-  import Status from './Status.html'
+  import StatusListItem from './StatusListItem.html'
+  import VirtualList from './VirtualList.html'
 
   export default {
     data: () => ({
       target: 'home',
-      statuses: fixture
+      statuses: fixture,
+      StatusListItem: StatusListItem
     }),
     store: () => store,
     components: {
-      Status
+      VirtualList
     }
   }
 </script>
