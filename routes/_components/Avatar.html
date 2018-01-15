@@ -1,16 +1,36 @@
-<img alt="Profile picture for @{{account.acct}}" src="{{account.avatar_static}}">
+{{#await imagePromise}}
+<svg>
+  <use xlink:href="#fa-user" />
+</svg>
+{{then src}}
+<img alt="Profile picture for @{{account.acct}}" src="{{account.avatar}}" />
+{{catch error}}
+<svg>
+  <use xlink:href="#fa-user" />
+</svg>
+{{/await}}
+
 <style>
-  img {
+  img, svg {
     width: 48px;
     height: 48px;
     margin: 0 auto;
     border-radius: 4px;
   }
+
+  svg {
+    fill: var(--deemphasized-text-color);
+  }
 </style>
 <script>
   export default {
-    data: () => ({
-      account: null
-    })
+    computed: {
+      imagePromise: (account) => new Promise((resolve, reject) => {
+        let img = new Image()
+        img.onload = resolve
+        img.onerror = reject
+        img.src = account.avatar
+      })
+    }
   }
 </script>

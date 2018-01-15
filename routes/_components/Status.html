@@ -12,18 +12,18 @@
       </div>
     {{/if}}
   <div class="author">
-    <a class="author-name" href="/accounts/{{status.account.id}}">
-      {{status.account.display_name}}
+    <a class="author-name" href="/accounts/{{original.id}}">
+      {{original.display_name || original.username}}
     </a>
     <span class="author-handle">
-      @{{status.account.acct}}
+      @{{original.acct}}
     </span>
-    <a class="author-relative-date" rel="noopener" target="_blank" href="{{status.url}}">
+    <a class="author-relative-date" rel="noopener" target="_blank" href="{{original.url}}">
       {{relativeDate}}
     </a>
   </div>
   <div class="sidebar">
-    <Avatar account={{status.reblog ? status.reblog.account : status.account}} />
+    <Avatar account={{original}} />
   </div>
   <div class="content">{{{status.content}}}</div>
   <div class="toolbar">
@@ -55,7 +55,6 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 10px 0;
-    border-bottom: 1px solid var(--main-border);
     display: grid;
     width: 100%;
     grid-template-areas:
@@ -63,7 +62,7 @@
         "sidebar author"
         "sidebar content"
         "....... toolbar";
-    grid-template-columns: 70px 1fr;
+    grid-template-columns: 60px 1fr;
   }
   .sidebar {
     grid-area: sidebar;
@@ -71,12 +70,12 @@
   }
 
   .author {
-    max-width: 525px; /* have to spell this out to avoid overflows from long text */
     grid-area: author;
     display: flex;
     align-items: center;
     margin-left: 5px;
     font-size: 1.1em;
+    min-width: 0;
   }
 
   .author a, .author a:visited, .author a:hover, .author .author-handle {
@@ -84,9 +83,9 @@
   }
 
   .author .author-name {
-    color: var(--body-text-color);
     min-width: 0;
     flex-shrink: 1;
+    color: var(--body-text-color);
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -107,7 +106,6 @@
   }
 
   .author-relative-date {
-    min-width: 0;
     flex-shrink: 1;
     text-align: right;
     margin-left: 5px;
@@ -115,7 +113,7 @@
   }
 
   .content {
-    margin: 20px 5px;
+    margin: 10px 5px 20px;
     grid-area: content;
     word-wrap: break-word;
     overflow: hidden;
@@ -199,7 +197,8 @@
       relativeDate: (status) => {
         let date = new Date(status.created_at)
         return relativeFormat.format(date)
-      }
+      },
+      original: (status) => status.reblog ? status.reblog.account : status.account
     },
     methods: {
       alert: function (e) {
