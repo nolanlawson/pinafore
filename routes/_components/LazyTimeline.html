@@ -9,7 +9,7 @@
 {{then constructor}}
 <:Component {constructor} :target />
 {{catch error}}
-<div>Component failed to load. Please try refreshing!</div>
+<div>Component failed to load. Please try refreshing! {{error}}</div>
 {{/await}}
 <style>
   .loading-page {

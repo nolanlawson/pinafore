@@ -1,8 +1,10 @@
 <div class="virtual-list-item"
      ref:node
-     style="transform: translate3d(0, {{virtualOffset}}px, 0);"
-     data-virtual-index="{{virtualIndex}}">
-  <:Component {component} :virtualProps :virtualIndex :intersectionObserver />
+     style="transform: translate3d(0, {{itemOffset}}px, 0);"
+     data-virtual-index="{{index}}"
+     data-virtual-key="{{key}}"
+>
+  <:Component {component} virtualProps="{{props}}" />
 </div>
 <style>
   .virtual-list-item {
@@ -12,18 +14,19 @@
   }
 </style>
 <script>
+  import { virtualListStore } from '../_utils/virtualListStore'
+
   export default {
     oncreate() {
-      this.observe('intersectionObserver', (intersectionObserver) => {
-        if (intersectionObserver) {
-          intersectionObserver.observe(this.refs.node)
-        }
-      })
+      let itemHeights = this.store.get('itemHeights')
+      itemHeights[this.get('key')] = this.refs.node.offsetHeight
+      this.store.set({itemHeights: itemHeights})
     },
-    methods: {
-      showRefs () {
-        console.log(this.refs)
+    computed: {
+      itemOffset: ($itemOffsets, key) => {
+        return $itemOffsets[key] || 0
       }
-    }
+    },
+    store: () => virtualListStore
   }
 </script>

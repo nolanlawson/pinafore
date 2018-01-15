@@ -1,5 +1,6 @@
 <div class="timeline">
   <VirtualList component="{{StatusListItem}}" items="{{statuses}}" />
+  <button type="button" on:click="addMoreItems()">Add more items</button>
 </div>
 <style>
   .timeline {
@@ -12,16 +13,30 @@
   import fixture from '../_utils/fixture.json'
   import StatusListItem from './StatusListItem.html'
   import VirtualList from './VirtualList.html'
+  import { splice } from 'svelte-extras'
+
+  let i = -1
+
+  const createData = () => fixture.slice(0, 5).map(_ => ({
+    key: `${++i}`,
+    props: _
+  }))
 
   export default {
     data: () => ({
       target: 'home',
-      statuses: fixture,
+      statuses: createData(),
       StatusListItem: StatusListItem
     }),
     store: () => store,
     components: {
       VirtualList
+    },
+    methods: {
+      splice: splice,
+      addMoreItems() {
+        this.splice('statuses', this.get('statuses').length, 0, ...createData())
+      }
     }
   }
 </script>
