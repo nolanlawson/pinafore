@@ -1,8 +1,9 @@
 import { init } from 'sapper/runtime.js'
+import { importURLSearchParams } from '../routes/_utils/asyncModules'
 
 // polyfills
 Promise.all([
-  typeof URLSearchParams === 'undefined' && importURLParams()
+  typeof URLSearchParams === 'undefined' && importURLSearchParams()
 ]).then(() => {
   // `routes` is an array of route objects injected by Sapper
   init(document.querySelector('#sapper'), __routes__)
