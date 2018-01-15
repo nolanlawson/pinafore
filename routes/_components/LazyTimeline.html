@@ -1,0 +1,40 @@
+{{#await promise}}
+<div class="loading-page">
+  {{#if trueValue}} <!-- hack to get the transition to work -->
+    <div transition:fade>
+      <LoadingSpinner />
+    </div>
+  {{/if}}
+</div>
+{{then constructor}}
+<:Component {constructor} :target />
+{{catch error}}
+<div>Component failed to load. Please try refreshing!</div>
+{{/await}}
+<style>
+  .loading-page {
+    width: 100%;
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+<script>
+  import { importTimeline } from '../_utils/asyncModules'
+  import LoadingSpinner from './LoadingSpinner.html'
+  import { fade } from 'svelte-transitions'
+
+  export default {
+    data: () => ({
+      promise: importTimeline(),
+      trueValue: true
+    }),
+    components: {
+      LoadingSpinner
+    },
+    transitions: {
+      fade
+    }
+  }
+</script>

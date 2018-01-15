@@ -13,7 +13,12 @@ const importToast = () => import(
   /* webpackChunkName: 'toast' */ './toast'
   ).then(mod => mod.toast)
 
+const importTimeline = () => import(
+  /* webpackChunkName: 'Timeline' */ '../_components/Timeline.html'
+  ).then(mod => mod.default)
+
 export {
   importURLSearchParams,
-  importToast
+  importToast,
+  importTimeline
 }

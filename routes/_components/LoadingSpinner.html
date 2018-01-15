@@ -1,0 +1,33 @@
+<svg class="{{maskStyle ? 'mask-style' : ''}}">
+  <use xlink:href="#fa-spinner" />
+</svg>
+<style>
+  svg {
+    width: 64px;
+    height: 64px;
+    fill: var(--svg-fill);
+    animation: spin 2s infinite linear;
+  }
+
+  svg.mask-style {
+    fill: var(--mask-svg-fill);
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(90deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    75% {
+      transform: rotate(270deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

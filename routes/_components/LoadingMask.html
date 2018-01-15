@@ -1,9 +1,7 @@
 <div class="loading-container">
   {{#if show}}
   <div transition:fade class="loading-mask">
-    <svg>
-      <use xlink:href="#fa-spinner" />
-    </svg>
+    <LoadingSpinner maskStyle="true"/>
   </div>
   {{/if}}
 </div>
@@ -27,35 +25,17 @@
     opacity: 0.6;
     pointer-events: auto;
   }
-  svg {
-    width: 64px;
-    height: 64px;
-    fill: var(--mask-svg-fill);
-    animation: spin 2s infinite linear;
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(90deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-    75% {
-      transform: rotate(270deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 </style>
 <script>
   import { fade } from 'svelte-transitions'
+  import LoadingSpinner from './LoadingSpinner.html'
 
   export default {
-    transitions: { fade }
+    transitions: {
+      fade
+    },
+    components: {
+      LoadingSpinner
+    }
   }
 </script>

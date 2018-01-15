@@ -4,7 +4,7 @@
 
 <Layout page='home'>
   {{#if $isUserLoggedIn}}
-  <Timeline target='home' />
+  <LazyTimeline target='home' />
   {{else}}
   <NotLoggedInHome/>
   {{/if}}
@@ -14,14 +14,14 @@
 <script>
   import Layout from './_components/Layout.html'
   import NotLoggedInHome from './_components/NotLoggedInHome.html'
-  import Timeline from './_components/Timeline.html'
+  import LazyTimeline from './_components/LazyTimeline.html'
   import { store } from './_utils/store.js'
 
 	export default {
 		store: () => store,
 		components: {
 		  Layout,
-			Timeline,
+      LazyTimeline,
 			NotLoggedInHome
 		}
 	}
