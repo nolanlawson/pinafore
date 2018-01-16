@@ -1,12 +1,9 @@
 import { Store } from 'svelte/store.js'
-import { splice } from 'svelte-extras'
 
 const RENDER_BUFFER = 1000
 
 class VirtualListStore extends Store {
 }
-
-VirtualListStore.prototype.splice = splice
 
 const virtualListStore = new VirtualListStore({
   items: [],
