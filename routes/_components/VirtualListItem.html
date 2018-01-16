@@ -1,8 +1,8 @@
 <div class="virtual-list-item"
      ref:node
      style="transform: translate3d(0, {{offset}}px, 0);"
-     data-virtual-index="{{index}}"
      data-virtual-key="{{key}}"
+     data-virtual-index="{{index}}"
 >
   <:Component {component} virtualProps="{{props}}" />
 </div>
@@ -18,9 +18,13 @@
 
   export default {
     oncreate() {
+      'VirtualListItem: oncreate'
       let itemHeights = this.store.get('itemHeights')
-      itemHeights[this.get('key')] = this.refs.node.offsetHeight
-      this.store.set({itemHeights: itemHeights})
+      let key = this.get('key')
+      itemHeights[key] = this.refs.node.offsetHeight
+      this.store.set({
+        itemHeights: itemHeights
+      })
     },
     store: () => virtualListStore
   }

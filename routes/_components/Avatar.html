@@ -25,11 +25,12 @@
 <script>
   export default {
     computed: {
-      imagePromise: (account) => new Promise((resolve, reject) => {
+      imageSrc: (account) => account.avatar,
+      imagePromise: (imageSrc) => new Promise((resolve, reject) => {
         let img = new Image()
         img.onload = resolve
         img.onerror = reject
-        img.src = account.avatar
+        img.src = imageSrc
       })
     }
   }

@@ -1,12 +1,12 @@
 <:Window bind:scrollY='scrollY' bind:innerHeight='innerHeight' />
 <div class="virtual-list" ref:node style="height: {{$height}}px;">
   <!-- <div class="virtual-list-viewport" ref:viewport></div> -->
-  {{#each $visibleItems as item, virtualIndex}}
+  {{#each $visibleItems as item, index @key}}
     <VirtualListItem :component
                      offset="{{item.offset}}"
-                     props="{{item.item.props}}"
-                     index="{{item.item.index}}"
-                     key="{{item.item.key}}"
+                     props="{{item.props}}"
+                     key="{{item.key}}"
+                     index="{{item.index}}"
     />
   {{/each}}
 </div>
@@ -18,29 +18,28 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { virtualListStore } from '../_utils/virtualListStore'
+  import debounce from 'lodash/debounce'
 
   export default {
     oncreate() {
-      console.log('scrollHeight', this.refs.node.scrollHeight)
-      this.store.set({
-        scrollHeight: this.refs.node.scrollHeight,
-      })
       this.observe('innerHeight', innerHeight => {
+        console.log('setting innerHeight', innerHeight)
         this.store.set({
           innerHeight: innerHeight
         })
       })
       this.observe('items', (items) => {
+        console.log('setting items')
         this.store.set({
           'items': items
         })
       })
-      this.observe('scrollY', (scrollY) => {
-        console.log('scrollY', scrollY)
+      this.observe('scrollY', debounce((scrollY) => {
+        console.log('setting scrollY', scrollY)
         this.store.set({
           scrollTop: scrollY
         })
-      })
+      }, 2000))
     },
     data: () => ({
       component: null
