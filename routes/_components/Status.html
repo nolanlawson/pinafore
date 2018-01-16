@@ -1,4 +1,4 @@
-<article>
+<article class="status-article">
     {{#if status.reblog}}
       <div class="boosted">
         <svg>
@@ -22,9 +22,7 @@
       {{relativeDate}}
     </a>
   </div>
-  <div class="sidebar">
-    <Avatar account={{original}} />
-  </div>
+  <Avatar account={{original}} className="sidebar"/>
   <div class="content">{{{status.content}}}</div>
   <div class="toolbar">
     <button aria-label="Reply" aria-pressed="false" type="button">
@@ -51,11 +49,10 @@
 </article>
 
 <style>
-  article {
+  .status-article {
     width: 580px;
     max-width: calc(100vw);
-    margin: 0 10px;
-    padding: 10px 0;
+    padding: 10px;
     display: grid;
     grid-template-areas:
         "....... boosted"
@@ -63,11 +60,12 @@
         "sidebar content"
         "....... toolbar";
     grid-template-columns: 68px 1fr;
+    border-bottom: 1px solid var(--main-border);
   }
-  .sidebar {
+
+  :global(.sidebar) {
     grid-area: sidebar;
-    display: flex;
-    justify-content: center;
+    margin: 0 10px;
   }
 
   .author {

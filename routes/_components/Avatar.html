@@ -1,21 +1,23 @@
 {{#await imagePromise}}
+<img class="{{className}} avatar" alt="Profile picture for @{{account.acct}}"
+     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
 {{then src}}
-<img alt="Profile picture for @{{account.acct}}" src="{{account.avatar}}" />
+<img class="{{className}} avatar" alt="Profile picture for @{{account.acct}}"
+     src="{{account.avatar}}" />
 {{catch error}}
-<svg>
+<svg class="{{className}} avatar">
   <use xlink:href="#fa-user" />
 </svg>
 {{/await}}
 
 <style>
-  img, svg {
+  .avatar {
     width: 48px;
     height: 48px;
-    margin: 0 auto;
     border-radius: 4px;
   }
 
-  svg {
+  svg.avatar {
     fill: var(--deemphasized-text-color);
   }
 </style>
