@@ -50,22 +50,22 @@
 
 <style>
   .status-article {
-    width: 580px;
-    max-width: calc(100vw);
-    padding: 10px;
+    width: 560px;
+    max-width: calc(100vw - 40px);
+    padding: 10px 20px;
     display: grid;
     grid-template-areas:
         "....... boosted"
         "sidebar author"
         "sidebar content"
         "....... toolbar";
-    grid-template-columns: 68px 1fr;
+    grid-template-columns: 58px 1fr;
     border-bottom: 1px solid var(--main-border);
   }
 
   :global(.sidebar) {
     grid-area: sidebar;
-    margin: 0 10px;
+    margin: 0 10px 0 0;
   }
 
   .author {
