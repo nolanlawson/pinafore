@@ -190,13 +190,10 @@
     components: {
       Avatar
     },
-    data: () => ({
-      status: null,
-    }),
     computed: {
-      relativeDate: (status) => {
-        let date = new Date(status.created_at)
-        return relativeFormat.format(date)
+      createdAtDate: (status) => status.created_at,
+      relativeDate: (createdAtDate) => {
+        return relativeFormat.format(new Date(createdAtDate))
       },
       original: (status) => status.reblog ? status.reblog.account : status.account
     },
