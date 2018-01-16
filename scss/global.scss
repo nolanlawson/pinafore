@@ -32,14 +32,14 @@ body {
 main {
   position: relative;
   max-width: 600px;
-  padding: 15px 15px;
+  padding: 15px 0;
   box-sizing: border-box;
   margin: 15px auto 15px;
   background: var(--main-bg);
   border: 1px solid var(--main-border);
   border-radius: 1px;
   @media (max-width: 767px) {
-    padding: 5px 5px;
+    padding: 5px 0;
     margin: 5px auto 15px;
   }
 }

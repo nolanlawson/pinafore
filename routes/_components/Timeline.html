@@ -2,11 +2,6 @@
   <VirtualList component="{{StatusListItem}}" items="{{statuses}}" />
   <button type="button" on:click="addMoreItems()">Add more items</button>
 </div>
-<style>
-  .timeline {
-    padding-right: 10px;
-  }
-</style>
 <script>
   import { store } from '../_utils/store'
   import { getHomeTimeline } from '../_utils/mastodon/oauth'
