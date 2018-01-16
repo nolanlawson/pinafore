@@ -1,5 +1,5 @@
-<:Window bind:scrollY='scrollY' bind:innerHeight='innerHeight'/>
-<div class="virtual-list" ref:node style="height: {{$height}}px;">
+<:Window bind:innerHeight='innerHeight'/>
+<div class="virtual-list" style="height: {{$height}}px;">
   <!-- <div class="virtual-list-viewport" ref:viewport></div> -->
   {{#each $visibleItems as item @key}}
   <VirtualListItem :component
@@ -19,7 +19,7 @@
   import { virtualListStore } from '../_utils/virtualListStore'
   import debounce from 'lodash/debounce'
 
-  const DEBOUNCE_TIME = 200
+  const DEBOUNCE_TIME = 500
 
   export default {
     oncreate () {
@@ -35,12 +35,16 @@
           'items': items
         })
       })
-      this.observe('scrollY', debounce((scrollY) => {
-        console.log('setting scrollY', scrollY)
+      document.body.querySelector('.container').addEventListener('scroll', debounce((e) => {
         this.store.set({
-          scrollTop: scrollY
+          scrollTop: e.target.scrollTop
         })
-      }, DEBOUNCE_TIME))
+      }, DEBOUNCE_TIME, {
+        leading: true,
+        trailing: true
+      }))
+    },
+    ondestroy () {
     },
     data: () => ({
       component: null

@@ -1,7 +1,5 @@
 import { Store } from 'svelte/store.js'
 
-const RENDER_BUFFER = 1000
-
 class VirtualListStore extends Store {
 }
 
@@ -14,6 +12,7 @@ const virtualListStore = new VirtualListStore({
 virtualListStore.compute('visibleItems',
     ['items', 'scrollTop', 'height', 'itemHeights', 'innerHeight'],
     (items, scrollTop, height, itemHeights, innerHeight) => {
+  let renderBuffer = 2 * innerHeight
   let visibleItems = []
   let totalOffset = 0
   let len = items.length
@@ -26,11 +25,11 @@ virtualListStore.compute('visibleItems',
     //console.log(key, 'scrollTop', scrollTop, 'currentOffset', currentOffset, 'innerHeight', innerHeight)
     let isBelowViewport = (currentOffset < scrollTop)
     if (isBelowViewport) {
-      if (scrollTop - RENDER_BUFFER > currentOffset) {
+      if (scrollTop - renderBuffer > currentOffset) {
         continue // below the area we want to render
       }
     } else {
-      if (currentOffset > (scrollTop + innerHeight + RENDER_BUFFER)) {
+      if (currentOffset > (scrollTop + innerHeight + renderBuffer)) {
         break // above the area we want to render
       }
     }
