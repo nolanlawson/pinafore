@@ -31,7 +31,8 @@ body {
 
 main {
   position: relative;
-  max-width: 600px;
+  width: 602px;
+  max-width: 100vw;
   padding: 15px 0;
   box-sizing: border-box;
   margin: 15px auto 15px;
@@ -39,7 +40,6 @@ main {
   border: 1px solid var(--main-border);
   border-radius: 1px;
   @media (max-width: 767px) {
-    padding: 5px 0;
     margin: 5px auto 15px;
   }
 }

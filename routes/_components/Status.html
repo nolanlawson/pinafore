@@ -52,9 +52,9 @@
 
 <style>
   article {
-    width: 570px;
-    max-width: calc(100vw - 30px);
-    margin: 0 auto;
+    width: 580px;
+    max-width: calc(100vw);
+    margin: 0 10px;
     padding: 10px 0;
     display: grid;
     grid-template-areas:
@@ -62,18 +62,19 @@
         "sidebar author"
         "sidebar content"
         "....... toolbar";
-    grid-template-columns: 60px 1fr;
+    grid-template-columns: 68px 1fr;
   }
   .sidebar {
     grid-area: sidebar;
     display: flex;
+    justify-content: center;
   }
 
   .author {
     grid-area: author;
     display: flex;
     align-items: center;
-    margin-left: 5px;
+    margin: 0 10px 0 5px;
     font-size: 1.1em;
     min-width: 0;
   }
@@ -113,7 +114,7 @@
   }
 
   .content {
-    margin: 10px 5px 20px;
+    margin: 10px 10px 20px 5px;
     grid-area: content;
     word-wrap: break-word;
     overflow: hidden;
@@ -143,7 +144,7 @@
 
   .boosted {
     grid-area: boosted;
-    margin: 5px 5px;
+    margin: 5px 10px 5px 5px;
     display: flex;
     align-items: center;
   }
@@ -157,7 +158,7 @@
   .toolbar {
     grid-area: toolbar;
     display: flex;
-    margin: 5px;
+    margin: 5px 10px 5px 5px;
     justify-content: space-between;
   }
 
