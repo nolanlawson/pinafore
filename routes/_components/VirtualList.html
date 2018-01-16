@@ -1,11 +1,12 @@
-<:Window bind:scrollY='scrollY'/>
+<:Window bind:scrollY='scrollY' bind:innerHeight='innerHeight' />
 <div class="virtual-list" ref:node style="height: {{$height}}px;">
   <!-- <div class="virtual-list-viewport" ref:viewport></div> -->
-  {{#each $virtualItems as virtualItem, virtualIndex}}
+  {{#each $visibleItems as item, virtualIndex}}
     <VirtualListItem :component
-                     props="{{virtualItem.props}}"
-                     index="{{virtualItem.index}}"
-                     key="{{virtualItem.key}}"
+                     offset="{{item.offset}}"
+                     props="{{item.item.props}}"
+                     index="{{item.item.index}}"
+                     key="{{item.item.key}}"
     />
   {{/each}}
 </div>
@@ -20,12 +21,25 @@
 
   export default {
     oncreate() {
+      console.log('scrollHeight', this.refs.node.scrollHeight)
+      this.store.set({
+        scrollHeight: this.refs.node.scrollHeight,
+      })
+      this.observe('innerHeight', innerHeight => {
+        this.store.set({
+          innerHeight: innerHeight
+        })
+      })
       this.observe('items', (items) => {
-        this.store.set({'items': items})
+        this.store.set({
+          'items': items
+        })
       })
       this.observe('scrollY', (scrollY) => {
         console.log('scrollY', scrollY)
-        this.store.set({scrollTop: scrollY})
+        this.store.set({
+          scrollTop: scrollY
+        })
       })
     },
     data: () => ({

@@ -1,6 +1,8 @@
 import { Store } from 'svelte/store.js'
 import { splice } from 'svelte-extras'
 
+const RENDER_BUFFER = 1000
+
 class VirtualListStore extends Store {
 }
 
@@ -9,7 +11,8 @@ VirtualListStore.prototype.splice = splice
 const virtualListStore = new VirtualListStore({
   items: [],
   itemHeights: {},
-  scrollTop: 0
+  scrollTop: 0,
+  scrollHeight: 0
 })
 
 virtualListStore.compute('virtualItems', ['items'], (items) => {
@@ -20,15 +23,29 @@ virtualListStore.compute('virtualItems', ['items'], (items) => {
   }))
 })
 
-virtualListStore.compute('itemOffsets', ['virtualItems', 'itemHeights'], (virtualItems, itemHeights) => {
-  let itemOffsets = {}
-  let totalHeight = 0
+virtualListStore.compute('visibleItems',
+    ['virtualItems', 'scrollTop', 'height', 'itemHeights', 'innerHeight'],
+    (virtualItems, scrollTop, height, itemHeights, innerHeight) => {
+  let visibleItems = []
+  let currentOffset = 0
   virtualItems.forEach(item => {
     let height = itemHeights[item.key] || 0
-    itemOffsets[item.key] = totalHeight
-    totalHeight += height
+    console.log(item.key, 'scrollTop', scrollTop, 'currentOffset', currentOffset, 'innerHeight', innerHeight)
+    if (
+      ((currentOffset < scrollTop)  && (scrollTop - RENDER_BUFFER < currentOffset)) ||
+      ((currentOffset >= scrollTop) && (currentOffset < (scrollTop + innerHeight + RENDER_BUFFER)))
+    ) {
+      console.log('    rendering', item)
+      visibleItems.push({
+        item: item,
+        offset: currentOffset
+      })
+    } else {
+      console.log('not rendering', item)
+    }
+    currentOffset += height
   })
-  return itemOffsets
+  return visibleItems
 })
 
 virtualListStore.compute('height', ['virtualItems', 'itemHeights'], (virtualItems, itemHeights) => {

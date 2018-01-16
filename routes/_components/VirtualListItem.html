@@ -1,6 +1,6 @@
 <div class="virtual-list-item"
      ref:node
-     style="transform: translate3d(0, {{itemOffset}}px, 0);"
+     style="transform: translate3d(0, {{offset}}px, 0);"
      data-virtual-index="{{index}}"
      data-virtual-key="{{key}}"
 >
@@ -21,11 +21,6 @@
       let itemHeights = this.store.get('itemHeights')
       itemHeights[this.get('key')] = this.refs.node.offsetHeight
       this.store.set({itemHeights: itemHeights})
-    },
-    computed: {
-      itemOffset: ($itemOffsets, key) => {
-        return $itemOffsets[key] || 0
-      }
     },
     store: () => virtualListStore
   }
