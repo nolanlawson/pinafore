@@ -1,6 +1,4 @@
 {{#await imagePromise}}
-<!-- 1x1 transparent png -->
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
 {{then src}}
 <img alt="Profile picture for @{{account.acct}}" src="{{account.avatar}}" />
 {{catch error}}
