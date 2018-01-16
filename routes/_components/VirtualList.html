@@ -24,13 +24,13 @@
   export default {
     oncreate () {
       this.observe('innerHeight', debounce(innerHeight => {
-        console.log('setting innerHeight', innerHeight)
+        //console.log('setting innerHeight', innerHeight)
         this.store.set({
           innerHeight: innerHeight
         })
       }, DEBOUNCE_TIME))
       this.observe('items', (items) => {
-        console.log('setting items')
+        //console.log('setting items')
         this.store.set({
           'items': items
         })
