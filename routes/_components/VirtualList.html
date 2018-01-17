@@ -16,15 +16,18 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { virtualListStore } from '../_utils/virtualListStore'
+  import { mark, stop } from '../_utils/marks'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
 
   export default {
     oncreate () {
       this.observe('items', (items) => {
+        mark('set items')
         this.store.set({
           items: items
         })
+        stop('set items')
       })
 
       let observedOnce = false

@@ -15,6 +15,7 @@
   import StatusListItem from './StatusListItem.html'
   import VirtualList from './VirtualList.html'
   import { splice, push } from 'svelte-extras'
+  import { mark, stop } from '../_utils/marks'
 
   let i = -1
 
@@ -37,31 +38,13 @@
       splice: splice,
       push: push,
       addMoreItems() {
-        console.log('addMoreItems')
+        mark('addMoreItems')
         let statuses = this.get('statuses')
         if (statuses) {
           let itemsToAdd = createData()
-          if (itemsToAdd.length) {
-
-          }
-
-          let importantFirstItem = itemsToAdd
           this.splice('statuses', statuses.length, 0, ...itemsToAdd)
         }
-      },
-      addTheseItems(items) {
-        if (!items.length) {
-          return
-        }
-        this.push(items.pop())
-        while (items.length) {
-          this.addItemLazily(items.pop())
-        }
-      },
-      addItemLazily(item) {
-        requestIdleCallback(() => {
-          this.push(item)
-        })
+        stop('addMoreItems')
       }
     }
   }

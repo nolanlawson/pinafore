@@ -182,6 +182,7 @@
 </style>
 <script>
   import Avatar from './Avatar.html'
+  import { mark, stop } from '../_utils/marks'
   import IntlRelativeFormat from 'intl-relativeformat'
   const relativeFormat = new IntlRelativeFormat('en-US');
 
@@ -192,15 +193,12 @@
     computed: {
       createdAtDate: (status) => status.created_at,
       relativeDate: (createdAtDate) => {
-        return relativeFormat.format(new Date(createdAtDate))
+        mark('compute relativeDate')
+        let res = relativeFormat.format(new Date(createdAtDate))
+        stop('compute relativeDate')
+        return res
       },
       original: (status) => status.reblog ? status.reblog.account : status.account
-    },
-    methods: {
-      alert: function (e) {
-        e.preventDefault()
-        window.alert(e.target)
-      }
     }
   }
 </script>

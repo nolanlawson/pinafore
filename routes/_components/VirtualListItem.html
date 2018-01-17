@@ -20,6 +20,7 @@
 </style>
 <script>
   import { virtualListStore } from '../_utils/virtualListStore'
+  import { mark, stop } from '../_utils/marks'
 
   let updateItemHeights = {}
   let promise = Promise.resolve()
@@ -44,6 +45,7 @@
           if (!updatedKeys.length) {
             return
           }
+          mark('batch update VirtualListItem')
           // batch all updates to itemHeights for better perf
           let itemHeights = this.store.get('itemHeights')
           for (key of updatedKeys) {
@@ -53,6 +55,7 @@
             itemHeights: itemHeights
           })
           updateItemHeights = {}
+          stop('batch update VirtualListItem')
         })
       }
       intersectionObserver.observe(this.refs.node)

@@ -12,12 +12,14 @@
 
   import debounce from 'lodash/debounce'
   import throttle from 'lodash/throttle'
+  import { mark, stop } from '../_utils/marks'
 
   const SCROLL_EVENT_DELAY = 300
   const RESIZE_EVENT_DELAY = 700
 
 	export default {
 	  oncreate() {
+      mark('onCreate Layout')
       this.observe('innerHeight', debounce(() => {
         // respond to window resize events
         this.store.set({
@@ -29,6 +31,7 @@
         scrollHeight: this.refs.node.scrollHeight,
         offsetHeight: this.refs.node.offsetHeight
       })
+      stop('onCreate Layout')
     },
 		components: {
 			Nav
@@ -36,7 +39,11 @@
     store: () => virtualListStore,
     events: {
       scroll(node, callback) {
-        const onScroll = throttle(callback, SCROLL_EVENT_DELAY, {
+        const onScroll = throttle(event => {
+          mark('onScroll')
+          callback(event)
+          stop('onScroll')
+        }, SCROLL_EVENT_DELAY, {
           leading: true,
           trailing: true
         })
