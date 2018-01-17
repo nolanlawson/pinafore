@@ -20,12 +20,15 @@
   import throttle from 'lodash/throttle'
 
   const THROTTLE_TIME = 500
+  const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
 
   export default {
     oncreate () {
-      this.observe('innerHeight', throttle(innerHeight => {
+      let container = document.body.querySelector('.container')
+      this.observe('innerHeight', throttle(() => {
+        // respond to window resize events
         this.store.set({
-          innerHeight: innerHeight
+          offsetHeight: container.offsetHeight
         })
       }, THROTTLE_TIME))
       this.observe('items', (items) => {
@@ -33,14 +36,27 @@
           'items': items
         })
       })
-      document.body.querySelector('.container').addEventListener('scroll', throttle((e) => {
+      this.store.observe('distanceFromBottom', distanceFromBottom => {
+        console.log('distanceFromBottom', distanceFromBottom)
+        if (distanceFromBottom >= 0 &&
+            distanceFromBottom <= DISTANCE_FROM_BOTTOM_TO_FIRE) {
+          this.fire('scrollToBottom')
+        }
+      })
+      container.addEventListener('scroll', throttle((e) => {
         this.store.set({
-          scrollTop: e.target.scrollTop
+          scrollTop: e.target.scrollTop,
+          scrollHeight: e.target.scrollHeight
         }, {
           leading: false,
           trailing: true
         })
       }, THROTTLE_TIME))
+      this.store.set({
+        scrollTop: container.scrollTop,
+        scrollHeight: container.scrollHeight,
+        offsetHeight: container.offsetHeight
+      })
     },
     data: () => ({
       component: null

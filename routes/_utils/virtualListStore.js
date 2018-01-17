@@ -6,13 +6,12 @@ class VirtualListStore extends Store {
 const virtualListStore = new VirtualListStore({
   items: [],
   itemHeights: {},
-  scrollTop: 0
 })
 
 virtualListStore.compute('visibleItems',
-    ['items', 'scrollTop', 'height', 'itemHeights', 'innerHeight'],
-    (items, scrollTop, height, itemHeights, innerHeight) => {
-  let renderBuffer = 1.5 * innerHeight
+    ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
+    (items, scrollTop, itemHeights, offsetHeight) => {
+  let renderBuffer = 1.5 * offsetHeight
   let visibleItems = []
   let totalOffset = 0
   let len = items.length
@@ -28,7 +27,7 @@ virtualListStore.compute('visibleItems',
         continue // below the area we want to render
       }
     } else {
-      if (currentOffset > (scrollTop + innerHeight + renderBuffer)) {
+      if (currentOffset > (scrollTop + offsetHeight + renderBuffer)) {
         break // above the area we want to render
       }
     }
@@ -36,10 +35,22 @@ virtualListStore.compute('visibleItems',
       offset: currentOffset,
       props: props,
       key: key,
-      index: i
+      index: i,
+      height: height
     })
   }
   return visibleItems
+})
+
+virtualListStore.compute('distanceFromBottom',
+    ['scrollHeight', 'scrollTop', 'offsetHeight'],
+    (scrollHeight, scrollTop, offsetHeight) => {
+  if (typeof scrollHeight === 'undefined' ||
+      typeof scrollTop === 'undefined' ||
+      typeof offsetHeight === 'undefined') {
+    return -1
+  }
+  return scrollHeight - scrollTop - offsetHeight
 })
 
 virtualListStore.compute('height', ['items', 'itemHeights'], (items, itemHeights) => {
