@@ -1,16 +1,55 @@
+<:Window bind:innerHeight='innerHeight'/>
 <Nav page={{page}} />
 
-<div class="container">
+<div class="container" on:scroll="onScroll(event)" ref:node>
   <main>
     <slot></slot>
   </main>
 </div>
 <script>
 	import Nav from './Nav.html';
+	import { virtualListStore } from '../_utils/virtualListStore'
+
+  import throttle from 'lodash/throttle'
+  const THROTTLE_DELAY = 500
 
 	export default {
+	  oncreate() {
+      this.observe('innerHeight', throttle(() => {
+        // respond to window resize events
+        this.store.set({
+          offsetHeight: this.refs.node.offsetHeight
+        })
+      }, THROTTLE_DELAY))
+	    this.store.set({
+        scrollTop: this.refs.node.scrollTop,
+        scrollHeight: this.refs.node.scrollHeight,
+        offsetHeight: this.refs.node.offsetHeight
+      })
+    },
 		components: {
 			Nav
-		}
+		},
+    store: () => virtualListStore,
+    events: {
+      scroll(node, callback) {
+        const onScroll = throttle(callback, THROTTLE_DELAY)
+        node.addEventListener('scroll', onScroll);
+
+        return {
+          teardown() {
+            node.removeEventListener('scroll', onScroll);
+          }
+        };
+      }
+    },
+    methods: {
+		  onScroll(event) {
+		    this.store.set({
+          scrollTop: event.target.scrollTop,
+          scrollHeight: event.target.scrollHeight
+        })
+      }
+    }
 	};
 </script>

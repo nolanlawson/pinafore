@@ -1,5 +1,4 @@
-<:Window bind:innerHeight='innerHeight'/>
-<div class="virtual-list" style="height: {{$height}}px;">
+<div class="virtual-list">
   <!-- <div class="virtual-list-viewport" ref:viewport></div> -->
   {{#each $visibleItems as item @key}}
   <VirtualListItem :component
@@ -17,45 +16,23 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { virtualListStore } from '../_utils/virtualListStore'
-  import throttle from 'lodash/throttle'
 
-  const THROTTLE_TIME = 500
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
 
   export default {
     oncreate () {
-      let container = document.body.querySelector('.container')
-      this.observe('innerHeight', throttle(() => {
-        // respond to window resize events
-        this.store.set({
-          offsetHeight: container.offsetHeight
-        })
-      }, THROTTLE_TIME))
       this.observe('items', (items) => {
         this.store.set({
-          'items': items
+          items: items
         })
       })
-      this.store.observe('distanceFromBottom', distanceFromBottom => {
-        console.log('distanceFromBottom', distanceFromBottom)
-        if (distanceFromBottom >= 0 &&
+
+      this.observe('distanceFromBottom', (distanceFromBottom) => {
+        //console.log('distanceFromBottom', distanceFromBottom)
+        if (distanceFromBottom > 0 && // hack: the first it's reported, it's always 0
             distanceFromBottom <= DISTANCE_FROM_BOTTOM_TO_FIRE) {
           this.fire('scrollToBottom')
         }
-      })
-      container.addEventListener('scroll', throttle((e) => {
-        this.store.set({
-          scrollTop: e.target.scrollTop,
-          scrollHeight: e.target.scrollHeight
-        }, {
-          leading: false,
-          trailing: true
-        })
-      }, THROTTLE_TIME))
-      this.store.set({
-        scrollTop: container.scrollTop,
-        scrollHeight: container.scrollHeight,
-        offsetHeight: container.offsetHeight
       })
     },
     data: () => ({
@@ -64,6 +41,11 @@
     store: () => virtualListStore,
     components: {
       VirtualListItem
+    },
+    computed: {
+      distanceFromBottom: ($scrollHeight, $scrollTop, $offsetHeight) => {
+        return $scrollHeight - $scrollTop - $offsetHeight
+      }
     }
   }
 </script>

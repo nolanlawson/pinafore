@@ -35,7 +35,8 @@
     oncreate() {
       let key = this.get('key')
       onIntersectionCallbacks[key] = entry => {
-        updateItemHeights[key] = entry.boundingClientRect.height
+        let rect = entry.boundingClientRect
+        updateItemHeights[key] = rect.height
         promise.then(() => {
           // update all item heights in one microtask batch for better perf
           let updatedKeys = Object.keys(updateItemHeights)

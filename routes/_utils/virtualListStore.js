@@ -27,7 +27,7 @@ virtualListStore.compute('visibleItems',
         continue // below the area we want to render
       }
     } else {
-      if (currentOffset > (scrollTop + offsetHeight + renderBuffer)) {
+      if (currentOffset > (scrollTop + height + renderBuffer)) {
         break // above the area we want to render
       }
     }
@@ -35,22 +35,10 @@ virtualListStore.compute('visibleItems',
       offset: currentOffset,
       props: props,
       key: key,
-      index: i,
-      height: height
+      index: i
     })
   }
   return visibleItems
-})
-
-virtualListStore.compute('distanceFromBottom',
-    ['scrollHeight', 'scrollTop', 'offsetHeight'],
-    (scrollHeight, scrollTop, offsetHeight) => {
-  if (typeof scrollHeight === 'undefined' ||
-      typeof scrollTop === 'undefined' ||
-      typeof offsetHeight === 'undefined') {
-    return -1
-  }
-  return scrollHeight - scrollTop - offsetHeight
 })
 
 virtualListStore.compute('height', ['items', 'itemHeights'], (items, itemHeights) => {

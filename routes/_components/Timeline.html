@@ -18,7 +18,7 @@
 
   let i = -1
 
-  const createData = () => fixture.slice(0, 5).map(_ => ({
+  const createData = () => fixture.slice(0, 20).map(_ => ({
     key: `${++i}`,
     props: _
   }))
@@ -37,7 +37,10 @@
       splice: splice,
       addMoreItems() {
         console.log('addMoreItems')
-        this.splice('statuses', this.get('statuses').length, 0, ...createData())
+        let statuses = this.get('statuses')
+        if (statuses) {
+          this.splice('statuses', statuses.length, 0, ...createData())
+        }
       }
     }
   }
