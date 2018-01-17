@@ -14,7 +14,7 @@
   import fixture from '../_utils/fixture.json'
   import StatusListItem from './StatusListItem.html'
   import VirtualList from './VirtualList.html'
-  import { splice } from 'svelte-extras'
+  import { splice, push } from 'svelte-extras'
 
   let i = -1
 
@@ -35,12 +35,33 @@
     },
     methods: {
       splice: splice,
+      push: push,
       addMoreItems() {
         console.log('addMoreItems')
         let statuses = this.get('statuses')
         if (statuses) {
-          this.splice('statuses', statuses.length, 0, ...createData())
+          let itemsToAdd = createData()
+          if (itemsToAdd.length) {
+
+          }
+
+          let importantFirstItem = itemsToAdd
+          this.splice('statuses', statuses.length, 0, ...itemsToAdd)
         }
+      },
+      addTheseItems(items) {
+        if (!items.length) {
+          return
+        }
+        this.push(items.pop())
+        while (items.length) {
+          this.addItemLazily(items.pop())
+        }
+      },
+      addItemLazily(item) {
+        requestIdleCallback(() => {
+          this.push(item)
+        })
       }
     }
   }

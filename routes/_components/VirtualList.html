@@ -1,5 +1,4 @@
-<div class="virtual-list">
-  <!-- <div class="virtual-list-viewport" ref:viewport></div> -->
+<div class="virtual-list" style="height: {{$height}}px;">
   {{#each $visibleItems as item @key}}
   <VirtualListItem :component
                    offset="{{item.offset}}"
@@ -27,9 +26,14 @@
         })
       })
 
+      let observedOnce = false
+
       this.observe('distanceFromBottom', (distanceFromBottom) => {
-        //console.log('distanceFromBottom', distanceFromBottom)
-        if (distanceFromBottom > 0 && // hack: the first it's reported, it's always 0
+        if (!observedOnce) {
+          observedOnce = true // TODO: the first time is always 0... need better way to handle this
+          return
+        }
+        if (distanceFromBottom >= 0 &&
             distanceFromBottom <= DISTANCE_FROM_BOTTOM_TO_FIRE) {
           this.fire('scrollToBottom')
         }

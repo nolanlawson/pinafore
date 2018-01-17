@@ -17,8 +17,13 @@ const importIntersectionObserver = () => import(
   /* webpackChunkname: 'intersection-observer' */ 'intersection-observer'
   )
 
+const importRequestIdleCallback = () => import(
+  /* webpackChunkName: 'requestidlecallback' */ 'requestidlecallback'
+  )
+
 export {
   importURLSearchParams,
   importTimeline,
-  importIntersectionObserver
+  importIntersectionObserver,
+  importRequestIdleCallback
 }

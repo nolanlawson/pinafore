@@ -11,7 +11,7 @@ const virtualListStore = new VirtualListStore({
 virtualListStore.compute('visibleItems',
     ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
     (items, scrollTop, itemHeights, offsetHeight) => {
-  let renderBuffer = 1.5 * offsetHeight
+  let renderBuffer = 3 * offsetHeight
   let visibleItems = []
   let totalOffset = 0
   let len = items.length
