@@ -1,7 +1,7 @@
 <div class="timeline">
   <VirtualList component="{{StatusListItem}}"
                items="{{statuses}}"
-               on:scrollToBottom="addMoreItems()" />
+               on:scrollToBottom="onScrollToBottom()" />
 </div>
 <style>
   .timeline {
@@ -37,14 +37,17 @@
     methods: {
       splice: splice,
       push: push,
-      addMoreItems() {
-        mark('addMoreItems')
+      onScrollToBottom() {
+        mark('onScrollToBottom')
         let statuses = this.get('statuses')
         if (statuses) {
           let itemsToAdd = createData()
-          this.splice('statuses', statuses.length, 0, ...itemsToAdd)
+          this.addItems(itemsToAdd)
         }
-        stop('addMoreItems')
+        stop('onScrollToBottom')
+      },
+      addItems(items) {
+        this.splice('statuses', this.get('statuses').length, 0, ...items)
       }
     }
   }
