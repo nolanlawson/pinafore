@@ -24,13 +24,11 @@
   export default {
     oncreate () {
       this.observe('innerHeight', throttle(innerHeight => {
-        //console.log('setting innerHeight', innerHeight)
         this.store.set({
           innerHeight: innerHeight
         })
       }, THROTTLE_TIME))
       this.observe('items', (items) => {
-        //console.log('setting items')
         this.store.set({
           'items': items
         })

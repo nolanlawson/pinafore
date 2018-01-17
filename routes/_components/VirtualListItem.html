@@ -15,7 +15,6 @@
 
   export default {
     oncreate() {
-      'VirtualListItem: oncreate'
       let itemHeights = this.store.get('itemHeights')
       let key = this.get('key')
       itemHeights[key] = this.refs.node.offsetHeight

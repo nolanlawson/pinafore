@@ -22,7 +22,6 @@ virtualListStore.compute('visibleItems',
     let height = itemHeights[key] || 0
     let currentOffset = totalOffset
     totalOffset += height
-    //console.log(key, 'scrollTop', scrollTop, 'currentOffset', currentOffset, 'innerHeight', innerHeight)
     let isBelowViewport = (currentOffset < scrollTop)
     if (isBelowViewport) {
       if (scrollTop - renderBuffer > currentOffset) {
