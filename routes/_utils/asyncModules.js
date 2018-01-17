@@ -13,7 +13,12 @@ const importTimeline = () => import(
   /* webpackChunkName: 'Timeline' */ '../_components/Timeline.html'
   ).then(mod => mod.default)
 
+const importIntersectionObserver = () => import(
+  /* webpackChunkname: 'intersection-observer' */ 'intersection-observer'
+  )
+
 export {
   importURLSearchParams,
-  importTimeline
+  importTimeline,
+  importIntersectionObserver
 }

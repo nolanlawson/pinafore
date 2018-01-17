@@ -1,4 +1,5 @@
-<div class="virtual-list-item"
+<div class="virtual-list-item {{shown ? 'shown' : ''}}"
+     virtual-list-key="{{key}}"
      ref:node
      style="transform: translate3d(0, {{offset}}px, 0);"
 >
@@ -8,6 +9,12 @@
   .virtual-list-item {
     position: absolute;
     top: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .shown {
+    opacity: 1;
+    pointer-events: auto;
   }
 </style>
 <script>
@@ -15,28 +22,45 @@
 
   let updateItemHeights = {}
   let promise = Promise.resolve()
+  let onIntersectionCallbacks = {}
+
+  let intersectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      let key = entry.target.getAttribute('virtual-list-key')
+      onIntersectionCallbacks[key](entry)
+    })
+  })
 
   export default {
     oncreate() {
       let key = this.get('key')
-      updateItemHeights[key] = this.refs.node.offsetHeight
-      promise.then(() => {
-        // update all item heights in one microtask batch for better perf
-        let updatedKeys = Object.keys(updateItemHeights)
-        if (!updatedKeys.length) {
-          return
-        }
-        // batch all updates to itemHeights for better perf
-        let itemHeights = this.store.get('itemHeights')
-        for (key of updatedKeys) {
-          itemHeights[key] = updateItemHeights[key]
-        }
-        this.store.set({
-          itemHeights: itemHeights
+      onIntersectionCallbacks[key] = entry => {
+        updateItemHeights[key] = entry.boundingClientRect.height
+        promise.then(() => {
+          // update all item heights in one microtask batch for better perf
+          let updatedKeys = Object.keys(updateItemHeights)
+          if (!updatedKeys.length) {
+            return
+          }
+          // batch all updates to itemHeights for better perf
+          let itemHeights = this.store.get('itemHeights')
+          for (key of updatedKeys) {
+            itemHeights[key] = updateItemHeights[key]
+          }
+          this.store.set({
+            itemHeights: itemHeights
+          })
+          updateItemHeights = {}
         })
-        updateItemHeights = {}
-      })
+      }
+      intersectionObserver.observe(this.refs.node)
     },
-    store: () => virtualListStore
+    ondestroy() {
+      intersectionObserver.unobserve(this.refs.node)
+    },
+    store: () => virtualListStore,
+    computed: {
+      'shown': ($itemHeights, key) => $itemHeights[key] > 0
+    }
   }
 </script>
