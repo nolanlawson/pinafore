@@ -13,13 +13,28 @@
 <script>
   import { virtualListStore } from '../_utils/virtualListStore'
 
+  let updateItemHeights = {}
+  let promise = Promise.resolve()
+
   export default {
     oncreate() {
-      let itemHeights = this.store.get('itemHeights')
       let key = this.get('key')
-      itemHeights[key] = this.refs.node.offsetHeight
-      this.store.set({
-        itemHeights: itemHeights
+      updateItemHeights[key] = this.refs.node.offsetHeight
+      promise.then(() => {
+        // update all item heights in one microtask batch for better perf
+        let updatedKeys = Object.keys(updateItemHeights)
+        if (!updatedKeys.length) {
+          return
+        }
+        // batch all updates to itemHeights for better perf
+        let itemHeights = this.store.get('itemHeights')
+        for (key of updatedKeys) {
+          itemHeights[key] = updateItemHeights[key]
+        }
+        this.store.set({
+          itemHeights: itemHeights
+        })
+        updateItemHeights = {}
       })
     },
     store: () => virtualListStore
