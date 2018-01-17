@@ -17,29 +17,32 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { virtualListStore } from '../_utils/virtualListStore'
-  import debounce from 'lodash/debounce'
+  import throttle from 'lodash/throttle'
 
-  const DEBOUNCE_TIME = 500
+  const THROTTLE_TIME = 500
 
   export default {
     oncreate () {
-      this.observe('innerHeight', debounce(innerHeight => {
+      this.observe('innerHeight', throttle(innerHeight => {
         //console.log('setting innerHeight', innerHeight)
         this.store.set({
           innerHeight: innerHeight
         })
-      }, DEBOUNCE_TIME))
+      }, THROTTLE_TIME))
       this.observe('items', (items) => {
         //console.log('setting items')
         this.store.set({
           'items': items
         })
       })
-      document.body.querySelector('.container').addEventListener('scroll', debounce((e) => {
+      document.body.querySelector('.container').addEventListener('scroll', throttle((e) => {
         this.store.set({
           scrollTop: e.target.scrollTop
+        }, {
+          leading: false,
+          trailing: true
         })
-      }, DEBOUNCE_TIME))
+      }, THROTTLE_TIME))
     },
     ondestroy () {
     },
