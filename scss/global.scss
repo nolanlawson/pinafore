@@ -12,11 +12,6 @@ body {
   top: 0;
 }
 
-#svelte {
-  display: flex;
-  flex-direction: column;
-}
-
 .container {
   overflow-y: auto;
   overflow-x: hidden;
@@ -109,8 +104,6 @@ button {
     }
   }
 }
-
-
 
 p, label, input {
   font-size: 1.3em;
