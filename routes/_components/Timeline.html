@@ -1,6 +1,6 @@
 <div class="timeline">
   <VirtualList component="{{StatusListItem}}"
-               items="{{statuses}}"
+               items="{{keyedStatuses}}"
                on:scrollToBottom="onScrollToBottom()" />
 </div>
 <style>
@@ -11,25 +11,33 @@
 <script>
   import { store } from '../_utils/store'
   import { getHomeTimeline } from '../_utils/mastodon/oauth'
-  import fixture from '../_utils/fixture.json'
   import StatusListItem from './StatusListItem.html'
   import VirtualList from './VirtualList.html'
   import { splice, push } from 'svelte-extras'
   import { mark, stop } from '../_utils/marks'
 
-  let i = -1
-
-  const createData = () => fixture.slice(0, 20).map(_ => ({
-    key: `${++i}`,
-    props: _
-  }))
-
   export default {
+    async oncreate() {
+      let instanceName = this.store.get('currentInstance')
+      let instanceData = this.store.get('currentInstanceData')
+      let statuses = await getHomeTimeline(instanceName, instanceData.access_token, null, 10)
+      this.set({
+        statuses: statuses,
+      })
+    },
     data: () => ({
       target: 'home',
-      statuses: createData(),
-      StatusListItem: StatusListItem
+      StatusListItem: StatusListItem,
+      statuses: [],
+      runningUpdate: false
     }),
+    computed: {
+      keyedStatuses: (statuses) => statuses.map(status => ({
+        props: status,
+        key: status.id
+      })),
+      lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id
+    },
     store: () => store,
     components: {
       VirtualList
@@ -37,13 +45,21 @@
     methods: {
       splice: splice,
       push: push,
-      onScrollToBottom() {
+      async onScrollToBottom() {
         mark('onScrollToBottom')
+        if (this.get('runningUpdate')) {
+          return
+        }
+        this.set({ runningUpdate: true })
+        let lastStatusId = this.get('lastStatusId')
+        let instanceName = this.store.get('currentInstance')
+        let instanceData = this.store.get('currentInstanceData')
+        let newStatuses = await getHomeTimeline(instanceName, instanceData.access_token, lastStatusId, 10)
         let statuses = this.get('statuses')
         if (statuses) {
-          let itemsToAdd = createData()
-          this.addItems(itemsToAdd)
+          this.addItems(newStatuses)
         }
+        this.set({ runningUpdate: false })
         stop('onScrollToBottom')
       },
       addItems(items) {

@@ -36,10 +36,14 @@
   export default {
     oncreate() {
       let key = this.get('key')
+      // TODO: implement AsyncLayout
+      // TODO: implement batchUpdate
+      // TODO: fix resize on media
       onIntersectionCallbacks[key] = entry => {
+        console.log('onIntersection', key, entry.boundingClientRect.height)
         let rect = entry.boundingClientRect
         updateItemHeights[key] = rect.height
-        promise.then(() => {
+        promise = promise.then(() => {
           // update all item heights in one microtask batch for better perf
           let updatedKeys = Object.keys(updateItemHeights)
           if (!updatedKeys.length) {
@@ -57,12 +61,22 @@
           updateItemHeights = {}
           stop('batch update VirtualListItem')
         })
+        this.set({ unobserved: true })
+        intersectionObserver.unobserve(this.refs.node)
       }
       intersectionObserver.observe(this.refs.node)
     },
     ondestroy() {
-      intersectionObserver.unobserve(this.refs.node)
+      let key = this.get('key')
+      if (!this.get('unobserved')) {
+        intersectionObserver.unobserve(this.refs.node)
+      }
+      delete onIntersectionCallbacks[key]
+      delete updateItemHeights[key]
     },
+    data: () => ({
+      unobserved: false
+    }),
     store: () => virtualListStore,
     computed: {
       'shown': ($itemHeights, key) => $itemHeights[key] > 0
