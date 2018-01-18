@@ -15,6 +15,10 @@ class VirtualListStore extends Store {
     batch[subKey] = value
 
     requestAnimationFrame(() => {
+      let batch = this._batches[key]
+      if (!batch) {
+        return
+      }
       let updatedKeys = Object.keys(batch)
       if (!updatedKeys.length) {
         return
