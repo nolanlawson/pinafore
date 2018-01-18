@@ -21,44 +21,20 @@
 <script>
   import { virtualListStore } from '../_utils/virtualListStore'
   import { AsyncLayout } from '../_utils/AsyncLayout'
-  import { mark, stop } from '../_utils/marks'
-
-  let updateItemHeights = {}
-  let promise = Promise.resolve()
 
   const asyncLayout = new AsyncLayout(node => node.getAttribute('virtual-list-key'))
 
   export default {
     oncreate() {
       let key = this.get('key')
-      // TODO: implement batchUpdate
-      // TODO: fix resize on media
       asyncLayout.observe(key, this.refs.node, (rect) => {
-        updateItemHeights[key] = rect.height
-        promise = promise.then(() => {
-          // update all item heights in one microtask batch for better perf
-          let updatedKeys = Object.keys(updateItemHeights)
-          if (!updatedKeys.length) {
-            return
-          }
-          mark('batch update VirtualListItem')
-          // batch all updates to itemHeights for better perf
-          let itemHeights = this.store.get('itemHeights')
-          for (key of updatedKeys) {
-            itemHeights[key] = updateItemHeights[key]
-          }
-          this.store.set({
-            itemHeights: itemHeights
-          })
-          updateItemHeights = {}
-          stop('batch update VirtualListItem')
-        })
+        // update all item heights in one microtask batch for better perf
+        this.store.batchUpdate('itemHeights', key, rect.height)
       })
     },
     ondestroy() {
       let key = this.get('key')
       asyncLayout.unobserve(key, this.refs.node)
-      delete updateItemHeights[key]
     },
     store: () => virtualListStore,
     computed: {

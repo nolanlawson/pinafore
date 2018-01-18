@@ -2,6 +2,35 @@ import { Store } from 'svelte/store.js'
 import { mark, stop } from '../_utils/marks'
 
 class VirtualListStore extends Store {
+  constructor(obj) {
+    super(obj)
+    this._batches = {}
+  }
+
+  batchUpdate(key, subKey, value) {
+    let batch = this._batches[key]
+    if (!batch) {
+      batch = this._batches[key] = {}
+    }
+    batch[subKey] = value
+
+    requestAnimationFrame(() => {
+      let updatedKeys = Object.keys(batch)
+      if (!updatedKeys.length) {
+        return
+      }
+      mark('batchUpdate()')
+      let obj = this.get(key)
+      for (let otherKey of updatedKeys) {
+        obj[otherKey] = batch[otherKey]
+      }
+      delete this._batches[key]
+      let toSet = {}
+      toSet[key] = obj
+      this.set(toSet)
+      stop('batchUpdate()')
+    })
+  }
 }
 
 const virtualListStore = new VirtualListStore({
