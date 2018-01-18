@@ -2,8 +2,8 @@ import { Store } from 'svelte/store.js'
 import { mark, stop } from '../_utils/marks'
 
 class VirtualListStore extends Store {
-  constructor(obj) {
-    super(obj)
+  constructor(state) {
+    super(state)
     this._batches = {}
   }
 
