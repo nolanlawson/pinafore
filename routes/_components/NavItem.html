@@ -1,4 +1,7 @@
-<a class='{{page === name ? "selected" : ""}}' aria-label='{{page === name ? "Current page" : label}}' href='{{href}}'>
+<a class='{{page === name ? "selected" : ""}}'
+   aria-label='{{page === name ? `${label} (current page)` : label}}'
+   aria-current="page === name"
+   href='{{href}}'>
   <svg>
     <use xlink:href="{{svg}}" />
   </svg>

@@ -1,4 +1,4 @@
-<div class="timeline">
+<div class="timeline" role="feed" aria-label="{{label}}">
   <VirtualList component="{{StatusListItem}}"
                items="{{keyedStatuses}}"
                on:scrollToBottom="onScrollToBottom()" />
@@ -36,7 +36,8 @@
         props: status,
         key: status.id
       })),
-      lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id
+      lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id,
+      label: (target, $currentInstance) => `${target} timeline for ${$currentInstance}`
     },
     store: () => store,
     components: {

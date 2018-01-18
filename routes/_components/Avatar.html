@@ -1,11 +1,11 @@
 {{#await imagePromise}}
-<img class="{{className}} avatar" alt="Profile picture for @{{account.acct}}"
+<img class="{{className}} avatar" aria-hidden="true"
      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
 {{then src}}
-<img class="{{className}} avatar" alt="Profile picture for @{{account.acct}}"
+<img class="{{className}} avatar" aria-hidden="true"
      src="{{account.avatar}}" />
 {{catch error}}
-<svg class="{{className}} avatar">
+<svg class="{{className}} avatar" aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
 {{/await}}

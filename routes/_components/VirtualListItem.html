@@ -3,7 +3,7 @@
      ref:node
      style="transform: translate3d(0, {{offset}}px, 0);"
 >
-  <:Component {component} virtualProps="{{props}}" />
+  <:Component {component} virtualProps="{{props}}" virtualIndex="{{index}}" virtualLength="{{$numItems}}"/>
 </div>
 <style>
   .virtual-list-item {

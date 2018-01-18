@@ -87,6 +87,8 @@ virtualListStore.compute('height', ['items', 'itemHeights'], (items, itemHeights
   return sum
 })
 
+virtualListStore.compute('numItems', ['items'], (items) => items.length)
+
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.virtualListStore = virtualListStore
 }
