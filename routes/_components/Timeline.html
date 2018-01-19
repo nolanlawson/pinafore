@@ -1,5 +1,5 @@
 <:Window bind:online />
-<div class="timeline" role="feed" aria-label="{{label}}">
+<div class="timeline" role="feed" aria-label="{{label}}" >
   <VirtualList component="{{StatusListItem}}"
                items="{{keyedStatuses}}"
                on:scrollToBottom="onScrollToBottom()" />
@@ -23,7 +23,6 @@
   import { mark, stop } from '../_utils/marks'
   import { timelines } from '../_static/timelines'
 
-
   const FETCH_LIMIT = 20
 
   export default {
@@ -38,11 +37,13 @@
         insertStatusesIntoDatabase(instanceName, this.get('timeline'), statuses)
       }
       this.addStatuses(statuses)
+      this.set({initialized: true})
     },
     data: () => ({
       StatusListItem: StatusListItem,
       statuses: [],
-      runningUpdate: false
+      runningUpdate: false,
+      initialized: false
     }),
     computed: {
       keyedStatuses: (statuses) => statuses.map(status => ({
@@ -60,10 +61,13 @@
       splice: splice,
       push: push,
       async onScrollToBottom() {
-        mark('onScrollToBottom')
+        if (!this.get('initialized')) {
+          return
+        }
         if (this.get('runningUpdate')) {
           return
         }
+        mark('onScrollToBottom')
         this.set({ runningUpdate: true })
         let lastStatusId = this.get('lastStatusId')
         let instanceName = this.store.get('currentInstance')
