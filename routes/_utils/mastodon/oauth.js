@@ -33,22 +33,3 @@ export function getAccessTokenFromAuthCode(instanceName, clientId, clientSecret,
     code: code
   })
 }
-
-export function getHomeTimeline(instanceName, accessToken, since, limit) {
-  let url = `https://${instanceName}/api/v1/timelines/home`
-
-  let params = {}
-  if (since) {
-    params[since] = since
-  }
-
-  if (limit) {
-    params[limit] = limit
-  }
-
-  url += '?' + paramsString(params)
-
-  return get(url, {
-    'Authorization': `Bearer ${accessToken}`
-  })
-}

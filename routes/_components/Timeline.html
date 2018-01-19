@@ -1,3 +1,4 @@
+<:Window bind:online />
 <div class="timeline" role="feed" aria-label="{{label}}">
   <VirtualList component="{{StatusListItem}}"
                items="{{keyedStatuses}}"
@@ -10,20 +11,32 @@
 </style>
 <script>
   import { store } from '../_utils/store'
-  import { getHomeTimeline } from '../_utils/mastodon/oauth'
+  import { getHomeTimeline } from '../_utils/mastodon/timelines'
   import StatusListItem from './StatusListItem.html'
   import VirtualList from './VirtualList.html'
   import { splice, push } from 'svelte-extras'
+  import {
+    insertStatuses as insertStatusesIntoDatabase,
+    getTimelineAfter as getTimelineFromDatabaseAfter
+  } from '../_utils/database/statuses'
+  import { mergeStatuses } from '../_utils/statuses'
   import { mark, stop } from '../_utils/marks'
+
+  const FETCH_LIMIT = 20
 
   export default {
     async oncreate() {
+      this.observe('online', e => console.log(e))
       let instanceName = this.store.get('currentInstance')
       let instanceData = this.store.get('currentInstanceData')
-      let statuses = await getHomeTimeline(instanceName, instanceData.access_token, null, 10)
-      this.set({
-        statuses: statuses,
-      })
+      let online = this.get('online')
+      let statuses = online ?
+        await getHomeTimeline(instanceName, instanceData.access_token, null, FETCH_LIMIT) :
+        await getTimelineFromDatabaseAfter(null, FETCH_LIMIT)
+      if (!online) {
+        insertStatusesIntoDatabase(statuses)
+      }
+      this.addStatuses(statuses)
     },
     data: () => ({
       target: 'home',
@@ -55,16 +68,30 @@
         let lastStatusId = this.get('lastStatusId')
         let instanceName = this.store.get('currentInstance')
         let instanceData = this.store.get('currentInstanceData')
-        let newStatuses = await getHomeTimeline(instanceName, instanceData.access_token, lastStatusId, 10)
+        let online = this.get('online')
+        let newStatuses = online ?
+          await getHomeTimeline(instanceName, instanceData.access_token, lastStatusId, FETCH_LIMIT) :
+          await getTimelineFromDatabaseAfter(lastStatusId, FETCH_LIMIT)
+        if (online) {
+          insertStatusesIntoDatabase(newStatuses)
+        }
         let statuses = this.get('statuses')
         if (statuses) {
-          this.addItems(newStatuses)
+          this.addStatuses(newStatuses)
         }
         this.set({ runningUpdate: false })
         stop('onScrollToBottom')
       },
-      addItems(items) {
-        this.splice('statuses', this.get('statuses').length, 0, ...items)
+      addStatuses(newStatuses) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('addStatuses()')
+        }
+        let statuses = this.get('statuses')
+        if (!statuses) {
+          return
+        }
+        let merged = mergeStatuses(statuses, newStatuses)
+        this.set({ statuses: merged })
       }
     }
   }

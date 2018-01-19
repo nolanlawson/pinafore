@@ -20,16 +20,17 @@
 	export default {
 	  oncreate() {
       mark('onCreate Layout')
+      let node = this.refs.node
       this.observe('innerHeight', debounce(() => {
         // respond to window resize events
         this.store.set({
-          offsetHeight: this.refs.node.offsetHeight
+          offsetHeight: node.offsetHeight
         })
       }, RESIZE_EVENT_DELAY))
 	    this.store.set({
-        scrollTop: this.refs.node.scrollTop,
-        scrollHeight: this.refs.node.scrollHeight,
-        offsetHeight: this.refs.node.offsetHeight
+        scrollTop: node.scrollTop,
+        scrollHeight: node.scrollHeight,
+        offsetHeight: node.offsetHeight
       })
       stop('onCreate Layout')
     },

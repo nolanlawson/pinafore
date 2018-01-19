@@ -23,7 +23,6 @@
     "fg-loadcss": "^2.0.1",
     "font-awesome-svg-png": "^1.2.2",
     "glob": "^7.1.2",
-    "idb": "^2.0.4",
     "intersection-observer": "^0.5.0",
     "intl-relativeformat": "^2.1.0",
     "lodash": "^4.17.4",
