@@ -30,11 +30,12 @@
       let instanceName = this.store.get('currentInstance')
       let instanceData = this.store.get('currentInstanceData')
       let online = this.get('online')
+      let timeline = this.get('timeline')
       let statuses = online ?
-        await getTimeline(instanceName, instanceData.access_token, this.get('timeline'), null, FETCH_LIMIT) :
-        await getTimelineFromDatabase(instanceName, this.get('timeline'), null, FETCH_LIMIT)
+        await getTimeline(instanceName, instanceData.access_token, timeline, null, FETCH_LIMIT) :
+        await getTimelineFromDatabase(instanceName, timeline, null, FETCH_LIMIT)
       if (online) {
-        insertStatusesIntoDatabase(instanceName, this.get('timeline'), statuses)
+        insertStatusesIntoDatabase(instanceName, timeline, statuses)
       }
       this.addStatuses(statuses)
       this.set({initialized: true})
@@ -73,11 +74,12 @@
         let instanceName = this.store.get('currentInstance')
         let instanceData = this.store.get('currentInstanceData')
         let online = this.get('online')
+        let timeline = this.get('timeline')
         let newStatuses = online ?
-          await getTimeline(instanceName, instanceData.access_token, this.get('timeline'), lastStatusId, FETCH_LIMIT) :
-          await getTimelineFromDatabase(instanceName, this.get('timeline'), lastStatusId, FETCH_LIMIT)
+          await getTimeline(instanceName, instanceData.access_token, timeline, lastStatusId, FETCH_LIMIT) :
+          await getTimelineFromDatabase(instanceName, timeline, lastStatusId, FETCH_LIMIT)
         if (online) {
-          insertStatusesIntoDatabase(instanceName, this.get('timeline'), newStatuses)
+          insertStatusesIntoDatabase(instanceName, timeline, newStatuses)
         }
         let statuses = this.get('statuses')
         if (statuses) {
