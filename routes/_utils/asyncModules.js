@@ -25,10 +25,15 @@ const importIndexedDBGetAllShim = () => import(
   /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
   )
 
+const importOfflineNotification = () => import(
+  /* webpackHunkName: 'offlineNotification' */ '../_utils/offlineNotification'
+  )
+
 export {
   importURLSearchParams,
   importTimeline,
   importIntersectionObserver,
   importRequestIdleCallback,
-  importIndexedDBGetAllShim
+  importIndexedDBGetAllShim,
+  importOfflineNotification
 }

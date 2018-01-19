@@ -1,10 +1,12 @@
 import { init } from 'sapper/runtime.js'
 import { toast } from '../routes/_utils/toast'
+
 import {
   importURLSearchParams,
   importIntersectionObserver,
   importRequestIdleCallback,
   importIndexedDBGetAllShim,
+  importOfflineNotification
 } from '../routes/_utils/asyncModules'
 
 // polyfills
@@ -24,5 +26,6 @@ Promise.all([
       }
     }
   }
-
 })
+
+importOfflineNotification()
