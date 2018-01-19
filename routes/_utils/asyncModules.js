@@ -14,7 +14,7 @@ const importTimeline = () => import(
   ).then(mod => mod.default)
 
 const importIntersectionObserver = () => import(
-  /* webpackChunkname: 'intersection-observer' */ 'intersection-observer'
+  /* webpackChunkName: 'intersection-observer' */ 'intersection-observer'
   )
 
 const importRequestIdleCallback = () => import(
