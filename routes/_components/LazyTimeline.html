@@ -1,23 +1,33 @@
-{{#await promise}}
-<div class="loading-page">
-  {{#if trueValue}} <!-- hack to get the transition to work -->
+<div class="lazy-timeline">
+  {{#if loading}}
     <div transition:fade>
-      <LoadingSpinner />
+      <div class="loading-page">
+        <LoadingSpinner />
+      </div>
     </div>
   {{/if}}
+  {{#await promise}}
+  {{then constructor}}
+    <:Component {constructor} :timeline on:initialized="set({'loading': false})"/>
+  {{catch error}}
+    <div>Component failed to load. Please try refreshing! {{error}}</div>
+  {{/await}}
 </div>
-{{then constructor}}
-<:Component {constructor} :timeline />
-{{catch error}}
-<div>Component failed to load. Please try refreshing! {{error}}</div>
-{{/await}}
 <style>
-  .loading-page {
+  .lazy-timeline {
     width: 100%;
-    min-height: 50vh;
+    min-height: 60vh;
+  }
+  .loading-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 50
   }
 </style>
 <script>
@@ -28,7 +38,7 @@
   export default {
     data: () => ({
       promise: importTimeline(),
-      trueValue: true
+      loading: true
     }),
     components: {
       LoadingSpinner

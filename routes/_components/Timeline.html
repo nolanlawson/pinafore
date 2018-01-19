@@ -1,12 +1,12 @@
 <:Window bind:online />
-<div class="timeline" role="feed" aria-label="{{label}}" >
+<div class="timeline" role="feed" aria-label="{{label}}" on:initialized >
   <VirtualList component="{{StatusListItem}}"
                items="{{keyedStatuses}}"
                on:scrollToBottom="onScrollToBottom()" />
 </div>
 <style>
   .timeline {
-    min-height: 50vh;
+    min-height: 60vh;
   }
 </style>
 <script>
@@ -39,6 +39,7 @@
       }
       this.addStatuses(statuses)
       this.set({initialized: true})
+      this.fire('initialized')
     },
     data: () => ({
       StatusListItem: StatusListItem,

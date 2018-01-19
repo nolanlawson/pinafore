@@ -18,8 +18,8 @@
     <span class="status-author-handle">
       @{{originalAccount.acct}}
     </span>
-    <a class="status-author-date" rel="noopener" target="_blank" href="{{originalAccount.url}}">
-      <time datetime={{createdAtDate}} title="{{accessibleDate}}">{{relativeDate}}</time>
+    <a class="status-author-date" rel="noopener" target="_blank" href="{{originalStatus.uri}}">
+      <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
     </a>
   </div>
   <Avatar account={{originalAccount}} className="status-sidebar"/>
@@ -214,23 +214,15 @@
     },
     computed: {
       createdAtDate: (status) => status.created_at,
-      accessibleDate: (createdAtDate) => {
-        return Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric'
-        }).format(new Date(createdAtDate))
-      },
       relativeDate: (createdAtDate) => {
         mark('compute relativeDate')
         let res = relativeFormat.format(new Date(createdAtDate))
         stop('compute relativeDate')
         return res
       },
-      originalAccount: (status) => status.reblog ? status.reblog.account : status.account,
-      originalMedia: (status) => status.reblog ? status.reblog.media_attachments : status.media_attachments,
+      originalStatus: (status) => status.reblog ? status.reblog : status,
+      originalAccount: (originalStatus) => originalStatus.account,
+      originalMedia: (originalStatus) => originalStatus.media_attachments,
       minMediaWidth: (originalMedia) => Math.min.apply(Math, originalMedia.map(_ => _.meta.small.width))
     }
   }

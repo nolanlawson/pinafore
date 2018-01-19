@@ -4,7 +4,7 @@ import { toast } from './toast'
 const OFFLINE_DELAY = 1000
 
 const notifyOffline = debounce(() => {
-  toast.say('You appear to be offline. You can still read toots while offline.')
+  toast.say('You seem to be offline. You can still read toots while offline.')
 }, OFFLINE_DELAY)
 
 const observe = online => {
