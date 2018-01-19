@@ -73,14 +73,14 @@ self.addEventListener('fetch', event => {
   // Non-GET and for certain endpoints (e.g. OAuth), go network-only
   if (req.method !== 'GET' ||
       NETWORK_ONLY.some(pattern => url.pathname.startsWith(pattern))) {
-    console.log('Using network-only for', url.href)
+    //console.log('Using network-only for', url.href)
     event.respondWith(fetch(req))
     return
   }
 
   // For these, go cache-first.
   if (CACHE_FIRST.some(pattern => url.pathname.startsWith(pattern))) {
-    console.log('Using cache-first for', url.href)
+    //console.log('Using cache-first for', url.href)
     event.respondWith(caches
       .open(`offline${timestamp}`)
       .then(async cache => {
@@ -107,7 +107,7 @@ self.addEventListener('fetch', event => {
     .open(`offline${timestamp}`)
     .then(async cache => {
       try {
-        console.log('Using network-first for', url.href)
+        //console.log('Using network-first for', url.href)
         const response = await fetch(req)
         cache.put(req, response.clone())
         return response
