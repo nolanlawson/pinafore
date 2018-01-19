@@ -26,14 +26,13 @@
 
   export default {
     async oncreate() {
-      this.observe('online', e => console.log(e))
       let instanceName = this.store.get('currentInstance')
       let instanceData = this.store.get('currentInstanceData')
       let online = this.get('online')
       let statuses = online ?
         await getHomeTimeline(instanceName, instanceData.access_token, null, FETCH_LIMIT) :
         await getTimelineFromDatabaseAfter(null, FETCH_LIMIT)
-      if (!online) {
+      if (online) {
         insertStatusesIntoDatabase(statuses)
       }
       this.addStatuses(statuses)

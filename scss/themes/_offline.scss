@@ -1,4 +1,4 @@
-$main-theme-color: royalblue;
+$main-theme-color: #999999;
 $body-bg-color: lighten($main-theme-color, 38%);
 $anchor-color: $main-theme-color;
 $main-text-color: #333;
@@ -10,6 +10,11 @@ $toast-bg: #333;
 
 @import "_base.scss";
 
-body {
+body.offline,
+body.theme-hotpants.offline,
+body.theme-majesty.offline,
+body.theme-oaken.offline,
+body.theme-scarlet.offline,
+body.theme-seafoam.offline {
   @include baseTheme();
 }

@@ -22,8 +22,8 @@ const dbPromise = new Promise((resolve, reject) => {
 
 function transformStatusForStorage(status) {
   status = cloneDeep(status)
-  status.pinafore_id_as_big_int = parseInt(status, 10)
-  status.pinafore_id_as_negative_big_int = -parseInt(status, 10)
+  status.pinafore_id_as_big_int = parseInt(status.id, 10)
+  status.pinafore_id_as_negative_big_int = -parseInt(status.id, 10)
   status.pinafore_stale = true
   return status
 }
@@ -34,19 +34,15 @@ export async function getTimelineAfter(max_id = null, limit = 20) {
     const tx = db.transaction(STORE, 'readonly')
     const store = tx.objectStore(STORE)
     const index = store.index('pinafore_id_as_negative_big_int')
-    let res
     let sinceAsNegativeBigInt = max_id === null ? null : -parseInt(max_id, 10)
     let query = sinceAsNegativeBigInt === null ? null : IDBKeyRange.lowerBound(sinceAsNegativeBigInt, false)
 
+    let res
     index.getAll(query, limit).onsuccess = (e) => {
-      console.log('done calling getAll()')
       res = e.target.result
     }
 
-    tx.oncomplete = () => {
-      console.log('complete')
-      resolve(res)
-    }
+    tx.oncomplete = () => resolve(res)
     tx.onerror = reject
   })
 }

@@ -37,7 +37,8 @@ self.addEventListener('activate', event => {
 })
 
 const NETWORK_ONLY = [
-  '/oauth'
+  '/oauth',
+  '/api/v1/timelines'
 ]
 
 const CACHE_FIRST = [

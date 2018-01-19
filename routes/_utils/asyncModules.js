@@ -21,9 +21,14 @@ const importRequestIdleCallback = () => import(
   /* webpackChunkName: 'requestidlecallback' */ 'requestidlecallback'
   )
 
+const importIndexedDBGetAllShim = () => import(
+  /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
+  )
+
 export {
   importURLSearchParams,
   importTimeline,
   importIntersectionObserver,
-  importRequestIdleCallback
+  importRequestIdleCallback,
+  importIndexedDBGetAllShim
 }

@@ -15,6 +15,7 @@ const now = require('performance-now')
 
 const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
+const offlineThemeScss = path.join(__dirname, '../scss/themes/_offline.scss')
 const html2xxFile = path.join(__dirname, '../templates/2xx.html')
 const scssDir = path.join(__dirname, '../scss')
 const themesScssDir = path.join(__dirname, '../scss/themes')
@@ -37,7 +38,8 @@ function doWatch() {
 async function compileGlobalSass() {
   let results = await Promise.all([
     render({file: defaultThemeScss, outputStyle: 'compressed'}),
-    render({file: globalScss, outputStyle: 'compressed'})
+    render({file: globalScss, outputStyle: 'compressed'}),
+    render({file: offlineThemeScss, outputStyle: 'compressed'})
   ])
 
   let css = results.map(_ => _.css).join('')
