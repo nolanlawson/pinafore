@@ -1,4 +1,4 @@
-import { keyval } from './keyval'
+import keyval from 'idb-keyval'
 import cloneDeep from 'lodash/cloneDeep'
 import padStart from 'lodash/padStart'
 
@@ -73,7 +73,7 @@ export async function getTimeline(instanceName, timeline, max_id = null, limit =
     }
 
     tx.oncomplete = () => resolve(res)
-    tx.onerror = reject
+    tx.onerror = () => reject(tx.error.name + ' ' + tx.error.message)
   })
 }
 
@@ -85,7 +85,7 @@ export async function insertStatuses(instanceName, timeline, statuses) {
     for (let status of statuses) {
       store.put(transformStatusForStorage(status))
     }
-    tx.oncomplete = resolve
-    tx.onerror = reject
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error.name + ' ' + tx.error.message)
   })
 }
