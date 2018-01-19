@@ -2,9 +2,10 @@ const WEBSITE = 'https://pinafore.social'
 const SCOPES = 'read write follow'
 const CLIENT_NAME = 'Pinafore'
 import { post, get, paramsString } from '../ajax'
+import { basename } from './utils'
 
 export function registerApplication(instanceName, redirectUri) {
-  const url = `https://${instanceName}/api/v1/apps`
+  const url = `${basename(instanceName)}/api/v1/apps`
   return post(url, {
       client_name: CLIENT_NAME,
       redirect_uris: redirectUri,
@@ -20,11 +21,11 @@ export function generateAuthLink(instanceName, clientId, redirectUri) {
     'response_type': 'code',
     'scope': SCOPES
   })
-  return `https://${instanceName}/oauth/authorize?${params}`
+  return `${basename(instanceName)}/oauth/authorize?${params}`
 }
 
 export function getAccessTokenFromAuthCode(instanceName, clientId, clientSecret, code, redirectUri) {
-  let url = `https://${instanceName}/oauth/token`
+  let url = `${basename(instanceName)}/oauth/token`
   return post(url, {
     client_id: clientId,
     client_secret: clientSecret,

@@ -1,7 +1,8 @@
 import { get, paramsString } from '../ajax'
+import { basename } from './utils'
 
 export function getHomeTimeline(instanceName, accessToken, maxId, since) {
-  let url = `https://${instanceName}/api/v1/timelines/home`
+  let url = `${basename(instanceName)}/api/v1/timelines/home`
 
   let params = {}
   if (since) {

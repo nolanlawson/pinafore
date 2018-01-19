@@ -17,9 +17,11 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { virtualListStore } from '../_utils/virtualListStore'
+  import throttle from 'lodash/throttle'
   import { mark, stop } from '../_utils/marks'
 
-  const DISTANCE_FROM_BOTTOM_TO_FIRE = 200
+  const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
+  const SCROLL_TO_BOTTOM_DELAY = 1000
 
   export default {
     oncreate () {
@@ -29,6 +31,9 @@
           items: items
         })
         stop('set items')
+        this.fireScrollToBottom = throttle(() => {
+          this.fire('scrollToBottom')
+        }, SCROLL_TO_BOTTOM_DELAY)
       })
 
       let observedOnce = false
@@ -40,7 +45,7 @@
         }
         if (distanceFromBottom >= 0 &&
             distanceFromBottom <= DISTANCE_FROM_BOTTOM_TO_FIRE) {
-          this.fire('scrollToBottom')
+          this.fireScrollToBottom()
         }
       })
     },
