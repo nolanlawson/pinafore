@@ -3,6 +3,7 @@ const config = require('sapper/webpack/config.js')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const isDev = config.dev;
 
@@ -63,6 +64,7 @@ module.exports = {
     }),
 		/* disable while https://github.com/sveltejs/sapper/issues/79 is open */
     //new ExtractTextPlugin('main.css'),
+    new LodashModuleReplacementPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		new UglifyJSPlugin(),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
