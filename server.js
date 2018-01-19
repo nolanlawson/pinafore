@@ -4,7 +4,7 @@ const compression = require('compression');
 const sapper = require('sapper');
 const static = require('serve-static');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 4002 } = process.env;
 
 // this allows us to do e.g. `fetch('/api/blog')` on the server
 const fetch = require('node-fetch');
