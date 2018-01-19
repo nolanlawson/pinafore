@@ -1,12 +1,12 @@
 import { init } from 'sapper/runtime.js'
-import { toast } from '../routes/_utils/toast'
+import { offlineNotifiction } from '../routes/_utils/offlineNotification'
+import { serviceWorkerClient } from '../routes/_utils/serviceWorkerClient'
 
 import {
   importURLSearchParams,
   importIntersectionObserver,
   importRequestIdleCallback,
-  importIndexedDBGetAllShim,
-  importOfflineNotification
+  importIndexedDBGetAllShim
 } from '../routes/_utils/asyncModules'
 
 // polyfills
@@ -18,14 +18,4 @@ Promise.all([
 ]).then(() => {
   // `routes` is an array of route objects injected by Sapper
   init(document.querySelector('#sapper'), __routes__)
-
-  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.onstatechange = (e) => {
-      if (e.target.state === 'redundant') {
-        toast.say('App update available. Reload to update.');
-      }
-    }
-  }
 })
-
-importOfflineNotification()

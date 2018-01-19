@@ -3,16 +3,29 @@
 </:Head>
 
 <Layout page='local'>
-  <h1>Local</h1>
+  {{#if $isUserLoggedIn}}
+  <LazyTimeline timeline='local' />
+  {{else}}
+  <FreeTextLayout>
+    <h1>Local</h1>
 
+    <p>Your local timeline will appear here when logged in.</p>
+  </FreeTextLayout>
+  {{/if}}
 </Layout>
 
 <script>
-  import Layout from './_components/Layout.html';
+  import Layout from './_components/Layout.html'
+  import LazyTimeline from './_components/LazyTimeline.html'
+  import FreeTextLayout from './_components/FreeTextLayout.html'
+  import { store } from './_utils/store.js'
 
   export default {
+    store: () => store,
     components: {
-      Layout
+      Layout,
+      LazyTimeline,
+      FreeTextLayout
     }
-  };
+  }
 </script>

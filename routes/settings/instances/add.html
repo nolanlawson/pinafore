@@ -4,7 +4,7 @@
 
 <Layout page='settings'>
   <SettingsLayout page='settings/instances/add' label="Add an Instance">
-    <h1>Add an Instance</h1>
+    <h1 id="add-an-instance-h1">Add an Instance</h1>
 
     <LoadingMask show="{{loading}}"/>
 
@@ -14,7 +14,7 @@
     <p>Log in to an instance to start using Pinafore.</p>
     {{/if}}
 
-    <form class="add-new-instance" on:submit='onSubmit(event)'>
+    <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
       <label for="instanceInput">Instance:</label>
       <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
       <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>

@@ -4,7 +4,7 @@
 
 <Layout page='home'>
   {{#if $isUserLoggedIn}}
-  <LazyTimeline target='home' />
+  <LazyTimeline timeline='home' />
   {{else}}
   <NotLoggedInHome/>
   {{/if}}

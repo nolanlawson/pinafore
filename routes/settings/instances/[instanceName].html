@@ -16,7 +16,7 @@
         <span class="acct-display-name">{{instanceUserAccount.display_name}}</span>
       </div>
       <h2>Theme:</h2>
-      <form class="theme-chooser">
+      <form class="theme-chooser" aria-label="Choose a theme">
         {{#each themes as theme}}
           <div class="theme-group">
             <input type="radio" id="choice-theme-{{theme.name}}"
@@ -27,7 +27,7 @@
         {{/each}}
       </form>
 
-      <form class="instance-actions">
+      <form class="instance-actions" aria-label="Switch to or log out of this instance">
         {{#if $loggedInInstancesInOrder.length > 1}}
           <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
             on:click="onSwitchToThisInstance()">

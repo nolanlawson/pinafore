@@ -17,5 +17,9 @@ const observe = online => {
   }
 }
 
+if (!navigator.onLine) {
+  observe(false)
+}
+
 window.addEventListener('offline', () => observe(false));
 window.addEventListener('online', () => observe(true));

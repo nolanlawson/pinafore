@@ -11,16 +11,18 @@
 </style>
 <script>
   import { store } from '../_utils/store'
-  import { getHomeTimeline } from '../_utils/mastodon/timelines'
+  import { getTimeline } from '../_utils/mastodon/timelines'
   import StatusListItem from './StatusListItem.html'
   import VirtualList from './VirtualList.html'
   import { splice, push } from 'svelte-extras'
   import {
     insertStatuses as insertStatusesIntoDatabase,
-    getTimelineAfter as getTimelineFromDatabaseAfter
+    getTimeline as getTimelineFromDatabase
   } from '../_utils/database/statuses'
   import { mergeStatuses } from '../_utils/statuses'
   import { mark, stop } from '../_utils/marks'
+  import { timelines } from '../_static/timelines'
+
 
   const FETCH_LIMIT = 20
 
@@ -30,15 +32,14 @@
       let instanceData = this.store.get('currentInstanceData')
       let online = this.get('online')
       let statuses = online ?
-        await getHomeTimeline(instanceName, instanceData.access_token, null, FETCH_LIMIT) :
-        await getTimelineFromDatabaseAfter(null, FETCH_LIMIT)
+        await getTimeline(instanceName, instanceData.access_token, this.get('timeline'), null, FETCH_LIMIT) :
+        await getTimelineFromDatabase(instanceName, this.get('timeline'), null, FETCH_LIMIT)
       if (online) {
-        insertStatusesIntoDatabase(statuses)
+        insertStatusesIntoDatabase(instanceName, this.get('timeline'), statuses)
       }
       this.addStatuses(statuses)
     },
     data: () => ({
-      target: 'home',
       StatusListItem: StatusListItem,
       statuses: [],
       runningUpdate: false
@@ -49,7 +50,7 @@
         key: status.id
       })),
       lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id,
-      label: (target, $currentInstance) => `${target} timeline for ${$currentInstance}`
+      label: (timeline, $currentInstance) => `${timelines[timeline].label} timeline for ${$currentInstance}`
     },
     store: () => store,
     components: {
@@ -69,10 +70,10 @@
         let instanceData = this.store.get('currentInstanceData')
         let online = this.get('online')
         let newStatuses = online ?
-          await getHomeTimeline(instanceName, instanceData.access_token, lastStatusId, FETCH_LIMIT) :
-          await getTimelineFromDatabaseAfter(lastStatusId, FETCH_LIMIT)
+          await getTimeline(instanceName, instanceData.access_token, this.get('timeline'), lastStatusId, FETCH_LIMIT) :
+          await getTimelineFromDatabase(instanceName, this.get('timeline'), lastStatusId, FETCH_LIMIT)
         if (online) {
-          insertStatusesIntoDatabase(newStatuses)
+          insertStatusesIntoDatabase(instanceName, this.get('timeline'), newStatuses)
         }
         let statuses = this.get('statuses')
         if (statuses) {
