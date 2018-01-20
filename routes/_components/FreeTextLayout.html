@@ -8,4 +8,12 @@
   :global(.free-text p) {
     margin: 30px 0;
   }
+  :global(.free-text) {
+    overflow-y: auto; /* fixes weird iOS Safari bug where scrolling gets stuck */
+  }
+  @media (max-width: 767px) {
+    :global(.free-text) {
+      margin: 10px;
+    }
+  }
 </style>

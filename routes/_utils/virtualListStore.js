@@ -1,6 +1,8 @@
 import { Store } from 'svelte/store.js'
 import { mark, stop } from '../_utils/marks'
 
+const VIEWPORT_RENDER_FACTOR = 4
+
 class VirtualListStore extends Store {
   constructor(state) {
     super(state)
@@ -46,7 +48,7 @@ virtualListStore.compute('visibleItems',
     ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
     (items, scrollTop, itemHeights, offsetHeight) => {
   mark('compute visibleItems')
-  let renderBuffer = 3 * offsetHeight
+  let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
   let visibleItems = []
   let totalOffset = 0
   let len = items.length

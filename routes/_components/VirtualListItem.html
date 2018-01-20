@@ -1,7 +1,8 @@
 <div class="virtual-list-item {{shown ? 'shown' : ''}}"
      virtual-list-key="{{key}}"
      ref:node
-     style="transform: translate3d(0, {{offset}}px, 0);"
+     style="transform: translateY({{offset}}px
+     );"
 >
   <:Component {component} virtualProps="{{props}}" virtualIndex="{{index}}" virtualLength="{{$numItems}}"/>
 </div>

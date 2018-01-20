@@ -1,0 +1,68 @@
+<div class="status-media" style="grid-template-columns: repeat(auto-fit, minmax({{minMediaWidth}}px, 1fr));">
+  {{#each mediaAttachments as media}}
+  <div class="status-media-container">
+    {{#if media.type === 'video'}}
+      <video class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
+             poster="{{media.preview_url}}"
+             src="{{media.url}}"
+             width="{{getSmallWidth(media)}}"
+             height="{{getSmallHeight(media)}}"
+             controls
+      />
+    {{else}}
+      <img class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
+           src="{{media.preview_url}}"
+           alt="{{media.description || ''}}"
+           width="{{getSmallWidth(media)}}"
+           height="{{getSmallHeight(media)}}"/>
+    {{/if}}
+  </div>
+  {{/each}}
+</div>
+<style>
+  .status-media {
+    grid-area: status-media;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+  }
+
+  .status-media-container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .status-media .no-native-width-height {
+    background-color: var(--mask-bg);
+  }
+  .status-media {
+    max-width: calc(100vw - 40px);
+    overflow: hidden;
+  }
+
+  .status-media video, .status-media img {
+    max-width: calc(100vw - 40px);
+    object-fit: cover;
+  }
+</style>
+<script>
+  const DEFAULT_MEDIA_WIDTH = 300
+  const DEFAULT_MEDIA_HEIGHT = 200
+
+  export default {
+    helpers: {
+      getSmallWidth: media => media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH,
+      getSmallHeight: media => media.meta && media.meta.small && typeof media.meta.small.height === 'number' ?  media.meta.small.height : DEFAULT_MEDIA_HEIGHT,
+      hasNoNativeWidthHeight: media => !(media && media.meta && media.meta.small && typeof media.meta.small.width === 'number' && typeof media.meta.small.height === 'number'),
+    },
+    computed: {
+      minMediaWidth: (mediaAttachments) => Math.min.apply(Math, mediaAttachments.map(media => media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH))
+    }
+  }
+</script>

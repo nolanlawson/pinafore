@@ -4,7 +4,7 @@
 
 <Layout page='settings'>
   <SettingsLayout page='settings/instances/{{params.instanceName}}' label="{{params.instanceName}}">
-    <h1>{{params.instanceName}}</h1>
+    <h1 class="instance-name-h1">{{params.instanceName}}</h1>
 
     {{#if instanceUserAccount}}
       <h2>Logged in as:</h2>
@@ -86,6 +86,11 @@
   .instance-actions button {
     margin: 0 5px;
     flex-basis: 100%;
+  }
+  .instance-name-h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
 <script>

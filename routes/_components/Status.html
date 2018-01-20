@@ -46,13 +46,7 @@
       </svg>
     </button>
   </div>
-  <!--<div class="status-media" style="grid-template-columns: repeat(auto-fit, minmax({{minMediaWidth}}px, 1fr));">
-    {{#each originalMedia as media}}
-      <div class="status-media-container">
-        <img src="{{media.preview_url}}" alt="{{media.description || ''}}"/>
-      </div>
-    {{/each}}
-  </div>-->
+  <Media mediaAttachments="{{originalMediaAttachments}}" />
 </article>
 
 <style>
@@ -66,7 +60,7 @@
         "status-sidebar status-author"
         "status-sidebar status-content"
         ".............. status-toolbar"
-        ".............. status-media";
+        "status-media   status-media";
     grid-template-columns: 58px 1fr;
     border-bottom: 1px solid var(--main-border);
     /* will-change: transform; */ /* TODO: is this necessary? */
@@ -188,31 +182,18 @@
     fill: var(--action-button-fill-color-active);
   }
 
-  /*
-  .status-media {
-    grid-area: status-media;
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-  }
-
-  .status-media-container {
-  }
-  .status-media-container img {
-    object-fit: cover;
-  }
-  */
 </style>
 <script>
   import Avatar from './Avatar.html'
+  import Media from './Media.html'
   import { mark, stop } from '../_utils/marks'
   import IntlRelativeFormat from 'intl-relativeformat'
   const relativeFormat = new IntlRelativeFormat('en-US');
 
   export default {
     components: {
-      Avatar
+      Avatar,
+      Media
     },
     computed: {
       createdAtDate: (status) => status.created_at,
@@ -224,8 +205,7 @@
       },
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
-      originalMedia: (originalStatus) => originalStatus.media_attachments,
-      minMediaWidth: (originalMedia) => Math.min.apply(Math, originalMedia.map(_ => _.meta.small.width))
+      originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
     }
   }
 </script>
