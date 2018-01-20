@@ -48,8 +48,7 @@
         key: status.id
       })),
       lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id,
-      label: (timeline, $currentInstance) => `${timelines[timeline].label} timeline for ${$currentInstance}`,
-      anyStatusesAreStale: (statuses) => statuses.some(status => status.pinafore_stale)
+      label: (timeline, $currentInstance) => `${timelines[timeline].label} timeline for ${$currentInstance}`
     },
     store: () => store,
     components: {
@@ -89,9 +88,8 @@
         let instanceData = this.store.get('currentInstanceData')
         let timeline = this.get('timeline')
         let lastStatusId = this.get('lastStatusId')
-        let anyStatusesAreStale = this.get('anyStatusesAreStale')
         let statuses
-        if (!online || anyStatusesAreStale) { // if we're in offline mode, stay in offline mode to avoid weirdness
+        if (!online) {
           statuses = await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
         } else {
           try {
