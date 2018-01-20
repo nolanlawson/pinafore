@@ -14,6 +14,9 @@ async function cleanup(instanceName, timeline) {
 
     store.count().onsuccess = (e) => {
       let count = e.target.result
+      if (count <= MAX_NUM_STORED_STATUSES) {
+        return
+      }
       let openKeyCursor = index.openKeyCursor || index.openCursor
       openKeyCursor.call(index, null, 'prev').onsuccess = (e) => {
         let cursor = e.target.result

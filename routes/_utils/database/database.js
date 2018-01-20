@@ -1,5 +1,5 @@
 import { cleanupOldStatuses } from './cleanup'
-import { OBJECT_STORE, getDatabase, doTransaction } from './shared'
+import { OBJECT_STORE, getDatabase } from './shared'
 import { toReversePaddedBigInt, transformStatusForStorage } from './utils'
 
 export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
