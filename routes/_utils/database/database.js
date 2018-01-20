@@ -2,14 +2,14 @@ import { cleanupOldStatuses } from './cleanup'
 import { OBJECT_STORE, getDatabase, doTransaction } from './shared'
 import { toReversePaddedBigInt, transformStatusForStorage } from './utils'
 
-export async function getTimeline(instanceName, timeline, max_id = null, limit = 20) {
+export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
   const db = await getDatabase(instanceName, timeline)
   return await new Promise((resolve, reject) => {
     const tx = db.transaction(OBJECT_STORE, 'readonly')
     const store = tx.objectStore(OBJECT_STORE)
     const index = store.index('pinafore_id_as_negative_big_int')
-    let sinceAsNegativeBigInt = max_id === null ? null : toReversePaddedBigInt(max_id)
-    let query = sinceAsNegativeBigInt === null ? null : IDBKeyRange.lowerBound(sinceAsNegativeBigInt, false)
+    let sinceAsNegativeBigInt = maxId ? toReversePaddedBigInt(maxId) : null
+    let query = sinceAsNegativeBigInt ? IDBKeyRange.lowerBound(sinceAsNegativeBigInt, false) : null
 
     let res
     index.getAll(query, limit).onsuccess = (e) => {

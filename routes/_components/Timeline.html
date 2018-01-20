@@ -19,6 +19,7 @@
   import { mergeStatuses } from '../_utils/statuses'
   import { mark, stop } from '../_utils/marks'
   import { timelines } from '../_static/timelines'
+  import { toast } from '../_utils/toast'
 
   const database = worker()
 
@@ -30,12 +31,7 @@
       let instanceData = this.store.get('currentInstanceData')
       let online = this.get('online')
       let timeline = this.get('timeline')
-      let statuses = online ?
-        await getTimeline(instanceName, instanceData.access_token, timeline, null, FETCH_LIMIT) :
-        await database.getTimeline(instanceName, timeline, null, FETCH_LIMIT)
-      if (online) {
-        database.insertStatuses(instanceName, timeline, statuses)
-      }
+      let statuses = await this.fetchStatusesAndPossiblyFallBack()
       this.addStatuses(statuses)
       this.set({initialized: true})
       this.fire('initialized')
@@ -52,7 +48,8 @@
         key: status.id
       })),
       lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id,
-      label: (timeline, $currentInstance) => `${timelines[timeline].label} timeline for ${$currentInstance}`
+      label: (timeline, $currentInstance) => `${timelines[timeline].label} timeline for ${$currentInstance}`,
+      anyStatusesAreStale: (statuses) => statuses.some(status => status.pinafore_stale)
     },
     store: () => store,
     components: {
@@ -70,21 +67,8 @@
         }
         mark('onScrollToBottom')
         this.set({ runningUpdate: true })
-        let lastStatusId = this.get('lastStatusId')
-        let instanceName = this.store.get('currentInstance')
-        let instanceData = this.store.get('currentInstanceData')
-        let online = this.get('online')
-        let timeline = this.get('timeline')
-        let newStatuses = online ?
-          await getTimeline(instanceName, instanceData.access_token, timeline, lastStatusId, FETCH_LIMIT) :
-          await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
-        if (online) {
-          database.insertStatuses(instanceName, timeline, newStatuses)
-        }
-        let statuses = this.get('statuses')
-        if (statuses) {
-          this.addStatuses(newStatuses)
-        }
+        let newStatuses = await this.fetchStatusesAndPossiblyFallBack()
+        this.addStatuses(newStatuses)
         this.set({ runningUpdate: false })
         stop('onScrollToBottom')
       },
@@ -98,6 +82,28 @@
         }
         let merged = mergeStatuses(statuses, newStatuses)
         this.set({ statuses: merged })
+      },
+      async fetchStatusesAndPossiblyFallBack() {
+        let online = this.get('online')
+        let instanceName = this.store.get('currentInstance')
+        let instanceData = this.store.get('currentInstanceData')
+        let timeline = this.get('timeline')
+        let lastStatusId = this.get('lastStatusId')
+        let anyStatusesAreStale = this.get('anyStatusesAreStale')
+        let statuses
+        if (!online || anyStatusesAreStale) { // if we're in offline mode, stay in offline mode to avoid weirdness
+          statuses = await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
+        } else {
+          try {
+            statuses = await getTimeline(instanceName, instanceData.access_token, timeline, lastStatusId, FETCH_LIMIT)
+            /* no await */ database.insertStatuses(instanceName, timeline, statuses)
+          } catch (e) {
+            console.error(e)
+            toast.say('Internet request failed. Showing offline content.')
+            statuses = await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
+          }
+        }
+        return statuses
       }
     }
   }
