@@ -1,12 +1,12 @@
-<a class='{{getCurrentClass(page, name)}}' aria-label='{{getAriaLabel(page, name, label)}}' href='{{href}}'>
+<a class='settings-nav-item {{getCurrentClass(page, name)}}' aria-label='{{getAriaLabel(page, name, label)}}' href='{{href}}'>
   {{label}}
 </a>
 <style>
-  a {
+  a.settings-nav-item {
     font-size: 1.2em;
   }
 
-  a.selected {
+  a.settings-nav-item.selected {
     font-weight: 600;
   }
 </style>

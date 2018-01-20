@@ -1,4 +1,4 @@
-<li>
+<li class="settings-list-item">
   <a :href>
     {{#if icon}}
     <svg>
@@ -11,36 +11,36 @@
   </a>
 </li>
 <style>
-  li {
+  li.settings-list-item {
     border: 1px solid var(--settings-list-item-border);
     font-size: 1.3em;
     display: flex;
     flex-direction: column;
   }
-  a {
+  .settings-list-item a {
     display: flex;
     padding: 20px;
     background: var(--settings-list-item-bg);
   }
-  a, a:visited {
+  .settings-list-item a, .settings-list-item a:visited {
     color: var(--settings-list-item-text);
   }
-  a:hover {
+  .settings-list-item a:hover {
     text-decoration: none;
     background: var(--settings-list-item-bg-hover);
     color: var(--settings-list-item-text-hover);
   }
-  a:active {
+  .settings-list-item a:active {
     background: var(--settings-list-item-bg-active);
   }
-  svg {
+  .settings-list-item svg {
     width: 24px;
     height: 24px;
     display: inline-block;
     margin-right: 20px;
     fill: var(--svg-fill);
   }
-  .offset-for-icon {
+  .settings-list-item .offset-for-icon {
     margin-left: 44px;
   }
 

@@ -10,7 +10,9 @@
     "build-sass-watch": "node ./bin/build-sass --watch",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run"
+    "test": "run-p --race dev cy:run",
+    "globalize-css": "node ./bin/globalize-css.js",
+    "deglobalize-css": "node ./bin/globalize-css.js --reverse"
   },
   "dependencies": {
     "chokidar": "^2.0.0",
@@ -36,6 +38,7 @@
     "performance-now": "^2.1.0",
     "pify": "^3.0.0",
     "requestidlecallback": "^0.3.0",
+    "rimraf": "^2.6.2",
     "sapper": "^0.3.2",
     "serve-static": "^1.13.1",
     "style-loader": "^0.19.1",

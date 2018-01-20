@@ -16,7 +16,7 @@
 
     <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
       <label for="instanceInput">Instance:</label>
-      <input type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
+      <input class="new-instance-input" type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
       <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>
     </form>
 
@@ -27,12 +27,12 @@
 </Layout>
 <style>
   @media (max-width: 767px) {
-    input {
+    input.new-instance-input {
       max-width: 90%;
     }
   }
 
-  input {
+  input.new-instance-input {
     min-width: 50%;
     max-width: 100%;
   }

@@ -1,8 +1,8 @@
-<ul>
+<ul class="settings-list">
   <slot></slot>
 </ul>
 <style>
-  ul {
+  ul.settings-list {
     list-style: none;
     width: 100%;
     border: 1px solid var(--settings-list-item-border);
@@ -10,7 +10,7 @@
   }
 
   @media (min-width: 768px) {
-    ul {
+    ul.settings-list {
       max-width: 80%;
     }
   }

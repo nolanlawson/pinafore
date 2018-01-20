@@ -1,4 +1,4 @@
-<a class='{{page === name ? "selected" : ""}}'
+<a class='main-nav-link {{page === name ? "selected" : ""}}'
    aria-label='{{page === name ? `${label} (current page)` : label}}'
    aria-current="{{page === name}}"
    href='{{href}}'>
@@ -8,7 +8,7 @@
   <span>{{label}}</span>
 </a>
 <style>
-  a {
+  .main-nav-link {
     border-bottom: 1px solid var(--nav-a-border);
     text-decoration: none;
     padding: 25px 20px;
@@ -17,46 +17,46 @@
     align-items: center;
   }
 
-  a.selected {
+  .main-nav-link.selected {
     border-bottom: 1px solid var(--nav-a-selected-border);
     background: var(--nav-a-selected-bg);
   }
 
-  a.selected:hover {
+  .main-nav-link.selected:hover {
     border-bottom: 1px solid var(--nav-a-selected-border-hover);
     background: var(--nav-a-selected-bg-hover);
   }
 
-  a:hover {
+  .main-nav-link:hover {
     background-color: var(--nav-a-bg-hover);
     border-bottom: 1px solid var(--nav-a-border-hover);
   }
 
-  a:hover span {
+  .main-nav-link:hover span {
     color: var(--nav-text-color-hover);
   }
-  a:hover svg {
+  .main-nav-link:hover svg {
     fill: var(--nav-svg-fill-hover);
   }
 
-  svg {
+  .main-nav-link svg {
     width: 20px;
     height: 20px;
     display: inline-block;
     fill: var(--nav-svg-fill);
   }
 
-  span {
+  .main-nav-link span {
     font-size: 16px;
     color: var(--nav-text-color);
     padding-left: 10px;
   }
 
   @media (max-width: 767px) {
-    span {
+    .main-nav-link span {
       display: none;
     }
-    svg {
+    .main-nav-link svg {
       width: 25px;
       height: 25px;
     }

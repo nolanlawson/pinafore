@@ -1,15 +1,15 @@
-<svg class="{{maskStyle ? 'mask-style' : ''}}">
+<svg class="loading-spinner-icon {{maskStyle ? 'mask-style' : ''}}">
   <use xlink:href="#fa-spinner" />
 </svg>
 <style>
-  svg {
+  .loading-spinner-icon {
     width: 64px;
     height: 64px;
     fill: var(--svg-fill);
     animation: spin 2s infinite linear;
   }
 
-  svg.mask-style {
+  .loading-spinner-icon.mask-style {
     fill: var(--mask-svg-fill);
   }
 

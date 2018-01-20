@@ -1,4 +1,4 @@
-<nav>
+<nav class="main-nav">
 	<ul>
 		<li>
       <NavItem :page name="home" href="/" svg="#pinafore-logo" label="Home" />
@@ -19,7 +19,7 @@
 </nav>
 
 <style>
-	nav {
+	.main-nav {
 		border-bottom: 1px solid var(--nav-border);
 		background: var(--nav-bg);
 		position: fixed;
@@ -29,7 +29,7 @@
 		z-index: 10;
 	}
 
-	ul {
+  .main-nav ul {
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -38,7 +38,7 @@
 	}
 
 	@media (max-width: 767px) {
-    li {
+    .main-nav li {
       flex-basis: 100%;
     }
 	}

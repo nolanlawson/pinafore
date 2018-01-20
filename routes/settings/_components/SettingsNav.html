@@ -1,4 +1,4 @@
-<nav>
+<nav class="settings-nav">
   <ul>
     {{#each navItems as navItem}}
     <li>
@@ -12,25 +12,25 @@
 </nav>
 
 <style>
-  ul {
+  .settings-nav ul {
     margin: 5px 20px;
     padding: 0;
     list-style: none;
   }
 
-  li {
+  .settings-nav li {
     margin: 5px 0;
     font-size: 1em;
     display: inline-block;
   }
 
-  li::after {
+  .settings-nav li::after {
     content: '>';
     margin: 0 15px;
     color: var(--anchor-text);
   }
 
-  li:last-child::after {
+  .settings-nav li:last-child::after {
     content: '';
     margin-left: 0;
     font-size: 1em;
