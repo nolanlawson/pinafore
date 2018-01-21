@@ -1,0 +1,15 @@
+$main-theme-color: darken(#41e041, 32%);
+$body-bg-color: lighten($main-theme-color, 70%);
+$anchor-color: $main-theme-color;
+$main-text-color: #333;
+$border-color: #dadada;
+$main-bg-color: white;
+$secondary-text-color: white;
+$toast-border: #fafafa;
+$toast-bg: #333;
+
+@import "_base.scss";
+
+body.theme-gecko {
+  @include baseTheme();
+}

@@ -22,6 +22,10 @@ const themes = [
   {
     name: 'majesty',
     label: 'Majesty'
+  },
+  {
+    name: 'gecko',
+    label: 'Gecko'
   }
 ]
 
