@@ -48,6 +48,9 @@ module.exports = {
 			}
 		].filter(Boolean)
 	},
+  node: {
+	  setImmediate: false
+  },
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
 			minChunks: 2,
