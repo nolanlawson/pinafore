@@ -1,15 +1,19 @@
 import { loadCSS } from 'fg-loadcss';
 
+let meta = process.browser && document.querySelector('meta[name="theme-color"]')
+
 export function switchToTheme(themeName) {
-  let CL = document.body.classList
-  for (let i = 0; i < CL.length; i++) {
-    let clazz = CL.item(i)
+  let clazzList = document.body.classList
+  for (let i = 0; i < clazzList.length; i++) {
+    let clazz = clazzList.item(i)
     if (clazz.startsWith('theme-')) {
-      CL.remove(clazz)
+      clazzList.remove(clazz)
     }
   }
+  let themeColor = window.__themeColors[themeName]
+  meta.content = themeColor || window.__themeColors['default']
   if (themeName !== 'default') {
-    CL.add(`theme-${themeName}`)
+    clazzList.add(`theme-${themeName}`)
     loadCSS(`/theme-${themeName}.css`)
   }
 }

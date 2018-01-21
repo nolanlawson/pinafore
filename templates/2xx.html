@@ -36,6 +36,16 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
 <body>
   <script>
 		<!-- load theme on startup (handled outside of Sapper/Svelte) -->
+    window.__themeColors = {
+		  'default': "royalblue",
+      scarlet:   "#e04e41",
+      seafoam:   "teal",
+      hotpants:  "hotpink",
+      oaken:     "saddlebrown",
+      majesty:   "blueviolet",
+      gecko:     "#126c12",
+      offline:   "#999999"
+		}
 		if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
 		  let theme = JSON.parse(localStorage.store_instanceThemes)[JSON.parse(localStorage.store_currentInstance)]
 			if (theme !== 'default') {
@@ -44,6 +54,9 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
 				link.rel = 'stylesheet'
 				link.href = `/theme-${theme}.css`
 				document.head.appendChild(link)
+        if (window.__themeColors[theme]) {
+          document.querySelector('meta[name="theme-color"]').content = window.__themeColors[theme]
+        }
       }
 		}
 	</script>
