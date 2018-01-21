@@ -4,7 +4,7 @@
     {{#if media.type === 'video'}}
     <button type="button"
             class="play-video-button"
-            aria-label="Play video"
+            aria-label="Play video: {{media.description || ''}}"
             on:click="onClickPlayVideoButton(media, getSmallWidth(media), getSmallHeight(media), media.description)">
       <div class="svg-wrapper">
         <svg>

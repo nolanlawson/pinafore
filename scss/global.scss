@@ -117,3 +117,12 @@ ul, li, p {
 .hidden {
   opacity: 0;
 }
+
+*:focus {
+  outline: 2px solid var(--focus-outline);
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
