@@ -1,0 +1,13 @@
+<div class="{{hidden ? 'hidden' : ''}}">
+  <slot></slot>
+</div>
+<script>
+  export default {
+    data: () => ({
+      hidden: true
+    }),
+    oncreate () {
+      this.set({hidden: !process.browser})
+    }
+  }
+</script>

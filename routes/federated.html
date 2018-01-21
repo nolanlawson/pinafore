@@ -6,11 +6,13 @@
   {{#if $isUserLoggedIn}}
   <LazyTimeline timeline='federated' />
   {{else}}
-  <FreeTextLayout>
-    <h1>Federated</h1>
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>Federated</h1>
 
-    <p>Your federated timeline will appear here when logged in.</p>
-  </FreeTextLayout>
+      <p>Your federated timeline will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
   {{/if}}
 </Layout>
 
@@ -19,13 +21,15 @@
   import LazyTimeline from './_components/LazyTimeline.html'
   import FreeTextLayout from './_components/FreeTextLayout.html'
   import { store } from './_utils/store.js'
+  import HiddenFromSSR from './_components/HiddenFromSSR'
 
   export default {
     store: () => store,
     components: {
       Layout,
       LazyTimeline,
-      FreeTextLayout
+      FreeTextLayout,
+      HiddenFromSSR
     }
   }
 </script>
