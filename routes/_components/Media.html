@@ -98,7 +98,7 @@
   const DEFAULT_MEDIA_WIDTH = 300
   const DEFAULT_MEDIA_HEIGHT = 200
 
-  import VideoDialog from './VideoDialog.html'
+  import { showVideoDialog } from '../_utils/showVideoDialog'
 
   export default {
     helpers: {
@@ -111,20 +111,7 @@
     },
     methods: {
       async onClickPlayVideoButton(media, width, height) {
-        let dialog = document.createElement('dialog')
-        dialog.classList.add('video-dialog')
-        document.body.appendChild(dialog)
-        let videoDialog = new VideoDialog({
-          target: dialog,
-          data: {
-            poster: media.preview_url,
-            src: media.url,
-            dialog: dialog,
-            width: width,
-            height: height
-          }
-        })
-        videoDialog.showModal()
+        showVideoDialog(media.preview_url, media.url, width, height)
       }
     }
   }
