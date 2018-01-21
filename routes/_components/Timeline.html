@@ -29,14 +29,14 @@
 
   export default {
     async oncreate() {
-      let instanceName = this.store.get('currentInstance')
-      let instanceData = this.store.get('currentInstanceData')
-      let online = this.get('online')
-      let timeline = this.get('timeline')
       let statuses = await this.fetchStatusesAndPossiblyFallBack()
       this.addStatuses(statuses)
-      this.set({initialized: true})
-      this.fire('initialized')
+      requestAnimationFrame(() => {
+        requestAnimationFrame((() => {
+          this.set({initialized: true})
+          this.fire('initialized')
+        }))
+      })
     },
     data: () => ({
       StatusListItem: StatusListItem,
