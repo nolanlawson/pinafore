@@ -2,12 +2,19 @@
   {{#each mediaAttachments as media}}
   <div class="status-media-container {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}">
     {{#if media.type === 'video'}}
-      <video poster="{{media.preview_url}}"
-             src="{{media.url}}"
-             width="{{getSmallWidth(media)}}"
-             height="{{getSmallHeight(media)}}"
-             controls
-      />
+    <button type="button"
+            class="play-video-button"
+            aria-label="Play video"
+            on:click="onClickPlayVideoButton(media, getSmallWidth(media), getSmallHeight(media))">
+      <div class="svg-wrapper">
+        <svg>
+          <use xlink:href="#fa-play-circle" />
+        </svg>
+      </div>
+      <img src="{{media.preview_url}}"
+           width="{{getSmallWidth(media)}}"
+           height="{{getSmallHeight(media)}}" />
+    </button>
     {{elseif media.type === 'gifv'}}
     <video
            poster="{{media.preview_url}}"
@@ -59,10 +66,39 @@
     max-width: calc(100vw - 40px);
     object-fit: cover;
   }
+  .play-video-button {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    border-radius: 0;
+    border: none;
+    background: none;
+  }
+  .play-video-button .svg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+    pointer-events: none;
+  }
+  .play-video-button svg {
+    width: 72px;
+    height: 72px;
+    fill: var(--mask-svg-fill);
+    border-radius: 100%;
+    background: var(--mask-opaque-bg);
+  }
 </style>
 <script>
   const DEFAULT_MEDIA_WIDTH = 300
   const DEFAULT_MEDIA_HEIGHT = 200
+
+  import VideoDialog from './VideoDialog.html'
 
   export default {
     helpers: {
@@ -72,6 +108,24 @@
     },
     computed: {
       minMediaWidth: (mediaAttachments) => Math.min.apply(Math, mediaAttachments.map(media => media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH))
+    },
+    methods: {
+      async onClickPlayVideoButton(media, width, height) {
+        let dialog = document.createElement('dialog')
+        dialog.classList.add('video-dialog')
+        document.body.appendChild(dialog)
+        let videoDialog = new VideoDialog({
+          target: dialog,
+          data: {
+            poster: media.preview_url,
+            src: media.url,
+            dialog: dialog,
+            width: width,
+            height: height
+          }
+        })
+        videoDialog.showModal()
+      }
     }
   }
 </script>

@@ -54,6 +54,7 @@
 
   --mask-bg: $toast-bg;
   --mask-svg-fill: $secondary-text-color;
+  --mask-opaque-bg: rgba($toast-bg, 0.8);
 
   --deemphasized-text-color: #666;
 }
