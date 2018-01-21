@@ -1,15 +1,11 @@
-{{#await imagePromise}}
-<img class="{{className}} avatar" aria-hidden="true" alt=""
-     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
-{{then src}}
-<img class="{{className}} avatar" aria-hidden="true" alt=""
-     src="{{account.avatar}}" />
-{{catch error}}
+{{#if error}}
 <svg class="{{className}} avatar" aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
-{{/await}}
-
+{{else}}
+<img class="{{className}} avatar" aria-hidden="true" alt=""
+     src="{{account.avatar}}" on:loadError="set({error: true})" />
+{{/if}}
 <style>
   .avatar {
     width: 48px;
@@ -23,14 +19,16 @@
 </style>
 <script>
   export default {
-    computed: {
-      imageSrc: (account) => account.avatar,
-      imagePromise: (imageSrc) => new Promise((resolve, reject) => {
-        let img = new Image()
-        img.onload = resolve
-        img.onerror = reject
-        img.src = imageSrc
-      })
+    events: {
+      loadError (node, callback) {
+        node.addEventListener('error', callback)
+
+        return {
+          teardown () {
+            node.removeEventListener('error', callback)
+          }
+        }
+      },
     }
   }
 </script>

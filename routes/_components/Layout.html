@@ -52,13 +52,13 @@
           leading: true,
           trailing: true
         })
-        node.addEventListener('scroll', onScroll);
+        node.addEventListener('scroll', onScroll)
 
         return {
           teardown() {
-            node.removeEventListener('scroll', onScroll);
+            node.removeEventListener('scroll', onScroll)
           }
-        };
+        }
       },
       fullscreen(node, callback) {
         const onFullscreen = (() => {
