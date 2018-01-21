@@ -17,7 +17,7 @@
         return page === name  ? "selected" : ""
       },
       getAriaLabel(page, name, label) {
-        return page === name ? "Current page" : label
+        return page === name ? `${label} (current page)` : label
       }
     }
   }

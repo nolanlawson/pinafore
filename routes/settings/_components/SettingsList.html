@@ -1,6 +1,12 @@
+{{#if label}}
+<ul class="settings-list" aria-label="{{label}}">
+  <slot></slot>
+</ul>
+{{else}}
 <ul class="settings-list">
   <slot></slot>
 </ul>
+{{/if}}
 <style>
   ul.settings-list {
     list-style: none;

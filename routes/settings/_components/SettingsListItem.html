@@ -5,9 +5,15 @@
       <use xlink:href="{{icon}}" />
     </svg>
     {{/if}}
+    {{#if ariaLabel}}
+    <span aria-label="{{ariaLabel}}" class="{{offsetForIcon ? 'offset-for-icon' : ''}}">
+      {{label}}
+    </span>
+    {{else}}
     <span class="{{offsetForIcon ? 'offset-for-icon' : ''}}">
       {{label}}
     </span>
+    {{/if}}
   </a>
 </li>
 <style>

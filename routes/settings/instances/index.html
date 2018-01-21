@@ -8,12 +8,13 @@
 
     {{#if $isUserLoggedIn}}
     <p>Instances you've logged in to:</p>
-    <SettingsList>
+    <SettingsList label="Instances">
       {{#each $loggedInInstancesAsList as instance}}
         <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
                           icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
                           href="/settings/instances/{{instance.name}}"
-                          label="{{instance.name}}" />
+                          label="{{instance.name}}"
+                          ariaLabel="{{instance.name}} {{instance.name === $currentInstance ? '(current instance)' : ''}}" />
       {{/each}}
     </SettingsList>
     <p><a href="/settings/instances/add">Add another instance</a></p>

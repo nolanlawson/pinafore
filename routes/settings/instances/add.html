@@ -15,9 +15,19 @@
     {{/if}}
 
     <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
+
       <label for="instanceInput">Instance:</label>
-      <input class="new-instance-input" type="text" id="instanceInput" bind:value='$instanceNameInSearch' placeholder=''>
+      <input class="new-instance-input" type="text" id="instanceInput"
+             bind:value='$instanceNameInSearch' placeholder='' required
+      >
       <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>
+
+      {{#if error}}
+      <div class="form-error" role="alert">
+        Error: {{error}}
+      </div>
+      {{/if}}
+
     </form>
 
     {{#if !$isUserLoggedIn}}
@@ -26,6 +36,14 @@
   </SettingsLayout>
 </Layout>
 <style>
+  .form-error {
+    border: 2px solid red;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 1.3em;
+    margin: 5px;
+    background-color: var(--main-bg);
+  }
   input.new-instance-input {
     min-width: 50%;
     max-width: 100%;
@@ -58,22 +76,20 @@
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
   import { switchToTheme } from '../../_utils/themeEngine'
-  import { toast } from '../../_utils/toast'
   import LoadingMask from '../../_components/LoadingMask'
 
   const REDIRECT_URI = (typeof location !== 'undefined' ?
       location.origin : 'https://pinafore.social') + '/settings/instances/add'
 
   export default {
-    oncreate: function () {
-      if (process.browser) {
-        (async () => {
-          let params = new URLSearchParams(location.search)
-          if (params.has('code')) {
-            this.onReceivedOauthCode(params.get('code'))
-          }
-        })()
+    async oncreate () {
+      let params = new URLSearchParams(location.search)
+      if (params.has('code')) {
+        this.onReceivedOauthCode(params.get('code'))
       }
+      this.store.observe('instanceNameInSearch', () => {
+        this.set({error: false})
+      })
     },
     components: {
       Layout,
@@ -91,10 +107,11 @@
           if (process.env.NODE_ENV !== 'production') {
             console.error(err)
           }
-          toast.say(`Error: ${err.message || err.name}. ` +
+          let error = `${err.message || err.name}. ` +
             (navigator.onLine ?
               `Is this a valid Mastodon instance?` :
-              `Are you offline?`))
+              `Are you offline?`)
+          this.set({error: error})
         } finally {
           this.set({loading: false})
         }
@@ -104,7 +121,7 @@
         let loggedInInstances = this.store.get('loggedInInstances')
         instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
         if (Object.keys(loggedInInstances).includes(instanceName)) {
-          toast.say(`You've already logged in to ${instanceName}`)
+          this.set({error: `You've already logged in to ${instanceName}`})
           return
         }
         let instanceData = await registerApplication(instanceName, REDIRECT_URI)
@@ -125,7 +142,7 @@
           this.set({loading: true})
           await this.registerNewInstance(code)
         } catch (err) {
-          toast.say(`Error: ${err.message || err.name}. Failed to connect to instance.`)
+          this.set({error: `${err.message || err.name}. Failed to connect to instance.`})
         } finally {
           this.set({loading: false})
         }
