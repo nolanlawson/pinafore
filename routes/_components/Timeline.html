@@ -1,8 +1,10 @@
 <:Window bind:online />
-<div class="timeline" role="feed" aria-label="{{label}}" on:initialized >
+<div class="timeline" role="feed" aria-label="{{label}}" on:initialized>
   <VirtualList component="{{StatusListItem}}"
                items="{{keyedStatuses}}"
-               on:scrollToBottom="onScrollToBottom()" />
+               on:scrollToBottom="onScrollToBottom()"
+               shown="{{initialized}}"
+  />
 </div>
 <style>
   .timeline {

@@ -1,5 +1,5 @@
 <!-- TODO: setting height is hacky, just make this element the scroller -->
-<div class="virtual-list" style="height: {{$height}}px;">
+<div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
   {{#each $visibleItems as item @key}}
   <VirtualListItem :component
                    offset="{{item.offset}}"
@@ -12,6 +12,7 @@
 <style>
   .virtual-list {
     position: relative;
+    transition: opacity 0.25s linear;
   }
 </style>
 <script>
