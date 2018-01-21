@@ -24,28 +24,7 @@
   </div>
   <Avatar account={{originalAccount}} className="status-sidebar"/>
   <div class="status-content">{{{status.content}}}</div>
-  <div class="status-toolbar">
-    <button aria-label="Reply" aria-pressed="false" type="button">
-      <svg>
-        <use xlink:href="#fa-reply" />
-      </svg>
-    </button>
-    <button aria-label="Boost" aria-pressed="false" type="button">
-      <svg>
-        <use xlink:href="#fa-retweet" />
-      </svg>
-    </button>
-    <button aria-label="Favorite" aria-pressed="false" type="button">
-      <svg>
-        <use xlink:href="#fa-star" />
-      </svg>
-    </button>
-    <button aria-label="More" aria-pressed="false" type="button">
-      <svg>
-        <use xlink:href="#fa-ellipsis-h" />
-      </svg>
-    </button>
-  </div>
+  <Toolbar :status />
   <Media mediaAttachments="{{originalMediaAttachments}}" />
 </article>
 
@@ -155,37 +134,11 @@
     height: 18px;
     fill: var(--deemphasized-text-color)
   }
-
-  .status-toolbar {
-    grid-area: status-toolbar;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .status-toolbar button {
-    padding: 6px 10px;
-    background: none;
-    border: none;
-  }
-
-  .status-toolbar button svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--action-button-fill-color);
-  }
-
-  .status-toolbar button:hover svg {
-    fill: var(--action-button-fill-color-hover);
-  }
-
-  .status-toolbar button:active svg {
-    fill: var(--action-button-fill-color-active);
-  }
-
 </style>
 <script>
   import Avatar from './Avatar.html'
   import Media from './Media.html'
+  import Toolbar from './Toolbar.html'
   import { mark, stop } from '../_utils/marks'
   import IntlRelativeFormat from 'intl-relativeformat'
   const relativeFormat = new IntlRelativeFormat('en-US');
@@ -193,7 +146,8 @@
   export default {
     components: {
       Avatar,
-      Media
+      Media,
+      Toolbar
     },
     computed: {
       createdAtDate: (status) => status.created_at,

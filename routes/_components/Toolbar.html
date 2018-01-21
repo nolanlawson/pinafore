@@ -1,0 +1,66 @@
+<div class="status-toolbar">
+  <button aria-label="Reply" type="button">
+    <svg>
+      <use xlink:href="#fa-reply" />
+    </svg>
+  </button>
+  <button aria-label="Boost" aria-pressed="{{status.reblogged}}" class="{{status.reblogged ? 'selected' : ''}}" type="button">
+    <svg>
+      <use xlink:href="#fa-retweet" />
+    </svg>
+  </button>
+  <button aria-label="Favorite" aria-pressed="{{status.favourited}}" class="{{status.favourited ? 'selected' : ''}}" type="button">
+    <svg>
+      <use xlink:href="#fa-star" />
+    </svg>
+  </button>
+  <button aria-label="More" type="button">
+    <svg>
+      <use xlink:href="#fa-ellipsis-h" />
+    </svg>
+  </button>
+</div>
+<style>
+  .status-toolbar {
+    grid-area: status-toolbar;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .status-toolbar button {
+    padding: 6px 10px;
+    background: none;
+    border: none;
+  }
+
+  .status-toolbar button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--action-button-fill-color);
+  }
+
+  .status-toolbar button:hover svg {
+    fill: var(--action-button-fill-color-hover);
+  }
+
+  .status-toolbar button:active svg {
+    fill: var(--action-button-fill-color-active);
+  }
+
+  .status-toolbar button.selected svg {
+    fill: var(--action-button-fill-color-pressed)
+  }
+
+  .status-toolbar button.selected:hover svg {
+    fill: var(--action-button-fill-color-pressed-hover);
+  }
+
+  .status-toolbar button.selected:active svg {
+    fill: var(--action-button-fill-color-pressed-active);
+  }
+
+</style>
+<script>
+  export default {
+  }
+</script>
