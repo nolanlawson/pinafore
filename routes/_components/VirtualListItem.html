@@ -1,10 +1,9 @@
 <div class="virtual-list-item {{shown ? 'shown' : ''}}"
      virtual-list-key="{{key}}"
      ref:node
-     style="transform: translateY({{offset}}px
-     );"
->
-  <:Component {component} virtualProps="{{props}}" virtualIndex="{{index}}" virtualLength="{{$numItems}}"/>
+     style="transform: translateY({{offset}}px);" >
+  <:Component {component} virtualProps="{{props}}" virtualIndex="{{index}}" virtualLength="{{$numItems}}"
+              on:recalculateHeight="doRecalculateHeight()"/>
 </div>
 <style>
   .virtual-list-item {
@@ -23,7 +22,8 @@
   import { virtualListStore } from '../_utils/virtualListStore'
   import { AsyncLayout } from '../_utils/AsyncLayout'
 
-  const asyncLayout = new AsyncLayout(node => node.getAttribute('virtual-list-key'))
+  const keyGetter = node => node.getAttribute('virtual-list-key')
+  const asyncLayout = new AsyncLayout(keyGetter)
 
   export default {
     oncreate() {
@@ -40,6 +40,17 @@
     store: () => virtualListStore,
     computed: {
       'shown': ($itemHeights, key) => $itemHeights[key] > 0
+    },
+    methods: {
+      doRecalculateHeight() {
+        let tempAsyncLayout = new AsyncLayout(keyGetter)
+        let key = this.get('key')
+        tempAsyncLayout.observe(key, this.refs.node, (rect) => {
+          tempAsyncLayout.disconnect()
+          // update all item heights in one microtask batch for better perf
+          this.store.batchUpdate('itemHeights', key, rect.height)
+        })
+      }
     }
   }
 </script>

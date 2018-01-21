@@ -26,6 +26,11 @@ class AsyncLayout {
     this._intersectionObserver.unobserve(node)
     delete this._onIntersectionCallbacks[key]
   }
+
+  disconnect() {
+    this._intersectionObserver.disconnect()
+    this._intersectionObserver = null
+  }
 }
 
 export { AsyncLayout }

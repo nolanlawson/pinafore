@@ -1,6 +1,6 @@
 import VideoDialog from '../_components/VideoDialog.html'
 
-export function showVideoDialog(poster, src, width, height) {
+export function showVideoDialog(poster, src, width, height, description) {
   let dialog = document.createElement('dialog')
   dialog.classList.add('video-dialog')
   dialog.setAttribute('aria-label', 'Video dialog')
@@ -12,7 +12,8 @@ export function showVideoDialog(poster, src, width, height) {
       src: src,
       dialog: dialog,
       width: width,
-      height: height
+      height: height,
+      description: description
     }
   })
   videoDialog.showModal()

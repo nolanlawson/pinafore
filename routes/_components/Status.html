@@ -1,29 +1,41 @@
-<article class="status-article" tabindex="0" aria-posinset="{{index}}" aria-setsize="{{length}}">
-    {{#if status.reblog}}
-      <div class="status-boosted">
-        <svg>
-          <use xlink:href="#fa-retweet" />
-        </svg>
-        <span>
-          <a href="/accounts/{{status.account.id}}">
-            {{status.account.username}}
-          </a> boosted
-        </span>
-      </div>
-    {{/if}}
+<article class="status-article" tabindex="0" aria-posinset="{{index}}" aria-setsize="{{length}}" on:recalculateHeight>
+  {{#if status.reblog}}
+    <div class="status-boosted">
+      <svg>
+        <use xlink:href="#fa-retweet" />
+      </svg>
+      <span>
+        <a href="/accounts/{{status.account.id}}">
+          {{status.account.username}}
+        </a> boosted
+      </span>
+    </div>
+  {{/if}}
   <div class="status-author">
     <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
       {{originalAccount.display_name || originalAccount.username}}
     </a>
     <span class="status-author-handle">
-      @{{originalAccount.acct}}
+      {{'@' + originalAccount.acct}}
     </span>
     <a class="status-author-date" rel="noopener" target="_blank" href="{{originalStatus.uri}}">
       <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
     </a>
   </div>
   <Avatar account={{originalAccount}} className="status-sidebar"/>
-  <div class="status-content">{{{status.content}}}</div>
+  {{#if status.spoiler_text}}
+    <div class="status-spoiler">{{status.spoiler_text}}</div>
+  {{/if}}
+  {{#if status.spoiler_text}}
+    <div class="status-spoiler-button">
+      <button type="button" on:click="onClickSpoilerButton()">Show more</button>
+    </div>
+  {{/if}}
+  {{#if !status.spoiler_text || spoilerShown}}
+    <div class="status-content">
+      {{{status.content}}}
+    </div>
+  {{/if}}
   <Toolbar :status />
   <Media mediaAttachments="{{originalMediaAttachments}}" />
 </article>
@@ -37,6 +49,8 @@
     grid-template-areas:
         ".............. status-boosted"
         "status-sidebar status-author"
+        "status-sidebar status-spoiler"
+        "status-sidebar status-spoiler-button"
         "status-sidebar status-content"
         ".............. status-toolbar"
         "status-media   status-media";
@@ -48,6 +62,25 @@
   :global(.status-sidebar) {
     grid-area: status-sidebar;
     margin: 0 10px 0 0;
+  }
+
+  .status-spoiler {
+    grid-area: status-spoiler;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-size: 1.1em;
+    margin: 5px;
+  }
+
+  .status-spoiler-button {
+    grid-area: status-spoiler-button;
+    margin: 5px;
+  }
+
+  .status-spoiler-button button {
+    padding: 5px 10px;
+    font-size: 1.1em;
   }
 
   .status-author {
@@ -94,7 +127,7 @@
   }
 
   .status-content {
-    margin: 10px 10px 20px 5px;
+    margin: 10px 10px 10px 5px;
     grid-area: status-content;
     word-wrap: break-word;
     overflow: hidden;
@@ -160,6 +193,12 @@
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
+    },
+    methods: {
+      onClickSpoilerButton() {
+        this.set({spoilerShown: !this.get('spoilerShown')})
+        this.fire('recalculateHeight')
+      }
     }
   }
 </script>
