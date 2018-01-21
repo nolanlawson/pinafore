@@ -34,12 +34,16 @@ async function cleanup(instanceName, timeline) {
 }
 
 export const cleanupOldStatuses = debounce(async () => {
-  console.log('cleanupOldStatuses')
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('cleanupOldStatuses')
+  }
   let knownDbs = (await keyval.get('known_dbs')) || {}
   let dbNames = Object.keys(knownDbs)
   for (let dbName of dbNames) {
     let [ instanceName, timeline ] = knownDbs[dbName]
     await cleanup(instanceName, timeline)
   }
-  console.log('done cleanupOldStatuses')
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('done cleanupOldStatuses')
+  }
 }, CLEANUP_INTERVAL)
