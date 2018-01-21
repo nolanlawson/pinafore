@@ -1,17 +1,26 @@
 <div class="status-media" style="grid-template-columns: repeat(auto-fit, minmax({{minMediaWidth}}px, 1fr));">
   {{#each mediaAttachments as media}}
-  <div class="status-media-container">
+  <div class="status-media-container {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}">
     {{#if media.type === 'video'}}
-      <video class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
-             poster="{{media.preview_url}}"
+      <video poster="{{media.preview_url}}"
              src="{{media.url}}"
              width="{{getSmallWidth(media)}}"
              height="{{getSmallHeight(media)}}"
              controls
       />
+    {{elseif media.type === 'gifv'}}
+    <video
+           poster="{{media.preview_url}}"
+           src="{{media.url}}"
+           width="{{getSmallWidth(media)}}"
+           height="{{getSmallHeight(media)}}"
+           autoplay
+           muted
+           loop
+           playsinline
+    />
     {{else}}
-      <img class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
-           src="{{media.preview_url}}"
+      <img src="{{media.preview_url}}"
            alt="{{media.description || ''}}"
            width="{{getSmallWidth(media)}}"
            height="{{getSmallHeight(media)}}"/>
@@ -38,7 +47,7 @@
     justify-content: center;
     align-items: center;
   }
-  .status-media .no-native-width-height {
+  .no-native-width-height img, .no-native-width-height video {
     background-color: var(--mask-bg);
   }
   .status-media {
