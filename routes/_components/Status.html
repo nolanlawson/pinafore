@@ -85,19 +85,6 @@
     border-bottom: 1px solid var(--main-border);
   }
 
-  @media (max-width: 767px) {
-    .status-article {
-      grid-template-areas:
-        ".............. status-boosted"
-        "status-sidebar status-author"
-        "status-sidebar status-spoiler"
-        "status-sidebar status-spoiler-button"
-        "status-sidebar status-content"
-        "status-media   status-media"
-        "status-toolbar status-toolbar";
-    }
-  }
-
   :global(.status-sidebar) {
     grid-area: status-sidebar;
     margin: 0 10px 0 0;
