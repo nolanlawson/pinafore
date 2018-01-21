@@ -1,4 +1,5 @@
-<div class="status-media" style="grid-template-columns: repeat(auto-fit, minmax({{minMediaWidth}}px, 1fr));">
+<div class="status-media {{sensitive ? 'status-media-is-sensitive' : ''}}"
+     style="grid-template-columns: repeat(auto-fit, minmax({{minMediaWidth}}px, 1fr));" >
   {{#each mediaAttachments as media}}
   <div class="status-media-container {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}">
     {{#if media.type === 'video'}}
@@ -46,6 +47,11 @@
     justify-items: center;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
+    margin: 10px 0;
+  }
+
+  .status-media.status-media-is-sensitive {
+    margin: 0;
   }
 
   .status-media-container {

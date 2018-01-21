@@ -28,7 +28,7 @@
   {{/if}}
   {{#if status.spoiler_text}}
     <div class="status-spoiler-button">
-      <button type="button" on:click="onClickSpoilerButton()">Show more</button>
+      <button type="button" on:click="onClickSpoilerButton()">{{spoilerShown ? 'Show less' : 'Show more'}}</button>
     </div>
   {{/if}}
   {{#if !status.spoiler_text || spoilerShown}}
@@ -36,8 +36,33 @@
       {{{status.content}}}
     </div>
   {{/if}}
+  {{#if originalMediaAttachments && originalMediaAttachments.length}}
+    {{#if status.sensitive}}
+      <button type="button"
+              class="status-sensitive-media-button {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}"
+              aria-label="{{sensitiveShown ? 'Hide sensitive media' : 'Show sensitive media'}}"
+              on:click="onClickSensitiveMediaButton()" >
+        {{#if !sensitiveShown}}
+          <div class="status-sensitive-media-warning">
+            <span>
+              Sensitive content. Click to show.
+            </span>
+          </div>
+        {{/if}}
+        <div class="svg-wrapper">
+          <svg>
+            <use xlink:href="{{sensitiveShown ? '#fa-eye-slash' : '#fa-eye'}}" />
+          </svg>
+        </div>
+        {{#if sensitiveShown}}
+          <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{status.sensitive}}"/>
+        {{/if}}
+      </button>
+    {{else}}
+      <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{status.sensitive}}"/>
+    {{/if}}
+  {{/if}}
   <Toolbar :status />
-  <Media mediaAttachments="{{originalMediaAttachments}}" />
 </article>
 
 <style>
@@ -52,8 +77,8 @@
         "status-sidebar status-spoiler"
         "status-sidebar status-spoiler-button"
         "status-sidebar status-content"
-        ".............. status-toolbar"
-        "status-media   status-media";
+        "status-media   status-media"
+        ".............. status-toolbar";
     grid-template-columns: 58px 1fr;
     border-bottom: 1px solid var(--main-border);
     /* will-change: transform; */ /* TODO: is this necessary? */
@@ -165,7 +190,66 @@
   .status-boosted svg {
     width: 18px;
     height: 18px;
-    fill: var(--deemphasized-text-color)
+  }
+
+  .status-sensitive-media-button {
+    grid-area: status-media;
+    margin: 10px 0;
+    padding: 0;
+    position: relative;
+    border-radius: 0;
+    border: none;
+    background: none;
+    fill: var(--mask-svg-fill);
+  }
+
+  .status-sensitive-media-button.status-sensitive-media-hidden {
+    width: 100%;
+    margin: 10px auto;
+    height: 200px;
+  }
+
+  .status-sensitive-media-button .status-sensitive-media-warning {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--deemphasized-text-color);
+    z-index: 60;
+  }
+
+  .status-sensitive-media-button .svg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    z-index: 40;
+    pointer-events: none;
+    background: var(--mask-bg);
+  }
+  .status-sensitive-media-button.status-sensitive-media-shown .svg-wrapper {
+    background: none;
+  }
+  .status-sensitive-media-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--mask-svg-fill);
+    border-radius: 2px;
+    background: var(--mask-opaque-bg);
+    margin: 1px;
+    padding: 6px 10px;
+  }
+  .status-sensitive-media-button.status-sensitive-media-hidden svg {
+    fill: var(--deemphasized-text-color);
+    background: var(--mask-opaque-bg);
   }
 </style>
 <script>
@@ -192,11 +276,15 @@
       },
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
-      originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
+      originalMediaAttachments: (originalStatus) => originalStatus.media_attachments
     },
     methods: {
       onClickSpoilerButton() {
         this.set({spoilerShown: !this.get('spoilerShown')})
+        this.fire('recalculateHeight')
+      },
+      onClickSensitiveMediaButton() {
+        this.set({sensitiveShown: !this.get('sensitiveShown')})
         this.fire('recalculateHeight')
       }
     }
