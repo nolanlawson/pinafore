@@ -21,7 +21,6 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  will-change: transform; /* avoids "repaint on scroll" in Chrome */
 }
 
 main {
