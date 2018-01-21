@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "concurrently --kill-others \"npm run build-sass-watch\" \"node server.js\"",
-    "build": "npm run build-sass && sapper build",
+    "build": "npm run globalize-css && npm run build-sass && sapper build && npm run deglobalize-css",
     "start": "cross-env NODE_ENV=production node server.js",
     "build-sass": "node ./bin/build-sass",
     "build-sass-watch": "node ./bin/build-sass --watch",
