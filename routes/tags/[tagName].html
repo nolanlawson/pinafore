@@ -8,9 +8,9 @@
         dynamicLabel="{{'#' + params.tagName}}"
         dynamicIcon="#fa-hashtag" >
   {{#if $isUserLoggedIn}}
-  <div class="hashtag-banner">
-    <h1 class="hashtag-title">{{'#' + params.tagName}}</h1>
-    <a href="#" class="hashtag-go-back" on:click="onGoBack(event)">Back</a>
+  <div class="dynamic-page-banner">
+    <h1 class="dynamic-page-title">{{'#' + params.tagName}}</h1>
+    <button type="button" class="dynamic-page-go-back" on:click="onGoBack(event)">Back</button>
   </div>
   <LazyTimeline timeline='tag/{{params.tagName}}' />
   {{else}}
@@ -24,19 +24,26 @@
   {{/if}}
 </Layout>
 <style>
-  .hashtag-banner {
+  .dynamic-page-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 0 20px 20px;
   }
-  h1.hashtag-title {
+  h1.dynamic-page-title {
     margin: 0;
   }
-  a.hashtag-go-back {
+  button.dynamic-page-go-back {
     font-size: 1.3em;
+    color: var(--anchor-text);
+    border: 0;
+    padding: 0;
+    background: none;
   }
-  a.hashtag-go-back::before {
+  button.dynamic-page-go-back:hover {
+    text-decoration: underline;
+  }
+  button.dynamic-page-go-back::before {
     content: '<';
     margin-right: 5px;
   }
