@@ -28,10 +28,10 @@
       </form>
 
       <form class="instance-actions" aria-label="Switch to or log out of this instance">
-        {{#if $loggedInInstancesInOrder.length > 1}}
-          <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
+        {{#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== params.instanceName}}
+          <button class="primary"
             on:click="onSwitchToThisInstance(event)">
-            {{$currentInstance === params.instanceName ? 'This is your current instance' : 'Switch to this instance'}}
+            Switch to this instance
           </button>
         {{/if}}
         <button on:click="onLogOut(event)">Log out</button>
