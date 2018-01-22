@@ -47,7 +47,8 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
       offline:   "#999999"
 		}
 		if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
-		  let theme = JSON.parse(localStorage.store_instanceThemes)[JSON.parse(localStorage.store_currentInstance)]
+		  let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
+		  let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
 			if (theme !== 'default') {
         document.body.classList.add(`theme-${theme}`)
 				let link = document.createElement('link')

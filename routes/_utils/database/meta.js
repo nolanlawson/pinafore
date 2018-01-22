@@ -1,20 +1,19 @@
 import { addKnownDb } from './knownDbs'
+import { openReqs, databaseCache } from './cache'
 
-const databaseCache = {}
 export const META_STORE = 'meta'
 
 export function getMetaDatabase(instanceName) {
-  const key = `${instanceName}_${META_STORE}`
-  if (databaseCache[key]) {
-    return Promise.resolve(databaseCache[key])
+  const dbName = `${instanceName}_${META_STORE}`
+  if (databaseCache[dbName]) {
+    return Promise.resolve(databaseCache[dbName])
   }
-
-  let dbName = key
 
   addKnownDb(instanceName, 'meta', dbName)
 
-  databaseCache[key] = new Promise((resolve, reject) => {
+  databaseCache[dbName] = new Promise((resolve, reject) => {
     let req = indexedDB.open(dbName, 1)
+    openReqs[dbName] = req
     req.onerror = reject
     req.onblocked = () => {
       console.log('idb blocked')
@@ -25,5 +24,5 @@ export function getMetaDatabase(instanceName) {
     }
     req.onsuccess = () => resolve(req.result)
   })
-  return databaseCache[key]
+  return databaseCache[dbName]
 }

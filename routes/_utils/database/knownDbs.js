@@ -1,7 +1,7 @@
 import keyval from "idb-keyval"
 
 export async function addKnownDb(instanceName, type, dbName) {
-  let knownDbs = (await keyval.get('known_dbs')) || {}
+  let knownDbs = (await getKnownDbs())
   if (!knownDbs[instanceName]) {
     knownDbs[instanceName] = []
   }
@@ -18,4 +18,10 @@ export async function getKnownDbs() {
 export async function getKnownDbsForInstance(instanceName) {
   let knownDbs = await getKnownDbs()
   return knownDbs[instanceName] || []
+}
+
+export async function deleteInstanceFromKnownDbs(instanceName) {
+  let knownDbs = await getKnownDbs()
+  delete knownDbs[instanceName]
+  await keyval.set('known_dbs', knownDbs)
 }

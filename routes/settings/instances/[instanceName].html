@@ -30,11 +30,11 @@
       <form class="instance-actions" aria-label="Switch to or log out of this instance">
         {{#if $loggedInInstancesInOrder.length > 1}}
           <button class="primary" disabled="{{$currentInstance === params.instanceName}}"
-            on:click="onSwitchToThisInstance()">
+            on:click="onSwitchToThisInstance(event)">
             {{$currentInstance === params.instanceName ? 'This is your current instance' : 'Switch to this instance'}}
           </button>
         {{/if}}
-        <button on:click="onLogOut()">Log out</button>
+        <button on:click="onLogOut(event)">Log out</button>
       </form>
     {{/if}}
   </SettingsLayout>
@@ -145,7 +145,8 @@
           switchToTheme(newTheme)
         }
       },
-      onSwitchToThisInstance() {
+      onSwitchToThisInstance(e) {
+        e.preventDefault()
         let instanceName = this.get('params').instanceName
         let instanceThemes = this.store.get('instanceThemes')
         this.store.set({
@@ -154,7 +155,8 @@
         this.store.save()
         switchToTheme(instanceThemes[instanceName])
       },
-      onLogOut() {
+      onLogOut(e) {
+        e.preventDefault()
         let loggedInInstances = this.store.get('loggedInInstances')
         let instanceThemes = this.store.get('instanceThemes')
         let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
@@ -173,6 +175,7 @@
           currentInstance: newInstance
         })
         this.store.save()
+        database.clearDatabasesForInstance(instanceName)
         switchToTheme(instanceThemes[newInstance] || 'default')
         toast.say(`Logged out of ${instanceName}`)
         goto('/settings/instances')

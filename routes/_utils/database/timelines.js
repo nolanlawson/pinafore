@@ -1,6 +1,6 @@
 import { addKnownDb } from './knownDbs'
+import { openReqs, databaseCache } from './cache'
 
-const databaseCache = {}
 export const TIMELINE_STORE = 'statuses'
 
 export function createTimelineDbName(instanceName, timeline) {
@@ -8,17 +8,17 @@ export function createTimelineDbName(instanceName, timeline) {
 }
 
 export function getTimelineDatabase(instanceName, timeline) {
-  const key = `${instanceName}_${timeline}`
-  if (databaseCache[key]) {
-    return Promise.resolve(databaseCache[key])
-  }
-
   let dbName = createTimelineDbName(instanceName, timeline)
+
+  if (databaseCache[dbName]) {
+    return Promise.resolve(databaseCache[dbName])
+  }
 
   addKnownDb(instanceName, 'timeline', dbName)
 
-  databaseCache[key] = new Promise((resolve, reject) => {
+  databaseCache[dbName] = new Promise((resolve, reject) => {
     let req = indexedDB.open(dbName, 1)
+    openReqs[dbName] = req
     req.onerror = reject
     req.onblocked = () => {
       console.log('idb blocked')
@@ -32,5 +32,5 @@ export function getTimelineDatabase(instanceName, timeline) {
     }
     req.onsuccess = () => resolve(req.result)
   })
-  return databaseCache[key]
+  return databaseCache[dbName]
 }
