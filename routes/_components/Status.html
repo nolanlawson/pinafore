@@ -32,7 +32,7 @@
     </div>
   {{/if}}
   {{#if !status.spoiler_text || spoilerShown}}
-    <div class="status-content">
+    <div class="status-content" ref:contentNode>
       {{{status.content}}}
     </div>
   {{/if}}
@@ -286,6 +286,9 @@
   const relativeFormat = new IntlRelativeFormat('en-US');
 
   export default {
+    oncreate() {
+      this.hydrateHtml()
+    },
     components: {
       Avatar,
       Media,
@@ -306,11 +309,26 @@
     methods: {
       onClickSpoilerButton() {
         this.set({spoilerShown: !this.get('spoilerShown')})
+        this.hydrateHtml()
         this.fire('recalculateHeight')
       },
       onClickSensitiveMediaButton() {
         this.set({sensitiveShown: !this.get('sensitiveShown')})
         this.fire('recalculateHeight')
+      },
+      hydrateHtml() {
+        let status = this.get('originalStatus')
+        if (status.tags && status.tags.length && this.refs.contentNode) {
+          let anchorTags = this.refs.contentNode.querySelectorAll('a[rel=tag]')
+          for (let tag of status.tags) {
+            let {name, url} = tag
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href') === url) {
+                anchorTag.setAttribute('href', `/tags/${name}`)
+              }
+            }
+          }
+        }
       }
     }
   }

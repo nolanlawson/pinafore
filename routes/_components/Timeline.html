@@ -52,7 +52,14 @@
         key: status.id
       })),
       lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id,
-      label: (timeline, $currentInstance) => `${timelines[timeline].label} timeline for ${$currentInstance}`
+      label: (timeline, $currentInstance) => {
+        if (timelines[timeline]) {
+          `${timelines[timeline].label} timeline for ${$currentInstance}`
+        } else if (timeline.startsWith('tag/')) {
+          let tag = timeline.split('/').slice(-1)[0]
+          return `#${tag} timeline for ${$currentInstance}`
+        }
+      }
     },
     store: () => store,
     components: {

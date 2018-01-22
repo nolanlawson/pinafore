@@ -15,6 +15,12 @@
 	  <li>
       <NavItem :page name="settings" href="/settings" svg="#fa-gears" label="Settings" />
 		</li>
+    {{#if dynamicPage}}
+    <li>
+      <NavItem :page name="{{dynamicPage}}" href="{{dynamicHref}}" svg="{{dynamicIcon}}"
+               label="{{dynamicLabel}}" forceCurrent="true" />
+    </li>
+    {{/if}}
 	</ul>
 </nav>
 
