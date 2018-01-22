@@ -47,7 +47,7 @@ export const cleanupOldStatuses = debounce(async () => {
       if (type !== 'timeline') {
         continue
       }
-      let timeline = dbName.split('_').slice(-1)
+      let timeline = dbName.split('_').slice(-1)[0]
       await cleanup(instanceName, timeline)
     }
   }
