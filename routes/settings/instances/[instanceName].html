@@ -6,14 +6,14 @@
   <SettingsLayout page='settings/instances/{{params.instanceName}}' label="{{params.instanceName}}">
     <h1 class="instance-name-h1">{{params.instanceName}}</h1>
 
-    {{#if instanceUserAccount}}
+    {{#if verifyCredentials}}
       <h2>Logged in as:</h2>
       <div class="acct-current-user">
-        <img alt="Profile picture for {{'@' + instanceUserAccount.acct}}"
-             class="acct-avatar" src="{{instanceUserAccount.avatar}}" />
+        <img alt="Profile picture for {{'@' + verifyCredentials.acct}}"
+             class="acct-avatar" src="{{verifyCredentials.avatar}}" />
         <a class="acct-handle" rel="noopener" target="_blank"
-           href="{{instanceUserAccount.url}}">{{'@' + instanceUserAccount.acct}}</a>
-        <span class="acct-display-name">{{instanceUserAccount.display_name}}</span>
+           href="{{verifyCredentials.url}}">{{'@' + verifyCredentials.acct}}</a>
+        <span class="acct-display-name">{{verifyCredentials.display_name}}</span>
       </div>
       <h2>Theme:</h2>
       <form class="theme-chooser" aria-label="Choose a theme">
@@ -97,7 +97,8 @@
   import { store } from '../../_utils/store'
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
-  import { getThisUserAccount } from '../../_utils/mastodon/user'
+  import { getVerifyCredentials } from '../../_utils/mastodon/user'
+  import { database } from '../../_utils/database/database'
   import { themes } from '../../_static/themes'
   import { switchToTheme } from '../../_utils/themeEngine'
   import { goto } from 'sapper/runtime.js'
@@ -117,9 +118,18 @@
       let loggedInInstances = this.store.get('loggedInInstances')
       let instanceThemes = this.store.get('instanceThemes')
       let instanceData = loggedInInstances[instanceName]
-      let instanceUserAccount = await getThisUserAccount(instanceName, instanceData.access_token)
+      let verifyCredentials = await database.getInstanceVerifyCredentials(instanceName)
+      if (verifyCredentials) { // update
+        getVerifyCredentials(instanceName, instanceData.access_token).then(verifyCredentials => {
+          database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
+        })
+      } else {
+        verifyCredentials = await getVerifyCredentials(instanceName, instanceData.access_token)
+        database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
+        verifyCredentials = verifyCredentials
+      }
       this.set({
-        instanceUserAccount: instanceUserAccount,
+        verifyCredentials: verifyCredentials,
         selectedTheme: instanceThemes[instanceName]
       })
     },

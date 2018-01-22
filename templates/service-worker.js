@@ -42,7 +42,6 @@ const NETWORK_ONLY = [
 ]
 
 const CACHE_FIRST = [
-  '/api/v1/accounts/verify_credentials',
   '/system/accounts/avatars'
 ]
 

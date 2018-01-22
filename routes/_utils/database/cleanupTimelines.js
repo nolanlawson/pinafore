@@ -1,15 +1,15 @@
-import keyval from "idb-keyval"
+import { getKnownDbs } from './knownDbs'
 import debounce from 'lodash/debounce'
-import { OBJECT_STORE, getDatabase } from './shared'
+import { TIMELINE_STORE, getTimelineDatabase } from './timelines'
 
 const MAX_NUM_STORED_STATUSES = 1000
 const CLEANUP_INTERVAL = 60000
 
 async function cleanup(instanceName, timeline) {
-  const db = await getDatabase(instanceName, timeline)
+  const db = await getTimelineDatabase(instanceName, timeline)
   return await new Promise((resolve, reject) => {
-    const tx = db.transaction(OBJECT_STORE, 'readwrite')
-    const store = tx.objectStore(OBJECT_STORE)
+    const tx = db.transaction(TIMELINE_STORE, 'readwrite')
+    const store = tx.objectStore(TIMELINE_STORE)
     const index = store.index('pinafore_id_as_negative_big_int')
 
     store.count().onsuccess = (e) => {
@@ -37,11 +37,18 @@ export const cleanupOldStatuses = debounce(async () => {
   if (process.env.NODE_ENV !== 'production') {
     console.log('cleanupOldStatuses')
   }
-  let knownDbs = (await keyval.get('known_dbs')) || {}
-  let dbNames = Object.keys(knownDbs)
-  for (let dbName of dbNames) {
-    let [ instanceName, timeline ] = knownDbs[dbName]
-    await cleanup(instanceName, timeline)
+
+  let knownDbs = await getKnownDbs()
+  let instanceNames = Object.keys(knownDbs)
+  for (let instanceName of instanceNames) {
+    let knownDbsForInstance = knownDbs[instanceName] || []
+    for (let knownDb of knownDbsForInstance) {
+      let {type, dbName} = knownDb
+      if (type !== 'timeline') {
+        continue
+      }
+      await cleanup(instanceName, dbName)
+    }
   }
   if (process.env.NODE_ENV !== 'production') {
     console.log('done cleanupOldStatuses')

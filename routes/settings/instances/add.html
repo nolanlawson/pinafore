@@ -72,11 +72,12 @@
   import Layout from '../../_components/Layout.html';
   import SettingsLayout from '../_components/SettingsLayout.html'
   import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon/oauth'
-  import { getThisUserAccount } from '../../_utils/mastodon/user'
+  import { getVerifyCredentials } from '../../_utils/mastodon/user'
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
   import { switchToTheme } from '../../_utils/themeEngine'
   import LoadingMask from '../../_components/LoadingMask'
+  import { database } from '../../_utils/database/database'
 
   const REDIRECT_URI = (typeof location !== 'undefined' ?
       location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -177,7 +178,9 @@
         this.store.save()
         switchToTheme('default')
         // fire off request for account so it's cached in the SW
-        getThisUserAccount(currentRegisteredInstanceName, instanceData.access_token)
+        getVerifyCredentials(currentRegisteredInstanceName, instanceData.access_token).then(verifyCredentials => {
+          database.setInstanceVerifyCredentials(currentRegisteredInstanceName, verifyCredentials)
+        })
         goto('/')
       }
     }
