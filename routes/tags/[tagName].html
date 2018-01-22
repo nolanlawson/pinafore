@@ -1,0 +1,39 @@
+<:Head>
+  <title>Pinafore – #{{params.tagName}}</title>
+</:Head>
+
+<Layout page='tag'
+        dynamicPage="{{params.tagName}}"
+        dynamicHref="/tags/{{params.tagName}}"
+        dynamicLabel="#{{params.tagName}}"
+        dynamicIcon="#fa-hashtag" >
+  {{#if $isUserLoggedIn}}
+  <!-- <LazyTimeline timeline='tag/{{params.tagName}}' /> -->
+  {{else}}
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>#{{params.tagName}}</h1>
+
+      <p>A hashtag timeline will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
+  {{/if}}
+</Layout>
+
+<script>
+  import Layout from '../_components/Layout.html'
+  import LazyTimeline from '../_components/LazyTimeline.html'
+  import FreeTextLayout from '../_components/FreeTextLayout.html'
+  import { store } from '../_utils/store.js'
+  import HiddenFromSSR from '../_components/HiddenFromSSR'
+
+  export default {
+    store: () => store,
+    components: {
+      Layout,
+      LazyTimeline,
+      FreeTextLayout,
+      HiddenFromSSR
+    }
+  }
+</script>

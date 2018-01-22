@@ -1,6 +1,6 @@
-<a class='main-nav-link {{page === name ? "selected" : ""}}'
-   aria-label='{{page === name ? `${label} (current page)` : label}}'
-   aria-current="{{page === name}}"
+<a class='main-nav-link {{forceCurrent || page === name ? "selected" : ""}}'
+   aria-label='{{forceCurrent || page === name ? `${label} (current page)` : label}}'
+   aria-current="{{forceCurrent || page === name}}"
    href='{{href}}'>
   <svg>
     <use xlink:href="{{svg}}" />

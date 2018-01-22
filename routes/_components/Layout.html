@@ -1,5 +1,5 @@
 <:Window bind:innerHeight />
-<Nav page={{page}} />
+<Nav :page :dynamicPage :dynamicHref :dynamicIcon :dynamicLabel/>
 
 <div class="container" on:scroll="onScroll(event)" on:fullscreen="onFullscreenChange()" ref:node>
   <main>
