@@ -1,0 +1,27 @@
+<div class="virtual-list-footer"
+  ref:node
+  style="transform: translateY({{$heightWithoutFooter}}px);" >
+  <:Component {component} />
+</div>
+<style>
+  .virtual-list-footer {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+</style>
+<script>
+  import { virtualListStore } from '../_utils/virtualListStore'
+  import { AsyncLayout } from '../_utils/AsyncLayout'
+
+  export default {
+    oncreate() {
+      const asyncLayout = new AsyncLayout(() => '__footer__')
+      asyncLayout.observe('__footer__', this.refs.node, (rect) => {
+        asyncLayout.disconnect()
+        this.store.set({footerHeight: rect.height})
+      })
+    },
+    store: () => virtualListStore,
+  }
+</script>

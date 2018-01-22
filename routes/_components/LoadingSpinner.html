@@ -1,10 +1,10 @@
-<svg class="loading-spinner-icon {{maskStyle ? 'mask-style' : ''}}">
+<svg class="loading-spinner-icon {{maskStyle ? 'mask-style' : ''}}"
+     style="width: {{size || 64}}px; height: {{size || 64}}px;"
+>
   <use xlink:href="#fa-spinner" />
 </svg>
 <style>
   .loading-spinner-icon {
-    width: 64px;
-    height: 64px;
     fill: var(--svg-fill);
     animation: spin 2s infinite linear;
   }

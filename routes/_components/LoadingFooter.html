@@ -1,0 +1,26 @@
+<div class="loading-footer">
+  <LoadingSpinner size={{48}} />
+  <span class="loading-footer-info">
+    Loading more...
+  </span>
+</div>
+<style>
+  .loading-footer {
+    padding: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .loading-footer-info {
+    margin-left: 20px;
+    font-size: 1.3em;
+  }
+</style>
+<script>
+  import LoadingSpinner from './LoadingSpinner.html'
+  export default {
+    components: {
+      LoadingSpinner
+    }
+  }
+</script>

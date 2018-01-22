@@ -1,13 +1,16 @@
 <!-- TODO: setting height is hacky, just make this element the scroller -->
 <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
   {{#each $visibleItems as item @key}}
-  <VirtualListItem :component
-                   offset="{{item.offset}}"
-                   props="{{item.props}}"
-                   key="{{item.key}}"
-                   index="{{item.index}}"
-  />
+    <VirtualListItem :component
+                     offset="{{item.offset}}"
+                     props="{{item.props}}"
+                     key="{{item.key}}"
+                     index="{{item.index}}"
+    />
   {{/each}}
+  {{#if $showFooter}}
+    <VirtualListFooter component="{{footerComponent}}"/>
+  {{/if}}
 </div>
 <style>
   .virtual-list {
@@ -17,6 +20,7 @@
 </style>
 <script>
   import VirtualListItem from './VirtualListItem'
+  import VirtualListFooter from './VirtualListFooter.html'
   import { virtualListStore } from '../_utils/virtualListStore'
   import throttle from 'lodash/throttle'
   import { mark, stop } from '../_utils/marks'
@@ -26,6 +30,9 @@
 
   export default {
     oncreate () {
+      this.observe('showFooter', showFooter => {
+        this.store.set({showFooter: showFooter})
+      })
       this.observe('items', (items) => {
         mark('set items')
         this.store.set({
@@ -55,7 +62,8 @@
     }),
     store: () => virtualListStore,
     components: {
-      VirtualListItem
+      VirtualListItem,
+      VirtualListFooter
     },
     computed: {
       distanceFromBottom: ($scrollHeight, $scrollTop, $offsetHeight) => {

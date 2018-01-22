@@ -42,6 +42,8 @@ class VirtualListStore extends Store {
 const virtualListStore = new VirtualListStore({
   items: [],
   itemHeights: {},
+  showFooter: false,
+  footerHeight: 0
 })
 
 virtualListStore.compute('visibleItems',
@@ -79,7 +81,9 @@ virtualListStore.compute('visibleItems',
   return visibleItems
 })
 
-virtualListStore.compute('height', ['items', 'itemHeights'], (items, itemHeights) => {
+virtualListStore.compute('heightWithoutFooter',
+    ['items', 'itemHeights'],
+    (items, itemHeights) => {
   let sum = 0
   let i = -1
   let len = items.length
@@ -87,6 +91,13 @@ virtualListStore.compute('height', ['items', 'itemHeights'], (items, itemHeights
     sum += itemHeights[items[i].key] || 0
   }
   return sum
+})
+
+
+virtualListStore.compute('height',
+    ['heightWithoutFooter', 'showFooter', 'footerHeight'],
+    (heightWithoutFooter, showFooter, footerHeight) => {
+  return showFooter ? (heightWithoutFooter + footerHeight) : heightWithoutFooter
 })
 
 virtualListStore.compute('numItems', ['items'], (items) => items.length)

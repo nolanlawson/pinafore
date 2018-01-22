@@ -4,6 +4,8 @@
                items="{{keyedStatuses}}"
                on:scrollToBottom="onScrollToBottom()"
                shown="{{initialized}}"
+               footerComponent="{{LoadingFooter}}"
+               showFooter="{{initialized && runningUpdate}}"
   />
 </div>
 <style>
@@ -15,6 +17,7 @@
   import { store } from '../_utils/store'
   import { getTimeline } from '../_utils/mastodon/timelines'
   import StatusListItem from './StatusListItem.html'
+  import LoadingFooter from './LoadingFooter.html'
   import VirtualList from './VirtualList.html'
   import { splice, push } from 'svelte-extras'
   import worker from 'workerize-loader!../_utils/database/database'
@@ -40,6 +43,7 @@
     },
     data: () => ({
       StatusListItem: StatusListItem,
+      LoadingFooter: LoadingFooter,
       statuses: [],
       runningUpdate: false,
       initialized: false
@@ -69,8 +73,8 @@
         mark('onScrollToBottom')
         this.set({ runningUpdate: true })
         let newStatuses = await this.fetchStatusesAndPossiblyFallBack()
-        this.addStatuses(newStatuses)
         this.set({ runningUpdate: false })
+        this.addStatuses(newStatuses)
         stop('onScrollToBottom')
       },
       addStatuses(newStatuses) {
