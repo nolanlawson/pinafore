@@ -119,14 +119,13 @@
       let instanceThemes = this.store.get('instanceThemes')
       let instanceData = loggedInInstances[instanceName]
       let verifyCredentials = await database.getInstanceVerifyCredentials(instanceName)
-      if (verifyCredentials) { // update
+      if (verifyCredentials) { // update in background
         getVerifyCredentials(instanceName, instanceData.access_token).then(verifyCredentials => {
           database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
         })
-      } else {
+      } else { // go to network
         verifyCredentials = await getVerifyCredentials(instanceName, instanceData.access_token)
         database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
-        verifyCredentials = verifyCredentials
       }
       this.set({
         verifyCredentials: verifyCredentials,
