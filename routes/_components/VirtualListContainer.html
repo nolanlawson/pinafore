@@ -1,0 +1,82 @@
+<:Window bind:innerHeight />
+<div class="container" on:scroll="onScroll(event)" on:fullscreen="onFullscreenChange()" ref:node>
+  <slot></slot>
+</div>
+<script>
+  import { virtualListStore } from '../_utils/virtualListStore'
+
+  import debounce from 'lodash/debounce'
+  import throttle from 'lodash/throttle'
+  import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../_utils/fullscreen'
+  import { mark, stop } from '../_utils/marks'
+
+  const SCROLL_EVENT_DELAY = 300
+  const RESIZE_EVENT_DELAY = 700
+
+  export default {
+    oncreate() {
+      mark('onCreate VirtualListContainer')
+      let node = this.refs.node
+      this.observe('innerHeight', debounce(() => {
+        // respond to window resize events
+        this.store.set({
+          offsetHeight: node.offsetHeight
+        })
+      }, RESIZE_EVENT_DELAY))
+      this.store.set({
+        scrollTop: node.scrollTop,
+        scrollHeight: node.scrollHeight,
+        offsetHeight: node.offsetHeight
+      })
+      stop('onCreate VirtualListContainer')
+    },
+    store: () => virtualListStore,
+    events: {
+      scroll(node, callback) {
+        const onScroll = throttle(event => {
+          mark('onScroll')
+          if (this.get('fullscreen')) {
+            return
+          }
+          callback(event)
+          stop('onScroll')
+        }, SCROLL_EVENT_DELAY, {
+          leading: true,
+          trailing: true
+        })
+        node.addEventListener('scroll', onScroll)
+
+        return {
+          teardown() {
+            node.removeEventListener('scroll', onScroll)
+          }
+        }
+      },
+      fullscreen(node, callback) {
+        const onFullscreen = (() => {
+          callback()
+        })
+        attachFullscreenListener(onFullscreen)
+        return {
+          teardown() {
+            detachFullscreenListener(onFullscreen)
+          }
+        }
+      }
+    },
+    methods: {
+      onScroll(event) {
+        this.store.set({
+          scrollTop: event.target.scrollTop,
+          scrollHeight: event.target.scrollHeight
+        })
+      },
+      onFullscreenChange() {
+        mark('onFullscreenChange')
+        console.log('is fullscreen? ', isFullscreen())
+        this.set({ fullscreen: isFullscreen() })
+        stop('onFullscreenChange')
+      }
+    }
+  };
+</script>
