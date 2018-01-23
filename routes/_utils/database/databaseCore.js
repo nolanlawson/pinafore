@@ -1,34 +1,59 @@
-import { META_STORE, getMetaDatabase } from './meta'
-import { cleanupOldStatuses } from './cleanupTimelines'
-import { TIMELINE_STORE, getTimelineDatabase } from './timelines'
-import { toReversePaddedBigInt, transformStatusForStorage, dbPromise, deleteDbPromise } from './utils'
-import { getKnownDbsForInstance, deleteInstanceFromKnownDbs } from './knownDbs'
+import {
+  toReversePaddedBigInt
+} from './utils'
+import {
+  getDatabase,
+  dbPromise,
+  deleteDatabase,
+} from './databaseLifecycle'
+
+import {
+  META_STORE,
+  TIMELINE_STORE,
+  STATUSES_STORE
+} from './constants'
 
 export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
-  const db = await getTimelineDatabase(instanceName, timeline)
-  return await dbPromise(db, TIMELINE_STORE, 'readonly', (store, callback) => {
-    const index = store.index('pinafore_id_as_negative_big_int')
-    let sinceAsNegativeBigInt = maxId ? toReversePaddedBigInt(maxId) : null
-    let query = sinceAsNegativeBigInt ? IDBKeyRange.lowerBound(sinceAsNegativeBigInt, false) : null
+  const db = await getDatabase(instanceName, timeline)
+  return await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE], 'readonly', (stores, callback) => {
+    let [ timelineStore, statusesStore ] = stores
 
-    index.getAll(query, limit).onsuccess = (e) => {
-      callback(e.target.result)
+    let negBigInt = maxId && toReversePaddedBigInt(maxId)
+    let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
+    let end = timeline + '\u0000\uffff'
+    let query = IDBKeyRange.bound(start, end, false, false)
+
+    timelineStore.getAll(query, limit).onsuccess = e => {
+      let timelineResults = e.target.result
+      let res = new Array(timelineResults.length)
+      timelineResults.forEach((timelineResult, i) => {
+        statusesStore.get(timelineResult.statusId).onsuccess = e => {
+          res[i] = e.target.result
+        }
+      })
+      callback(res)
     }
   })
 }
 
 export async function insertStatuses(instanceName, timeline, statuses) {
-  const db = await getTimelineDatabase(instanceName, timeline)
-  await dbPromise(db, TIMELINE_STORE, 'readwrite', (store) => {
+  const db = await getDatabase(instanceName, timeline)
+  await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE], 'readwrite', (stores) => {
+    let [ timelineStore, statusesStore ] = stores
     for (let status of statuses) {
-      store.put(transformStatusForStorage(status))
+      statusesStore.put(status)
+      // reverse chronological order, prefixed by timeline
+      let id = timeline + '\u0000' +  toReversePaddedBigInt(status.id)
+      timelineStore.put({
+        id: id,
+        statusId: status.id
+      })
     }
   })
-  /* no await */ cleanupOldStatuses()
 }
 
 export async function getInstanceVerifyCredentials(instanceName) {
-  const db = await getMetaDatabase(instanceName)
+  const db = await getDatabase(instanceName)
   return await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
     store.get('verifyCredentials').onsuccess = (e) => {
       callback(e.target.result && e.target.result.value)
@@ -37,7 +62,7 @@ export async function getInstanceVerifyCredentials(instanceName) {
 }
 
 export async function setInstanceVerifyCredentials(instanceName, verifyCredentials) {
-  const db = await getMetaDatabase(instanceName)
+  const db = await getDatabase(instanceName)
   return await dbPromise(db, META_STORE, 'readwrite', (store) => {
     store.put({
       key: 'verifyCredentials',
@@ -46,17 +71,6 @@ export async function setInstanceVerifyCredentials(instanceName, verifyCredentia
   })
 }
 
-export async function clearDatabasesForInstance(instanceName) {
-  console.log('clearDatabasesForInstance', instanceName)
-  const knownDbsForInstance = await getKnownDbsForInstance(instanceName)
-  for (let knownDb of knownDbsForInstance) {
-    let { dbName } = knownDb
-    try {
-      await deleteDbPromise(dbName)
-      console.error(`deleted database ${dbName}`)
-    } catch (e) {
-      console.error(`failed to delete database ${dbName}`)
-    }
-  }
-  await deleteInstanceFromKnownDbs(instanceName)
+export async function clearDatabaseForInstance(instanceName) {
+  await deleteDatabase(instanceName)
 }

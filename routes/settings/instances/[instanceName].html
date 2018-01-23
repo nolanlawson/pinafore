@@ -174,7 +174,7 @@
           currentInstance: newInstance
         })
         this.store.save()
-        database.clearDatabasesForInstance(instanceName)
+        database.clearDatabaseForInstance(instanceName)
         switchToTheme(instanceThemes[newInstance] || 'default')
         toast.say(`Logged out of ${instanceName}`)
         goto('/settings/instances')
