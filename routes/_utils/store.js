@@ -1,8 +1,14 @@
 import { Store } from 'svelte/store.js'
 
-const DONT_STORE_THESE_KEYS = [
-  'cachedAccountNames'
-]
+const LOCAL_STORAGE_KEYS = new Set([
+  "currentInstance",
+  "currentRegisteredInstance",
+  "currentRegisteredInstanceName",
+  "instanceNameInSearch",
+  "instanceThemes",
+  "loggedInInstances",
+  "loggedInInstancesInOrder"
+])
 
 const LS = process.browser && localStorage
 class LocalStorageStore extends Store {
@@ -10,7 +16,7 @@ class LocalStorageStore extends Store {
   constructor(state) {
     super(state)
     if (process.browser) {
-      this.lastChanged = {}
+      this.keysToStore = {}
       let newState = {}
       for (let i = 0, len = LS.length; i < len; i++) {
         let key = LS.key(i)
@@ -22,9 +28,8 @@ class LocalStorageStore extends Store {
       this.set(newState)
       this.onchange((state, changed) => {
         Object.keys(changed).forEach(change => {
-          if (!DONT_STORE_THESE_KEYS.includes(change) &&
-              !this._computed[change]) { // TODO: better way to ignore computed values?
-            this.lastChanged[change] = true
+          if (LOCAL_STORAGE_KEYS.has(change)) {
+            this.keysToStore[change] = true
           }
         })
       })
@@ -33,10 +38,10 @@ class LocalStorageStore extends Store {
 
   save() {
     if (process.browser) {
-      Object.keys(this.lastChanged).forEach(key => {
+      Object.keys(this.keysToStore).forEach(key => {
         LS.setItem(`store_${key}`, JSON.stringify(this.get(key)))
       })
-      this.lastChanged = {}
+      this.keysToStore = {}
     }
   }
 }
