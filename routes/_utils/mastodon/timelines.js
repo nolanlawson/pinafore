@@ -1,24 +1,29 @@
 import { get, paramsString } from '../ajax'
 import { basename } from './utils'
 
-function getTimelineUrlName(timeline) {
+function getTimelineUrlPath(timeline) {
   switch (timeline) {
     case 'local':
     case 'federated':
-      return 'public'
+      return 'timelines/public'
     case 'home':
-      return 'home'
-    default:
-      return 'tag'
+      return 'timelines/home'
+  }
+  if (timeline.startsWith('tag/')) {
+    return 'timelines/tag'
+  } else if (timeline.startsWith('account/')) {
+    return 'accounts'
   }
 }
 
 export function getTimeline(instanceName, accessToken, timeline, maxId, since) {
-  let timelineUrlName = getTimelineUrlName(timeline)
-  let url = `${basename(instanceName)}/api/v1/timelines/${timelineUrlName}`
+  let timelineUrlName = getTimelineUrlPath(timeline)
+  let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
   if (timeline.startsWith('tag/')) {
     url += '/' + timeline.split('/').slice(-1)[0]
+  } else if (timeline.startsWith('account/')) {
+    url += '/' + timeline.split('/').slice(-1)[0] +'/statuses'
   }
 
   let params = {}

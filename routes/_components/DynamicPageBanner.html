@@ -1,0 +1,44 @@
+<div class="dynamic-page-banner">
+  <h1 class="dynamic-page-title">{{title}}</h1>
+  <button type="button"
+          class="dynamic-page-go-back"
+          on:click="onGoBack(event)">Back</button>
+</div>
+<style>
+  .dynamic-page-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 20px 20px;
+  }
+  h1.dynamic-page-title {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  button.dynamic-page-go-back {
+    font-size: 1.3em;
+    color: var(--anchor-text);
+    border: 0;
+    padding: 0;
+    background: none;
+  }
+  button.dynamic-page-go-back:hover {
+    text-decoration: underline;
+  }
+  button.dynamic-page-go-back::before {
+    content: '<';
+    margin-right: 5px;
+  }
+</style>
+<script>
+  export default {
+    methods: {
+      onGoBack(e) {
+        e.preventDefault()
+        window.history.back();
+      }
+    }
+  }
+</script>

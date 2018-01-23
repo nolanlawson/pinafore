@@ -7,3 +7,10 @@ export function getVerifyCredentials(instanceName, accessToken) {
     'Authorization': `Bearer ${accessToken}`
   })
 }
+
+export function getAccount(instanceName, accessToken, accountId) {
+  let url = `${basename(instanceName)}/api/v1/accounts/${accountId}`
+  return get(url, {
+    'Authorization': `Bearer ${accessToken}`
+  })
+}

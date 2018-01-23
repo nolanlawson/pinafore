@@ -1,6 +1,8 @@
+/*
 import worker from 'workerize-loader!./databaseCore'
-const database = process.browser && worker()
+export const database = process.browser && worker()
+*/
 
-export {
-  database
-}
+import * as dbCore from './databaseCore'
+
+export { dbCore as database }

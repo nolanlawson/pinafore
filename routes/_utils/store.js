@@ -1,5 +1,9 @@
 import { Store } from 'svelte/store.js'
 
+const DONT_STORE_THESE_KEYS = [
+  'cachedAccountNames'
+]
+
 const LS = process.browser && localStorage
 class LocalStorageStore extends Store {
 
@@ -18,7 +22,8 @@ class LocalStorageStore extends Store {
       this.set(newState)
       this.onchange((state, changed) => {
         Object.keys(changed).forEach(change => {
-          if (!this._computed[change]) { // TODO: better way to ignore computed values?
+          if (!DONT_STORE_THESE_KEYS.includes(change) &&
+              !this._computed[change]) { // TODO: better way to ignore computed values?
             this.lastChanged[change] = true
           }
         })
@@ -73,6 +78,12 @@ store.compute(
       name: currentInstance
     }, loggedInInstances[currentInstance])
 })
+
+store.compute(
+  'accessToken',
+  ['currentInstanceData'],
+  (currentInstanceData) => currentInstanceData.access_token
+)
 
 store.compute(
   'currentTheme',

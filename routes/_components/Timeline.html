@@ -38,6 +38,22 @@
           this.fire('initialized')
         }))
       })
+      this.observe('statuses', statuses => {
+        let cachedAccountNames = this.store.get('cachedAccountNames') || {}
+        for (let status of statuses) {
+          cachedAccountNames[status.account.id] = {
+            username: status.account.username,
+            acct: status.account.acct
+          }
+          if (status.reblog) {
+            cachedAccountNames[status.reblog.account.id] = {
+              username: status.reblog.account.username,
+              acct: status.reblog.account.acct
+            }
+          }
+        }
+        this.store.set({'cachedAccountNames': cachedAccountNames})
+      })
     },
     data: () => ({
       StatusListItem: StatusListItem,
@@ -58,6 +74,9 @@
         } else if (timeline.startsWith('tag/')) {
           let tag = timeline.split('/').slice(-1)[0]
           return `#${tag} timeline for ${$currentInstance}`
+        } else if (timeline.startsWith('account/')) {
+          let account = timeline.split('/').slice(-1)[0]
+          return `Account #${account} on ${$currentInstance}`
         }
       }
     },

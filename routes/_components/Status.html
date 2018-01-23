@@ -32,8 +32,8 @@
     </div>
   {{/if}}
   {{#if !status.spoiler_text || spoilerShown}}
-    <div class="status-content">
-      {{{hydratedContent}}}
+    <div class="status-content" ref:contentNode>
+      {{{emojifiedContent}}}
     </div>
   {{/if}}
   {{#if originalMediaAttachments && originalMediaAttachments.length}}
@@ -295,6 +295,9 @@
   const relativeFormat = new IntlRelativeFormat('en-US');
 
   export default {
+    oncreate() {
+      this.hashtagifyContent()
+    },
     components: {
       Avatar,
       Media,
@@ -311,15 +314,9 @@
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
-      hydratedContent: (originalStatus) => {
+      emojifiedContent: (originalStatus) => {
         let status = originalStatus
         let content = status.content
-        if (status.tags && status.tags.length) {
-          for (let tag of status.tags) {
-            let {name, url} = tag
-            content = replaceAll(content, url, `/tags/${name}`)
-          }
-        }
         if (status.emojis && status.emojis.length) {
           for (let emoji of status.emojis) {
             let { shortcode, url } = emoji
@@ -337,11 +334,34 @@
     methods: {
       onClickSpoilerButton() {
         this.set({spoilerShown: !this.get('spoilerShown')})
+        this.hashtagifyContent()
         this.fire('recalculateHeight')
       },
       onClickSensitiveMediaButton() {
         this.set({sensitiveShown: !this.get('sensitiveShown')})
         this.fire('recalculateHeight')
+      },
+      hashtagifyContent() {
+        if (!this.refs.contentNode) {
+          return
+        }
+        let status = this.get('originalStatus')
+        mark('hydrateHashtags')
+        if (status.tags && status.tags.length) {
+          let anchorTags = Array.from(this.refs.contentNode.querySelectorAll(
+            'a[class~=hashtag][href^=http]'))
+          for (let tag of status.tags) {
+            let { name } = tag
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href').endsWith(`/tags/${name}`)) {
+                anchorTag.setAttribute('href', `/tags/${name}`)
+                anchorTag.removeAttribute('target')
+                anchorTag.removeAttribute('rel')
+              }
+            }
+          }
+        }
+        stop('hydrateHashtags')
       }
     }
   }

@@ -8,10 +8,7 @@
         dynamicLabel="{{'#' + params.tagName}}"
         dynamicIcon="#fa-hashtag" >
   {{#if $isUserLoggedIn}}
-  <div class="dynamic-page-banner">
-    <h1 class="dynamic-page-title">{{'#' + params.tagName}}</h1>
-    <button type="button" class="dynamic-page-go-back" on:click="onGoBack(event)">Back</button>
-  </div>
+  <DynamicPageBanner title="{{'#' + params.tagName}}"/>
   <LazyTimeline timeline='tag/{{params.tagName}}' />
   {{else}}
   <HiddenFromSSR>
@@ -23,37 +20,13 @@
   </HiddenFromSSR>
   {{/if}}
 </Layout>
-<style>
-  .dynamic-page-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 20px 20px;
-  }
-  h1.dynamic-page-title {
-    margin: 0;
-  }
-  button.dynamic-page-go-back {
-    font-size: 1.3em;
-    color: var(--anchor-text);
-    border: 0;
-    padding: 0;
-    background: none;
-  }
-  button.dynamic-page-go-back:hover {
-    text-decoration: underline;
-  }
-  button.dynamic-page-go-back::before {
-    content: '<';
-    margin-right: 5px;
-  }
-</style>
 <script>
   import Layout from '../_components/Layout.html'
   import LazyTimeline from '../_components/LazyTimeline.html'
   import FreeTextLayout from '../_components/FreeTextLayout.html'
   import { store } from '../_utils/store.js'
   import HiddenFromSSR from '../_components/HiddenFromSSR'
+  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
 
   export default {
     store: () => store,
@@ -61,13 +34,8 @@
       Layout,
       LazyTimeline,
       FreeTextLayout,
-      HiddenFromSSR
-    },
-    methods: {
-      onGoBack(e) {
-        e.preventDefault()
-        window.history.back();
-      }
+      HiddenFromSSR,
+      DynamicPageBanner
     }
   }
 </script>
