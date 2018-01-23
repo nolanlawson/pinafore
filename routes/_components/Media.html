@@ -30,7 +30,10 @@
            playsinline
     />
     {{else}}
-      <img alt="{{media.description || ''}}"
+      <img class="{{!imageLoaded ? 'image-loading' : ''}} {{imageError ? 'image-error' : ''}}"
+           on:imgLoad="set({imageLoaded: true})"
+           on:imgLoadError="set({imageError: true})"
+           alt="{{media.description || ''}}"
            src="{{media.preview_url}}"
            width="{{getSmallWidth(media)}}"
            height="{{getSmallHeight(media)}}"/>
@@ -64,6 +67,9 @@
   }
   .no-native-width-height img, .no-native-width-height video {
     background-color: var(--mask-bg);
+  }
+  .status-media img.image-loading, .status-media img.image-error {
+    background: var(--loading-bg);
   }
   .status-media {
     max-width: calc(100vw - 40px);
@@ -106,6 +112,7 @@
   const DEFAULT_MEDIA_WIDTH = 300
   const DEFAULT_MEDIA_HEIGHT = 200
 
+  import { imgLoad, imgLoadError } from '../_utils/events'
   import { showVideoDialog } from '../_utils/showVideoDialog'
 
   export default {
@@ -121,6 +128,10 @@
       async onClickPlayVideoButton(media, width, height, description) {
         showVideoDialog(media.preview_url, media.url, width, height, description)
       }
+    },
+    events: {
+      imgLoad,
+      imgLoadError
     }
   }
 </script>

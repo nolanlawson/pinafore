@@ -4,7 +4,7 @@
 </svg>
 {{else}}
 <img class="{{className}} avatar" aria-hidden="true" alt=""
-     src="{{account.avatar}}" on:loadError="set({error: true})" />
+     src="{{account.avatar}}" on:imgLoadError="set({error: true})" />
 {{/if}}
 <style>
   .avatar {
@@ -18,17 +18,11 @@
   }
 </style>
 <script>
+  import { imgLoadError } from '../_utils/events'
+
   export default {
     events: {
-      loadError (node, callback) {
-        node.addEventListener('error', callback)
-
-        return {
-          teardown () {
-            node.removeEventListener('error', callback)
-          }
-        }
-      },
+      imgLoadError
     }
   }
 </script>
