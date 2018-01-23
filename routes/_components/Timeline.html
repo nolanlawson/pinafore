@@ -38,22 +38,6 @@
           this.fire('initialized')
         }))
       })
-      this.observe('statuses', statuses => {
-        let cachedAccountNames = this.store.get('cachedAccountNames') || {}
-        for (let status of statuses) {
-          cachedAccountNames[status.account.id] = {
-            username: status.account.username,
-            acct: status.account.acct
-          }
-          if (status.reblog) {
-            cachedAccountNames[status.reblog.account.id] = {
-              username: status.reblog.account.username,
-              acct: status.reblog.account.acct
-            }
-          }
-        }
-        this.store.set({'cachedAccountNames': cachedAccountNames})
-      })
     },
     data: () => ({
       StatusListItem: StatusListItem,

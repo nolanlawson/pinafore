@@ -10,7 +10,7 @@ import {
 import {
   META_STORE,
   TIMELINE_STORE,
-  STATUSES_STORE
+  STATUSES_STORE, ACCOUNTS_STORE
 } from './constants'
 
 export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
@@ -38,16 +38,19 @@ export async function getTimeline(instanceName, timeline, maxId = null, limit = 
 
 export async function insertStatuses(instanceName, timeline, statuses) {
   const db = await getDatabase(instanceName, timeline)
-  await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE], 'readwrite', (stores) => {
-    let [ timelineStore, statusesStore ] = stores
+  await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE, ACCOUNTS_STORE], 'readwrite', (stores) => {
+    let [ timelineStore, statusesStore, accountsStore ] = stores
     for (let status of statuses) {
       statusesStore.put(status)
       // reverse chronological order, prefixed by timeline
-      let id = timeline + '\u0000' +  toReversePaddedBigInt(status.id)
       timelineStore.put({
-        id: id,
+        id: (timeline + '\u0000' +  toReversePaddedBigInt(status.id)),
         statusId: status.id
       })
+      accountsStore.put(status.account)
+      if (status.reblog) {
+        accountsStore.put(status.reblog.account)
+      }
     }
   })
 }
@@ -68,6 +71,15 @@ export async function setInstanceVerifyCredentials(instanceName, verifyCredentia
       key: 'verifyCredentials',
       value: verifyCredentials
     })
+  })
+}
+
+export async function getAccount(instanceName, accountId) {
+  const db = await getDatabase(instanceName)
+  return await dbPromise(db, ACCOUNTS_STORE, 'readonly', (store, callback) => {
+    store.get(accountId).onsuccess = (e) => {
+      callback(e.target.result && e.target.result)
+    }
   })
 }
 

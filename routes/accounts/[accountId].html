@@ -1,14 +1,14 @@
 <:Head>
-  <title>{{'Pinafore – ' + (cachedProfileName || profileName || '')}}</title>
+  <title>{{'Pinafore – ' + profileName}}</title>
 </:Head>
 
 <Layout page='tags'
-        dynamicPage="{{cachedProfileName || profileName || ''}}"
+        dynamicPage="{{profileName}}"
         dynamicHref="/accounts/{{params.accountId}}"
-        dynamicLabel="{{cachedShortProfileName || shortProfileName || ''}}"
+        dynamicLabel="{{shortProfileName}}"
         dynamicIcon="#fa-user" >
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="{{cachedProfileName || profileName || ''}}" />
+  <DynamicPageBanner title="{{profileName}}" />
   <LazyTimeline timeline='account/{{params.accountId}}' />
   {{else}}
   <HiddenFromSSR>
@@ -28,28 +28,39 @@
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
   import { getAccount } from '../_utils/mastodon/user'
+  import { database } from '../_utils/database/database'
 
   export default {
-    async oncreate() {
+    oncreate() {
       let currentInstance = this.store.get('currentInstance')
       let accessToken = this.store.get('accessToken')
       let accountId = this.get('params').accountId
-      let account = await getAccount(currentInstance, accessToken, accountId)
-      this.set({account: account})
+      database.getAccount(currentInstance, accountId).then(account => {
+        this.set({cachedAccount: account})
+      })
+      getAccount(currentInstance, accessToken, accountId).then(account => {
+        this.set({account: account})
+      })
     },
     store: () => store,
     computed: {
-      profileName: (account) => {
+      remoteProfileName: (account) => {
         return account && ('@' + account.acct)
       },
-      shortProfileName: (account) => {
+      remoteShortProfileName: (account) => {
         return account && ('@' + account.username)
       },
-      cachedProfileName: ($cachedAccountNames, params) => {
-        return $cachedAccountNames && $cachedAccountNames[params.accountId] && ('@' + $cachedAccountNames[params.accountId].acct)
+      cachedProfileName: (cachedAccount) => {
+        return cachedAccount && ('@' + cachedAccount.acct)
       },
-      cachedShortProfileName: ($cachedAccountNames, params) => {
-        return $cachedAccountNames && $cachedAccountNames[params.accountId] && ('@' + $cachedAccountNames[params.accountId].username)
+      cachedShortProfileName: (cachedAccount) => {
+        return cachedAccount && ('@' + cachedAccount.username)
+      },
+      profileName: (remoteProfileName, cachedProfileName) => {
+        return remoteProfileName || cachedProfileName || ''
+      },
+      shortProfileName: (remoteShortProfileName, cachedShortProfileName) => {
+        return remoteShortProfileName || cachedShortProfileName || ''
       }
     },
     components: {

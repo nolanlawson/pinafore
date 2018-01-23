@@ -4,7 +4,8 @@ const databaseCache = {}
 import {
   META_STORE,
   TIMELINE_STORE,
-  STATUSES_STORE
+  STATUSES_STORE,
+  ACCOUNTS_STORE
 } from './constants'
 
 export function getDatabase(instanceName) {
@@ -23,6 +24,7 @@ export function getDatabase(instanceName) {
       let db = req.result;
       db.createObjectStore(META_STORE, {keyPath: 'key'})
       db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
+      db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
       let timelineStore = db.createObjectStore(TIMELINE_STORE, {keyPath: 'id'})
       timelineStore.createIndex('statusId', 'statusId')
     }
