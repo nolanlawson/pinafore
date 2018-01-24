@@ -13,6 +13,18 @@ import {
   STATUSES_STORE, ACCOUNTS_STORE
 } from './constants'
 
+import QuickLRU from 'quick-lru'
+
+const statusesCache = new QuickLRU({maxSize: 100})
+
+if (process.browser && process.env.NODE_ENV !== 'production') {
+  window.cacheStats = {
+    cache: statusesCache,
+    cacheHits: 0,
+    cacheMisses: 0
+  }
+}
+
 export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
   const db = await getDatabase(instanceName, timeline)
   return await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE], 'readonly', (stores, callback) => {
@@ -37,6 +49,9 @@ export async function getTimeline(instanceName, timeline, maxId = null, limit = 
 }
 
 export async function insertStatuses(instanceName, timeline, statuses) {
+  for (let status of statuses) {
+    statusesCache.set(status.id, status)
+  }
   const db = await getDatabase(instanceName, timeline)
   await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE, ACCOUNTS_STORE], 'readwrite', (stores) => {
     let [ timelineStore, statusesStore, accountsStore ] = stores
@@ -85,4 +100,24 @@ export async function getAccount(instanceName, accountId) {
 
 export async function clearDatabaseForInstance(instanceName) {
   await deleteDatabase(instanceName)
+}
+
+export async function getStatus(instanceName, statusId) {
+  if (statusesCache.has(statusId)) {
+    if (process.browser && process.env.NODE_ENV !== 'production') {
+      window.cacheStats.cacheHits++
+    }
+    return statusesCache.get(statusId)
+  }
+  const db = await getDatabase(instanceName)
+  let result = await dbPromise(db, STATUSES_STORE, 'readonly', (store, callback) => {
+    store.get(statusId).onsuccess = (e) => {
+      callback(e.target.result && e.target.result)
+    }
+  })
+  statusesCache.set(statusId, result)
+  if (process.browser && process.env.NODE_ENV !== 'production') {
+    window.cacheStats.cacheMisses++
+  }
+  return result
 }

@@ -1,11 +1,11 @@
 <!-- TODO: setting height is hacky, just make this element the scroller -->
 <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
   {{#each $visibleItems as item @key}}
-    <VirtualListItem :component
-                     offset="{{item.offset}}"
-                     props="{{item.props}}"
-                     key="{{item.key}}"
-                     index="{{item.index}}"
+    <VirtualListLazyItem :component
+                         offset="{{item.offset}}"
+                         makeProps="{{makeProps}}"
+                         key="{{item.key}}"
+                         index="{{item.index}}"
     />
   {{/each}}
   {{#if $showFooter}}
@@ -19,7 +19,7 @@
   }
 </style>
 <script>
-  import VirtualListItem from './VirtualListItem'
+  import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
   import { virtualListStore } from '../_utils/virtualListStore'
   import throttle from 'lodash/throttle'
@@ -62,7 +62,7 @@
     }),
     store: () => virtualListStore,
     components: {
-      VirtualListItem,
+      VirtualListLazyItem,
       VirtualListFooter
     },
     computed: {

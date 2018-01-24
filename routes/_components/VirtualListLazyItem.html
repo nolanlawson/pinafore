@@ -1,0 +1,22 @@
+{{#if props}}
+<VirtualListItem :component
+                 :offset
+                 :props
+                 :key
+                 :index
+                 />
+{{/if}}
+<script>
+  import VirtualListItem from './VirtualListItem'
+  export default {
+    async oncreate() {
+      let makeProps = this.get('makeProps')
+      let key = this.get('key')
+      let props = await makeProps(key)
+      this.set({ props: props })
+    },
+    components: {
+      VirtualListItem
+    }
+  }
+</script>

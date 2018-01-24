@@ -56,7 +56,7 @@ virtualListStore.compute('visibleItems',
   let len = items.length
   let i = -1
   while (++i < len) {
-    let { props, key } = items[i]
+    let { key } = items[i]
     let height = itemHeights[key] || 0
     let currentOffset = totalOffset
     totalOffset += height
@@ -72,7 +72,6 @@ virtualListStore.compute('visibleItems',
     }
     visibleItems.push({
       offset: currentOffset,
-      props: props,
       key: key,
       index: i
     })

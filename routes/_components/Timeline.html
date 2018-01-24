@@ -1,7 +1,8 @@
 <:Window bind:online />
 <div class="timeline" role="feed" aria-label="{{label}}" on:initialized>
   <VirtualList component="{{StatusListItem}}"
-               items="{{keyedStatuses}}"
+               :makeProps
+               :items
                on:scrollToBottom="onScrollToBottom()"
                shown="{{initialized}}"
                footerComponent="{{LoadingFooter}}"
@@ -42,16 +43,18 @@
     data: () => ({
       StatusListItem: StatusListItem,
       LoadingFooter: LoadingFooter,
-      statuses: [],
+      statusIds: [],
       runningUpdate: false,
       initialized: false
     }),
     computed: {
-      keyedStatuses: (statuses) => statuses.map(status => ({
-        props: status,
-        key: status.id
-      })),
-      lastStatusId: (statuses) => statuses.length && statuses[statuses.length - 1].id,
+      makeProps: ($currentInstance) => (statusId) => database.getStatus($currentInstance, statusId),
+      items: (statusIds) => {
+        return statusIds.map(statusId => ({
+          key: statusId
+        }))
+      },
+      lastStatusId: (statusIds) => statusIds.length && statusIds[statusIds.length - 1],
       label: (timeline, $currentInstance) => {
         if (timelines[timeline]) {
           `${timelines[timeline].label} timeline for ${$currentInstance}`
@@ -89,12 +92,16 @@
         if (process.env.NODE_ENV !== 'production') {
           console.log('addStatuses()')
         }
-        let statuses = this.get('statuses')
-        if (!statuses) {
+        let instanceName = this.store.get('instanceName')
+        let timeline = this.get('timeline')
+        /* no await */ database.insertStatuses(instanceName, timeline, newStatuses)
+        let statusIds = this.get('statusIds')
+        if (!statusIds) {
           return
         }
-        let merged = mergeStatuses(statuses, newStatuses)
-        this.set({ statuses: merged })
+        let newStatusIds = newStatuses.map(status => status.id)
+        let merged = mergeStatuses(statusIds, newStatusIds)
+        this.set({ statusIds: merged })
       },
       async fetchStatusesAndPossiblyFallBack() {
         let online = this.get('online')

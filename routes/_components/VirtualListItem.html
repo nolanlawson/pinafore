@@ -2,7 +2,10 @@
      virtual-list-key="{{key}}"
      ref:node
      style="transform: translateY({{offset}}px);" >
-  <:Component {component} virtualProps="{{props}}" virtualIndex="{{index}}" virtualLength="{{$numItems}}"
+  <:Component {component}
+              virtualProps="{{props}}"
+              virtualIndex="{{index}}"
+              virtualLength="{{$numItems}}"
               on:recalculateHeight="doRecalculateHeight()"/>
 </div>
 <style>
