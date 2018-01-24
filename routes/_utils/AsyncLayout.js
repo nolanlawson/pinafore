@@ -14,24 +14,30 @@ class AsyncLayout {
   }
 
   observe(key, node, callback) {
-    this._onIntersectionCallbacks[key] = (entry) => {
-      callback(getRectFromEntry(entry))
-      this.unobserve(key, node)
+    if (this._intersectionObserver) {
+      this._onIntersectionCallbacks[key] = (entry) => {
+        callback(getRectFromEntry(entry))
+        this.unobserve(key, node)
+      }
+      this._intersectionObserver.observe(node)
     }
-    this._intersectionObserver.observe(node)
   }
 
   unobserve(key, node) {
     if (key in this._onIntersectionCallbacks) {
       return
     }
-    this._intersectionObserver.unobserve(node)
+    if (this._intersectionObserver) {
+      this._intersectionObserver.unobserve(node)
+    }
     delete this._onIntersectionCallbacks[key]
   }
 
   disconnect() {
-    this._intersectionObserver.disconnect()
-    this._intersectionObserver = null
+    if (this._intersectionObserver) {
+      this._intersectionObserver.disconnect()
+      this._intersectionObserver = null
+    }
   }
 }
 
