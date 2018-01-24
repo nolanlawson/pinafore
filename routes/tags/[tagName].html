@@ -6,10 +6,11 @@
         dynamicPage="{{params.tagName}}"
         dynamicHref="/tags/{{params.tagName}}"
         dynamicLabel="{{'#' + params.tagName}}"
-        dynamicIcon="#fa-hashtag" >
+        dynamicIcon="#fa-hashtag"
+        storeKey="tag/{{params.tagName}}">
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{'#' + params.tagName}}"/>
-  <LazyTimeline timeline='tag/{{params.tagName}}' />
+  <LazyTimeline timeline='tag/{{params.tagName}}'/>
   {{else}}
   <HiddenFromSSR>
     <FreeTextLayout>

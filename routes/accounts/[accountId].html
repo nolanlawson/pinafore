@@ -2,14 +2,15 @@
   <title>{{'Pinafore – ' + profileName}}</title>
 </:Head>
 
-<Layout page='tags'
+<Layout page='accounts'
         dynamicPage="{{profileName}}"
         dynamicHref="/accounts/{{params.accountId}}"
         dynamicLabel="{{shortProfileName}}"
-        dynamicIcon="#fa-user" >
+        dynamicIcon="#fa-user"
+        storeKey='account/{{params.accountId}}' >
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{profileName}}" />
-  <LazyTimeline timeline='account/{{params.accountId}}' />
+  <LazyTimeline timeline='account/{{params.accountId}}'/>
   {{else}}
   <HiddenFromSSR>
     <FreeTextLayout>

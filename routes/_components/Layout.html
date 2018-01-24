@@ -1,6 +1,6 @@
 <Nav :page :dynamicPage :dynamicHref :dynamicIcon :dynamicLabel/>
 
-<VirtualListContainer>
+<VirtualListContainer storeKey="{{dynamicPage || page}}">
   <main>
     <slot></slot>
   </main>

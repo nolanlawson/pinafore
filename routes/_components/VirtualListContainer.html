@@ -10,6 +10,7 @@
   import throttle from 'lodash/throttle'
   import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../_utils/fullscreen'
   import { mark, stop } from '../_utils/marks'
+  import { virtualStoreCache } from '../_utils/virtualStoreCache'
 
   const SCROLL_EVENT_DELAY = 300
 
@@ -24,7 +25,10 @@
       })
       stop('onCreate VirtualListContainer')
     },
-    store: () => virtualListStore,
+    store: () => {
+
+      return virtualListStore
+    },
     events: {
       scroll(node, callback) {
         const onScroll = throttle(event => {

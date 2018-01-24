@@ -3,10 +3,71 @@ import { mark, stop } from '../_utils/marks'
 
 const VIEWPORT_RENDER_FACTOR = 4
 
-class VirtualListStore extends Store {
+const defaults = {
+  items: [],
+  itemHeights: {},
+  showFooter: false,
+  footerHeight: 0
+}
+
+export class VirtualListStore extends Store {
   constructor(state) {
-    super(state)
+    super(Object.assign({}, defaults, state))
     this._batches = {}
+
+    this.compute('visibleItems',
+      ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
+      (items, scrollTop, itemHeights, offsetHeight) => {
+        mark('compute visibleItems')
+        let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
+        let visibleItems = []
+        let totalOffset = 0
+        let len = items.length
+        let i = -1
+        while (++i < len) {
+          let key = items[i]
+          let height = itemHeights[key] || 0
+          let currentOffset = totalOffset
+          totalOffset += height
+          let isBelowViewport = (currentOffset < scrollTop)
+          if (isBelowViewport) {
+            if (scrollTop - renderBuffer > currentOffset) {
+              continue // below the area we want to render
+            }
+          } else {
+            if (currentOffset > (scrollTop + height + renderBuffer)) {
+              break // above the area we want to render
+            }
+          }
+          visibleItems.push({
+            offset: currentOffset,
+            key: key,
+            index: i
+          })
+        }
+        stop('compute visibleItems')
+        return visibleItems
+      })
+
+    this.compute('heightWithoutFooter',
+      ['items', 'itemHeights'],
+      (items, itemHeights) => {
+        let sum = 0
+        let i = -1
+        let len = items.length
+        while (++i < len) {
+          sum += itemHeights[items[i]] || 0
+        }
+        return sum
+      })
+
+    this.compute('height',
+      ['heightWithoutFooter', 'showFooter', 'footerHeight'],
+      (heightWithoutFooter, showFooter, footerHeight) => {
+        return showFooter ? (heightWithoutFooter + footerHeight) : heightWithoutFooter
+      })
+
+    this.compute('numItems', ['items'], (items) => items.length)
   }
 
   batchUpdate(key, subKey, value) {
@@ -37,74 +98,4 @@ class VirtualListStore extends Store {
       stop('batchUpdate()')
     })
   }
-}
-
-const virtualListStore = new VirtualListStore({
-  items: [],
-  itemHeights: {},
-  showFooter: false,
-  footerHeight: 0
-})
-
-virtualListStore.compute('visibleItems',
-    ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
-    (items, scrollTop, itemHeights, offsetHeight) => {
-  mark('compute visibleItems')
-  let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
-  let visibleItems = []
-  let totalOffset = 0
-  let len = items.length
-  let i = -1
-  while (++i < len) {
-    let key = items[i]
-    let height = itemHeights[key] || 0
-    let currentOffset = totalOffset
-    totalOffset += height
-    let isBelowViewport = (currentOffset < scrollTop)
-    if (isBelowViewport) {
-      if (scrollTop - renderBuffer > currentOffset) {
-        continue // below the area we want to render
-      }
-    } else {
-      if (currentOffset > (scrollTop + height + renderBuffer)) {
-        break // above the area we want to render
-      }
-    }
-    visibleItems.push({
-      offset: currentOffset,
-      key: key,
-      index: i
-    })
-  }
-  stop('compute visibleItems')
-  return visibleItems
-})
-
-virtualListStore.compute('heightWithoutFooter',
-    ['items', 'itemHeights'],
-    (items, itemHeights) => {
-  let sum = 0
-  let i = -1
-  let len = items.length
-  while (++i < len) {
-    sum += itemHeights[items[i]] || 0
-  }
-  return sum
-})
-
-
-virtualListStore.compute('height',
-    ['heightWithoutFooter', 'showFooter', 'footerHeight'],
-    (heightWithoutFooter, showFooter, footerHeight) => {
-  return showFooter ? (heightWithoutFooter + footerHeight) : heightWithoutFooter
-})
-
-virtualListStore.compute('numItems', ['items'], (items) => items.length)
-
-if (process.browser && process.env.NODE_ENV !== 'production') {
-  window.virtualListStore = virtualListStore
-}
-
-export {
-  virtualListStore
 }
