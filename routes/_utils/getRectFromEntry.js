@@ -13,7 +13,6 @@ export function getRectFromEntry(entry) {
       boundingRect.bottom !== observerRect.bottom ||
       boundingRect.left !== observerRect.left ||
       boundingRect.right !== observerRect.right;
-    alert(hasBoundingRectBug)
   }
   return hasBoundingRectBug ? entry.target.getBoundingClientRect() : entry.boundingClientRect;
 }
