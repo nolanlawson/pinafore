@@ -7,6 +7,8 @@
                shown="{{initialized}}"
                footerComponent="{{LoadingFooter}}"
                showFooter="{{initialized && runningUpdate}}"
+               storeKey="{{timeline}}"
+               initialized="{{initialized}}"
   />
 </div>
 <style>
@@ -27,18 +29,32 @@
   import { toast } from '../_utils/toast'
   import { database } from '../_utils/database/database'
 
+  const cachedTimelines = {}
+
+  if (process.browser && process.env.NODE_ENV !== 'production') {
+    window.cachedTimelines = cachedTimelines
+  }
+
   const FETCH_LIMIT = 20
 
   export default {
     async oncreate() {
-      let statuses = await this.fetchStatusesAndPossiblyFallBack()
-      this.addStatuses(statuses)
+      let timeline = this.get('timeline')
+      let cachedStatusIds = cachedTimelines[timeline]
+      if (cachedStatusIds) {
+        this.set({statusIds: cachedStatusIds})
+      } else {
+        this.addStatuses(await this.fetchStatusesAndPossiblyFallBack())
+      }
       requestAnimationFrame(() => {
-        requestAnimationFrame((() => {
+        requestAnimationFrame(() => {
           this.set({initialized: true})
           this.fire('initialized')
-        }))
+        })
       })
+    },
+    ondestroy() {
+      cachedTimelines[this.get('timeline')] = this.get('statusIds')
     },
     data: () => ({
       StatusListItem: StatusListItem,

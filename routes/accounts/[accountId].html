@@ -3,6 +3,8 @@
 </:Head>
 
 <Layout page='tags'
+        virtual="true"
+        virtualStoreKey='account/{{params.accountId}}'
         dynamicPage="{{profileName}}"
         dynamicHref="/accounts/{{params.accountId}}"
         dynamicLabel="{{shortProfileName}}"

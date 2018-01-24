@@ -1,10 +1,18 @@
 <Nav :page :dynamicPage :dynamicHref :dynamicIcon :dynamicLabel/>
 
-<VirtualListContainer>
-  <main>
-    <slot></slot>
-  </main>
-</VirtualListContainer>
+{{#if virtual}}
+  <VirtualListContainer storeKey="{{virtualStoreKey}}">
+    <main>
+      <slot></slot>
+    </main>
+  </VirtualListContainer>
+{{else}}
+  <div class="container">
+    <main>
+      <slot></slot>
+    </main>
+  </div>
+{{/if}}
 <script>
 	import Nav from './Nav.html';
 	import VirtualListContainer from './VirtualListContainer.html'

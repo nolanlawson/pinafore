@@ -3,10 +3,26 @@ import { mark, stop } from '../_utils/marks'
 
 const VIEWPORT_RENDER_FACTOR = 4
 
+const cloneKeys = [
+  'items',
+  'itemHeights',
+  'scrollTop',
+  'scrollHeight',
+  'offsetHeight'
+]
+
 class VirtualListStore extends Store {
   constructor(state) {
     super(state)
     this._batches = {}
+  }
+
+  cloneState() {
+    let res = {}
+    for (let key of cloneKeys) {
+      res[key] = this.get(key)
+    }
+    return res
   }
 
   batchUpdate(key, subKey, value) {

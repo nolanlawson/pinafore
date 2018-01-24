@@ -3,6 +3,8 @@
 </:Head>
 
 <Layout page='tags'
+        virtual="true"
+        virtualStoreKey='tag/{{params.tagName}}'
         dynamicPage="{{params.tagName}}"
         dynamicHref="/tags/{{params.tagName}}"
         dynamicLabel="{{'#' + params.tagName}}"
