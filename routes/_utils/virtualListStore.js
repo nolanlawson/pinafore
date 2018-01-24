@@ -56,7 +56,7 @@ virtualListStore.compute('visibleItems',
   let len = items.length
   let i = -1
   while (++i < len) {
-    let { key } = items[i]
+    let key = items[i]
     let height = itemHeights[key] || 0
     let currentOffset = totalOffset
     totalOffset += height
@@ -87,7 +87,7 @@ virtualListStore.compute('heightWithoutFooter',
   let i = -1
   let len = items.length
   while (++i < len) {
-    sum += itemHeights[items[i].key] || 0
+    sum += itemHeights[items[i]] || 0
   }
   return sum
 })

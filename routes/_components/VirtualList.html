@@ -1,11 +1,11 @@
 <!-- TODO: setting height is hacky, just make this element the scroller -->
 <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
-  {{#each $visibleItems as item @key}}
+  {{#each $visibleItems as visibleItem @key}}
     <VirtualListLazyItem :component
-                         offset="{{item.offset}}"
+                         offset="{{visibleItem.offset}}"
                          makeProps="{{makeProps}}"
-                         key="{{item.key}}"
-                         index="{{item.index}}"
+                         key="{{visibleItem.key}}"
+                         index="{{visibleItem.index}}"
     />
   {{/each}}
   {{#if $showFooter}}

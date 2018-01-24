@@ -2,7 +2,7 @@
 <div class="timeline" role="feed" aria-label="{{label}}" on:initialized>
   <VirtualList component="{{StatusListItem}}"
                :makeProps
-               :items
+               items="{{statusIds}}"
                on:scrollToBottom="onScrollToBottom()"
                shown="{{initialized}}"
                footerComponent="{{LoadingFooter}}"
@@ -49,11 +49,6 @@
     }),
     computed: {
       makeProps: ($currentInstance) => (statusId) => database.getStatus($currentInstance, statusId),
-      items: (statusIds) => {
-        return statusIds.map(statusId => ({
-          key: statusId
-        }))
-      },
       lastStatusId: (statusIds) => statusIds.length && statusIds[statusIds.length - 1],
       label: (timeline, $currentInstance) => {
         if (timelines[timeline]) {
