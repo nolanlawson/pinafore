@@ -291,6 +291,7 @@
   import { mark, stop } from '../_utils/marks'
   import IntlRelativeFormat from 'intl-relativeformat'
   import { replaceAll } from '../_utils/replaceAll'
+  import { store } from '../_utils/store'
 
   const relativeFormat = new IntlRelativeFormat('en-US');
 
@@ -303,6 +304,7 @@
       Media,
       Toolbar
     },
+    store: () => store,
     computed: {
       createdAtDate: (status) => status.created_at,
       relativeDate: (createdAtDate) => {
@@ -314,6 +316,7 @@
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
+      statusId: (originalStatus) => originalStatus.id,
       emojifiedContent: (originalStatus) => {
         let status = originalStatus
         let content = status.content
@@ -329,16 +332,24 @@
           }
         }
         return content
-      }
+      },
+      spoilerShown: ($spoilersShown, statusId) => $spoilersShown && $spoilersShown[statusId],
+      sensitiveShown: ($sensitivesShown, statusId) => $sensitivesShown && $sensitivesShown[statusId],
     },
     methods: {
       onClickSpoilerButton() {
-        this.set({spoilerShown: !this.get('spoilerShown')})
+        let $spoilersShown = this.store.get('spoilersShown') || {}
+        let statusId = this.get('statusId')
+        $spoilersShown[statusId] = !$spoilersShown[statusId]
+        this.store.set({'spoilersShown': $spoilersShown})
         this.hashtagifyContent()
         this.fire('recalculateHeight')
       },
       onClickSensitiveMediaButton() {
-        this.set({sensitiveShown: !this.get('sensitiveShown')})
+        let $sensitivesShown = this.store.get('sensitivesShown') || {}
+        let statusId = this.get('statusId')
+        $sensitivesShown[statusId] = !$sensitivesShown[statusId]
+        this.store.set({'sensitivesShown': $sensitivesShown})
         this.fire('recalculateHeight')
       },
       hashtagifyContent() {
