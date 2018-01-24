@@ -2,7 +2,7 @@
   <title>{{'Pinafore – ' + profileName}}</title>
 </:Head>
 
-<Layout page='accounts'
+<VirtualListLayout page='accounts'
         dynamicPage="{{profileName}}"
         dynamicHref="/accounts/{{params.accountId}}"
         dynamicLabel="{{shortProfileName}}"
@@ -20,9 +20,9 @@
     </FreeTextLayout>
   </HiddenFromSSR>
   {{/if}}
-</Layout>
+</VirtualListLayout>
 <script>
-  import Layout from '../_components/Layout.html'
+  import VirtualListLayout from '../_components/VirtualListLayout.html'
   import LazyTimeline from '../_components/LazyTimeline.html'
   import FreeTextLayout from '../_components/FreeTextLayout.html'
   import { store } from '../_utils/store.js'
@@ -65,7 +65,7 @@
       }
     },
     components: {
-      Layout,
+      VirtualListLayout,
       LazyTimeline,
       FreeTextLayout,
       HiddenFromSSR,

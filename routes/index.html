@@ -2,17 +2,17 @@
 	<title>Pinafore – Home</title>
 </:Head>
 
-<Layout page='home'>
+<VirtualListLayout page='home'>
   {{#if $isUserLoggedIn}}
   <LazyTimeline timeline='home' />
   {{else}}
   <NotLoggedInHome/>
   {{/if}}
-</Layout>
+</VirtualListLayout>
 
 
 <script>
-  import Layout from './_components/Layout.html'
+  import VirtualListLayout from './_components/VirtualListLayout.html'
   import NotLoggedInHome from './_components/NotLoggedInHome.html'
   import LazyTimeline from './_components/LazyTimeline.html'
   import { store } from './_utils/store.js'
@@ -20,7 +20,7 @@
 	export default {
 		store: () => store,
 		components: {
-		  Layout,
+      VirtualListLayout,
       LazyTimeline,
 			NotLoggedInHome
 		}

@@ -5,8 +5,7 @@
   <slot></slot>
 </div>
 <script>
-  import { virtualListStore } from '../_utils/virtualListStore'
-
+  import { getVirtualStore } from '../_utils/virtualStoreCache'
   import throttle from 'lodash/throttle'
   import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../_utils/fullscreen'
   import { mark, stop } from '../_utils/marks'
@@ -25,10 +24,7 @@
       })
       stop('onCreate VirtualListContainer')
     },
-    store: () => {
-
-      return virtualListStore
-    },
+    store: () => getVirtualStore(this.get('storeKey')),
     events: {
       scroll(node, callback) {
         const onScroll = throttle(event => {

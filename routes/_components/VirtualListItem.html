@@ -21,7 +21,7 @@
   }
 </style>
 <script>
-  import { virtualListStore } from '../_utils/virtualListStore'
+  import { getVirtualStore } from '../_utils/virtualStoreCache'
   import { AsyncLayout } from '../_utils/AsyncLayout'
 
   const keyGetter = node => node.getAttribute('virtual-list-key')
@@ -39,7 +39,7 @@
       let key = this.get('key')
       asyncLayout.unobserve(key, this.refs.node)
     },
-    store: () => virtualListStore,
+    store: () => getVirtualStore(this.get('storeKey')),
     computed: {
       'shown': ($itemHeights, key) => $itemHeights[key] > 0
     },

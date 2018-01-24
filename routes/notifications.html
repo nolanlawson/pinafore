@@ -2,7 +2,7 @@
 	<title>Pinafore – Notifications</title>
 </:Head>
 
-<Layout page='notifications'>
+<VirtualListLayout page='notifications'>
   <HiddenFromSSR>
     <FreeTextLayout>
       <h1>Notifications</h1>
@@ -10,16 +10,16 @@
       <p>Your notifications will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-</Layout>
+</VirtualListLayout>
 
 <script>
-  import Layout from './_components/Layout.html';
+  import VirtualListLayout from './_components/VirtualListLayout.html';
   import FreeTextLayout from './_components/FreeTextLayout.html'
   import HiddenFromSSR from './_components/HiddenFromSSR'
 
   export default {
     components: {
-      Layout,
+      VirtualListLayout,
       FreeTextLayout,
       HiddenFromSSR
     },

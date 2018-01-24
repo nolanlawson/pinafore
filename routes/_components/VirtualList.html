@@ -6,6 +6,7 @@
                          makeProps="{{makeProps}}"
                          key="{{visibleItem.key}}"
                          index="{{visibleItem.index}}"
+                         :storeKey
     />
   {{/each}}
   {{#if $showFooter}}
@@ -21,7 +22,7 @@
 <script>
   import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
-  import { virtualListStore } from '../_utils/virtualListStore'
+  import { getVirtualStore } from '../_utils/virtualStoreCache'
   import throttle from 'lodash/throttle'
   import { mark, stop } from '../_utils/marks'
 
@@ -60,7 +61,7 @@
     data: () => ({
       component: null
     }),
-    store: () => virtualListStore,
+    store: () => getVirtualStore(this.get('storeKey')),
     components: {
       VirtualListLazyItem,
       VirtualListFooter

@@ -2,7 +2,7 @@
   <title>Pinafore – #{{params.tagName}}</title>
 </:Head>
 
-<Layout page='tags'
+<VirtualListLayout page='tags'
         dynamicPage="{{params.tagName}}"
         dynamicHref="/tags/{{params.tagName}}"
         dynamicLabel="{{'#' + params.tagName}}"
@@ -20,9 +20,9 @@
     </FreeTextLayout>
   </HiddenFromSSR>
   {{/if}}
-</Layout>
+</VirtualListLayout>
 <script>
-  import Layout from '../_components/Layout.html'
+  import VirtualListLayout from '../_components/VirtualListLayout.html'
   import LazyTimeline from '../_components/LazyTimeline.html'
   import FreeTextLayout from '../_components/FreeTextLayout.html'
   import { store } from '../_utils/store.js'
@@ -32,7 +32,7 @@
   export default {
     store: () => store,
     components: {
-      Layout,
+      VirtualListLayout,
       LazyTimeline,
       FreeTextLayout,
       HiddenFromSSR,
