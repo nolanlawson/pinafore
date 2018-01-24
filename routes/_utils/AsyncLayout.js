@@ -1,4 +1,6 @@
 // Use intersection observer to calculate rects asynchronously
+import { getRectFromEntry } from './getRectFromEntry'
+
 class AsyncLayout {
   constructor(generateKeyFromNode) {
     this._onIntersectionCallbacks = {}
@@ -13,7 +15,7 @@ class AsyncLayout {
 
   observe(key, node, callback) {
     this._onIntersectionCallbacks[key] = (entry) => {
-      callback(entry.boundingClientRect)
+      callback(getRectFromEntry(entry))
       this.unobserve(key, node)
     }
     this._intersectionObserver.observe(node)
