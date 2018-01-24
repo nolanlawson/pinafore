@@ -23,15 +23,15 @@
     </a>
   </div>
   <Avatar account={{originalAccount}} className="status-sidebar"/>
-  {{#if status.spoiler_text}}
-    <div class="status-spoiler">{{status.spoiler_text}}</div>
+  {{#if originalStatus.spoiler_text}}
+    <div class="status-spoiler">{{originalStatus.spoiler_text}}</div>
   {{/if}}
-  {{#if status.spoiler_text}}
+  {{#if originalStatus.spoiler_text}}
     <div class="status-spoiler-button">
       <button type="button" on:click="onClickSpoilerButton()">{{spoilerShown ? 'Show less' : 'Show more'}}</button>
     </div>
   {{/if}}
-  {{#if !status.spoiler_text || spoilerShown}}
+  {{#if !originalStatus.spoiler_text || spoilerShown}}
     <div class="status-content" ref:contentNode>
       {{{emojifiedContent}}}
     </div>
