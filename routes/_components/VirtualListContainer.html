@@ -109,6 +109,7 @@
           if (process.env.NODE_ENV !== 'production') {
             console.log('no need to force scroll top')
           }
+          return
         }
         let initializedScrollTop = false
         let node = this.refs.node

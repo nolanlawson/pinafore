@@ -45,6 +45,7 @@
       } else {
         this.addStatuses(await this.fetchStatusesAndPossiblyFallBack())
       }
+      // TODO: this is just a guess. allVisibleItemsHaveHeight should be more accurate
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           this.set({initialized: true})
