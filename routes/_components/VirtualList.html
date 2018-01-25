@@ -44,6 +44,12 @@
         }, SCROLL_TO_BOTTOM_DELAY)
       })
 
+      this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+        if (allVisibleItemsHaveHeight) {
+          this.fire('initializedVisibleItems')
+        }
+      })
+
       let observedOnce = false
 
       this.observe('distanceFromBottom', (distanceFromBottom) => {
@@ -68,7 +74,9 @@
     computed: {
       distanceFromBottom: ($scrollHeight, $scrollTop, $offsetHeight) => {
         return $scrollHeight - $scrollTop - $offsetHeight
-      }
+      },
+      // TODO: bug in svelte store, shouldn't need to do this
+      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
     }
   }
 </script>

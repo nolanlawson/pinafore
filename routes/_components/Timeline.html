@@ -8,6 +8,7 @@
                footerComponent="{{LoadingFooter}}"
                showFooter="{{initialized && runningUpdate}}"
                storeKey="{{timeline}}"
+               on:initializedVisibleItems="initialize()"
   />
 </div>
 <style>
@@ -45,13 +46,6 @@
       } else {
         this.addStatuses(await this.fetchStatusesAndPossiblyFallBack())
       }
-      // TODO: this is just a guess. allVisibleItemsHaveHeight should be more accurate
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          this.set({initialized: true})
-          this.fire('initialized')
-        })
-      })
     },
     ondestroy() {
       cachedTimelines[this.get('timeline')] = this.get('statusIds')
@@ -85,6 +79,17 @@
     methods: {
       splice: splice,
       push: push,
+      initialize() {
+        if (this.get('initialized') || !this.get('statusIds') || !this.get('statusIds').length) {
+          return
+        }
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this.set({initialized: true})
+            this.fire('initialized')
+          })
+        })
+      },
       async onScrollToBottom() {
         if (!this.get('initialized')) {
           return
