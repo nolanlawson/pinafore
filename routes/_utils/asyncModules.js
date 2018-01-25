@@ -1,6 +1,6 @@
 import { loadCSS } from 'fg-loadcss';
 
-const importURLSearchParams = () => import(
+export const importURLSearchParams = () => import(
   /* webpackChunkName: 'url-search-params' */ 'url-search-params'
   ).then(Params => {
   window.URLSearchParams = Params
@@ -11,23 +11,23 @@ const importURLSearchParams = () => import(
   })
 })
 
-const importTimeline = () => import(
+export const importTimeline = () => import(
   /* webpackChunkName: 'Timeline' */ '../_components/Timeline.html'
   ).then(mod => mod.default)
 
-const importIntersectionObserver = () => import(
+export const importIntersectionObserver = () => import(
   /* webpackChunkName: 'intersection-observer' */ 'intersection-observer'
   )
 
-const importRequestIdleCallback = () => import(
+export const importRequestIdleCallback = () => import(
   /* webpackChunkName: 'requestidlecallback' */ 'requestidlecallback'
   )
 
-const importIndexedDBGetAllShim = () => import(
+export const importIndexedDBGetAllShim = () => import(
   /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
   )
 
-const importDialogPolyfill = (() => {
+export const importDialogPolyfill = (() => {
   let cached
   return () => {
     if (cached) {
@@ -40,12 +40,3 @@ const importDialogPolyfill = (() => {
     })
   }
 })()
-
-export {
-  importURLSearchParams,
-  importTimeline,
-  importIntersectionObserver,
-  importRequestIdleCallback,
-  importIndexedDBGetAllShim,
-  importDialogPolyfill
-}

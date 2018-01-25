@@ -29,6 +29,7 @@
   import { timelines } from '../_static/timelines'
   import { toast } from '../_utils/toast'
   import { database } from '../_utils/database/database'
+  import { StatusStream } from '../_utils/mastodon/StatusStream'
 
   const cachedTimelines = {}
 
@@ -42,6 +43,7 @@
     async oncreate() {
       let timeline = this.get('timeline')
       let instanceName = this.store.get('currentInstance')
+      let accessToken = this.store.get('accessToken')
       let cachedStatusIds = cachedTimelines[timeline]
       if (cachedStatusIds) {
         this.set({statusIds: cachedStatusIds})
@@ -50,8 +52,16 @@
       }
       /* no await */ getInstanceInfo(instanceName).then(instanceInfo => database.setInstanceInfo(instanceName, instanceInfo))
       let instanceInfo = await database.getInstanceInfo(instanceName)
+      this._statusStream = new StatusStream(instanceInfo.urls.streaming_api, accessToken, timeline, {
+        onMessage(message) {
+          console.log('message', message)
+        }
+      })
     },
     ondestroy() {
+      if (this._statusStream) {
+        this._statusStream.close()
+      }
       cachedTimelines[this.get('timeline')] = this.get('statusIds')
     },
     data: () => ({

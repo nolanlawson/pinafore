@@ -52,6 +52,7 @@
     "url-search-params": "^0.10.0",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.2",
+    "websocket.js": "^0.1.12",
     "workerize-loader": "^1.0.1",
     "yargs": "^10.1.1"
   },
