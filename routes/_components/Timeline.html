@@ -19,6 +19,7 @@
 <script>
   import { store } from '../_utils/store'
   import { getTimeline } from '../_utils/mastodon/timelines'
+  import { getInstanceInfo } from '../_utils/mastodon/instance'
   import StatusListItem from './StatusListItem.html'
   import LoadingFooter from './LoadingFooter.html'
   import VirtualList from './virtualList/VirtualList.html'
@@ -40,12 +41,15 @@
   export default {
     async oncreate() {
       let timeline = this.get('timeline')
+      let instanceName = this.store.get('currentInstance')
       let cachedStatusIds = cachedTimelines[timeline]
       if (cachedStatusIds) {
         this.set({statusIds: cachedStatusIds})
       } else {
         this.addStatuses(await this.fetchStatusesAndPossiblyFallBack())
       }
+      /* no await */ getInstanceInfo(instanceName).then(instanceInfo => database.setInstanceInfo(instanceName, instanceInfo))
+      let instanceInfo = await database.getInstanceInfo(instanceName)
     },
     ondestroy() {
       cachedTimelines[this.get('timeline')] = this.get('statusIds')

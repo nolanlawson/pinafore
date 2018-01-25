@@ -17,6 +17,7 @@ import QuickLRU from 'quick-lru'
 
 const statusesCache = new QuickLRU({maxSize: 100})
 const accountsCache = new QuickLRU({maxSize: 50})
+const metaCache = new QuickLRU({maxSize: 20})
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.cacheStats = {
@@ -29,9 +30,18 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
       cache: accountsCache,
       hits: 0,
       misses: 0
+    },
+    meta: {
+      cache: accountsCache,
+      hits: 0,
+      misses: 0
     }
   }
 }
+
+//
+// timelines/statuses
+//
 
 export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
   const db = await getDatabase(instanceName, timeline)
@@ -82,24 +92,80 @@ export async function insertStatuses(instanceName, timeline, statuses) {
   })
 }
 
-export async function getInstanceVerifyCredentials(instanceName) {
+export async function getStatus(instanceName, statusId) {
+  if (statusesCache.has(statusId)) {
+    if (process.browser && process.env.NODE_ENV !== 'production') {
+      window.cacheStats.statuses.hits++
+    }
+    return statusesCache.get(statusId)
+  }
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
-    store.get('verifyCredentials').onsuccess = (e) => {
+  let result = await dbPromise(db, STATUSES_STORE, 'readonly', (store, callback) => {
+    store.get(statusId).onsuccess = (e) => {
+      callback(e.target.result && e.target.result)
+    }
+  })
+  statusesCache.set(statusId, result)
+  if (process.browser && process.env.NODE_ENV !== 'production') {
+    window.cacheStats.statuses.misses++
+  }
+  return result
+}
+
+//
+// meta
+//
+
+async function getMetaProperty(instanceName, key) {
+  if (metaCache.has(key)) {
+    if (process.browser && process.env.NODE_ENV !== 'production') {
+      window.cacheStats.meta.hits++
+    }
+    return metaCache.get(key)
+  }
+  const db = await getDatabase(instanceName)
+  let result = await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
+    store.get(key).onsuccess = (e) => {
       callback(e.target.result && e.target.result.value)
     }
   })
+  metaCache.set(key, result)
+  if (process.browser && process.env.NODE_ENV !== 'production') {
+    window.cacheStats.meta.misses++
+  }
+  return result
 }
 
-export async function setInstanceVerifyCredentials(instanceName, verifyCredentials) {
+async function setMetaProperty(instanceName, key, value) {
+  metaCache.set(key, value)
   const db = await getDatabase(instanceName)
   return await dbPromise(db, META_STORE, 'readwrite', (store) => {
     store.put({
-      key: 'verifyCredentials',
-      value: verifyCredentials
+      key: key,
+      value: value
     })
   })
 }
+
+export async function getInstanceVerifyCredentials(instanceName) {
+  return await getMetaProperty(instanceName, 'verifyCredentials')
+}
+
+export async function setInstanceVerifyCredentials(instanceName, value) {
+  return await setMetaProperty(instanceName, 'verifyCredentials', value)
+}
+
+export async function getInstanceInfo(instanceName) {
+  return await getMetaProperty(instanceName, 'instance')
+}
+
+export async function setInstanceInfo(instanceName, value) {
+  return await setMetaProperty(instanceName, 'instance', value)
+}
+
+//
+// accounts
+//
 
 export async function getAccount(instanceName, accountId) {
   if (accountsCache.has(accountId)) {
@@ -120,26 +186,10 @@ export async function getAccount(instanceName, accountId) {
   return result
 }
 
+//
+// lifecycle
+//
+
 export async function clearDatabaseForInstance(instanceName) {
   await deleteDatabase(instanceName)
-}
-
-export async function getStatus(instanceName, statusId) {
-  if (statusesCache.has(statusId)) {
-    if (process.browser && process.env.NODE_ENV !== 'production') {
-      window.cacheStats.statuses.hits++
-    }
-    return statusesCache.get(statusId)
-  }
-  const db = await getDatabase(instanceName)
-  let result = await dbPromise(db, STATUSES_STORE, 'readonly', (store, callback) => {
-    store.get(statusId).onsuccess = (e) => {
-      callback(e.target.result && e.target.result)
-    }
-  })
-  statusesCache.set(statusId, result)
-  if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cacheStats.statuses.misses++
-  }
-  return result
 }

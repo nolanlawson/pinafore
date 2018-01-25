@@ -73,6 +73,7 @@
   import SettingsLayout from '../_components/SettingsLayout.html'
   import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon/oauth'
   import { getVerifyCredentials } from '../../_utils/mastodon/user'
+  import { getInstanceInfo } from '../../_utils/mastodon/instance'
   import { store } from '../../_utils/store'
   import { goto } from 'sapper/runtime.js'
   import { switchToTheme } from '../../_utils/themeEngine'
@@ -125,7 +126,10 @@
           this.set({error: `You've already logged in to ${instanceName}`})
           return
         }
-        let instanceData = await registerApplication(instanceName, REDIRECT_URI)
+        let registrationPromise = registerApplication(instanceName, REDIRECT_URI)
+        let instanceInfo = await getInstanceInfo(instanceName)
+        await database.setInstanceInfo(instanceName, instanceInfo) // cache for later
+        let instanceData = await registrationPromise
         this.store.set({
           currentRegisteredInstanceName: instanceName,
           currentRegisteredInstance: instanceData
@@ -177,7 +181,7 @@
         })
         this.store.save()
         switchToTheme('default')
-        // fire off request for account so it's cached in the SW
+        // fire off request for account so it's cached
         getVerifyCredentials(currentRegisteredInstanceName, instanceData.access_token).then(verifyCredentials => {
           database.setInstanceVerifyCredentials(currentRegisteredInstanceName, verifyCredentials)
         })
