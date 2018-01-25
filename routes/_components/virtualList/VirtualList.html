@@ -21,9 +21,9 @@
 <script>
   import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
-  import { virtualListStore } from '../_utils/virtualListStore'
+  import { virtualListStore } from './virtualListStore'
   import throttle from 'lodash/throttle'
-  import { mark, stop } from '../_utils/marks'
+  import { mark, stop } from '../../_utils/marks'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
   const SCROLL_TO_BOTTOM_DELAY = 1000

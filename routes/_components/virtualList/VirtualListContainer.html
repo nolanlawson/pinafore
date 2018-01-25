@@ -5,11 +5,11 @@
   <slot></slot>
 </div>
 <script>
-  import { virtualListStore } from '../_utils/virtualListStore'
+  import { virtualListStore } from './virtualListStore'
 
   import throttle from 'lodash/throttle'
-  import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../_utils/fullscreen'
-  import { mark, stop } from '../_utils/marks'
+  import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../../_utils/fullscreen'
+  import { mark, stop } from '../../_utils/marks'
 
   const SCROLL_EVENT_DELAY = 300
 

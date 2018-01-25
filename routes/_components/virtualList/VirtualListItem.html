@@ -21,8 +21,8 @@
   }
 </style>
 <script>
-  import { virtualListStore } from '../_utils/virtualListStore'
-  import { AsyncLayout } from '../_utils/AsyncLayout'
+  import { virtualListStore } from './virtualListStore'
+  import { AsyncLayout } from '../../_utils/AsyncLayout'
 
   const keyGetter = node => node.getAttribute('virtual-list-key')
   const asyncLayout = new AsyncLayout(keyGetter)

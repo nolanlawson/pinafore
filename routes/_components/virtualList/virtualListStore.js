@@ -1,5 +1,5 @@
 import { Store } from 'svelte/store.js'
-import { mark, stop } from '../_utils/marks'
+import { mark, stop } from '../../_utils/marks'
 
 const VIEWPORT_RENDER_FACTOR = 4
 
