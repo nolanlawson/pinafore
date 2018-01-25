@@ -45,9 +45,12 @@
     ondestroy() {
       let storeKey = this.get('storeKey')
       if (storeKey) {
+        let clonedState = this.store.cloneState()
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('caching scroll top', clonedState.scrollTop)
+        }
         cachedVirtualStores[storeKey] = {
-          state: this.store.cloneState(),
-          height: this.store.get('height')
+          state: clonedState
         }
       }
     },
@@ -94,23 +97,29 @@
       },
       onFullscreenChange() {
         mark('onFullscreenChange')
-        console.log('is fullscreen? ', isFullscreen())
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('is fullscreen? ', isFullscreen())
+        }
         this.set({ fullscreen: isFullscreen() })
         stop('onFullscreenChange')
       },
       rehydrateScrollTop(cachedStore) {
         let cachedScrollTop = cachedStore.state.scrollTop || 0
-        let cachedHeight = cachedStore.height
         if (cachedScrollTop === 0) {
-          return
+          if (process.env.NODE_ENV !== 'production') {
+            console.log('no need to force scroll top')
+          }
         }
         let initializedScrollTop = false
         let node = this.refs.node
-        this.store.observe('height', height => {
-          if (!initializedScrollTop && height === cachedHeight && node) {
+        this.store.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+          if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
             initializedScrollTop = true
             requestAnimationFrame(() => {
               mark('set scrollTop')
+              if (process.env.NODE_ENV !== 'production') {
+                console.log('forcing scroll top to ', cachedScrollTop)
+              }
               node.scrollTop = cachedScrollTop
               stop('set scrollTop')
             })

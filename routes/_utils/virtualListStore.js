@@ -117,6 +117,17 @@ virtualListStore.compute('height',
 
 virtualListStore.compute('numItems', ['items'], (items) => items.length)
 
+virtualListStore.compute('allVisibleItemsHaveHeight',
+    ['visibleItems', 'itemHeights'],
+    (visibleItems, itemHeights) => {
+  for (let visibleItem of visibleItems) {
+    if (!itemHeights[visibleItem.key]) {
+      return false
+    }
+  }
+  return true
+})
+
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.virtualListStore = virtualListStore
 }
