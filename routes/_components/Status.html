@@ -37,7 +37,7 @@
     </div>
   {{/if}}
   {{#if originalMediaAttachments && originalMediaAttachments.length}}
-    {{#if status.sensitive}}
+    {{#if originalStatus.sensitive}}
       <div class="status-sensitive-media-container {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}"
               >
         <button type="button" class="status-sensitive-media-button"
@@ -57,11 +57,11 @@
           </div>
         </button>
         {{#if sensitiveShown}}
-          <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{status.sensitive}}"/>
+          <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{originalStatus.sensitive}}"/>
         {{/if}}
       </div>
     {{else}}
-      <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{status.sensitive}}"/>
+      <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{originalStatus.sensitive}}"/>
     {{/if}}
   {{/if}}
   <Toolbar :status />
