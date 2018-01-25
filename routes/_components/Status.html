@@ -297,7 +297,7 @@
 
   export default {
     oncreate() {
-      this.hashtagifyContent()
+      this.hydrateContent()
     },
     components: {
       Avatar,
@@ -342,7 +342,7 @@
         let statusId = this.get('statusId')
         $spoilersShown[statusId] = !$spoilersShown[statusId]
         this.store.set({'spoilersShown': $spoilersShown})
-        this.hashtagifyContent()
+        this.hydrateContent()
         this.fire('recalculateHeight')
       },
       onClickSensitiveMediaButton() {
@@ -352,27 +352,39 @@
         this.store.set({'sensitivesShown': $sensitivesShown})
         this.fire('recalculateHeight')
       },
-      hashtagifyContent() {
+      hydrateContent() {
         if (!this.refs.contentNode) {
           return
         }
         let status = this.get('originalStatus')
-        mark('hydrateHashtags')
+        mark('hydrateContent')
         if (status.tags && status.tags.length) {
           let anchorTags = Array.from(this.refs.contentNode.querySelectorAll(
             'a[class~=hashtag][href^=http]'))
           for (let tag of status.tags) {
-            let { name } = tag
             for (let anchorTag of anchorTags) {
-              if (anchorTag.getAttribute('href').endsWith(`/tags/${name}`)) {
-                anchorTag.setAttribute('href', `/tags/${name}`)
+              if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
+                anchorTag.setAttribute('href', `/tags/${tag.name}`)
                 anchorTag.removeAttribute('target')
                 anchorTag.removeAttribute('rel')
               }
             }
           }
         }
-        stop('hydrateHashtags')
+        if (status.mentions && status.mentions.length) {
+          let anchorTags = Array.from(this.refs.contentNode.querySelectorAll(
+            'a[class~=mention][href^=http]'))
+          for (let mention of status.mentions) {
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href') === mention.url) {
+                anchorTag.setAttribute('href', `/accounts/${mention.id}`)
+                anchorTag.removeAttribute('target')
+                anchorTag.removeAttribute('rel')
+              }
+            }
+          }
+        }
+        stop('hydrateContent')
       }
     }
   }
