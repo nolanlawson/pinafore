@@ -31,8 +31,34 @@
           scrollHeight: cachedStore.state.scrollHeight,
           offsetHeight: cachedStore.state.offsetHeight
         })
-        this.rehydrateScrollTop(cachedStore)
         this.store.set(cachedStore.state)
+
+        // rehydrate scroll top
+        let cachedScrollTop = cachedStore.state.scrollTop || 0
+        if (cachedScrollTop === 0) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.log('no need to force scroll top')
+          }
+          return
+        }
+        let initializedScrollTop = false
+        let node = this.refs.node
+        this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+          if (process.env.NODE_ENV !== 'production') {
+            console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
+          }
+          if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
+            initializedScrollTop = true
+            requestAnimationFrame(() => {
+              mark('set scrollTop')
+              if (process.env.NODE_ENV !== 'production') {
+                console.log('forcing scroll top to ', cachedScrollTop)
+              }
+              node.scrollTop = cachedScrollTop
+              stop('set scrollTop')
+            })
+          }
+        })
       } else {
         this.store.set({
           scrollTop: 0,
@@ -102,31 +128,11 @@
         }
         this.set({ fullscreen: isFullscreen() })
         stop('onFullscreenChange')
-      },
-      rehydrateScrollTop(cachedStore) {
-        let cachedScrollTop = cachedStore.state.scrollTop || 0
-        if (cachedScrollTop === 0) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.log('no need to force scroll top')
-          }
-          return
-        }
-        let initializedScrollTop = false
-        let node = this.refs.node
-        this.store.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
-          if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
-            initializedScrollTop = true
-            requestAnimationFrame(() => {
-              mark('set scrollTop')
-              if (process.env.NODE_ENV !== 'production') {
-                console.log('forcing scroll top to ', cachedScrollTop)
-              }
-              node.scrollTop = cachedScrollTop
-              stop('set scrollTop')
-            })
-          }
-        })
       }
+    },
+    computed: {
+      // TODO: bug in svelte/store – the observer in oncreate() never get removed without this hack
+      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
     }
   };
 </script>

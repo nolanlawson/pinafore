@@ -120,6 +120,9 @@ virtualListStore.compute('numItems', ['items'], (items) => items.length)
 virtualListStore.compute('allVisibleItemsHaveHeight',
     ['visibleItems', 'itemHeights'],
     (visibleItems, itemHeights) => {
+  if (!visibleItems.length) {
+    return false
+  }
   for (let visibleItem of visibleItems) {
     if (!itemHeights[visibleItem.key]) {
       return false
