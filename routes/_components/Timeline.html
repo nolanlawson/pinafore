@@ -108,13 +108,13 @@
         if (process.env.NODE_ENV !== 'production') {
           console.log('addStatuses()')
         }
-        let instanceName = this.store.get('instanceName')
+        let instanceName = this.store.get('currentInstance')
         let timeline = this.get('timeline')
-        /* no await */ database.insertStatuses(instanceName, timeline, newStatuses)
         let statusIds = this.get('statusIds')
         if (!statusIds) {
           return
         }
+        /* no await */ database.insertStatuses(instanceName, timeline, newStatuses)
         let newStatusIds = newStatuses.map(status => status.id)
         let merged = mergeStatuses(statusIds, newStatusIds)
         this.set({ statusIds: merged })

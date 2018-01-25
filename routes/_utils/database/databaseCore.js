@@ -16,12 +16,20 @@ import {
 import QuickLRU from 'quick-lru'
 
 const statusesCache = new QuickLRU({maxSize: 100})
+const accountsCache = new QuickLRU({maxSize: 50})
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.cacheStats = {
-    cache: statusesCache,
-    cacheHits: 0,
-    cacheMisses: 0
+    statuses: {
+      cache: statusesCache,
+      hits: 0,
+      misses: 0
+    },
+    accounts: {
+      cache: accountsCache,
+      hits: 0,
+      misses: 0
+    }
   }
 }
 
@@ -51,6 +59,10 @@ export async function getTimeline(instanceName, timeline, maxId = null, limit = 
 export async function insertStatuses(instanceName, timeline, statuses) {
   for (let status of statuses) {
     statusesCache.set(status.id, status)
+    accountsCache.set(status.account.id, status.account)
+    if (status.reblog) {
+      accountsCache.set(status.reblog.account.id, status.reblog.account)
+    }
   }
   const db = await getDatabase(instanceName, timeline)
   await dbPromise(db, [TIMELINE_STORE, STATUSES_STORE, ACCOUNTS_STORE], 'readwrite', (stores) => {
@@ -90,12 +102,22 @@ export async function setInstanceVerifyCredentials(instanceName, verifyCredentia
 }
 
 export async function getAccount(instanceName, accountId) {
+  if (accountsCache.has(accountId)) {
+    if (process.browser && process.env.NODE_ENV !== 'production') {
+      window.cacheStats.accounts.hits++
+    }
+    return accountsCache.get(accountId)
+  }
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, ACCOUNTS_STORE, 'readonly', (store, callback) => {
+  let result = await dbPromise(db, ACCOUNTS_STORE, 'readonly', (store, callback) => {
     store.get(accountId).onsuccess = (e) => {
       callback(e.target.result && e.target.result)
     }
   })
+  if (process.browser && process.env.NODE_ENV !== 'production') {
+    window.cacheStats.accounts.misses++
+  }
+  return result
 }
 
 export async function clearDatabaseForInstance(instanceName) {
@@ -105,7 +127,7 @@ export async function clearDatabaseForInstance(instanceName) {
 export async function getStatus(instanceName, statusId) {
   if (statusesCache.has(statusId)) {
     if (process.browser && process.env.NODE_ENV !== 'production') {
-      window.cacheStats.cacheHits++
+      window.cacheStats.statuses.hits++
     }
     return statusesCache.get(statusId)
   }
@@ -117,7 +139,7 @@ export async function getStatus(instanceName, statusId) {
   })
   statusesCache.set(statusId, result)
   if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cacheStats.cacheMisses++
+    window.cacheStats.statuses.misses++
   }
   return result
 }
