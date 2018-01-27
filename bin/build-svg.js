@@ -21,7 +21,7 @@ async function main() {
     let $symbol = $('<symbol></symbol>')
       .attr('id', svg.id)
       .attr('viewBox', `0 0 ${optimized.info.width} ${optimized.info.height}`)
-      .append($('<title>').val(svg.title))
+      .append($('<title></title>').text(svg.title))
       .append($path)
     return $.xml($symbol)
   }))).join('\n')

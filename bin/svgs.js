@@ -3,7 +3,7 @@ module.exports = [
   {id:'fa-bell', src:'node_modules/font-awesome-svg-png/white/svg/bell.svg', title: 'Notifications'},
   {id:'fa-users', src:'node_modules/font-awesome-svg-png/white/svg/users.svg', title: 'Local'},
   {id:'fa-globe', src:'node_modules/font-awesome-svg-png/white/svg/globe.svg', title: 'Federated'},
-  {id:'fa-gears', src:'node_modules/font-awesome-svg-png/white/svg/gears.svg', title: 'Settings'},
+  {id:'fa-gear', src:'node_modules/font-awesome-svg-png/white/svg/gear.svg', title: 'Settings'},
   {id:'fa-reply', src:'node_modules/font-awesome-svg-png/white/svg/reply.svg', title: 'Reply'},
   {id:'fa-retweet', src:'node_modules/font-awesome-svg-png/white/svg/retweet.svg', title: 'Boost'},
   {id:'fa-star', src:'node_modules/font-awesome-svg-png/white/svg/star.svg', title: 'Favorite'},
