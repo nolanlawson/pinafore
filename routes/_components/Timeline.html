@@ -119,9 +119,7 @@
         stop('onScrollToBottom')
       },
       addStatuses(newStatuses) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('addStatuses()')
-        }
+        console.log('addStatuses()')
         let instanceName = this.store.get('currentInstance')
         let timeline = this.get('timeline')
         let statusIds = this.get('statusIds')

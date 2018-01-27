@@ -22,16 +22,12 @@
       let scrollTop = this.store.get('scrollTop')
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
-          if (process.env.NODE_ENV !== 'production') {
-            console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
-          }
+          console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
           if (!this.get('initializedScrollTop') && allVisibleItemsHaveHeight && node) {
             this.set({'initializedScrollTop': true})
             requestAnimationFrame(() => {
               mark('set scrollTop')
-              if (process.env.NODE_ENV !== 'production') {
-                console.log('forcing scroll top to ', scrollTop)
-              }
+              console.log('forcing scroll top to ', scrollTop)
               node.scrollTop = scrollTop
               stop('set scrollTop')
             })
@@ -88,9 +84,7 @@
       },
       onFullscreenChange() {
         mark('onFullscreenChange')
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('is fullscreen? ', isFullscreen())
-        }
+        console.log('is fullscreen? ', isFullscreen())
         this.set({ fullscreen: isFullscreen() })
         stop('onFullscreenChange')
       }

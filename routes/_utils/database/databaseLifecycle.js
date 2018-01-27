@@ -9,8 +9,7 @@ import {
 } from './constants'
 
 export function getDatabase(instanceName) {
-  if (!instanceName && process.env.NODE_ENV !== 'production') {
-    console.trace()
+  if (!instanceName) {
     throw new Error('instanceName is undefined in getDatabase()')
   }
   if (databaseCache[instanceName]) {

@@ -68,7 +68,15 @@ module.exports = {
     //new ExtractTextPlugin('main.css'),
     new LodashModuleReplacementPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
-		new UglifyJSPlugin(),
+    new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        comments: false,
+        compress: {
+          drop_console: true
+        }
+      }
+    }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
       generateStatsFile: true,
