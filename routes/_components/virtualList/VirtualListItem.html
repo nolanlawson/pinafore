@@ -24,20 +24,9 @@
   import { virtualListStore } from './virtualListStore'
   import { AsyncLayout } from '../../_utils/AsyncLayout'
 
-  const keyGetter = node => node.getAttribute('virtual-list-key')
-  const asyncLayout = new AsyncLayout(keyGetter)
-
   export default {
     oncreate() {
-      let key = this.get('key')
-      asyncLayout.observe(key, this.refs.node, (rect) => {
-        // update all item heights in one microtask batch for better perf
-        this.store.batchUpdate('itemHeights', key, rect.height)
-      })
-    },
-    ondestroy() {
-      let key = this.get('key')
-      asyncLayout.unobserve(key, this.refs.node)
+      this.doRecalculateHeight()
     },
     store: () => virtualListStore,
     computed: {
@@ -45,10 +34,10 @@
     },
     methods: {
       doRecalculateHeight() {
-        let tempAsyncLayout = new AsyncLayout(keyGetter)
+        let asyncLayout = new AsyncLayout(node => node.getAttribute('virtual-list-key'))
         let key = this.get('key')
-        tempAsyncLayout.observe(key, this.refs.node, (rect) => {
-          tempAsyncLayout.disconnect()
+        asyncLayout.observe(key, this.refs.node, (rect) => {
+          asyncLayout.disconnect()
           // update all item heights in one microtask batch for better perf
           this.store.batchUpdate('itemHeights', key, rect.height)
         })
