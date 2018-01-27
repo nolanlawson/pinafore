@@ -6,7 +6,7 @@
   <SettingsLayout page='settings/instances/add' label="Add an Instance">
     <h1 id="add-an-instance-h1">Add an Instance</h1>
 
-    <LoadingMask show="{{loading}}"/>
+    <LoadingMask show="{{$logInToInstanceLoading}}"/>
 
     {{#if $isUserLoggedIn}}
     <p>Connect to an instance to log in.</p>
@@ -16,9 +16,9 @@
 
     <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
-      {{#if error}}
+      {{#if $logInToInstanceError}}
       <div class="form-error" role="alert">
-        Error: {{error}}
+        Error: {{$logInToInstanceError}}
       </div>
       {{/if}}
 
@@ -70,27 +70,16 @@
 <script>
   import Layout from '../../_components/Layout.html';
   import SettingsLayout from '../_components/SettingsLayout.html'
-  import { registerApplication, generateAuthLink, getAccessTokenFromAuthCode } from '../../_utils/mastodon/oauth'
-  import { getVerifyCredentials } from '../../_utils/mastodon/user'
-  import { getInstanceInfo } from '../../_utils/mastodon/instance'
   import { store } from '../../_utils/store'
-  import { goto } from 'sapper/runtime.js'
-  import { switchToTheme } from '../../_utils/themeEngine'
   import LoadingMask from '../../_components/LoadingMask'
-  import { database } from '../../_utils/database/database'
-
-  const REDIRECT_URI = (typeof location !== 'undefined' ?
-      location.origin : 'https://pinafore.social') + '/settings/instances/add'
+  import { logInToInstance, handleOauthCode } from './_actions/add'
 
   export default {
     async oncreate () {
       let params = new URLSearchParams(location.search)
       if (params.has('code')) {
-        this.onReceivedOauthCode(params.get('code'))
+        handleOauthCode(params.get('code'))
       }
-      this.store.observe('instanceNameInSearch', () => {
-        this.set({error: false})
-      })
     },
     components: {
       Layout,
@@ -99,90 +88,9 @@
     },
     store: () => store,
     methods: {
-      onSubmit: async function(event) {
+      onSubmit(event) {
         event.preventDefault()
-        this.set({loading: true})
-        try {
-          await this.redirectToOauth()
-        } catch (err) {
-          console.error(err)
-          let error = `${err.message || err.name}. ` +
-            (navigator.onLine ?
-              `Is this a valid Mastodon instance?` :
-              `Are you offline?`)
-          this.set({error: error})
-        } finally {
-          this.set({loading: false})
-        }
-      },
-      redirectToOauth: async function() {
-        let instanceName = this.store.get('instanceNameInSearch')
-        let loggedInInstances = this.store.get('loggedInInstances')
-        instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
-        if (Object.keys(loggedInInstances).includes(instanceName)) {
-          this.set({error: `You've already logged in to ${instanceName}`})
-          return
-        }
-        let registrationPromise = registerApplication(instanceName, REDIRECT_URI)
-        let instanceInfo = await getInstanceInfo(instanceName)
-        await database.setInstanceInfo(instanceName, instanceInfo) // cache for later
-        let instanceData = await registrationPromise
-        this.store.set({
-          currentRegisteredInstanceName: instanceName,
-          currentRegisteredInstance: instanceData
-        })
-        this.store.save()
-        let oauthUrl = generateAuthLink(
-          instanceName,
-          instanceData.client_id,
-          REDIRECT_URI
-        )
-        document.location.href = oauthUrl
-      },
-      onReceivedOauthCode: async function(code) {
-        try {
-          this.set({loading: true})
-          await this.registerNewInstance(code)
-        } catch (err) {
-          this.set({error: `${err.message || err.name}. Failed to connect to instance.`})
-        } finally {
-          this.set({loading: false})
-        }
-      },
-      registerNewInstance: async function (code) {
-        let currentRegisteredInstanceName = this.store.get('currentRegisteredInstanceName')
-        let currentRegisteredInstance = this.store.get('currentRegisteredInstance')
-        let instanceData = await getAccessTokenFromAuthCode(
-          currentRegisteredInstanceName,
-          currentRegisteredInstance.client_id,
-          currentRegisteredInstance.client_secret,
-          code,
-          REDIRECT_URI
-        )
-        let loggedInInstances = this.store.get('loggedInInstances')
-        let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
-        let instanceThemes = this.store.get('instanceThemes')
-        instanceThemes[currentRegisteredInstanceName] = 'default'
-        loggedInInstances[currentRegisteredInstanceName] = instanceData
-        if (!loggedInInstancesInOrder.includes(currentRegisteredInstanceName)) {
-          loggedInInstancesInOrder.push(currentRegisteredInstanceName)
-        }
-        this.store.set({
-          instanceNameInSearch: '',
-          currentRegisteredInstanceName: null,
-          currentRegisteredInstance: null,
-          loggedInInstances: loggedInInstances,
-          currentInstance: currentRegisteredInstanceName,
-          loggedInInstancesInOrder: loggedInInstancesInOrder,
-          instanceThemes: instanceThemes
-        })
-        this.store.save()
-        switchToTheme('default')
-        // fire off request for account so it's cached
-        getVerifyCredentials(currentRegisteredInstanceName, instanceData.access_token).then(verifyCredentials => {
-          database.setInstanceVerifyCredentials(currentRegisteredInstanceName, verifyCredentials)
-        })
-        goto('/')
+        logInToInstance()
       }
     }
   }
