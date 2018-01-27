@@ -38,7 +38,7 @@
         let key = this.get('key')
         asyncLayout.observe(key, this.refs.node, (rect) => {
           asyncLayout.disconnect()
-          // update all item heights in one microtask batch for better perf
+          // update all item heights in one batch for better perf
           this.store.batchUpdate('itemHeights', key, rect.height)
         })
       }
