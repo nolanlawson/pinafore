@@ -2,7 +2,7 @@
   <title>Pinafore – Local</title>
 </:Head>
 
-<Layout page='local' virtual="true" virtualStoreKey="local">
+<Layout page='local' virtual="true" virtualRealm="local">
   {{#if $isUserLoggedIn}}
   <LazyTimeline timeline='local' />
   {{else}}

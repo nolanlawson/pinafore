@@ -3,26 +3,10 @@ import { mark, stop } from '../../_utils/marks'
 
 const VIEWPORT_RENDER_FACTOR = 4
 
-const cloneKeys = [
-  'items',
-  'itemHeights',
-  'scrollTop',
-  'scrollHeight',
-  'offsetHeight'
-]
-
 class VirtualListStore extends Store {
   constructor(state) {
     super(state)
     this._batches = {}
-  }
-
-  cloneState() {
-    let res = {}
-    for (let key of cloneKeys) {
-      res[key] = this.get(key)
-    }
-    return res
   }
 
   batchUpdate(key, subKey, value) {
@@ -53,13 +37,40 @@ class VirtualListStore extends Store {
       stop('batchUpdate()')
     })
   }
+
+  setForRealm(obj) {
+    let realmName = this.get('currentRealm')
+    let realms = this.get('realms') || {}
+    realms[realmName] = Object.assign(realms[realmName] || {}, obj)
+    this.set({realms: realms})
+  }
 }
 
 const virtualListStore = new VirtualListStore({
-  items: [],
+  realms: {},
+  currentRealm: null,
   itemHeights: {},
-  showFooter: false,
   footerHeight: 0
+})
+
+virtualListStore.compute('items', ['currentRealm', 'realms'], (currentRealm, realms) => {
+  return realms[currentRealm] && realms[currentRealm].items || []
+})
+
+virtualListStore.compute('showFooter', ['currentRealm', 'realms'], (currentRealm, realms) => {
+  return realms[currentRealm] && realms[currentRealm].showFooter
+})
+
+virtualListStore.compute('scrollTop', ['currentRealm', 'realms'], (currentRealm, realms) => {
+  return realms[currentRealm] && realms[currentRealm].scrollTop || 0
+})
+
+virtualListStore.compute('scrollHeight', ['currentRealm', 'realms'], (currentRealm, realms) => {
+  return realms[currentRealm] && realms[currentRealm].scrollHeight || 0
+})
+
+virtualListStore.compute('offsetHeight', ['currentRealm', 'realms'], (currentRealm, realms) => {
+  return realms[currentRealm] && realms[currentRealm].offsetHeight || 0
 })
 
 virtualListStore.compute('visibleItems',

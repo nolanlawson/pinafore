@@ -2,7 +2,7 @@
   <title>Pinafore – Federated</title>
 </:Head>
 
-<Layout page='federated' virtual="true" virtualStoreKey="federated">
+<Layout page='federated' virtual="true" virtualRealm="federated">
   {{#if $isUserLoggedIn}}
   <LazyTimeline timeline='federated' />
   {{else}}

@@ -1,7 +1,7 @@
 <Nav :page :dynamicPage :dynamicHref :dynamicIcon :dynamicLabel/>
 
 {{#if virtual}}
-  <VirtualListContainer storeKey="{{virtualStoreKey}}">
+  <VirtualListContainer realm="{{virtualRealm}}">
     <main>
       <slot></slot>
     </main>

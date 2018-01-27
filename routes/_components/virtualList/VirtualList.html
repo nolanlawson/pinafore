@@ -31,13 +31,11 @@
   export default {
     oncreate () {
       this.observe('showFooter', showFooter => {
-        this.store.set({showFooter: showFooter})
+        this.store.setForRealm({showFooter: showFooter})
       })
       this.observe('items', (items) => {
         mark('set items')
-        this.store.set({
-          items: items
-        })
+        this.store.setForRealm({items: items})
         stop('set items')
         this.fireScrollToBottom = throttle(() => {
           this.fire('scrollToBottom')

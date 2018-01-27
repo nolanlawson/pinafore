@@ -13,72 +13,37 @@
 
   const SCROLL_EVENT_DELAY = 300
 
-  const cachedVirtualStores = {}
-
-  if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cachedVirtualStores = cachedVirtualStores
-  }
-
   export default {
     oncreate() {
       mark('onCreate VirtualListContainer')
       let node = this.refs.node
-      let storeKey = this.get('storeKey')
-      let cachedStore
-      if (storeKey && (cachedStore = cachedVirtualStores[storeKey])) {
-        this.store.set({
-          scrollTop: cachedStore.state.scrollTop,
-          scrollHeight: cachedStore.state.scrollHeight,
-          offsetHeight: cachedStore.state.offsetHeight
-        })
-        this.store.set(cachedStore.state)
-
-        // rehydrate scroll top
-        let cachedScrollTop = cachedStore.state.scrollTop || 0
-        if (cachedScrollTop === 0) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.log('no need to force scroll top')
-          }
-          return
-        }
-        let initializedScrollTop = false
-        let node = this.refs.node
+      let realm = this.get('realm')
+      this.store.set({currentRealm: realm})
+      let scrollTop = this.store.get('scrollTop')
+      if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           if (process.env.NODE_ENV !== 'production') {
             console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
           }
-          if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
-            initializedScrollTop = true
+          if (!this.get('initializedScrollTop') && allVisibleItemsHaveHeight && node) {
+            this.set({'initializedScrollTop': true})
             requestAnimationFrame(() => {
               mark('set scrollTop')
               if (process.env.NODE_ENV !== 'production') {
-                console.log('forcing scroll top to ', cachedScrollTop)
+                console.log('forcing scroll top to ', scrollTop)
               }
-              node.scrollTop = cachedScrollTop
+              node.scrollTop = scrollTop
               stop('set scrollTop')
             })
           }
         })
       } else {
-        this.store.set({
-          scrollTop: 0,
+        this.store.setForRealm({
           scrollHeight: node.scrollHeight,
           offsetHeight: node.offsetHeight
         })
       }
       stop('onCreate VirtualListContainer')
-    },
-    ondestroy() {
-      let storeKey = this.get('storeKey')
-      if (storeKey) {
-        let clonedState = this.store.cloneState()
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('caching scroll top', clonedState.scrollTop)
-        }
-        cachedVirtualStores[storeKey] = {
-          state: clonedState
-        }
-      }
     },
     store: () => virtualListStore,
     events: {
@@ -116,7 +81,7 @@
     },
     methods: {
       onScroll(event) {
-        this.store.set({
+        this.store.setForRealm({
           scrollTop: event.target.scrollTop,
           scrollHeight: event.target.scrollHeight
         })
