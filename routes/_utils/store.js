@@ -46,7 +46,6 @@ class PinaforeStore extends Store {
   }
 
   setForTimeline(instanceName, timelineName, obj) {
-    console.log('setForTimeline')
     let timelines = this.get('timelines') || {}
     let timelineData = timelines[instanceName] || {}
     timelineData[timelineName] = Object.assign(timelineData[timelineName] || {}, obj)
