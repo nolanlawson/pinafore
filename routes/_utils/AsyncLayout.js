@@ -14,6 +14,9 @@ class AsyncLayout {
   }
 
   observe(key, node, callback) {
+    if (!node) {
+      return
+    }
     if (this._intersectionObserver) {
       this._onIntersectionCallbacks[key] = (entry) => {
         callback(getRectFromEntry(entry))
@@ -25,6 +28,9 @@ class AsyncLayout {
 
   unobserve(key, node) {
     if (key in this._onIntersectionCallbacks) {
+      return
+    }
+    if (!node) {
       return
     }
     if (this._intersectionObserver) {

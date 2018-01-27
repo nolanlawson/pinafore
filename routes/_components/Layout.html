@@ -1,7 +1,7 @@
 <Nav :page :dynamicPage :dynamicHref :dynamicIcon :dynamicLabel/>
 
 {{#if virtual}}
-  <VirtualListContainer realm="{{virtualRealm}}">
+  <VirtualListContainer realm="{{$currentInstance + '/' + virtualRealm}}">
     <main>
       <slot></slot>
     </main>
@@ -16,11 +16,13 @@
 <script>
 	import Nav from './Nav.html';
 	import VirtualListContainer from './virtualList/VirtualListContainer.html'
+  import { store } from '../_utils/store'
 
 	export default {
 		components: {
 		  VirtualListContainer,
 			Nav
-		}
+		},
+    store: () => store
 	}
 </script>

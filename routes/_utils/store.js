@@ -11,7 +11,7 @@ const LOCAL_STORAGE_KEYS = new Set([
 ])
 
 const LS = process.browser && localStorage
-class LocalStorageStore extends Store {
+class PinaforeStore extends Store {
 
   constructor(state) {
     super(state)
@@ -44,9 +44,18 @@ class LocalStorageStore extends Store {
       this.keysToStore = {}
     }
   }
+
+  setForTimeline(instanceName, timelineName, obj) {
+    console.log('setForTimeline')
+    let timelines = this.get('timelines') || {}
+    let timelineData = timelines[instanceName] || {}
+    timelineData[timelineName] = Object.assign(timelineData[timelineName] || {}, obj)
+    timelines[instanceName] = timelineData
+    this.set({timelines: timelines})
+  }
 }
 
-const store = new LocalStorageStore({
+const store = new PinaforeStore({
   instanceNameInSearch: '',
   currentRegisteredInstance: null,
   currentRegisteredInstanceName: '',
@@ -97,6 +106,16 @@ store.compute(
     return instanceThemes[currentInstance] || 'default'
   }
 )
+
+store.compute('currentTimelineData', ['currentInstance', 'currentTimeline', 'timelines'],
+  (currentInstance, currentTimeline, timelines) => {
+  return ((timelines && timelines[currentInstance]) || {})[currentTimeline] || {}
+})
+
+store.compute('statusIds',     ['currentTimelineData'], (currentTimelineData) => currentTimelineData.statusIds || [])
+store.compute('runningUpdate', ['currentTimelineData'], (currentTimelineData) => currentTimelineData.runningUpdate)
+store.compute('initialized',   ['currentTimelineData'], (currentTimelineData) => currentTimelineData.initialized)
+store.compute('lastStatusId',  ['statusIds'], (statusIds) => statusIds.length && statusIds[statusIds.length - 1])
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging

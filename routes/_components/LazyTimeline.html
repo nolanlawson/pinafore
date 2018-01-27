@@ -1,5 +1,5 @@
 <div class="lazy-timeline">
-  {{#if loading}}
+  {{#if !$initialized}}
     <div transition:fade>
       <div class="loading-page">
         <LoadingSpinner />
@@ -8,7 +8,7 @@
   {{/if}}
   {{#await promise}}
   {{then constructor}}
-    <:Component {constructor} :timeline on:initialized="set({'loading': false})"/>
+    <:Component {constructor} :timeline />
   {{catch error}}
     <div>Component failed to load. Please try refreshing! {{error}}</div>
   {{/await}}
@@ -34,11 +34,18 @@
   import { importTimeline } from '../_utils/asyncModules'
   import LoadingSpinner from './LoadingSpinner.html'
   import { fade } from 'svelte-transitions'
+  import { store } from '../_utils/store'
 
   export default {
+    oncreate() {
+      let instanceName = this.store.get('currentInstance')
+      let timeline = this.get('timeline')
+      this.store.set({currentTimeline: timeline})
+      this.store.setForTimeline(instanceName, timeline, {runningUpdate: false})
+    },
+    store: () => store,
     data: () => ({
-      promise: importTimeline(),
-      loading: true
+      promise: importTimeline()
     }),
     components: {
       LoadingSpinner

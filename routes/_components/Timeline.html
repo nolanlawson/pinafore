@@ -1,13 +1,13 @@
 <:Window bind:online />
-<div class="timeline" role="feed" aria-label="{{label}}" on:initialized>
+<div class="timeline" role="feed" aria-label="{{label}}">
   <VirtualList component="{{StatusListItem}}"
                :makeProps
-               items="{{statusIds}}"
+               items="{{$statusIds}}"
                on:scrollToBottom="onScrollToBottom()"
-               shown="{{initialized}}"
+               shown="{{$initialized}}"
                footerComponent="{{LoadingFooter}}"
-               showFooter="{{initialized && runningUpdate}}"
-               realm="{{timeline}}"
+               showFooter="{{$initialized && $runningUpdate}}"
+               realm="{{$currentInstance + '/' + timeline}}"
                on:initializedVisibleItems="initialize()"
   />
 </div>
@@ -31,12 +31,6 @@
   import { database } from '../_utils/database/database'
   import { StatusStream } from '../_utils/mastodon/StatusStream'
 
-  const cachedTimelines = {}
-
-  if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cachedTimelines = cachedTimelines
-  }
-
   const FETCH_LIMIT = 20
 
   export default {
@@ -44,10 +38,7 @@
       let timeline = this.get('timeline')
       let instanceName = this.store.get('currentInstance')
       let accessToken = this.store.get('accessToken')
-      let cachedStatusIds = cachedTimelines[timeline]
-      if (cachedStatusIds) {
-        this.set({statusIds: cachedStatusIds})
-      } else {
+      if (!this.store.get('statusIds').length) {
         this.addStatuses(await this.fetchStatusesAndPossiblyFallBack())
       }
       /* no await */ getInstanceInfo(instanceName).then(instanceInfo => database.setInstanceInfo(instanceName, instanceInfo))
@@ -62,18 +53,13 @@
       if (this._statusStream) {
         this._statusStream.close()
       }
-      cachedTimelines[this.get('timeline')] = this.get('statusIds')
     },
     data: () => ({
       StatusListItem: StatusListItem,
-      LoadingFooter: LoadingFooter,
-      statusIds: [],
-      runningUpdate: false,
-      initialized: false
+      LoadingFooter: LoadingFooter
     }),
     computed: {
       makeProps: ($currentInstance) => (statusId) => database.getStatus($currentInstance, statusId),
-      lastStatusId: (statusIds) => statusIds.length && statusIds[statusIds.length - 1],
       label: (timeline, $currentInstance) => {
         if (timelines[timeline]) {
           `${timelines[timeline].label} timeline for ${$currentInstance}`
@@ -94,27 +80,30 @@
       splice: splice,
       push: push,
       initialize() {
-        if (this.get('initialized') || !this.get('statusIds') || !this.get('statusIds').length) {
+        if (this.store.get('initialized') || !this.store.get('statusIds') || !this.store.get('statusIds').length) {
           return
         }
+        let instanceName = this.store.get('currentInstance')
+        let timeline = this.get('timeline')
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            this.set({initialized: true})
-            this.fire('initialized')
+            this.store.setForTimeline(instanceName, timeline, {initialized: true})
           })
         })
       },
       async onScrollToBottom() {
-        if (!this.get('initialized')) {
+        if (!this.store.get('initialized')) {
           return
         }
-        if (this.get('runningUpdate')) {
+        if (this.store.get('runningUpdate')) {
           return
         }
         mark('onScrollToBottom')
-        this.set({ runningUpdate: true })
+        let timeline = this.get('timeline')
+        let instanceName = this.store.get('currentInstance')
+        this.store.setForTimeline(instanceName, timeline, { runningUpdate: true })
         let newStatuses = await this.fetchStatusesAndPossiblyFallBack()
-        this.set({ runningUpdate: false })
+        this.store.setForTimeline(instanceName, timeline, { runningUpdate: false })
         this.addStatuses(newStatuses)
         stop('onScrollToBottom')
       },
@@ -122,21 +111,21 @@
         console.log('addStatuses()')
         let instanceName = this.store.get('currentInstance')
         let timeline = this.get('timeline')
-        let statusIds = this.get('statusIds')
+        let statusIds = this.store.get('statusIds')
         if (!statusIds) {
           return
         }
         /* no await */ database.insertStatuses(instanceName, timeline, newStatuses)
         let newStatusIds = newStatuses.map(status => status.id)
         let merged = mergeStatuses(statusIds, newStatusIds)
-        this.set({ statusIds: merged })
+        this.store.setForTimeline(instanceName, timeline, { statusIds: merged })
       },
       async fetchStatusesAndPossiblyFallBack() {
         let online = this.get('online')
         let instanceName = this.store.get('currentInstance')
         let instanceData = this.store.get('currentInstanceData')
         let timeline = this.get('timeline')
-        let lastStatusId = this.get('lastStatusId')
+        let lastStatusId = this.store.get('lastStatusId')
         let statuses
         if (!online) {
           statuses = await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
