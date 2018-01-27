@@ -38,6 +38,7 @@
     "node-fetch": "^1.7.3",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.2",
+    "p-any": "^1.1.0",
     "performance-now": "^2.1.0",
     "pify": "^3.0.0",
     "quick-lru": "^1.1.0",

@@ -97,12 +97,13 @@
   import { store } from '../../_utils/store'
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
-  import { getVerifyCredentials } from '../../_utils/mastodon/user'
-  import { database } from '../../_utils/database/database'
+  import {
+    changeTheme,
+    switchToInstance,
+    logOutOfInstance,
+    updateVerifyCredentialsForInstance
+  } from './_actions/[instanceName]'
   import { themes } from '../../_static/themes'
-  import { switchToTheme } from '../../_utils/themeEngine'
-  import { goto } from 'sapper/runtime.js'
-  import { toast } from '../../_utils/toast'
 
   export default {
     components: {
@@ -111,73 +112,32 @@
     },
     store: () => store,
     data: () => ({
-      themes: themes
+      themes: themes,
     }),
-    oncreate: async function () {
-      let instanceName = this.get('params').instanceName
-      let loggedInInstances = this.store.get('loggedInInstances')
-      let instanceThemes = this.store.get('instanceThemes')
-      let instanceData = loggedInInstances[instanceName]
-      let verifyCredentials = await database.getInstanceVerifyCredentials(instanceName)
-      if (verifyCredentials) { // update in background
-        getVerifyCredentials(instanceName, instanceData.access_token).then(verifyCredentials => {
-          database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
-        })
-      } else { // go to network
-        verifyCredentials = await getVerifyCredentials(instanceName, instanceData.access_token)
-        database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
-      }
-      this.set({
-        verifyCredentials: verifyCredentials,
-        selectedTheme: instanceThemes[instanceName]
-      })
+    async oncreate() {
+      let instanceName = this.get('instanceName')
+      await updateVerifyCredentialsForInstance(instanceName)
+    },
+    computed: {
+      instanceName: (params) => params.instanceName,
+      selectedTheme: ($instanceThemes, instanceName) => $instanceThemes[instanceName],
+      verifyCredentials: ($verifyCredentials, instanceName) => $verifyCredentials && $verifyCredentials[instanceName]
     },
     methods: {
       onThemeChange() {
         let newTheme = this.get('selectedTheme')
-        let instanceName = this.get('params').instanceName
-        let instanceThemes = this.store.get('instanceThemes')
-        instanceThemes[instanceName] = newTheme
-        this.store.set({instanceThemes: instanceThemes})
-        this.store.save()
-        if (this.get('params').instanceName === this.store.get('currentInstance')) {
-          switchToTheme(newTheme)
-        }
+        let instanceName = this.get('instanceName')
+        changeTheme(instanceName,  newTheme)
       },
       onSwitchToThisInstance(e) {
         e.preventDefault()
-        let instanceName = this.get('params').instanceName
-        let instanceThemes = this.store.get('instanceThemes')
-        this.store.set({
-          currentInstance: instanceName
-        })
-        this.store.save()
-        switchToTheme(instanceThemes[instanceName])
+        let instanceName = this.get('instanceName')
+        switchToInstance(instanceName)
       },
       onLogOut(e) {
         e.preventDefault()
-        let loggedInInstances = this.store.get('loggedInInstances')
-        let instanceThemes = this.store.get('instanceThemes')
-        let loggedInInstancesInOrder = this.store.get('loggedInInstancesInOrder')
-        let instanceName = this.get('params').instanceName
-        let currentInstance = this.store.get('currentInstance')
-        loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
-        let newInstance = instanceName === currentInstance ?
-          loggedInInstancesInOrder[0] :
-          currentInstance
-        delete loggedInInstances[instanceName]
-        delete instanceThemes[instanceName]
-        this.store.set({
-          loggedInInstances: loggedInInstances,
-          instanceThemes: instanceThemes,
-          loggedInInstancesInOrder: loggedInInstancesInOrder,
-          currentInstance: newInstance
-        })
-        this.store.save()
-        database.clearDatabaseForInstance(instanceName)
-        switchToTheme(instanceThemes[newInstance] || 'default')
-        toast.say(`Logged out of ${instanceName}`)
-        goto('/settings/instances')
+        let instanceName = this.get('instanceName')
+        logOutOfInstance(instanceName)
       }
     }
   }

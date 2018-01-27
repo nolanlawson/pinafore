@@ -39,6 +39,18 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
   }
 }
 
+function setInCache(cache, instanceName, key, value) {
+  return cache.set(`${instanceName}/${key}`, value)
+}
+
+function getInCache(cache, instanceName, key) {
+  return cache.get(`${instanceName}/${key}`)
+}
+
+function hasInCache(cache, instanceName, key) {
+  return cache.has(`${instanceName}/${key}`)
+}
+
 //
 // timelines/statuses
 //
@@ -68,10 +80,10 @@ export async function getTimeline(instanceName, timeline, maxId = null, limit = 
 
 export async function insertStatuses(instanceName, timeline, statuses) {
   for (let status of statuses) {
-    statusesCache.set(status.id, status)
-    accountsCache.set(status.account.id, status.account)
+    setInCache(statusesCache, instanceName, status.id, status)
+    setInCache(accountsCache, instanceName, status.account.id, status.account)
     if (status.reblog) {
-      accountsCache.set(status.reblog.account.id, status.reblog.account)
+      setInCache(accountsCache, instanceName, status.reblog.account.id, status.reblog.account)
     }
   }
   const db = await getDatabase(instanceName, timeline)
@@ -93,11 +105,11 @@ export async function insertStatuses(instanceName, timeline, statuses) {
 }
 
 export async function getStatus(instanceName, statusId) {
-  if (statusesCache.has(statusId)) {
+  if (hasInCache(statusesCache, instanceName, statusId)) {
     if (process.browser && process.env.NODE_ENV !== 'production') {
       window.cacheStats.statuses.hits++
     }
-    return statusesCache.get(statusId)
+    return getInCache(statusesCache, instanceName, statusId)
   }
   const db = await getDatabase(instanceName)
   let result = await dbPromise(db, STATUSES_STORE, 'readonly', (store, callback) => {
@@ -105,7 +117,7 @@ export async function getStatus(instanceName, statusId) {
       callback(e.target.result && e.target.result)
     }
   })
-  statusesCache.set(statusId, result)
+  setInCache(statusesCache, instanceName, statusId, result)
   if (process.browser && process.env.NODE_ENV !== 'production') {
     window.cacheStats.statuses.misses++
   }
@@ -117,11 +129,11 @@ export async function getStatus(instanceName, statusId) {
 //
 
 async function getMetaProperty(instanceName, key) {
-  if (metaCache.has(key)) {
+  if (hasInCache(metaCache, instanceName, key)) {
     if (process.browser && process.env.NODE_ENV !== 'production') {
       window.cacheStats.meta.hits++
     }
-    return metaCache.get(key)
+    return getInCache(metaCache, instanceName, key)
   }
   const db = await getDatabase(instanceName)
   let result = await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
@@ -129,7 +141,7 @@ async function getMetaProperty(instanceName, key) {
       callback(e.target.result && e.target.result.value)
     }
   })
-  metaCache.set(key, result)
+  setInCache(metaCache, instanceName, key, result)
   if (process.browser && process.env.NODE_ENV !== 'production') {
     window.cacheStats.meta.misses++
   }
@@ -137,7 +149,7 @@ async function getMetaProperty(instanceName, key) {
 }
 
 async function setMetaProperty(instanceName, key, value) {
-  metaCache.set(key, value)
+  setInCache(metaCache, instanceName, key, value)
   const db = await getDatabase(instanceName)
   return await dbPromise(db, META_STORE, 'readwrite', (store) => {
     store.put({
@@ -168,11 +180,11 @@ export async function setInstanceInfo(instanceName, value) {
 //
 
 export async function getAccount(instanceName, accountId) {
-  if (accountsCache.has(accountId)) {
+  if (hasInCache(accountsCache, instanceName, accountId)) {
     if (process.browser && process.env.NODE_ENV !== 'production') {
       window.cacheStats.accounts.hits++
     }
-    return accountsCache.get(accountId)
+    return getInCache(accountsCache, instanceName, accountId)
   }
   const db = await getDatabase(instanceName)
   let result = await dbPromise(db, ACCOUNTS_STORE, 'readonly', (store, callback) => {

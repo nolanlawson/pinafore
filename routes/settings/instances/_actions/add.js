@@ -1,10 +1,10 @@
 import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../../../_utils/mastodon/oauth'
-import { getVerifyCredentials } from '../../../_utils/mastodon/user'
 import { getInstanceInfo } from '../../../_utils/mastodon/instance'
 import { goto } from 'sapper/runtime.js'
 import { switchToTheme } from '../../../_utils/themeEngine'
 import { database } from '../../../_utils/database/database'
 import { store } from '../../../_utils/store'
+import { updateVerifyCredentialsForInstance } from './[instanceName]'
 
 const REDIRECT_URI = (typeof location !== 'undefined' ?
   location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -86,9 +86,7 @@ async function registerNewInstance(code) {
   store.save()
   switchToTheme('default')
   // fire off request for account so it's cached
-  getVerifyCredentials(currentRegisteredInstanceName, instanceData.access_token).then(verifyCredentials => {
-    database.setInstanceVerifyCredentials(currentRegisteredInstanceName, verifyCredentials)
-  })
+  updateVerifyCredentialsForInstance(currentRegisteredInstanceName)
   goto('/')
 }
 
