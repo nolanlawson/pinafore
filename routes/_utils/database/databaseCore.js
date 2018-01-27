@@ -15,9 +15,18 @@ import {
 
 import QuickLRU from 'quick-lru'
 
-const statusesCache = new QuickLRU({maxSize: 100})
-const accountsCache = new QuickLRU({maxSize: 50})
-const metaCache = new QuickLRU({maxSize: 20})
+const statusesCache = {
+  maxSize: 100,
+  caches: {}
+}
+const accountsCache = {
+  maxSize: 50,
+  caches: {}
+}
+const metaCache = {
+  maxSize: 20,
+  caches: {}
+}
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.cacheStats = {
@@ -39,16 +48,31 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
   }
 }
 
+function clearCache(cache, instanceName) {
+  delete cache.caches[instanceName]
+}
+
+function getOrCreateInstanceCache(cache, instanceName) {
+  let cached = cache.caches[instanceName]
+  if (!cached) {
+    cached = cache.caches[instanceName] = new QuickLRU({maxSize: cache.maxSize})
+  }
+  return cached
+}
+
 function setInCache(cache, instanceName, key, value) {
-  return cache.set(`${instanceName}/${key}`, value)
+  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  return instanceCache.set(key, value)
 }
 
 function getInCache(cache, instanceName, key) {
-  return cache.get(`${instanceName}/${key}`)
+  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  return instanceCache.get(key)
 }
 
 function hasInCache(cache, instanceName, key) {
-  return cache.has(`${instanceName}/${key}`)
+  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  return instanceCache.has(key)
 }
 
 //
@@ -203,5 +227,8 @@ export async function getAccount(instanceName, accountId) {
 //
 
 export async function clearDatabaseForInstance(instanceName) {
+  clearCache(statusesCache, instanceName)
+  clearCache(accountsCache, instanceName)
+  clearCache(metaCache, instanceName)
   await deleteDatabase(instanceName)
 }
