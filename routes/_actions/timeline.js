@@ -5,7 +5,7 @@ import { toast } from '../_utils/toast'
 import { StatusStream } from '../_utils/mastodon/StatusStream'
 import { getInstanceInfo } from '../_utils/mastodon/instance'
 import { mark, stop } from '../_utils/marks'
-import { mergeStatuses } from '../_utils/timelines'
+import { mergeArrays } from '../_utils/arrays'
 
 const FETCH_LIMIT = 20
 
@@ -34,7 +34,7 @@ async function addStatuses(instanceName, timelineName, newStatuses) {
   mark('addStatuses')
   let newStatusIds = newStatuses.map(status => status.id)
   let oldStatusIds = store.getForTimeline(instanceName, timelineName, 'statusIds') || []
-  let merged = mergeStatuses(oldStatusIds, newStatusIds)
+  let merged = mergeArrays(oldStatusIds, newStatusIds)
   store.setForTimeline(instanceName, timelineName, { statusIds: merged })
   stop('addStatuses')
 }
