@@ -9,12 +9,6 @@ import { updateVerifyCredentialsForInstance } from './[instanceName]'
 const REDIRECT_URI = (typeof location !== 'undefined' ?
   location.origin : 'https://pinafore.social') + '/settings/instances/add'
 
-store.onchange((state, changed) => {
-  if (changed['instanceNameInSearch']) {
-    store.set({logInToInstanceError: false})
-  }
-})
-
 async function redirectToOauth() {
   let instanceName = store.get('instanceNameInSearch')
   let loggedInInstances = store.get('loggedInInstances')
@@ -42,6 +36,7 @@ async function redirectToOauth() {
 
 export async function logInToInstance() {
   store.set({logInToInstanceLoading: true})
+  store.set({logInToInstanceError: null})
   try {
     await redirectToOauth()
   } catch (err) {
