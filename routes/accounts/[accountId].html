@@ -11,6 +11,9 @@
         dynamicIcon="#fa-user" >
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{profileName}}" />
+    {{#if $currentAccountProfile}}
+      <AccountProfile profile="{{$currentAccountProfile}}" />
+    {{/if}}
   <LazyTimeline timeline='account/{{params.accountId}}' />
   {{else}}
   <HiddenFromSSR>
@@ -30,6 +33,7 @@
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
   import { showAccountProfile } from './_actions/[accountId]'
+  import AccountProfile from '../_components/AccountProfile.html'
 
   export default {
     oncreate() {
@@ -50,7 +54,8 @@
       LazyTimeline,
       FreeTextLayout,
       HiddenFromSSR,
-      DynamicPageBanner
+      DynamicPageBanner,
+      AccountProfile
     }
   }
 </script>

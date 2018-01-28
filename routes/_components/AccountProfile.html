@@ -1,0 +1,127 @@
+<div class="account-profile {{headerIsMissing ? 'header-is-missing' : ''}}" style="background-image: url({{profile.header}});">
+  <div class="account-profile-grid">
+    <div class="account-profile-avatar">
+      <img src="{{profile.avatar}}">
+    </div>
+    <div class="account-profile-name">
+      {{profile.display_name}}
+    </div>
+    <div class="account-profile-following">
+      <span>
+        Follows you
+      </span>
+    </div>
+    <div class="account-profile-follow">
+      <svg>
+        <use xlink:href="#fa-user-plus" />
+      </svg>
+    </div>
+    <div class="account-profile-note">
+      {{{profile.note}}}
+    </div>
+  </div>
+  <div class="account-profile-background"></div>
+</div>
+<style>
+  .account-profile {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding-top: 175px;
+  }
+
+  .account-profile.header-is-missing {
+    padding-top: 0;
+  }
+
+  .account-profile-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+  }
+
+  .account-profile-grid {
+    display: grid;
+    grid-template-areas: "avatar     name        following   follow"
+                         "avatar     note        note        note";
+    grid-template-columns: min-content min-content 1fr min-content;
+    grid-column-gap: 10px;
+    grid-row-gap: 2px;
+    padding: 10px;
+    justify-content: center;
+  }
+
+  @supports (-webkit-backdrop-filter: blur(20px) saturate(130%)) or (backdrop-filter: blur(20px) saturate(130%)) {
+    :global(.account-profile-grid) {
+      -webkit-backdrop-filter: blur(20px) saturate(130%);
+      backdrop-filter: blur(20px) saturate(130%);
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(20px) saturate(130%)) or (backdrop-filter: blur(20px) saturate(130%))) {
+    :global(.account-profile-grid) {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  .account-profile-following, .account-profile-avatar, .account-profile-follow,
+      .account-profile-name, .account-profile-username, .account-profile-note {
+    z-index: 10;
+  }
+
+  .account-profile-following {
+    grid-area: following;
+    align-self: center;
+    text-transform: uppercase;
+    color: var(--deemphasized-text-color);
+    font-size: 0.8em;
+  }
+  .account-profile-following span {
+    background: rgba(30, 30, 30, 0.2);
+    border-radius: 4px;
+    padding: 3px 5px;
+  }
+  .account-profile-avatar {
+    grid-area: avatar;
+  }
+  .account-profile-avatar img {
+    border-radius: 4px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .account-profile-follow {
+    grid-area: follow;
+    align-self: center;
+  }
+  .account-profile-follow svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--svg-fill);
+  }
+  .account-profile-name {
+    grid-area: name;
+    font-size: 1.5em;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .account-profile-note {
+    grid-area: note;
+  }
+  :global(.account-profile-note p) {
+    font-size: 1em;
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      headerIsMissing: (profile) => profile.header.endsWith('missing.png')
+    }
+  }
+</script>
