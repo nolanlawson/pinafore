@@ -1,4 +1,4 @@
-import { store } from '../_utils/store'
+import { store } from '../_store/store'
 import { database } from '../_utils/database/database'
 import { getTimeline } from '../_utils/mastodon/timelines'
 import { toast } from '../_utils/toast'

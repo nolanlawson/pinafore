@@ -3,7 +3,7 @@ import { getInstanceInfo } from '../../../_utils/mastodon/instance'
 import { goto } from 'sapper/runtime.js'
 import { switchToTheme } from '../../../_utils/themeEngine'
 import { database } from '../../../_utils/database/database'
-import { store } from '../../../_utils/store'
+import { store } from '../../../_store/store'
 import { updateVerifyCredentialsForInstance } from './[instanceName]'
 
 const REDIRECT_URI = (typeof location !== 'undefined' ?

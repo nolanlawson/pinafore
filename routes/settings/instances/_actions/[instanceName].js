@@ -1,5 +1,5 @@
 import { getVerifyCredentials } from '../../../_utils/mastodon/user'
-import { store } from '../../../_utils/store'
+import { store } from '../../../_store/store'
 import { switchToTheme } from '../../../_utils/themeEngine'
 import { toast } from '../../../_utils/toast'
 import { database } from '../../../_utils/database/database'

@@ -1,6 +1,6 @@
 import { getAccount, getRelationship } from '../../_utils/mastodon/user'
 import { database } from '../../_utils/database/database'
-import { store } from '../../_utils/store'
+import { store } from '../../_store/store'
 
 async function updateAccount(accountId, instanceName, accessToken) {
   let localPromise = database.getAccount(instanceName, accountId)
