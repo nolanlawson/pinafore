@@ -41,16 +41,16 @@
         this.set({cachedAccount: account})
       })
       getAccount(currentInstance, accessToken, accountId).then(account => {
-        this.set({account: account})
+        this.set({remoteAccount: account})
       })
     },
     store: () => store,
     computed: {
-      remoteProfileName: (account) => {
-        return account && ('@' + account.acct)
+      remoteProfileName: (remoteAccount) => {
+        return remoteAccount && ('@' + remoteAccount.acct)
       },
-      remoteShortProfileName: (account) => {
-        return account && ('@' + account.username)
+      remoteShortProfileName: (remoteAccount) => {
+        return remoteAccount && ('@' + remoteAccount.username)
       },
       cachedProfileName: (cachedAccount) => {
         return cachedAccount && ('@' + cachedAccount.acct)
