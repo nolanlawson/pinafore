@@ -333,22 +333,30 @@
         }
         return content
       },
-      spoilerShown: ($spoilersShown, statusId) => $spoilersShown && $spoilersShown[statusId],
-      sensitiveShown: ($sensitivesShown, statusId) => $sensitivesShown && $sensitivesShown[statusId],
+      spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId],
+      sensitiveShown: ($sensitivesShown, $currentInstance, statusId) => $sensitivesShown && $sensitivesShown[$currentInstance] && $sensitivesShown[$currentInstance][statusId],
     },
     methods: {
       onClickSpoilerButton() {
-        let $spoilersShown = this.store.get('spoilersShown') || {}
         let statusId = this.get('statusId')
-        $spoilersShown[statusId] = !$spoilersShown[statusId]
+        let instanceName = this.store.get('currentInstance')
+        let $spoilersShown = this.store.get('spoilersShown') || {}
+        if (!$spoilersShown[instanceName]) {
+          $spoilersShown[instanceName] = {}
+        }
+        $spoilersShown[instanceName][statusId] = !$spoilersShown[instanceName][statusId]
         this.store.set({'spoilersShown': $spoilersShown})
         this.hydrateContent()
         this.fire('recalculateHeight')
       },
       onClickSensitiveMediaButton() {
-        let $sensitivesShown = this.store.get('sensitivesShown') || {}
         let statusId = this.get('statusId')
-        $sensitivesShown[statusId] = !$sensitivesShown[statusId]
+        let instanceName = this.store.get('currentInstance')
+        let $sensitivesShown = this.store.get('sensitivesShown') || {}
+        if (!$sensitivesShown[instanceName]) {
+          $sensitivesShown[instanceName] = {}
+        }
+        $sensitivesShown[instanceName][statusId] = !$sensitivesShown[instanceName][statusId]
         this.store.set({'sensitivesShown': $sensitivesShown})
         this.fire('recalculateHeight')
       },
