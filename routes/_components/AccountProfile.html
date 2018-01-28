@@ -1,32 +1,34 @@
 <div class="account-profile {{headerIsMissing ? 'header-is-missing' : ''}}" style="background-image: url({{profile.header}});">
-  <div class="account-profile-grid">
-    <div class="account-profile-avatar">
-      <img src="{{profile.avatar}}" aria-hidden="true">
-    </div>
-    <div class="account-profile-name">
-      {{profile.display_name}}
-    </div>
-    <div class="account-profile-followed-by">
-      {{#if relationship && relationship.followed_by}}
-      <span>
-        Follows you
-      </span>
-      {{/if}}
-    </div>
-    <div class="account-profile-follow">
-      {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
-        <IconButton
-          label="{{relationship && relationship.following ? 'Unfollow' : 'Follow'}}"
-          href="{{relationship && relationship.following ? '#fa-user-times' : '#fa-user-plus'}}"
-          big="true"
-        />
-      {{/if}}
-    </div>
-    <div class="account-profile-note">
-      {{{profile.note}}}
+  <div class="account-profile-grid-wrapper">
+    <div class="account-profile-backdrop"></div>
+    <div class="account-profile-grid">
+      <div class="account-profile-avatar">
+        <img src="{{profile.avatar}}" aria-hidden="true">
+      </div>
+      <div class="account-profile-name">
+        {{profile.display_name}}
+      </div>
+      <div class="account-profile-followed-by">
+        {{#if relationship && relationship.followed_by}}
+        <span>
+          Follows you
+        </span>
+        {{/if}}
+      </div>
+      <div class="account-profile-follow">
+        {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
+          <IconButton
+            label="{{relationship && relationship.following ? 'Unfollow' : 'Follow'}}"
+            href="{{relationship && relationship.following ? '#fa-user-times' : '#fa-user-plus'}}"
+            big="true"
+          />
+        {{/if}}
+      </div>
+      <div class="account-profile-note">
+        {{{profile.note}}}
+      </div>
     </div>
   </div>
-  <div class="account-profile-background"></div>
 </div>
 <style>
   .account-profile {
@@ -41,7 +43,7 @@
     background-color: #ccc;
   }
 
-  .account-profile-background {
+  .account-profile-backdrop {
     position: absolute;
     left: 0;
     top: 0;
@@ -59,10 +61,12 @@
     grid-row-gap: 2px;
     padding: 10px;
     justify-content: center;
+    z-index: 10;
+    position: relative;
   }
 
   @supports (-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%)) {
-    :global(.account-profile-grid) {
+    :global(.account-profile-grid-wrapper) {
       -webkit-backdrop-filter: blur(7px) saturate(110%);
       backdrop-filter: blur(7px) saturate(110%);
       background-color: rgba(255, 255, 255, 0.7);
@@ -70,13 +74,12 @@
   }
 
   @supports not ((-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%))) {
-    :global(.account-profile-grid) {
+    :global(.account-profile-grid-wrapper) {
       background-color: rgba(255, 255, 255, 0.9);
     }
   }
 
-  .account-profile-followed-by, .account-profile-avatar, .account-profile-follow,
-      .account-profile-name, .account-profile-username, .account-profile-note {
+  .account-profile-grid {
     z-index: 10;
   }
 
