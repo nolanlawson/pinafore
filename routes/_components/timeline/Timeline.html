@@ -17,19 +17,19 @@
   }
 </style>
 <script>
-  import { store } from '../_utils/store'
-  import { getTimeline } from '../_utils/mastodon/timelines'
-  import { getInstanceInfo } from '../_utils/mastodon/instance'
+  import { store } from '../../_utils/store'
+  import { getTimeline } from '../../_utils/mastodon/timelines'
+  import { getInstanceInfo } from '../../_utils/mastodon/instance'
   import StatusListItem from './StatusListItem.html'
   import LoadingFooter from './LoadingFooter.html'
-  import VirtualList from './virtualList/VirtualList.html'
+  import VirtualList from '../virtualList/VirtualList.html'
   import { splice, push } from 'svelte-extras'
-  import { mergeStatuses } from '../_utils/statuses'
-  import { mark, stop } from '../_utils/marks'
-  import { timelines } from '../_static/timelines'
-  import { toast } from '../_utils/toast'
-  import { database } from '../_utils/database/database'
-  import { StatusStream } from '../_utils/mastodon/StatusStream'
+  import { mergeStatuses } from '../../_utils/statuses'
+  import { mark, stop } from '../../_utils/marks'
+  import { timelines } from '../../_static/timelines'
+  import { toast } from '../../_utils/toast'
+  import { database } from '../../_utils/database/database'
+  import { StatusStream } from '../../_utils/mastodon/StatusStream'
 
   const FETCH_LIMIT = 20
 

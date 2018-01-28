@@ -12,7 +12,7 @@ export const importURLSearchParams = () => import(
 })
 
 export const importTimeline = () => import(
-  /* webpackChunkName: 'Timeline' */ '../_components/Timeline.html'
+  /* webpackChunkName: 'Timeline' */ '../_components/timeline/Timeline.html'
   ).then(mod => mod.default)
 
 export const importIntersectionObserver = () => import(

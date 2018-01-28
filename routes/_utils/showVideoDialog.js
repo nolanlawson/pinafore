@@ -1,4 +1,4 @@
-import VideoDialog from '../_components/VideoDialog.html'
+import VideoDialog from '../_components/status/VideoDialog.html'
 
 export function showVideoDialog(poster, src, width, height, description) {
   let dialog = document.createElement('dialog')
