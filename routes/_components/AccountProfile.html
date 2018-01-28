@@ -61,15 +61,15 @@
     justify-content: center;
   }
 
-  @supports (-webkit-backdrop-filter: blur(20px) saturate(130%)) or (backdrop-filter: blur(20px) saturate(130%)) {
+  @supports (-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%)) {
     :global(.account-profile-grid) {
-      -webkit-backdrop-filter: blur(20px) saturate(130%);
-      backdrop-filter: blur(20px) saturate(130%);
-      background-color: rgba(255, 255, 255, 0.5);
+      -webkit-backdrop-filter: blur(7px) saturate(110%);
+      backdrop-filter: blur(7px) saturate(110%);
+      background-color: rgba(255, 255, 255, 0.7);
     }
   }
 
-  @supports not ((-webkit-backdrop-filter: blur(20px) saturate(130%)) or (backdrop-filter: blur(20px) saturate(130%))) {
+  @supports not ((-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%))) {
     :global(.account-profile-grid) {
       background-color: rgba(255, 255, 255, 0.9);
     }
