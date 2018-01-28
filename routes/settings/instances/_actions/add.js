@@ -12,7 +12,7 @@ const REDIRECT_URI = (typeof location !== 'undefined' ?
 async function redirectToOauth() {
   let instanceName = store.get('instanceNameInSearch')
   let loggedInInstances = store.get('loggedInInstances')
-  instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '')
+  instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '').toLowerCase()
   if (Object.keys(loggedInInstances).includes(instanceName)) {
     store.set({logInToInstanceError: `You've already logged in to ${instanceName}`})
     return
