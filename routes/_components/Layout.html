@@ -1,3 +1,4 @@
+<:Window bind:online />
 <Nav :page :dynamicPage :dynamicHref :dynamicIcon :dynamicLabel/>
 
 {{#if virtual}}
@@ -19,6 +20,11 @@
   import { store } from '../_utils/store'
 
 	export default {
+	  oncreate() {
+	    this.observe('online', online => {
+	      this.store.set({online: online})
+      })
+    },
 		components: {
 		  VirtualListContainer,
 			Nav

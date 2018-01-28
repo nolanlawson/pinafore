@@ -52,6 +52,12 @@ class PinaforeStore extends Store {
     timelines[instanceName] = timelineData
     this.set({timelines: timelines})
   }
+
+  getForTimeline(instanceName, timelineName, key) {
+    let timelines = this.get('timelines') || {}
+    let timelineData = timelines[instanceName] || {}
+    return (timelineData[timelineName] || {})[key]
+  }
 }
 
 const store = new PinaforeStore({

@@ -1,4 +1,3 @@
-<:Window bind:online />
 <div class="timeline" role="feed" aria-label="{{label}}">
   <VirtualList component="{{StatusListItem}}"
                :makeProps
@@ -18,41 +17,16 @@
 </style>
 <script>
   import { store } from '../../_utils/store'
-  import { getTimeline } from '../../_utils/mastodon/timelines'
-  import { getInstanceInfo } from '../../_utils/mastodon/instance'
   import StatusListItem from './StatusListItem.html'
   import LoadingFooter from './LoadingFooter.html'
   import VirtualList from '../virtualList/VirtualList.html'
-  import { splice, push } from 'svelte-extras'
-  import { mergeStatuses } from '../../_utils/statuses'
-  import { mark, stop } from '../../_utils/marks'
   import { timelines } from '../../_static/timelines'
-  import { toast } from '../../_utils/toast'
   import { database } from '../../_utils/database/database'
-  import { StatusStream } from '../../_utils/mastodon/StatusStream'
-
-  const FETCH_LIMIT = 20
+  import { initializeTimeline, fetchStatusesOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
 
   export default {
     async oncreate() {
-      let timeline = this.get('timeline')
-      let instanceName = this.store.get('currentInstance')
-      let accessToken = this.store.get('accessToken')
-      if (!this.store.get('statusIds').length) {
-        this.addStatuses(await this.fetchStatusesAndPossiblyFallBack())
-      }
-      /* no await */ getInstanceInfo(instanceName).then(instanceInfo => database.setInstanceInfo(instanceName, instanceInfo))
-      let instanceInfo = await database.getInstanceInfo(instanceName)
-      this._statusStream = new StatusStream(instanceInfo.urls.streaming_api, accessToken, timeline, {
-        onMessage(message) {
-          console.log('message', message)
-        }
-      })
-    },
-    ondestroy() {
-      if (this._statusStream) {
-        this._statusStream.close()
-      }
+      setupTimeline()
     },
     data: () => ({
       StatusListItem: StatusListItem,
@@ -77,69 +51,17 @@
       VirtualList
     },
     methods: {
-      splice: splice,
-      push: push,
       initialize() {
         if (this.store.get('initialized') || !this.store.get('statusIds') || !this.store.get('statusIds').length) {
           return
         }
-        let instanceName = this.store.get('currentInstance')
-        let timeline = this.get('timeline')
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            this.store.setForTimeline(instanceName, timeline, {initialized: true})
-          })
-        })
+        initializeTimeline()
       },
       async onScrollToBottom() {
-        if (!this.store.get('initialized')) {
+        if (!this.store.get('initialized') || this.store.get('runningUpdate')) {
           return
         }
-        if (this.store.get('runningUpdate')) {
-          return
-        }
-        mark('onScrollToBottom')
-        let timeline = this.get('timeline')
-        let instanceName = this.store.get('currentInstance')
-        this.store.setForTimeline(instanceName, timeline, { runningUpdate: true })
-        let newStatuses = await this.fetchStatusesAndPossiblyFallBack()
-        this.store.setForTimeline(instanceName, timeline, { runningUpdate: false })
-        this.addStatuses(newStatuses)
-        stop('onScrollToBottom')
-      },
-      addStatuses(newStatuses) {
-        console.log('addStatuses()')
-        let instanceName = this.store.get('currentInstance')
-        let timeline = this.get('timeline')
-        let statusIds = this.store.get('statusIds')
-        if (!statusIds) {
-          return
-        }
-        /* no await */ database.insertStatuses(instanceName, timeline, newStatuses)
-        let newStatusIds = newStatuses.map(status => status.id)
-        let merged = mergeStatuses(statusIds, newStatusIds)
-        this.store.setForTimeline(instanceName, timeline, { statusIds: merged })
-      },
-      async fetchStatusesAndPossiblyFallBack() {
-        let online = this.get('online')
-        let instanceName = this.store.get('currentInstance')
-        let instanceData = this.store.get('currentInstanceData')
-        let timeline = this.get('timeline')
-        let lastStatusId = this.store.get('lastStatusId')
-        let statuses
-        if (!online) {
-          statuses = await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
-        } else {
-          try {
-            statuses = await getTimeline(instanceName, instanceData.access_token, timeline, lastStatusId, FETCH_LIMIT)
-            /* no await */ database.insertStatuses(instanceName, timeline, statuses)
-          } catch (e) {
-            console.error(e)
-            toast.say('Internet request failed. Showing offline content.')
-            statuses = await database.getTimeline(instanceName, timeline, lastStatusId, FETCH_LIMIT)
-          }
-        }
-        return statuses
+        fetchStatusesOnScrollToBottom()
       }
     }
   }
