@@ -6,7 +6,13 @@
   </button>
   <button aria-label="Boost" aria-pressed="{{status.reblogged}}" class="{{status.reblogged ? 'selected' : ''}}" type="button">
     <svg>
-      <use xlink:href="#fa-retweet" />
+      {{#if status.visibility === 'private'}}
+        <use xlink:href="#fa-lock" />
+      {{elseif status.visibility === 'direct'}}
+        <use xlink:href="#fa-envelope" />
+      {{else}}
+        <use xlink:href="#fa-retweet" />
+      {{/if}}
     </svg>
   </button>
   <button aria-label="Favorite" aria-pressed="{{status.favourited}}" class="{{status.favourited ? 'selected' : ''}}" type="button">

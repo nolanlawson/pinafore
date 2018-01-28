@@ -14,4 +14,6 @@ module.exports = [
   {id:'fa-eye', src:'node_modules/font-awesome-svg-png/white/svg/eye.svg', title: 'Show Sensitive Content'},
   {id:'fa-eye-slash', src:'node_modules/font-awesome-svg-png/white/svg/eye-slash.svg', title: 'Hide Sensitive Content'},
   {id:'fa-hashtag', src:'node_modules/font-awesome-svg-png/white/svg/hashtag.svg', title: 'Hashtag'},
+  {id:'fa-lock', src:'node_modules/font-awesome-svg-png/white/svg/lock.svg', title: 'Locked'},
+  {id:'fa-envelope', src:'node_modules/font-awesome-svg-png/white/svg/envelope.svg', title: 'Sealed Envelope'}
 ]

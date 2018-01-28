@@ -1,4 +1,6 @@
-<article class="status-article" tabindex="0" aria-posinset="{{index}}" aria-setsize="{{length}}" on:recalculateHeight>
+<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}}" tabindex="0"
+         aria-posinset="{{index}}" aria-setsize="{{length}}"
+         on:recalculateHeight>
   {{#if status.reblog}}
     <div class="status-boosted">
       <svg>
@@ -83,6 +85,10 @@
         ".............. status-toolbar";
     grid-template-columns: 58px 1fr;
     border-bottom: 1px solid var(--main-border);
+  }
+
+  .status-article.status-direct {
+    background-color: var(--status-direct-background);
   }
 
   :global(.status-sidebar) {

@@ -62,4 +62,6 @@
 
   --deemphasized-text-color: #666;
   --focus-outline: $focus-outline;
+
+  --status-direct-background: darken($body-bg-color, 5%)
 }
