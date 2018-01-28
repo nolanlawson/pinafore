@@ -1,6 +1,6 @@
 import { paramsString } from '../ajax'
 import noop from 'lodash/noop'
-import WebSocketClient from 'websocket.js'
+import WebSocketClient from '@gamestdio/websocket'
 
 function getStreamName(timeline) {
   switch (timeline) {
