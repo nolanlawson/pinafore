@@ -222,6 +222,14 @@ export async function getAccount(instanceName, accountId) {
   return result
 }
 
+export async function setAccount(instanceName, account) {
+  setInCache(accountsCache, instanceName, account.id, account)
+  const db = await getDatabase(instanceName)
+  return await dbPromise(db, ACCOUNTS_STORE, 'readwrite', (store) => {
+    store.put(account)
+  })
+}
+
 //
 // lifecycle
 //

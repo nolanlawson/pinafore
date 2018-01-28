@@ -29,40 +29,20 @@
   import { store } from '../_utils/store.js'
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
-  import { getAccount } from '../_utils/mastodon/user'
-  import { database } from '../_utils/database/database'
+  import { showAccountProfile } from './_actions/[accountId]'
 
   export default {
     oncreate() {
-      let currentInstance = this.store.get('currentInstance')
-      let accessToken = this.store.get('accessToken')
       let accountId = this.get('params').accountId
-      database.getAccount(currentInstance, accountId).then(account => {
-        this.set({cachedAccount: account})
-      })
-      getAccount(currentInstance, accessToken, accountId).then(account => {
-        this.set({remoteAccount: account})
-      })
+      showAccountProfile(accountId)
     },
     store: () => store,
     computed: {
-      remoteProfileName: (remoteAccount) => {
-        return remoteAccount && ('@' + remoteAccount.acct)
+      profileName: ($currentAccountProfile) => {
+        return $currentAccountProfile && ('@' + $currentAccountProfile.acct)
       },
-      remoteShortProfileName: (remoteAccount) => {
-        return remoteAccount && ('@' + remoteAccount.username)
-      },
-      cachedProfileName: (cachedAccount) => {
-        return cachedAccount && ('@' + cachedAccount.acct)
-      },
-      cachedShortProfileName: (cachedAccount) => {
-        return cachedAccount && ('@' + cachedAccount.username)
-      },
-      profileName: (remoteProfileName, cachedProfileName) => {
-        return remoteProfileName || cachedProfileName || ''
-      },
-      shortProfileName: (remoteShortProfileName, cachedShortProfileName) => {
-        return remoteShortProfileName || cachedShortProfileName || ''
+      shortProfileName: ($currentAccountProfile) => {
+        return $currentAccountProfile && ('@' + $currentAccountProfile.username)
       }
     },
     components: {
