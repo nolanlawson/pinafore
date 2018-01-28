@@ -2,6 +2,10 @@ import { Store } from 'svelte/store'
 
 const LS = process.browser && localStorage
 
+function safeParse(str) {
+  return !str ? undefined : (str === 'undefined' ? undefined : JSON.parse(str))
+}
+
 export class LocalStorageStore extends Store {
   constructor(state, keysToWatch) {
     super(state)
@@ -15,7 +19,7 @@ export class LocalStorageStore extends Store {
       let key = LS.key(i)
       if (key.startsWith('store_')) {
         let item = LS.getItem(key)
-        newState[key.substring(6)] = item === 'undefined' ? undefined : JSON.parse(item)
+        newState[key.substring(6)] = safeParse(item)
       }
     }
     this.set(newState)
