@@ -1,11 +1,14 @@
 const openReqs = {}
 const databaseCache = {}
 
+const DB_VERSION = 2
+
 import {
   META_STORE,
   TIMELINE_STORE,
   STATUSES_STORE,
-  ACCOUNTS_STORE
+  ACCOUNTS_STORE,
+  RELATIONSHIPS_STORE
 } from './constants'
 
 export function getDatabase(instanceName) {
@@ -17,19 +20,24 @@ export function getDatabase(instanceName) {
   }
 
   databaseCache[instanceName] = new Promise((resolve, reject) => {
-    let req = indexedDB.open(instanceName, 1)
+    let req = indexedDB.open(instanceName, DB_VERSION)
     openReqs[instanceName] = req
     req.onerror = reject
     req.onblocked = () => {
       console.log('idb blocked')
     }
-    req.onupgradeneeded = () => {
+    req.onupgradeneeded = (e) => {
       let db = req.result;
-      db.createObjectStore(META_STORE, {keyPath: 'key'})
-      db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
-      db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
-      let timelineStore = db.createObjectStore(TIMELINE_STORE, {keyPath: 'id'})
-      timelineStore.createIndex('statusId', 'statusId')
+      if (e.oldVersion < 1) {
+        db.createObjectStore(META_STORE, {keyPath: 'key'})
+        db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
+        db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
+        let timelineStore = db.createObjectStore(TIMELINE_STORE, {keyPath: 'id'})
+        timelineStore.createIndex('statusId', 'statusId')
+      }
+      if (e.oldVersion < 2) {
+        db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
+      }
     }
     req.onsuccess = () => resolve(req.result)
   })

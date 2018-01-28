@@ -1,0 +1,56 @@
+{{#if pressable}}
+  <button type="button"
+          aria-label="{{label}}"
+          aria-pressed="{{!!pressed}}"
+          class="icon-button {{pressed ? 'pressed' : ''}} {{big ? 'big-icon' : ''}}">
+    <svg>
+      <use xlink:href="{{href}}" />
+    </svg>
+  </button>
+{{else}}
+  <button type="button"
+          aria-label="{{label}}"
+          class="icon-button {{big ? 'big-icon' : ''}}">
+    <svg>
+      <use xlink:href="{{href}}" />
+    </svg>
+  </button>
+{{/if}}
+<style>
+  button.icon-button {
+    padding: 6px 10px;
+    background: none;
+    border: none;
+  }
+
+  button.icon-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--action-button-fill-color);
+  }
+
+  button.icon-button.big-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  button.icon-button:hover svg {
+    fill: var(--action-button-fill-color-hover);
+  }
+
+  button.icon-button:active svg {
+    fill: var(--action-button-fill-color-active);
+  }
+
+  button.icon-button.pressed svg {
+    fill: var(--action-button-fill-color-pressed)
+  }
+
+  button.icon-button.pressed:hover svg {
+    fill: var(--action-button-fill-color-pressed-hover);
+  }
+
+  button.icon-button.pressed:active svg {
+    fill: var(--action-button-fill-color-pressed-active);
+  }
+</style>

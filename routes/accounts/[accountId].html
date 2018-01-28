@@ -12,7 +12,10 @@
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{profileName}}" />
     {{#if $currentAccountProfile}}
-      <AccountProfile profile="{{$currentAccountProfile}}" />
+      <AccountProfile profile="{{$currentAccountProfile}}"
+                      relationship="{{$currentAccountRelationship}}"
+                      verifyCredentials="{{$currentVerifyCredentials}}"
+      />
     {{/if}}
   <LazyTimeline timeline='account/{{params.accountId}}' />
   {{else}}
@@ -32,13 +35,16 @@
   import { store } from '../_utils/store.js'
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
-  import { showAccountProfile } from './_actions/[accountId]'
+  import { updateProfileAndRelationship } from './_actions/[accountId]'
   import AccountProfile from '../_components/AccountProfile.html'
+  import { updateVerifyCredentialsForInstance } from '../settings/instances/_actions/[instanceName]'
 
   export default {
     oncreate() {
       let accountId = this.get('params').accountId
-      showAccountProfile(accountId)
+      let instanceName = this.store.get('currentInstance')
+      updateProfileAndRelationship(accountId)
+      updateVerifyCredentialsForInstance(instanceName)
     },
     store: () => store,
     computed: {

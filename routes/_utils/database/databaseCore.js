@@ -10,69 +10,44 @@ import {
 import {
   META_STORE,
   TIMELINE_STORE,
-  STATUSES_STORE, ACCOUNTS_STORE
+  STATUSES_STORE,
+  ACCOUNTS_STORE,
+  RELATIONSHIPS_STORE
 } from './constants'
 
-import QuickLRU from 'quick-lru'
+import {
+  statusesCache,
+  relationshipsCache,
+  accountsCache,
+  metaCache,
+  clearCache,
+  getInCache,
+  hasInCache,
+  setInCache
+} from './cache'
 
-const statusesCache = {
-  maxSize: 100,
-  caches: {}
-}
-const accountsCache = {
-  maxSize: 50,
-  caches: {}
-}
-const metaCache = {
-  maxSize: 20,
-  caches: {}
-}
+//
+// helpers
+//
 
-if (process.browser && process.env.NODE_ENV !== 'production') {
-  window.cacheStats = {
-    statuses: {
-      cache: statusesCache,
-      hits: 0,
-      misses: 0
-    },
-    accounts: {
-      cache: accountsCache,
-      hits: 0,
-      misses: 0
-    },
-    meta: {
-      cache: accountsCache,
-      hits: 0,
-      misses: 0
-    }
+async function getGenericEntityWithId(store, cache, instanceName, id) {
+  if (hasInCache(cache, instanceName, id)) {
+    return getInCache(cache, instanceName, id)
   }
+  const db = await getDatabase(instanceName)
+  let result = await dbPromise(db, store, 'readonly', (store, callback) => {
+    store.get(id).onsuccess = (e) => callback(e.target.result)
+  })
+  setInCache(cache, instanceName, id, result)
+  return result
 }
 
-function clearCache(cache, instanceName) {
-  delete cache.caches[instanceName]
-}
-
-function getOrCreateInstanceCache(cache, instanceName) {
-  let cached = cache.caches[instanceName]
-  if (!cached) {
-    cached = cache.caches[instanceName] = new QuickLRU({maxSize: cache.maxSize})
-  }
-  return cached
-}
-
-function setInCache(cache, instanceName, key, value) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
-  return instanceCache.set(key, value)
-}
-
-function getInCache(cache, instanceName, key) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
-  return instanceCache.get(key)
-}
-
-function hasInCache(cache, instanceName, key) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
-  return instanceCache.has(key)
+async function setGenericEntityWithId(store, cache, instanceName, entity) {
+  setInCache(cache, instanceName, entity.id, entity)
+  const db = await getDatabase(instanceName)
+  return await dbPromise(db, store, 'readwrite', (store) => {
+    store.put(entity)
+  })
 }
 
 //
@@ -129,23 +104,7 @@ export async function insertStatuses(instanceName, timeline, statuses) {
 }
 
 export async function getStatus(instanceName, statusId) {
-  if (hasInCache(statusesCache, instanceName, statusId)) {
-    if (process.browser && process.env.NODE_ENV !== 'production') {
-      window.cacheStats.statuses.hits++
-    }
-    return getInCache(statusesCache, instanceName, statusId)
-  }
-  const db = await getDatabase(instanceName)
-  let result = await dbPromise(db, STATUSES_STORE, 'readonly', (store, callback) => {
-    store.get(statusId).onsuccess = (e) => {
-      callback(e.target.result && e.target.result)
-    }
-  })
-  setInCache(statusesCache, instanceName, statusId, result)
-  if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cacheStats.statuses.misses++
-  }
-  return result
+  return await getGenericEntityWithId(STATUSES_STORE, statusesCache, instanceName, statusId)
 }
 
 //
@@ -154,9 +113,6 @@ export async function getStatus(instanceName, statusId) {
 
 async function getMetaProperty(instanceName, key) {
   if (hasInCache(metaCache, instanceName, key)) {
-    if (process.browser && process.env.NODE_ENV !== 'production') {
-      window.cacheStats.meta.hits++
-    }
     return getInCache(metaCache, instanceName, key)
   }
   const db = await getDatabase(instanceName)
@@ -166,9 +122,6 @@ async function getMetaProperty(instanceName, key) {
     }
   })
   setInCache(metaCache, instanceName, key, result)
-  if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cacheStats.meta.misses++
-  }
   return result
 }
 
@@ -200,34 +153,23 @@ export async function setInstanceInfo(instanceName, value) {
 }
 
 //
-// accounts
+// accounts/relationships
 //
 
 export async function getAccount(instanceName, accountId) {
-  if (hasInCache(accountsCache, instanceName, accountId)) {
-    if (process.browser && process.env.NODE_ENV !== 'production') {
-      window.cacheStats.accounts.hits++
-    }
-    return getInCache(accountsCache, instanceName, accountId)
-  }
-  const db = await getDatabase(instanceName)
-  let result = await dbPromise(db, ACCOUNTS_STORE, 'readonly', (store, callback) => {
-    store.get(accountId).onsuccess = (e) => {
-      callback(e.target.result && e.target.result)
-    }
-  })
-  if (process.browser && process.env.NODE_ENV !== 'production') {
-    window.cacheStats.accounts.misses++
-  }
-  return result
+  return await getGenericEntityWithId(ACCOUNTS_STORE, accountsCache, instanceName, accountId)
 }
 
 export async function setAccount(instanceName, account) {
-  setInCache(accountsCache, instanceName, account.id, account)
-  const db = await getDatabase(instanceName)
-  return await dbPromise(db, ACCOUNTS_STORE, 'readwrite', (store) => {
-    store.put(account)
-  })
+  return await setGenericEntityWithId(ACCOUNTS_STORE, accountsCache, instanceName, account)
+}
+
+export async function getRelationship(instanceName, accountId) {
+  return await getGenericEntityWithId(RELATIONSHIPS_STORE, relationshipsCache, instanceName, accountId)
+}
+
+export async function setRelationship(instanceName, relationship) {
+  return await setGenericEntityWithId(RELATIONSHIPS_STORE, relationshipsCache, instanceName, relationship)
 }
 
 //

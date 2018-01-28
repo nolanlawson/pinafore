@@ -1,20 +1,26 @@
 <div class="account-profile {{headerIsMissing ? 'header-is-missing' : ''}}" style="background-image: url({{profile.header}});">
   <div class="account-profile-grid">
     <div class="account-profile-avatar">
-      <img src="{{profile.avatar}}">
+      <img src="{{profile.avatar}}" aria-hidden="true">
     </div>
     <div class="account-profile-name">
       {{profile.display_name}}
     </div>
-    <div class="account-profile-following">
+    <div class="account-profile-followed-by">
+      {{#if relationship && relationship.followed_by}}
       <span>
         Follows you
       </span>
+      {{/if}}
     </div>
     <div class="account-profile-follow">
-      <svg>
-        <use xlink:href="#fa-user-plus" />
-      </svg>
+      {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
+        <IconButton
+          label="{{relationship && relationship.following ? 'Unfollow' : 'Follow'}}"
+          href="{{relationship && relationship.following ? '#fa-user-times' : '#fa-user-plus'}}"
+          big="true"
+        />
+      {{/if}}
     </div>
     <div class="account-profile-note">
       {{{profile.note}}}
@@ -32,6 +38,7 @@
 
   .account-profile.header-is-missing {
     padding-top: 0;
+    background-color: #ccc;
   }
 
   .account-profile-background {
@@ -45,7 +52,7 @@
 
   .account-profile-grid {
     display: grid;
-    grid-template-areas: "avatar     name        following   follow"
+    grid-template-areas: "avatar     name        followed-by   follow"
                          "avatar     note        note        note";
     grid-template-columns: min-content auto 1fr min-content;
     grid-column-gap: 10px;
@@ -68,19 +75,19 @@
     }
   }
 
-  .account-profile-following, .account-profile-avatar, .account-profile-follow,
+  .account-profile-followed-by, .account-profile-avatar, .account-profile-follow,
       .account-profile-name, .account-profile-username, .account-profile-note {
     z-index: 10;
   }
 
-  .account-profile-following {
-    grid-area: following;
+  .account-profile-followed-by {
+    grid-area: followed-by;
     align-self: center;
     text-transform: uppercase;
     color: var(--deemphasized-text-color);
     font-size: 0.8em;
   }
-  .account-profile-following span {
+  .account-profile-followed-by span {
     background: rgba(30, 30, 30, 0.2);
     border-radius: 4px;
     padding: 3px 5px;
@@ -99,11 +106,6 @@
     grid-area: follow;
     align-self: center;
   }
-  .account-profile-follow svg {
-    width: 32px;
-    height: 32px;
-    fill: var(--svg-fill);
-  }
   .account-profile-name {
     grid-area: name;
     font-size: 1.5em;
@@ -121,9 +123,14 @@
   }
 </style>
 <script>
+  import IconButton from './IconButton.html'
+
   export default {
     computed: {
       headerIsMissing: (profile) => profile.header.endsWith('missing.png')
+    },
+    components: {
+      IconButton
     }
   }
 </script>

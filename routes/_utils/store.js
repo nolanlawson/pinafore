@@ -1,4 +1,5 @@
 import { Store } from 'svelte/store.js'
+import { storeObservers } from './storeObservers'
 
 const LOCAL_STORAGE_KEYS = new Set([
   "currentInstance",
@@ -112,6 +113,12 @@ store.compute(
   }
 )
 
+store.compute(
+  'currentVerifyCredentials',
+  ['currentInstance', 'verifyCredentials'],
+  (currentInstance, verifyCredentials) => verifyCredentials && verifyCredentials[currentInstance]
+)
+
 store.compute('currentTimelineData', ['currentInstance', 'currentTimeline', 'timelines'],
   (currentInstance, currentTimeline, timelines) => {
   return ((timelines && timelines[currentInstance]) || {})[currentTimeline] || {}
@@ -121,6 +128,8 @@ store.compute('statusIds',     ['currentTimelineData'], (currentTimelineData) =>
 store.compute('runningUpdate', ['currentTimelineData'], (currentTimelineData) => currentTimelineData.runningUpdate)
 store.compute('initialized',   ['currentTimelineData'], (currentTimelineData) => currentTimelineData.initialized)
 store.compute('lastStatusId',  ['statusIds'], (statusIds) => statusIds.length && statusIds[statusIds.length - 1])
+
+storeObservers(store)
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging

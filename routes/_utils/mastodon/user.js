@@ -1,4 +1,4 @@
-import { get } from '../ajax'
+import { get, paramsString } from '../ajax'
 import { basename } from './utils'
 
 export function getVerifyCredentials(instanceName, accessToken) {
@@ -13,4 +13,13 @@ export function getAccount(instanceName, accessToken, accountId) {
   return get(url, {
     'Authorization': `Bearer ${accessToken}`
   })
+}
+
+export async function getRelationship(instanceName, accessToken, accountId) {
+  let url = `${basename(instanceName)}/api/v1/accounts/relationships`
+  url += '?' + paramsString({id: accountId})
+  let res = await get(url, {
+    'Authorization': `Bearer ${accessToken}`
+  })
+  return res[0]
 }
