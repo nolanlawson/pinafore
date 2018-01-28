@@ -57,7 +57,7 @@
         }
         initializeTimeline()
       },
-      async onScrollToBottom() {
+      onScrollToBottom() {
         if (!this.store.get('initialized') || this.store.get('runningUpdate')) {
           return
         }
