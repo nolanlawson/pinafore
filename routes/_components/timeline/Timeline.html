@@ -34,16 +34,25 @@
     }),
     computed: {
       makeProps: ($currentInstance) => (statusId) => database.getStatus($currentInstance, statusId),
-      label: (timeline, $currentInstance) => {
+      label: (timeline, $currentInstance, timelineType, timelineValue) => {
         if (timelines[timeline]) {
-          `${timelines[timeline].label} timeline for ${$currentInstance}`
-        } else if (timeline.startsWith('tag/')) {
-          let tag = timeline.split('/').slice(-1)[0]
-          return `#${tag} timeline for ${$currentInstance}`
-        } else if (timeline.startsWith('account/')) {
-          let account = timeline.split('/').slice(-1)[0]
-          return `Account #${account} on ${$currentInstance}`
+          return `${timelines[timeline].label} timeline for ${$currentInstance}`
         }
+
+        switch (timelineType) {
+          case 'tag':
+            return `#${timelineValue} timeline for ${$currentInstance}`
+          case 'status':
+            return 'Status context'
+          case 'account':
+            return `Account #${timelineValue} on ${$currentInstance}`
+        }
+      },
+      timelineType: (timeline) => {
+        return timeline.split('/')[0]
+      },
+      timelineValue: (timeline) => {
+        return timeline.split('/').slice(-1)[0]
       }
     },
     store: () => store,
@@ -58,7 +67,9 @@
         initializeTimeline()
       },
       onScrollToBottom() {
-        if (!this.store.get('initialized') || this.store.get('runningUpdate')) {
+        if (!this.store.get('initialized') ||
+            this.store.get('runningUpdate') ||
+            this.get('timelineType') === 'status') { // for status contexts, we've already fetched the whole thread
           return
         }
         fetchStatusesOnScrollToBottom()

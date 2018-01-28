@@ -18,6 +18,7 @@ export function mergeArrays(leftArray, rightArray) {
     let left = leftArray[leftIndex]
     let right = rightArray[rightIndex]
     if (right === left) {
+      merged.push(left)
       rightIndex++
       leftIndex++
     } else if (parseInt(right, 10) > parseInt(left, 10)) {

@@ -30,7 +30,7 @@ export function instanceComputations(store) {
   store.compute(
     'accessToken',
     ['currentInstanceData'],
-    (currentInstanceData) => currentInstanceData.access_token
+    (currentInstanceData) => currentInstanceData && currentInstanceData.access_token
   )
 
   store.compute(

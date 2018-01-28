@@ -2,6 +2,8 @@ import { updateVerifyCredentialsForInstance } from '../settings/instances/_actio
 
 export function observers(store) {
   store.observe('currentInstance', (currentInstance) => {
-    updateVerifyCredentialsForInstance(currentInstance)
+    if (currentInstance) {
+      updateVerifyCredentialsForInstance(currentInstance)
+    }
   })
 }

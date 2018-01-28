@@ -17,5 +17,6 @@ module.exports = [
   {id:'fa-lock', src:'node_modules/font-awesome-svg-png/white/svg/lock.svg', title: 'Locked'},
   {id:'fa-envelope', src:'node_modules/font-awesome-svg-png/white/svg/envelope.svg', title: 'Sealed Envelope'},
   {id:'fa-user-times', src:'node_modules/font-awesome-svg-png/white/svg/user-times.svg', title: 'Stop Following'},
-  {id:'fa-user-plus', src:'node_modules/font-awesome-svg-png/white/svg/user-plus.svg', title: 'Follow'}
+  {id:'fa-user-plus', src:'node_modules/font-awesome-svg-png/white/svg/user-plus.svg', title: 'Follow'},
+  {id:'fa-comments', src:'node_modules/font-awesome-svg-png/white/svg/comments.svg', title: 'Statuses'},
 ]
