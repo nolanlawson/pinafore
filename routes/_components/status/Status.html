@@ -7,25 +7,15 @@
         <use xlink:href="#fa-retweet" />
       </svg>
       <span>
-        {{#if timelineType === 'account' && timelineValue === status.account.id}}
-          <ExternalLink href="{{status.account.url}}">{{status.account.username}}</ExternalLink>
-        {{else}}
-          <a href="/accounts/{{status.account.id}}">{{status.account.username}}</a>
-        {{/if}}
+        <a href="/accounts/{{status.account.id}}">{{status.account.username}}</a>
         boosted
       </span>
     </div>
   {{/if}}
   <div class="status-author">
-    {{#if timelineType === 'account' && timelineValue === originalAccount.id}}
-      <ExternalLink class="status-author-name" href="{{originalAccount.url}}">
-        {{originalAccount.display_name || originalAccount.username}}
-      </ExternalLink>
-    {{else}}
-      <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
-        {{originalAccount.display_name || originalAccount.username}}
-      </a>
-    {{/if}}
+    <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
+      {{originalAccount.display_name || originalAccount.username}}
+    </a>
     <span class="status-author-handle">
       {{'@' + originalAccount.acct}}
     </span>

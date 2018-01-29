@@ -1,31 +1,30 @@
-{{#if class}}
-  <a rel="nofollow noopener" target="_blank" href="{{href}}" class="external-link {{class}}">
-    <slot></slot>
-    {{#if showIcon}}
-      <svg>
-        <use xlink:href="#fa-external-link" />
-      </svg>
-    {{/if}}
-  </a>
-{{else}}
-  <a rel="nofollow noopener" target="_blank" href="{{href}}" class="external-link">
-    <slot></slot>
-    {{#if showIcon}}
-      <svg>
-        <use xlink:href="#fa-external-link" />
-      </svg>
-    {{/if}}
-  </a>
-{{/if}}
+<a rel="nofollow noopener"
+   target="_blank"
+   href="{{href}}"
+   class="{{className || ''}} {{showIcon ? 'external-link-with-icon' : ''}}">
+  <slot></slot>
+  {{#if showIcon}}
+    <svg>
+      <use xlink:href="#fa-external-link" />
+    </svg>
+  {{/if}}
+</a>
 <style>
-  .external-link {
+  .external-link-with-icon {
     display: inline-flex;
     align-items: center;
   }
-  .external-link svg {
+  .external-link-with-icon svg {
     margin-left: 4px;
     width: 14px;
     height: 14px;
     fill: var(--deemphasized-text-color);
   }
 </style>
+<script>
+  export default {
+    oncreate() {
+      this.set({className: this.get('class')}) // workaround for "class" property name bug in svelte
+    }
+  }
+</script>
