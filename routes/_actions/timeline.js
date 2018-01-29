@@ -32,7 +32,6 @@ async function fetchStatuses(instanceName, accessToken, timelineName, lastStatus
 
 async function addStatuses(instanceName, timelineName, newStatuses) {
   console.log('addStatuses, length:', newStatuses.length)
-  debugger
   mark('addStatuses')
   let newStatusIds = newStatuses.map(status => status.id)
   let oldStatusIds = store.getForTimeline(instanceName, timelineName, 'statusIds') || []
