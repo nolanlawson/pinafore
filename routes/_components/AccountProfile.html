@@ -8,6 +8,9 @@
       <div class="account-profile-name">
         {{profile.display_name}}
       </div>
+      <div class="account-profile-username">
+        {{'@' + profile.acct}}
+      </div>
       <div class="account-profile-followed-by">
         {{#if relationship && relationship.followed_by}}
         <span>
@@ -55,10 +58,11 @@
   .account-profile-grid {
     display: grid;
     grid-template-areas: "avatar     name        followed-by   follow"
-                         "avatar     note        note        note";
+                         "avatar     username    username      follow"
+                         "avatar     note        note          follow";
     grid-template-columns: min-content auto 1fr min-content;
     grid-column-gap: 10px;
-    grid-row-gap: 2px;
+    grid-row-gap: 5px;
     padding: 10px;
     justify-content: center;
     z-index: 10;
@@ -77,10 +81,6 @@
     :global(.account-profile-grid-wrapper) {
       background-color: rgba(255, 255, 255, 0.9);
     }
-  }
-
-  .account-profile-grid {
-    z-index: 10;
   }
 
   .account-profile-followed-by {
@@ -105,9 +105,18 @@
     height: 100px;
   }
 
+  .account-profile-username {
+    grid-area: username;
+    color: var(--deemphasized-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-self: center;
+  }
+
   .account-profile-follow {
     grid-area: follow;
-    align-self: center;
+    align-self: flex-start;
   }
   .account-profile-name {
     grid-area: name;
@@ -120,9 +129,38 @@
   }
   .account-profile-note {
     grid-area: note;
+    padding: 10px 0;
   }
   :global(.account-profile-note p) {
     font-size: 1em;
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-avatar img {
+      width: 80px;
+      height: 80px;
+    }
+    .account-profile-name {
+      font-size: 1.2em;
+    }
+    .account-profile-grid {
+      display: grid;
+      grid-template-areas: "avatar     name          follow"
+                           "avatar     username      follow"
+                           "avatar     followed-by   follow"
+                           "note       note          note";
+      grid-template-columns: min-content minmax(auto, 1fr) min-content;
+      grid-template-rows: min-content min-content 1fr min-content;
+    }
+    .account-profile-note {
+      padding: 5px 5px;
+    }
+    .account-profile-username {
+      font-size: 0.9em;
+    }
+    .account-profile-name, .account-profile-username {
+      align-self: flex-start;
+    }
   }
 </style>
 <script>

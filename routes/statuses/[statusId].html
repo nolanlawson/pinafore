@@ -10,7 +10,7 @@
         dynamicLabel="Status"
         dynamicIcon="#fa-comments" >
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="Status"/>
+  <DynamicPageBanner title=""/>
   <LazyTimeline timeline='status/{{params.statusId}}' />
   {{else}}
   <HiddenFromSSR>
