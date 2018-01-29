@@ -73,9 +73,13 @@ virtualListStore.compute('offsetHeight', ['currentRealm', 'realms'], (currentRea
   return realms[currentRealm] && realms[currentRealm].offsetHeight || 0
 })
 
+virtualListStore.compute('scrollToItem', ['currentRealm', 'realms'], (currentRealm, realms) => {
+  return realms[currentRealm] && realms[currentRealm].scrollToItem
+})
+
 virtualListStore.compute('visibleItems',
-    ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
-    (items, scrollTop, itemHeights, offsetHeight) => {
+    ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'itemsLeftToCalculateHeight'],
+    (items, scrollTop, itemHeights, offsetHeight, itemsLeftToCalculateHeight) => {
   mark('compute visibleItems')
   let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
   let visibleItems = []
@@ -87,14 +91,16 @@ virtualListStore.compute('visibleItems',
     let height = itemHeights[key] || 0
     let currentOffset = totalOffset
     totalOffset += height
-    let isBelowViewport = (currentOffset < scrollTop)
-    if (isBelowViewport) {
-      if (scrollTop - renderBuffer > currentOffset) {
-        continue // below the area we want to render
-      }
-    } else {
-      if (currentOffset > (scrollTop + height + renderBuffer)) {
-        break // above the area we want to render
+    if (!itemsLeftToCalculateHeight) {
+      let isBelowViewport = (currentOffset < scrollTop)
+      if (!isBelowViewport) {
+        if (scrollTop - renderBuffer > currentOffset) {
+          continue // below the area we want to render
+        }
+      } else {
+        if (currentOffset > (scrollTop + height + renderBuffer)) {
+          break // above the area we want to render
+        }
       }
     }
     visibleItems.push({
@@ -141,6 +147,45 @@ virtualListStore.compute('allVisibleItemsHaveHeight',
   }
   return true
 })
+
+// if we need to initialize the scroll at a particular item, then
+// we effectively have to calculate all visible item heights
+// TODO: technically not, we only need to calculate the items above it... or even estimate
+virtualListStore.compute('mustCalculateAllItemHeights',
+    ['scrollToItem'],
+    (scrollToItem) => !!scrollToItem
+  )
+
+virtualListStore.compute('itemsLeftToCalculateHeight',
+    ['mustCalculateAllItemHeights', 'itemHeights', 'items'],
+    (mustCalculateAllItemHeights, itemHeights, items) => {
+  if (!mustCalculateAllItemHeights) {
+    return false
+  }
+  for (let item of items) {
+    if (!itemHeights[item]) {
+      return true
+    }
+  }
+  return false
+})
+
+virtualListStore.compute('scrollToItemOffset',
+    ['mustCalculateAllItemHeights', 'itemsLeftToCalculateHeight', 'scrollToItem', 'items', 'itemHeights'],
+    (mustCalculateAllItemHeights, itemsLeftToCalculateHeight, scrollToItem, items, itemHeights) => {
+  if (!mustCalculateAllItemHeights || itemsLeftToCalculateHeight) {
+    return null
+  }
+  let offset = 0
+  for (let item of items) {
+    if (item === scrollToItem) {
+      break
+    }
+    offset += itemHeights[item]
+  }
+  return offset
+})
+
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.virtualListStore = virtualListStore

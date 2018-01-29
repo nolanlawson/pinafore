@@ -38,6 +38,18 @@
           scrollHeight: node.scrollHeight,
           offsetHeight: node.offsetHeight
         })
+        this.observe('scrollToItemOffset', scrollToItemOffset => {
+          console.log('scrollToItemOffset', scrollToItemOffset)
+          if (!this.get('initializedScrollTop') && scrollToItemOffset && node) {
+            this.set({'initializedScrollTop': true})
+            requestAnimationFrame(() => {
+              mark('set scrollToItemOffset')
+              console.log('forcing scroll top to ', scrollToItemOffset)
+              node.scrollTop = scrollToItemOffset
+              stop('set scrollToItemOffset')
+            })
+          }
+        })
       }
       stop('onCreate VirtualListContainer')
     },
@@ -91,7 +103,8 @@
     },
     computed: {
       // TODO: bug in svelte/store – the observer in oncreate() never get removed without this hack
-      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
+      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
+      scrollToItemOffset: ($scrollToItemOffset) => $scrollToItemOffset
     }
   };
 </script>

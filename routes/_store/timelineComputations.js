@@ -8,4 +8,5 @@ export function timelineComputations(store) {
   store.compute('runningUpdate', ['currentTimelineData'], (currentTimelineData) => currentTimelineData.runningUpdate)
   store.compute('initialized', ['currentTimelineData'], (currentTimelineData) => currentTimelineData.initialized)
   store.compute('lastStatusId', ['statusIds'], (statusIds) => statusIds.length && statusIds[statusIds.length - 1])
+  store.compute('scrollToStatusId', ['currentTimelineData'], (currentTimelineData) => currentTimelineData.scrollToStatusId)
 }

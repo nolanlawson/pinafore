@@ -30,6 +30,9 @@
 
   export default {
     oncreate () {
+      this.fireScrollToBottom = throttle(() => {
+        this.fire('scrollToBottom')
+      }, SCROLL_TO_BOTTOM_DELAY)
       this.observe('showFooter', showFooter => {
         this.store.setForRealm({showFooter: showFooter})
       })
@@ -37,11 +40,12 @@
         mark('set items')
         this.store.setForRealm({items: items})
         stop('set items')
-        this.fireScrollToBottom = throttle(() => {
-          this.fire('scrollToBottom')
-        }, SCROLL_TO_BOTTOM_DELAY)
       })
-
+      this.observe('scrollToItem', (scrollToItem) => {
+        mark('scrollToItem')
+        this.store.setForRealm({scrollToItem: scrollToItem})
+        stop('scrollToItem')
+      })
       this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
         if (allVisibleItemsHaveHeight) {
           this.fire('initializedVisibleItems')

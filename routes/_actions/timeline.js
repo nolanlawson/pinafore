@@ -36,7 +36,11 @@ async function addStatuses(instanceName, timelineName, newStatuses) {
   let newStatusIds = newStatuses.map(status => status.id)
   let oldStatusIds = store.getForTimeline(instanceName, timelineName, 'statusIds') || []
   let merged = mergeArrays(oldStatusIds, newStatusIds)
-  store.setForTimeline(instanceName, timelineName, { statusIds: merged })
+  store.setForTimeline(instanceName, timelineName, {
+    statusIds: merged,
+    // if it's a status (context) list, we need to scroll to the status in question
+    scrollToStatusId: timelineName.startsWith('status/') && timelineName.split('/').slice(-1)[0]
+  })
   stop('addStatuses')
 }
 

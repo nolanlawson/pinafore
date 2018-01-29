@@ -2,11 +2,12 @@
   <VirtualList component="{{StatusListItem}}"
                :makeProps
                items="{{$statusIds}}"
-               on:scrollToBottom="onScrollToBottom()"
+               scrollToItem="{{$scrollToStatusId}}"
                shown="{{$initialized}}"
                footerComponent="{{LoadingFooter}}"
                showFooter="{{$initialized && $runningUpdate}}"
                realm="{{$currentInstance + '/' + timeline}}"
+               on:scrollToBottom="onScrollToBottom()"
                on:initializedVisibleItems="initialize()"
   />
 </div>
