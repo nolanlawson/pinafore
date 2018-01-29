@@ -7,22 +7,37 @@
         <use xlink:href="#fa-retweet" />
       </svg>
       <span>
-        <a href="/accounts/{{status.account.id}}">
-          {{status.account.username}}
-        </a> boosted
+        {{#if timelineType === 'account' && timelineValue === status.account.id}}
+          <a rel="noopener" target="_blank"  href="{{status.account.url}}">{{status.account.username}}</a>
+        {{else}}
+          <a href="/accounts/{{status.account.id}}">{{status.account.username}}</a>
+        {{/if}}
+        boosted
       </span>
     </div>
   {{/if}}
   <div class="status-author">
-    <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
-      {{originalAccount.display_name || originalAccount.username}}
-    </a>
+    {{#if timelineType === 'account' && timelineValue === originalAccount.id}}
+      <a class="status-author-name" rel="noopener" target="_blank" href="{{originalAccount.url}}">
+        {{originalAccount.display_name || originalAccount.username}}
+      </a>
+    {{else}}
+      <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
+        {{originalAccount.display_name || originalAccount.username}}
+      </a>
+    {{/if}}
     <span class="status-author-handle">
       {{'@' + originalAccount.acct}}
     </span>
-    <a class="status-author-date" href="/statuses/{{originalStatus.id}}">
-      <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
-    </a>
+    {{#if timelineType === 'status'}}
+      <a class="status-author-date" rel="noopener" target="_blank" href="{{originalStatus.url}}">
+        <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
+      </a>
+    {{else}}
+      <a class="status-author-date" href="/statuses/{{originalStatus.id}}">
+        <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
+      </a>
+    {{/if}}
   </div>
   <Avatar account={{originalAccount}} className="status-sidebar"/>
   {{#if originalStatus.spoiler_text}}

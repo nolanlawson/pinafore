@@ -6,7 +6,9 @@
         <img src="{{profile.avatar}}" aria-hidden="true">
       </div>
       <div class="account-profile-name">
-        {{profile.display_name}}
+        <a rel="noopener" target="_blank" href="{{profile.url}}">
+          {{profile.display_name}}
+        </a>
       </div>
       <div class="account-profile-username">
         {{'@' + profile.acct}}
@@ -126,6 +128,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0;
+  }
+  .account-profile-name a {
+    color: var(--body-text-color);
+    text-decoration: none;
+  }
+  .account-profile-name a:hover {
+    color: var(--body-text-color);
+    text-decoration: underline;
   }
   .account-profile-note {
     grid-area: note;

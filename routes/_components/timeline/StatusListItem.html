@@ -1,4 +1,9 @@
-<Status status="{{virtualProps}}" index="{{virtualIndex}}" length="{{virtualLength}}" on:recalculateHeight />
+<Status status="{{virtualProps.status}}"
+        timelineType="{{virtualProps.timelineType}}"
+        timelineValue="{{virtualProps.timelineValue}}"
+        index="{{virtualIndex}}"
+        length="{{virtualLength}}"
+        on:recalculateHeight />
 <script>
   import Status from '../status/Status.html'
 

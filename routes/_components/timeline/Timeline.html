@@ -33,7 +33,11 @@
       LoadingFooter: LoadingFooter
     }),
     computed: {
-      makeProps: ($currentInstance) => (statusId) => database.getStatus($currentInstance, statusId),
+      makeProps: ($currentInstance, timelineType, timelineValue) => async (statusId) => ({
+        timelineType: timelineType,
+        timelineValue: timelineValue,
+        status: await database.getStatus($currentInstance, statusId)
+      }),
       label: (timeline, $currentInstance, timelineType, timelineValue) => {
         if (timelines[timeline]) {
           return `${timelines[timeline].label} timeline for ${$currentInstance}`
