@@ -19,6 +19,14 @@
       let node = this.refs.node
       let realm = this.get('realm')
       this.store.set({currentRealm: realm})
+
+      this.observe('scrollToItem', scrollToItem => {
+        if (scrollToItem && node && !this.store.get('containerTop')) {
+          // have to calculate difference between container and virtual list tops in order to scroll
+          this.store.set({containerTop: node.getBoundingClientRect().top})
+        }
+      })
+
       let scrollTop = this.store.get('scrollTop')
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
@@ -27,7 +35,7 @@
             this.set({'initializedScrollTop': true})
             requestAnimationFrame(() => {
               mark('set scrollTop')
-              console.log('forcing scroll top to ', scrollTop)
+              console.log('forcing scrollTop to ', scrollTop)
               node.scrollTop = scrollTop
               stop('set scrollTop')
             })
@@ -44,7 +52,7 @@
             this.set({'initializedScrollTop': true})
             requestAnimationFrame(() => {
               mark('set scrollToItemOffset')
-              console.log('forcing scroll top to ', scrollToItemOffset)
+              console.log('forcing scrollItemOffset to ', scrollToItemOffset)
               node.scrollTop = scrollToItemOffset
               stop('set scrollToItemOffset')
             })
@@ -89,6 +97,7 @@
     },
     methods: {
       onScroll(event) {
+        console.log('onScroll', event.target.scrollTop)
         this.store.setForRealm({
           scrollTop: event.target.scrollTop,
           scrollHeight: event.target.scrollHeight
@@ -104,7 +113,8 @@
     computed: {
       // TODO: bug in svelte/store – the observer in oncreate() never get removed without this hack
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
-      scrollToItemOffset: ($scrollToItemOffset) => $scrollToItemOffset
+      scrollToItemOffset: ($scrollToItemOffset) => $scrollToItemOffset,
+      scrollToItem: ($scrollToItem) => $scrollToItem
     }
   };
 </script>

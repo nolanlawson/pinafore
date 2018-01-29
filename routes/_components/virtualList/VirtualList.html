@@ -1,5 +1,5 @@
 <!-- TODO: setting height is hacky, just make this element the scroller -->
-<div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
+<div ref:node class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
   {{#each $visibleItems as visibleItem @key}}
     <VirtualListLazyItem :component
                          offset="{{visibleItem.offset}}"
@@ -33,6 +33,7 @@
       this.fireScrollToBottom = throttle(() => {
         this.fire('scrollToBottom')
       }, SCROLL_TO_BOTTOM_DELAY)
+      let node = this.refs.node
       this.observe('showFooter', showFooter => {
         this.store.setForRealm({showFooter: showFooter})
       })
@@ -43,6 +44,10 @@
       })
       this.observe('scrollToItem', (scrollToItem) => {
         mark('scrollToItem')
+        if (scrollToItem && node && !this.store.get('virtualListTop')) {
+          // have to calculate difference between container and virtual list tops in order to scroll
+          this.store.set({virtualListTop: node.getBoundingClientRect().top})
+        }
         this.store.setForRealm({scrollToItem: scrollToItem})
         stop('scrollToItem')
       })

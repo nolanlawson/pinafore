@@ -92,12 +92,11 @@ virtualListStore.compute('visibleItems',
     let currentOffset = totalOffset
     totalOffset += height
     if (!itemsLeftToCalculateHeight) {
-      let isBelowViewport = (currentOffset < scrollTop)
-      if (!isBelowViewport) {
+      if (currentOffset < scrollTop) { // below viewport
         if (scrollTop - renderBuffer > currentOffset) {
           continue // below the area we want to render
         }
-      } else {
+      } else { // above or inside viewport
         if (currentOffset > (scrollTop + height + renderBuffer)) {
           break // above the area we want to render
         }
@@ -171,9 +170,9 @@ virtualListStore.compute('itemsLeftToCalculateHeight',
 })
 
 virtualListStore.compute('scrollToItemOffset',
-    ['mustCalculateAllItemHeights', 'itemsLeftToCalculateHeight', 'scrollToItem', 'items', 'itemHeights'],
-    (mustCalculateAllItemHeights, itemsLeftToCalculateHeight, scrollToItem, items, itemHeights) => {
-  if (!mustCalculateAllItemHeights || itemsLeftToCalculateHeight) {
+    ['mustCalculateAllItemHeights', 'itemsLeftToCalculateHeight', 'scrollToItem', 'items', 'itemHeights', 'containerTop', 'virtualListTop'],
+    (mustCalculateAllItemHeights, itemsLeftToCalculateHeight, scrollToItem, items, itemHeights, containerTop, virtualListTop) => {
+  if (!mustCalculateAllItemHeights || itemsLeftToCalculateHeight || !containerTop || !virtualListTop) {
     return null
   }
   let offset = 0
@@ -183,7 +182,7 @@ virtualListStore.compute('scrollToItemOffset',
     }
     offset += itemHeights[item]
   }
-  return offset
+  return offset + (virtualListTop - containerTop) // have to offset difference between container and virtual list
 })
 
 
