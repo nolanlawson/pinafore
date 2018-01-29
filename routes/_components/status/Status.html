@@ -8,7 +8,7 @@
       </svg>
       <span>
         {{#if timelineType === 'account' && timelineValue === status.account.id}}
-          <a rel="noopener" target="_blank"  href="{{status.account.url}}">{{status.account.username}}</a>
+          <ExternalLink href="{{status.account.url}}">{{status.account.username}}</ExternalLink>
         {{else}}
           <a href="/accounts/{{status.account.id}}">{{status.account.username}}</a>
         {{/if}}
@@ -18,9 +18,9 @@
   {{/if}}
   <div class="status-author">
     {{#if timelineType === 'account' && timelineValue === originalAccount.id}}
-      <a class="status-author-name" rel="noopener" target="_blank" href="{{originalAccount.url}}">
+      <ExternalLink class="status-author-name" href="{{originalAccount.url}}">
         {{originalAccount.display_name || originalAccount.username}}
-      </a>
+      </ExternalLink>
     {{else}}
       <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
         {{originalAccount.display_name || originalAccount.username}}
@@ -30,9 +30,9 @@
       {{'@' + originalAccount.acct}}
     </span>
     {{#if timelineType === 'status'}}
-      <a class="status-author-date" rel="noopener" target="_blank" href="{{originalStatus.url}}">
+      <ExternalLink class="status-author-date" href="{{originalStatus.url}}" showIcon="true">
         <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
-      </a>
+      </ExternalLink>
     {{else}}
       <a class="status-author-date" href="/statuses/{{originalStatus.id}}">
         <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
@@ -139,11 +139,11 @@
     min-width: 0;
   }
 
-  .status-author a, .status-author a:visited, .status-author a:hover, .status-author .status-author-handle {
+  :global(.status-author a, .status-author a:visited, .status-author a:hover, .status-author .status-author-handle) {
     color: var(--deemphasized-text-color);
   }
 
-  .status-author .status-author-name {
+  :global(.status-author .status-author-name) {
     min-width: 0;
     flex-shrink: 1;
     color: var(--body-text-color);
@@ -153,7 +153,7 @@
     text-overflow: ellipsis;
   }
 
-  .status-author .status-author-name:hover {
+  :global(.status-author .status-author-name:hover) {
     color: var(--body-text-color);
   }
 
@@ -166,11 +166,15 @@
     text-overflow: ellipsis;
   }
 
-  .status-author-date {
+  :global(.status-author-date) {
+    color: var(--deemphasized-text-color);
     flex-shrink: 1;
     text-align: right;
     margin-left: 5px;
     white-space: nowrap;
+  }
+  :global(.status-author-date:hover) {
+    color: var(--deemphasized-text-color);
   }
 
   .status-content {
@@ -204,7 +208,7 @@
     margin-left: 5px;
   }
 
-  .status-boosted span, .status-boosted a, .status-boosted a:visited, .status-boosted a:hover {
+  :global(.status-boosted span, .status-boosted a, .status-boosted a:visited, .status-boosted a:hover) {
     color: var(--deemphasized-text-color);
   }
 
@@ -313,6 +317,7 @@
   import IntlRelativeFormat from 'intl-relativeformat'
   import { replaceAll } from '../../_utils/strings'
   import { store } from '../../_store/store'
+  import ExternalLink from '../ExternalLink.html'
 
   const relativeFormat = new IntlRelativeFormat('en-US');
 
@@ -323,7 +328,8 @@
     components: {
       Avatar,
       Media,
-      Toolbar
+      Toolbar,
+      ExternalLink
     },
     store: () => store,
     computed: {

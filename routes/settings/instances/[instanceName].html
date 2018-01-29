@@ -11,8 +11,10 @@
       <div class="acct-current-user">
         <img alt="Profile picture for {{'@' + verifyCredentials.acct}}"
              class="acct-avatar" src="{{verifyCredentials.avatar}}" />
-        <a class="acct-handle" rel="noopener" target="_blank"
-           href="{{verifyCredentials.url}}">{{'@' + verifyCredentials.acct}}</a>
+        <ExternalLink class="acct-handle"
+                      href="{{verifyCredentials.url}}">
+          {{'@' + verifyCredentials.acct}}
+        </ExternalLink>
         <span class="acct-display-name">{{verifyCredentials.display_name}}</span>
       </div>
       <h2>Theme:</h2>
@@ -59,7 +61,7 @@
     border-radius: 4px;
     grid-area: avatar;
   }
-  .acct-handle {
+  :global(.acct-handle) {
     grid-area: handle;
   }
   .theme-chooser {
@@ -97,6 +99,7 @@
   import { store } from '../../_store/store'
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
+  import ExternalLink from '../../_components/ExternalLink.html'
   import {
     changeTheme,
     switchToInstance,
@@ -108,7 +111,8 @@
   export default {
     components: {
       Layout,
-      SettingsLayout
+      SettingsLayout,
+      ExternalLink
     },
     store: () => store,
     data: () => ({

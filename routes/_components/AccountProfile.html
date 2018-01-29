@@ -6,9 +6,9 @@
         <img src="{{profile.avatar}}" aria-hidden="true">
       </div>
       <div class="account-profile-name">
-        <a rel="noopener" target="_blank" href="{{profile.url}}">
+        <ExternalLink href="{{profile.url}}">
           {{profile.display_name}}
-        </a>
+        </ExternalLink>
       </div>
       <div class="account-profile-username">
         {{'@' + profile.acct}}
@@ -129,11 +129,11 @@
     text-overflow: ellipsis;
     min-width: 0;
   }
-  .account-profile-name a {
+  :global(.account-profile-name a) {
     color: var(--body-text-color);
     text-decoration: none;
   }
-  .account-profile-name a:hover {
+  :global(.account-profile-name a:hover) {
     color: var(--body-text-color);
     text-decoration: underline;
   }
@@ -175,13 +175,15 @@
 </style>
 <script>
   import IconButton from './IconButton.html'
+  import ExternalLink from './ExternalLink.html'
 
   export default {
     computed: {
       headerIsMissing: (profile) => profile.header.endsWith('missing.png')
     },
     components: {
-      IconButton
+      IconButton,
+      ExternalLink
     }
   }
 </script>

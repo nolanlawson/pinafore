@@ -19,4 +19,5 @@ module.exports = [
   {id:'fa-user-times', src:'node_modules/font-awesome-svg-png/white/svg/user-times.svg', title: 'Stop Following'},
   {id:'fa-user-plus', src:'node_modules/font-awesome-svg-png/white/svg/user-plus.svg', title: 'Follow'},
   {id:'fa-comments', src:'node_modules/font-awesome-svg-png/white/svg/comments.svg', title: 'Statuses'},
+  {id:'fa-external-link', src:'node_modules/font-awesome-svg-png/white/svg/external-link.svg', title: 'External Link'},
 ]

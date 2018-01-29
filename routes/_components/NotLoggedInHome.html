@@ -7,11 +7,11 @@
         </svg>
         <h1>Pinafore</h1>
       </div>
-      <p>Pinafore is a web client for <a rel="noopener" target="_blank" href="https://joinmastodon.org">Mastodon</a>, optimized for speed and simplicity.</p>
+      <p>Pinafore is a web client for <ExternalLink href="https://joinmastodon.org">Mastodon</ExternalLink>, optimized for speed and simplicity.</p>
 
       <p>To get started, <a href="/settings/instances/add">log in to an instance</a>.</p>
 
-      <p>Don't have an instance? <a rel="noopener" target="_blank" href="https://joinmastodon.org">Join Mastodon!</a></p>
+      <p>Don't have an instance? <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink></p>
     </div>
   </FreeTextLayout>
 </HiddenFromSSR>
@@ -46,11 +46,13 @@
 <script>
   import FreeTextLayout from './FreeTextLayout.html'
   import HiddenFromSSR from './HiddenFromSSR.html'
+  import ExternalLink from './ExternalLink.html'
 
   export default {
     components: {
       FreeTextLayout,
-      HiddenFromSSR
+      HiddenFromSSR,
+      ExternalLink
     }
   }
 </script>

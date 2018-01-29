@@ -1,0 +1,31 @@
+{{#if class}}
+  <a rel="nofollow noopener" target="_blank" href="{{href}}" class="external-link {{class}}">
+    <slot></slot>
+    {{#if showIcon}}
+      <svg>
+        <use xlink:href="#fa-external-link" />
+      </svg>
+    {{/if}}
+  </a>
+{{else}}
+  <a rel="nofollow noopener" target="_blank" href="{{href}}" class="external-link">
+    <slot></slot>
+    {{#if showIcon}}
+      <svg>
+        <use xlink:href="#fa-external-link" />
+      </svg>
+    {{/if}}
+  </a>
+{{/if}}
+<style>
+  .external-link {
+    display: inline-flex;
+    align-items: center;
+  }
+  .external-link svg {
+    margin-left: 4px;
+    width: 14px;
+    height: 14px;
+    fill: var(--deemphasized-text-color);
+  }
+</style>

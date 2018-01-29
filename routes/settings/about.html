@@ -6,22 +6,24 @@
   <SettingsLayout page='settings/about' label="About Pinafore">
     <h1>About Pinafore</h1>
 
-    <p>Pinafore is <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore/">open-source software</a> created by <a rel="noopener" target="_blank" href="https://nolanlawson.com/">Nolan Lawson</a>.</p>
+    <p>Pinafore is <ExternalLink href="https://github.com/nolanlawson/pinafore/">open-source software</ExternalLink> created by <ExternalLink href="https://nolanlawson.com/">Nolan Lawson</ExternalLink>.</p>
 
-    <p>Icons provided by <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.</p>
+    <p>Icons provided by <ExternalLink href="http://fontawesome.io/">Font Awesome</ExternalLink>.</p>
 
-    <p>Logo thanks to "sailboat" by Gregor Cresnar from <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.</p>
+    <p>Logo thanks to "sailboat" by Gregor Cresnar from <ExternalLink href="https://thenounproject.com/">the Noun Project</ExternalLink>.</p>
   </SettingsLayout>
 </Layout>
 
 <script>
   import Layout from '../_components/Layout.html';
   import SettingsLayout from './_components/SettingsLayout.html'
+  import ExternalLink from '../_components/ExternalLink.html'
 
   export default {
     components: {
       Layout,
-      SettingsLayout
+      SettingsLayout,
+      ExternalLink
     }
   };
 </script>
