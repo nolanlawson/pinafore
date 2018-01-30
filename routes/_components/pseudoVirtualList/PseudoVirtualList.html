@@ -1,0 +1,65 @@
+<div class="pseudo-virtual-list {{shown ? '' : 'hidden'}}" on:initializedVisibleItems>
+  {{#each wrappedItems as wrappedItem, i @item}}
+    <PseudoVirtualListLazyItem
+      component="{{component}}"
+      index="{{i}}"
+      length="{{items.length}}"
+      makeProps="{{makeProps}}"
+      key="{{wrappedItem.item}}"
+      scrollToThisItem="{{wrappedItem.item === scrollToItem}}"
+      on:scrollToPosition="onScrollToPosition(event)"
+      on:renderedListItem="onRenderedListItem()"
+    />
+  {{/each}}
+</div>
+<style>
+  .pseudo-virtual-list {
+    position: relative;
+    transition: opacity 0.25s linear;
+  }
+</style>
+<script>
+
+  import PseudoVirtualListLazyItem from './PseudoVirtualListLazyItem.html'
+
+  export default {
+    oncreate() {
+      this.observe('numRenderedListItems', numRenderedListItems => {
+        let items = this.get('items')
+        if (items.length && items.length === numRenderedListItems && !this.get('initialized')) {
+          this.set({initialized: true})
+          console.log('fire initialized')
+          this.fire('initializedVisibleItems')
+        }
+      })
+    },
+    methods: {
+      onScrollToPosition(rect) {
+        console.log('onScrollToPosition', rect)
+        // TODO: there should be some cleaner way to grab the container element
+        let container = document.querySelector('.container')
+        if (!container) {
+          return
+        }
+        let containerRect = container.getBoundingClientRect()
+        let scrollTop = rect.top - containerRect.top
+        if (scrollTop !== 0) {
+          requestAnimationFrame(() => {
+            console.log('setting scrollTop to ', scrollTop)
+            container.scrollTop = scrollTop
+          })
+        }
+      },
+      onRenderedListItem() {
+        let numRenderedListItems = this.get('numRenderedListItems') || 0
+        this.set({numRenderedListItems: numRenderedListItems + 1})
+      }
+    },
+    computed: {
+      wrappedItems: (items) => items.map(item => ({item: item}))
+    },
+    components: {
+      PseudoVirtualListLazyItem
+    }
+  }
+</script>

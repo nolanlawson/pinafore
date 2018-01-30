@@ -1,0 +1,32 @@
+<div class="pseudo-virtual-list-item" pseudo-virtual-list-key="{{index}}" ref:node>
+  <:Component {component}
+              virtualProps="{{props}}"
+              virtualIndex="{{index}}"
+              virtualLength="{length}}"
+              on:renderedListItem
+              on:scrollToPosition
+  />
+</div>
+<script>
+
+  import { AsyncLayout } from '../../_utils/AsyncLayout'
+
+  export default {
+    oncreate() {
+      this.fire('renderedListItem')
+      if (this.get('scrollToThisItem')) {
+        if (this.get('firedScrollToPosition')) {
+          return
+        }
+        this.set({firedScrollToPosition: true})
+        let node = this.refs.node
+        let asyncLayout = new AsyncLayout(node => node.getAttribute('pseudo-virtual-list-key'))
+        let key = this.get('index')
+        asyncLayout.observe(key, this.refs.node, (rect) => {
+          asyncLayout.disconnect()
+          this.fire('scrollToPosition', rect)
+        })
+      }
+    }
+  }
+</script>

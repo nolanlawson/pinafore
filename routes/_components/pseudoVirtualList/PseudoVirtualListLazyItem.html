@@ -1,0 +1,24 @@
+{{#if props}}
+  <PseudoVirtualListItem :component
+                         :props
+                         :key
+                         :index
+                         :scrollToThisItem
+                         on:renderedListItem
+                         on:scrollToPosition
+  />
+{{/if}}
+<script>
+  import PseudoVirtualListItem from './PseudoVirtualListItem.html'
+  export default {
+    async oncreate() {
+      let makeProps = this.get('makeProps')
+      let key = this.get('key')
+      let props = await makeProps(key)
+      this.set({ props: props })
+    },
+    components: {
+      PseudoVirtualListItem
+    }
+  }
+</script>

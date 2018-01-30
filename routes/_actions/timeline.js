@@ -78,11 +78,11 @@ export async function setupTimeline() {
   if (statusStream) {
     statusStream.close()
   }
-  statusStream = new StatusStream(instanceInfo.urls.streaming_api, accessToken, timelineName, {
+  /*statusStream = new StatusStream(instanceInfo.urls.streaming_api, accessToken, timelineName, {
     onMessage(message) {
       console.log('message', message)
     }
-  })
+  })*/
   stop('addStatuses')
 }
 

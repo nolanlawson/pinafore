@@ -1,14 +1,26 @@
 <div class="timeline" role="feed" aria-label="{{label}}">
-  <VirtualList component="{{StatusListItem}}"
-               :makeProps
-               items="{{$statusIds}}"
-               on:scrollToBottom="onScrollToBottom()"
-               shown="{{$initialized}}"
-               footerComponent="{{LoadingFooter}}"
-               showFooter="{{$initialized && $runningUpdate}}"
-               realm="{{$currentInstance + '/' + timeline}}"
-               on:initializedVisibleItems="initialize()"
-  />
+  {{#if virtual}}
+    <VirtualList component="{{StatusVirtualListItem}}"
+                 :makeProps
+                 items="{{$statusIds}}"
+                 on:scrollToBottom="onScrollToBottom()"
+                 shown="{{$initialized}}"
+                 footerComponent="{{LoadingFooter}}"
+                 showFooter="{{$initialized && $runningUpdate}}"
+                 realm="{{$currentInstance + '/' + timeline}}"
+                 on:initializedVisibleItems="initialize()"
+    />
+  {{else}}
+    <!-- if this is a status thread, it's easier to just render the
+         whole thing rather than use a virtual list -->
+    <PseudoVirtualList component="{{StatusVirtualListItem}}"
+                       :makeProps
+                       items="{{$statusIds}}"
+                       shown="{{$initialized}}"
+                       on:initializedVisibleItems="initialize()"
+                       scrollToItem="{{timelineValue}}"
+    />
+  {{/if}}
 </div>
 <style>
   .timeline {
@@ -17,7 +29,9 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import StatusListItem from './StatusListItem.html'
+  import StatusVirtualListItem from './StatusVirtualListItem.html'
+  import Status from '../status/Status.html'
+  import PseudoVirtualList from '../pseudoVirtualList/PseudoVirtualList.html'
   import LoadingFooter from './LoadingFooter.html'
   import VirtualList from '../virtualList/VirtualList.html'
   import { timelines } from '../../_static/timelines'
@@ -26,11 +40,13 @@
 
   export default {
     async oncreate() {
+      console.log('timeline oncreate()')
       setupTimeline()
     },
     data: () => ({
-      StatusListItem: StatusListItem,
-      LoadingFooter: LoadingFooter
+      StatusVirtualListItem,
+      LoadingFooter,
+      Status
     }),
     computed: {
       makeProps: ($currentInstance, timelineType) => async (statusId) => ({
@@ -56,17 +72,22 @@
       },
       timelineValue: (timeline) => {
         return timeline.split('/').slice(-1)[0]
-      }
+      },
+      // for threads, it's simpler to just render all items due to need to scroll to the right item
+      // TODO: this can be optimized to use a virtual list
+      virtual: (timelineType) => timelineType !=='status'
     },
     store: () => store,
     components: {
-      VirtualList
+      VirtualList,
+      PseudoVirtualList
     },
     methods: {
       initialize() {
         if (this.store.get('initialized') || !this.store.get('statusIds') || !this.store.get('statusIds').length) {
           return
         }
+        console.log('timeline initialize()')
         initializeTimeline()
       },
       onScrollToBottom() {
