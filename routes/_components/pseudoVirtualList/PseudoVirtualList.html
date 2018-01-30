@@ -1,4 +1,4 @@
-<div class="pseudo-virtual-list {{shown ? '' : 'hidden'}}" on:initializedVisibleItems>
+<div class="pseudo-virtual-list {{shown ? '' : 'hidden'}}" on:initializedVisibleItems ref:node>
   {{#each wrappedItems as wrappedItem, i @item}}
     <PseudoVirtualListLazyItem
       component="{{component}}"
@@ -6,8 +6,9 @@
       length="{{items.length}}"
       makeProps="{{makeProps}}"
       key="{{wrappedItem.item}}"
-      scrollToThisItem="{{wrappedItem.item === scrollToItem}}"
-      on:scrollToPosition="onScrollToPosition(event)"
+      intersectionObserver="{{intersectionObserver}}"
+      hide="{{shouldHide(wrappedItem.item, intersectionStates)}}"
+      height="{{getHeight(wrappedItem.item, intersectionStates)}}"
       on:renderedListItem="onRenderedListItem()"
     />
   {{/each}}
@@ -21,23 +22,53 @@
 <script>
 
   import PseudoVirtualListLazyItem from './PseudoVirtualListLazyItem.html'
+  import { getRectFromEntry } from '../../_utils/getRectFromEntry'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate() {
-      this.observe('numRenderedListItems', numRenderedListItems => {
-        let items = this.get('items')
-        if (items.length && items.length === numRenderedListItems && !this.get('initialized')) {
+      this.set({
+        intersectionObserver: new IntersectionObserver(this.onIntersection.bind(this), {
+          root: document.getElementsByClassName('container')[0], // TODO: fix this
+          rootMargin: '300% 0px'
+        }),
+        intersectionStates: {}
+      })
+      this.observe('allItemsHaveHeight', allItemsHaveHeight => {
+        console.log('allItemsHaveHeight', allItemsHaveHeight)
+        if (allItemsHaveHeight && !this.get('initialized')) {
           this.set({initialized: true})
-          console.log('fire initialized')
+          console.log('initializedVisibleItems')
           this.fire('initializedVisibleItems')
         }
       })
     },
+    ondestroy() {
+      let intersectionObserver = this.get('intersectionObserver')
+      if (intersectionObserver) {
+        intersectionObserver.disconnect()
+      }
+    },
+    data: () => ({
+      intersectionStates: {}
+    }),
+    helpers: {
+      shouldHide(key, intersectionStates) {
+        return !!(intersectionStates[key] && !intersectionStates[key].isIntersecting)
+      },
+      getHeight(key, intersectionStates) {
+        return intersectionStates[key] && intersectionStates[key].rect.height
+      }
+    },
     methods: {
-      onScrollToPosition(rect) {
-        console.log('onScrollToPosition', rect)
+      scrollToPosition(rect) {
+        if (this.get('scrolledToPosition')) {
+          return
+        }
+        this.set({scrolledToPosition: true})
+        console.log('scrollToPosition', rect)
         // TODO: there should be some cleaner way to grab the container element
-        let container = document.querySelector('.container')
+        let container = document.getElementsByClassName('container')[0]
         if (!container) {
           return
         }
@@ -50,13 +81,40 @@
           })
         }
       },
-      onRenderedListItem() {
-        let numRenderedListItems = this.get('numRenderedListItems') || 0
-        this.set({numRenderedListItems: numRenderedListItems + 1})
+      onIntersection(entries) {
+        mark('onIntersection')
+        let newIntersectionStates = {}
+        let scrollToItem = this.get('scrollToItem')
+        let intersectionStates = this.get('intersectionStates')
+        for (let entry of entries) {
+          let key = entry.target.getAttribute('pseudo-virtual-list-key')
+          let rect = getRectFromEntry(entry)
+          newIntersectionStates[key] = {
+            isIntersecting: entry.isIntersecting,
+            rect: rect
+          }
+          if (scrollToItem === key) {
+            this.scrollToPosition(rect)
+          }
+        }
+        intersectionStates = Object.assign(intersectionStates, newIntersectionStates)
+        this.set({intersectionStates: intersectionStates})
+        stop('onIntersection')
       }
     },
     computed: {
-      wrappedItems: (items) => items.map(item => ({item: item}))
+      wrappedItems: (items) => items.map(item => ({item: item})),
+      allItemsHaveHeight: (items, intersectionStates) => {
+        if (!items.length) {
+          return false
+        }
+        for (let item of items) {
+          if (!intersectionStates[item]) {
+            return false
+          }
+        }
+        return true
+      }
     },
     components: {
       PseudoVirtualListLazyItem
