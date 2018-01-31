@@ -1,4 +1,5 @@
-<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}}" tabindex="0"
+<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}} {{isStatusInContext ? 'status-in-context' : ''}}"
+         tabindex="0"
          aria-posinset="{{index}}" aria-setsize="{{length}}"
          on:recalculateHeight>
   {{#if status.reblog}}
@@ -39,7 +40,7 @@
     </div>
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
-    <div class="status-content {{isStatusInContext ? 'status-in-context' : ''}}" ref:contentNode>
+    <div class="status-content" ref:contentNode>
       {{{emojifiedContent}}}
     </div>
   {{/if}}
@@ -176,8 +177,8 @@
     font-size: 0.9em;
   }
 
-  .status-content.status-in-context {
-    font-size: 1.1em;
+  .status-in-context .status-content {
+    font-size: 1.3em;
     margin: 20px 10px 20px 5px;
   }
 
