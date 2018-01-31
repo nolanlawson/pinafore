@@ -1,12 +1,5 @@
 <div class="lazy-timeline">
-  {{#if !$initialized}}
-    <!-- <div transition:fade> -->
-      <div class="loading-page">
-        <LoadingSpinner />
-      </div>
-    <!-- </div> -->
-  {{/if}}
-  {{#await promise}}
+  {{#await importTimeline}}
   {{then constructor}}
     <:Component {constructor} :timeline />
   {{catch error}}
@@ -18,23 +11,9 @@
     width: 100%;
     min-height: 60vh;
   }
-  .loading-page {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-  }
 </style>
 <script>
   import { importTimeline } from '../../_utils/asyncModules'
-  import LoadingSpinner from '../LoadingSpinner.html'
-  // TODO: the transition seems to occasionally cause an error in Svelte, transition_run is undefined
-  //import { fade } from 'svelte-transitions'
   import { store } from '../../_store/store'
 
   export default {
@@ -46,13 +25,7 @@
     },
     store: () => store,
     data: () => ({
-      promise: importTimeline()
-    }),
-    components: {
-      LoadingSpinner
-    }/*,
-    transitions: {
-      fade
-    }*/
+      importTimeline: importTimeline()
+    })
   }
 </script>
