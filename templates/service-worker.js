@@ -36,11 +36,6 @@ self.addEventListener('activate', event => {
   )
 })
 
-const NETWORK_ONLY = [
-  '/oauth',
-  '/api/v1/timelines'
-]
-
 const CACHE_FIRST = [
   '/system/accounts/avatars'
 ]
@@ -69,17 +64,14 @@ self.addEventListener('fetch', event => {
     return
   }
 
-  // Non-GET and for certain endpoints (e.g. OAuth), go network-only
-  if (req.method !== 'GET' ||
-      NETWORK_ONLY.some(pattern => url.pathname.startsWith(pattern))) {
-    //console.log('Using network-only for', url.href)
+  // For non-GET requests, go network-only
+  if (req.method !== 'GET') {
     event.respondWith(fetch(req))
     return
   }
 
   // For these, go cache-first.
   if (CACHE_FIRST.some(pattern => url.pathname.startsWith(pattern))) {
-    //console.log('Using cache-first for', url.href)
     event.respondWith(caches
       .open(`offline${timestamp}`)
       .then(async cache => {
@@ -98,26 +90,6 @@ self.addEventListener('fetch', event => {
     return
   }
 
-
-  // for everything else, try the network first, falling back to
-  // cache if the user is offline. (If the pages never change, you
-  // might prefer a cache-first approach to a network-first one.)
-  event.respondWith(caches
-    .open(`offline${timestamp}`)
-    .then(async cache => {
-      try {
-        //console.log('Using network-first for', url.href)
-        const response = await fetch(req)
-        cache.put(req, response.clone())
-        return response
-      } catch (err) {
-        const response = await cache.match(req)
-        if (response) {
-          return response
-        }
-
-        throw err
-      }
-    })
-  )
+  // for everything else, go network-only
+  event.respondWith(fetch(req))
 })
