@@ -10,7 +10,7 @@
   {{then constructor}}
     <:Component {constructor} :timeline />
   {{catch error}}
-    <div>Component failed to load. Please try refreshing! {{error}}</div>
+    <div>Component failed to load. Try refreshing! {{error}}</div>
   {{/await}}
 </div>
 <style>
@@ -20,7 +20,7 @@
   }
   .loading-page {
     position: fixed;
-    top: 72px;
+    top: 0;
     left: 0;
     bottom: 0;
     right: 0;
