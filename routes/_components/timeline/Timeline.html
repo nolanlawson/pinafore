@@ -19,6 +19,7 @@
                        shown="{{$initialized}}"
                        on:initializedVisibleItems="initialize()"
                        scrollToItem="{{timelineValue}}"
+                       realm="{{$currentInstance + '/' + timeline}}"
     />
   {{/if}}
 </div>
@@ -49,8 +50,9 @@
       Status
     }),
     computed: {
-      makeProps: ($currentInstance, timelineType) => async (statusId) => ({
+      makeProps: ($currentInstance, timelineType, timelineValue) => async (statusId) => ({
         timelineType: timelineType,
+        timelineValue: timelineValue,
         status: await database.getStatus($currentInstance, statusId)
       }),
       label: (timeline, $currentInstance, timelineType, timelineValue) => {

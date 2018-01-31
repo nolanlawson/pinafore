@@ -7,9 +7,8 @@
       makeProps="{{makeProps}}"
       key="{{wrappedItem.item}}"
       intersectionObserver="{{intersectionObserver}}"
-      hide="{{shouldHide(wrappedItem.item, intersectionStates)}}"
-      height="{{getHeight(wrappedItem.item, intersectionStates)}}"
-      on:renderedListItem="onRenderedListItem()"
+      hide="{{shouldHide(wrappedItem.item, $intersectionStates)}}"
+      height="{{getHeight(wrappedItem.item, $intersectionStates)}}"
     />
   {{/each}}
 </div>
@@ -24,16 +23,26 @@
   import PseudoVirtualListLazyItem from './PseudoVirtualListLazyItem.html'
   import { getRectFromEntry } from '../../_utils/getRectFromEntry'
   import { mark, stop } from '../../_utils/marks'
+  import { pseudoVirtualListStore } from './pseudoVirtualListStore'
 
   export default {
     oncreate() {
-      this.set({
-        intersectionObserver: new IntersectionObserver(this.onIntersection.bind(this), {
-          root: document.getElementsByClassName('container')[0], // TODO: fix this
-          rootMargin: '300% 0px'
-        }),
-        intersectionStates: {}
-      })
+      mark('PseudoVirtualList oncreate()')
+      this.store.set({currentRealm: this.get('realm')})
+
+      // When re-rendering, assume all items are non-intersecting until told otherwise.
+      // We already have the heights cached.
+      let intersectionStates = this.store.get('intersectionStates')
+      let keys = Object.keys(intersectionStates)
+      for (let key of keys) {
+        intersectionStates[key].isIntersecting = false
+      }
+      this.store.setForRealm({intersectionStates: intersectionStates})
+
+      this.set({intersectionObserver: new IntersectionObserver(this.onIntersection.bind(this), {
+        root: document.getElementsByClassName('container')[0], // TODO: fix this
+        rootMargin: '300% 0px'
+      })})
       this.observe('allItemsHaveHeight', allItemsHaveHeight => {
         console.log('allItemsHaveHeight', allItemsHaveHeight)
         if (allItemsHaveHeight && !this.get('initialized')) {
@@ -42,6 +51,7 @@
           this.fire('initializedVisibleItems')
         }
       })
+      stop('PseudoVirtualList oncreate()')
     },
     ondestroy() {
       let intersectionObserver = this.get('intersectionObserver')
@@ -49,15 +59,12 @@
         intersectionObserver.disconnect()
       }
     },
-    data: () => ({
-      intersectionStates: {}
-    }),
     helpers: {
-      shouldHide(key, intersectionStates) {
-        return !!(intersectionStates[key] && !intersectionStates[key].isIntersecting)
+      shouldHide(key, $intersectionStates) {
+        return !!($intersectionStates[key] && !$intersectionStates[key].isIntersecting)
       },
-      getHeight(key, intersectionStates) {
-        return intersectionStates[key] && intersectionStates[key].rect.height
+      getHeight(key, $intersectionStates) {
+        return $intersectionStates[key] && $intersectionStates[key].rect.height
       }
     },
     methods: {
@@ -85,7 +92,7 @@
         mark('onIntersection')
         let newIntersectionStates = {}
         let scrollToItem = this.get('scrollToItem')
-        let intersectionStates = this.get('intersectionStates')
+        let intersectionStates = this.store.get('intersectionStates')
         for (let entry of entries) {
           let key = entry.target.getAttribute('pseudo-virtual-list-key')
           let rect = getRectFromEntry(entry)
@@ -98,18 +105,18 @@
           }
         }
         intersectionStates = Object.assign(intersectionStates, newIntersectionStates)
-        this.set({intersectionStates: intersectionStates})
+        this.store.setForRealm({intersectionStates: intersectionStates})
         stop('onIntersection')
       }
     },
     computed: {
       wrappedItems: (items) => items.map(item => ({item: item})),
-      allItemsHaveHeight: (items, intersectionStates) => {
+      allItemsHaveHeight: (items, $intersectionStates) => {
         if (!items.length) {
           return false
         }
         for (let item of items) {
-          if (!intersectionStates[item]) {
+          if (!$intersectionStates[item]) {
             return false
           }
         }
@@ -118,6 +125,7 @@
     },
     components: {
       PseudoVirtualListLazyItem
-    }
+    },
+    store: () => pseudoVirtualListStore
   }
 </script>
