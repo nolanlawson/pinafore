@@ -140,9 +140,22 @@
   .account-profile-note {
     grid-area: note;
     padding: 10px 0;
+    font-size: 0.9em;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
   }
+
   :global(.account-profile-note p) {
-    font-size: 1em;
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-note p:first-child) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-note p:last-child) {
+    margin: 0;
   }
 
   @media (max-width: 767px) {
@@ -151,7 +164,7 @@
       height: 80px;
     }
     .account-profile-name {
-      font-size: 1.2em;
+      font-size: 1.3em;
     }
     .account-profile-grid {
       display: grid;
@@ -161,12 +174,13 @@
                            "note       note          note";
       grid-template-columns: min-content minmax(auto, 1fr) min-content;
       grid-template-rows: min-content min-content 1fr min-content;
+      padding: 10px;
     }
     .account-profile-note {
       padding: 5px 0;
     }
     .account-profile-username {
-      font-size: 0.9em;
+      font-size: 1.1em;
     }
     .account-profile-name, .account-profile-username {
       align-self: flex-start;

@@ -72,13 +72,14 @@
     background: var(--loading-bg);
   }
   .status-media {
-    max-width: calc(100vw - 40px);
     overflow: hidden;
   }
 
   .status-media video, .status-media img {
-    max-width: calc(100vw - 40px);
     object-fit: cover;
+  }
+  .status-media, .status-media video, .status-media img {
+    max-width: calc(100vw - 40px);
   }
   .play-video-button {
     margin: 0;
@@ -106,6 +107,11 @@
     fill: var(--mask-svg-fill);
     border-radius: 100%;
     background: var(--mask-opaque-bg);
+  }
+  @media (max-width: 767px) {
+    .status-media, .status-media video, .status-media img {
+      max-width: calc(100vw - 20px);
+    }
   }
 </style>
 <script>

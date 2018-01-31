@@ -22,6 +22,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  @media (max-width: 767px) {
+    top: 62px;
+  }
 }
 
 main {

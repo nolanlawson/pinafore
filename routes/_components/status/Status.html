@@ -304,6 +304,12 @@
     fill: var(--deemphasized-text-color);
     background: var(--mask-opaque-bg);
   }
+  @media (max-width: 767px) {
+    .status-article {
+      padding: 10px 10px;
+      max-width: calc(100vw - 20px);
+    }
+  }
 </style>
 <script>
   import Avatar from './Avatar.html'
