@@ -68,7 +68,7 @@
         return !!($intersectionStates[key] && $intersectionStates[key].isCached)
       },
       getHeight(key, $intersectionStates) {
-        return $intersectionStates[key] && $intersectionStates[key].rect.height
+        return $intersectionStates[key] && $intersectionStates[key].height
       }
     },
     methods: {
@@ -77,7 +77,7 @@
           return
         }
         this.set({scrolledToPosition: true})
-        console.log('scrollToPosition', rect)
+        console.log('scrollToPosition', rect.top)
         // TODO: there should be some cleaner way to grab the container element
         let container = document.getElementsByClassName('container')[0]
         if (!container) {
@@ -102,7 +102,7 @@
           let rect = getRectFromEntry(entry)
           newIntersectionStates[key] = {
             isIntersecting: entry.isIntersecting,
-            rect: rect
+            height: rect.height
           }
           if (scrollToItem === key) {
             this.scrollToPosition(rect)
