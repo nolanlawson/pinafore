@@ -1,11 +1,11 @@
-import { Store } from 'svelte/store.js'
 import { mark, stop } from '../../_utils/marks'
+import { RealmStore } from '../../_utils/RealmStore'
 
 const VIEWPORT_RENDER_FACTOR = 4
 
-class VirtualListStore extends Store {
+class VirtualListStore extends RealmStore {
   constructor(state) {
-    super(state)
+    super(state, /* maxSize */ 10)
     this._batches = {}
   }
 
@@ -37,41 +37,18 @@ class VirtualListStore extends Store {
       stop('batchUpdate()')
     })
   }
-
-  setForRealm(obj) {
-    let realmName = this.get('currentRealm')
-    let realms = this.get('realms') || {}
-    realms[realmName] = Object.assign(realms[realmName] || {}, obj)
-    this.set({realms: realms})
-  }
 }
 
 const virtualListStore = new VirtualListStore({
-  realms: {},
-  currentRealm: null,
   itemHeights: {},
   footerHeight: 0
 })
 
-virtualListStore.compute('items', ['currentRealm', 'realms'], (currentRealm, realms) => {
-  return realms[currentRealm] && realms[currentRealm].items || []
-})
-
-virtualListStore.compute('showFooter', ['currentRealm', 'realms'], (currentRealm, realms) => {
-  return realms[currentRealm] && realms[currentRealm].showFooter
-})
-
-virtualListStore.compute('scrollTop', ['currentRealm', 'realms'], (currentRealm, realms) => {
-  return realms[currentRealm] && realms[currentRealm].scrollTop || 0
-})
-
-virtualListStore.compute('scrollHeight', ['currentRealm', 'realms'], (currentRealm, realms) => {
-  return realms[currentRealm] && realms[currentRealm].scrollHeight || 0
-})
-
-virtualListStore.compute('offsetHeight', ['currentRealm', 'realms'], (currentRealm, realms) => {
-  return realms[currentRealm] && realms[currentRealm].offsetHeight || 0
-})
+virtualListStore.computeForRealm('items', [])
+virtualListStore.computeForRealm('showFooter', false)
+virtualListStore.computeForRealm('scrollTop', 0)
+virtualListStore.computeForRealm('scrollHeight', 0)
+virtualListStore.computeForRealm('offsetHeight', 0)
 
 virtualListStore.compute('visibleItems',
     ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],

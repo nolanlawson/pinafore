@@ -29,7 +29,7 @@
   export default {
     oncreate() {
       mark('PseudoVirtualList oncreate()')
-      this.store.set({currentRealm: this.get('realm')})
+      this.store.setCurrentRealm(this.get('realm'))
 
       // When re-rendering, assume all items are non-intersecting until told otherwise.
       // We already have the heights cached.

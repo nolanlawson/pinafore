@@ -17,8 +17,7 @@
     oncreate() {
       mark('onCreate VirtualListContainer')
       let node = this.refs.node
-      let realm = this.get('realm')
-      this.store.set({currentRealm: realm})
+      this.store.setCurrentRealm(this.get('realm'))
       let scrollTop = this.store.get('scrollTop')
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {

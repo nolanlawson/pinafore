@@ -1,21 +1,14 @@
-import { Store } from 'svelte/store.js'
+import { RealmStore } from '../../_utils/RealmStore'
 
-class PseudoVirtualListStore extends Store {
-  setForRealm(obj) {
-    let realmName = this.get('currentRealm')
-    let realms = this.get('realms') || {}
-    realms[realmName] = Object.assign(realms[realmName] || {}, obj)
-    this.set({realms: realms})
+class PseudoVirtualListStore extends RealmStore {
+  constructor(state) {
+    super(state, /* maxSize */ 10)
   }
 }
 
 const pseudoVirtualListStore = new PseudoVirtualListStore()
 
-pseudoVirtualListStore.compute('intersectionStates',
-    ['realms', 'currentRealm'],
-    (realms, currentRealm) => {
-  return (realms && realms[currentRealm] && realms[currentRealm].intersectionStates) || {}
-})
+pseudoVirtualListStore.computeForRealm('intersectionStates', {})
 
 if (process.browser && process.env.NODE_NODE !== 'production') {
   window.pseudoVirtualListStore = pseudoVirtualListStore
