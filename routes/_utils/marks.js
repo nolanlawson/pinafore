@@ -1,8 +1,9 @@
 import { mark as markyMark, stop as markyStop } from 'marky'
 import noop from 'lodash/noop'
 
-const enableMarks = typeof window !== 'undefined' &&
-  new URLSearchParams(location.search).get('marks') === 'true'
+const enableMarks = process.browser &&
+  (process.env.NODE_ENV !== 'production' ||
+  new URLSearchParams(location.search).get('marks') === 'true')
 
 const mark = enableMarks ? markyMark : noop
 const stop = enableMarks ? markyStop : noop
