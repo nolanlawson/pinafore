@@ -1,18 +1,28 @@
-{{#if label}}
-<ul class="settings-list" aria-label="{{label}}">
-  <slot></slot>
-</ul>
-{{else}}
-<ul class="settings-list">
-  <slot></slot>
-</ul>
-{{/if}}
+<div class="settings-list-wrapper">
+  {{#if label}}
+  <ul class="settings-list" aria-label="{{label}}">
+    <slot></slot>
+  </ul>
+  {{else}}
+  <ul class="settings-list">
+    <slot></slot>
+  </ul>
+  {{/if}}
+</div>
 <style>
+  .settings-list-wrapper {
+    margin: 20px 20px;
+  }
   ul.settings-list {
     list-style: none;
     width: 100%;
     border: 1px solid var(--settings-list-item-border);
-    margin: 20px auto;
-    max-width: 80%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  @media (max-width: 767px) {
+    .settings-list-wrapper {
+      margin: 20px 0;
+    }
   }
 </style>
