@@ -7,7 +7,8 @@
       makeProps="{{makeProps}}"
       key="{{wrappedItem.item}}"
       intersectionObserver="{{intersectionObserver}}"
-      hide="{{shouldHide(wrappedItem.item, $intersectionStates)}}"
+      isIntersecting="{{isIntersecting(wrappedItem.item, $intersectionStates)}}"
+      isCached="{{isCached(wrappedItem.item, $intersectionStates)}}"
       height="{{getHeight(wrappedItem.item, $intersectionStates)}}"
     />
   {{/each}}
@@ -35,7 +36,7 @@
       let intersectionStates = this.store.get('intersectionStates')
       let keys = Object.keys(intersectionStates)
       for (let key of keys) {
-        intersectionStates[key].isIntersecting = false
+        intersectionStates[key].isCached = true
       }
       this.store.setForRealm({intersectionStates: intersectionStates})
 
@@ -60,8 +61,11 @@
       }
     },
     helpers: {
-      shouldHide(key, $intersectionStates) {
-        return !!($intersectionStates[key] && !$intersectionStates[key].isIntersecting)
+      isIntersecting(key, $intersectionStates) {
+        return !!($intersectionStates[key] && $intersectionStates[key].isIntersecting)
+      },
+      isCached(key, $intersectionStates) {
+        return !!($intersectionStates[key] && $intersectionStates[key].isCached)
       },
       getHeight(key, $intersectionStates) {
         return $intersectionStates[key] && $intersectionStates[key].rect.height

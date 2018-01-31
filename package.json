@@ -53,6 +53,7 @@
     "svelte-loader": "^2.3.3",
     "svelte-transitions": "^1.1.1",
     "svgo": "^1.0.3",
+    "tiny-queue": "^0.2.1",
     "uglifyjs-webpack-plugin": "^1.1.5",
     "url-search-params": "^0.10.0",
     "webpack": "^3.10.0",

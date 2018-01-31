@@ -1,9 +1,9 @@
 <div class="pseudo-virtual-list-item"
      aria-hidden="{{hide}}"
      pseudo-virtual-list-key="{{key}}"
-     style="height: {{hide ? `${height}px` : ''}};"
+     style="height: {{shouldHide ? `${height}px` : ''}};"
      ref:node>
-  {{#if !hide}}
+  {{#if !shouldHide}}
     <:Component {component}
                 virtualProps="{{props}}"
                 virtualIndex="{{index}}"
@@ -13,10 +13,38 @@
 </div>
 <script>
 
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { mark, stop } from '../../_utils/marks'
+
   export default {
     oncreate() {
+      this.observe('isIntersecting', isIntersecting => {
+        if (isIntersecting) {
+          mark('render')
+          this.set({hide: false})
+          stop('render')
+        } else {
+          // unrender lazily; it's not a critical UI task
+          scheduleIdleTask(() => {
+            mark('unrender')
+            if (!this.get('isIntersecting')) {
+              this.set({hide: true})
+            }
+            stop('unrender')
+          })
+        }
+      })
+
       let intersectionObserver = this.get('intersectionObserver')
       intersectionObserver.observe(this.refs.node)
+    },
+    computed: {
+      shouldHide: (isIntersecting, isCached, hide) => {
+        if (isCached) {
+          return true // if it's cached, always unrender immediately until proven it's intersecting
+        }
+        return !isIntersecting && hide
+      }
     }
   }
 </script>
