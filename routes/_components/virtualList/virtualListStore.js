@@ -6,49 +6,18 @@ const VIEWPORT_RENDER_FACTOR = 4
 class VirtualListStore extends RealmStore {
   constructor(state) {
     super(state, /* maxSize */ 10)
-    this._batches = {}
-  }
-
-  batchUpdate(key, subKey, value) {
-    let batch = this._batches[key]
-    if (!batch) {
-      batch = this._batches[key] = {}
-    }
-    batch[subKey] = value
-
-    requestAnimationFrame(() => {
-      let batch = this._batches[key]
-      if (!batch) {
-        return
-      }
-      let updatedKeys = Object.keys(batch)
-      if (!updatedKeys.length) {
-        return
-      }
-      mark('batchUpdate()')
-      let obj = this.get(key)
-      for (let otherKey of updatedKeys) {
-        obj[otherKey] = batch[otherKey]
-      }
-      delete this._batches[key]
-      let toSet = {}
-      toSet[key] = obj
-      this.set(toSet)
-      stop('batchUpdate()')
-    })
   }
 }
 
-const virtualListStore = new VirtualListStore({
-  itemHeights: {},
-  footerHeight: 0
-})
+const virtualListStore = new VirtualListStore()
 
 virtualListStore.computeForRealm('items', [])
 virtualListStore.computeForRealm('showFooter', false)
+virtualListStore.computeForRealm('footerHeight', 0)
 virtualListStore.computeForRealm('scrollTop', 0)
 virtualListStore.computeForRealm('scrollHeight', 0)
 virtualListStore.computeForRealm('offsetHeight', 0)
+virtualListStore.computeForRealm('itemHeights', {})
 
 virtualListStore.compute('visibleItems',
     ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],

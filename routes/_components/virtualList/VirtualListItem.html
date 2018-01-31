@@ -5,7 +5,7 @@
   <:Component {component}
               virtualProps="{{props}}"
               virtualIndex="{{index}}"
-              virtualLength="{{$numItems}}"
+              virtualLength="{{numItems}}"
               on:recalculateHeight="doRecalculateHeight()"/>
 </div>
 <style>
@@ -39,7 +39,7 @@
         asyncLayout.observe(key, this.refs.node, (rect) => {
           asyncLayout.disconnect()
           // update all item heights in one batch for better perf
-          this.store.batchUpdate('itemHeights', key, rect.height)
+          this.store.batchUpdateForRealm('itemHeights', key, rect.height)
         })
       }
     }

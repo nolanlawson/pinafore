@@ -19,7 +19,7 @@
       const asyncLayout = new AsyncLayout(() => '__footer__')
       asyncLayout.observe('__footer__', this.refs.node, (rect) => {
         asyncLayout.disconnect()
-        this.store.set({footerHeight: rect.height})
+        this.store.setForRealm({footerHeight: rect.height})
       })
     },
     store: () => virtualListStore,
