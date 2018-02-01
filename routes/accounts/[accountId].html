@@ -49,10 +49,10 @@
     store: () => store,
     computed: {
       profileName: ($currentAccountProfile) => {
-        return $currentAccountProfile && ('@' + $currentAccountProfile.acct)
+        return ($currentAccountProfile && ('@' + $currentAccountProfile.acct)) || ''
       },
       shortProfileName: ($currentAccountProfile) => {
-        return $currentAccountProfile && ('@' + $currentAccountProfile.username)
+        return ($currentAccountProfile && ('@' + $currentAccountProfile.username)) || ''
       }
     },
     components: {
