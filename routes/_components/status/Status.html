@@ -349,12 +349,13 @@
       originalAccount: (originalStatus) => originalStatus.account,
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
       statusId: (originalStatus) => originalStatus.id,
-      emojifiedContent: (originalStatus) => {
+      emojifiedContent: (originalStatus, $autoplayGifs) => {
         let status = originalStatus
         let content = status.content
         if (status.emojis && status.emojis.length) {
           for (let emoji of status.emojis) {
-            let { shortcode, url } = emoji
+            let { shortcode, url, url_static } = emoji
+            let urlToUse = $autoplayGifs ? url : url_static
             let shortcodeWithColons = `:${shortcode}:`
             content = replaceAll(
               content,
