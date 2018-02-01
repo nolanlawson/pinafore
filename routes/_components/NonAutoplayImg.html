@@ -1,0 +1,38 @@
+{{#if staticSrc === src}}
+  <img class="{{className || ''}}"
+       aria-hidden="{{ariaHidden}}"
+       alt="{{alt}}"
+       src="{{src}}"
+       on:imgLoadError />
+{{else}}
+  <img class="{{className || ''}} non-autoplay-zoom-in"
+       aria-hidden="{{ariaHidden}}"
+       alt="{{alt}}"
+       src="{{staticSrc}}"
+       on:imgLoadError
+       on:mouseover="onMouseOver(event)"
+       ref:node />
+{{/if}}
+<style>
+  .non-autoplay-zoom-in {
+    cursor: zoom-in;
+  }
+</style>
+<script>
+  import { imgLoadError, mouseover } from '../_utils/events'
+  export default {
+    methods: {
+      onMouseOver(mouseOver) {
+        if (mouseOver) {
+          this.refs.node.src = this.get('src')
+        } else {
+          this.refs.node.src = this.get('staticSrc')
+        }
+      }
+    },
+    events: {
+      imgLoadError,
+      mouseover
+    }
+  }
+</script>

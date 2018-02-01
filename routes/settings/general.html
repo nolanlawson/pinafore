@@ -1,0 +1,44 @@
+<:Head>
+  <title>General Settings</title>
+</:Head>
+
+<Layout page='settings'>
+  <SettingsLayout page='settings/general' label="General">
+    <h1>General Settings</h1>
+
+    <h2>UI</h2>
+    <form class="ui-settings" aria-label="UI settings">
+      <div class="setting-group">
+        <input type="checkbox" id="choice-autoplay-gif"
+               bind:checked="$autoplayGifs" on:change="store.save()">
+        <label for="choice-autoplay-gif">Autoplay GIFs</label>
+      </div>
+    </form>
+
+  </SettingsLayout>
+</Layout>
+
+<style>
+  .ui-settings {
+    display: flex;
+    align-items: center;
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    padding: 20px;
+    line-height: 2em;
+  }
+</style>
+<script>
+  import Layout from '../_components/Layout.html';
+  import SettingsLayout from './_components/SettingsLayout.html'
+  import { store } from '../_store/store'
+
+  export default {
+    components: {
+      Layout,
+      SettingsLayout
+    },
+    store: () => store
+  };
+</script>

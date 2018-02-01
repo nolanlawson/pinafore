@@ -1,9 +1,10 @@
-<div class="account-profile {{headerIsMissing ? 'header-is-missing' : ''}}" style="background-image: url({{profile.header}});">
+<div class="account-profile {{headerIsMissing ? 'header-is-missing' : ''}}"
+     style="background-image: url({{$autoplayGifs ? profile.header : profile.header_static}});">
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-backdrop"></div>
     <div class="account-profile-grid">
       <div class="account-profile-avatar">
-        <img src="{{profile.avatar}}" aria-hidden="true">
+        <Avatar account="{{profile}}" size="big" />
       </div>
       <div class="account-profile-name">
         <ExternalLink href="{{profile.url}}">
@@ -101,11 +102,6 @@
   .account-profile-avatar {
     grid-area: avatar;
   }
-  .account-profile-avatar img {
-    border-radius: 4px;
-    width: 100px;
-    height: 100px;
-  }
 
   .account-profile-username {
     grid-area: username;
@@ -159,10 +155,6 @@
   }
 
   @media (max-width: 767px) {
-    .account-profile-avatar img {
-      width: 80px;
-      height: 80px;
-    }
     .account-profile-name {
       font-size: 1.3em;
     }
@@ -190,14 +182,18 @@
 <script>
   import IconButton from './IconButton.html'
   import ExternalLink from './ExternalLink.html'
+  import Avatar from './Status/Avatar.html'
+  import { store } from '../_store/store'
 
   export default {
     computed: {
       headerIsMissing: (profile) => profile.header.endsWith('missing.png')
     },
+    store: () => store,
     components: {
       IconButton,
-      ExternalLink
+      ExternalLink,
+      Avatar
     }
   }
 </script>

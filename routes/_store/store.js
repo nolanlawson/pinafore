@@ -10,7 +10,8 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   "instanceNameInSearch",
   "instanceThemes",
   "loggedInInstances",
-  "loggedInInstancesInOrder"
+  "loggedInInstancesInOrder",
+  "autoplayGifs"
 ])
 
 class PinaforeStore extends LocalStorageStore {
@@ -24,7 +25,8 @@ const store = new PinaforeStore({
   currentInstance: null,
   loggedInInstances: {},
   loggedInInstancesInOrder: [],
-  instanceThemes: {}
+  instanceThemes: {},
+  autoplayGifs: false
 })
 
 mixins(PinaforeStore)

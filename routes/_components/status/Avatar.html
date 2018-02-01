@@ -1,16 +1,33 @@
 {{#if error}}
-<svg class="{{className}} avatar" aria-hidden="true">
+<svg class="{{className}} avatar size-{{size}}" aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
-{{else}}
-<img class="{{className}} avatar" aria-hidden="true" alt=""
+{{elseif $autoplayGifs}}
+  <img class="{{className}} avatar size-{{size}}" aria-hidden="true" alt=""
      src="{{account.avatar}}" on:imgLoadError="set({error: true})" />
+{{else}}
+  <NonAutoplayImg className="{{className}} avatar size-{{size}}" ariaHidden="true" alt=""
+       src="{{account.avatar}}" staticSrc="{{account.avatar_static}}" on:imgLoadError="set({error: true})" />
 {{/if}}
 <style>
-  .avatar {
+  :global(.avatar) {
+    border-radius: 4px;
+  }
+  :global(.avatar.size-small) {
     width: 48px;
     height: 48px;
-    border-radius: 4px;
+  }
+
+  :global(.avatar.size-big) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media (max-width: 767px) {
+    :global(.avatar.size-big) {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   svg.avatar {
@@ -19,10 +36,16 @@
 </style>
 <script>
   import { imgLoadError } from '../../_utils/events'
+  import { store } from '../../_store/store'
+  import NonAutoplayImg from '../NonAutoplayImg.html'
 
   export default {
     events: {
       imgLoadError
+    },
+    store: () => store,
+    components: {
+      NonAutoplayImg
     }
   }
 </script>
