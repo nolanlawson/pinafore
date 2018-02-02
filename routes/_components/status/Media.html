@@ -18,8 +18,8 @@
            class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
       />
     </button>
-    {{elseif media.type === 'gifv'}}
-    <video
+    {{elseif media.type === 'gifv' && $autoplayGifs}}
+      <video
            class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
            aria-label="Animated GIF: {{media.description || ''}}"
            poster="{{media.preview_url}}"
@@ -30,7 +30,17 @@
            muted
            loop
            playsinline
-    />
+      />
+    {{elseif media.type === 'gifv' && !$autoplayGifs}}
+      <NonAutoplayGifv
+        class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
+        label="Animated GIF: {{media.description || ''}}"
+        poster="{{media.preview_url}}"
+        src="{{media.url}}"
+        staticSrc="{{media.preview_url}}"
+        width="{{getSmallWidth(media)}}"
+        height="{{getSmallHeight(media)}}"
+        />
     {{else}}
       <img class="{{!imageLoaded ? 'image-loading' : ''}} {{imageError ? 'image-error' : ''}} {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
            on:imgLoad="set({imageLoaded: true})"
@@ -110,6 +120,7 @@
 
   import { imgLoad, imgLoadError } from '../../_utils/events'
   import { showVideoDialog } from '../../_utils/showVideoDialog'
+  import NonAutoplayGifv from '../NonAutoplayGifv.html'
 
   export default {
     helpers: {
@@ -128,6 +139,9 @@
     events: {
       imgLoad,
       imgLoadError
+    },
+    components: {
+      NonAutoplayGifv
     }
   }
 </script>

@@ -1,0 +1,44 @@
+<div class="non-autoplay-gifv" style="width: {{width}}px; height: {{height}}px;"
+     on:mouseover="onMouseOver(event)"
+     ref:node
+>
+  {{#if playing}}
+    <video
+      class="{{class}}"
+      aria-label="{{label}}"
+      poster="{{poster}}"
+      src="{{src}}"
+      width="{{width}}"
+      height="{{height}}"
+      autoplay
+      muted
+      loop
+      playsinline
+      />
+  {{else}}
+    <img class="{{class}}"
+         alt="{{label}}"
+         src="{{staticSrc}}"
+         width="{{width}}"
+         height="{{height}}"
+         />
+  {{/if}}
+</div>
+<style>
+  .non-autoplay-gifv {
+    cursor: zoom-in;
+  }
+</style>
+<script>
+  import { mouseover } from '../_utils/events'
+  export default {
+    methods: {
+      onMouseOver(mouseOver) {
+        this.set({playing: mouseOver})
+      }
+    },
+    events: {
+      mouseover
+    }
+  }
+</script>
