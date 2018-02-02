@@ -17,11 +17,12 @@
   </a>
 </li>
 <style>
-  li.settings-list-item {
+  .settings-list-item {
     border: 1px solid var(--settings-list-item-border);
     font-size: 1.3em;
     display: flex;
     flex-direction: column;
+    padding: 0 10px;
   }
   .settings-list-item a {
     display: flex;
@@ -56,6 +57,9 @@
   }
 
   @media (max-width: 767px) {
+    .settings-list-item {
+      padding: 0;
+    }
     .settings-list-item a {
       padding: 20px 10px;
     }
