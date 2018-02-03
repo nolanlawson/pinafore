@@ -13,11 +13,9 @@ module.exports = [
   {id:'fa-play-circle', src:'node_modules/font-awesome-svg-png/white/svg/play-circle.svg', title: 'Play'},
   {id:'fa-eye', src:'node_modules/font-awesome-svg-png/white/svg/eye.svg', title: 'Show Sensitive Content'},
   {id:'fa-eye-slash', src:'node_modules/font-awesome-svg-png/white/svg/eye-slash.svg', title: 'Hide Sensitive Content'},
-  {id:'fa-hashtag', src:'node_modules/font-awesome-svg-png/white/svg/hashtag.svg', title: 'Hashtag'},
   {id:'fa-lock', src:'node_modules/font-awesome-svg-png/white/svg/lock.svg', title: 'Locked'},
   {id:'fa-envelope', src:'node_modules/font-awesome-svg-png/white/svg/envelope.svg', title: 'Sealed Envelope'},
   {id:'fa-user-times', src:'node_modules/font-awesome-svg-png/white/svg/user-times.svg', title: 'Stop Following'},
   {id:'fa-user-plus', src:'node_modules/font-awesome-svg-png/white/svg/user-plus.svg', title: 'Follow'},
-  {id:'fa-comments', src:'node_modules/font-awesome-svg-png/white/svg/comments.svg', title: 'Statuses'},
   {id:'fa-external-link', src:'node_modules/font-awesome-svg-png/white/svg/external-link.svg', title: 'External Link'},
 ]

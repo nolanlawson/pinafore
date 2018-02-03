@@ -2,11 +2,7 @@
   <title>Pinafore</title>
 </:Head>
 
-<Layout page='statuses'
-        dynamicPage="Status"
-        dynamicHref="/statuses/{{params.statusId}}"
-        dynamicLabel="Status"
-        dynamicIcon="#fa-comments" >
+<Layout page='statuses' >
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title=""/>
   <LazyTimeline timeline='status/{{params.statusId}}' />

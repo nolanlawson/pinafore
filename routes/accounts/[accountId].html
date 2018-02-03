@@ -4,11 +4,7 @@
 
 <Layout page='tags'
         virtual="true"
-        virtualRealm='account/{{params.accountId}}'
-        dynamicPage="{{profileName}}"
-        dynamicHref="/accounts/{{params.accountId}}"
-        dynamicLabel="{{shortProfileName}}"
-        dynamicIcon="#fa-user" >
+        virtualRealm='account/{{params.accountId}}' >
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{profileName}}" />
     {{#if $currentAccountProfile}}

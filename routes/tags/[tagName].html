@@ -4,11 +4,7 @@
 
 <Layout page='tags'
         virtual="true"
-        virtualRealm='tag/{{params.tagName}}'
-        dynamicPage="{{params.tagName}}"
-        dynamicHref="/tags/{{params.tagName}}"
-        dynamicLabel="{{'#' + params.tagName}}"
-        dynamicIcon="#fa-hashtag" >
+        virtualRealm='tag/{{params.tagName}}' >
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{'#' + params.tagName}}"/>
   <LazyTimeline timeline='tag/{{params.tagName}}' />
