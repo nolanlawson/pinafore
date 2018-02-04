@@ -1,0 +1,17 @@
+<Avatar account={{status.account}}
+        className="status-sidebar"
+        size="small" />
+<style>
+  :global(.status-sidebar) {
+    grid-area: status-sidebar;
+    margin: 0 10px 0 0;
+  }
+</style>
+<script>
+  import Avatar from './Avatar.html'
+  export default {
+    components: {
+      Avatar
+    }
+  }
+</script>

@@ -6,21 +6,21 @@
     <StatusHeader :notification :status />
   {{/if}}
   <StatusAuthor status="{{originalStatus}}" :isStatusInContext />
-  <Avatar account={{originalAccount}} className="status-sidebar" size="small" />
+  <StatusSidebar status="{{originalStatus}}" />
   {{#if originalStatus.spoiler_text}}
     <StatusSpoiler status="{{originalStatus}}" :spoilerShown on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" />
   {{/if}}
-  {{#if originalMediaAttachments && originalMediaAttachments.length}}
-    <MediaAttachments
+  {{#if originalStatusMediaAttachments && originalStatusMediaAttachments.length}}
+    <StatusMediaAttachments
       status="{{originalStatus}}"
-      mediaAttachments="{{originalMediaAttachments}}"
+      mediaAttachments="{{originalStatusMediaAttachments}}"
       on:recalculateHeight
       />
   {{/if}}
-  <Toolbar :status />
+  <StatusToolbar :status />
 </article>
 
 <style>
@@ -45,11 +45,6 @@
     background-color: var(--status-direct-background);
   }
 
-  :global(.status-sidebar) {
-    grid-area: status-sidebar;
-    margin: 0 10px 0 0;
-  }
-
   @media (max-width: 767px) {
     .status-article {
       padding: 10px 10px;
@@ -58,33 +53,31 @@
   }
 </style>
 <script>
-  import Avatar from './Avatar.html'
-  import MediaAttachments from './MediaAttachments.html'
+  import StatusSidebar from './StatusSidebar.html'
+  import StatusHeader from './StatusHeader.html'
   import StatusAuthor from './StatusAuthor.html'
   import StatusContent from './StatusContent.html'
-  import Toolbar from './Toolbar.html'
-  import StatusHeader from './StatusHeader.html'
+  import StatusToolbar from './StatusToolbar.html'
   import StatusSpoiler from './StatusSpoiler.html'
-  import ExternalLink from '../ExternalLink.html'
+  import StatusMediaAttachments from './StatusMediaAttachments.html'
   import { store } from '../../_store/store'
 
   export default {
     components: {
-      Avatar,
-      MediaAttachments,
-      Toolbar,
-      ExternalLink,
+      StatusSidebar,
       StatusHeader,
       StatusAuthor,
       StatusContent,
-      StatusSpoiler
+      StatusToolbar,
+      StatusSpoiler,
+      StatusMediaAttachments,
     },
     store: () => store,
     computed: {
       isStatusInContext: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
-      originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
+      originalStatusMediaAttachments: (originalStatus) => originalStatus.media_attachments,
       statusId: (originalStatus) => originalStatus.id,
       spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
     }
