@@ -8,12 +8,7 @@
   <StatusAuthor status="{{originalStatus}}" :isStatusInContext />
   <Avatar account={{originalAccount}} className="status-sidebar" size="small" />
   {{#if originalStatus.spoiler_text}}
-    <div class="status-spoiler">{{originalStatus.spoiler_text}}</div>
-  {{/if}}
-  {{#if originalStatus.spoiler_text}}
-    <div class="status-spoiler-button">
-      <button type="button" on:click="onClickSpoilerButton()">{{spoilerShown ? 'Show less' : 'Show more'}}</button>
-    </div>
+    <StatusSpoiler status="{{originalStatus}}" :spoilerShown on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" />
@@ -55,25 +50,6 @@
     margin: 0 10px 0 0;
   }
 
-  .status-spoiler {
-    grid-area: status-spoiler;
-    word-wrap: break-word;
-    overflow: hidden;
-    white-space: pre-wrap;
-    font-size: 1.1em;
-    margin: 5px;
-  }
-
-  .status-spoiler-button {
-    grid-area: status-spoiler-button;
-    margin: 5px;
-  }
-
-  .status-spoiler-button button {
-    padding: 5px 10px;
-    font-size: 1.1em;
-  }
-
   @media (max-width: 767px) {
     .status-article {
       padding: 10px 10px;
@@ -88,6 +64,7 @@
   import StatusContent from './StatusContent.html'
   import Toolbar from './Toolbar.html'
   import StatusHeader from './StatusHeader.html'
+  import StatusSpoiler from './StatusSpoiler.html'
   import ExternalLink from '../ExternalLink.html'
   import { store } from '../../_store/store'
 
@@ -99,7 +76,8 @@
       ExternalLink,
       StatusHeader,
       StatusAuthor,
-      StatusContent
+      StatusContent,
+      StatusSpoiler
     },
     store: () => store,
     computed: {
@@ -109,19 +87,6 @@
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
       statusId: (originalStatus) => originalStatus.id,
       spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
-    },
-    methods: {
-      onClickSpoilerButton() {
-        let statusId = this.get('statusId')
-        let instanceName = this.store.get('currentInstance')
-        let $spoilersShown = this.store.get('spoilersShown') || {}
-        if (!$spoilersShown[instanceName]) {
-          $spoilersShown[instanceName] = {}
-        }
-        $spoilersShown[instanceName][statusId] = !$spoilersShown[instanceName][statusId]
-        this.store.set({'spoilersShown': $spoilersShown})
-        this.fire('recalculateHeight')
-      }
     }
   }
 </script>

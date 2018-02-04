@@ -1,0 +1,49 @@
+<div class="status-spoiler">{{status.spoiler_text}}</div>
+<div class="status-spoiler-button">
+  <button type="button" on:click="onClickSpoilerButton()">
+    {{spoilerShown ? 'Show less' : 'Show more'}}
+  </button>
+</div>
+<style>
+  .status-spoiler {
+    grid-area: status-spoiler;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-size: 1.1em;
+    margin: 5px;
+  }
+
+  .status-spoiler-button {
+    grid-area: status-spoiler-button;
+    margin: 5px;
+  }
+
+  .status-spoiler-button button {
+    padding: 5px 10px;
+    font-size: 1.1em;
+  }
+</style>
+<script>
+  import { store } from '../../_store/store'
+
+  export default {
+    store: () => store,
+    computed: {
+      statusId: (status) => status.id
+    },
+    methods: {
+      onClickSpoilerButton() {
+        let statusId = this.get('statusId')
+        let instanceName = this.store.get('currentInstance')
+        let $spoilersShown = this.store.get('spoilersShown') || {}
+        if (!$spoilersShown[instanceName]) {
+          $spoilersShown[instanceName] = {}
+        }
+        $spoilersShown[instanceName][statusId] = !$spoilersShown[instanceName][statusId]
+        this.store.set({'spoilersShown': $spoilersShown})
+        this.fire('recalculateHeight')
+      }
+    }
+  }
+</script>
