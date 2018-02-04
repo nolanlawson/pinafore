@@ -5,7 +5,7 @@
     <button type="button"
             class="play-video-button"
             aria-label="Play video: {{media.description || ''}}"
-            on:click="onClickPlayVideoButton(media, getSmallWidth(media), getSmallHeight(media), media.description)">
+            on:click="onClickPlayVideoButton(media, media.description)">
       <div class="svg-wrapper">
         <svg>
           <use xlink:href="#fa-play-circle" />
@@ -132,8 +132,8 @@
       maxMediaWidth: (mediaAttachments) => Math.max.apply(Math, mediaAttachments.map(media => media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH))
     },
     methods: {
-      async onClickPlayVideoButton(media, width, height, description) {
-        showVideoDialog(media.preview_url, media.url, width, height, description)
+      async onClickPlayVideoButton(media, description) {
+        showVideoDialog(media.preview_url, media.url, description)
       }
     },
     events: {
