@@ -1,0 +1,87 @@
+<div class="status-author">
+  <a class="status-author-name" href="/accounts/{{status.account.id}}">
+    {{status.account.display_name || status.account.username}}
+  </a>
+  <span class="status-author-handle">
+      {{'@' + status.account.acct}}
+    </span>
+  {{#if isStatusInContext}}
+  <ExternalLink class="status-author-date" href="{{status.url}}" showIcon="true">
+    <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
+  </ExternalLink>
+  {{else}}
+  <a class="status-author-date" href="/statuses/{{status.id}}">
+    <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
+  </a>
+  {{/if}}
+</div>
+<style>
+  .status-author {
+    grid-area: status-author;
+    display: flex;
+    align-items: center;
+    margin: 0 10px 0 5px;
+    font-size: 1.1em;
+    min-width: 0;
+  }
+
+  :global(.status-author a, .status-author a:visited, .status-author a:hover, .status-author .status-author-handle) {
+    color: var(--deemphasized-text-color);
+  }
+
+  :global(.status-author .status-author-name) {
+    min-width: 0;
+    flex-shrink: 1;
+    color: var(--body-text-color);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.status-author .status-author-name:hover) {
+    color: var(--body-text-color);
+  }
+
+  .status-author-handle {
+    min-width: 0;
+    flex: 1;
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.status-author-date) {
+    color: var(--deemphasized-text-color);
+    flex-shrink: 1;
+    text-align: right;
+    margin-left: 5px;
+    white-space: nowrap;
+  }
+  :global(.status-author-date:hover) {
+    color: var(--deemphasized-text-color);
+  }
+</style>
+<script>
+  import IntlRelativeFormat from 'intl-relativeformat'
+  import ExternalLink from '../ExternalLink.html'
+  import { mark, stop } from '../../_utils/marks'
+
+  const relativeFormat = new IntlRelativeFormat('en-US');
+
+  export default {
+    computed: {
+      createdAtDate: (status) => status.created_at,
+      relativeDate: (createdAtDate) => {
+        mark('compute relativeDate')
+        let res = relativeFormat.format(new Date(createdAtDate))
+        stop('compute relativeDate')
+        return res
+      }
+    },
+    components: {
+      ExternalLink
+    }
+  }
+</script>

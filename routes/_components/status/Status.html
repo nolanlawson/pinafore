@@ -5,23 +5,7 @@
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
     <StatusHeader :notification :status />
   {{/if}}
-  <div class="status-author">
-    <a class="status-author-name" href="/accounts/{{originalAccount.id}}">
-      {{originalAccount.display_name || originalAccount.username}}
-    </a>
-    <span class="status-author-handle">
-      {{'@' + originalAccount.acct}}
-    </span>
-    {{#if isStatusInContext}}
-      <ExternalLink class="status-author-date" href="{{originalStatus.url}}" showIcon="true">
-        <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
-      </ExternalLink>
-    {{else}}
-      <a class="status-author-date" href="/statuses/{{originalStatus.id}}">
-        <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
-      </a>
-    {{/if}}
-  </div>
+  <StatusAuthor status="{{originalStatus}}" :isStatusInContext />
   <Avatar account={{originalAccount}} className="status-sidebar" size="small" />
   {{#if originalStatus.spoiler_text}}
     <div class="status-spoiler">{{originalStatus.spoiler_text}}</div>
@@ -92,53 +76,6 @@
     font-size: 1.1em;
   }
 
-  .status-author {
-    grid-area: status-author;
-    display: flex;
-    align-items: center;
-    margin: 0 10px 0 5px;
-    font-size: 1.1em;
-    min-width: 0;
-  }
-
-  :global(.status-author a, .status-author a:visited, .status-author a:hover, .status-author .status-author-handle) {
-    color: var(--deemphasized-text-color);
-  }
-
-  :global(.status-author .status-author-name) {
-    min-width: 0;
-    flex-shrink: 1;
-    color: var(--body-text-color);
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  :global(.status-author .status-author-name:hover) {
-    color: var(--body-text-color);
-  }
-
-  .status-author-handle {
-    min-width: 0;
-    flex: 1;
-    margin-left: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  :global(.status-author-date) {
-    color: var(--deemphasized-text-color);
-    flex-shrink: 1;
-    text-align: right;
-    margin-left: 5px;
-    white-space: nowrap;
-  }
-  :global(.status-author-date:hover) {
-    color: var(--deemphasized-text-color);
-  }
-
   .status-content {
     margin: 10px 10px 10px 5px;
     grid-area: status-content;
@@ -181,15 +118,13 @@
 <script>
   import Avatar from './Avatar.html'
   import MediaAttachments from './MediaAttachments.html'
+  import StatusAuthor from './StatusAuthor.html'
   import Toolbar from './Toolbar.html'
   import StatusHeader from './StatusHeader.html'
+  import ExternalLink from '../ExternalLink.html'
   import { mark, stop } from '../../_utils/marks'
-  import IntlRelativeFormat from 'intl-relativeformat'
   import { replaceAll } from '../../_utils/strings'
   import { store } from '../../_store/store'
-  import ExternalLink from '../ExternalLink.html'
-
-  const relativeFormat = new IntlRelativeFormat('en-US');
 
   export default {
     oncreate() {
@@ -200,20 +135,12 @@
       MediaAttachments,
       Toolbar,
       ExternalLink,
-      StatusHeader
+      StatusHeader,
+      StatusAuthor
     },
     store: () => store,
     computed: {
-      isStatusInContext: (timelineType, timelineValue, statusId) => {
-        return timelineType === 'status' && timelineValue === statusId
-      },
-      createdAtDate: (status) => status.created_at,
-      relativeDate: (createdAtDate) => {
-        mark('compute relativeDate')
-        let res = relativeFormat.format(new Date(createdAtDate))
-        stop('compute relativeDate')
-        return res
-      },
+      isStatusInContext: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       originalStatus: (status) => status.reblog ? status.reblog : status,
       originalAccount: (originalStatus) => originalStatus.account,
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
