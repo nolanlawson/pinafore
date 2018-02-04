@@ -1,5 +1,8 @@
-<div class="status-content" ref:node>
-  {{{emojifiedContent}}}
+<div
+  class="status-content {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
+  ref:node
+>
+    {{{emojifiedContent}}}
 </div>
 <style>
   .status-content {
@@ -11,7 +14,7 @@
     font-size: 0.9em;
   }
 
-  :global(.status-in-own-thread .status-content) {
+  .status-content.status-in-own-thread {
     font-size: 1.3em;
     margin: 20px 10px 20px 5px;
   }

@@ -1,4 +1,4 @@
-<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
+<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}}"
          tabindex="0"
          aria-posinset="{{index}}" aria-setsize="{{length}}"
          on:recalculateHeight>
@@ -11,7 +11,7 @@
     <StatusSpoiler status="{{originalStatus}}" :spoilerShown on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
-    <StatusContent status="{{originalStatus}}" />
+    <StatusContent status="{{originalStatus}}" :isStatusInOwnThread />
   {{/if}}
   {{#if hasMedia}}
     <StatusMediaAttachments status="{{originalStatus}}" on:recalculateHeight />
