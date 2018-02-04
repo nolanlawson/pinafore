@@ -1,0 +1,16 @@
+<Notification
+  notification="{{virtualProps.notification}}"
+  timelineType="{{virtualProps.timelineType}}"
+  timelineValue="{{virtualProps.timelineValue}}"
+  index="{{virtualIndex}}"
+  length="{{virtualLength}}"
+  on:recalculateHeight />
+<script>
+  import Notification from '../notification/Notification.html'
+
+  export default {
+    components: {
+      Notification
+    }
+  }
+</script>

@@ -1,14 +1,16 @@
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 2
+const DB_VERSION = 1
 
 import {
   META_STORE,
-  TIMELINE_STORE,
+  STATUS_TIMELINES_STORE,
   STATUSES_STORE,
   ACCOUNTS_STORE,
-  RELATIONSHIPS_STORE
+  RELATIONSHIPS_STORE,
+  NOTIFICATIONS_STORE,
+  NOTIFICATION_TIMELINES_STORE
 } from './constants'
 
 export function getDatabase(instanceName) {
@@ -28,16 +30,15 @@ export function getDatabase(instanceName) {
     }
     req.onupgradeneeded = (e) => {
       let db = req.result;
-      if (e.oldVersion < 1) {
-        db.createObjectStore(META_STORE, {keyPath: 'key'})
-        db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
-        db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
-        let timelineStore = db.createObjectStore(TIMELINE_STORE, {keyPath: 'id'})
-        timelineStore.createIndex('statusId', 'statusId')
-      }
-      if (e.oldVersion < 2) {
-        db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
-      }
+      db.createObjectStore(META_STORE, {keyPath: 'key'})
+      db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
+      db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
+      db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
+      db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
+      db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
+          .createIndex('statusId', 'statusId')
+      db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
+          .createIndex('notificationId', 'notificationId')
     }
     req.onsuccess = () => resolve(req.result)
   })

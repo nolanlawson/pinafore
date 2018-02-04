@@ -2,55 +2,51 @@ import { store } from '../_store/store'
 import { database } from '../_utils/database/database'
 import { getTimeline } from '../_utils/mastodon/timelines'
 import { toast } from '../_utils/toast'
-import { StatusStream } from '../_utils/mastodon/StatusStream'
-import { getInstanceInfo } from '../_utils/mastodon/instance'
 import { mark, stop } from '../_utils/marks'
 import { mergeArrays } from '../_utils/arrays'
 
 const FETCH_LIMIT = 20
 
-let statusStream
-
-async function fetchStatuses(instanceName, accessToken, timelineName, lastStatusId, online) {
-  mark('fetchStatuses')
-  let statuses
+async function fetchTimelineItems(instanceName, accessToken, timelineName, lastTimelineItemId, online) {
+  mark('fetchTimelineItems')
+  let items
   if (!online) {
-    statuses = await database.getTimeline(instanceName, timelineName, lastStatusId, FETCH_LIMIT)
+    items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
   } else {
     try {
-      statuses = await getTimeline(instanceName, accessToken, timelineName, lastStatusId, FETCH_LIMIT)
-      /* no await */ database.insertStatuses(instanceName, timelineName, statuses)
+      items = await getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, FETCH_LIMIT)
+      /* no await */ database.insertTimelineItems(instanceName, timelineName, items)
     } catch (e) {
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')
-      statuses = await database.getTimeline(instanceName, timelineName, lastStatusId, FETCH_LIMIT)
+      items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
     }
   }
-  stop('fetchStatuses')
-  return statuses
+  stop('fetchTimelineItems')
+  return items
 }
 
-async function addStatuses(instanceName, timelineName, newStatuses) {
-  console.log('addStatuses, length:', newStatuses.length)
-  mark('addStatuses')
-  let newStatusIds = newStatuses.map(status => status.id)
-  let oldStatusIds = store.getForTimeline(instanceName, timelineName, 'statusIds') || []
-  let merged = mergeArrays(oldStatusIds, newStatusIds)
-  store.setForTimeline(instanceName, timelineName, { statusIds: merged })
-  stop('addStatuses')
+async function addTimelineItems(instanceName, timelineName, newItems) {
+  console.log('addTimelineItems, length:', newItems.length)
+  mark('addTimelineItems')
+  let newIds = newItems.map(item => item.id)
+  let oldIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
+  let merged = mergeArrays(oldIds, newIds)
+  store.setForTimeline(instanceName, timelineName, { timelineItemIds: merged })
+  stop('addTimelineItems')
 }
 
-async function fetchStatusesAndPossiblyFallBack() {
-  mark('fetchStatusesAndPossiblyFallBack')
+async function fetchTimelineItemsAndPossiblyFallBack() {
+  mark('fetchTimelineItemsAndPossiblyFallBack')
   let timelineName = store.get('currentTimeline')
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
-  let lastStatusId = store.get('lastStatusId')
+  let lastTimelineItemId = store.get('lastTimelineItemId')
   let online = store.get('online')
 
-  let newStatuses = await fetchStatuses(instanceName, accessToken, timelineName, lastStatusId, online)
-  addStatuses(instanceName, timelineName, newStatuses)
-  stop('fetchStatusesAndPossiblyFallBack')
+  let newItems = await fetchTimelineItems(instanceName, accessToken, timelineName, lastTimelineItemId, online)
+  addTimelineItems(instanceName, timelineName, newItems)
+  stop('fetchTimelineItemsAndPossiblyFallBack')
 }
 
 export function initializeTimeline() {
@@ -66,30 +62,20 @@ export function initializeTimeline() {
 }
 
 export async function setupTimeline() {
-  mark('addStatuses')
+  mark('setupTimeline')
   let timelineName = store.get('currentTimeline')
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
-  if (!store.get('statusIds').length) {
-    await fetchStatusesAndPossiblyFallBack()
+  if (!store.get('timelineItemIds').length) {
+    await fetchTimelineItemsAndPossiblyFallBack()
   }
-  /* no await */ getInstanceInfo(instanceName).then(instanceInfo => database.setInstanceInfo(instanceName, instanceInfo))
-  let instanceInfo = await database.getInstanceInfo(instanceName)
-  if (statusStream) {
-    statusStream.close()
-  }
-  /*statusStream = new StatusStream(instanceInfo.urls.streaming_api, accessToken, timelineName, {
-    onMessage(message) {
-      console.log('message', message)
-    }
-  })*/
-  stop('addStatuses')
+  stop('setupTimeline')
 }
 
-export async function fetchStatusesOnScrollToBottom() {
+export async function fetchTimelineItemsOnScrollToBottom() {
   let timelineName = store.get('currentTimeline')
   let instanceName = store.get('currentInstance')
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })
-  await fetchStatusesAndPossiblyFallBack()
+  await fetchTimelineItemsAndPossiblyFallBack()
   store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
 }

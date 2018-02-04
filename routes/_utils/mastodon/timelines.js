@@ -8,6 +8,8 @@ function getTimelineUrlPath(timeline) {
       return 'timelines/public'
     case 'home':
       return 'timelines/home'
+    case 'notifications':
+      return 'notifications'
   }
   if (timeline.startsWith('tag/')) {
     return 'timelines/tag'

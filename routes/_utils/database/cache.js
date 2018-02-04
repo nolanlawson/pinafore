@@ -16,13 +16,18 @@ export const metaCache = {
   maxSize: 20,
   caches: {}
 }
+export const notificationsCache = {
+  maxSize: 50,
+  caches: {}
+}
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.cacheStats = {
     statuses: statusesCache,
     accounts: accountsCache,
     relationships: relationshipsCache,
-    meta: metaCache
+    meta: metaCache,
+    notifications: notificationsCache
   }
 }
 

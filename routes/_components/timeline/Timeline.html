@@ -4,10 +4,21 @@
       <LoadingSpinner />
     </div>
   {{/if}}
-  {{#if virtual}}
+  {{#if timelineType === 'notifications'}}
+    <VirtualList component="{{NotificationVirtualListItem}}"
+                 :makeProps
+                 items="{{$timelineItemIds}}"
+                 on:scrollToBottom="onScrollToBottom()"
+                 shown="{{$initialized}}"
+                 footerComponent="{{LoadingFooter}}"
+                 showFooter="{{$initialized && $runningUpdate}}"
+                 realm="{{$currentInstance + '/' + timeline}}"
+                 on:initializedVisibleItems="initialize()"
+  />
+  {{elseif virtual}}
     <VirtualList component="{{StatusVirtualListItem}}"
                  :makeProps
-                 items="{{$statusIds}}"
+                 items="{{$timelineItemIds}}"
                  on:scrollToBottom="onScrollToBottom()"
                  shown="{{$initialized}}"
                  footerComponent="{{LoadingFooter}}"
@@ -20,7 +31,7 @@
          whole thing rather than use a virtual list -->
     <PseudoVirtualList component="{{StatusVirtualListItem}}"
                        :makeProps
-                       items="{{$statusIds}}"
+                       items="{{$timelineItemIds}}"
                        shown="{{$initialized}}"
                        on:initializedVisibleItems="initialize()"
                        scrollToItem="{{timelineValue}}"
@@ -48,13 +59,14 @@
 <script>
   import { store } from '../../_store/store'
   import StatusVirtualListItem from './StatusVirtualListItem.html'
+  import NotificationVirtualListItem from './NotificationVirtualListItem.html'
   import Status from '../status/Status.html'
   import PseudoVirtualList from '../pseudoVirtualList/PseudoVirtualList.html'
   import LoadingFooter from './LoadingFooter.html'
   import VirtualList from '../virtualList/VirtualList.html'
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_utils/database/database'
-  import { initializeTimeline, fetchStatusesOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
+  import { initializeTimeline, fetchTimelineItemsOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
   import LoadingSpinner from '../LoadingSpinner.html'
 
   export default {
@@ -64,15 +76,20 @@
     },
     data: () => ({
       StatusVirtualListItem,
+      NotificationVirtualListItem,
       LoadingFooter,
       Status
     }),
     computed: {
-      makeProps: ($currentInstance, timelineType, timelineValue) => async (statusId) => ({
-        timelineType: timelineType,
-        timelineValue: timelineValue,
-        status: await database.getStatus($currentInstance, statusId)
-      }),
+      makeProps: ($currentInstance, timelineType, timelineValue) => async (itemId) => {
+        let res = { timelineType, timelineValue }
+        if (timelineType === 'notifications') {
+          res.notification = await database.getNotification($currentInstance, itemId)
+        } else {
+          res.status = await database.getStatus($currentInstance, itemId)
+        }
+        return res
+      },
       label: (timeline, $currentInstance, timelineType, timelineValue) => {
         if (timelines[timeline]) {
           return `${timelines[timeline].label} timeline for ${$currentInstance}`
@@ -101,11 +118,12 @@
     components: {
       VirtualList,
       PseudoVirtualList,
+      NotificationVirtualListItem,
       LoadingSpinner
     },
     methods: {
       initialize() {
-        if (this.store.get('initialized') || !this.store.get('statusIds') || !this.store.get('statusIds').length) {
+        if (this.store.get('initialized') || !this.store.get('timelineItemIds') || !this.store.get('timelineItemIds').length) {
           return
         }
         console.log('timeline initialize()')
@@ -117,7 +135,7 @@
             this.get('timelineType') === 'status') { // for status contexts, we've already fetched the whole thread
           return
         }
-        fetchStatusesOnScrollToBottom()
+        fetchTimelineItemsOnScrollToBottom()
       }
     }
   }
