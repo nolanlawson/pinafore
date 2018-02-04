@@ -1,7 +1,43 @@
-<article class="notification-article"
-         tabindex="0"
-         aria-posinset="{{index}}" aria-setsize="{{length}}"
-         on:recalculateHeight
->
-  Notification
-</article>
+{{#if notification.type === 'mention' || notification.type === 'reblog' || notification.type === 'favourite'}}
+  <Status :index :length :timelineType :timelineValue
+          status="{{notification.status}}"
+          :notification
+          on:recalculateHeight
+  />
+{{else}}
+  <article class="notification-article"
+           tabindex="0"
+           aria-posinset="{{index}}" aria-setsize="{{length}}"
+  >
+    <div class="follow-notification-offset">
+      <StatusHeader :status :notification />
+    </div>
+  </article>
+{{/if}}
+<style>
+  .notification-article {
+    width: 560px;
+    max-width: calc(100vw - 40px);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--main-border);
+  }
+  .follow-notification-offset {
+    margin-left: 58px; /* offset for avatar, 48px + 10px */
+  }
+  @media (max-width: 767px) {
+    .notification-article {
+      padding: 10px 10px;
+      max-width: calc(100vw - 20px);
+    }
+  }
+</style>
+<script>
+  import Status from '../status/Status.html'
+  import StatusHeader from '../status/StatusHeader.html'
+  export default {
+    components: {
+      Status,
+      StatusHeader
+    }
+  }
+</script>

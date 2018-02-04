@@ -72,7 +72,7 @@ virtualListStore.compute('height',
   return showFooter ? (heightWithoutFooter + footerHeight) : heightWithoutFooter
 })
 
-virtualListStore.compute('numItems', ['items'], (items) => items.length)
+virtualListStore.compute('length', ['items'], (items) => items ? items.length : 0)
 
 virtualListStore.compute('allVisibleItemsHaveHeight',
     ['visibleItems', 'itemHeights'],
