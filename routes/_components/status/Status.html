@@ -13,7 +13,7 @@
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" :isStatusInOwnThread />
   {{/if}}
-  {{#if hasMedia}}
+  {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
     <StatusMediaAttachments status="{{originalStatus}}" on:recalculateHeight />
   {{/if}}
   <StatusToolbar :status />
@@ -52,10 +52,10 @@
   import StatusSidebar from './StatusSidebar.html'
   import StatusHeader from './StatusHeader.html'
   import StatusAuthor from './StatusAuthor.html'
-  import StatusContent from './StatusContent.html'
   import StatusToolbar from './StatusToolbar.html'
-  import StatusSpoiler from './StatusSpoiler.html'
   import StatusMediaAttachments from './StatusMediaAttachments.html'
+  import StatusContent from './StatusContent.html'
+  import StatusSpoiler from './StatusSpoiler.html'
   import { store } from '../../_store/store'
 
   export default {
@@ -63,18 +63,17 @@
       StatusSidebar,
       StatusHeader,
       StatusAuthor,
-      StatusContent,
       StatusToolbar,
-      StatusSpoiler,
       StatusMediaAttachments,
+      StatusContent,
+      StatusSpoiler
     },
     store: () => store,
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
-      hasMedia: (originalStatus) => originalStatus.media_attachments && originalStatus.media_attachments.length,
-      isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       originalAccount: (originalStatus) => originalStatus.account,
+      isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
     }
   }
