@@ -1,0 +1,44 @@
+<ModalDialog :shown background="var(--main-bg)">
+  {{#if type === 'gifv'}}
+    <video
+      aria-label="Animated GIF: {{description || ''}}"
+      poster="{{poster}}"
+      src="{{src}}"
+      width="{{width}}"
+      height="{{height}}"
+      autoplay
+      muted
+      loop
+      playsinline
+    />
+  {{else}}
+    <img
+      src="{{src}}"
+      width="{{width}}"
+      height="{{height}}"
+      aria-label="{{description || ''}}"
+    />
+  {{/if}}
+</ModalDialog>
+<style>
+  :global(.modal-dialog img, .modal-dialog video) {
+    object-fit: contain;
+    overflow: hidden;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 100px);
+  }
+</style>
+<script>
+  import ModalDialog from '../ModalDialog.html'
+
+  export default {
+    components: {
+      ModalDialog
+    },
+    methods: {
+      async show() {
+        this.set({shown: true})
+      }
+    }
+  }
+</script>

@@ -1,24 +1,33 @@
 {{#if status.sensitive}}
 <div class="status-sensitive-media-container {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}"
 >
-  <button type="button" class="status-sensitive-media-button"
-          aria-label="{{sensitiveShown ? 'Hide sensitive media: ' : 'Show sensitive media'}}"
+  {{#if sensitiveShown}}
+  <button type="button"
+          class="status-sensitive-media-button"
+          aria-label="Hide sensitive media"
           on:click="onClickSensitiveMediaButton()" >
-    {{#if !sensitiveShown}}
-    <div class="status-sensitive-media-warning">
-      <span>
-        Sensitive content. Click to show.
-      </span>
-    </div>
-    {{/if}}
     <div class="svg-wrapper">
       <svg>
-        <use xlink:href="{{sensitiveShown ? '#fa-eye-slash' : '#fa-eye'}}" />
+        <use xlink:href="#fa-eye-slash" />
       </svg>
     </div>
   </button>
-  {{#if sensitiveShown}}
   <Media mediaAttachments="{{mediaAttachments}}" sensitive="{{status.sensitive}}"/>
+  {{else}}
+    <button type="button"
+            class="status-sensitive-media-button"
+            aria-label="Show sensitive media"
+            on:click="onClickSensitiveMediaButton()" >
+
+      <div class="status-sensitive-media-warning">
+        <span>Sensitive content. Click to show.</span>
+      </div>
+      <div class="svg-wrapper">
+        <svg>
+          <use xlink:href="#fa-eye" />
+        </svg>
+      </div>
+    </button>
   {{/if}}
 </div>
 {{else}}
@@ -39,8 +48,6 @@
     padding: 0;
     border: none;
     background: none;
-    width: 100%;
-    height: 100%;
   }
 
   .status-sensitive-media-button:hover {
@@ -54,10 +61,15 @@
   .status-sensitive-media-shown .status-sensitive-media-button {
     position: absolute;
     left: 0;
-    right: 0;
     top: 0;
-    bottom: 0;
     z-index: 90;
+  }
+
+  .status-sensitive-media-hidden .status-sensitive-media-button {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .status-sensitive-media-container.status-sensitive-media-hidden {
@@ -80,17 +92,19 @@
   }
 
   .status-sensitive-media-container .svg-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     z-index: 40;
     pointer-events: none;
     background: var(--mask-bg);
+  }
+  .status-sensitive-media-hidden .svg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
   .status-sensitive-media-container.status-sensitive-media-shown .svg-wrapper {
     background: none;
@@ -129,7 +143,7 @@
         $sensitivesShown[contextualStatusId] = !$sensitivesShown[contextualStatusId]
         this.store.set({'sensitivesShown': $sensitivesShown})
         this.fire('recalculateHeight')
-      },
+      }
     }
   }
 </script>

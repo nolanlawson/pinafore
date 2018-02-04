@@ -1,13 +1,18 @@
-<ModalDialog :shown>
+<ModalDialog :shown background="#000">
   <video poster="{{poster}}"
          src="{{src}}"
+         width="{{width}}"
+         height="{{height}}"
          aria-label="Video: {{description || ''}}"
          controls
   />
 </ModalDialog>
 <style>
   :global(.modal-dialog video) {
-    max-width: 100%;
+    object-fit: contain;
+    overflow: hidden;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 100px);
   }
 </style>
 <script>

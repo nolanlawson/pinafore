@@ -2,53 +2,60 @@
      style="grid-template-columns: repeat(auto-fit, minmax({{maxMediaWidth}}px, 1fr));" >
   {{#each mediaAttachments as media}}
     {{#if media.type === 'video'}}
-    <button type="button"
-            class="play-video-button"
-            aria-label="Play video: {{media.description || ''}}"
-            on:click="onClickPlayVideoButton(media, media.description)">
-      <div class="svg-wrapper">
-        <svg>
-          <use xlink:href="#fa-play-circle" />
-        </svg>
-      </div>
-      <img alt="{{media.description || ''}}"
-           src="{{media.preview_url}}"
-           width="{{getSmallWidth(media)}}"
-           height="{{getSmallHeight(media)}}"
-           class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
-      />
-    </button>
-    {{elseif media.type === 'gifv' && $autoplayGifs}}
-      <video
-           class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
-           aria-label="Animated GIF: {{media.description || ''}}"
-           poster="{{media.preview_url}}"
-           src="{{media.url}}"
-           width="{{getSmallWidth(media)}}"
-           height="{{getSmallHeight(media)}}"
-           autoplay
-           muted
-           loop
-           playsinline
-      />
-    {{elseif media.type === 'gifv' && !$autoplayGifs}}
-      <NonAutoplayGifv
-        class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
-        label="Animated GIF: {{media.description || ''}}"
-        poster="{{media.preview_url}}"
-        src="{{media.url}}"
-        staticSrc="{{media.preview_url}}"
-        width="{{getSmallWidth(media)}}"
-        height="{{getSmallHeight(media)}}"
+      <button type="button"
+              class="play-video-button"
+              aria-label="Play video: {{media.description || ''}}"
+              on:click="onClickPlayVideoButton(media, getOriginalWidth(media), getOriginalHeight(media))">
+        <div class="svg-wrapper">
+          <svg>
+            <use xlink:href="#fa-play-circle" />
+          </svg>
+        </div>
+        <img alt="{{media.description || ''}}"
+             src="{{media.preview_url}}"
+             width="{{getSmallWidth(media)}}"
+             height="{{getSmallHeight(media)}}"
+             class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
         />
+      </button>
     {{else}}
-      <img class="{{!imageLoaded ? 'image-loading' : ''}} {{imageError ? 'image-error' : ''}} {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
-           on:imgLoad="set({imageLoaded: true})"
-           on:imgLoadError="set({imageError: true})"
-           alt="{{media.description || ''}}"
-           src="{{media.preview_url}}"
-           width="{{getSmallWidth(media)}}"
-           height="{{getSmallHeight(media)}}"/>
+      <button type="button"
+            class="show-image-button"
+            aria-label="Show image: {{media.description || ''}}"
+            on:click="onClickShowImageButton(media, getOriginalWidth(media), getOriginalHeight(media))">
+      {{#if media.type === 'gifv' && $autoplayGifs}}
+        <video
+          class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
+          aria-label="Animated GIF: {{media.description || ''}}"
+          poster="{{media.preview_url}}"
+          src="{{media.url}}"
+          width="{{getSmallWidth(media)}}"
+          height="{{getSmallHeight(media)}}"
+          autoplay
+          muted
+          loop
+          playsinline
+        />
+      {{elseif media.type === 'gifv' && !$autoplayGifs}}
+        <NonAutoplayGifv
+          class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
+          label="Animated GIF: {{media.description || ''}}"
+          poster="{{media.preview_url}}"
+          src="{{media.url}}"
+          staticSrc="{{media.preview_url}}"
+          width="{{getSmallWidth(media)}}"
+          height="{{getSmallHeight(media)}}"
+        />
+      {{else}}
+        <img class="{{!imageLoaded ? 'image-loading' : ''}} {{imageError ? 'image-error' : ''}} {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
+             on:imgLoad="set({imageLoaded: true})"
+             on:imgLoadError="set({imageError: true})"
+             alt="{{media.description || ''}}"
+             src="{{media.preview_url}}"
+             width="{{getSmallWidth(media)}}"
+             height="{{getSmallHeight(media)}}"/>
+      {{/if}}
+    </button>
     {{/if}}
   {{/each}}
 </div>
@@ -84,10 +91,10 @@
   .play-video-button {
     margin: 0;
     padding: 0;
-    position: relative;
     border-radius: 0;
     border: none;
     background: none;
+    position: relative;
   }
   .play-video-button .svg-wrapper {
     position: absolute;
@@ -108,6 +115,14 @@
     border-radius: 100%;
     background: var(--mask-opaque-bg);
   }
+  .show-image-button {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    background: none;
+    cursor: zoom-in;
+  }
   @media (max-width: 767px) {
     .status-media, .status-media video, .status-media img {
       max-width: calc(100vw - 20px);
@@ -120,20 +135,26 @@
 
   import { imgLoad, imgLoadError } from '../../_utils/events'
   import { showVideoDialog } from '../../_utils/showVideoDialog'
+  import { showImageDialog } from '../../_utils/showImageDialog'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
 
   export default {
     helpers: {
       getSmallWidth: media => media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH,
       getSmallHeight: media => media.meta && media.meta.small && typeof media.meta.small.height === 'number' ?  media.meta.small.height : DEFAULT_MEDIA_HEIGHT,
+      getOriginalWidth: media => media.meta && media.meta.original && typeof media.meta.original.width === 'number' ?  media.meta.original.width : DEFAULT_MEDIA_WIDTH,
+      getOriginalHeight: media => media.meta && media.meta.original && typeof media.meta.original.height === 'number' ?  media.meta.original.height : DEFAULT_MEDIA_HEIGHT,
       hasNoNativeWidthHeight: media => !(media && media.meta && media.meta.small && typeof media.meta.small.width === 'number' && typeof media.meta.small.height === 'number'),
     },
     computed: {
       maxMediaWidth: (mediaAttachments) => Math.max.apply(Math, mediaAttachments.map(media => media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH))
     },
     methods: {
-      async onClickPlayVideoButton(media, description) {
-        showVideoDialog(media.preview_url, media.url, description)
+      onClickPlayVideoButton(media, width, height) {
+        showVideoDialog(media.preview_url, media.url, width, height, media.description)
+      },
+      onClickShowImageButton(media, width, height) {
+        showImageDialog(media.preview_url, media.url, media.type, width, height, media.description)
       }
     },
     events: {
