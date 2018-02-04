@@ -16,9 +16,7 @@
     </div>
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
-    <div class="status-content" ref:contentNode>
-      {{{emojifiedContent}}}
-    </div>
+    <StatusContent status="{{originalStatus}}" />
   {{/if}}
   {{#if originalMediaAttachments && originalMediaAttachments.length}}
     <MediaAttachments
@@ -76,38 +74,6 @@
     font-size: 1.1em;
   }
 
-  .status-content {
-    margin: 10px 10px 10px 5px;
-    grid-area: status-content;
-    word-wrap: break-word;
-    overflow: hidden;
-    white-space: pre-wrap;
-    font-size: 0.9em;
-  }
-
-  .status-in-context .status-content {
-    font-size: 1.3em;
-    margin: 20px 10px 20px 5px;
-  }
-
-  :global(.status-content .status-emoji) {
-    width: 20px;
-    height: 20px;
-    margin: -3px 0;
-  }
-
-  :global(.status-content p) {
-    margin: 0 0 20px;
-  }
-
-  :global(.status-content p:first-child) {
-    margin: 0 0 20px;
-  }
-
-  :global(.status-content p:last-child) {
-    margin: 0;
-  }
-
   @media (max-width: 767px) {
     .status-article {
       padding: 10px 10px;
@@ -119,24 +85,21 @@
   import Avatar from './Avatar.html'
   import MediaAttachments from './MediaAttachments.html'
   import StatusAuthor from './StatusAuthor.html'
+  import StatusContent from './StatusContent.html'
   import Toolbar from './Toolbar.html'
   import StatusHeader from './StatusHeader.html'
   import ExternalLink from '../ExternalLink.html'
-  import { mark, stop } from '../../_utils/marks'
-  import { replaceAll } from '../../_utils/strings'
   import { store } from '../../_store/store'
 
   export default {
-    oncreate() {
-      this.hydrateContent()
-    },
     components: {
       Avatar,
       MediaAttachments,
       Toolbar,
       ExternalLink,
       StatusHeader,
-      StatusAuthor
+      StatusAuthor,
+      StatusContent
     },
     store: () => store,
     computed: {
@@ -145,23 +108,6 @@
       originalAccount: (originalStatus) => originalStatus.account,
       originalMediaAttachments: (originalStatus) => originalStatus.media_attachments,
       statusId: (originalStatus) => originalStatus.id,
-      emojifiedContent: (originalStatus, $autoplayGifs) => {
-        let status = originalStatus
-        let content = status.content
-        if (status.emojis && status.emojis.length) {
-          for (let emoji of status.emojis) {
-            let { shortcode, url, url_static } = emoji
-            let urlToUse = $autoplayGifs ? url : url_static
-            let shortcodeWithColons = `:${shortcode}:`
-            content = replaceAll(
-              content,
-              shortcodeWithColons,
-              `<img class="status-emoji" draggable="false" src="${url}" alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
-            )
-          }
-        }
-        return content
-      },
       spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
     },
     methods: {
@@ -174,42 +120,7 @@
         }
         $spoilersShown[instanceName][statusId] = !$spoilersShown[instanceName][statusId]
         this.store.set({'spoilersShown': $spoilersShown})
-        this.hydrateContent()
         this.fire('recalculateHeight')
-      },
-      hydrateContent() {
-        if (!this.refs.contentNode) {
-          return
-        }
-        let status = this.get('originalStatus')
-        mark('hydrateContent')
-        if (status.tags && status.tags.length) {
-          let anchorTags = Array.from(this.refs.contentNode.querySelectorAll(
-            'a[class~=hashtag][href^=http]'))
-          for (let tag of status.tags) {
-            for (let anchorTag of anchorTags) {
-              if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
-                anchorTag.setAttribute('href', `/tags/${tag.name}`)
-                anchorTag.removeAttribute('target')
-                anchorTag.removeAttribute('rel')
-              }
-            }
-          }
-        }
-        if (status.mentions && status.mentions.length) {
-          let anchorTags = Array.from(this.refs.contentNode.querySelectorAll(
-            'a[class~=mention][href^=http]'))
-          for (let mention of status.mentions) {
-            for (let anchorTag of anchorTags) {
-              if (anchorTag.getAttribute('href') === mention.url) {
-                anchorTag.setAttribute('href', `/accounts/${mention.id}`)
-                anchorTag.removeAttribute('target')
-                anchorTag.removeAttribute('rel')
-              }
-            }
-          }
-        }
-        stop('hydrateContent')
       }
     }
   }

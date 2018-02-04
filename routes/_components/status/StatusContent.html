@@ -1,0 +1,103 @@
+<div class="status-content" ref:node>
+  {{{emojifiedContent}}}
+</div>
+<style>
+  .status-content {
+    margin: 10px 10px 10px 5px;
+    grid-area: status-content;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+  }
+
+  .status-in-context .status-content {
+    font-size: 1.3em;
+    margin: 20px 10px 20px 5px;
+  }
+
+  :global(.status-content .status-emoji) {
+    width: 20px;
+    height: 20px;
+    margin: -3px 0;
+  }
+
+  :global(.status-content p) {
+    margin: 0 0 20px;
+  }
+
+  :global(.status-content p:first-child) {
+    margin: 0 0 20px;
+  }
+
+  :global(.status-content p:last-child) {
+    margin: 0;
+  }
+</style>
+<script>
+  import { replaceAll } from '../../_utils/strings'
+  import { mark, stop } from '../../_utils/marks'
+  import { store } from '../../_store/store'
+
+  export default {
+    oncreate() {
+      this.hydrateContent()
+    },
+    store: () => store,
+    computed: {
+      emojifiedContent: (status, $autoplayGifs) => {
+        let content = status.content
+        if (status.emojis && status.emojis.length) {
+          for (let emoji of status.emojis) {
+            let { shortcode, url, static_url } = emoji
+            let urlToUse = $autoplayGifs ? url : static_url
+            let shortcodeWithColons = `:${shortcode}:`
+            content = replaceAll(
+              content,
+              shortcodeWithColons,
+              `<img class="status-emoji" draggable="false" src="${urlToUse}"
+                    alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
+            )
+          }
+        }
+        return content
+      }
+    },
+    methods: {
+      hydrateContent() {
+        if (!this.refs.node) {
+          return
+        }
+        let status = this.get('status')
+        mark('hydrateContent')
+        if (status.tags && status.tags.length) {
+          let anchorTags = Array.from(this.refs.node.querySelectorAll(
+            'a[class~=hashtag][href^=http]'))
+          for (let tag of status.tags) {
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
+                anchorTag.setAttribute('href', `/tags/${tag.name}`)
+                anchorTag.removeAttribute('target')
+                anchorTag.removeAttribute('rel')
+              }
+            }
+          }
+        }
+        if (status.mentions && status.mentions.length) {
+          let anchorTags = Array.from(this.refs.node.querySelectorAll(
+            'a[class~=mention][href^=http]'))
+          for (let mention of status.mentions) {
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href') === mention.url) {
+                anchorTag.setAttribute('href', `/accounts/${mention.id}`)
+                anchorTag.removeAttribute('target')
+                anchorTag.removeAttribute('rel')
+              }
+            }
+          }
+        }
+        stop('hydrateContent')
+      }
+    }
+  }
+</script>
