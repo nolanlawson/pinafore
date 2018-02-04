@@ -13,12 +13,8 @@
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" />
   {{/if}}
-  {{#if originalStatusMediaAttachments && originalStatusMediaAttachments.length}}
-    <StatusMediaAttachments
-      status="{{originalStatus}}"
-      mediaAttachments="{{originalStatusMediaAttachments}}"
-      on:recalculateHeight
-      />
+  {{#if hasMedia}}
+    <StatusMediaAttachments status="{{originalStatus}}" on:recalculateHeight />
   {{/if}}
   <StatusToolbar :status />
 </article>
@@ -74,11 +70,11 @@
     },
     store: () => store,
     computed: {
-      isStatusInContext: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       originalStatus: (status) => status.reblog ? status.reblog : status,
-      originalAccount: (originalStatus) => originalStatus.account,
-      originalStatusMediaAttachments: (originalStatus) => originalStatus.media_attachments,
       statusId: (originalStatus) => originalStatus.id,
+      hasMedia: (originalStatus) => originalStatus.media_attachments && originalStatus.media_attachments.length,
+      isStatusInContext: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
+      originalAccount: (originalStatus) => originalStatus.account,
       spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
     }
   }

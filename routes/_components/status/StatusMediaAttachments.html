@@ -119,6 +119,7 @@
     },
     store: () => store,
     computed: {
+      mediaAttachments: (status) => status.media_attachments,
       sensitiveShown: ($sensitivesShown, $currentInstance, statusId) => {
         return $sensitivesShown && $sensitivesShown[$currentInstance] && $sensitivesShown[$currentInstance][statusId]
       },
