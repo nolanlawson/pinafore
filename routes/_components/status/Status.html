@@ -37,32 +37,11 @@
     </div>
   {{/if}}
   {{#if originalMediaAttachments && originalMediaAttachments.length}}
-    {{#if originalStatus.sensitive}}
-      <div class="status-sensitive-media-container {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}"
-              >
-        <button type="button" class="status-sensitive-media-button"
-                aria-label="{{sensitiveShown ? 'Hide sensitive media: ' : 'Show sensitive media'}}"
-                on:click="onClickSensitiveMediaButton()" >
-          {{#if !sensitiveShown}}
-          <div class="status-sensitive-media-warning">
-            <span>
-              Sensitive content. Click to show.
-            </span>
-          </div>
-          {{/if}}
-          <div class="svg-wrapper">
-            <svg>
-              <use xlink:href="{{sensitiveShown ? '#fa-eye-slash' : '#fa-eye'}}" />
-            </svg>
-          </div>
-        </button>
-        {{#if sensitiveShown}}
-          <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{originalStatus.sensitive}}"/>
-        {{/if}}
-      </div>
-    {{else}}
-      <Media mediaAttachments="{{originalMediaAttachments}}" sensitive="{{originalStatus.sensitive}}"/>
-    {{/if}}
+    <MediaAttachments
+      status="{{originalStatus}}"
+      mediaAttachments="{{originalMediaAttachments}}"
+      on:recalculateHeight
+      />
   {{/if}}
   <Toolbar :status />
 </article>
@@ -192,89 +171,6 @@
     margin: 0;
   }
 
-  .status-sensitive-media-container {
-    grid-area: status-media;
-    margin: 10px 0;
-    position: relative;
-    border-radius: 0;
-    border: none;
-    background: none;
-  }
-
-  .status-sensitive-media-button {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
-    width: 100%;
-    height: 100%;
-  }
-
-  .status-sensitive-media-button:hover {
-    background: none;
-  }
-
-  .status-sensitive-media-button:active {
-    background: none;
-  }
-
-  .status-sensitive-media-shown .status-sensitive-media-button {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 90;
-  }
-
-  .status-sensitive-media-container.status-sensitive-media-hidden {
-    width: 100%;
-    margin: 10px auto;
-    height: 200px;
-  }
-
-  .status-sensitive-media-container .status-sensitive-media-warning {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--deemphasized-text-color);
-    z-index: 60;
-  }
-
-  .status-sensitive-media-container .svg-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    z-index: 40;
-    pointer-events: none;
-    background: var(--mask-bg);
-  }
-  .status-sensitive-media-container.status-sensitive-media-shown .svg-wrapper {
-    background: none;
-  }
-  .status-sensitive-media-container svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--mask-svg-fill);
-    border-radius: 2px;
-    background: var(--mask-opaque-bg);
-    margin: 1px;
-    padding: 6px 10px;
-  }
-  .status-sensitive-media-container.status-sensitive-media-hidden svg {
-    fill: var(--deemphasized-text-color);
-    background: var(--mask-opaque-bg);
-  }
   @media (max-width: 767px) {
     .status-article {
       padding: 10px 10px;
@@ -284,7 +180,7 @@
 </style>
 <script>
   import Avatar from './Avatar.html'
-  import Media from './Media.html'
+  import MediaAttachments from './MediaAttachments.html'
   import Toolbar from './Toolbar.html'
   import StatusHeader from './StatusHeader.html'
   import { mark, stop } from '../../_utils/marks'
@@ -301,7 +197,7 @@
     },
     components: {
       Avatar,
-      Media,
+      MediaAttachments,
       Toolbar,
       ExternalLink,
       StatusHeader
@@ -339,8 +235,7 @@
         }
         return content
       },
-      spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId],
-      sensitiveShown: ($sensitivesShown, $currentInstance, statusId) => $sensitivesShown && $sensitivesShown[$currentInstance] && $sensitivesShown[$currentInstance][statusId],
+      spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
     },
     methods: {
       onClickSpoilerButton() {
@@ -353,17 +248,6 @@
         $spoilersShown[instanceName][statusId] = !$spoilersShown[instanceName][statusId]
         this.store.set({'spoilersShown': $spoilersShown})
         this.hydrateContent()
-        this.fire('recalculateHeight')
-      },
-      onClickSensitiveMediaButton() {
-        let statusId = this.get('statusId')
-        let instanceName = this.store.get('currentInstance')
-        let $sensitivesShown = this.store.get('sensitivesShown') || {}
-        if (!$sensitivesShown[instanceName]) {
-          $sensitivesShown[instanceName] = {}
-        }
-        $sensitivesShown[instanceName][statusId] = !$sensitivesShown[instanceName][statusId]
-        this.store.set({'sensitivesShown': $sensitivesShown})
         this.fire('recalculateHeight')
       },
       hydrateContent() {
