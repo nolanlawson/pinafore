@@ -120,20 +120,13 @@
     store: () => store,
     computed: {
       mediaAttachments: (status) => status.media_attachments,
-      sensitiveShown: ($sensitivesShown, $currentInstance, statusId) => {
-        return $sensitivesShown && $sensitivesShown[$currentInstance] && $sensitivesShown[$currentInstance][statusId]
-      },
-      statusId: (status) => status.id
+      sensitiveShown: ($sensitivesShown, contextualStatusId) => !!$sensitivesShown[contextualStatusId]
     },
     methods: {
       onClickSensitiveMediaButton() {
-        let statusId = this.get('statusId')
-        let instanceName = this.store.get('currentInstance')
+        let contextualStatusId = this.get('contextualStatusId')
         let $sensitivesShown = this.store.get('sensitivesShown') || {}
-        if (!$sensitivesShown[instanceName]) {
-          $sensitivesShown[instanceName] = {}
-        }
-        $sensitivesShown[instanceName][statusId] = !$sensitivesShown[instanceName][statusId]
+        $sensitivesShown[contextualStatusId] = !$sensitivesShown[contextualStatusId]
         this.store.set({'sensitivesShown': $sensitivesShown})
         this.fire('recalculateHeight')
       },

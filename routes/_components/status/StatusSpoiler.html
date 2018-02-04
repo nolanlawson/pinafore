@@ -30,17 +30,13 @@
   export default {
     store: () => store,
     computed: {
-      statusId: (status) => status.id
+      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId]
     },
     methods: {
       onClickSpoilerButton() {
-        let statusId = this.get('statusId')
-        let instanceName = this.store.get('currentInstance')
-        let $spoilersShown = this.store.get('spoilersShown') || {}
-        if (!$spoilersShown[instanceName]) {
-          $spoilersShown[instanceName] = {}
-        }
-        $spoilersShown[instanceName][statusId] = !$spoilersShown[instanceName][statusId]
+        let contextualStatusId = this.get('contextualStatusId')
+        let $spoilersShown = this.store.get('spoilersShown')
+        $spoilersShown[contextualStatusId] = !$spoilersShown[contextualStatusId]
         this.store.set({'spoilersShown': $spoilersShown})
         this.fire('recalculateHeight')
       }

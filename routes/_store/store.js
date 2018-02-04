@@ -26,7 +26,9 @@ const store = new PinaforeStore({
   loggedInInstances: {},
   loggedInInstancesInOrder: [],
   instanceThemes: {},
-  autoplayGifs: false
+  spoilersShown: {},
+  sensitivesShown: {},
+  autoplayGifs: false,
 })
 
 mixins(PinaforeStore)

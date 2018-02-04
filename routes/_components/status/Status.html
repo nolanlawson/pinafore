@@ -8,13 +8,13 @@
   <StatusAuthor status="{{originalStatus}}" :isStatusInOwnThread />
   <StatusSidebar status="{{originalStatus}}" />
   {{#if originalStatus.spoiler_text}}
-    <StatusSpoiler status="{{originalStatus}}" :spoilerShown on:recalculateHeight />
+    <StatusSpoiler status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" :isStatusInOwnThread />
   {{/if}}
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
-    <StatusMediaAttachments status="{{originalStatus}}" on:recalculateHeight />
+    <StatusMediaAttachments status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
   {{/if}}
   <StatusToolbar :status />
 </article>
@@ -72,9 +72,10 @@
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
+      contextualStatusId: ($currentInstance, timelineType, timelineValue, status) => `${$currentInstance}/${timelineType}/${timelineValue}/${status.id}`,
       originalAccount: (originalStatus) => originalStatus.account,
       isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
-      spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
+      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId]
     }
   }
 </script>
