@@ -1,11 +1,11 @@
-<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}} {{isStatusInContext ? 'status-in-context' : ''}}"
+<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
          tabindex="0"
          aria-posinset="{{index}}" aria-setsize="{{length}}"
          on:recalculateHeight>
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
     <StatusHeader :notification :status />
   {{/if}}
-  <StatusAuthor status="{{originalStatus}}" :isStatusInContext />
+  <StatusAuthor status="{{originalStatus}}" :isStatusInOwnThread />
   <StatusSidebar status="{{originalStatus}}" />
   {{#if originalStatus.spoiler_text}}
     <StatusSpoiler status="{{originalStatus}}" :spoilerShown on:recalculateHeight />
@@ -73,7 +73,7 @@
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
       hasMedia: (originalStatus) => originalStatus.media_attachments && originalStatus.media_attachments.length,
-      isStatusInContext: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
+      isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       originalAccount: (originalStatus) => originalStatus.account,
       spoilerShown: ($spoilersShown, $currentInstance, statusId) => $spoilersShown && $spoilersShown[$currentInstance] && $spoilersShown[$currentInstance][statusId]
     }

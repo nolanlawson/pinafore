@@ -5,7 +5,7 @@
   <span class="status-author-handle">
       {{'@' + status.account.acct}}
     </span>
-  {{#if isStatusInContext}}
+  {{#if isStatusInOwnThread}}
   <ExternalLink class="status-author-date" href="{{status.url}}" showIcon="true">
     <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
   </ExternalLink>
