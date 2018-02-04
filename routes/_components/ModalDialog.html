@@ -1,0 +1,87 @@
+<div class="dialog-wrapper" ref:node>
+  <div class="close-dialog-button-wrapper">
+    <button class="close-dialog-button" aria-label="Close dialog" on:click="onCloseButtonClicked()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <slot></slot>
+</div>
+<style>
+  :global(.modal-dialog) {
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    background: #000;
+    padding: 0;
+    border: 3px solid var(--main-border);
+  }
+  :global(.modal-dialog-wrapper) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: calc(100vw - 40px);
+  }
+  .close-dialog-button-wrapper {
+    text-align: right;
+    width: 100%;
+    background: var(--nav-bg)
+  }
+  .close-dialog-button {
+    margin: 0 0 2px;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+  .close-dialog-button span {
+    padding: 0 15px;
+    font-size: 48px;
+    color: var(--button-primary-text);
+  }
+  :global(dialog.modal-dialog::backdrop) {
+    background: rgba(51, 51, 51, 0.8);
+  }
+  :global(dialog.modal-dialog + .backdrop) {
+    background: rgba(51, 51, 51, 0.8);
+  }
+</style>
+<script>
+
+  import { importDialogPolyfill } from '../_utils/asyncModules'
+  import { registerFocusRestoreDialog } from '../_utils/dialogs'
+
+  export default {
+    oncreate() {
+      // TODO: this hack is for Edge 16, which makes the modal too wide
+      if (typeof setImmediate === 'function' && navigator.userAgent.match(/Edge/)) {
+        this.getDialogElement().style.width = `${this.get('width')}px`
+      }
+      this.observe('shown', shown => {
+        if (shown) {
+          this.show()
+        }
+      })
+      this.registration = this.register()
+    },
+    methods: {
+      async register() {
+        if (typeof HTMLDialogElement === 'undefined') {
+          let dialogPolyfill = await importDialogPolyfill()
+          dialogPolyfill.registerDialog(this.getDialogElement())
+        }
+        registerFocusRestoreDialog(this.getDialogElement())
+      },
+      async show() {
+        await this.registration
+        this.getDialogElement().showModal()
+      },
+      onCloseButtonClicked() {
+        this.getDialogElement().close()
+        document.body.removeChild(this.getDialogElement())
+      },
+      getDialogElement() {
+        return this.refs.node.parentElement
+      }
+    }
+  }
+</script>

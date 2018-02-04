@@ -1,9 +1,4 @@
-<div class="video-dialog-wrapper">
-  <div class="close-video-button-wrapper">
-    <button class="close-video-button" aria-label="Close dialog" on:click="onCloseButtonClicked()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+<ModalDialog :shown>
   <video poster="{{poster}}"
          src="{{src}}"
          width="{{width}}"
@@ -11,75 +6,22 @@
          aria-label="Video: {{description || ''}}"
          controls
   />
-</div>
+</ModalDialog>
 <style>
-  :global(.video-dialog) {
-    position: fixed;
-    top: 50%;
-    transform: translate(0, -50%);
-    background: #000;
-    padding: 0;
-    border: 3px solid var(--main-border);
-  }
-  :global(.video-dialog-wrapper) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: calc(100vw - 40px);
-  }
-  :global(.video-dialog video) {
+  :global(.modal-dialog video) {
     max-width: 100%;
-  }
-  .close-video-button-wrapper {
-    text-align: right;
-    width: 100%;
-    background: var(--nav-bg)
-  }
-  .close-video-button {
-    margin: 0 0 2px;
-    padding: 0;
-    background: none;
-    border: none;
-  }
-  .close-video-button span {
-    padding: 0 15px;
-    font-size: 48px;
-    color: var(--button-primary-text);
-  }
-  :global(dialog.video-dialog::backdrop) {
-    background: rgba(51, 51, 51, 0.8);
-  }
-  :global(dialog.video-dialog + .backdrop) {
-    background: rgba(51, 51, 51, 0.8);
   }
 </style>
 <script>
-
-  import { importDialogPolyfill } from '../../_utils/asyncModules'
+  import ModalDialog from '../ModalDialog.html'
 
   export default {
-    oncreate() {
-      // TODO: this hack is for Edge 16, which makes the modal too wide
-      if (typeof setImmediate === 'function' && navigator.userAgent.match(/Edge/)) {
-        this.get('dialog').style.width = `${this.get('width')}px`
-      }
-      this.registration = this.register()
+    components: {
+      ModalDialog
     },
     methods: {
-      async register() {
-        if (typeof HTMLDialogElement === 'undefined') {
-          let dialogPolyfill = await importDialogPolyfill()
-          dialogPolyfill.registerDialog(this.get('dialog'))
-        }
-      },
-      async showModal() {
-        await this.registration
-        this.get('dialog').showModal()
-      },
-      onCloseButtonClicked() {
-        this.get('dialog').close()
-        document.body.removeChild(this.get('dialog'))
+      async show() {
+        this.set({shown: true})
       }
     }
   }
