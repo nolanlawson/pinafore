@@ -1,6 +1,6 @@
 <div class="dialog-wrapper" ref:node>
   <div class="close-dialog-button-wrapper">
-    <button class="close-dialog-button" aria-label="Close dialog" on:click="onCloseButtonClicked()">
+    <button class="close-dialog-button" aria-label="Close dialog" on:click="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -38,11 +38,8 @@
     font-size: 48px;
     color: var(--button-primary-text);
   }
-  :global(dialog.modal-dialog::backdrop) {
-    background: rgba(51, 51, 51, 0.8);
-  }
-  :global(dialog.modal-dialog + .backdrop) {
-    background: rgba(51, 51, 51, 0.8);
+  :global(dialog::backdrop, .backdrop) {
+    background: rgba(51, 51, 51, 0.9) !important; /* TODO: hack for Safari */
   }
 </style>
 <script>
@@ -62,6 +59,17 @@
         }
       })
       this.registration = this.register()
+      this.onDocumentClick = (e) => {
+        let dialog = this.getDialogElement()
+        if (!dialog.open) {
+          return;
+        }
+        if (e.target !== dialog) {
+          return;
+        }
+        this.close() // close when clicked outside of dialog
+      }
+      document.body.addEventListener('click', this.onDocumentClick);
     },
     methods: {
       async register() {
@@ -75,9 +83,10 @@
         await this.registration
         this.getDialogElement().showModal()
       },
-      onCloseButtonClicked() {
+      close() {
         this.getDialogElement().close()
         document.body.removeChild(this.getDialogElement())
+        document.body.removeEventListener('click', this.onDocumentClick);
       },
       getDialogElement() {
         return this.refs.node.parentElement
