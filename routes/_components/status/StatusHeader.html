@@ -1,4 +1,4 @@
-<div class="status-header">
+<div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}}">
   <svg>
     <use xlink:href="{{getIcon(notification, status)}}"/>
   </svg>
@@ -22,8 +22,22 @@
     margin-left: 5px;
   }
 
-  :global(.status-header span, .status-header a, .status-header a:visited, .status-header a:hover) {
+  :global(
+      .status-header span,
+      .status-header a,
+      .status-header a:visited,
+      .status-header a:hover
+  ) {
     color: var(--deemphasized-text-color);
+  }
+
+  :global(
+      .status-header.status-in-notification span,
+      .status-header.status-in-notification a,
+      .status-header.status-in-notification a:visited,
+      .status-header.status-in-notification a:hover
+  ) {
+    color: var(--body-text-color);
   }
 
   .status-header {
@@ -37,6 +51,10 @@
     width: 18px;
     height: 18px;
     fill: var(--deemphasized-text-color);
+  }
+
+  .status-header.status-in-notification svg {
+    fill: var(--body-text-color);
   }
 </style>
 <script>

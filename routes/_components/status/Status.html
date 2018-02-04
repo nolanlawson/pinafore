@@ -3,15 +3,15 @@
          aria-posinset="{{index}}" aria-setsize="{{length}}"
          on:recalculateHeight>
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
-    <StatusHeader :notification :status />
+    <StatusHeader :notification :status :isStatusInNotification />
   {{/if}}
-  <StatusAuthor status="{{originalStatus}}" :isStatusInOwnThread />
+  <StatusAuthor status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
   <StatusSidebar status="{{originalStatus}}" />
   {{#if originalStatus.spoiler_text}}
-    <StatusSpoiler status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
+    <StatusSpoiler status="{{originalStatus}}" :contextualStatusId :isStatusInNotification on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
-    <StatusContent status="{{originalStatus}}" :isStatusInOwnThread />
+    <StatusContent status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
   {{/if}}
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
     <StatusMediaAttachments status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
@@ -72,9 +72,12 @@
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
-      contextualStatusId: ($currentInstance, timelineType, timelineValue, status) => `${$currentInstance}/${timelineType}/${timelineValue}/${status.id}`,
+      contextualStatusId: ($currentInstance, timelineType, timelineValue, status, notification) => {
+        return `${$currentInstance}/${timelineType}/${timelineValue}/${notification ? notification.id : ''}/${status.id}`
+      },
       originalAccount: (originalStatus) => originalStatus.account,
       isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
+      isStatusInNotification: (status, notification) => notification && notification.status && notification.type !== 'mention' && notification.status.id === status.id,
       spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId]
     }
   }

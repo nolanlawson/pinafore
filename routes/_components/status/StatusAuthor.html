@@ -1,4 +1,4 @@
-<div class="status-author">
+<div class="status-author {{isStatusInNotification ? 'status-in-notification' : ''}}">
   <a class="status-author-name" href="/accounts/{{status.account.id}}">
     {{status.account.display_name || status.account.username}}
   </a>
@@ -25,7 +25,13 @@
     min-width: 0;
   }
 
-  :global(.status-author a, .status-author a:visited, .status-author a:hover, .status-author .status-author-handle) {
+  :global(
+      .status-author a,
+      .status-author a:visited,
+      .status-author a:hover,
+      .status-author
+      .status-author-handle
+  ) {
     color: var(--deemphasized-text-color);
   }
 
@@ -62,6 +68,17 @@
   :global(.status-author-date:hover) {
     color: var(--deemphasized-text-color);
   }
+
+  :global(
+      .status-author.status-in-notification,
+      .status-author.status-in-notification a,
+      .status-author.status-in-notification a:visited,
+      .status-author.status-in-notification a:hover,
+      .status-author.status-in-notification .status-author-handle
+  ) {
+    color: var(--very-deemphasized-text-color);
+  }
+
 </style>
 <script>
   import IntlRelativeFormat from 'intl-relativeformat'

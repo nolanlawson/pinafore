@@ -1,4 +1,6 @@
-<div class="status-spoiler">{{status.spoiler_text}}</div>
+<div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}}">
+  {{status.spoiler_text}}
+</div>
 <div class="status-spoiler-button">
   <button type="button" on:click="onClickSpoilerButton()">
     {{spoilerShown ? 'Show less' : 'Show more'}}
@@ -22,6 +24,10 @@
   .status-spoiler-button button {
     padding: 5px 10px;
     font-size: 1.1em;
+  }
+
+  .status-spoiler.status-in-notification {
+    color: var(--very-deemphasized-text-color);
   }
 </style>
 <script>

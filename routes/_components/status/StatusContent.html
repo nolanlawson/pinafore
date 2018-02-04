@@ -1,5 +1,5 @@
 <div
-  class="status-content {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
+  class="status-content {{isStatusInOwnThread ? 'status-in-own-thread' : ''}} {{isStatusInNotification ? 'status-in-notification' : ''}}"
   ref:node
 >
     {{{emojifiedContent}}}
@@ -36,6 +36,14 @@
   :global(.status-content p:last-child) {
     margin: 0;
   }
+
+  .status-content.status-in-notification {
+    color: var(--very-deemphasized-text-color);
+  }
+  :global(.status-content.status-in-notification a, .status-content.status-in-notification a:hover) {
+    color: var(--very-deemphasized-link-color);
+  }
+
 </style>
 <script>
   import { replaceAll } from '../../_utils/strings'
