@@ -54,10 +54,6 @@
 
   export default {
     oncreate() {
-      // TODO: this hack is for Edge 16, which makes the modal too wide
-      if (typeof setImmediate === 'function' && navigator.userAgent.match(/Edge/)) {
-        this.getDialogElement().style.width = `${this.get('width')}px`
-      }
       this.getDialogElement().style.background = this.get('background') || '#000'
       this.observe('shown', shown => {
         if (shown) {

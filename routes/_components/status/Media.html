@@ -22,7 +22,9 @@
       <button type="button"
             class="show-image-button"
             aria-label="Show image: {{media.description || ''}}"
-            on:click="onClickShowImageButton(media, getOriginalWidth(media), getOriginalHeight(media))">
+            on:click="onClickShowImageButton(media, getOriginalWidth(media), getOriginalHeight(media))"
+            on:mouseover="set({mouseover: event})"
+      >
       {{#if media.type === 'gifv' && $autoplayGifs}}
         <video
           class="{{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
@@ -45,6 +47,7 @@
           staticSrc="{{media.preview_url}}"
           width="{{getSmallWidth(media)}}"
           height="{{getSmallHeight(media)}}"
+          playing="{{mouseover}}"
         />
       {{else}}
         <img class="{{!imageLoaded ? 'image-loading' : ''}} {{imageError ? 'image-error' : ''}} {{hasNoNativeWidthHeight(media) ? 'no-native-width-height' : ''}}"
@@ -136,6 +139,7 @@
   import { imgLoad, imgLoadError } from '../../_utils/events'
   import { showVideoDialog } from '../../_utils/showVideoDialog'
   import { showImageDialog } from '../../_utils/showImageDialog'
+  import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
 
   export default {
@@ -159,7 +163,8 @@
     },
     events: {
       imgLoad,
-      imgLoadError
+      imgLoadError,
+      mouseover
     },
     components: {
       NonAutoplayGifv
