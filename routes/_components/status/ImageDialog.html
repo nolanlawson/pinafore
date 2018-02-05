@@ -1,4 +1,4 @@
-<ModalDialog :shown background="var(--main-bg)">
+<ModalDialog :label :shown background="var(--main-bg)">
   {{#if type === 'gifv'}}
     <video
       aria-label="Animated GIF: {{description || ''}}"
@@ -21,7 +21,7 @@
   {{/if}}
 </ModalDialog>
 <style>
-  :global(.modal-dialog img, .modal-dialog video) {
+  :global(#modal-dialog img, #modal-dialog video) {
     object-fit: contain;
     overflow: hidden;
     max-width: calc(100vw - 20px);

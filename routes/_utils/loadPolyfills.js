@@ -11,7 +11,6 @@ export function loadPolyfills() {
     typeof URLSearchParams === 'undefined' && importURLSearchParams(),
     typeof IntersectionObserver === 'undefined' && importIntersectionObserver(),
     typeof requestIdleCallback === 'undefined' && importRequestIdleCallback(),
-    !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim(),
-    typeof HTMLDialogElement === 'undefined' && importDialogPolyfill()
+    !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim()
   ])
 }

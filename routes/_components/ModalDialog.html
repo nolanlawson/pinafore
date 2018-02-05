@@ -1,25 +1,41 @@
-<div class="dialog-wrapper" ref:node>
-  <div class="close-dialog-button-wrapper">
-    <button class="close-dialog-button" aria-label="Close dialog" on:click="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<div class="modal-dialog-backdrop" tabindex="-1" data-a11y-dialog-hide></div>
+<div class="modal-dialog-contents" role="dialog" aria-label="{{label}}" ref:node>
+  <div class="modal-dialog-document" role="document" style="background: {{background || '#000'}};">
+    <div class="close-dialog-button-wrapper">
+      <button class="close-dialog-button" data-a11y-dialog-hide aria-label="Close dialog">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <slot></slot>
   </div>
-  <slot></slot>
 </div>
 <style>
-  :global(.modal-dialog) {
+  :global(#modal-dialog[aria-hidden='true']) {
+    display: none;
+  }
+  .modal-dialog-backdrop {
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(51, 51, 51, 0.9);
+  }
+  .modal-dialog-contents {
+    z-index: 10010;
     position: fixed;
     top: 50%;
-    transform: translate(0, -50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 0;
     border: 3px solid var(--main-border);
   }
-  :global(.modal-dialog-wrapper) {
+  .modal-dialog-document {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: calc(100vw - 40px);
   }
   .close-dialog-button-wrapper {
     text-align: right;
@@ -36,9 +52,6 @@
     font-size: 48px;
     color: var(--button-primary-text);
   }
-  :global(dialog::backdrop, .backdrop) {
-    background: rgba(51, 51, 51, 0.9) !important; /* TODO: hack for Safari */
-  }
 
   @media (max-width: 767px) {
     .close-dialog-button span {
@@ -48,51 +61,22 @@
   }
 </style>
 <script>
-
-  import { importDialogPolyfill } from '../_utils/asyncModules'
-  import { registerFocusRestoreDialog } from '../_utils/dialogs'
+  import A11yDialog from 'a11y-dialog'
 
   export default {
     oncreate() {
-      this.getDialogElement().style.background = this.get('background') || '#000'
+      let dialogElement = this.refs.node.parentElement
+      let a11yDialog = new A11yDialog(dialogElement)
       this.observe('shown', shown => {
         if (shown) {
-          this.show()
+          a11yDialog.show()
+          a11yDialog.on('hide', () => {
+            console.log('destroying modal dialog')
+            a11yDialog.destroy()
+            this.destroy()
+          })
         }
       })
-      this.registration = this.register()
-      this.onDocumentClick = (e) => {
-        let dialog = this.getDialogElement()
-        if (!dialog.open) {
-          return;
-        }
-        if (e.target !== dialog) {
-          return;
-        }
-        this.close() // close when clicked outside of dialog
-      }
-      document.body.addEventListener('click', this.onDocumentClick);
-    },
-    methods: {
-      async register() {
-        if (typeof HTMLDialogElement === 'undefined') {
-          let dialogPolyfill = await importDialogPolyfill()
-          dialogPolyfill.registerDialog(this.getDialogElement())
-        }
-        registerFocusRestoreDialog(this.getDialogElement())
-      },
-      async show() {
-        await this.registration
-        this.getDialogElement().showModal()
-      },
-      close() {
-        this.getDialogElement().close()
-        document.body.removeChild(this.getDialogElement())
-        document.body.removeEventListener('click', this.onDocumentClick);
-      },
-      getDialogElement() {
-        return this.refs.node.parentElement
-      }
     }
   }
 </script>

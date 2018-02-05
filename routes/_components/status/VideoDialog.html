@@ -1,4 +1,4 @@
-<ModalDialog :shown background="#000">
+<ModalDialog :label :shown background="#000">
   <video poster="{{poster}}"
          src="{{src}}"
          width="{{width}}"
@@ -8,7 +8,7 @@
   />
 </ModalDialog>
 <style>
-  :global(.modal-dialog video) {
+  :global(#modal-dialog video) {
     object-fit: contain;
     overflow: hidden;
     max-width: calc(100vw - 20px);
