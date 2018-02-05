@@ -1,0 +1,49 @@
+<div class="status-media {{sensitive ? 'status-media-is-sensitive' : ''}}"
+     style="grid-template-columns: repeat(auto-fit, minmax({{maxMediaWidth}}px, 1fr));" >
+  {{#each mediaAttachments as media}}
+    <Media :media />
+  {{/each}}
+</div>
+<style>
+  .status-media {
+    grid-area: status-media;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    margin: 10px 0;
+  }
+  .status-media.status-media-is-sensitive {
+    margin: 0;
+  }
+  .status-media {
+    overflow: hidden;
+  }
+  .status-media {
+    max-width: calc(100vw - 40px);
+  }
+  @media (max-width: 767px) {
+    .status-media {
+      max-width: calc(100vw - 20px);
+    }
+  }
+</style>
+<script>
+  import Media from './Media.html'
+  import { DEFAULT_MEDIA_WIDTH } from '../../_static/media'
+
+  export default {
+    computed: {
+      maxMediaWidth: (mediaAttachments) => {
+        return Math.max.apply(Math, mediaAttachments.map(media => {
+          return media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH
+        }))
+      }
+    },
+    components: {
+      Media
+    }
+  }
+</script>

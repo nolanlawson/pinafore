@@ -12,7 +12,7 @@
       </svg>
     </div>
   </button>
-  <Media mediaAttachments="{{mediaAttachments}}" sensitive="{{status.sensitive}}"/>
+  <MediaAttachments mediaAttachments="{{mediaAttachments}}" sensitive="{{status.sensitive}}"/>
   {{else}}
     <button type="button"
             class="status-sensitive-media-button"
@@ -31,7 +31,7 @@
   {{/if}}
 </div>
 {{else}}
-<Media mediaAttachments="{{mediaAttachments}}" sensitive="{{status.sensitive}}"/>
+  <MediaAttachments mediaAttachments="{{mediaAttachments}}" sensitive="{{status.sensitive}}"/>
 {{/if}}
 <style>
   .status-sensitive-media-container {
@@ -124,12 +124,12 @@
   }
 </style>
 <script>
-  import Media from './Media.html'
+  import MediaAttachments from './MediaAttachments.html'
   import { store } from '../../_store/store'
 
   export default {
     components: {
-      Media
+      MediaAttachments
     },
     store: () => store,
     computed: {
