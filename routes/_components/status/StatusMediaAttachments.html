@@ -1,4 +1,4 @@
-{{#if status.sensitive}}
+{{#if status.sensitive || $markMediaAsSensitive}}
 <div class="status-sensitive-media-container {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}"
 >
   {{#if sensitiveShown}}

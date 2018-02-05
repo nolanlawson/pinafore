@@ -13,6 +13,11 @@
                bind:checked="$autoplayGifs" on:change="store.save()">
         <label for="choice-autoplay-gif">Autoplay GIFs</label>
       </div>
+      <div class="setting-group">
+        <input type="checkbox" id="choice-mark-media-sensitive"
+               bind:checked="$markMediaAsSensitive" on:change="store.save()">
+        <label for="choice-mark-media-sensitive">Always mark media as sensitive</label>
+      </div>
     </form>
 
   </SettingsLayout>
@@ -20,13 +25,14 @@
 
 <style>
   .ui-settings {
-    display: flex;
-    align-items: center;
     background: var(--form-bg);
     border: 1px solid var(--main-border);
     border-radius: 4px;
     padding: 20px;
     line-height: 2em;
+  }
+  .setting-group {
+    padding: 5px 0;
   }
 </style>
 <script>
