@@ -100,6 +100,7 @@
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
   import ExternalLink from '../../_components/ExternalLink.html'
+  import { showConfirmationDialog } from '../../_components/dialog/showConfirmationDialog'
   import {
     changeTheme,
     switchToInstance,
@@ -141,7 +142,13 @@
       onLogOut(e) {
         e.preventDefault()
         let instanceName = this.get('instanceName')
-        logOutOfInstance(instanceName)
+
+        showConfirmationDialog({
+          text: `Log out of ${instanceName}?`,
+          onPositive() {
+            logOutOfInstance(instanceName)
+          }
+        })
       }
     }
   }

@@ -1,4 +1,4 @@
-import ImageDialog from '../_components/status/ImageDialog.html'
+import ImageDialog from './ImageDialog.html'
 
 export function showImageDialog(poster, src, type, width, height, description) {
   let imageDialog = new ImageDialog({

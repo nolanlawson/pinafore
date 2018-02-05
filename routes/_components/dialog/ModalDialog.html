@@ -67,14 +67,21 @@
     oncreate() {
       let dialogElement = this.refs.node.parentElement
       let a11yDialog = new A11yDialog(dialogElement)
+      a11yDialog.on('hide', () => {
+        a11yDialog.destroy()
+        this.fire('close')
+        this.destroy()
+      })
       this.observe('shown', shown => {
         if (shown) {
           a11yDialog.show()
-          a11yDialog.on('hide', () => {
-            console.log('destroying modal dialog')
-            a11yDialog.destroy()
-            this.destroy()
-          })
+        }
+      })
+      this.observe('closed', closed => {
+        if (closed) {
+          setTimeout(() => { // use setTimeout to workaround svelte timing issue
+            a11yDialog.hide()
+          }, 0)
         }
       })
     }

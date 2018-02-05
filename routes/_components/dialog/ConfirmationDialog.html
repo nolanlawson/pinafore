@@ -1,0 +1,61 @@
+<ModalDialog :label :shown :closed background="var(--main-bg)" on:close="onClose()">
+  <form class="confirmation-dialog-form">
+    <p>
+      {{text}}
+    </p>
+    <div class="confirmation-dialog-form-flex">
+      <button type="button" on:click="onPositive()">
+        {{positiveText || 'OK'}}
+      </button>
+      <button type="button" on:click="onNegative()">
+        {{negativeText || 'Cancel'}}
+      </button>
+    </div>
+  </form>
+</ModalDialog>
+<style>
+  .confirmation-dialog-form-flex {
+    display: flex;
+    flex-direction: row;
+  }
+  .confirmation-dialog-form-flex button {
+    flex: 1;
+    min-width: 200px;
+  }
+  .confirmation-dialog-form p {
+    font-size: 1.3em;
+    padding: 40px 20px;
+  }
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+
+  export default {
+    components: {
+      ModalDialog
+    },
+    methods: {
+      show() {
+        this.set({shown: true})
+      },
+      onClose() {
+        if (this.get('positiveResult')) {
+          if (this.get('onPositive')) {
+            this.get('onPositive')()
+          }
+        } else {
+          if (this.get('onNegative')) {
+            this.get('onNegative')()
+          }
+        }
+      },
+      onPositive() {
+        this.set({positiveResult: true})
+        this.set({closed: true})
+      },
+      onNegative() {
+        this.set({closed: true})
+      }
+    }
+  }
+</script>
