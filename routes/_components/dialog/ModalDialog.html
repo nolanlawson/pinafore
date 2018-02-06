@@ -6,7 +6,9 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <slot></slot>
+    <div class="modal-dialog-slot">
+      <slot></slot>
+    </div>
   </div>
 </div>
 <style>
@@ -29,13 +31,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 0;
-    border: 3px solid var(--main-border);
+    border: 1px solid var(--main-border);
+    border-radius: 2px;
   }
   .modal-dialog-document {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    max-width: calc(100vw - 20px);
   }
   .close-dialog-button-wrapper {
     text-align: right;
@@ -51,6 +55,10 @@
     padding: 0 15px;
     font-size: 48px;
     color: var(--button-primary-text);
+  }
+
+  .modal-dialog-slot {
+    max-width: 100%;
   }
 
   @media (max-width: 767px) {
