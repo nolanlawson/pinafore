@@ -1,8 +1,6 @@
 <div class="timeline" role="feed" aria-label="{{label}}">
   {{#if !$initialized}}
-    <div class="loading-page">
-      <LoadingSpinner />
-    </div>
+    <LoadingPage />
   {{/if}}
   {{#if timelineType === 'notifications'}}
     <VirtualList component="{{NotificationVirtualListItem}}"
@@ -44,17 +42,6 @@
     min-height: 60vh;
     position: relative;
   }
-  .loading-page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-  }
 </style>
 <script>
   import { store } from '../../_store/store'
@@ -67,7 +54,7 @@
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_utils/database/database'
   import { initializeTimeline, fetchTimelineItemsOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
-  import LoadingSpinner from '../LoadingSpinner.html'
+  import LoadingPage from '../LoadingPage.html'
 
   export default {
     async oncreate() {
@@ -118,7 +105,7 @@
     components: {
       VirtualList,
       PseudoVirtualList,
-      LoadingSpinner
+      LoadingPage
     },
     methods: {
       initialize() {

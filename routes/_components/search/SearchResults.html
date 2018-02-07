@@ -1,0 +1,34 @@
+<ul class="search-results">
+  {{#each $searchResults.hashtags as hashtag}}
+    <HashtagSearchResult :hashtag />
+  {{/each}}
+  {{#each $searchResults.accounts as account}}
+    <AccountSearchResult :account />
+  {{/each}}
+  {{#each $searchResults.statuses as status, index}}
+  <StatusSearchResult :status :index length="{{$searchResults.statuses.length}}"/>
+  {{/each}}
+</ul>
+<style>
+  .search-results {
+    list-style: none;
+    box-sizing: border-box;
+    border: 1px solid var(--main-border);
+    border-radius: 2px;
+  }
+</style>
+<script>
+  import { store } from '../../_store/store'
+  import AccountSearchResult from './AccountSearchResult.html'
+  import HashtagSearchResult from './HashtagSearchResult.html'
+  import StatusSearchResult from './StatusSearchResult.html'
+
+  export default {
+    store: () => store,
+    components: {
+      AccountSearchResult,
+      HashtagSearchResult,
+      StatusSearchResult
+    }
+  }
+</script>

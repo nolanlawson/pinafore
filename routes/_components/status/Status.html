@@ -1,4 +1,4 @@
-<article class="status-article {{originalStatus.visibility === 'direct' ? 'status-direct' : ''}}"
+<article class="status-article {{getClasses(originalStatus, timelineType)}}"
          tabindex="0"
          aria-posinset="{{index}}" aria-setsize="{{length}}"
          on:recalculateHeight>
@@ -21,10 +21,8 @@
 
 <style>
   .status-article {
-    width: 560px;
     max-width: calc(100vw - 40px);
     padding: 10px 20px;
-    border-bottom: 1px solid var(--main-border);
     display: grid;
     grid-template-areas:
         ".............. status-header"
@@ -35,6 +33,11 @@
         "status-media   status-media"
         ".............. status-toolbar";
     grid-template-columns: 58px 1fr;
+  }
+
+  .status-article.status-in-timeline {
+    width: 560px;
+    border-bottom: 1px solid var(--main-border);
   }
 
   .status-article.status-direct {
@@ -69,6 +72,12 @@
       StatusSpoiler
     },
     store: () => store,
+    helpers: {
+      getClasses(originalStatus, timelineType) {
+        return (originalStatus.visibility === 'direct' ? 'status-direct' : '') +
+          ' ' + (timelineType !== 'search' ? 'status-in-timeline' : '')
+      }
+    },
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,

@@ -1,0 +1,93 @@
+<form class="search-input-form" on:submit="onSubmit(event)">
+  <div class="search-input-wrapper">
+    <input type="search"
+           class="search-input"
+           placeholder="Search"
+           aria-label="Search input"
+           required
+           bind:value="$queryInSearch">
+  </div>
+  <button type="submit" class="primary search-button" aria-label="Search">
+    <svg>
+      <use xlink:href="#fa-search" />
+    </svg>
+  </button>
+</form>
+{{#if loading}}
+  <div class="search-results-container">
+    <LoadingPage />
+  </div>
+{{elseif $searchResults && $searchResultsForQuery === $queryInSearch}}
+  <div class="search-results-container">
+    <SearchResults />
+  </div>
+{{/if}}
+<style>
+  .search-input-form {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-gap: 10px;
+  }
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .search-input {
+    padding: 10px 15px;
+    border-radius: 10px;
+    flex: 1;
+  }
+  .search-button svg {
+    fill: var(--button-primary-text);
+    width: 18px;
+    height: 18px;
+    flex: 1;
+  }
+  .search-results-container {
+    position: relative;
+    margin-top: 20px;
+  }
+  @media (min-width: 768px) {
+    .search-button {
+      min-width: 100px;
+    }
+  }
+</style>
+<script>
+  import { store } from '../../_store/store'
+  import LoadingPage from '../LoadingPage.html'
+  import { toast } from '../../_utils/toast'
+  import { search } from '../../_utils/mastodon/search'
+  import SearchResults from './SearchResults.html'
+
+  export default {
+    store: () => store,
+    components: {
+      LoadingPage,
+      SearchResults
+    },
+    methods: {
+      async onSubmit (e) {
+        e.preventDefault()
+        let instanceName = this.store.get('currentInstance')
+        let accessToken = this.store.get('accessToken')
+        let queryInSearch = this.store.get('queryInSearch')
+        this.set({loading: true})
+        try {
+          let results = await search(instanceName, accessToken, queryInSearch)
+          this.store.set({
+            searchResultsForQuery: queryInSearch,
+            searchResults: results
+          })
+        } catch (e) {
+          toast.say('Error during search: ' + (e.name || '') + ' ' + (e.message || ''))
+          console.error(e)
+        } finally {
+          this.set({loading: false})
+        }
+      }
+    }
+  }
+</script>

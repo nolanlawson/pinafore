@@ -1,0 +1,28 @@
+<li class="search-result">
+  <a href="{{href}}" class="search-result-anchor">
+    <slot></slot>
+  </a>
+</li>
+<style>
+  .search-result {
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--main-border);
+    display: flex;
+  }
+  .search-result:last-child {
+    border-bottom: none;
+  }
+  .search-result-anchor {
+    padding: 20px;
+    flex: 1;
+    background: var(--settings-list-item-bg);
+    color: var(--body-text-color);
+  }
+  .search-result-anchor:hover {
+    background: var(--settings-list-item-bg-hover);
+    text-decoration: none;
+  }
+  .search-result-anchor:active {
+    background: var(--settings-list-item-bg-active);
+  }
+</style>

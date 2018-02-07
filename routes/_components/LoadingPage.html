@@ -1,0 +1,24 @@
+<div class="loading-page">
+  <LoadingSpinner />
+</div>
+<style>
+  .loading-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+</style>
+<script>
+  import LoadingSpinner from './LoadingSpinner.html'
+  export default {
+    components: {
+      LoadingSpinner
+    }
+  }
+</script>

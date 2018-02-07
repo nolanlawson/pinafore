@@ -1,0 +1,49 @@
+<SearchResult href="/accounts/{{account.id}}">
+  <div class="search-result-account">
+    <Avatar :account size="small" className="search-result-account-avatar"/>
+    <div class="search-result-account-name">
+      {{account.display_name}}
+    </div>
+    <div class="search-result-account-username">
+      {{'@' + account.acct}}
+    </div>
+  </div>
+</SearchResult>
+<style>
+  .search-result-account {
+    display: grid;
+    grid-template-areas:
+      "avatar    name"
+      "avatar    username";
+    grid-column-gap: 20px;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+  }
+  :global(.search-result-account-avatar) {
+    grid-area: avatar;
+  }
+  .search-result-account-name {
+    grid-area: name;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.2em;
+  }
+  .search-result-account-username {
+    grid-area: username;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--deemphasized-text-color);
+  }
+</style>
+<script>
+  import Avatar from '../status/Avatar.html'
+  import SearchResult from './SearchResult.html'
+  export default {
+    components: {
+      Avatar,
+      SearchResult
+    }
+  }
+</script>

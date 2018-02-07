@@ -23,6 +23,7 @@ class PinaforeStore extends LocalStorageStore {
 
 const store = new PinaforeStore({
   instanceNameInSearch: '',
+  queryInSearch: '',
   currentInstance: null,
   loggedInInstances: {},
   loggedInInstancesInOrder: [],

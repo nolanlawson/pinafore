@@ -129,3 +129,8 @@ button::-moz-focus-inner {
   border: 0;
 }
 
+/* Firefox hacks to remove ugly red border.
+   Unnecessary since it gives a warning if you submit an empty field anyway. */
+input:required, input:invalid {
+  box-shadow: none;
+}

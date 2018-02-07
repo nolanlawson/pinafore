@@ -1,0 +1,18 @@
+<SearchResult href="/statuses/{{status.id}}">
+  <Status :index :length
+          timelineType="search" timelineValue="search"
+          status="{{status}}" />
+</SearchResult>
+<style>
+</style>
+<script>
+  import SearchResult from './SearchResult.html'
+  import Status from '../status/Status.html'
+
+  export default {
+    components: {
+      SearchResult,
+      Status
+    }
+  }
+</script>

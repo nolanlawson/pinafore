@@ -1,12 +1,12 @@
 {{#if error}}
-<svg class="{{className}} avatar size-{{size}}" aria-hidden="true">
+<svg class="{{className || ''}} avatar size-{{size}}" aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
 {{elseif $autoplayGifs}}
-  <img class="{{className}} avatar size-{{size}}" aria-hidden="true" alt=""
+  <img class="{{className || ''}} avatar size-{{size}}" aria-hidden="true" alt=""
      src="{{account.avatar}}" on:imgLoadError="set({error: true})" />
 {{else}}
-  <NonAutoplayImg className="{{className}} avatar size-{{size}}" ariaHidden="true" alt=""
+  <NonAutoplayImg className="{{className || ''}} avatar size-{{size}}" ariaHidden="true" alt=""
        src="{{account.avatar}}" staticSrc="{{account.avatar_static}}" on:imgLoadError="set({error: true})" />
 {{/if}}
 <style>
