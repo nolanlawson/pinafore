@@ -23,7 +23,7 @@
       {{/if}}
 
       <label for="instanceInput">Instance:</label>
-      <input class="new-instance-input" type="url" id="instanceInput"
+      <input class="new-instance-input" type="text" id="instanceInput"
              bind:value='$instanceNameInSearch' placeholder='' required
       >
       <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>
