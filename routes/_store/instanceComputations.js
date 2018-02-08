@@ -51,4 +51,24 @@ export function instanceComputations(store) {
     'pinnedPage',
     ['pinnedPages', 'currentInstance'],
     (pinnedPages, currentInstance) => (currentInstance && pinnedPages[currentInstance]) || '/local')
+
+  store.compute(
+    'lists',
+    ['instanceLists', 'currentInstance'],
+    (instanceLists, currentInstance) => (currentInstance && instanceLists[currentInstance]) || []
+  )
+
+  store.compute(
+    'pinnedListTitle',
+    ['lists', 'pinnedPage'],
+    (lists, pinnedPage) => {
+      if (!pinnedPage.startsWith('/lists')) {
+        return
+      }
+      let listId = pinnedPage.split('/').slice(-1)[0]
+      let list = lists.find(_ => _.id === listId)
+      return list ? list.title : ''
+    }
+  )
+
 }

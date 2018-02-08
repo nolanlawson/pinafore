@@ -176,6 +176,14 @@ export async function setInstanceInfo(instanceName, value) {
   return await setMetaProperty(instanceName, 'instance', value)
 }
 
+export async function getLists(instanceName) {
+  return await getMetaProperty(instanceName, 'lists')
+}
+
+export async function setLists(instanceName, value) {
+  return await setMetaProperty(instanceName, 'lists', value)
+}
+
 //
 // accounts/relationships
 //

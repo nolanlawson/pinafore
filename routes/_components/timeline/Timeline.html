@@ -89,6 +89,8 @@
             return 'Status context'
           case 'account':
             return `Account #${timelineValue} on ${$currentInstance}`
+          case 'list':
+            return `List #${timelineValue} on ${$currentInstance}`
         }
       },
       timelineType: (timeline) => {

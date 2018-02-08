@@ -4,7 +4,9 @@
 
 <Layout page='favorites' virtual="true" virtualRealm="favorites">
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="Favorites" icon="#fa-star"/>
+  {{#if $pinnedPage !== '/favorites'}}
+    <DynamicPageBanner title="Favorites" icon="#fa-star"/>
+  {{/if}}
   <LazyTimeline timeline='favorites' />
   {{else}}
   <HiddenFromSSR>

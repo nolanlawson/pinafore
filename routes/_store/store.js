@@ -1,4 +1,4 @@
-import { observers } from './obsevers'
+import { observers } from './observers'
 import { computations } from './computations'
 import { mixins } from './mixins'
 import { LocalStorageStore } from './LocalStorageStore'
@@ -33,7 +33,8 @@ const store = new PinaforeStore({
   sensitivesShown: {},
   autoplayGifs: false,
   markMediaAsSensitive: false,
-  pinnedPages: {}
+  pinnedPages: {},
+  instanceLists: {}
 })
 
 mixins(PinaforeStore)

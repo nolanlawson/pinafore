@@ -22,4 +22,5 @@ module.exports = [
   {id:'fa-comments', src:'node_modules/font-awesome-svg-png/white/svg/comments.svg', title: 'Conversations'},
   {id:'fa-paperclip', src:'node_modules/font-awesome-svg-png/white/svg/paperclip.svg', title: 'Paperclip'},
   {id:'fa-thumbtack', src:'node_modules/font-awesome-svg-png/white/svg/thumb-tack.svg', title: 'Thumbtack'},
+  {id:'fa-bars', src:'node_modules/font-awesome-svg-png/white/svg/bars.svg', title: 'List'},
 ]

@@ -19,6 +19,8 @@ function getTimelineUrlPath(timeline) {
     return 'statuses'
   } else if (timeline.startsWith('account/')) {
     return 'accounts'
+  } else if (timeline.startsWith('list/')) {
+    return 'timelines/list'
   }
 }
 
@@ -31,7 +33,9 @@ export function getTimeline(instanceName, accessToken, timeline, maxId, since) {
   } else if (timeline.startsWith('status/')) {
     url += '/' + timeline.split('/').slice(-1)[0] + '/context'
   } else if (timeline.startsWith('account/')) {
-    url += '/' + timeline.split('/').slice(-1)[0] +'/statuses'
+    url += '/' + timeline.split('/').slice(-1)[0] + '/statuses'
+  } else if (timeline.startsWith('list/')) {
+    url += '/' + timeline.split('/').slice(-1)[0]
   }
 
   let params = {}

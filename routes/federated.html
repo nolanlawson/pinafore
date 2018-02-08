@@ -4,7 +4,9 @@
 
 <Layout page='federated' virtual="true" virtualRealm="federated">
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="Federated Timeline" icon="#fa-globe"/>
+  {{#if $pinnedPage !== '/federated'}}
+    <DynamicPageBanner title="Federated Timeline" icon="#fa-globe"/>
+  {{/if}}
   <LazyTimeline timeline='federated' />
   {{else}}
   <HiddenFromSSR>

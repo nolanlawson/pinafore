@@ -18,6 +18,13 @@
                     label="Favorites"
                     icon="#fa-star"
       />
+
+      {{#each $lists as list}}
+      <PageListItem href="/lists/{{list.id}}"
+                    label="{{list.title}}"
+                    icon="#fa-bars"
+      />
+      {{/each}}
     </PageList>
   </div>
   {{else}}
@@ -47,8 +54,12 @@
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import PageList from './_components/PageList.html'
   import PageListItem from './_components/PageListItem.html'
+  import { fetchLists } from './_actions/community'
 
   export default {
+    async oncreate() {
+      await fetchLists()
+    },
     store: () => store,
     components: {
       Layout,

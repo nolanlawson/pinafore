@@ -79,6 +79,7 @@
         let href = this.get('href')
         pinnedPages[currentInstance] = href
         this.store.set({pinnedPages: pinnedPages})
+        this.store.save()
       }
     }
   }

@@ -4,7 +4,9 @@
 
 <Layout page='local' virtual="true" virtualRealm="local">
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
+  {{#if $pinnedPage !== '/local'}}
+    <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
+  {{/if}}
   <LazyTimeline timeline='local' />
   {{else}}
   <HiddenFromSSR>
