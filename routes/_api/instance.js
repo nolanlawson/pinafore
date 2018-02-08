@@ -1,4 +1,4 @@
-import { get } from '../ajax'
+import { get } from '../_utils/ajax'
 import { basename } from './utils'
 
 export function getInstanceInfo(instanceName) {

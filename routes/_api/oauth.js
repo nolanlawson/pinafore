@@ -1,7 +1,7 @@
 const WEBSITE = 'https://pinafore.social'
 const SCOPES = 'read write follow'
 const CLIENT_NAME = 'Pinafore'
-import { post, get, paramsString } from '../ajax'
+import { post, get, paramsString } from '../_utils/ajax'
 import { basename } from './utils'
 
 export function registerApplication(instanceName, redirectUri) {

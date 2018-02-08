@@ -1,4 +1,4 @@
-import { get, paramsString } from '../ajax'
+import { get, paramsString } from '../_utils/ajax'
 import { basename } from './utils'
 
 function getTimelineUrlPath(timeline) {

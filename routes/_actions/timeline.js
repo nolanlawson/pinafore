@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
-import { database } from '../_utils/database/database'
-import { getTimeline } from '../_utils/mastodon/timelines'
+import { database } from '../_database/database'
+import { getTimeline } from '../_api/timelines'
 import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
 import { mergeArrays } from '../_utils/arrays'

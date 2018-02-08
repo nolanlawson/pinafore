@@ -1,8 +1,8 @@
-import { getVerifyCredentials } from '../../../_utils/mastodon/user'
+import { getVerifyCredentials } from '../../../_api/user'
 import { store } from '../../../_store/store'
 import { switchToTheme } from '../../../_utils/themeEngine'
 import { toast } from '../../../_utils/toast'
-import { database } from '../../../_utils/database/database'
+import { database } from '../../../_database/database'
 import { goto } from 'sapper/runtime.js'
 import pAny from 'p-any'
 

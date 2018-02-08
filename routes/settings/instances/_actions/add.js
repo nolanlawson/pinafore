@@ -1,8 +1,8 @@
-import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../../../_utils/mastodon/oauth'
-import { getInstanceInfo } from '../../../_utils/mastodon/instance'
+import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../../../_api/oauth'
+import { getInstanceInfo } from '../../../_api/instance'
 import { goto } from 'sapper/runtime.js'
 import { switchToTheme } from '../../../_utils/themeEngine'
-import { database } from '../../../_utils/database/database'
+import { database } from '../../../_database/database'
 import { store } from '../../../_store/store'
 import { updateVerifyCredentialsForInstance } from './[instanceName]'
 

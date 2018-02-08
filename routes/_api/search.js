@@ -1,4 +1,4 @@
-import { get, paramsString } from '../ajax'
+import { get, paramsString } from '../_utils/ajax'
 
 export function search(instanceName, accessToken, query) {
   let url = `https://${instanceName}/api/v1/search?` + paramsString({

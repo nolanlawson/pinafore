@@ -1,5 +1,5 @@
-import { getAccount, getRelationship } from '../../_utils/mastodon/user'
-import { database } from '../../_utils/database/database'
+import { getAccount, getRelationship } from '../../_api/user'
+import { database } from '../../_database/database'
 import { store } from '../../_store/store'
 
 async function updateAccount(accountId, instanceName, accessToken) {

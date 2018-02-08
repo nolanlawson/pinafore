@@ -1,4 +1,4 @@
-import { paramsString } from '../ajax'
+import { paramsString } from '../_utils/ajax'
 import noop from 'lodash/noop'
 import WebSocketClient from '@gamestdio/websocket'
 

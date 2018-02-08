@@ -6,7 +6,7 @@ const static = require('serve-static');
 
 const { PORT = 4002 } = process.env;
 
-// this allows us to do e.g. `fetch('/api/blog')` on the server
+// this allows us to do e.g. `fetch('/_api/blog')` on the server
 const fetch = require('node-fetch');
 global.fetch = (url, opts) => {
 	if (url[0] === '/') url = `http://localhost:${PORT}${url}`;
