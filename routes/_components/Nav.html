@@ -6,9 +6,6 @@
 		<li>
       <NavItem :page name="notifications" href="/notifications" svg="#fa-bell" label="Notifications" />
 		</li>
-    <li>
-      <NavItem :page name="search" href="/search" svg="#fa-search" label="Search" />
-    </li>
     {{#if $pinnedPage === '/local'}}
       <li>
         <NavItem :page name="local" href="/local" svg="#fa-users" label="Local" />
@@ -25,6 +22,9 @@
 		<li>
       <NavItem :page name="community" href="/community" svg="#fa-comments" label="Community" />
 		</li>
+    <li>
+      <NavItem :page name="search" href="/search" svg="#fa-search" label="Search" />
+    </li>
 	  <li>
       <NavItem :page name="settings" href="/settings" svg="#fa-gear" label="Settings" />
 		</li>
