@@ -1,0 +1,85 @@
+<li class="page-list-item">
+  <a :href>
+    <svg>
+      <use xlink:href="{{icon}}" />
+    </svg>
+    <span aria-label="{{label}} {{$pinnedPage === href ? 'Pinned page' : 'Unpinned page'}}">
+      {{label}}
+    </span>
+    <IconButton pressable="true"
+                pressed="{{$pinnedPage === href}}"
+                label="Pin page"
+                href="#fa-thumbtack"
+                on:click="onPinClick(event)"
+    />
+  </a>
+</li>
+<style>
+  .page-list-item {
+    border: 1px solid var(--settings-list-item-border);
+    font-size: 1.3em;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-list-item a {
+    padding: 20px 40px;
+    background: var(--settings-list-item-bg);
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+  }
+  .page-list-item a, .page-list-item a:visited {
+    color: var(--body-text-color);
+  }
+  .page-list-item a:hover {
+    text-decoration: none;
+    background: var(--settings-list-item-bg-hover);
+    color: var(--body-text-color);
+  }
+  .page-list-item a:active {
+    background: var(--settings-list-item-bg-active);
+  }
+  .page-list-item svg {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin-right: 20px;
+    fill: var(--body-text-color);
+  }
+  .page-list-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 767px) {
+    .page-list-item a {
+      padding: 20px 10px;
+    }
+    .page-list-item svg {
+      margin-right: 10px;
+    }
+  }
+
+</style>
+<script>
+  import { store } from '../../_store/store'
+  import IconButton from '../../_components/IconButton'
+
+  export default {
+    store: () => store,
+    components: {
+      IconButton
+    },
+    methods: {
+      onPinClick(e) {
+        e.preventDefault()
+        let currentInstance = this.store.get('currentInstance')
+        let pinnedPages = this.store.get('pinnedPages')
+        let href = this.get('href')
+        pinnedPages[currentInstance] = href
+        this.store.set({pinnedPages: pinnedPages})
+      }
+    }
+  }
+</script>

@@ -12,7 +12,8 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   "loggedInInstances",
   "loggedInInstancesInOrder",
   "autoplayGifs",
-  "markMediaAsSensitive"
+  "markMediaAsSensitive",
+  "pinnedPages"
 ])
 
 class PinaforeStore extends LocalStorageStore {
@@ -31,7 +32,8 @@ const store = new PinaforeStore({
   spoilersShown: {},
   sensitivesShown: {},
   autoplayGifs: false,
-  markMediaAsSensitive: false
+  markMediaAsSensitive: false,
+  pinnedPages: {}
 })
 
 mixins(PinaforeStore)

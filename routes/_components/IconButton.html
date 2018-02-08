@@ -2,7 +2,9 @@
   <button type="button"
           aria-label="{{label}}"
           aria-pressed="{{!!pressed}}"
-          class="icon-button {{pressed ? 'pressed' : ''}} {{big ? 'big-icon' : ''}}">
+          class="icon-button {{pressed ? 'pressed' : ''}} {{big ? 'big-icon' : ''}}"
+          on:click
+  >
     <svg>
       <use xlink:href="{{href}}" />
     </svg>
@@ -10,7 +12,9 @@
 {{else}}
   <button type="button"
           aria-label="{{label}}"
-          class="icon-button {{big ? 'big-icon' : ''}}">
+          class="icon-button {{big ? 'big-icon' : ''}}"
+          on:click
+  >
     <svg>
       <use xlink:href="{{href}}" />
     </svg>

@@ -4,6 +4,7 @@
 
 <Layout page='federated' virtual="true" virtualRealm="federated">
   {{#if $isUserLoggedIn}}
+  <DynamicPageBanner title="Federated Timeline" icon="#fa-globe"/>
   <LazyTimeline timeline='federated' />
   {{else}}
   <HiddenFromSSR>
@@ -22,6 +23,7 @@
   import FreeTextLayout from './_components/FreeTextLayout.html'
   import { store } from './_store/store.js'
   import HiddenFromSSR from './_components/HiddenFromSSR'
+  import DynamicPageBanner from './_components/DynamicPageBanner.html'
 
   export default {
     store: () => store,
@@ -29,7 +31,8 @@
       Layout,
       LazyTimeline,
       FreeTextLayout,
-      HiddenFromSSR
+      HiddenFromSSR,
+      DynamicPageBanner
     }
   }
 </script>

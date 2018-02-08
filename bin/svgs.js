@@ -19,4 +19,7 @@ module.exports = [
   {id:'fa-user-plus', src:'node_modules/font-awesome-svg-png/white/svg/user-plus.svg', title: 'Follow'},
   {id:'fa-external-link', src:'node_modules/font-awesome-svg-png/white/svg/external-link.svg', title: 'External Link'},
   {id:'fa-search', src:'node_modules/font-awesome-svg-png/white/svg/search.svg', title: 'Search'},
+  {id:'fa-comments', src:'node_modules/font-awesome-svg-png/white/svg/comments.svg', title: 'Conversations'},
+  {id:'fa-paperclip', src:'node_modules/font-awesome-svg-png/white/svg/paperclip.svg', title: 'Paperclip'},
+  {id:'fa-thumbtack', src:'node_modules/font-awesome-svg-png/white/svg/thumb-tack.svg', title: 'Thumbtack'},
 ]

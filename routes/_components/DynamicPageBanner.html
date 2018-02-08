@@ -1,4 +1,9 @@
-<div class="dynamic-page-banner">
+<div class="dynamic-page-banner {{icon ? 'dynamic-page-with-icon' : ''}}">
+  {{#if icon}}
+  <svg>
+    <use xlink:href="{{icon}}" />
+  </svg>
+  {{/if}}
   <h1 class="dynamic-page-title">{{title}}</h1>
   <button type="button"
           class="dynamic-page-go-back"
@@ -6,10 +11,19 @@
 </div>
 <style>
   .dynamic-page-banner {
-    display: flex;
+    display: grid;
     align-items: center;
-    justify-content: space-between;
     margin: 20px 20px 20px;
+    grid-template-columns: 1fr min-content;
+    grid-column-gap: 10px;
+  }
+  .dynamic-page-banner.dynamic-page-with-icon {
+    grid-template-columns: min-content 1fr min-content;
+  }
+  .dynamic-page-banner svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--body-text-color);
   }
   h1.dynamic-page-title {
     margin: 0;
@@ -23,6 +37,7 @@
     border: 0;
     padding: 0;
     background: none;
+    justify-self: flex-end;
   }
   button.dynamic-page-go-back:hover {
     text-decoration: underline;

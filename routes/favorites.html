@@ -1,17 +1,17 @@
 <:Head>
-  <title>Pinafore – Local</title>
+  <title>Pinafore – Favorites</title>
 </:Head>
 
-<Layout page='local' virtual="true" virtualRealm="local">
+<Layout page='favorites' virtual="true" virtualRealm="favorites">
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
-  <LazyTimeline timeline='local' />
+  <DynamicPageBanner title="Favorites" icon="#fa-star"/>
+  <LazyTimeline timeline='favorites' />
   {{else}}
   <HiddenFromSSR>
     <FreeTextLayout>
-      <h1>Local</h1>
+      <h1>Favorites</h1>
 
-      <p>Your local timeline will appear here when logged in.</p>
+      <p>Your favorites will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
   {{/if}}

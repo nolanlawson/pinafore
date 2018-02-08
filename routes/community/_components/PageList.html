@@ -1,0 +1,28 @@
+<div class="page-list-wrapper">
+  {{#if label}}
+  <ul class="page-list" aria-label="{{label}}">
+    <slot></slot>
+  </ul>
+  {{else}}
+  <ul class="page-list">
+    <slot></slot>
+  </ul>
+  {{/if}}
+</div>
+<style>
+  .page-list-wrapper {
+    margin: 20px 20px;
+  }
+  ul.page-list {
+    list-style: none;
+    width: 100%;
+    border: 1px solid var(--settings-list-item-border);
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  @media (max-width: 767px) {
+    .page-list-wrapper {
+      margin: 20px 0;
+    }
+  }
+</style>

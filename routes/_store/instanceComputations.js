@@ -46,4 +46,9 @@ export function instanceComputations(store) {
     ['currentInstance', 'verifyCredentials'],
     (currentInstance, verifyCredentials) => verifyCredentials && verifyCredentials[currentInstance]
   )
+
+  store.compute(
+    'pinnedPage',
+    ['pinnedPages', 'currentInstance'],
+    (pinnedPages, currentInstance) => (currentInstance && pinnedPages[currentInstance]) || '/local')
 }
