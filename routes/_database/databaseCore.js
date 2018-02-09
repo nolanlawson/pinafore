@@ -57,37 +57,25 @@ async function setGenericEntityWithId(store, cache, instanceName, entity) {
 // timelines/statuses/notifications
 //
 
-function getTimelineVariables(timeline) {
-  if (timeline === 'notifications') {
-    return {
-      stores: [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, ACCOUNTS_STORE],
-      remoteId: 'notificationId',
-      itemsCache: notificationsCache
-    }
-  }
-  return {
-    stores: [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE],
-    remoteId: 'statusId',
-    itemsCache: statusesCache
-  }
+function createKeyRange(timeline, maxId) {
+  let negBigInt = maxId && toReversePaddedBigInt(maxId)
+  let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
+  let end = timeline + '\u0000\uffff'
+  return IDBKeyRange.bound(start, end, false, false)
 }
 
-export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
-  let { stores, remoteId } = getTimelineVariables(timeline)
+async function getNotificationTimeline(instanceName, timeline, maxId, limit) {
+  let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE]
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, stores, 'readonly', (stores, callback) => {
-    let [ timelineStore, itemsStore ] = stores
+  return await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+    let [ timelineStore, notificationsStore ] = stores
+    let keyRange = createKeyRange(timeline, maxId)
 
-    let negBigInt = maxId && toReversePaddedBigInt(maxId)
-    let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
-    let end = timeline + '\u0000\uffff'
-    let query = IDBKeyRange.bound(start, end, false, false)
-
-    timelineStore.getAll(query, limit).onsuccess = e => {
+    timelineStore.getAll(keyRange, limit).onsuccess = e => {
       let timelineResults = e.target.result
       let res = new Array(timelineResults.length)
       timelineResults.forEach((timelineResult, i) => {
-        itemsStore.get(timelineResult[remoteId]).onsuccess = e => {
+        notificationsStore.get(timelineResult.notificationId).onsuccess = e => {
           res[i] = e.target.result
         }
       })
@@ -96,31 +84,87 @@ export async function getTimeline(instanceName, timeline, maxId = null, limit = 
   })
 }
 
-export async function insertTimelineItems(instanceName, timeline, timelineItems) {
-  let { stores, remoteId, itemsCache } = getTimelineVariables(timeline)
-  for (let timelineItem of timelineItems) {
-    setInCache(itemsCache, instanceName, timelineItem.id, timelineItem)
-    setInCache(accountsCache, instanceName, timelineItem.account.id, timelineItem.account)
-    if (timelineItem.reblog) {
-      setInCache(accountsCache, instanceName, timelineItem.reblog.account.id, timelineItem.reblog.account)
+async function getStatusTimeline(instanceName, timeline, maxId, limit) {
+  let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE]
+  const db = await getDatabase(instanceName)
+  return await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+    let [ timelineStore, statusesStore ] = stores
+    let keyRange = createKeyRange(timeline, maxId)
+
+    timelineStore.getAll(keyRange, limit).onsuccess = e => {
+      let timelineResults = e.target.result
+      let res = new Array(timelineResults.length)
+      timelineResults.forEach((timelineResult, i) => {
+        statusesStore.get(timelineResult.statusId).onsuccess = e => {
+          res[i] = e.target.result
+        }
+      })
+      callback(res)
+    }
+  })
+}
+
+export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
+  return timeline === 'notifications' ?
+    await getNotificationTimeline(instanceName, timeline, maxId, limit) :
+    await getStatusTimeline(instanceName, timeline, maxId, limit)
+}
+
+function createTimelineId(timeline, id) {
+  // reverse chronological order, prefixed by timeline
+  return timeline + '\u0000' + toReversePaddedBigInt(id)
+}
+
+async function insertTimelineNotifications(instanceName, timeline, notifications) {
+  let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, ACCOUNTS_STORE]
+  for (let notification of notifications) {
+    setInCache(notificationsCache, instanceName, notification.id, notification)
+    setInCache(accountsCache, instanceName, notification.account.id, notification.account)
+  }
+  const db = await getDatabase(instanceName)
+  await dbPromise(db, storeNames, 'readwrite', (stores) => {
+    let [ timelineStore, notificationsStore, accountsStore ] = stores
+    for (let notification of notifications) {
+      notificationsStore.put(notification)
+      timelineStore.put({
+        id: createTimelineId(timeline, notification.id),
+        notificationId: notification.id
+      })
+      accountsStore.put(notification.account)
+    }
+  })
+}
+
+async function insertTimelineStatuses(instanceName, timeline, statuses) {
+  let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  for (let status of statuses) {
+    setInCache(statusesCache, instanceName, status.id, status)
+    setInCache(accountsCache, instanceName, status.account.id, status.account)
+    if (status.reblog) {
+      setInCache(accountsCache, instanceName, status.reblog.account.id, status.reblog.account)
     }
   }
   const db = await getDatabase(instanceName)
-  await dbPromise(db, stores, 'readwrite', (stores) => {
-    let [ timelineStore, itemsStore, accountsStore ] = stores
-    for (let item of timelineItems) {
-      itemsStore.put(item)
-      // reverse chronological order, prefixed by timeline
+  await dbPromise(db, storeNames, 'readwrite', (stores) => {
+    let [ timelineStore, statusesStore, accountsStore ] = stores
+    for (let status of statuses) {
+      statusesStore.put(status)
       timelineStore.put({
-        id: (timeline + '\u0000' + toReversePaddedBigInt(item.id)),
-        [remoteId]: item.id
+        id: createTimelineId(timeline, status.id),
+        statusId: status.id
       })
-      accountsStore.put(item.account)
-      if (item.reblog) {
-        accountsStore.put(item.reblog.account)
+      accountsStore.put(status.account)
+      if (status.reblog) {
+        accountsStore.put(status.reblog.account)
       }
     }
   })
+}
+
+export async function insertTimelineItems(instanceName, timeline, timelineItems) {
+  return timeline === 'notifications' ?
+    await insertTimelineNotifications(instanceName, timeline, timelineItems) :
+    await insertTimelineStatuses(instanceName, timeline, timelineItems)
 }
 
 export async function getStatus(instanceName, statusId) {
