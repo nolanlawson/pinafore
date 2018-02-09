@@ -1,10 +1,10 @@
-import { getVerifyCredentials } from '../../../_api/user'
-import { store } from '../../../_store/store'
-import { switchToTheme } from '../../../_utils/themeEngine'
-import { toast } from '../../../_utils/toast'
-import { database } from '../../../_database/database'
+import { getVerifyCredentials } from '../_api/user'
+import { store } from '../_store/store'
+import { switchToTheme } from '../_utils/themeEngine'
+import { toast } from '../_utils/toast'
+import { database } from '../_database/database'
 import { goto } from 'sapper/runtime.js'
-import pAny from 'p-any'
+import { cacheFirstUpdateAfter } from '../_utils/sync'
 
 export function changeTheme(instanceName, newTheme) {
   let instanceThemes = store.get('instanceThemes')
@@ -55,14 +55,11 @@ function setStoreVerifyCredentials(instanceName, thisVerifyCredentials) {
 
 export async function updateVerifyCredentialsForInstance(instanceName) {
   let loggedInInstances = store.get('loggedInInstances')
-  let instanceData = loggedInInstances[instanceName]
-  await pAny([
-    database.getInstanceVerifyCredentials(instanceName).then(verifyCredentials => {
-      setStoreVerifyCredentials(instanceName, verifyCredentials)
-    }),
-    getVerifyCredentials(instanceName, instanceData.access_token).then(verifyCredentials => {
-      setStoreVerifyCredentials(instanceName, verifyCredentials)
-      return database.setInstanceVerifyCredentials(instanceName, verifyCredentials)
-    })
-  ])
+  let accessToken = loggedInInstances[instanceName].access_token
+  await cacheFirstUpdateAfter(
+    () => getVerifyCredentials(instanceName, accessToken),
+    () => database.getInstanceVerifyCredentials(instanceName),
+    verifyCredentials => database.setInstanceVerifyCredentials(instanceName, verifyCredentials),
+    verifyCredentials => setStoreVerifyCredentials(instanceName, verifyCredentials)
+  )
 }

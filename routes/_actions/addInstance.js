@@ -1,10 +1,10 @@
-import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../../../_api/oauth'
-import { getInstanceInfo } from '../../../_api/instance'
+import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../_api/oauth'
+import { getInstanceInfo } from '../_api/instance'
 import { goto } from 'sapper/runtime.js'
-import { switchToTheme } from '../../../_utils/themeEngine'
-import { database } from '../../../_database/database'
-import { store } from '../../../_store/store'
-import { updateVerifyCredentialsForInstance } from './[instanceName]'
+import { switchToTheme } from '../_utils/themeEngine'
+import { database } from '../_database/database'
+import { store } from '../_store/store'
+import { updateVerifyCredentialsForInstance } from './instances'
 
 const REDIRECT_URI = (typeof location !== 'undefined' ?
   location.origin : 'https://pinafore.social') + '/settings/instances/add'

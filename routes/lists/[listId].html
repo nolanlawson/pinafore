@@ -25,12 +25,8 @@
   import { store } from '../_store/store.js'
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
-  import { fetchLists } from '../community/_actions/community'
 
   export default {
-    async oncreate() {
-      await fetchLists()
-    },
     computed: {
       list: (params, $lists) => $lists && $lists.find(_ => _.id === params['listId']),
       listTitle: (list) => list ? list.title : ''

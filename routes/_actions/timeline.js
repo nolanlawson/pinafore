@@ -63,9 +63,6 @@ export function initializeTimeline() {
 
 export async function setupTimeline() {
   mark('setupTimeline')
-  let timelineName = store.get('currentTimeline')
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
   if (!store.get('timelineItemIds').length) {
     await fetchTimelineItemsAndPossiblyFallBack()
   }

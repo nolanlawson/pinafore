@@ -31,9 +31,9 @@
   import { store } from '../_store/store.js'
   import HiddenFromSSR from '../_components/HiddenFromSSR'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
-  import { updateProfileAndRelationship } from './_actions/[accountId]'
+  import { updateProfileAndRelationship } from '../_actions/accounts'
   import AccountProfile from '../_components/AccountProfile.html'
-  import { updateVerifyCredentialsForInstance } from '../settings/instances/_actions/[instanceName]'
+  import { updateVerifyCredentialsForInstance } from '../_actions/instances'
 
   export default {
     oncreate() {

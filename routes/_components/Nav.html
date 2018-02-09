@@ -64,15 +64,8 @@
 <script>
   import NavItem from './NavItem'
   import { store } from '../_store/store'
-  import { fetchLists } from '../community/_actions/community'
 
   export default {
-    async oncreate() {
-      let pinnedPage = this.store.get('pinnedPage')
-      if (pinnedPage.startsWith('/lists')) {
-        await fetchLists()
-      }
-    },
     store: () => store,
     components: {
       NavItem
