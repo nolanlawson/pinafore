@@ -111,7 +111,7 @@
     },
     methods: {
       initialize() {
-        if (this.store.get('initialized') || !this.store.get('timelineItemIds') || !this.store.get('timelineItemIds').length) {
+        if (this.store.get('initialized') || !this.store.get('timelineItemIds')) {
           return
         }
         console.log('timeline initialize()')

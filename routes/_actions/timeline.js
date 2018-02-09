@@ -63,7 +63,7 @@ export function initializeTimeline() {
 
 export async function setupTimeline() {
   mark('setupTimeline')
-  if (!store.get('timelineItemIds').length) {
+  if (!store.get('timelineItemIds')) {
     await fetchTimelineItemsAndPossiblyFallBack()
   }
   stop('setupTimeline')

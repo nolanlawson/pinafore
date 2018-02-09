@@ -11,7 +11,7 @@ class VirtualListStore extends RealmStore {
 
 const virtualListStore = new VirtualListStore()
 
-virtualListStore.computeForRealm('items', [])
+virtualListStore.computeForRealm('items', null)
 virtualListStore.computeForRealm('showFooter', false)
 virtualListStore.computeForRealm('footerHeight', 0)
 virtualListStore.computeForRealm('scrollTop', 0)
@@ -23,6 +23,9 @@ virtualListStore.compute('visibleItems',
     ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
     (items, scrollTop, itemHeights, offsetHeight) => {
   mark('compute visibleItems')
+  if (!items) {
+    return null
+  }
   let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
   let visibleItems = []
   let totalOffset = 0
@@ -56,6 +59,9 @@ virtualListStore.compute('visibleItems',
 virtualListStore.compute('heightWithoutFooter',
     ['items', 'itemHeights'],
     (items, itemHeights) => {
+  if (!items) {
+    return 0
+  }
   let sum = 0
   let i = -1
   let len = items.length
@@ -77,7 +83,7 @@ virtualListStore.compute('length', ['items'], (items) => items ? items.length : 
 virtualListStore.compute('allVisibleItemsHaveHeight',
     ['visibleItems', 'itemHeights'],
     (visibleItems, itemHeights) => {
-  if (!visibleItems.length) {
+  if (!visibleItems) {
     return false
   }
   for (let visibleItem of visibleItems) {
