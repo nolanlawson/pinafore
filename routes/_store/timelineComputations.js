@@ -1,4 +1,4 @@
-export function timelineComputations(store) {
+export function timelineComputations (store) {
   store.compute('currentTimelineData', ['currentInstance', 'currentTimeline', 'timelines'],
     (currentInstance, currentTimeline, timelines) => {
       return ((timelines && timelines[currentInstance]) || {})[currentTimeline] || {}

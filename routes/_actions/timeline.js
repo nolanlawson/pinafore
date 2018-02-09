@@ -7,7 +7,7 @@ import { mergeArrays } from '../_utils/arrays'
 
 const FETCH_LIMIT = 20
 
-async function fetchTimelineItems(instanceName, accessToken, timelineName, lastTimelineItemId, online) {
+async function fetchTimelineItems (instanceName, accessToken, timelineName, lastTimelineItemId, online) {
   mark('fetchTimelineItems')
   let items
   if (!online) {
@@ -26,7 +26,7 @@ async function fetchTimelineItems(instanceName, accessToken, timelineName, lastT
   return items
 }
 
-async function addTimelineItems(instanceName, timelineName, newItems) {
+async function addTimelineItems (instanceName, timelineName, newItems) {
   console.log('addTimelineItems, length:', newItems.length)
   mark('addTimelineItems')
   let newIds = newItems.map(item => item.id)
@@ -36,7 +36,7 @@ async function addTimelineItems(instanceName, timelineName, newItems) {
   stop('addTimelineItems')
 }
 
-async function fetchTimelineItemsAndPossiblyFallBack() {
+async function fetchTimelineItemsAndPossiblyFallBack () {
   mark('fetchTimelineItemsAndPossiblyFallBack')
   let timelineName = store.get('currentTimeline')
   let instanceName = store.get('currentInstance')
@@ -49,7 +49,7 @@ async function fetchTimelineItemsAndPossiblyFallBack() {
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
 
-export function initializeTimeline() {
+export function initializeTimeline () {
   mark('initializeTimeline')
   let instanceName = store.get('currentInstance')
   let timeline = store.get('currentTimeline')
@@ -61,7 +61,7 @@ export function initializeTimeline() {
   stop('initializeTimeline')
 }
 
-export async function setupTimeline() {
+export async function setupTimeline () {
   mark('setupTimeline')
   if (!store.get('timelineItemIds')) {
     await fetchTimelineItemsAndPossiblyFallBack()
@@ -69,7 +69,7 @@ export async function setupTimeline() {
   stop('setupTimeline')
 }
 
-export async function fetchTimelineItemsOnScrollToBottom() {
+export async function fetchTimelineItemsOnScrollToBottom () {
   let timelineName = store.get('currentTimeline')
   let instanceName = store.get('currentInstance')
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })

@@ -19,8 +19,7 @@ const observe = online => {
     meta.content = oldTheme || window.__themeColors['default']
   } else {
     let offlineThemeColor = window.__themeColors.offline
-    if (meta.content !== offlineThemeColor)
-    oldTheme = meta.content
+    if (meta.content !== offlineThemeColor) { oldTheme = meta.content }
     meta.content = offlineThemeColor
     notifyOffline()
   }
@@ -30,5 +29,5 @@ if (!navigator.onLine) {
   observe(false)
 }
 
-window.addEventListener('offline', () => observe(false));
-window.addEventListener('online', () => observe(true));
+window.addEventListener('offline', () => observe(false))
+window.addEventListener('online', () => observe(true))

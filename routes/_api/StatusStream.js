@@ -2,7 +2,7 @@ import { paramsString } from '../_utils/ajax'
 import noop from 'lodash/noop'
 import WebSocketClient from '@gamestdio/websocket'
 
-function getStreamName(timeline) {
+function getStreamName (timeline) {
   switch (timeline) {
     case 'local':
       return 'public:local'
@@ -18,7 +18,7 @@ function getStreamName(timeline) {
   }
 }
 
-function getUrl(streamingApi, accessToken, timeline) {
+function getUrl (streamingApi, accessToken, timeline) {
   let url = `${streamingApi}/api/v1/streaming`
   let streamName = getStreamName(timeline)
 
@@ -38,7 +38,7 @@ function getUrl(streamingApi, accessToken, timeline) {
 }
 
 export class StatusStream {
-  constructor(streamingApi, accessToken, timeline, opts) {
+  constructor (streamingApi, accessToken, timeline, opts) {
     let url = getUrl(streamingApi, accessToken, timeline)
 
     const ws = new WebSocketClient(url, null, { backoff: 'exponential' })
@@ -52,7 +52,7 @@ export class StatusStream {
     this._ws = ws
   }
 
-  close() {
+  close () {
     this._ws.close()
   }
 }

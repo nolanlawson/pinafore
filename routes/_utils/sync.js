@@ -1,6 +1,6 @@
 // Hit both the cache and the network, setting state for the cached version first,
 // then the network version (as it's assumed to be fresher). Also update the db afterwards.
-export async function cacheFirstUpdateAfter(networkFetcher, dbFetcher, dbUpdater, stateSetter) {
+export async function cacheFirstUpdateAfter (networkFetcher, dbFetcher, dbUpdater, stateSetter) {
   let networkPromise = networkFetcher() // kick off network request immediately
   let dbResponse
   try {

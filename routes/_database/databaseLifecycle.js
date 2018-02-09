@@ -1,8 +1,3 @@
-const openReqs = {}
-const databaseCache = {}
-
-const DB_VERSION = 1
-
 import {
   META_STORE,
   STATUS_TIMELINES_STORE,
@@ -13,7 +8,12 @@ import {
   NOTIFICATION_TIMELINES_STORE
 } from './constants'
 
-export function getDatabase(instanceName) {
+const openReqs = {}
+const databaseCache = {}
+
+const DB_VERSION = 1
+
+export function getDatabase (instanceName) {
   if (!instanceName) {
     throw new Error('instanceName is undefined in getDatabase()')
   }
@@ -29,7 +29,7 @@ export function getDatabase(instanceName) {
       console.log('idb blocked')
     }
     req.onupgradeneeded = (e) => {
-      let db = req.result;
+      let db = req.result
       db.createObjectStore(META_STORE, {keyPath: 'key'})
       db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
       db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
@@ -45,26 +45,26 @@ export function getDatabase(instanceName) {
   return databaseCache[instanceName]
 }
 
-export async function dbPromise(db, storeName, readOnlyOrReadWrite, cb) {
-  return await new Promise((resolve, reject) => {
+export async function dbPromise (db, storeName, readOnlyOrReadWrite, cb) {
+  return new Promise((resolve, reject) => {
     const tx = db.transaction(storeName, readOnlyOrReadWrite)
-    let store = typeof storeName === 'string' ?
-      tx.objectStore(storeName) :
-      storeName.map(name => tx.objectStore(name))
+    let store = typeof storeName === 'string'
+      ? tx.objectStore(storeName)
+      : storeName.map(name => tx.objectStore(name))
     let res
     cb(store, (result) => {
       res = result
     })
 
     tx.oncomplete = () => resolve(res)
-    tx.onerror = () => reject(tx.error.name + ' ' + tx.error.message)
+    tx.onerror = () => reject(tx.error)
   })
 }
 
-export function deleteDatabase(instanceName) {
+export function deleteDatabase (instanceName) {
   return new Promise((resolve, reject) => {
     // close any open requests
-    let openReq = openReqs[instanceName];
+    let openReq = openReqs[instanceName]
     if (openReq && openReq.result) {
       openReq.result.close()
     }
@@ -72,6 +72,6 @@ export function deleteDatabase(instanceName) {
     delete databaseCache[instanceName]
     let req = indexedDB.deleteDatabase(instanceName)
     req.onsuccess = () => resolve()
-    req.onerror = () => reject(req.error.name + ' ' + req.error.message)
+    req.onerror = () => reject(req.error)
   })
 }

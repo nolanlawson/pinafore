@@ -1,7 +1,7 @@
 import { get, paramsString } from '../_utils/ajax'
 import { basename } from './utils'
 
-function getTimelineUrlPath(timeline) {
+function getTimelineUrlPath (timeline) {
   switch (timeline) {
     case 'local':
     case 'federated':
@@ -24,7 +24,7 @@ function getTimelineUrlPath(timeline) {
   }
 }
 
-export function getTimeline(instanceName, accessToken, timeline, maxId, since) {
+export function getTimeline (instanceName, accessToken, timeline, maxId, since) {
   let timelineUrlName = getTimelineUrlPath(timeline)
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 

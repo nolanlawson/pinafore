@@ -6,7 +6,7 @@ import { database } from '../_database/database'
 import { goto } from 'sapper/runtime.js'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 
-export function changeTheme(instanceName, newTheme) {
+export function changeTheme (instanceName, newTheme) {
   let instanceThemes = store.get('instanceThemes')
   instanceThemes[instanceName] = newTheme
   store.set({instanceThemes: instanceThemes})
@@ -16,22 +16,22 @@ export function changeTheme(instanceName, newTheme) {
   }
 }
 
-export function switchToInstance(instanceName) {
+export function switchToInstance (instanceName) {
   let instanceThemes = store.get('instanceThemes')
   store.set({currentInstance: instanceName})
   store.save()
   switchToTheme(instanceThemes[instanceName])
 }
 
-export async function logOutOfInstance(instanceName) {
+export async function logOutOfInstance (instanceName) {
   let loggedInInstances = store.get('loggedInInstances')
   let instanceThemes = store.get('instanceThemes')
   let loggedInInstancesInOrder = store.get('loggedInInstancesInOrder')
   let currentInstance = store.get('currentInstance')
   loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
-  let newInstance = instanceName === currentInstance ?
-    loggedInInstancesInOrder[0] :
-    currentInstance
+  let newInstance = instanceName === currentInstance
+    ? loggedInInstancesInOrder[0]
+    : currentInstance
   delete loggedInInstances[instanceName]
   delete instanceThemes[instanceName]
   store.set({
@@ -47,13 +47,13 @@ export async function logOutOfInstance(instanceName) {
   goto('/settings/instances')
 }
 
-function setStoreVerifyCredentials(instanceName, thisVerifyCredentials) {
+function setStoreVerifyCredentials (instanceName, thisVerifyCredentials) {
   let verifyCredentials = store.get('verifyCredentials') || {}
   verifyCredentials[instanceName] = thisVerifyCredentials
   store.set({verifyCredentials: verifyCredentials})
 }
 
-export async function updateVerifyCredentialsForInstance(instanceName) {
+export async function updateVerifyCredentialsForInstance (instanceName) {
   let loggedInInstances = store.get('loggedInInstances')
   let accessToken = loggedInInstances[instanceName].access_token
   await cacheFirstUpdateAfter(

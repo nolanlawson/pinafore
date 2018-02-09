@@ -2,7 +2,7 @@ import { dbPromise, getDatabase } from './databaseLifecycle'
 import { META_STORE } from './constants'
 import { metaCache, hasInCache, getInCache, setInCache } from './cache'
 
-async function getMetaProperty(instanceName, key) {
+async function getMetaProperty (instanceName, key) {
   if (hasInCache(metaCache, instanceName, key)) {
     return getInCache(metaCache, instanceName, key)
   }
@@ -16,10 +16,10 @@ async function getMetaProperty(instanceName, key) {
   return result
 }
 
-async function setMetaProperty(instanceName, key, value) {
+async function setMetaProperty (instanceName, key, value) {
   setInCache(metaCache, instanceName, key, value)
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, META_STORE, 'readwrite', (store) => {
+  return dbPromise(db, META_STORE, 'readwrite', (store) => {
     store.put({
       key: key,
       value: value
@@ -27,26 +27,26 @@ async function setMetaProperty(instanceName, key, value) {
   })
 }
 
-export async function getInstanceVerifyCredentials(instanceName) {
-  return await getMetaProperty(instanceName, 'verifyCredentials')
+export async function getInstanceVerifyCredentials (instanceName) {
+  return getMetaProperty(instanceName, 'verifyCredentials')
 }
 
-export async function setInstanceVerifyCredentials(instanceName, value) {
-  return await setMetaProperty(instanceName, 'verifyCredentials', value)
+export async function setInstanceVerifyCredentials (instanceName, value) {
+  return setMetaProperty(instanceName, 'verifyCredentials', value)
 }
 
-export async function getInstanceInfo(instanceName) {
-  return await getMetaProperty(instanceName, 'instance')
+export async function getInstanceInfo (instanceName) {
+  return getMetaProperty(instanceName, 'instance')
 }
 
-export async function setInstanceInfo(instanceName, value) {
-  return await setMetaProperty(instanceName, 'instance', value)
+export async function setInstanceInfo (instanceName, value) {
+  return setMetaProperty(instanceName, 'instance', value)
 }
 
-export async function getLists(instanceName) {
-  return await getMetaProperty(instanceName, 'lists')
+export async function getLists (instanceName) {
+  return getMetaProperty(instanceName, 'lists')
 }
 
-export async function setLists(instanceName, value) {
-  return await setMetaProperty(instanceName, 'lists', value)
+export async function setLists (instanceName, value) {
+  return setMetaProperty(instanceName, 'lists', value)
 }

@@ -1,6 +1,6 @@
 // Merge two arrays, assuming both input arrays have the same order
 // and items are comparable
-export function mergeArrays(leftArray, rightArray) {
+export function mergeArrays (leftArray, rightArray) {
   let leftIndex = 0
   let rightIndex = 0
   let merged = []

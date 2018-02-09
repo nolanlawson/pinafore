@@ -1,6 +1,6 @@
 import { get, paramsString } from '../_utils/ajax'
 
-export function search(instanceName, accessToken, query) {
+export function search (instanceName, accessToken, query) {
   let url = `https://${instanceName}/api/v1/search?` + paramsString({
     q: query,
     resolve: true
@@ -9,4 +9,3 @@ export function search(instanceName, accessToken, query) {
     'Authorization': `Bearer ${accessToken}`
   })
 }
-

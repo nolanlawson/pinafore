@@ -11,7 +11,7 @@ const $ = require('cheerio')
 const readFile = pify(fs.readFile.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 
-async function main() {
+async function main () {
   let result = (await Promise.all(svgs.map(async svg => {
     let filepath = path.join(__dirname, '../', svg.src)
     let content = await readFile(filepath, 'utf8')

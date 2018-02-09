@@ -11,10 +11,10 @@ const readFile = pify(fs.readFile.bind(fs))
 const glob = pify(require('glob'))
 const rimraf = pify(require('rimraf'))
 
-const selectorRegex = /\n[ \t]*([0-9\w\- \t\.:#,]+?)[ \t]*\{/g
+const selectorRegex = /\n[ \t]*([0-9\w\- \t.:#,]+?)[ \t]*{/g
 const styleRegex = /<style>[\s\S]+?<\/style>/
 
-async function main() {
+async function main () {
   if (argv.reverse) { // reverse the operation we just did
     let tmpComponents = await glob('./routes/**/.tmp-*.html')
     for (let filename of tmpComponents) {
@@ -29,7 +29,7 @@ async function main() {
       let text = await readFile(filename, 'utf8')
       let newText = text.replace(styleRegex, style => {
         return style.replace(selectorRegex, selectorMatch => {
-          return selectorMatch.replace(/\S[^\{]+/, selector => `:global(${selector})`)
+          return selectorMatch.replace(/\S[^{]+/, selector => `:global(${selector})`)
         })
       })
       let newFilename = path.join(path.dirname(filename), '.tmp-' + path.basename(filename))

@@ -18,12 +18,12 @@ export function imgLoad (node, callback) {
   }
 }
 
-export function mouseover(node, callback) {
-  function onMouseEnter() {
-    callback(true)
+export function mouseover (node, callback) {
+  function onMouseEnter () {
+    callback(true) // eslint-disable-line
   }
-  function onMouseLeave() {
-    callback(false)
+  function onMouseLeave () {
+    callback(false) // eslint-disable-line
   }
   node.addEventListener('mouseenter', onMouseEnter)
   node.addEventListener('mouseleave', onMouseLeave)

@@ -3,7 +3,7 @@ import { database } from '../_database/database'
 import { getLists } from '../_api/lists'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 
-export async function updateLists() {
+export async function updateLists () {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
 

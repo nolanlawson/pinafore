@@ -4,20 +4,20 @@ import { mixins } from './mixins'
 import { LocalStorageStore } from './LocalStorageStore'
 
 const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
-  "currentInstance",
-  "currentRegisteredInstance",
-  "currentRegisteredInstanceName",
-  "instanceNameInSearch",
-  "instanceThemes",
-  "loggedInInstances",
-  "loggedInInstancesInOrder",
-  "autoplayGifs",
-  "markMediaAsSensitive",
-  "pinnedPages"
+  'currentInstance',
+  'currentRegisteredInstance',
+  'currentRegisteredInstanceName',
+  'instanceNameInSearch',
+  'instanceThemes',
+  'loggedInInstances',
+  'loggedInInstancesInOrder',
+  'autoplayGifs',
+  'markMediaAsSensitive',
+  'pinnedPages'
 ])
 
 class PinaforeStore extends LocalStorageStore {
-  constructor(state) {
+  constructor (state) {
     super(state, KEYS_TO_STORE_IN_LOCAL_STORAGE)
   }
 }

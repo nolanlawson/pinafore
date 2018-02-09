@@ -1,7 +1,7 @@
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { getInCache, hasInCache, setInCache } from './cache'
 
-export async function getGenericEntityWithId(store, cache, instanceName, id) {
+export async function getGenericEntityWithId (store, cache, instanceName, id) {
   if (hasInCache(cache, instanceName, id)) {
     return getInCache(cache, instanceName, id)
   }
@@ -13,10 +13,10 @@ export async function getGenericEntityWithId(store, cache, instanceName, id) {
   return result
 }
 
-export async function setGenericEntityWithId(store, cache, instanceName, entity) {
+export async function setGenericEntityWithId (store, cache, instanceName, entity) {
   setInCache(cache, instanceName, entity.id, entity)
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, store, 'readwrite', (store) => {
+  return dbPromise(db, store, 'readwrite', (store) => {
     store.put(entity)
   })
 }

@@ -2,7 +2,7 @@
 import { getRectFromEntry } from './getRectFromEntry'
 
 class AsyncLayout {
-  constructor(generateKeyFromNode) {
+  constructor (generateKeyFromNode) {
     this._onIntersectionCallbacks = {}
 
     this._intersectionObserver = new IntersectionObserver(entries => {
@@ -13,7 +13,7 @@ class AsyncLayout {
     })
   }
 
-  observe(key, node, callback) {
+  observe (key, node, callback) {
     if (!node) {
       return
     }
@@ -26,7 +26,7 @@ class AsyncLayout {
     }
   }
 
-  unobserve(key, node) {
+  unobserve (key, node) {
     if (key in this._onIntersectionCallbacks) {
       return
     }
@@ -39,7 +39,7 @@ class AsyncLayout {
     delete this._onIntersectionCallbacks[key]
   }
 
-  disconnect() {
+  disconnect () {
     if (this._intersectionObserver) {
       this._intersectionObserver.disconnect()
       this._intersectionObserver = null

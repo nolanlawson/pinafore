@@ -1,6 +1,6 @@
 import VideoDialog from './VideoDialog.html'
 
-export function showVideoDialog(poster, src, width, height, description) {
+export function showVideoDialog (poster, src, width, height, description) {
   let videoDialog = new VideoDialog({
     target: document.getElementById('modal-dialog'),
     data: {

@@ -1,4 +1,4 @@
-export function instanceComputations(store) {
+export function instanceComputations (store) {
   store.compute(
     'isUserLoggedIn',
     ['currentInstance', 'loggedInInstances'],
@@ -70,5 +70,4 @@ export function instanceComputations(store) {
       return list ? list.title : ''
     }
   )
-
 }

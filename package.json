@@ -3,6 +3,7 @@
   "description": "TODO",
   "version": "0.0.1",
   "scripts": {
+    "lint": "standard",
     "dev": "npm run build-svg && concurrently --kill-others \"npm run build-sass-watch\" \"node server.js\"",
     "build": "npm run globalize-css && npm run build-sass && npm run build-svg && sapper build && npm run deglobalize-css",
     "start": "cross-env NODE_ENV=production node server.js",
@@ -47,6 +48,7 @@
     "rimraf": "^2.6.2",
     "sapper": "nolanlawson/sapper#fix-style-loader-built",
     "serve-static": "^1.13.1",
+    "standard": "^10.0.3",
     "style-loader": "^0.19.1",
     "svelte": "^1.54.0",
     "svelte-extras": "^1.6.0",
@@ -63,5 +65,25 @@
   },
   "engines": {
     "node": ">= 8"
+  },
+  "standard": {
+    "globals": [
+      "fetch",
+      "IDBKeyRange",
+      "IDBObjectStore",
+      "indexedDB",
+      "requestAnimationFrame",
+      "requestIdleCallback",
+      "location",
+      "localStorage",
+      "URLSearchParams",
+      "IntersectionObserver",
+      "URL"
+    ],
+    "ignore": [
+      "dist",
+      "cypress",
+      "routes/_utils/asyncModules.js"
+    ]
   }
 }

@@ -1,5 +1,5 @@
-export async function post(url, body) {
-  return await (await fetch(url, {
+export async function post (url, body) {
+  return (await fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -9,7 +9,7 @@ export async function post(url, body) {
   })).json()
 }
 
-export function paramsString(paramsObject) {
+export function paramsString (paramsObject) {
   let params = new URLSearchParams()
   Object.keys(paramsObject).forEach(key => {
     params.set(key, paramsObject[key])
@@ -17,11 +17,11 @@ export function paramsString(paramsObject) {
   return params.toString()
 }
 
-export async function get(url, headers = {}) {
-  return await (await fetch(url, {
+export async function get (url, headers = {}) {
+  return (await fetch(url, {
     method: 'GET',
     headers: Object.assign(headers, {
-      'Accept': 'application/json',
+      'Accept': 'application/json'
     })
   })).json()
 }

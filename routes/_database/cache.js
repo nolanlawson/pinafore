@@ -31,7 +31,7 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
   }
 }
 
-function getOrCreateInstanceCache(cache, instanceName) {
+function getOrCreateInstanceCache (cache, instanceName) {
   let cached = cache.caches[instanceName]
   if (!cached) {
     cached = cache.caches[instanceName] = new QuickLRU({maxSize: cache.maxSize})
@@ -39,20 +39,20 @@ function getOrCreateInstanceCache(cache, instanceName) {
   return cached
 }
 
-export function clearCache(cache, instanceName) {
+export function clearCache (cache, instanceName) {
   delete cache.caches[instanceName]
 }
-export function setInCache(cache, instanceName, key, value) {
+export function setInCache (cache, instanceName, key, value) {
   let instanceCache = getOrCreateInstanceCache(cache, instanceName)
   return instanceCache.set(key, value)
 }
 
-export function getInCache(cache, instanceName, key) {
+export function getInCache (cache, instanceName, key) {
   let instanceCache = getOrCreateInstanceCache(cache, instanceName)
   return instanceCache.get(key)
 }
 
-export function hasInCache(cache, instanceName, key) {
+export function hasInCache (cache, instanceName, key) {
   let instanceCache = getOrCreateInstanceCache(cache, instanceName)
   let res = instanceCache.has(key)
   if (process.env.NODE_ENV !== 'production') {

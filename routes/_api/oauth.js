@@ -1,20 +1,21 @@
+import { post, paramsString } from '../_utils/ajax'
+import { basename } from './utils'
+
 const WEBSITE = 'https://pinafore.social'
 const SCOPES = 'read write follow'
 const CLIENT_NAME = 'Pinafore'
-import { post, get, paramsString } from '../_utils/ajax'
-import { basename } from './utils'
 
-export function registerApplication(instanceName, redirectUri) {
+export function registerApplication (instanceName, redirectUri) {
   const url = `${basename(instanceName)}/api/v1/apps`
   return post(url, {
-      client_name: CLIENT_NAME,
-      redirect_uris: redirectUri,
-      scopes: SCOPES,
-      website: WEBSITE
+    client_name: CLIENT_NAME,
+    redirect_uris: redirectUri,
+    scopes: SCOPES,
+    website: WEBSITE
   })
 }
 
-export function generateAuthLink(instanceName, clientId, redirectUri) {
+export function generateAuthLink (instanceName, clientId, redirectUri) {
   let params = paramsString({
     'client_id': clientId,
     'redirect_uri': redirectUri,
@@ -24,7 +25,7 @@ export function generateAuthLink(instanceName, clientId, redirectUri) {
   return `${basename(instanceName)}/oauth/authorize?${params}`
 }
 
-export function getAccessTokenFromAuthCode(instanceName, clientId, clientSecret, code, redirectUri) {
+export function getAccessTokenFromAuthCode (instanceName, clientId, clientSecret, code, redirectUri) {
   let url = `${basename(instanceName)}/oauth/token`
   return post(url, {
     client_id: clientId,

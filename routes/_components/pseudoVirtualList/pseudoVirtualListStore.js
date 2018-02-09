@@ -1,7 +1,7 @@
 import { RealmStore } from '../../_utils/RealmStore'
 
 class PseudoVirtualListStore extends RealmStore {
-  constructor(state) {
+  constructor (state) {
     super(state, /* maxSize */ 10)
   }
 }

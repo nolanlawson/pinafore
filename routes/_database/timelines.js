@@ -7,17 +7,17 @@ import {
 } from './constants'
 import { getGenericEntityWithId } from './helpers'
 
-function createKeyRange(timeline, maxId) {
+function createKeyRange (timeline, maxId) {
   let negBigInt = maxId && toReversePaddedBigInt(maxId)
   let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
   let end = timeline + '\u0000\uffff'
   return IDBKeyRange.bound(start, end, false, false)
 }
 
-async function getNotificationTimeline(instanceName, timeline, maxId, limit) {
+async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
   let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE]
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+  return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ timelineStore, notificationsStore ] = stores
     let keyRange = createKeyRange(timeline, maxId)
 
@@ -34,10 +34,10 @@ async function getNotificationTimeline(instanceName, timeline, maxId, limit) {
   })
 }
 
-async function getStatusTimeline(instanceName, timeline, maxId, limit) {
+async function getStatusTimeline (instanceName, timeline, maxId, limit) {
   let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE]
   const db = await getDatabase(instanceName)
-  return await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+  return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ timelineStore, statusesStore ] = stores
     let keyRange = createKeyRange(timeline, maxId)
 
@@ -54,18 +54,18 @@ async function getStatusTimeline(instanceName, timeline, maxId, limit) {
   })
 }
 
-export async function getTimeline(instanceName, timeline, maxId = null, limit = 20) {
-  return timeline === 'notifications' ?
-    await getNotificationTimeline(instanceName, timeline, maxId, limit) :
-    await getStatusTimeline(instanceName, timeline, maxId, limit)
+export async function getTimeline (instanceName, timeline, maxId = null, limit = 20) {
+  return timeline === 'notifications'
+    ? getNotificationTimeline(instanceName, timeline, maxId, limit)
+    : getStatusTimeline(instanceName, timeline, maxId, limit)
 }
 
-function createTimelineId(timeline, id) {
+function createTimelineId (timeline, id) {
   // reverse chronological order, prefixed by timeline
   return timeline + '\u0000' + toReversePaddedBigInt(id)
 }
 
-async function insertTimelineNotifications(instanceName, timeline, notifications) {
+async function insertTimelineNotifications (instanceName, timeline, notifications) {
   let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, ACCOUNTS_STORE]
   for (let notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
@@ -85,7 +85,7 @@ async function insertTimelineNotifications(instanceName, timeline, notifications
   })
 }
 
-async function insertTimelineStatuses(instanceName, timeline, statuses) {
+async function insertTimelineStatuses (instanceName, timeline, statuses) {
   let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   for (let status of statuses) {
     setInCache(statusesCache, instanceName, status.id, status)
@@ -111,16 +111,16 @@ async function insertTimelineStatuses(instanceName, timeline, statuses) {
   })
 }
 
-export async function insertTimelineItems(instanceName, timeline, timelineItems) {
-  return timeline === 'notifications' ?
-    await insertTimelineNotifications(instanceName, timeline, timelineItems) :
-    await insertTimelineStatuses(instanceName, timeline, timelineItems)
+export async function insertTimelineItems (instanceName, timeline, timelineItems) {
+  return timeline === 'notifications'
+    ? insertTimelineNotifications(instanceName, timeline, timelineItems)
+    : insertTimelineStatuses(instanceName, timeline, timelineItems)
 }
 
-export async function getStatus(instanceName, statusId) {
-  return await getGenericEntityWithId(STATUSES_STORE, statusesCache, instanceName, statusId)
+export async function getStatus (instanceName, statusId) {
+  return getGenericEntityWithId(STATUSES_STORE, statusesCache, instanceName, statusId)
 }
 
-export async function getNotification(instanceName, notificationId) {
-  return await getGenericEntityWithId(NOTIFICATIONS_STORE, notificationsCache, instanceName, notificationId)
+export async function getNotification (instanceName, notificationId) {
+  return getGenericEntityWithId(NOTIFICATIONS_STORE, notificationsCache, instanceName, notificationId)
 }

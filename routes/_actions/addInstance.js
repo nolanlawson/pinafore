@@ -6,10 +6,10 @@ import { database } from '../_database/database'
 import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
 
-const REDIRECT_URI = (typeof location !== 'undefined' ?
-  location.origin : 'https://pinafore.social') + '/settings/instances/add'
+const REDIRECT_URI = (typeof location !== 'undefined'
+  ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
 
-async function redirectToOauth() {
+async function redirectToOauth () {
   let instanceName = store.get('instanceNameInSearch')
   let loggedInInstances = store.get('loggedInInstances')
   instanceName = instanceName.replace(/^https?:\/\//, '').replace('/$', '').toLowerCase()
@@ -34,7 +34,7 @@ async function redirectToOauth() {
   document.location.href = oauthUrl
 }
 
-export async function logInToInstance() {
+export async function logInToInstance () {
   store.set({logInToInstanceLoading: true})
   store.set({logInToInstanceError: null})
   try {
@@ -42,16 +42,16 @@ export async function logInToInstance() {
   } catch (err) {
     console.error(err)
     let error = `${err.message || err.name}. ` +
-      (navigator.onLine ?
-        `Is this a valid Mastodon instance?` :
-        `Are you offline?`)
+      (navigator.onLine
+        ? `Is this a valid Mastodon instance?`
+        : `Are you offline?`)
     store.set({logInToInstanceError: error})
   } finally {
     store.set({logInToInstanceLoading: false})
   }
 }
 
-async function registerNewInstance(code) {
+async function registerNewInstance (code) {
   let currentRegisteredInstanceName = store.get('currentRegisteredInstanceName')
   let currentRegisteredInstance = store.get('currentRegisteredInstance')
   let instanceData = await getAccessTokenFromAuthCode(
@@ -85,7 +85,7 @@ async function registerNewInstance(code) {
   goto('/')
 }
 
-export async function handleOauthCode(code) {
+export async function handleOauthCode (code) {
   try {
     store.set({logInToInstanceLoading: true})
     await registerNewInstance(code)
@@ -95,4 +95,3 @@ export async function handleOauthCode(code) {
     store.set({logInToInstanceLoading: false})
   }
 }
-

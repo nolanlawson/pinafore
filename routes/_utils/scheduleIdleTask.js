@@ -7,7 +7,7 @@ import Queue from 'tiny-queue'
 const taskQueue = new Queue()
 let runningRequestIdleCallback = false
 
-function runTasks(deadline) {
+function runTasks (deadline) {
   while (taskQueue.length && deadline.timeRemaining() > 0) {
     taskQueue.shift()()
   }
@@ -18,7 +18,7 @@ function runTasks(deadline) {
   }
 }
 
-export function scheduleIdleTask(task) {
+export function scheduleIdleTask (task) {
   taskQueue.push(task)
   if (!runningRequestIdleCallback) {
     runningRequestIdleCallback = true

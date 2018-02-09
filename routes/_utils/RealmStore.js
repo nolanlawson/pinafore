@@ -6,37 +6,37 @@ import QuickLRU from 'quick-lru'
 import { mark, stop } from './marks'
 
 export class RealmStore extends Store {
-  constructor(init, maxSize) {
+  constructor (init, maxSize) {
     super(init)
     this.set({realms: new QuickLRU({maxSize: maxSize})})
     this._batches = {}
   }
 
-  setCurrentRealm(realm) {
+  setCurrentRealm (realm) {
     this.set({currentRealm: realm})
   }
 
-  setForRealm(obj) {
+  setForRealm (obj) {
     let realmName = this.get('currentRealm')
     let realms = this.get('realms')
     realms.set(realmName, Object.assign(realms.get(realmName) || {}, obj))
     this.set({realms: realms})
   }
 
-  computeForRealm(key, defaultValue) {
+  computeForRealm (key, defaultValue) {
     this.compute(key,
         ['realms', 'currentRealm'],
         (realms, currentRealm) => {
-      let realmData = realms.get(currentRealm)
-      return (realmData && realmData[key]) || defaultValue
-    })
+          let realmData = realms.get(currentRealm)
+          return (realmData && realmData[key]) || defaultValue
+        })
   }
 
   /*
    * Update several values at once in a realm, assuming the key points
    * to a plain old javascript object.
    */
-  batchUpdateForRealm(key, subKey, value) {
+  batchUpdateForRealm (key, subKey, value) {
     let realm = this.get('currentRealm')
     let realmBatches = this._batches[realm]
     if (!realmBatches) {

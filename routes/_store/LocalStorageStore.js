@@ -2,12 +2,12 @@ import { Store } from 'svelte/store'
 
 const LS = process.browser && localStorage
 
-function safeParse(str) {
+function safeParse (str) {
   return !str ? undefined : (str === 'undefined' ? undefined : JSON.parse(str))
 }
 
 export class LocalStorageStore extends Store {
-  constructor(state, keysToWatch) {
+  constructor (state, keysToWatch) {
     super(state)
     if (!process.browser) {
       return
@@ -32,7 +32,7 @@ export class LocalStorageStore extends Store {
     })
   }
 
-  save() {
+  save () {
     if (!process.browser) {
       return
     }
