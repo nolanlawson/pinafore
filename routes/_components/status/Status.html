@@ -1,4 +1,4 @@
-<article class="status-article {{getClasses(originalStatus, timelineType)}}"
+<article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
          tabindex="0"
          aria-posinset="{{index}}" aria-setsize="{{length}}"
          on:recalculateHeight>
@@ -60,6 +60,7 @@
   import StatusContent from './StatusContent.html'
   import StatusSpoiler from './StatusSpoiler.html'
   import { store } from '../../_store/store'
+  import identity from 'lodash/identity'
 
   export default {
     components: {
@@ -73,9 +74,12 @@
     },
     store: () => store,
     helpers: {
-      getClasses(originalStatus, timelineType) {
-        return (originalStatus.visibility === 'direct' ? 'status-direct' : '') +
-          ' ' + (timelineType !== 'search' ? 'status-in-timeline' : '')
+      getClasses(originalStatus, timelineType, isStatusInOwnThread) {
+        return [
+          originalStatus.visibility === 'direct' && 'status-direct',
+          timelineType !== 'search' && 'status-in-timeline',
+          isStatusInOwnThread && 'status-in-own-thread'
+        ].filter(identity).join(' ')
       }
     },
     computed: {
