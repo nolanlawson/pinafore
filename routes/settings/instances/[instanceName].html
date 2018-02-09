@@ -9,8 +9,7 @@
     {{#if verifyCredentials}}
       <h2>Logged in as:</h2>
       <div class="acct-current-user">
-        <img alt="Profile picture for {{'@' + verifyCredentials.acct}}"
-             class="acct-avatar" src="{{verifyCredentials.avatar}}" />
+        <Avatar account="{{verifyCredentials}}" className="acct-avatar" size="big"/>
         <ExternalLink class="acct-handle"
                       href="{{verifyCredentials.url}}">
           {{'@' + verifyCredentials.acct}}
@@ -53,12 +52,11 @@
     grid-template-areas:
         "avatar handle"
         "avatar display-name";
-    grid-gap: 20px;
+    grid-template-columns: min-content 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
   }
-  .acct-avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 4px;
+  :global(.acct-avatar) {
     grid-area: avatar;
   }
   :global(.acct-handle) {
@@ -100,6 +98,7 @@
   import Layout from '../../_components/Layout.html'
   import SettingsLayout from '../_components/SettingsLayout.html'
   import ExternalLink from '../../_components/ExternalLink.html'
+  import Avatar from '../../_components/Avatar.html'
   import { showConfirmationDialog } from '../../_components/dialog/showConfirmationDialog'
   import {
     changeTheme,
@@ -113,7 +112,8 @@
     components: {
       Layout,
       SettingsLayout,
-      ExternalLink
+      ExternalLink,
+      Avatar
     },
     store: () => store,
     data: () => ({
