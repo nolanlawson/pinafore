@@ -78,7 +78,12 @@
       "localStorage",
       "URLSearchParams",
       "IntersectionObserver",
-      "URL"
+      "URL",
+      "self",
+      "caches",
+      "__routes__",
+      "__shell__",
+      "__assets__"
     ],
     "ignore": [
       "dist",

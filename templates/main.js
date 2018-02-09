@@ -1,5 +1,3 @@
-/* global __routes__ */
-
 import { init } from 'sapper/runtime.js'
 import { offlineNotifiction } from '../routes/_utils/offlineNotification'
 import { serviceWorkerClient } from '../routes/_utils/serviceWorkerClient'

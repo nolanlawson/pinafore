@@ -1,5 +1,3 @@
-/* global self, caches, __shell__, __assets__, __routes__ */
-
 const timestamp = '__timestamp__'
 const ASSETS = `cache${timestamp}`
 
