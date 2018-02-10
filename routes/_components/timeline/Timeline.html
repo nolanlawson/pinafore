@@ -37,7 +37,7 @@
                        items="{{$timelineItemIds}}"
                        shown="{{$initialized}}"
                        on:initializedVisibleItems="initialize()"
-                       scrollToItem="{{timelineValue}}"
+                       scrollToItem="{{scrollToItem}}"
                        realm="{{$currentInstance + '/' + timeline}}"
     />
   {{/if}}
@@ -115,9 +115,17 @@
       timelineValue: (timeline) => {
         return timeline.split('/').slice(-1)[0]
       },
-      // for threads, it's simpler to just render all items due to need to scroll to the right item
-      // TODO: this can be optimized to use a virtual list
-      virtual: (timelineType) => timelineType !=='status'
+      // for threads, it's simpler to just render all items as a pseudo-virtual list
+      // due to need to scroll to the right item and thus calculate all item heights up-front
+      virtual: (timelineType) => timelineType !=='status',
+      scrollToItem: (timelineType, timelineValue, $firstTimelineItemId) => {
+        // Scroll to the first item if this is a "status in own thread" timeline.
+        // Don't scroll to the first item because it obscures the "back" button.
+        return timelineType === 'status'
+          && $firstTimelineItemId
+          && timelineValue !== $firstTimelineItemId
+          && timelineValue
+      }
     },
     store: () => store,
     components: {

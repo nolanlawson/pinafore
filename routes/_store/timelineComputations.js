@@ -16,5 +16,6 @@ export function timelineComputations (store) {
   computeForTimeline(store, 'lastFocusedElementSelector')
   computeForTimeline(store, 'ignoreBlurEvents')
 
+  store.compute('firstTimelineItemId', ['timelineItemIds'], (timelineItemIds) => timelineItemIds && timelineItemIds.length && timelineItemIds[0])
   store.compute('lastTimelineItemId', ['timelineItemIds'], (timelineItemIds) => timelineItemIds && timelineItemIds.length && timelineItemIds[timelineItemIds.length - 1])
 }
