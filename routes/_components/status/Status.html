@@ -25,14 +25,14 @@
     padding: 10px 20px;
     display: grid;
     grid-template-areas:
-        "....... header"
-        "sidebar author"
-        "sidebar spoiler"
-        "sidebar spoiler-button"
-        "sidebar content"
-        "media   media"
-        "....... toolbar";
-    grid-template-columns: 58px 1fr;
+        "....... header          header         header"
+        "sidebar author-name     author-handle  author-date"
+        "sidebar spoiler         spoiler        spoiler"
+        "sidebar spoiler-button  spoiler-button spoiler-button"
+        "sidebar content         content        content"
+        "media   media           media          media"
+        "....... toolbar         toolbar        toolbar";
+    grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
   }
 
   .status-article.status-in-timeline {
