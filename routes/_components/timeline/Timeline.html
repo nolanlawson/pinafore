@@ -65,9 +65,9 @@
   export default {
     oncreate() {
       console.log('timeline oncreate()')
+      this.store.setForCurrentTimeline({ignoreBlurEvents: false})
       setupTimeline()
       if (this.store.get('initialized')) {
-        console.log('initialized!!!!')
         this.restoreFocus()
       }
     },
@@ -159,12 +159,15 @@
         })
       },
       clearFocus() {
-        /*console.log('clearing focus')
+        if (this.store.get('ignoreBlurEvents')) {
+          return
+        }
+        console.log('clearing focus')
         let instanceName = this.store.get('currentInstance')
         let timelineName = this.get('timeline')
         this.store.setForTimeline(instanceName, timelineName, {
           lastFocusedElementSelector: null
-        })*/
+        })
       },
       restoreFocus() {
         let lastFocusedElementSelector = this.store.get('lastFocusedElementSelector')

@@ -141,6 +141,7 @@
             parentElement.parentElement.localName !== 'button') {
           e.preventDefault()
           e.stopPropagation()
+          this.store.setForCurrentTimeline({ignoreBlurEvents: true})
           goto(`/statuses/${this.get('statusId')}`)
         }
       }
