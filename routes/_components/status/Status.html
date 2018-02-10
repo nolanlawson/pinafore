@@ -1,6 +1,7 @@
 <article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
-         tabindex="0"
+         tabindex="0" on:click="onClickOrKeydown(event)" on:keydown="onClickOrKeydown(event)"
          aria-posinset="{{index}}" aria-setsize="{{length}}"
+         aria-label="Status by {{originalStatus.account.display_name || originalStatus.account.username}}"
          on:recalculateHeight>
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
     <StatusHeader :notification :status :isStatusInNotification />
@@ -28,6 +29,7 @@
 
 <style>
   .status-article {
+    cursor: pointer;
     max-width: calc(100vw - 40px);
     padding: 10px 20px;
     display: grid;
@@ -84,6 +86,7 @@
   import StatusSpoiler from './StatusSpoiler.html'
   import { store } from '../../_store/store'
   import identity from 'lodash/identity'
+  import { goto } from 'sapper/runtime.js'
 
   export default {
     components: {
@@ -106,6 +109,24 @@
           timelineType !== 'search' && 'status-in-timeline',
           isStatusInOwnThread && 'status-in-own-thread'
         ].filter(identity).join(' ')
+      }
+    },
+    methods: {
+      onClickOrKeydown(e) {
+        let { type, keyCode } = e
+        let { localName, parentElement } = e.target
+
+        if ((type === 'click' || (type === 'keydown' && keyCode === 13)) &&
+            localName !== 'a' &&
+            localName !== 'button' &&
+            parentElement.localName !== 'a' &&
+            parentElement.localName !== 'button' &&
+            parentElement.parentElement.localName !== 'a' &&
+            parentElement.parentElement.localName !== 'button') {
+          e.preventDefault()
+          e.stopPropagation()
+          goto(`/statuses/${this.get('statusId')}`)
+        }
       }
     },
     computed: {

@@ -1,6 +1,6 @@
 <a class="status-relative-date {{isStatusInNotification ? 'status-in-notification' : '' }}"
    href="/statuses/{{status.id}}">
-  <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
+  <time datetime={{createdAtDate}} title="{{relativeDate}}" aria-label="{{relativeDate}} – click to show thread">{{relativeDate}}</time>
 </a>
 <style>
   .status-relative-date {
