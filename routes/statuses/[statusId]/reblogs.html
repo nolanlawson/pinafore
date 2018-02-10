@@ -1,0 +1,25 @@
+<:Head>
+  <title>Pinafore – Reblogs</title>
+</:Head>
+
+<Layout page='reblogs'>
+  <AccountsListPage :accountsFetcher :statusId />
+</Layout>
+<script>
+  import Layout from '../../_components/Layout.html'
+  import { getReblogs } from '../../_api/reblogsAndFavs'
+  import AccountsListPage from '../../_components/AccountsListPage.html'
+
+  export default {
+    data: () => ({
+      accountsFetcher: getReblogs
+    }),
+    computed: {
+      statusId: params => params.statusId
+    },
+    components: {
+      Layout,
+      AccountsListPage
+    }
+  }
+</script>

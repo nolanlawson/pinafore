@@ -1,0 +1,104 @@
+<div class="status-details">
+  <ExternalLink class="status-absolute-date" href="{{status.url}}" showIcon="true">
+    <time datetime={{createdAtDate}} title="{{formattedDate}}">{{formattedDate}}</time>
+  </ExternalLink>
+  <a class="status-favs-reblogs" href="/statuses/{{statusId}}/reblogs">
+    <svg>
+      <use xlink:href="#fa-retweet"/>
+    </svg>
+    <span>{{numReblogs}}</span>
+  </a>
+  <a class="status-favs-reblogs" href="/statuses/{{statusId}}/favorites">
+    <svg>
+      <use xlink:href="#fa-star" />
+    </svg>
+    <span>{{numFavs}}</span>
+  </a>
+</div>
+<style>
+  .status-details {
+    grid-area: details;
+    display: grid;
+    grid-template-columns: minmax(0, max-content) min-content min-content;
+    grid-gap: 20px;
+    align-items: center;
+    justify-content: left;
+    margin: 0 5px 10px;
+  }
+  :global(.status-absolute-date) {
+    font-size: 1.1em;
+    min-width: 0;
+  }
+
+  :global(.status-absolute-date time) {
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+  }
+
+  .status-favs-reblogs {
+    font-size: 1.1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .status-favs-reblogs span {
+    margin-left: 5px;
+  }
+
+  .status-favs-reblogs,
+  .status-favs-reblogs:hover,
+  .status-favs-reblogs:visited {
+    color: var(--deemphasized-text-color);
+  }
+
+  .status-favs-reblogs svg {
+    fill: var(--deemphasized-text-color);
+    width: 18px;
+    height: 18px;
+  }
+
+  :global(.status-absolute-date, .status-absolute-date:hover, .status-absolute-date:visited) {
+    color: var(--deemphasized-text-color);
+  }
+
+  @media (max-width: 479px) {
+    :global(.status-absolute-date) {
+      font-size: 1em;
+    }
+    .status-favs-reblogs {
+      font-size: 1em;
+    }
+    .status-details {
+      grid-gap: 5px;
+      justify-content: space-between;
+    }
+
+  }
+
+</style>
+<script>
+  import ExternalLink from '../ExternalLink.html'
+
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+
+  export default {
+    computed: {
+      statusId: (status) => status.id,
+      createdAtDate: (status) => status.created_at,
+      numReblogs: (status) => status.reblogs_count || 0,
+      numFavs: (status) => status.favourites_count || 0,
+      formattedDate: (createdAtDate) => formatter.format(new Date(createdAtDate))
+    },
+    components: {
+      ExternalLink
+    }
+  }
+</script>

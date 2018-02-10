@@ -1,0 +1,62 @@
+<div class="accounts-page">
+  {{#if loading}}
+    <LoadingPage />
+  {{elseif accounts && accounts.length}}
+    <ul class="accounts-results">
+      {{#each accounts as account}}
+        <AccountSearchResult :account />
+      {{/each}}
+    </ul>
+  {{/if}}
+</div>
+<style>
+  .accounts-page {
+    min-height: 60vh;
+    padding: 20px 20px;
+  }
+  .accounts-results {
+    list-style: none;
+    box-sizing: border-box;
+    border: 1px solid var(--main-border);
+    border-radius: 2px;
+  }
+  @media (max-width: 767px) {
+    .accounts-page {
+      padding: 20px 10px;
+    }
+  }
+</style>
+<script>
+  import Layout from '../_components/Layout.html'
+  import { store } from '../_store/store'
+  import LoadingPage from '../_components/LoadingPage.html'
+  import AccountSearchResult from '../_components/search/AccountSearchResult.html'
+  import { toast } from '../_utils/toast'
+
+  export default {
+    async oncreate() {
+      let accountsFetcher = this.get('accountsFetcher')
+      let statusId = this.get('statusId')
+      let instanceName = this.store.get('currentInstance')
+      let accessToken = this.store.get('accessToken')
+      try {
+        let accounts = await accountsFetcher(instanceName, accessToken, statusId)
+        this.set({ accounts: accounts })
+      } catch (e) {
+        toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
+      } finally {
+        this.set({loading: false})
+      }
+    },
+    data: () => ({
+      loading: true,
+      accounts: []
+    }),
+    store: () => store,
+    components: {
+      Layout,
+      LoadingPage,
+      AccountSearchResult
+    }
+  }
+</script>

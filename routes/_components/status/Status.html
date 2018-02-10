@@ -26,7 +26,7 @@
     <StatusMediaAttachments status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
   {{/if}}
   {{#if isStatusInOwnThread}}
-  <StatusAbsoluteDate status="{{originalStatus}}" />
+  <StatusDetails status="{{originalStatus}}" />
   {{/if}}
   <StatusToolbar :status :isStatusInOwnThread />
 </article>
@@ -65,7 +65,7 @@
       "spoiler-btn spoiler-btn"
       "content     content"
       "media       media"
-      "date        date"
+      "details     details"
       "toolbar     toolbar";
     grid-template-columns: min-content 1fr;
   }
@@ -83,7 +83,7 @@
   import StatusAuthorName from './StatusAuthorName.html'
   import StatusAuthorHandle from './StatusAuthorHandle.html'
   import StatusRelativeDate from './StatusRelativeDate.html'
-  import StatusAbsoluteDate from './StatusAbsoluteDate.html'
+  import StatusDetails from './StatusDetails.html'
   import StatusToolbar from './StatusToolbar.html'
   import StatusMediaAttachments from './StatusMediaAttachments.html'
   import StatusContent from './StatusContent.html'
@@ -116,7 +116,7 @@
       StatusAuthorName,
       StatusAuthorHandle,
       StatusRelativeDate,
-      StatusAbsoluteDate,
+      StatusDetails,
       StatusToolbar,
       StatusMediaAttachments,
       StatusContent,

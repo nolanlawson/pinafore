@@ -1,0 +1,25 @@
+<:Head>
+  <title>Pinafore – Favorites</title>
+</:Head>
+
+<Layout page='favorites'>
+  <AccountsListPage :accountsFetcher :statusId />
+</Layout>
+<script>
+  import Layout from '../../_components/Layout.html'
+  import { getFavorites } from '../../_api/reblogsAndFavs'
+  import AccountsListPage from '../../_components/AccountsListPage.html'
+
+  export default {
+    data: () => ({
+      accountsFetcher: getFavorites
+    }),
+    computed: {
+      statusId: params => params.statusId
+    },
+    components: {
+      Layout,
+      AccountsListPage
+    }
+  }
+</script>
