@@ -1,0 +1,43 @@
+<a class="status-relative-date {{isStatusInNotification ? 'status-in-notification' : '' }}"
+   href="/statuses/{{status.id}}">
+  <time datetime={{createdAtDate}} title="{{relativeDate}}">{{relativeDate}}</time>
+</a>
+<style>
+  .status-relative-date {
+    grid-area: relative-date;
+    align-self: center;
+    margin-left: 5px;
+    margin-right: 10px;
+    font-size: 1.1em;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .status-relative-date, .status-relative-date:hover, .status-relative-date:visited {
+    color: var(--deemphasized-text-color);
+  }
+
+  .status-relative-date.status-in-notification,
+  .status-relative-date.status-in-notification:hover,
+  .status-relative-date.status-in-notification:visited {
+    color: var(--very-deemphasized-text-color);
+  }
+
+</style>
+<script>
+  import IntlRelativeFormat from 'intl-relativeformat'
+  import { mark, stop } from '../../_utils/marks'
+
+  const relativeFormat = new IntlRelativeFormat('en-US');
+
+  export default {
+    computed: {
+      createdAtDate: (status) => status.created_at,
+      relativeDate: (createdAtDate) => {
+        mark('compute relativeDate')
+        let res = relativeFormat.format(new Date(createdAtDate))
+        stop('compute relativeDate')
+        return res
+      }
+    }
+  }
+</script>

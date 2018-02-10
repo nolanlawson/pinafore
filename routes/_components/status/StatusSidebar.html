@@ -1,6 +1,6 @@
 <Avatar account={{status.account}}
         className="status-sidebar"
-        size="small" />
+        size="{{isStatusInOwnThread ? 'medium' : 'small'}}" />
 <style>
   :global(.status-sidebar) {
     grid-area: sidebar;

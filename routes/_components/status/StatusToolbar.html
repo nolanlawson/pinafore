@@ -1,4 +1,4 @@
-<div class="status-toolbar">
+<div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
   <IconButton
     label="Reply"
     href="#fa-reply"
@@ -25,6 +25,9 @@
     grid-area: toolbar;
     display: flex;
     justify-content: space-between;
+  }
+  .status-toolbar.status-in-own-thread {
+    margin-left: 58px;
   }
 </style>
 <script>

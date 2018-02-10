@@ -1,7 +1,7 @@
-<div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}}">
-  {{status.spoiler_text}}
+<div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
+  <p>{{status.spoiler_text}}</p>
 </div>
-<div class="status-spoiler-button">
+<div class="status-spoiler-button {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
   <button type="button" on:click="onClickSpoilerButton()">
     {{spoilerShown ? 'Show less' : 'Show more'}}
   </button>
@@ -12,22 +12,30 @@
     word-wrap: break-word;
     overflow: hidden;
     white-space: pre-wrap;
-    font-size: 1.1em;
-    margin: 5px;
+    font-size: 0.9em;
+    margin: 10px 5px;
+  }
+
+  .status-spoiler.status-in-own-thread {
+    font-size: 1.3em;
+    margin: 20px 5px 10px;
+  }
+
+  .status-spoiler.status-in-notification {
+    color: var(--very-deemphasized-text-color);
   }
 
   .status-spoiler-button {
-    grid-area: spoiler-button;
-    margin: 5px;
+    grid-area: spoiler-btn;
+    margin: 10px 5px;
+  }
+
+  .status-spoiler-button.status-in-own-thread {
   }
 
   .status-spoiler-button button {
     padding: 5px 10px;
     font-size: 1.1em;
-  }
-
-  .status-spoiler.status-in-notification {
-    color: var(--very-deemphasized-text-color);
   }
 </style>
 <script>

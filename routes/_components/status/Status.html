@@ -5,10 +5,14 @@
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
     <StatusHeader :notification :status :isStatusInNotification />
   {{/if}}
-  <StatusAuthor status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
-  <StatusSidebar status="{{originalStatus}}" />
+  <StatusAuthorName status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
+  <StatusAuthorHandle status="{{originalStatus}}" :isStatusInNotification />
+  {{#if !isStatusInOwnThread}}
+    <StatusRelativeDate status="{{originalStatus}}" :isStatusInNotification />
+  {{/if}}
+  <StatusSidebar status="{{originalStatus}}" :isStatusInOwnThread />
   {{#if originalStatus.spoiler_text}}
-    <StatusSpoiler status="{{originalStatus}}" :contextualStatusId :isStatusInNotification on:recalculateHeight />
+    <StatusSpoiler status="{{originalStatus}}" :isStatusInOwnThread :contextualStatusId :isStatusInNotification on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
@@ -16,7 +20,10 @@
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
     <StatusMediaAttachments status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
   {{/if}}
-  <StatusToolbar :status />
+  {{#if isStatusInOwnThread}}
+  <StatusAbsoluteDate status="{{originalStatus}}" />
+  {{/if}}
+  <StatusToolbar :status :isStatusInOwnThread />
 </article>
 
 <style>
@@ -25,13 +32,13 @@
     padding: 10px 20px;
     display: grid;
     grid-template-areas:
-        "....... header          header         header"
-        "sidebar author-name     author-handle  author-date"
-        "sidebar spoiler         spoiler        spoiler"
-        "sidebar spoiler-button  spoiler-button spoiler-button"
-        "sidebar content         content        content"
-        "media   media           media          media"
-        "....... toolbar         toolbar        toolbar";
+        "....... header       header        header"
+        "sidebar author-name  author-handle relative-date"
+        "sidebar spoiler      spoiler       spoiler"
+        "sidebar spoiler-btn  spoiler-btn   spoiler-btn"
+        "sidebar content      content       content"
+        "media   media        media         media"
+        "....... toolbar      toolbar       toolbar";
     grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
   }
 
@@ -44,6 +51,19 @@
     background-color: var(--status-direct-background);
   }
 
+  .status-article.status-in-own-thread {
+    grid-template-areas:
+      "sidebar     author-name"
+      "sidebar     author-handle"
+      "spoiler     spoiler"
+      "spoiler-btn spoiler-btn"
+      "content     content"
+      "media       media"
+      "date        date"
+      "toolbar     toolbar";
+    grid-template-columns: min-content 1fr;
+  }
+
   @media (max-width: 767px) {
     .status-article {
       padding: 10px 10px;
@@ -54,7 +74,10 @@
 <script>
   import StatusSidebar from './StatusSidebar.html'
   import StatusHeader from './StatusHeader.html'
-  import StatusAuthor from './StatusAuthor.html'
+  import StatusAuthorName from './StatusAuthorName.html'
+  import StatusAuthorHandle from './StatusAuthorHandle.html'
+  import StatusRelativeDate from './StatusRelativeDate.html'
+  import StatusAbsoluteDate from './StatusAbsoluteDate.html'
   import StatusToolbar from './StatusToolbar.html'
   import StatusMediaAttachments from './StatusMediaAttachments.html'
   import StatusContent from './StatusContent.html'
@@ -66,7 +89,10 @@
     components: {
       StatusSidebar,
       StatusHeader,
-      StatusAuthor,
+      StatusAuthorName,
+      StatusAuthorHandle,
+      StatusRelativeDate,
+      StatusAbsoluteDate,
       StatusToolbar,
       StatusMediaAttachments,
       StatusContent,
