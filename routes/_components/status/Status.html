@@ -1,6 +1,9 @@
 <article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
-         tabindex="0" on:click="onClickOrKeydown(event)" on:keydown="onClickOrKeydown(event)"
-         aria-posinset="{{index}}" aria-setsize="{{length}}"
+         tabindex="0"
+         delegate-click-key="{{delegateKey}}"
+         delegate-keydown-key="{{delegateKey}}"
+         aria-posinset="{{index}}"
+         aria-setsize="{{length}}"
          aria-label="Status by {{originalStatus.account.display_name || originalStatus.account.username}}"
          on:recalculateHeight>
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
@@ -87,8 +90,20 @@
   import { store } from '../../_store/store'
   import identity from 'lodash/identity'
   import { goto } from 'sapper/runtime.js'
+  import { registerDelegate, unregisterDelegate } from '../../_utils/delegate'
 
   export default {
+    oncreate() {
+      let delegateKey = this.get('delegateKey')
+      let onClickOrKeydown = this.onClickOrKeydown.bind(this)
+      registerDelegate('click', delegateKey, onClickOrKeydown)
+      registerDelegate('keydown', delegateKey, onClickOrKeydown)
+    },
+    ondestroy() {
+      let delegateKey = this.get('delegateKey')
+      unregisterDelegate('click', delegateKey)
+      unregisterDelegate('keydown', delegateKey)
+    },
     components: {
       StatusSidebar,
       StatusHeader,
@@ -132,6 +147,7 @@
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
+      delegateKey: (statusId, timelineType, timelineValue) => `status-${timelineType}-${timelineValue}-${statusId}`,
       contextualStatusId: ($currentInstance, timelineType, timelineValue, status, notification) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notification ? notification.id : ''}/${status.id}`
       },
