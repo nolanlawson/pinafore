@@ -1,7 +1,7 @@
 <a rel="nofollow noopener"
    target="_blank"
    href="{{href}}"
-   class="{{className || ''}} {{showIcon ? 'external-link-with-icon' : ''}}">
+   class="{{className || ''}} {{showIcon ? 'external-link-with-icon' : ''}} {{normalIconColor ? 'normal-icon-color' : ''}}">
   <slot></slot>
   {{#if showIcon}}
     <svg>
@@ -19,6 +19,9 @@
     width: 14px;
     height: 14px;
     fill: var(--deemphasized-text-color);
+  }
+  .external-link-with-icon.normal-icon-color svg {
+    fill: var(--body-text-color);
   }
 </style>
 <script>
