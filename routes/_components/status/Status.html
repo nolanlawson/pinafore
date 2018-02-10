@@ -1,7 +1,8 @@
 <article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
          tabindex="0"
-         delegate-click-key="{{delegateKey}}"
-         delegate-keydown-key="{{delegateKey}}"
+         delegate-click-key="{{elementKey}}"
+         delegate-keydown-key="{{elementKey}}"
+         focus-key="{{elementKey}}"
          aria-posinset="{{index}}"
          aria-setsize="{{length}}"
          aria-label="Status by {{originalStatus.account.display_name || originalStatus.account.username}}"
@@ -94,15 +95,15 @@
 
   export default {
     oncreate() {
-      let delegateKey = this.get('delegateKey')
+      let elementKey = this.get('elementKey')
       let onClickOrKeydown = this.onClickOrKeydown.bind(this)
-      registerDelegate('click', delegateKey, onClickOrKeydown)
-      registerDelegate('keydown', delegateKey, onClickOrKeydown)
+      registerDelegate('click', elementKey, onClickOrKeydown)
+      registerDelegate('keydown', elementKey, onClickOrKeydown)
     },
     ondestroy() {
-      let delegateKey = this.get('delegateKey')
-      unregisterDelegate('click', delegateKey)
-      unregisterDelegate('keydown', delegateKey)
+      let elementKey = this.get('elementKey')
+      unregisterDelegate('click', elementKey)
+      unregisterDelegate('keydown', elementKey)
     },
     components: {
       StatusSidebar,
@@ -147,7 +148,7 @@
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
-      delegateKey: (statusId, timelineType, timelineValue) => `status-${timelineType}-${timelineValue}-${statusId}`,
+      elementKey: (statusId, timelineType, timelineValue) => `status-${timelineType}-${timelineValue}-${statusId}`,
       contextualStatusId: ($currentInstance, timelineType, timelineValue, status, notification) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notification ? notification.id : ''}/${status.id}`
       },

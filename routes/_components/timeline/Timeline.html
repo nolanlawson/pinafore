@@ -1,4 +1,9 @@
-<div class="timeline" role="feed" aria-label="{{label}}">
+<div class="timeline"
+     role="feed"
+     aria-label="{{label}}"
+     on:focusWithCapture="saveFocus(event)"
+     on:blurWithCapture="clearFocus(event)"
+>
   {{#if !$initialized}}
     <LoadingPage />
   {{/if}}
@@ -55,11 +60,19 @@
   import { database } from '../../_database/database'
   import { initializeTimeline, fetchTimelineItemsOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
   import LoadingPage from '../LoadingPage.html'
+  import { focusWithCapture, blurWithCapture } from '../../_utils/events'
 
   export default {
-    async oncreate() {
+    oncreate() {
       console.log('timeline oncreate()')
       setupTimeline()
+      if (this.store.get('initialized')) {
+        console.log('initialized!!!!')
+        this.restoreFocus()
+      }
+    },
+    ondestroy() {
+      console.log('ondestroy')
     },
     data: () => ({
       StatusVirtualListItem,
@@ -109,6 +122,10 @@
       PseudoVirtualList,
       LoadingPage
     },
+    events: {
+      focusWithCapture,
+      blurWithCapture
+    },
     methods: {
       initialize() {
         if (this.store.get('initialized') || !this.store.get('timelineItemIds')) {
@@ -124,7 +141,46 @@
           return
         }
         fetchTimelineItemsOnScrollToBottom()
-      }
+      },
+      saveFocus(e) {
+        let instanceName = this.store.get('currentInstance')
+        let timelineName = this.get('timeline')
+        let lastFocusedElementSelector
+        let activeElement = e.target
+        if (activeElement) {
+          let focusKey = activeElement.getAttribute('focus-key')
+          if (focusKey) {
+            lastFocusedElementSelector = `[focus-key=${focusKey}]`
+          }
+        }
+        console.log('saving focus to ', lastFocusedElementSelector)
+        this.store.setForTimeline(instanceName, timelineName, {
+          lastFocusedElementSelector
+        })
+      },
+      clearFocus() {
+        /*console.log('clearing focus')
+        let instanceName = this.store.get('currentInstance')
+        let timelineName = this.get('timeline')
+        this.store.setForTimeline(instanceName, timelineName, {
+          lastFocusedElementSelector: null
+        })*/
+      },
+      restoreFocus() {
+        let lastFocusedElementSelector = this.store.get('lastFocusedElementSelector')
+        console.log('lastFocused', lastFocusedElementSelector)
+        if (lastFocusedElementSelector) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              let element = document.querySelector(lastFocusedElementSelector)
+              console.log('el', element)
+              if (element) {
+                element.focus()
+              }
+            })
+          })
+        }
+      },
     }
   }
 </script>
