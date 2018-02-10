@@ -3,7 +3,9 @@
     <use xlink:href="{{getIcon(notification, status)}}"/>
   </svg>
   <span>
-    <a href="/accounts/{{getAccount(notification, status).id}}">
+    <a href="/accounts/{{getAccount(notification, status).id}}"
+       focus-key="{{focusKey}}"
+    >
       {{getAccount(notification, status).display_name || ('@' + getAccount(notification, status).username)}}
     </a>
     {{#if notification && notification.type === 'reblog'}}
@@ -62,6 +64,10 @@
 </style>
 <script>
   export default {
+    computed: {
+      statusId: (status) => status.id,
+      focusKey: (statusId) => `status-header-${statusId}`
+    },
     helpers: {
       getIcon(notification, status) {
         if ((notification && notification.type === 'reblog') || (status && status.reblog)) {

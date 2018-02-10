@@ -1,5 +1,7 @@
 <a class="status-author-name {{isStatusInNotification ? 'status-in-notification' : '' }} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
-   href="/accounts/{{status.account.id}}">
+   href="/accounts/{{status.account.id}}"
+   focus-key="{{focusKey}}"
+>
   {{status.account.display_name || status.account.username}}
 </a>
 <style>
@@ -31,27 +33,10 @@
 
 </style>
 <script>
-  import IntlRelativeFormat from 'intl-relativeformat'
-  import ExternalLink from '../ExternalLink.html'
-  import { mark, stop } from '../../_utils/marks'
-
-  const relativeFormat = new IntlRelativeFormat('en-US');
-
   export default {
-    helpers: {
-      getClass: isStatusInNotification => isStatusInNotification ? 'status-author-in-notification' : ''
-    },
     computed: {
-      createdAtDate: (status) => status.created_at,
-      relativeDate: (createdAtDate) => {
-        mark('compute relativeDate')
-        let res = relativeFormat.format(new Date(createdAtDate))
-        stop('compute relativeDate')
-        return res
-      }
-    },
-    components: {
-      ExternalLink
+      statusId: (status) => status.id,
+      focusKey: (statusId) => `status-author-name-${statusId}`
     }
   }
 </script>

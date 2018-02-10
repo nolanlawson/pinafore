@@ -1,5 +1,7 @@
 <a class="status-relative-date {{isStatusInNotification ? 'status-in-notification' : '' }}"
-   href="/statuses/{{status.id}}">
+   href="/statuses/{{status.id}}"
+   focus-key="{{focusKey}}"
+>
   <time datetime={{createdAtDate}} title="{{relativeDate}}" aria-label="{{relativeDate}} – click to show thread">{{relativeDate}}</time>
 </a>
 <style>
@@ -32,12 +34,14 @@
   export default {
     computed: {
       createdAtDate: (status) => status.created_at,
+      statusId: (status) => status.id,
       relativeDate: (createdAtDate) => {
         mark('compute relativeDate')
         let res = relativeFormat.format(new Date(createdAtDate))
         stop('compute relativeDate')
         return res
-      }
+      },
+      focusKey: (statusId) => `status-relative-date-${statusId}`
     }
   }
 </script>

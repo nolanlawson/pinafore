@@ -72,7 +72,8 @@
           }
         }
         return content
-      }
+      },
+      statusId: (status) => status.id
     },
     methods: {
       hydrateContent() {
@@ -80,6 +81,8 @@
           return
         }
         let status = this.get('status')
+        let statusId = this.get('statusId')
+        let count = 0
         mark('hydrateContent')
         if (status.tags && status.tags.length) {
           let anchorTags = Array.from(this.refs.node.querySelectorAll(
@@ -88,6 +91,7 @@
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
                 anchorTag.setAttribute('href', `/tags/${tag.name}`)
+                anchorTag.setAttribute('focus-key', `status-content-link-${statusId}-${++count}`)
                 anchorTag.removeAttribute('target')
                 anchorTag.removeAttribute('rel')
               }
@@ -101,6 +105,7 @@
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href') === mention.url) {
                 anchorTag.setAttribute('href', `/accounts/${mention.id}`)
+                anchorTag.setAttribute('focus-key', `status-content-link-${statusId}-${++count}`)
                 anchorTag.removeAttribute('target')
                 anchorTag.removeAttribute('rel')
               }

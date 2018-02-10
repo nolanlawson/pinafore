@@ -34,3 +34,21 @@ export function mouseover (node, callback) {
     }
   }
 }
+
+export function focusWithCapture (node, callback) {
+  node.addEventListener('focus', callback, true)
+  return {
+    teardown () {
+      node.removeEventListener('focus', callback, true)
+    }
+  }
+}
+
+export function blurWithCapture (node, callback) {
+  node.addEventListener('blur', callback, true)
+  return {
+    teardown () {
+      node.removeEventListener('blur', callback, true)
+    }
+  }
+}
