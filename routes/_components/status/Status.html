@@ -97,13 +97,18 @@
     oncreate() {
       let elementKey = this.get('elementKey')
       let onClickOrKeydown = this.onClickOrKeydown.bind(this)
-      registerDelegate('click', elementKey, onClickOrKeydown)
-      registerDelegate('keydown', elementKey, onClickOrKeydown)
+      if (!this.get('isStatusInOwnThread')) {
+        // the whole <article> is clickable in this case
+        registerDelegate('click', elementKey, onClickOrKeydown)
+        registerDelegate('keydown', elementKey, onClickOrKeydown)
+      }
     },
     ondestroy() {
       let elementKey = this.get('elementKey')
-      unregisterDelegate('click', elementKey)
-      unregisterDelegate('keydown', elementKey)
+      if (!this.get('isStatusInOwnThread')) {
+        unregisterDelegate('click', elementKey)
+        unregisterDelegate('keydown', elementKey)
+      }
     },
     components: {
       StatusSidebar,
