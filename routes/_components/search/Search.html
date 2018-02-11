@@ -7,13 +7,13 @@
            required
            bind:value="$queryInSearch">
   </div>
-  <button type="submit" class="primary search-button" aria-label="Search">
+  <button type="submit" class="primary search-button" aria-label="Search" disabled="{{$searchLoading}}">
     <svg>
       <use xlink:href="#fa-search" />
     </svg>
   </button>
 </form>
-{{#if loading}}
+{{#if $searchLoading}}
   <div class="search-results-container">
     <LoadingPage />
   </div>
@@ -58,8 +58,7 @@
 <script>
   import { store } from '../../_store/store'
   import LoadingPage from '../LoadingPage.html'
-  import { toast } from '../../_utils/toast'
-  import { search } from '../../_api/search'
+  import { doSearch } from '../../_actions/search'
   import SearchResults from './SearchResults.html'
 
   export default {
@@ -71,25 +70,7 @@
     methods: {
       async onSubmit (e) {
         e.preventDefault()
-        let instanceName = this.store.get('currentInstance')
-        let accessToken = this.store.get('accessToken')
-        let queryInSearch = this.store.get('queryInSearch')
-        this.set({loading: true})
-        try {
-          let results = await search(instanceName, accessToken, queryInSearch)
-          let currentQueryInSearch = this.store.get('queryInSearch') // avoid race conditions
-          if (currentQueryInSearch === queryInSearch) {
-            this.store.set({
-              searchResultsForQuery: queryInSearch,
-              searchResults: results
-            })
-          }
-        } catch (e) {
-          toast.say('Error during search: ' + (e.name || '') + ' ' + (e.message || ''))
-          console.error(e)
-        } finally {
-          this.set({loading: false})
-        }
+        doSearch()
       }
     }
   }
