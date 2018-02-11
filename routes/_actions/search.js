@@ -2,7 +2,7 @@ import { store } from '../_store/store'
 import { toast } from '../_utils/toast'
 import { search } from '../_api/search'
 
-export async function doSearch() {
+export async function doSearch () {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   let queryInSearch = store.get('queryInSearch')

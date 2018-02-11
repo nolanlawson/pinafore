@@ -3,7 +3,7 @@ import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getPinnedStatuses } from '../_api/pinnedStatuses'
 import { database } from '../_database/database'
 
-export async function updatePinnedStatusesForAccount(accountId) {
+export async function updatePinnedStatusesForAccount (accountId) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
 
@@ -18,6 +18,4 @@ export async function updatePinnedStatusesForAccount(accountId) {
       store.set({pinnedStatuses: $pinnedStatuses})
     }
   )
-
-
 }

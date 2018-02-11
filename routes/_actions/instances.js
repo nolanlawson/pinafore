@@ -67,8 +67,7 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
   )
 }
 
-
-export async function updateInstanceInfo(instanceName) {
+export async function updateInstanceInfo (instanceName) {
   await cacheFirstUpdateAfter(
     () => getInstanceInfo(instanceName),
     () => database.getInstanceInfo(instanceName),

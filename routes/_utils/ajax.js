@@ -1,6 +1,6 @@
 const TIMEOUT = 15000
 
-function fetchWithTimeout(url, options) {
+function fetchWithTimeout (url, options) {
   return Promise.race([
     fetch(url, options),
     new Promise((resolve, reject) => {

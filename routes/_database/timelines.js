@@ -57,7 +57,7 @@ function cloneForStorage (obj) {
   return res
 }
 
-function cacheStatus(status, instanceName) {
+function cacheStatus (status, instanceName) {
   setInCache(statusesCache, instanceName, status.id, status)
   setInCache(accountsCache, instanceName, status.account.id, status.account)
   if (status.reblog) {

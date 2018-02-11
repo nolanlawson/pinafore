@@ -2,7 +2,6 @@ import { updateInstanceInfo } from '../_actions/instances'
 import { createStream } from '../_actions/streaming'
 
 export function timelineObservers (store) {
-
   let currentTimelineStream
 
   store.observe('currentTimeline', async (currentTimeline) => {

@@ -50,8 +50,8 @@ function handleStreamMessage (instanceName, timelineName, message) {
 }
 
 export function createStream (streamingApi, instanceName, accessToken, timelineName) {
-  new TimelineStream(streamingApi, accessToken, timelineName, {
-    onMessage(msg) {
+  return new TimelineStream(streamingApi, accessToken, timelineName, {
+    onMessage (msg) {
       console.log('message', msg)
       if (msg.event !== 'update' && msg.event !== 'delete') {
         console.error("don't know how to handle event", msg)
@@ -61,13 +61,13 @@ export function createStream (streamingApi, instanceName, accessToken, timelineN
         handleStreamMessage(instanceName, timelineName, msg)
       })
     },
-    onOpen() {
+    onOpen () {
       console.log('opened stream for timeline', timelineName)
     },
-    onClose() {
+    onClose () {
       console.log('closed stream for timeline', timelineName)
     },
-    onReconnect() {
+    onReconnect () {
       console.log('reconnected stream for timeline', timelineName)
     }
   })
