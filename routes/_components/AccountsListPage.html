@@ -13,6 +13,7 @@
   .accounts-page {
     min-height: 60vh;
     padding: 20px 20px;
+    position: relative;
   }
   .accounts-results {
     list-style: none;
@@ -36,11 +37,9 @@
   export default {
     async oncreate() {
       let accountsFetcher = this.get('accountsFetcher')
-      let statusId = this.get('statusId')
-      let instanceName = this.store.get('currentInstance')
-      let accessToken = this.store.get('accessToken')
       try {
-        let accounts = await accountsFetcher(instanceName, accessToken, statusId)
+        // TODO: paginate
+        let accounts = await accountsFetcher()
         this.set({ accounts: accounts })
       } catch (e) {
         toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))

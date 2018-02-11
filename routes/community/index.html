@@ -5,27 +5,66 @@
 <Layout page='community'>
   {{#if $isUserLoggedIn}}
   <div class="community-page">
-    <PageList label="Community list">
+
+    <h2 class="community-header">
+      Timelines
+    </h2>
+
+    <PageList label="Timelines">
       <PageListItem href="/local"
                     label="Local Timeline"
                     icon="#fa-users"
+                    pinnable="true"
       />
       <PageListItem href="/federated"
                     label="Federated Timeline"
                     icon="#fa-globe"
+                    pinnable="true"
       />
       <PageListItem href="/favorites"
                     label="Favorites"
                     icon="#fa-star"
+                    pinnable="true"
       />
-
-      {{#each $lists as list}}
-      <PageListItem href="/lists/{{list.id}}"
-                    label="{{list.title}}"
-                    icon="#fa-bars"
-      />
-      {{/each}}
     </PageList>
+
+    {{#if $lists.length}}
+
+      <h2 class="community-header">
+        Lists
+      </h2>
+
+      <PageList label="Lists">
+        {{#each $lists as list}}
+        <PageListItem href="/lists/{{list.id}}"
+                      label="{{list.title}}"
+                      icon="#fa-bars"
+                      pinnable="true"
+        />
+        {{/each}}
+      </PageList>
+
+    {{/if}}
+
+    <h2 class="community-header">
+      Instance settings
+    </h2>
+
+    <PageList label="Instance settings">
+      <PageListItem href="/muted"
+                    label="Muted users"
+                    icon="#fa-volume-off"
+      />
+      <PageListItem href="/blocked"
+                    label="Blocked users"
+                    icon="#fa-ban"
+      />
+      <PageListItem href="/pinned"
+                    label="Pinned toots"
+                    icon="#fa-thumb-tack"
+      />
+    </PageList>
+
   </div>
   {{else}}
   <HiddenFromSSR>

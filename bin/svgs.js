@@ -21,6 +21,8 @@ module.exports = [
   {id: 'fa-search', src: 'node_modules/font-awesome-svg-png/white/svg/search.svg', title: 'Search'},
   {id: 'fa-comments', src: 'node_modules/font-awesome-svg-png/white/svg/comments.svg', title: 'Conversations'},
   {id: 'fa-paperclip', src: 'node_modules/font-awesome-svg-png/white/svg/paperclip.svg', title: 'Paperclip'},
-  {id: 'fa-thumbtack', src: 'node_modules/font-awesome-svg-png/white/svg/thumb-tack.svg', title: 'Thumbtack'},
-  {id: 'fa-bars', src: 'node_modules/font-awesome-svg-png/white/svg/bars.svg', title: 'List'}
+  {id: 'fa-thumb-tack', src: 'node_modules/font-awesome-svg-png/white/svg/thumb-tack.svg', title: 'Thumbtack'},
+  {id: 'fa-bars', src: 'node_modules/font-awesome-svg-png/white/svg/bars.svg', title: 'List'},
+  {id: 'fa-volume-off', src: 'node_modules/font-awesome-svg-png/white/svg/volume-off.svg', title: 'Volume off'},
+  {id: 'fa-ban', src: 'node_modules/font-awesome-svg-png/white/svg/ban.svg', title: 'Ban'},
 ]

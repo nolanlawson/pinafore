@@ -6,12 +6,13 @@
     <span aria-label="{{label}} {{$pinnedPage === href ? 'Pinned page' : 'Unpinned page'}}">
       {{label}}
     </span>
-    <IconButton pressable="true"
-                pressed="{{$pinnedPage === href}}"
-                label="Pin page"
-                href="#fa-thumbtack"
-                on:click="onPinClick(event)"
-    />
+    {{#if pinnable}}
+      <IconButton pressable="true"
+                  pressed="{{$pinnedPage === href}}"
+                  label="Pin page"
+                  href="#fa-thumb-tack"
+                  on:click="onPinClick(event)" />
+    {{/if}}
   </a>
 </li>
 <style>
