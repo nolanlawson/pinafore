@@ -32,10 +32,10 @@
 
   export default {
     oncreate () {
-      this.observe('showFooter', showFooter => {
+      this.observeSafely('showFooter', showFooter => {
         this.store.setForRealm({showFooter: showFooter})
       })
-      this.observe('items', (items) => {
+      this.observeSafely('items', (items) => {
         mark('set items')
         this.store.setForRealm({items: items})
         stop('set items')
@@ -44,7 +44,7 @@
         }, SCROLL_TO_BOTTOM_DELAY)
       })
 
-      this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+      this.observeSafely('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
         if (allVisibleItemsHaveHeight) {
           this.fire('initializedVisibleItems')
         }
@@ -52,7 +52,7 @@
 
       let observedOnce = false
 
-      this.observe('distanceFromBottom', (distanceFromBottom) => {
+      this.observeSafely('distanceFromBottom', (distanceFromBottom) => {
         if (!observedOnce) {
           observedOnce = true // TODO: the first time is always 0... need better way to handle this
           return
@@ -77,6 +77,19 @@
       },
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
+    },
+    ondestroy() {
+      this.__destroyed = true
+    },
+    methods: {
+      observeSafely(val, callback) {
+        // TODO: feels like this shouldn't be necessary... bug in Svelte?
+        this.observe(val, val => {
+          if (!this.__destroyed) {
+            callback(val)
+          }
+        })
+      }
     }
   }
 </script>
