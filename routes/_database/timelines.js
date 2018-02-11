@@ -14,9 +14,17 @@ const ACCOUNT_ID = '__pinafore_acct_id'
 const STATUS_ID = '__pinafore_status_id'
 const REBLOG_ID = '__pinafore_reblog_id'
 
-function createKeyRange (timeline, maxId) {
+function createTimelineKeyRange (timeline, maxId) {
   let negBigInt = maxId && toReversePaddedBigInt(maxId)
   let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
+  let end = timeline + '\u0000\uffff'
+  return IDBKeyRange.bound(start, end, true, true)
+}
+
+// special case for threads – these are in chronological order rather than reverse
+// chronological order, and we fetch everything all at once rather than paginating
+function createKeyRangeForStatusThread (timeline) {
+  let start = timeline + '\u0000'
   let end = timeline + '\u0000\uffff'
   return IDBKeyRange.bound(start, end, true, true)
 }
@@ -58,7 +66,7 @@ async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ timelineStore, notificationsStore, statusesStore, accountsStore ] = stores
-    let keyRange = createKeyRange(timeline, maxId)
+    let keyRange = createTimelineKeyRange(timeline, maxId)
 
     timelineStore.getAll(keyRange, limit).onsuccess = e => {
       let timelineResults = e.target.result
@@ -78,10 +86,18 @@ async function getStatusTimeline (instanceName, timeline, maxId, limit) {
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ timelineStore, statusesStore, accountsStore ] = stores
-    let keyRange = createKeyRange(timeline, maxId)
+    // Status threads are a special case - these are in forward chronological order
+    // and we fetch them all at once instead of paginating.
+    let isStatusThread = timeline.startsWith('status/')
+    let getReq = isStatusThread ?
+      timelineStore.getAll(createKeyRangeForStatusThread(timeline)) :
+      timelineStore.getAll(createTimelineKeyRange(timeline, maxId), limit)
 
-    timelineStore.getAll(keyRange, limit).onsuccess = e => {
+    getReq.onsuccess = e => {
       let timelineResults = e.target.result
+      if (isStatusThread) {
+        timelineResults = timelineResults.reverse()
+      }
       let res = new Array(timelineResults.length)
       timelineResults.forEach((timelineResult, i) => {
         fetchStatus(statusesStore, accountsStore, timelineResult.statusId, status => {
