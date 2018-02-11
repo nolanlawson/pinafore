@@ -38,7 +38,9 @@ export async function logOutOfInstance (instanceName) {
     loggedInInstances: loggedInInstances,
     instanceThemes: instanceThemes,
     loggedInInstancesInOrder: loggedInInstancesInOrder,
-    currentInstance: newInstance
+    currentInstance: newInstance,
+    searchResults: null,
+    queryInSearch: ''
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)

@@ -1,0 +1,35 @@
+<div role="feed" aria-label="Pinned toots" classes="pinned-statuses">
+  {{#if pinnedStatuses}}
+    {{#each pinnedStatuses as status, index}}
+      <Status :status
+              timelineType="pinned"
+              timelineValue="{{accountId}}"
+              :index
+              length="{{pinnedStatuses.length}}"
+      />
+    {{/each}}
+  {{/if}}
+</div>
+<script>
+  import { store } from '../../_store/store'
+  import Status from '../status/Status.html'
+  import LoadingPage from '../../_components/LoadingPage.html'
+  import { updatePinnedStatusesForAccount } from '../../_actions/pinnedStatuses'
+
+  export default {
+    async oncreate() {
+      let accountId = this.get('accountId')
+      await updatePinnedStatusesForAccount(accountId)
+    },
+    computed: {
+      pinnedStatuses: ($pinnedStatuses, $currentInstance, accountId) => {
+        return $pinnedStatuses[$currentInstance] && $pinnedStatuses[$currentInstance][accountId]
+      }
+    },
+    store: () => store,
+    components: {
+      Status,
+      LoadingPage
+    }
+  }
+</script>

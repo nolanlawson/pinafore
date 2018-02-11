@@ -1,10 +1,10 @@
-import { toReversePaddedBigInt } from './utils'
+import { toPaddedBigInt, toReversePaddedBigInt } from './utils'
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { accountsCache, getInCache, hasInCache, notificationsCache, setInCache, statusesCache } from './cache'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
-  NOTIFICATIONS_STORE,
+  NOTIFICATIONS_STORE, PINNED_STATUSES_STORE,
   STATUS_TIMELINES_STORE,
   STATUSES_STORE
 } from './constants'
@@ -55,6 +55,14 @@ function cloneForStorage (obj) {
   }
   res[TIMESTAMP] = Date.now()
   return res
+}
+
+function cacheStatus(status, instanceName) {
+  setInCache(statusesCache, instanceName, status.id, status)
+  setInCache(accountsCache, instanceName, status.account.id, status.account)
+  if (status.reblog) {
+    setInCache(accountsCache, instanceName, status.reblog.account.id, status.reblog.account)
+  }
 }
 
 //
@@ -214,11 +222,7 @@ async function insertTimelineNotifications (instanceName, timeline, notification
 
 async function insertTimelineStatuses (instanceName, timeline, statuses) {
   for (let status of statuses) {
-    setInCache(statusesCache, instanceName, status.id, status)
-    setInCache(accountsCache, instanceName, status.account.id, status.account)
-    if (status.reblog) {
-      setInCache(accountsCache, instanceName, status.reblog.account.id, status.reblog.account)
-    }
+    cacheStatus(status, instanceName)
   }
   const db = await getDatabase(instanceName)
   let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
@@ -270,4 +274,48 @@ export async function getNotification (instanceName, id) {
   })
   setInCache(notificationsCache, instanceName, id, result)
   return result
+}
+
+//
+// pinned statuses
+//
+
+export async function insertPinnedStatuses (instanceName, accountId, statuses) {
+  for (let status of statuses) {
+    cacheStatus(status, instanceName)
+  }
+  const db = await getDatabase(instanceName)
+  let storeNames = [PINNED_STATUSES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  await dbPromise(db, storeNames, 'readwrite', (stores) => {
+    let [ pinnedStatusesStore, statusesStore, accountsStore ] = stores
+    statuses.forEach((status, i) => {
+      storeStatus(statusesStore, accountsStore, status)
+      pinnedStatusesStore.put({
+        id: accountId + '\u0000' + toPaddedBigInt(i),
+        statusId: status.id
+      })
+    })
+  })
+}
+
+export async function getPinnedStatuses (instanceName, accountId) {
+  let storeNames = [PINNED_STATUSES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  const db = await getDatabase(instanceName)
+  return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+    let [ pinnedStatusesStore, statusesStore, accountsStore ] = stores
+    let keyRange = IDBKeyRange.bound(
+      accountId + '\u0000',
+      accountId + '\u0000\uffff'
+    )
+    pinnedStatusesStore.getAll(keyRange).onsuccess = e => {
+      let pinnedResults = e.target.result
+      let res = new Array(pinnedResults.length)
+      pinnedResults.forEach((pinnedResult, i) => {
+        fetchStatus(statusesStore, accountsStore, pinnedResult.statusId, status => {
+          res[i] = status
+        })
+      })
+      callback(res)
+    }
+  })
 }

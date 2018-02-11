@@ -5,13 +5,14 @@ import {
   ACCOUNTS_STORE,
   RELATIONSHIPS_STORE,
   NOTIFICATIONS_STORE,
-  NOTIFICATION_TIMELINES_STORE
+  NOTIFICATION_TIMELINES_STORE,
+  PINNED_STATUSES_STORE
 } from './constants'
 
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 1
+const DB_VERSION = 2
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -30,15 +31,20 @@ export function getDatabase (instanceName) {
     }
     req.onupgradeneeded = (e) => {
       let db = req.result
-      db.createObjectStore(META_STORE, {keyPath: 'key'})
-      db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
-      db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
-      db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
-      db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
-      db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
+      if (e.oldVersion < 1) {
+        db.createObjectStore(META_STORE, {keyPath: 'key'})
+        db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
+        db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
+        db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
+        db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
+        db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
           .createIndex('statusId', 'statusId')
-      db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
+        db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
           .createIndex('notificationId', 'notificationId')
+      }
+      if (e.oldVersion < 2) {
+        db.createObjectStore(PINNED_STATUSES_STORE, {keyPath: 'id'})
+      }
     }
     req.onsuccess = () => resolve(req.result)
   })

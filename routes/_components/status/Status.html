@@ -7,8 +7,8 @@
          aria-setsize="{{length}}"
          aria-label="Status by {{originalStatus.account.display_name || originalStatus.account.username}}"
          on:recalculateHeight>
-  {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog}}
-    <StatusHeader :notification :status :isStatusInNotification />
+  {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog || timelineType === 'pinned'}}
+    <StatusHeader :notification :status :isStatusInNotification :timelineType />
   {{/if}}
   <StatusAuthorName status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
   <StatusAuthorHandle status="{{originalStatus}}" :isStatusInNotification />

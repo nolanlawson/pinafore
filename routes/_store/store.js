@@ -34,7 +34,8 @@ const store = new PinaforeStore({
   autoplayGifs: false,
   markMediaAsSensitive: false,
   pinnedPages: {},
-  instanceLists: {}
+  instanceLists: {},
+  pinnedStatuses: {}
 })
 
 mixins(PinaforeStore)

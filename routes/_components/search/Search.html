@@ -77,10 +77,13 @@
         this.set({loading: true})
         try {
           let results = await search(instanceName, accessToken, queryInSearch)
-          this.store.set({
-            searchResultsForQuery: queryInSearch,
-            searchResults: results
-          })
+          let currentQueryInSearch = this.store.get('queryInSearch') // avoid race conditions
+          if (currentQueryInSearch === queryInSearch) {
+            this.store.set({
+              searchResultsForQuery: queryInSearch,
+              searchResults: results
+            })
+          }
         } catch (e) {
           toast.say('Error during search: ' + (e.name || '') + ' ' + (e.message || ''))
           console.error(e)

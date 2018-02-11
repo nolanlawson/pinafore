@@ -1,21 +1,24 @@
 <div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}}">
   <svg>
-    <use xlink:href="{{getIcon(notification, status)}}"/>
+    <use xlink:href="{{icon}}"/>
   </svg>
   <span>
-    <a href="/accounts/{{getAccount(notification, status).id}}"
-       focus-key="{{focusKey}}"
-    >
-      {{getAccount(notification, status).display_name || ('@' + getAccount(notification, status).username)}}
-    </a>
-    {{#if notification && notification.type === 'reblog'}}
-      boosted your status
-    {{elseif notification && notification.type === 'favourite'}}
-      favorited your status
-    {{elseif notification && notification.type === 'follow'}}
-      followed you
-    {{elseif status && status.reblog}}
-      boosted
+    {{#if timelineType === 'pinned'}}
+      Pinned toot
+    {{else}}
+      <a href="/accounts/{{account.id}}"
+         focus-key="{{focusKey}}" >
+        {{account.display_name || ('@' + account.username)}}
+      </a>
+      {{#if notification && notification.type === 'reblog'}}
+        boosted your status
+      {{elseif notification && notification.type === 'favourite'}}
+        favorited your status
+      {{elseif notification && notification.type === 'follow'}}
+        followed you
+      {{elseif status && status.reblog}}
+        boosted
+      {{/if}}
     {{/if}}
   </span>
 </div>
@@ -66,18 +69,18 @@
   export default {
     computed: {
       statusId: (status) => status.id,
-      focusKey: (statusId) => `status-header-${statusId}`
-    },
-    helpers: {
-      getIcon(notification, status) {
-        if ((notification && notification.type === 'reblog') || (status && status.reblog)) {
+      focusKey: (statusId) => `status-header-${statusId}`,
+      icon: (notification, status, timelineType) => {
+        if (timelineType === 'pinned') {
+          return '#fa-thumb-tack'
+        } else if ((notification && notification.type === 'reblog') || (status && status.reblog)) {
           return '#fa-retweet'
         } else if (notification && notification.type === 'follow') {
           return '#fa-user-plus'
         }
         return '#fa-star'
       },
-      getAccount(notification, status) {
+      account: (notification, status) => {
         if (notification && notification.account) {
           return notification.account
         }

@@ -13,6 +13,7 @@
                       verifyCredentials="{{$currentVerifyCredentials}}"
       />
     {{/if}}
+  <PinnedStatuses accountId="{{params.accountId}}" />
   <LazyTimeline timeline='account/{{params.accountId}}' />
   {{else}}
   <HiddenFromSSR>
@@ -34,6 +35,7 @@
   import { updateProfileAndRelationship } from '../_actions/accounts'
   import AccountProfile from '../_components/AccountProfile.html'
   import { updateVerifyCredentialsForInstance } from '../_actions/instances'
+  import PinnedStatuses from '../_components/timeline/PinnedStatuses.html'
 
   export default {
     oncreate() {
@@ -57,7 +59,8 @@
       FreeTextLayout,
       HiddenFromSSR,
       DynamicPageBanner,
-      AccountProfile
+      AccountProfile,
+      PinnedStatuses
     }
   }
 </script>
