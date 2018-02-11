@@ -24,3 +24,7 @@ export const importRequestIdleCallback = () => import(
 export const importIndexedDBGetAllShim = () => import(
   /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
   )
+
+export const importWebSocketClient = () => import(
+  /* webpackChunkName: '@gamestdio/websocket' */ '@gamestdio/websocket'
+  ).then(mod => mod.default)

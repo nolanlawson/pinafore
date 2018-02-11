@@ -35,7 +35,8 @@ const store = new PinaforeStore({
   markMediaAsSensitive: false,
   pinnedPages: {},
   instanceLists: {},
-  pinnedStatuses: {}
+  pinnedStatuses: {},
+  instanceInfos: {}
 })
 
 mixins(PinaforeStore)

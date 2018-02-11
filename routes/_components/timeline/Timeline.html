@@ -61,21 +61,27 @@
   import { initializeTimeline, fetchTimelineItemsOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
   import LoadingPage from '../LoadingPage.html'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
+  import { addTimelineItemIds } from '../../_actions/timeline'
 
   export default {
     oncreate() {
       console.log('timeline oncreate()')
-      this.onPushState = this.onPushState.bind(this)
-      this.store.setForCurrentTimeline({ignoreBlurEvents: false})
-      window.addEventListener('pushState', this.onPushState)
+      this.setupFocus()
       setupTimeline()
       if (this.store.get('initialized')) {
         this.restoreFocus()
       }
+      let instanceName = this.store.get('currentInstance')
+      let timelineName = this.get('timeline')
+      this.observe('itemIdsToAdd', itemIdsToAdd => {
+        console.log('itemIdsToAdd', itemIdsToAdd)
+        addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
+        this.store.setForTimeline(instanceName, timelineName, { itemIdsToAdd: [] })
+      })
     },
     ondestroy() {
       console.log('ondestroy')
-      window.removeEventListener('pushState', this.onPushState)
+      this.teardownFocus()
     },
     data: () => ({
       StatusVirtualListItem,
@@ -125,6 +131,12 @@
           && $firstTimelineItemId
           && timelineValue !== $firstTimelineItemId
           && timelineValue
+      },
+      itemIdsToAdd: (timeline, $currentInstance, $timelines) => {
+        return ($timelines &&
+          $timelines[$currentInstance] &&
+          $timelines[$currentInstance][timeline] &&
+          $timelines[$currentInstance][timeline].itemIdsToAdd) || []
       }
     },
     store: () => store,
@@ -145,9 +157,6 @@
         console.log('timeline initialize()')
         initializeTimeline()
       },
-      onPushState() {
-        this.store.setForCurrentTimeline({ ignoreBlurEvents: true })
-      },
       onScrollToBottom() {
         if (!this.store.get('initialized') ||
             this.store.get('runningUpdate') ||
@@ -155,6 +164,17 @@
           return
         }
         fetchTimelineItemsOnScrollToBottom()
+      },
+      setupFocus() {
+        this.onPushState = this.onPushState.bind(this)
+        this.store.setForCurrentTimeline({ignoreBlurEvents: false})
+        window.addEventListener('pushState', this.onPushState)
+      },
+      teardownFocus() {
+        window.removeEventListener('pushState', this.onPushState)
+      },
+      onPushState() {
+        this.store.setForCurrentTimeline({ ignoreBlurEvents: true })
       },
       saveFocus(e) {
         let instanceName = this.store.get('currentInstance')

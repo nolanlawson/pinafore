@@ -30,10 +30,14 @@ async function addTimelineItems (instanceName, timelineName, newItems) {
   console.log('addTimelineItems, length:', newItems.length)
   mark('addTimelineItems')
   let newIds = newItems.map(item => item.id)
+  addTimelineItemIds(instanceName, timelineName, newIds)
+  stop('addTimelineItems')
+}
+
+export async function addTimelineItemIds (instanceName, timelineName, newIds) {
   let oldIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
   let merged = mergeArrays(oldIds, newIds)
   store.setForTimeline(instanceName, timelineName, { timelineItemIds: merged })
-  stop('addTimelineItems')
 }
 
 async function fetchTimelineItemsAndPossiblyFallBack () {

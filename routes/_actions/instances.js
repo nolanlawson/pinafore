@@ -5,6 +5,7 @@ import { toast } from '../_utils/toast'
 import { database } from '../_database/database'
 import { goto } from 'sapper/runtime.js'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
+import { getInstanceInfo } from '../_api/instance'
 
 export function changeTheme (instanceName, newTheme) {
   let instanceThemes = store.get('instanceThemes')
@@ -63,5 +64,19 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
     () => database.getInstanceVerifyCredentials(instanceName),
     verifyCredentials => database.setInstanceVerifyCredentials(instanceName, verifyCredentials),
     verifyCredentials => setStoreVerifyCredentials(instanceName, verifyCredentials)
+  )
+}
+
+
+export async function updateInstanceInfo(instanceName) {
+  await cacheFirstUpdateAfter(
+    () => getInstanceInfo(instanceName),
+    () => database.getInstanceInfo(instanceName),
+    info => database.setInstanceInfo(instanceName, info),
+    info => {
+      let instanceInfos = store.get('instanceInfos')
+      instanceInfos[instanceName] = info
+      store.set({instanceInfos: instanceInfos})
+    }
   )
 }

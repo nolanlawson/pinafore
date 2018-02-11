@@ -1,6 +1,6 @@
 import { paramsString } from '../_utils/ajax'
 import noop from 'lodash/noop'
-import WebSocketClient from '@gamestdio/websocket'
+import { importWebSocketClient } from '../_utils/asyncModules'
 
 function getStreamName (timeline) {
   switch (timeline) {
@@ -16,6 +16,9 @@ function getStreamName (timeline) {
   if (timeline.startsWith('tag/')) {
     return 'hashtag'
   }
+  if (timeline.startsWith('list/')) {
+    return 'list'
+  }
 }
 
 function getUrl (streamingApi, accessToken, timeline) {
@@ -28,6 +31,8 @@ function getUrl (streamingApi, accessToken, timeline) {
 
   if (timeline.startsWith('tag/')) {
     params.tag = timeline.split('/').slice(-1)[0]
+  } else if (timeline.startsWith('list/')) {
+    params.list = timeline.split('/').slice(-1)[0]
   }
 
   if (accessToken) {
@@ -37,22 +42,29 @@ function getUrl (streamingApi, accessToken, timeline) {
   return url + '?' + paramsString(params)
 }
 
-export class StatusStream {
+export class TimelineStream {
   constructor (streamingApi, accessToken, timeline, opts) {
     let url = getUrl(streamingApi, accessToken, timeline)
+    importWebSocketClient().then(WebSocketClient => {
+      if (this.__closed) {
+        return
+      }
+      const ws = new WebSocketClient(url, null, { backoff: 'exponential' })
+      const onMessage = opts.onMessage || noop
 
-    const ws = new WebSocketClient(url, null, { backoff: 'exponential' })
-    const onMessage = opts.onMessage || noop
+      ws.onopen = opts.onOpen || noop
+      ws.onmessage = e => onMessage(JSON.parse(e.data))
+      ws.onclose = opts.onClose || noop
+      ws.onreconnect = opts.onReconnect || noop
 
-    ws.onopen = opts.onOpen || noop
-    ws.onmessage = e => onMessage(JSON.parse(e.data))
-    ws.onclose = opts.onClose || noop
-    ws.onreconnect = opts.onReconnect || noop
-
-    this._ws = ws
+      this._ws = ws
+    })
   }
 
   close () {
-    this._ws.close()
+    this.__closed = true
+    if (this._ws) {
+      this._ws.close()
+    }
   }
 }

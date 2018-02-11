@@ -1,11 +1,7 @@
-import { updateVerifyCredentialsForInstance } from '../_actions/instances'
-import { updateLists } from '../_actions/lists'
+import { instanceObservers } from './instanceObservers'
+import { timelineObservers } from './timelineObservers'
 
 export function observers (store) {
-  store.observe('currentInstance', (currentInstance) => {
-    if (currentInstance) {
-      updateVerifyCredentialsForInstance(currentInstance)
-      updateLists()
-    }
-  })
+  instanceObservers(store)
+  timelineObservers(store)
 }

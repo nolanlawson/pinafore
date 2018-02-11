@@ -48,6 +48,12 @@ export function instanceComputations (store) {
   )
 
   store.compute(
+    'currentInstanceInfo',
+    ['currentInstance', 'instanceInfos'],
+    (currentInstance, instanceInfos) => instanceInfos && instanceInfos[currentInstance]
+  )
+
+  store.compute(
     'pinnedPage',
     ['pinnedPages', 'currentInstance'],
     (pinnedPages, currentInstance) => (currentInstance && pinnedPages[currentInstance]) || '/local')
