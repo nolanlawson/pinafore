@@ -1,8 +1,7 @@
 
-function computeForTimeline(store, key) {
+function computeForTimeline (store, key) {
   store.compute(key, ['currentTimelineData'], (currentTimelineData) => currentTimelineData[key])
 }
-
 
 export function timelineComputations (store) {
   store.compute('currentTimelineData', ['currentInstance', 'currentTimeline', 'timelines'],

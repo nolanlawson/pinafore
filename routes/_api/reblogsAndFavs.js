@@ -1,6 +1,6 @@
 import { get, paramsString } from '../_utils/ajax'
 
-export async function getReblogs(instanceName, accessToken, statusId, limit = 80) {
+export async function getReblogs (instanceName, accessToken, statusId, limit = 80) {
   let url = `https://${instanceName}/api/v1/statuses/${statusId}/reblogged_by`
   url += '?' + paramsString({ limit })
   return get(url, {
@@ -8,7 +8,7 @@ export async function getReblogs(instanceName, accessToken, statusId, limit = 80
   })
 }
 
-export async function getFavorites(instanceName, accessToken, statusId, limit = 80) {
+export async function getFavorites (instanceName, accessToken, statusId, limit = 80) {
   let url = `https://${instanceName}/api/v1/statuses/${statusId}/favourited_by`
   url += '?' + paramsString({ limit })
   return get(url, {

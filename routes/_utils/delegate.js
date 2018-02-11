@@ -8,7 +8,7 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
   window.delegateCallbacks = callbacks
 }
 
-function onEvent(e) {
+function onEvent (e) {
   let { type, keyCode, target } = e
   if (!(type === 'click' || (type === 'keydown' && keyCode === 13))) {
     // we're not interested in any non-click or non-Enter events
@@ -30,14 +30,14 @@ function onEvent(e) {
   stop('delegate onEvent')
 }
 
-export function registerDelegate(type, key, callback) {
+export function registerDelegate (type, key, callback) {
   mark('delegate registerDelegate')
   callbacks[type] = callbacks[type] || {}
   callbacks[type][key] = callback
   stop('delegate registerDelegate')
 }
 
-export function unregisterDelegate(type, key) {
+export function unregisterDelegate (type, key) {
   mark('delegate unregisterDelegate')
   callbacks[type] = callbacks[type] || {}
   delete callbacks[type][key]

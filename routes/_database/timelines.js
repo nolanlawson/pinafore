@@ -29,7 +29,7 @@ function createKeyRangeForStatusThread (timeline) {
   return IDBKeyRange.bound(start, end, true, true)
 }
 
-function cloneForStorage(obj) {
+function cloneForStorage (obj) {
   let res = {}
   let keys = Object.keys(obj)
   for (let key of keys) {
@@ -89,9 +89,9 @@ async function getStatusTimeline (instanceName, timeline, maxId, limit) {
     // Status threads are a special case - these are in forward chronological order
     // and we fetch them all at once instead of paginating.
     let isStatusThread = timeline.startsWith('status/')
-    let getReq = isStatusThread ?
-      timelineStore.getAll(createKeyRangeForStatusThread(timeline)) :
-      timelineStore.getAll(createTimelineKeyRange(timeline, maxId), limit)
+    let getReq = isStatusThread
+      ? timelineStore.getAll(createKeyRangeForStatusThread(timeline))
+      : timelineStore.getAll(createTimelineKeyRange(timeline, maxId), limit)
 
     getReq.onsuccess = e => {
       let timelineResults = e.target.result
@@ -119,23 +119,23 @@ export async function getTimeline (instanceName, timeline, maxId = null, limit =
 // insertion
 //
 
-function putStatus(statusesStore, status) {
+function putStatus (statusesStore, status) {
   statusesStore.put(cloneForStorage(status))
 }
 
-function putAccount(accountsStore, account) {
+function putAccount (accountsStore, account) {
   accountsStore.put(cloneForStorage(account))
 }
 
-function putNotification(notificationsStore, notification) {
+function putNotification (notificationsStore, notification) {
   notificationsStore.put(cloneForStorage(notification))
 }
 
-function storeAccount(accountsStore, account) {
+function storeAccount (accountsStore, account) {
   putAccount(accountsStore, account)
 }
 
-function storeStatus(statusesStore, accountsStore, status) {
+function storeStatus (statusesStore, accountsStore, status) {
   putStatus(statusesStore, status)
   putAccount(accountsStore, status.account)
   if (status.reblog) {
@@ -144,7 +144,7 @@ function storeStatus(statusesStore, accountsStore, status) {
   }
 }
 
-function storeNotification(notificationsStore, statusesStore, accountsStore, notification) {
+function storeNotification (notificationsStore, statusesStore, accountsStore, notification) {
   if (notification.status) {
     storeStatus(statusesStore, accountsStore, notification.status)
   }
@@ -152,13 +152,13 @@ function storeNotification(notificationsStore, statusesStore, accountsStore, not
   putNotification(notificationsStore, notification)
 }
 
-function fetchAccount(accountsStore, id, callback) {
+function fetchAccount (accountsStore, id, callback) {
   accountsStore.get(id).onsuccess = e => {
     callback(e.target.result)
   }
 }
 
-function fetchStatus(statusesStore, accountsStore, id, callback) {
+function fetchStatus (statusesStore, accountsStore, id, callback) {
   statusesStore.get(id).onsuccess = e => {
     let status = e.target.result
     callback(status)
@@ -173,7 +173,7 @@ function fetchStatus(statusesStore, accountsStore, id, callback) {
   }
 }
 
-function fetchNotification(notificationsStore, statusesStore, accountsStore, id, callback) {
+function fetchNotification (notificationsStore, statusesStore, accountsStore, id, callback) {
   notificationsStore.get(id).onsuccess = e => {
     let notification = e.target.result
     callback(notification)

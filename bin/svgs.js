@@ -24,5 +24,5 @@ module.exports = [
   {id: 'fa-thumb-tack', src: 'node_modules/font-awesome-svg-png/white/svg/thumb-tack.svg', title: 'Thumbtack'},
   {id: 'fa-bars', src: 'node_modules/font-awesome-svg-png/white/svg/bars.svg', title: 'List'},
   {id: 'fa-volume-off', src: 'node_modules/font-awesome-svg-png/white/svg/volume-off.svg', title: 'Volume off'},
-  {id: 'fa-ban', src: 'node_modules/font-awesome-svg-png/white/svg/ban.svg', title: 'Ban'},
+  {id: 'fa-ban', src: 'node_modules/font-awesome-svg-png/white/svg/ban.svg', title: 'Ban'}
 ]

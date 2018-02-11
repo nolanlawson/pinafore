@@ -7,11 +7,11 @@ const enableMarks = process.browser &&
 
 const perf = process.browser && performance
 
-function doMark(name) {
+function doMark (name) {
   perf.mark(`start ${name}`)
 }
 
-function doStop(name) {
+function doStop (name) {
   perf.mark(`end ${name}`)
   perf.measure(name, `start ${name}`, `end ${name}`)
 }
