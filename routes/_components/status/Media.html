@@ -51,7 +51,7 @@
          on:imgLoad="set({imageLoaded: true})"
          on:imgLoadError="set({imageError: true})"
          alt="{{media.description || ''}}"
-         src="{{media.preview_url}}"
+         src="{{imageError ? oneTransparentPixel : media.preview_url}}"
          width="{{inlineWidth}}"
          height="{{inlineHeight}}"
     />
@@ -152,6 +152,9 @@
         showImageDialog(media.preview_url, media.url, media.type, width, height, media.description)
       }
     },
+    data: () => ({
+      oneTransparentPixel: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+    }),
     events: {
       imgLoad,
       imgLoadError,
