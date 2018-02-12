@@ -30,8 +30,8 @@ async function handleFreshChanges (instanceName, timelineName) {
 
     await database.insertTimelineItems(instanceName, timelineName, updates)
 
-    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
-    if (itemIdsToAdd && itemIdsToAdd.length) {
+    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
+    if (updates && updates.length) {
       itemIdsToAdd = itemIdsToAdd.concat(updates.map(_ => _.id))
       store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
     }
