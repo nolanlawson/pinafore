@@ -11,10 +11,12 @@
     opacity: 0;
     pointer-events: none;
     z-index: 10;
+    transition: none;
   }
   .virtual-list-header.shown {
     opacity: 1;
     pointer-events: auto;
+    transition: opacity 0.333s linear;
   }
 </style>
 <script>
