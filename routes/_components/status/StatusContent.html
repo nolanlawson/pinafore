@@ -2,7 +2,7 @@
   class="status-content {{isStatusInOwnThread ? 'status-in-own-thread' : ''}} {{isStatusInNotification ? 'status-in-notification' : ''}}"
   ref:node
 >
-    {{{emojifiedContent}}}
+    {{{massagedContent}}}
 </div>
 <style>
   .status-content {
@@ -66,8 +66,9 @@
     },
     store: () => store,
     computed: {
-      emojifiedContent: (status, $autoplayGifs) => {
+      massagedContent: (status, $autoplayGifs) => {
         let content = status.content
+        // emojify
         if (status.emojis && status.emojis.length) {
           for (let emoji of status.emojis) {
             let { shortcode, url, static_url } = emoji
@@ -80,6 +81,10 @@
                     alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
             )
           }
+        }
+        // GNU Social and Pleroma don't add <p> tags
+        if (!content.startsWith('<p>')) {
+          content = `<p>${content}</p>`
         }
         return content
       },

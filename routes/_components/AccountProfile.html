@@ -31,7 +31,7 @@
         {{/if}}
       </div>
       <div class="account-profile-note">
-        {{{profile.note}}}
+        {{{massagedNote}}}
       </div>
     </div>
   </div>
@@ -187,7 +187,15 @@
 
   export default {
     computed: {
-      headerIsMissing: (profile) => profile.header.endsWith('missing.png')
+      headerIsMissing: (profile) => profile.header.endsWith('missing.png'),
+      note: (profile) => profile.note,
+      massagedNote: (note) => {
+        // GNU Social / Pleroma don't add <p> tags
+        if (!note.startsWith('<p>')) {
+          note = `<p>${note}</p>`
+        }
+        return note
+      }
     },
     store: () => store,
     components: {
