@@ -14,21 +14,23 @@ const virtualListStore = new VirtualListStore()
 virtualListStore.computeForRealm('items', null)
 virtualListStore.computeForRealm('showFooter', false)
 virtualListStore.computeForRealm('footerHeight', 0)
+virtualListStore.computeForRealm('showHeader', false)
+virtualListStore.computeForRealm('headerHeight', 0)
 virtualListStore.computeForRealm('scrollTop', 0)
 virtualListStore.computeForRealm('scrollHeight', 0)
 virtualListStore.computeForRealm('offsetHeight', 0)
 virtualListStore.computeForRealm('itemHeights', {})
 
 virtualListStore.compute('visibleItems',
-    ['items', 'scrollTop', 'itemHeights', 'offsetHeight'],
-    (items, scrollTop, itemHeights, offsetHeight) => {
+    ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'showHeader', 'headerHeight'],
+    (items, scrollTop, itemHeights, offsetHeight, showHeader, headerHeight) => {
       mark('compute visibleItems')
       if (!items) {
         return null
       }
       let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
       let visibleItems = []
-      let totalOffset = 0
+      let totalOffset = showHeader ? headerHeight : 0
       let len = items.length
       let i = -1
       while (++i < len) {
@@ -57,12 +59,12 @@ virtualListStore.compute('visibleItems',
     })
 
 virtualListStore.compute('heightWithoutFooter',
-    ['items', 'itemHeights'],
-    (items, itemHeights) => {
+    ['items', 'itemHeights', 'showHeader', 'headerHeight'],
+    (items, itemHeights, showHeader, headerHeight) => {
       if (!items) {
         return 0
       }
-      let sum = 0
+      let sum = showHeader ? headerHeight : 0
       let i = -1
       let len = items.length
       while (++i < len) {

@@ -12,9 +12,13 @@
                  :makeProps
                  items="{{$timelineItemIds}}"
                  on:scrollToBottom="onScrollToBottom()"
+                 on:scrollToTop="onScrollToTop()"
                  shown="{{$initialized}}"
                  footerComponent="{{LoadingFooter}}"
                  showFooter="{{$initialized && $runningUpdate}}"
+                 showHeader="{{$showHeader}}"
+                 headerComponent="{{MoreHeaderVirtualWrapper}}"
+                 :headerProps
                  realm="{{$currentInstance + '/' + timeline}}"
                  on:initializedVisibleItems="initialize()"
   />
@@ -23,8 +27,12 @@
                  :makeProps
                  items="{{$timelineItemIds}}"
                  on:scrollToBottom="onScrollToBottom()"
+                 on:scrollToTop="onScrollToTop()"
                  shown="{{$initialized}}"
                  footerComponent="{{LoadingFooter}}"
+                 showHeader="{{$showHeader}}"
+                 headerComponent="{{MoreHeaderVirtualWrapper}}"
+                 :headerProps
                  showFooter="{{$initialized && $runningUpdate}}"
                  realm="{{$currentInstance + '/' + timeline}}"
                  on:initializedVisibleItems="initialize()"
@@ -55,13 +63,16 @@
   import Status from '../status/Status.html'
   import PseudoVirtualList from '../pseudoVirtualList/PseudoVirtualList.html'
   import LoadingFooter from './LoadingFooter.html'
+  import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
   import VirtualList from '../virtualList/VirtualList.html'
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_database/database'
   import { initializeTimeline, fetchTimelineItemsOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
   import LoadingPage from '../LoadingPage.html'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
-  import { addTimelineItemIds } from '../../_actions/timeline'
+  import { showMoreItemsForCurrentTimeline } from '../../_actions/timeline'
+  import { virtualListStore } from '../virtualList/virtualListStore' // TODO: hacky, need better way to expose scrollTop
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
     oncreate() {
@@ -71,15 +82,7 @@
       if (this.store.get('initialized')) {
         this.restoreFocus()
       }
-      let instanceName = this.store.get('currentInstance')
-      let timelineName = this.get('timeline')
-      this.observe('itemIdsToAdd', itemIdsToAdd => {
-        console.log('itemIdsToAdd', itemIdsToAdd)
-        if (itemIdsToAdd && itemIdsToAdd.length) {
-          addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
-          this.store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: []})
-        }
-      })
+      this.setupStreaming()
     },
     ondestroy() {
       console.log('ondestroy')
@@ -89,6 +92,7 @@
       StatusVirtualListItem,
       NotificationVirtualListItem,
       LoadingFooter,
+      MoreHeaderVirtualWrapper,
       Status
     }),
     computed: {
@@ -139,6 +143,12 @@
           $timelines[$currentInstance] &&
           $timelines[$currentInstance][timeline] &&
           $timelines[$currentInstance][timeline].itemIdsToAdd) || []
+      },
+      headerProps: (itemIdsToAdd) => {
+        return {
+          count: (itemIdsToAdd && itemIdsToAdd.length) || 0,
+          onClick: showMoreItemsForCurrentTimeline
+        }
       }
     },
     store: () => store,
@@ -167,6 +177,41 @@
           return
         }
         fetchTimelineItemsOnScrollToBottom()
+      },
+      onScrollToTop() {
+        if (this.store.get('shouldShowHeader')) {
+          this.store.setForCurrentTimeline({
+            showHeader: true,
+            shouldShowHeader: false
+          })
+        }
+      },
+      setupStreaming() {
+        let instanceName = this.store.get('currentInstance')
+        let timelineName = this.get('timeline')
+        let handleItemIdsToAdd = () => {
+          let itemIdsToAdd = this.get('itemIdsToAdd')
+          if (!itemIdsToAdd || !itemIdsToAdd.length) {
+            return
+          }
+          let scrollTop = virtualListStore.get('scrollTop')
+          let shouldShowHeader = this.store.get('shouldShowHeader')
+          let showHeader = this.store.get('showHeader')
+          //console.log('handleItemIdsToAdd', (itemIdsToAdd && itemIdsToAdd.length) || 0)
+          if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
+            // if the user is scrolled to the top and we're not showing the header, then
+            // just insert the statuses. this is "chat room mode"
+            showMoreItemsForCurrentTimeline()
+          } else {
+            // user hasn't scrolled to the top, show a header instead
+            this.store.setForTimeline(instanceName, timelineName, {shouldShowHeader: true})
+          }
+        }
+        this.observe('itemIdsToAdd', itemIdsToAdd => {
+          if (itemIdsToAdd && itemIdsToAdd.length) {
+            scheduleIdleTask(handleItemIdsToAdd)
+          }
+        })
       },
       setupFocus() {
         this.onPushState = this.onPushState.bind(this)

@@ -1,5 +1,5 @@
-<!-- TODO: setting height is hacky, just make this element the scroller -->
 <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
+  <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
   {{#if $visibleItems}}
     {{#each $visibleItems as visibleItem @key}}
       <VirtualListLazyItem :component
@@ -23,17 +23,21 @@
 <script>
   import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
+  import VirtualListHeader from './VirtualListHeader.html'
   import { virtualListStore } from './virtualListStore'
   import throttle from 'lodash/throttle'
   import { mark, stop } from '../../_utils/marks'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
-  const SCROLL_TO_BOTTOM_DELAY = 1000
+  const SCROLL_EVENT_THROTTLE = 1000
 
   export default {
     oncreate () {
       this.observe('showFooter', showFooter => {
         this.store.setForRealm({showFooter: showFooter})
+      })
+      this.observe('showHeader', showHeader => {
+        this.store.setForRealm({showHeader: showHeader})
       })
       this.observe('items', (items) => {
         mark('set items')
@@ -41,7 +45,10 @@
         stop('set items')
         this.fireScrollToBottom = throttle(() => {
           this.fire('scrollToBottom')
-        }, SCROLL_TO_BOTTOM_DELAY)
+        }, SCROLL_EVENT_THROTTLE)
+        this.fireScrollToTop = throttle(() => {
+          this.fire('scrollToTop')
+        }, SCROLL_EVENT_THROTTLE)
       })
 
       this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
@@ -62,6 +69,12 @@
           this.fireScrollToBottom()
         }
       })
+
+      this.observe('distanceFromTop', (distanceFromTop) => {
+        if (distanceFromTop === 0) {
+          this.fireScrollToTop()
+        }
+      })
     },
     data: () => ({
       component: null
@@ -69,12 +82,14 @@
     store: () => virtualListStore,
     components: {
       VirtualListLazyItem,
-      VirtualListFooter
+      VirtualListFooter,
+      VirtualListHeader
     },
     computed: {
       distanceFromBottom: ($scrollHeight, $scrollTop, $offsetHeight) => {
         return $scrollHeight - $scrollTop - $offsetHeight
       },
+      distanceFromTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
     }

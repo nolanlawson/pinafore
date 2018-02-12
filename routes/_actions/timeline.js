@@ -81,3 +81,15 @@ export async function fetchTimelineItemsOnScrollToBottom () {
   await fetchTimelineItemsAndPossiblyFallBack()
   store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
 }
+
+export async function showMoreItemsForCurrentTimeline() {
+  let instanceName = store.get('currentInstance')
+  let timelineName = store.get('currentTimeline')
+  let itemIdsToAdd = store.get('itemIdsToAdd')
+  addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
+  store.setForTimeline(instanceName, timelineName, {
+    itemIdsToAdd: [],
+    shouldShowHeader: false,
+    showHeader: false
+  })
+}

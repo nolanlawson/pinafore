@@ -1,0 +1,34 @@
+<div class="virtual-list-header {{shown ? 'shown' : ''}}"
+     aria-hidden="{{!shown}}"
+     ref:node >
+  <:Component {component} :virtualProps />
+</div>
+<style>
+  .virtual-list-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .virtual-list-header.shown {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+<script>
+  import { virtualListStore } from './virtualListStore'
+  import { AsyncLayout } from '../../_utils/AsyncLayout'
+
+  export default {
+    oncreate() {
+      const asyncLayout = new AsyncLayout(() => '__header__')
+      asyncLayout.observe('__header__', this.refs.node, (rect) => {
+        asyncLayout.disconnect()
+        this.store.setForRealm({headerHeight: rect.height})
+      })
+    },
+    store: () => virtualListStore,
+  }
+</script>

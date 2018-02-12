@@ -1,0 +1,25 @@
+<div class="more-items-header" role="dialog">
+  <button class="primary" type="button" on:click="onClick(event)">
+    Click to show {{count}} more
+  </button>
+</div>
+<style>
+  .more-items-header {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+    justify-content:center;
+  }
+</style>
+<script>
+  export default {
+    methods: {
+      onClick(event) {
+        let onClick = this.get('onClick')
+        if (onClick) {
+          onClick(event)
+        }
+      }
+    }
+  }
+</script>

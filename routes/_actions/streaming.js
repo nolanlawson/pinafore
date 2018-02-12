@@ -16,17 +16,13 @@ async function removeDuplicates (instanceName, timelineName, updates) {
 }
 
 async function handleFreshChanges (instanceName, timelineName) {
-  console.log('handleFreshChanges')
   let freshChanges = store.getForTimeline(instanceName, timelineName, 'freshChanges')
-  console.log('freshChanges', freshChanges)
   if (freshChanges.updates && freshChanges.updates.length) {
     let updates = freshChanges.updates.slice()
     freshChanges.updates = []
     store.setForTimeline(instanceName, timelineName, {freshChanges: freshChanges})
 
-    console.log('before removing duplicates, updates are ', updates.length)
     updates = await removeDuplicates(instanceName, timelineName, updates)
-    console.log('after removing duplicates, updates are ', updates.length)
 
     await database.insertTimelineItems(instanceName, timelineName, updates)
 
@@ -39,7 +35,6 @@ async function handleFreshChanges (instanceName, timelineName) {
 }
 
 function handleStreamMessage (instanceName, timelineName, message) {
-  console.log('handleStreamMessage')
   let { event, payload } = message
   let key = event === 'update' ? 'updates' : 'deletes'
   let freshChanges = store.getForTimeline(instanceName, timelineName, 'freshChanges') || {}
@@ -54,7 +49,6 @@ function handleStreamMessage (instanceName, timelineName, message) {
 export function createStream (streamingApi, instanceName, accessToken, timelineName) {
   return new TimelineStream(streamingApi, accessToken, timelineName, {
     onMessage (msg) {
-      console.log('message', msg)
       if (msg.event !== 'update' && msg.event !== 'delete') {
         console.error("don't know how to handle event", msg)
         return
