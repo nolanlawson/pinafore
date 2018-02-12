@@ -6,7 +6,7 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 async function removeDuplicates (instanceName, timelineName, updates) {
   // remove duplicates, including duplicates due to reblogs
-  let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
+  let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
   let reblogIds = (await Promise.all(timelineItemIds.map(async timelineItemId => {
     let status = await database.getStatus(instanceName, timelineItemId)
     return status.reblog && status.reblog.id
@@ -30,9 +30,11 @@ async function handleFreshChanges (instanceName, timelineName) {
 
     await database.insertTimelineItems(instanceName, timelineName, updates)
 
-    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-    itemIdsToAdd = itemIdsToAdd.concat(updates.map(_ => _.id))
-    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
+    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
+    if (itemIdsToAdd && itemIdsToAdd.length) {
+      itemIdsToAdd = itemIdsToAdd.concat(updates.map(_ => _.id))
+      store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
+    }
   }
 }
 

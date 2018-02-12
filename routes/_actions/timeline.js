@@ -59,6 +59,7 @@ export function initializeTimeline () {
   let timeline = store.get('currentTimeline')
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
+      console.log('initialized')
       store.setForTimeline(instanceName, timeline, {initialized: true})
     })
   })

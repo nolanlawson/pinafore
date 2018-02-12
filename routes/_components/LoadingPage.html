@@ -1,4 +1,4 @@
-<div class="loading-page">
+<div class="loading-page {{shown ? '' : 'hidden'}}">
   <LoadingSpinner />
 </div>
 <style>
@@ -12,11 +12,17 @@
     align-items: center;
     justify-content: center;
     z-index: 50;
+    transition: opacity 0.25s linear;
   }
 </style>
 <script>
   import LoadingSpinner from './LoadingSpinner.html'
   export default {
+    oncreate() {
+      setTimeout(() => {
+        this.set({shown: true})
+      }, 200)
+    },
     components: {
       LoadingSpinner
     }

@@ -75,8 +75,10 @@
       let timelineName = this.get('timeline')
       this.observe('itemIdsToAdd', itemIdsToAdd => {
         console.log('itemIdsToAdd', itemIdsToAdd)
-        addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
-        this.store.setForTimeline(instanceName, timelineName, { itemIdsToAdd: [] })
+        if (itemIdsToAdd && itemIdsToAdd.length) {
+          addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
+          this.store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: []})
+        }
       })
     },
     ondestroy() {
@@ -151,9 +153,10 @@
     },
     methods: {
       initialize() {
-        if (this.store.get('initialized') || !this.store.get('timelineItemIds')) {
+        if (this.get('initializeStarted')) {
           return
         }
+        this.set({initializeStarted: true})
         console.log('timeline initialize()')
         initializeTimeline()
       },
