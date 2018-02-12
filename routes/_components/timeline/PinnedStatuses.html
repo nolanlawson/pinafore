@@ -13,7 +13,6 @@
 <script>
   import { store } from '../../_store/store'
   import Status from '../status/Status.html'
-  import LoadingPage from '../../_components/LoadingPage.html'
   import { updatePinnedStatusesForAccount } from '../../_actions/pinnedStatuses'
 
   export default {
@@ -28,8 +27,7 @@
     },
     store: () => store,
     components: {
-      Status,
-      LoadingPage
+      Status
     }
   }
 </script>
