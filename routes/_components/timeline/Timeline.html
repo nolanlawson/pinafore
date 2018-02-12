@@ -138,12 +138,9 @@
           && timelineValue !== $firstTimelineItemId
           && timelineValue
       },
-      itemIdsToAdd: (timeline, $currentInstance, $timelines) => {
-        return ($timelines &&
-          $timelines[$currentInstance] &&
-          $timelines[$currentInstance][timeline] &&
-          $timelines[$currentInstance][timeline].itemIdsToAdd) || []
-      },
+      itemIdsToAdd: ($itemIdsToAdd) => $itemIdsToAdd,
+      // hack to avoid getting called too often
+      itemIdsToAddStringified: (itemIdsToAdd) => JSON.stringify(itemIdsToAdd),
       headerProps: (itemIdsToAdd) => {
         return {
           count: (itemIdsToAdd && itemIdsToAdd.length) || 0,
@@ -207,7 +204,9 @@
             this.store.setForTimeline(instanceName, timelineName, {shouldShowHeader: true})
           }
         }
-        this.observe('itemIdsToAdd', itemIdsToAdd => {
+        this.observe('itemIdsToAddStringified', itemIdsToAddStringified => {
+          let itemIdsToAdd = typeof itemIdsToAddStringified === 'undefined' ? undefined :
+            JSON.parse(itemIdsToAddStringified)
           if (itemIdsToAdd && itemIdsToAdd.length) {
             scheduleIdleTask(handleItemIdsToAdd)
           }

@@ -33,24 +33,29 @@
 
   export default {
     oncreate () {
+      this.fireScrollToBottom = throttle(() => {
+        this.fire('scrollToBottom')
+      }, SCROLL_EVENT_THROTTLE)
+      this.fireScrollToTop = throttle(() => {
+        this.fire('scrollToTop')
+      }, SCROLL_EVENT_THROTTLE)
       this.observe('showFooter', showFooter => {
+        mark('set showFooter')
         this.store.setForRealm({showFooter: showFooter})
+        mark('set showFooter')
       })
       this.observe('showHeader', showHeader => {
+        mark('set showHeader')
         this.store.setForRealm({showHeader: showHeader})
+        stop('set showHeader')
       })
-      this.observe('items', (items) => {
+      this.observe('itemsStringified', (itemsStringified) => {
+        let items = typeof itemsStringified === 'undefined' ? undefined :
+          JSON.parse(itemsStringified)
         mark('set items')
         this.store.setForRealm({items: items})
         stop('set items')
-        this.fireScrollToBottom = throttle(() => {
-          this.fire('scrollToBottom')
-        }, SCROLL_EVENT_THROTTLE)
-        this.fireScrollToTop = throttle(() => {
-          this.fire('scrollToTop')
-        }, SCROLL_EVENT_THROTTLE)
       })
-
       this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
         if (allVisibleItemsHaveHeight) {
           this.fire('initializedVisibleItems')
@@ -91,7 +96,9 @@
       },
       distanceFromTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
-      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
+      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
+      // hack to avoid getting called too often
+      itemsStringified: (items) => JSON.stringify(items)
     }
   }
 </script>
