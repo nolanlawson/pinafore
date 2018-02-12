@@ -73,6 +73,7 @@
   import { showMoreItemsForCurrentTimeline } from '../../_actions/timeline'
   import { virtualListStore } from '../virtualList/virtualListStore' // TODO: hacky, need better way to expose scrollTop
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate() {
@@ -191,6 +192,7 @@
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
             return
           }
+          mark('handleItemIdsToAdd')
           let scrollTop = virtualListStore.get('scrollTop')
           let shouldShowHeader = this.store.get('shouldShowHeader')
           let showHeader = this.store.get('showHeader')
@@ -203,13 +205,10 @@
             // user hasn't scrolled to the top, show a header instead
             this.store.setForTimeline(instanceName, timelineName, {shouldShowHeader: true})
           }
+          stop('handleItemIdsToAdd')
         }
         this.observe('itemIdsToAddStringified', itemIdsToAddStringified => {
-          let itemIdsToAdd = typeof itemIdsToAddStringified === 'undefined' ? undefined :
-            JSON.parse(itemIdsToAddStringified)
-          if (itemIdsToAdd && itemIdsToAdd.length) {
-            scheduleIdleTask(handleItemIdsToAdd)
-          }
+          scheduleIdleTask(handleItemIdsToAdd)
         })
       },
       setupFocus() {

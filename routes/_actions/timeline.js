@@ -83,6 +83,7 @@ export async function fetchTimelineItemsOnScrollToBottom () {
 }
 
 export async function showMoreItemsForCurrentTimeline() {
+  mark('showMoreItemsForCurrentTimeline')
   let instanceName = store.get('currentInstance')
   let timelineName = store.get('currentTimeline')
   let itemIdsToAdd = store.get('itemIdsToAdd')
@@ -92,4 +93,5 @@ export async function showMoreItemsForCurrentTimeline() {
     shouldShowHeader: false,
     showHeader: false
   })
+  stop('showMoreItemsForCurrentTimeline')
 }
