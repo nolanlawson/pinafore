@@ -7,46 +7,33 @@
   {{#if !$initialized}}
     <LoadingPage />
   {{/if}}
-  {{#if timelineType === 'notifications'}}
-    <VirtualList component="{{NotificationVirtualListItem}}"
-                 :makeProps
-                 items="{{$timelineItemIds}}"
-                 on:scrollToBottom="onScrollToBottom()"
-                 on:scrollToTop="onScrollToTop()"
-                 shown="{{$initialized}}"
-                 footerComponent="{{LoadingFooter}}"
-                 showFooter="{{$initialized && $runningUpdate}}"
-                 showHeader="{{$showHeader}}"
-                 headerComponent="{{MoreHeaderVirtualWrapper}}"
-                 :headerProps
+  {{#if virtual}}
+    <VirtualList component="{{VirtualListComponent}}"
                  realm="{{$currentInstance + '/' + timeline}}"
-                 on:initializedVisibleItems="initialize()"
-  />
-  {{elseif virtual}}
-    <VirtualList component="{{StatusVirtualListItem}}"
+                 containerQuery=".container"
                  :makeProps
                  items="{{$timelineItemIds}}"
-                 on:scrollToBottom="onScrollToBottom()"
-                 on:scrollToTop="onScrollToTop()"
                  shown="{{$initialized}}"
+                 showFooter="{{$initialized && $runningUpdate}}"
                  footerComponent="{{LoadingFooter}}"
                  showHeader="{{$showHeader}}"
                  headerComponent="{{MoreHeaderVirtualWrapper}}"
                  :headerProps
-                 showFooter="{{$initialized && $runningUpdate}}"
-                 realm="{{$currentInstance + '/' + timeline}}"
+                 on:scrollToBottom="onScrollToBottom()"
+                 on:scrollToTop="onScrollToTop()"
                  on:initializedVisibleItems="initialize()"
     />
   {{else}}
     <!-- if this is a status thread, it's easier to just render the
          whole thing rather than use a virtual list -->
-    <PseudoVirtualList component="{{StatusVirtualListItem}}"
+    <PseudoVirtualList component="{{VirtualListComponent}}"
+                       realm="{{$currentInstance + '/' + timeline}}"
+                       containerQuery=".container"
                        :makeProps
                        items="{{$timelineItemIds}}"
                        shown="{{$initialized}}"
-                       on:initializedVisibleItems="initialize()"
                        scrollToItem="{{scrollToItem}}"
-                       realm="{{$currentInstance + '/' + timeline}}"
+                       on:initializedVisibleItems="initialize()"
     />
   {{/if}}
 </div>
@@ -90,13 +77,14 @@
       this.teardownFocus()
     },
     data: () => ({
-      StatusVirtualListItem,
-      NotificationVirtualListItem,
       LoadingFooter,
       MoreHeaderVirtualWrapper,
       Status
     }),
     computed: {
+      VirtualListComponent: (timelineType) => {
+        return timelineType === 'notifications' ? NotificationVirtualListItem : StatusVirtualListItem
+      },
       makeProps: ($currentInstance, timelineType, timelineValue) => async (itemId) => {
         let res = { timelineType, timelineValue }
         if (timelineType === 'notifications') {

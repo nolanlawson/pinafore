@@ -10,7 +10,7 @@
   export default {
     oncreate() {
       mark('onCreate VirtualListContainer')
-      let node = document.querySelector('.container')
+      let node = document.querySelector(this.get('containerQuery'))
       this.setupScroll(node)
       this.setupFullscreen()
       this.store.setCurrentRealm(this.get('realm'))
@@ -58,7 +58,7 @@
         node.addEventListener('scroll', this.scrollListener)
       },
       teardownScroll() {
-        let node = document.querySelector('.container')
+        let node = document.querySelector(this.get('containerQuery'))
         if (node) {
           node.removeEventListener('scroll', this.scrollListener)
         }

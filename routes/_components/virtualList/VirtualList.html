@@ -1,4 +1,4 @@
-<VirtualListContainer :realm >
+<VirtualListContainer :realm :containerQuery >
   <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
     <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
     {{#if $visibleItems}}
