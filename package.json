@@ -10,6 +10,7 @@
     "build-svg": "node ./bin/build-svg.js",
     "build-sass": "node ./bin/build-sass.js",
     "build-sass-watch": "node ./bin/build-sass.js --watch",
+    "run-mastodon": "cd mastodon && docker-compose run --rm web rake db:migrate && docker-compose up",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
