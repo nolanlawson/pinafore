@@ -68,8 +68,9 @@
 <script>
   export default {
     computed: {
-      statusId: (status) => status.id,
-      focusKey: (statusId) => `status-header-${statusId}`,
+      statusId: (status) => status && status.id,
+      notificationId: (notification) => notification && notification.id,
+      focusKey: (statusId, notificationId) => `status-header-${statusId}-${notificationId}`,
       icon: (notification, status, timelineType) => {
         if (timelineType === 'pinned') {
           return '#fa-thumb-tack'
