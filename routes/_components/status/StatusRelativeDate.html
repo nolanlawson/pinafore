@@ -26,10 +26,9 @@
 
 </style>
 <script>
-  import IntlRelativeFormat from 'intl-relativeformat'
   import { mark, stop } from '../../_utils/marks'
-
-  const relativeFormat = new IntlRelativeFormat('en-US');
+  import timeago from 'timeago.js'
+  const timeagoInstance = timeago()
 
   export default {
     computed: {
@@ -37,7 +36,7 @@
       statusId: (status) => status.id,
       relativeDate: (createdAtDate) => {
         mark('compute relativeDate')
-        let res = relativeFormat.format(new Date(createdAtDate))
+        let res = timeagoInstance.format(createdAtDate)
         stop('compute relativeDate')
         return res
       },
