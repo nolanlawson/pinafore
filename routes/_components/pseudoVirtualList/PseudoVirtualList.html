@@ -61,6 +61,7 @@
       if (intersectionObserver) {
         intersectionObserver.disconnect()
       }
+      this.store.setCurrentRealm(null)
     },
     helpers: {
       isIntersecting(key, $intersectionStates) {

@@ -10,10 +10,10 @@
   export default {
     oncreate() {
       mark('onCreate VirtualListContainer')
+      this.store.setCurrentRealm(this.get('realm'))
       let node = document.querySelector(this.get('containerQuery'))
       this.setupScroll(node)
       this.setupFullscreen()
-      this.store.setCurrentRealm(this.get('realm'))
       let scrollTop = this.store.get('scrollTop')
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
@@ -39,6 +39,7 @@
     ondestroy() {
       this.teardownScroll()
       this.teardownFullscreen()
+      this.store.setCurrentRealm(null)
     },
     store: () => virtualListStore,
     methods: {
