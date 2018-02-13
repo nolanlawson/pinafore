@@ -2,7 +2,7 @@
   <title>Pinafore – Favorites</title>
 </:Head>
 
-<Layout page='favorites' virtual="true" virtualRealm="favorites">
+<Layout page='favorites'>
   {{#if $isUserLoggedIn}}
   {{#if $pinnedPage !== '/favorites'}}
     <DynamicPageBanner title="Favorites" icon="#fa-star"/>

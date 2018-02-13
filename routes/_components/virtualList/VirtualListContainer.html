@@ -1,12 +1,6 @@
-<div class="container"
-     on:scroll="onScroll(event)"
-     on:fullscreen="onFullscreenChange()"
-     ref:node>
-  <slot></slot>
-</div>
+<slot></slot>
 <script>
   import { virtualListStore } from './virtualListStore'
-
   import throttle from 'lodash/throttle'
   import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../../_utils/fullscreen'
   import { mark, stop } from '../../_utils/marks'
@@ -16,7 +10,9 @@
   export default {
     oncreate() {
       mark('onCreate VirtualListContainer')
-      let node = this.refs.node
+      let node = document.querySelector('.container')
+      this.setupScroll(node)
+      this.setupFullscreen()
       this.store.setCurrentRealm(this.get('realm'))
       let scrollTop = this.store.get('scrollTop')
       if (scrollTop > 0) {
@@ -40,46 +36,47 @@
       }
       stop('onCreate VirtualListContainer')
     },
+    ondestroy() {
+      this.teardownScroll()
+      this.teardownFullscreen()
+    },
     store: () => virtualListStore,
-    events: {
-      scroll(node, callback) {
-        const onScroll = throttle(event => {
-          mark('onScroll')
+    methods: {
+      setupScroll(node) {
+        if (!node) {
+          return
+        }
+        this.scrollListener = throttle(event => {
           if (this.get('fullscreen')) {
             return
           }
-          callback(event)
-          stop('onScroll')
+          this.onScroll(event)
         }, SCROLL_EVENT_DELAY, {
           leading: true,
           trailing: true
         })
-        node.addEventListener('scroll', onScroll)
-
-        return {
-          teardown() {
-            node.removeEventListener('scroll', onScroll)
-          }
+        node.addEventListener('scroll', this.scrollListener)
+      },
+      teardownScroll() {
+        let node = document.querySelector('.container')
+        if (node) {
+          node.removeEventListener('scroll', this.scrollListener)
         }
       },
-      fullscreen(node, callback) {
-        const onFullscreen = (() => {
-          callback()
-        })
-        attachFullscreenListener(onFullscreen)
-        return {
-          teardown() {
-            detachFullscreenListener(onFullscreen)
-          }
-        }
-      }
-    },
-    methods: {
+      setupFullscreen() {
+        this.onFullscreenChange = this.onFullscreenChange.bind(this)
+        attachFullscreenListener(this.onFullscreenChange)
+      },
+      teardownFullscreen() {
+        detachFullscreenListener(this.onFullscreenChange)
+      },
       onScroll(event) {
+        mark('onScroll')
         this.store.setForRealm({
           scrollTop: event.target.scrollTop,
           scrollHeight: event.target.scrollHeight
         })
+        stop('onScroll')
       },
       onFullscreenChange() {
         mark('onFullscreenChange')

@@ -2,9 +2,7 @@
   <title>Pinafore – #{{params.tagName}}</title>
 </:Head>
 
-<Layout page='tags'
-        virtual="true"
-        virtualRealm='tag/{{params.tagName}}' >
+<Layout page='tags'>
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{'#' + params.tagName}}"/>
   <LazyTimeline timeline='tag/{{params.tagName}}' />

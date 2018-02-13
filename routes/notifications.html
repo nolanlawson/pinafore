@@ -2,7 +2,7 @@
 	<title>Pinafore – Notifications</title>
 </:Head>
 
-<Layout page='notifications' virtual="true" virtualRealm="notifications">
+<Layout page='notifications'>
   {{#if $isUserLoggedIn}}
   <LazyTimeline timeline='notifications' />
   {{else}}

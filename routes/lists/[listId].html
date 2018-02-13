@@ -2,7 +2,7 @@
   <title>Pinafore – {{listTitle}}</title>
 </:Head>
 
-<Layout page='lists' virtual="true" virtualRealm="list/{{params.listId}}">
+<Layout page='lists'>
   {{#if $isUserLoggedIn}}
   {{#if $pinnedPage !== `/lists/${params.listId}`}}
     <DynamicPageBanner title="{{listTitle}}" icon="#fa-bars"/>

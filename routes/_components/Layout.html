@@ -1,19 +1,11 @@
 <:Window bind:online />
 <Nav :page />
 
-{{#if virtual}}
-  <VirtualListContainer realm="{{$currentInstance + '/' + virtualRealm}}">
-    <main>
-      <slot></slot>
-    </main>
-  </VirtualListContainer>
-{{else}}
-  <div class="container">
-    <main>
-      <slot></slot>
-    </main>
-  </div>
-{{/if}}
+<div class="container">
+  <main>
+    <slot></slot>
+  </main>
+</div>
 <script>
 	import Nav from './Nav.html';
 	import VirtualListContainer from './virtualList/VirtualListContainer.html'

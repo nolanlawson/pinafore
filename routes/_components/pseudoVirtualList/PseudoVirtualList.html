@@ -43,7 +43,7 @@
       this.store.setForRealm({intersectionStates: intersectionStates})
 
       this.set({intersectionObserver: new IntersectionObserver(this.onIntersection.bind(this), {
-        root: document.getElementsByClassName('container')[0], // TODO: fix this
+        root: document.querySelector('.container'),
         rootMargin: '300% 0px'
       })})
       this.observe('allItemsHaveHeight', allItemsHaveHeight => {
@@ -80,8 +80,7 @@
         }
         this.set({scrolledToPosition: true})
         console.log('scrollToPosition', rect.top)
-        // TODO: there should be some cleaner way to grab the container element
-        let container = document.getElementsByClassName('container')[0]
+        let container = document.querySelector('.container')
         if (!container) {
           return
         }

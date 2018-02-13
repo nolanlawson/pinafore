@@ -1,19 +1,21 @@
-<div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
-  <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
-  {{#if $visibleItems}}
-    {{#each $visibleItems as visibleItem @key}}
-      <VirtualListLazyItem :component
-                           offset="{{visibleItem.offset}}"
-                           makeProps="{{makeProps}}"
-                           key="{{visibleItem.key}}"
-                           index="{{visibleItem.index}}"
-      />
-    {{/each}}
-  {{/if}}
-  {{#if $showFooter}}
-    <VirtualListFooter component="{{footerComponent}}"/>
-  {{/if}}
-</div>
+<VirtualListContainer :realm >
+  <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
+    <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
+    {{#if $visibleItems}}
+      {{#each $visibleItems as visibleItem @key}}
+        <VirtualListLazyItem :component
+                             offset="{{visibleItem.offset}}"
+                             makeProps="{{makeProps}}"
+                             key="{{visibleItem.key}}"
+                             index="{{visibleItem.index}}"
+        />
+      {{/each}}
+    {{/if}}
+    {{#if $showFooter}}
+      <VirtualListFooter component="{{footerComponent}}" />
+    {{/if}}
+  </div>
+</VirtualListContainer>
 <style>
   .virtual-list {
     position: relative;
@@ -21,6 +23,7 @@
   }
 </style>
 <script>
+  import VirtualListContainer from './VirtualListContainer.html'
   import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
   import VirtualListHeader from './VirtualListHeader.html'
@@ -86,6 +89,7 @@
     }),
     store: () => virtualListStore,
     components: {
+      VirtualListContainer,
       VirtualListLazyItem,
       VirtualListFooter,
       VirtualListHeader

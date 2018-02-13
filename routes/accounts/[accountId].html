@@ -2,9 +2,7 @@
   <title>Pinafore – {{profileName}}</title>
 </:Head>
 
-<Layout page='tags'
-        virtual="true"
-        virtualRealm='account/{{params.accountId}}' >
+<Layout page='tags'>
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title="{{profileName}}" />
     {{#if $currentAccountProfile}}
