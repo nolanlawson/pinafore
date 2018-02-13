@@ -128,7 +128,7 @@
           && timelineValue
       },
       itemIdsToAdd: ($itemIdsToAdd) => $itemIdsToAdd,
-      // hack to avoid getting called too often
+      // TODO: hack to avoid getting called too often
       itemIdsToAddStringified: (itemIdsToAdd) => JSON.stringify(itemIdsToAdd),
       headerProps: (itemIdsToAdd) => {
         return {

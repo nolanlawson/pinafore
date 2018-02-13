@@ -101,7 +101,7 @@
       distanceFromTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
-      // hack to avoid getting called too often
+      // TODO: hack to avoid getting called too often
       itemsStringified: (items) => JSON.stringify(items)
     }
   }
