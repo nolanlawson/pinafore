@@ -78,8 +78,9 @@
         }
       })
 
-      this.observe('distanceFromTop', (distanceFromTop) => {
-        if (distanceFromTop === 0) {
+      this.observe('scrollTop', (scrollTop) => {
+        this.fire('scrollTopChanged', scrollTop)
+        if (scrollTop === 0) {
           this.fireScrollToTop()
         }
       })
@@ -98,7 +99,7 @@
       distanceFromBottom: ($scrollHeight, $scrollTop, $offsetHeight) => {
         return $scrollHeight - $scrollTop - $offsetHeight
       },
-      distanceFromTop: ($scrollTop) => $scrollTop,
+      scrollTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
       // TODO: hack to avoid getting called too often

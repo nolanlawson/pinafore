@@ -21,6 +21,7 @@
                  :headerProps
                  on:scrollToBottom="onScrollToBottom()"
                  on:scrollToTop="onScrollToTop()"
+                 on:scrollTopChanged="onScrollTopChanged(event)"
                  on:initializedVisibleItems="initialize()"
     />
   {{else}}
@@ -58,7 +59,6 @@
   import LoadingPage from '../LoadingPage.html'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
   import { showMoreItemsForCurrentTimeline } from '../../_actions/timeline'
-  import { virtualListStore } from '../virtualList/virtualListStore' // TODO: hacky, need better way to expose scrollTop
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
 
@@ -79,7 +79,8 @@
     data: () => ({
       LoadingFooter,
       MoreHeaderVirtualWrapper,
-      Status
+      Status,
+      scrollTop: 0
     }),
     computed: {
       VirtualListComponent: (timelineType) => {
@@ -156,6 +157,9 @@
         console.log('timeline initialize()')
         initializeTimeline()
       },
+      onScrollTopChanged(scrollTop) {
+        this.set({scrollTop: scrollTop})
+      },
       onScrollToBottom() {
         if (!this.store.get('initialized') ||
             this.store.get('runningUpdate') ||
@@ -181,7 +185,7 @@
             return
           }
           mark('handleItemIdsToAdd')
-          let scrollTop = virtualListStore.get('scrollTop')
+          let scrollTop = this.get('scrollTop')
           let shouldShowHeader = this.store.get('shouldShowHeader')
           let showHeader = this.store.get('showHeader')
           //console.log('handleItemIdsToAdd', (itemIdsToAdd && itemIdsToAdd.length) || 0)
