@@ -6,13 +6,18 @@ import {
   RELATIONSHIPS_STORE,
   NOTIFICATIONS_STORE,
   NOTIFICATION_TIMELINES_STORE,
-  PINNED_STATUSES_STORE
+  PINNED_STATUSES_STORE,
+  TIMESTAMP
 } from './constants'
 
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 2
+const DB_VERSION = 1
+
+function objectStore(db, name, keyPath) {
+  return db.createObjectStore(name, {keyPath: keypPath})
+}
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -31,20 +36,20 @@ export function getDatabase (instanceName) {
     }
     req.onupgradeneeded = (e) => {
       let db = req.result
-      if (e.oldVersion < 1) {
-        db.createObjectStore(META_STORE, {keyPath: 'key'})
-        db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
-        db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
-        db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
-        db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
-        db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
-          .createIndex('statusId', 'statusId')
-        db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
-          .createIndex('notificationId', 'notificationId')
-      }
-      if (e.oldVersion < 2) {
-        db.createObjectStore(PINNED_STATUSES_STORE, {keyPath: 'id'})
-      }
+      db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
+        .createIndex(TIMESTAMP, TIMESTAMP)
+      db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
+        .createIndex('statusId', 'statusId')
+      db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
+        .createIndex(TIMESTAMP, TIMESTAMP)
+      db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
+        .createIndex('notificationId', 'notificationId')
+      db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
+        .createIndex(TIMESTAMP, TIMESTAMP)
+      db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
+        .createIndex(TIMESTAMP, TIMESTAMP)
+      db.createObjectStore(META_STORE, {keyPath: 'key'})
+      db.createObjectStore(PINNED_STATUSES_STORE, {keyPath: 'id'})
     }
     req.onsuccess = () => resolve(req.result)
   })

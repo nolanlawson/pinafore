@@ -1,18 +1,19 @@
 import { toPaddedBigInt, toReversePaddedBigInt } from './utils'
+import { cloneForStorage } from './helpers'
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { accountsCache, getInCache, hasInCache, notificationsCache, setInCache, statusesCache } from './cache'
+import { scheduleCleanup } from './cleanup'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
   NOTIFICATIONS_STORE, PINNED_STATUSES_STORE,
   STATUS_TIMELINES_STORE,
-  STATUSES_STORE
+  STATUSES_STORE,
+  ACCOUNT_ID,
+  REBLOG_ID,
+  STATUS_ID
 } from './constants'
-
-const TIMESTAMP = '__pinafore_ts'
-const ACCOUNT_ID = '__pinafore_acct_id'
-const STATUS_ID = '__pinafore_status_id'
-const REBLOG_ID = '__pinafore_reblog_id'
+import { scheduleCleanup } from './cleanup'
 
 function createTimelineKeyRange (timeline, maxId) {
   let negBigInt = maxId && toReversePaddedBigInt(maxId)
@@ -27,34 +28,6 @@ function createKeyRangeForStatusThread (timeline) {
   let start = timeline + '\u0000'
   let end = timeline + '\u0000\uffff'
   return IDBKeyRange.bound(start, end, true, true)
-}
-
-function cloneForStorage (obj) {
-  let res = {}
-  let keys = Object.keys(obj)
-  for (let key of keys) {
-    let value = obj[key]
-    // save storage space by skipping nulls, 0s, falses, empty strings, and empty arrays
-    if (!value || (Array.isArray(value) && value.length === 0)) {
-      continue
-    }
-    switch (key) {
-      case 'account':
-        res[ACCOUNT_ID] = value.id
-        break
-      case 'status':
-        res[STATUS_ID] = value.id
-        break
-      case 'reblog':
-        res[REBLOG_ID] = value.id
-        break
-      default:
-        res[key] = value
-        break
-    }
-  }
-  res[TIMESTAMP] = Date.now()
-  return res
 }
 
 function cacheStatus (status, instanceName) {
@@ -202,6 +175,7 @@ function createTimelineId (timeline, id) {
 }
 
 async function insertTimelineNotifications (instanceName, timeline, notifications) {
+  /* no await */ scheduleCleanup()
   for (let notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
     setInCache(accountsCache, instanceName, notification.account.id, notification.account)
@@ -221,6 +195,7 @@ async function insertTimelineNotifications (instanceName, timeline, notification
 }
 
 async function insertTimelineStatuses (instanceName, timeline, statuses) {
+  /* no await */ scheduleCleanup()
   for (let status of statuses) {
     cacheStatus(status, instanceName)
   }

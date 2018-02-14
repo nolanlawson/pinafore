@@ -1,5 +1,6 @@
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { getInCache, hasInCache, setInCache } from './cache'
+import { ACCOUNT_ID, REBLOG_ID, STATUS_ID, TIMESTAMP } from './constants'
 
 export async function getGenericEntityWithId (store, cache, instanceName, id) {
   if (hasInCache(cache, instanceName, id)) {
@@ -19,4 +20,32 @@ export async function setGenericEntityWithId (store, cache, instanceName, entity
   return dbPromise(db, store, 'readwrite', (store) => {
     store.put(entity)
   })
+}
+
+export function cloneForStorage (obj) {
+  let res = {}
+  let keys = Object.keys(obj)
+  for (let key of keys) {
+    let value = obj[key]
+    // save storage space by skipping nulls, 0s, falses, empty strings, and empty arrays
+    if (!value || (Array.isArray(value) && value.length === 0)) {
+      continue
+    }
+    switch (key) {
+      case 'account':
+        res[ACCOUNT_ID] = value.id
+        break
+      case 'status':
+        res[STATUS_ID] = value.id
+        break
+      case 'reblog':
+        res[REBLOG_ID] = value.id
+        break
+      default:
+        res[key] = value
+        break
+    }
+  }
+  res[TIMESTAMP] = Date.now()
+  return res
 }

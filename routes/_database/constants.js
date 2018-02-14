@@ -6,3 +6,8 @@ export const RELATIONSHIPS_STORE = 'relationships'
 export const NOTIFICATIONS_STORE = 'notifications'
 export const NOTIFICATION_TIMELINES_STORE = 'notification_timelines'
 export const PINNED_STATUSES_STORE = 'pinned_statuses'
+
+export const TIMESTAMP = '__pinafore_ts'
+export const ACCOUNT_ID = '__pinafore_acct_id'
+export const STATUS_ID = '__pinafore_status_id'
+export const REBLOG_ID = '__pinafore_reblog_id'
