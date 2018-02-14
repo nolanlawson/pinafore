@@ -15,10 +15,6 @@ const databaseCache = {}
 
 const DB_VERSION = 1
 
-function objectStore(db, name, keyPath) {
-  return db.createObjectStore(name, {keyPath: keypPath})
-}
-
 export function getDatabase (instanceName) {
   if (!instanceName) {
     throw new Error('instanceName is undefined in getDatabase()')

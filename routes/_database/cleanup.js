@@ -17,8 +17,8 @@ const BATCH_SIZE = 20
 const TIME_AGO = 14 * 24 * 60 * 60 * 1000 // two weeks ago
 const DELAY = 5 * 60 * 1000               // five minutes
 
-function batchedGetAll(callGetAll, callback) {
-  function nextBatch() {
+function batchedGetAll (callGetAll, callback) {
+  function nextBatch () {
     callGetAll().onsuccess = function (e) {
       let results = e.target.result
       callback(results)
@@ -30,7 +30,7 @@ function batchedGetAll(callGetAll, callback) {
   nextBatch()
 }
 
-function cleanupStatuses(statusesStore, statusTimelinesStore, cutoff) {
+function cleanupStatuses (statusesStore, statusTimelinesStore, cutoff) {
   batchedGetAll(
     () => statusesStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     results => {
@@ -48,7 +48,7 @@ function cleanupStatuses(statusesStore, statusTimelinesStore, cutoff) {
   )
 }
 
-function cleanupNotifications(notificationsStore, notificationTimelinesStore, cutoff) {
+function cleanupNotifications (notificationsStore, notificationTimelinesStore, cutoff) {
   batchedGetAll(
     () => notificationsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     results => {
@@ -66,7 +66,7 @@ function cleanupNotifications(notificationsStore, notificationTimelinesStore, cu
   )
 }
 
-function cleanupAccounts(accountsStore, cutoff) {
+function cleanupAccounts (accountsStore, cutoff) {
   batchedGetAll(
     () => accountsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     (results) => {
@@ -77,7 +77,7 @@ function cleanupAccounts(accountsStore, cutoff) {
   )
 }
 
-function cleanupRelationships(relationshipsStore, cutoff) {
+function cleanupRelationships (relationshipsStore, cutoff) {
   batchedGetAll(
     () => relationshipsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     (results) => {
@@ -88,7 +88,7 @@ function cleanupRelationships(relationshipsStore, cutoff) {
   )
 }
 
-async function cleanup(instanceName) {
+async function cleanup (instanceName) {
   console.log('cleanup', instanceName)
   mark(`cleanup:${instanceName}`)
   let db = await getDatabase(instanceName)
@@ -120,7 +120,7 @@ async function cleanup(instanceName) {
   stop(`cleanup:${instanceName}`)
 }
 
-function doCleanup(instanceName) {
+function doCleanup (instanceName) {
   scheduleIdleTask(() => cleanup(instanceName))
 }
 

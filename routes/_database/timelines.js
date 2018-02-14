@@ -13,7 +13,6 @@ import {
   REBLOG_ID,
   STATUS_ID
 } from './constants'
-import { scheduleCleanup } from './cleanup'
 
 function createTimelineKeyRange (timeline, maxId) {
   let negBigInt = maxId && toReversePaddedBigInt(maxId)

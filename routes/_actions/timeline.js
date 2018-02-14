@@ -82,7 +82,7 @@ export async function fetchTimelineItemsOnScrollToBottom () {
   store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
 }
 
-export async function showMoreItemsForCurrentTimeline() {
+export async function showMoreItemsForCurrentTimeline () {
   mark('showMoreItemsForCurrentTimeline')
   let instanceName = store.get('currentInstance')
   let timelineName = store.get('currentTimeline')
