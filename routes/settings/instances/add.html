@@ -6,8 +6,6 @@
   <SettingsLayout page='settings/instances/add' label="Add an Instance">
     <h1 id="add-an-instance-h1">Add an Instance</h1>
 
-    <LoadingMask shown="{{$logInToInstanceLoading}}"/>
-
     {{#if $isUserLoggedIn}}
     <p>Connect to an instance to log in.</p>
     {{else}}
@@ -74,7 +72,6 @@
   import Layout from '../../_components/Layout.html';
   import SettingsLayout from '../_components/SettingsLayout.html'
   import { store } from '../../_store/store'
-  import LoadingMask from '../../_components/LoadingMask'
   import { logInToInstance, handleOauthCode } from '../../_actions/addInstance'
   import ExternalLink from '../../_components/ExternalLink.html'
 
@@ -88,7 +85,6 @@
     components: {
       Layout,
       SettingsLayout,
-      LoadingMask,
       ExternalLink
     },
     store: () => store,

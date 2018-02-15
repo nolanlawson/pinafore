@@ -1,10 +1,12 @@
-<div class="loading-container {{shown ? 'loading-container-shown' : ''}}">
-  <div class="loading-mask">
-    <LoadingSpinner maskStyle="true"/>
-  </div>
+<div class="loading-mask-container {{shown ? 'loading-mask-container-shown' : ''}}">
+  {{#if shown}}
+    <div class="loading-mask">
+      <LoadingSpinner maskStyle="true"/>
+    </div>
+  {{/if}}
 </div>
 <style>
-  .loading-container {
+  .loading-mask-container {
     left: 0;
     right: 0;
     top: 0;
@@ -12,9 +14,12 @@
     position: fixed;
     z-index: 100;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 333ms linear;
   }
-  .loading-container.loading-container-shown {
+  .loading-mask-container.loading-mask-container-shown {
     pointer-events: auto;
+    opacity: 0.6;
   }
   .loading-mask {
     width: 100%;
@@ -23,17 +28,17 @@
     align-items: center;
     justify-content: center;
     background: var(--mask-bg);
-    opacity: 0;
-    transition: opacity 333ms linear;
-  }
-  .loading-container-shown .loading-mask {
-    opacity: 0.6;
   }
 </style>
 <script>
   import LoadingSpinner from './LoadingSpinner.html'
+  import { store } from '../_store/store'
 
   export default {
+    store: () => store,
+    computed: {
+      shown: ($logInToInstanceLoading) => $logInToInstanceLoading
+    },
     components: {
       LoadingSpinner
     }
