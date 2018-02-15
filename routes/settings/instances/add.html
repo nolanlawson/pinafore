@@ -26,7 +26,10 @@
       <input class="new-instance-input" type="text" id="instanceInput"
              bind:value='$instanceNameInSearch' placeholder='' required
       >
-      <button class="primary" type="submit" id="submitButton" disabled="{{!$instanceNameInSearch}}">Add instance</button>
+      <button class="primary" type="submit" id="submitButton"
+              disabled="{{!$instanceNameInSearch || $logInToInstanceLoading}}">
+        Add instance
+      </button>
     </form>
 
     {{#if !$isUserLoggedIn}}
