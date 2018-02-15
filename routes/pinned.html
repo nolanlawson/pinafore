@@ -8,11 +8,14 @@
     {{#if loading}}
     <LoadingPage />
     {{elseif statuses && statuses.length}}
-    <ul class="pinned-toots-results">
-      {{#each statuses as status}}
-      <StatusSearchResult :status />
-      {{/each}}
-    </ul>
+    {{#await importStatusSearchResult}}
+    {{then StatusSearchResult}}
+      <ul class="pinned-toots-results">
+        {{#each statuses as status}}
+          <:Component {StatusSearchResult} :status />
+        {{/each}}
+      </ul>
+    {{/await}}
     {{/if}}
   </div>
 </Layout>
@@ -43,6 +46,7 @@
   import DynamicPageBanner from './_components/DynamicPageBanner.html'
   import { getPinnedStatuses } from './_api/pinnedStatuses'
   import { updateVerifyCredentialsForInstance } from './_actions/instances'
+  import { importStatusRendering } from './_utils/asyncModules'
 
   export default {
     async oncreate() {
@@ -62,7 +66,8 @@
     },
     data: () => ({
       loading: true,
-      accounts: []
+      accounts: [],
+      importStatusSearchResult: importStatusRendering().then(mod => mod.StatusSearchResult)
     }),
     store: () => store,
     components: {

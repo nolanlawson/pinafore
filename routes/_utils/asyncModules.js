@@ -36,3 +36,7 @@ export const importPseudoVirtualList = () => import(
 export const importDialogs = () => import(
   /* webpackChunkName: 'dialogs' */ '../_components/dialog/dialogs.js'
   )
+
+export const importStatusRendering = () => import(
+  /* webpackChunkName: 'statusRendering' */ '../_components/statusRendering.js'
+  )

@@ -1,14 +1,17 @@
-<ul class="search-results">
-  {{#each $searchResults.hashtags as hashtag}}
-    <HashtagSearchResult :hashtag />
-  {{/each}}
-  {{#each $searchResults.accounts as account}}
-    <AccountSearchResult :account />
-  {{/each}}
-  {{#each $searchResults.statuses as status, index}}
-  <StatusSearchResult :status :index length="{{$searchResults.statuses.length}}"/>
-  {{/each}}
-</ul>
+{{#await importStatusSearchResult}}
+{{then StatusSearchResult}}
+  <ul class="search-results">
+    {{#each $searchResults.hashtags as hashtag}}
+      <HashtagSearchResult :hashtag />
+    {{/each}}
+    {{#each $searchResults.accounts as account}}
+      <AccountSearchResult :account />
+    {{/each}}
+    {{#each $searchResults.statuses as status, index}}
+      <:Component {StatusSearchResult} :status :index length="{{$searchResults.statuses.length}}"/>
+    {{/each}}
+  </ul>
+{{/await}}
 <style>
   .search-results {
     list-style: none;
@@ -22,9 +25,13 @@
   import AccountSearchResult from './AccountSearchResult.html'
   import HashtagSearchResult from './HashtagSearchResult.html'
   import StatusSearchResult from './StatusSearchResult.html'
+  import { importStatusRendering } from '../../_utils/asyncModules'
 
   export default {
     store: () => store,
+    data: () => ({
+      importStatusSearchResult: importStatusRendering().then(mod => mod.StatusSearchResult)
+    }),
     components: {
       AccountSearchResult,
       HashtagSearchResult,

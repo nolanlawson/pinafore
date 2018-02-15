@@ -7,42 +7,45 @@
   {{#if !$initialized}}
     <LoadingPage />
   {{/if}}
-  {{#if virtual}}
-    <VirtualList component="{{VirtualListComponent}}"
-                 realm="{{$currentInstance + '/' + timeline}}"
-                 containerQuery=".container"
-                 :makeProps
-                 items="{{$timelineItemIds}}"
-                 shown="{{$initialized}}"
-                 showFooter="{{$initialized && $runningUpdate}}"
-                 footerComponent="{{LoadingFooter}}"
-                 showHeader="{{$showHeader}}"
-                 headerComponent="{{MoreHeaderVirtualWrapper}}"
-                 :headerProps
-                 on:scrollToBottom="onScrollToBottom()"
-                 on:scrollToTop="onScrollToTop()"
-                 on:scrollTopChanged="onScrollTopChanged(event)"
-                 on:initializedVisibleItems="initialize()"
-    />
-  {{else}}
-    {{#await importPseudoVirtualList}}
-    {{then PseudoVirtualList}}
-      <!-- if this is a status thread, it's easier to just render the
-           whole thing rather than use a virtual list -->
-      <:Component {PseudoVirtualList}
-                 component="{{VirtualListComponent}}"
-                 realm="{{$currentInstance + '/' + timeline}}"
-                 containerQuery=".container"
-                 :makeProps
-                 items="{{$timelineItemIds}}"
-                 shown="{{$initialized}}"
-                 scrollToItem="{{scrollToItem}}"
-                 on:initializedVisibleItems="initialize()"
+  {{#await importListItemComponent}}
+  {{then ListItemComponent}}
+    {{#if virtual}}
+      <VirtualList component="{{ListItemComponent}}"
+                   realm="{{$currentInstance + '/' + timeline}}"
+                   containerQuery=".container"
+                   :makeProps
+                   items="{{$timelineItemIds}}"
+                   shown="{{$initialized}}"
+                   showFooter="{{$initialized && $runningUpdate}}"
+                   footerComponent="{{LoadingFooter}}"
+                   showHeader="{{$showHeader}}"
+                   headerComponent="{{MoreHeaderVirtualWrapper}}"
+                   :headerProps
+                   on:scrollToBottom="onScrollToBottom()"
+                   on:scrollToTop="onScrollToTop()"
+                   on:scrollTopChanged="onScrollTopChanged(event)"
+                   on:initializedVisibleItems="initialize()"
       />
-    {{catch error}}
-      <div>Component failed to load. Try refreshing! {{error}}</div>
-    {{/await}}
-  {{/if}}
+    {{else}}
+      {{#await importPseudoVirtualList}}
+      {{then PseudoVirtualList}}
+        <!-- if this is a status thread, it's easier to just render the
+             whole thing rather than use a virtual list -->
+        <:Component {PseudoVirtualList}
+                   component="{{ListItemComponent}}"
+                   realm="{{$currentInstance + '/' + timeline}}"
+                   containerQuery=".container"
+                   :makeProps
+                   items="{{$timelineItemIds}}"
+                   shown="{{$initialized}}"
+                   scrollToItem="{{scrollToItem}}"
+                   on:initializedVisibleItems="initialize()"
+        />
+      {{catch error}}
+        <div>Component failed to load. Try refreshing! {{error}}</div>
+      {{/await}}
+    {{/if}}
+  {{/await}}
 </div>
 <style>
   .timeline {
@@ -66,7 +69,7 @@
   import { showMoreItemsForCurrentTimeline } from '../../_actions/timeline'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
-  import { importPseudoVirtualList } from '../../_utils/asyncModules'
+  import { importPseudoVirtualList, importStatusRendering } from '../../_utils/asyncModules'
 
   export default {
     oncreate() {
@@ -92,8 +95,12 @@
       importPseudoVirtualList: (virtual) => {
         return !virtual && importPseudoVirtualList()
       },
-      VirtualListComponent: (timelineType) => {
-        return timelineType === 'notifications' ? NotificationVirtualListItem : StatusVirtualListItem
+      importListItemComponent: (timelineType) => {
+        return importStatusRendering().then(mod => {
+          return timelineType === 'notifications'
+            ? mod.NotificationVirtualListItem
+            : mod.StatusVirtualListItem
+        })
       },
       makeProps: ($currentInstance, timelineType, timelineValue) => async (itemId) => {
         let res = { timelineType, timelineValue }
