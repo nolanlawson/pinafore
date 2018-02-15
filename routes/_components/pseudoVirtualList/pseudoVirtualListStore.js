@@ -10,7 +10,7 @@ const pseudoVirtualListStore = new PseudoVirtualListStore()
 
 pseudoVirtualListStore.computeForRealm('intersectionStates', {})
 
-if (process.browser && process.env.NODE_NODE !== 'production') {
+if (process.browser && process.env.NODE_ENV !== 'production') {
   window.pseudoVirtualListStore = pseudoVirtualListStore
 }
 
