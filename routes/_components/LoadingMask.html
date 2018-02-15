@@ -1,9 +1,7 @@
-<div class="loading-container">
-  {{#if show}}
-  <div transition:fade class="loading-mask">
+<div class="loading-container {{shown ? 'loading-container-shown' : ''}}">
+  <div class="loading-mask">
     <LoadingSpinner maskStyle="true"/>
   </div>
-  {{/if}}
 </div>
 <style>
   .loading-container {
@@ -12,8 +10,11 @@
     top: 0;
     bottom: 0;
     position: fixed;
-    pointer-events: none;
     z-index: 100;
+    pointer-events: none;
+  }
+  .loading-container.loading-container-shown {
+    pointer-events: auto;
   }
   .loading-mask {
     width: 100%;
@@ -22,18 +23,17 @@
     align-items: center;
     justify-content: center;
     background: var(--mask-bg);
+    opacity: 0;
+    transition: opacity 333ms linear;
+  }
+  .loading-container-shown .loading-mask {
     opacity: 0.6;
-    pointer-events: auto;
   }
 </style>
 <script>
-  import { fade } from 'svelte-transitions'
   import LoadingSpinner from './LoadingSpinner.html'
 
   export default {
-    transitions: {
-      fade
-    },
     components: {
       LoadingSpinner
     }
