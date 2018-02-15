@@ -28,3 +28,7 @@ export const importIndexedDBGetAllShim = () => import(
 export const importWebSocketClient = () => import(
   /* webpackChunkName: '@gamestdio/websocket' */ '@gamestdio/websocket'
   ).then(mod => mod.default)
+
+export const importPseudoVirtualList = () => import(
+  /* webpackChunkName: 'PseudoVirtualList' */ '../_components/pseudoVirtualList/PseudoVirtualList.html'
+  ).then(mod => mod.default)
