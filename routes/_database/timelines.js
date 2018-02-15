@@ -178,6 +178,9 @@ async function insertTimelineNotifications (instanceName, timeline, notification
   for (let notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
     setInCache(accountsCache, instanceName, notification.account.id, notification.account)
+    if (notification.status) {
+      setInCache(statusesCache, instanceName, notification.status.id, notification.status)
+    }
   }
   const db = await getDatabase(instanceName)
   let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, ACCOUNTS_STORE, STATUSES_STORE]

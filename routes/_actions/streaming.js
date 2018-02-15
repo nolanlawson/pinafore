@@ -6,24 +6,35 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import throttle from 'lodash/throttle'
 import { mark, stop } from '../_utils/marks'
 
-async function removeDuplicates (instanceName, timelineName, updates) {
-  // remove duplicates, including duplicates due to reblogs
-  let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
-  let reblogIds = (await Promise.all(timelineItemIds.map(async timelineItemId => {
+async function getReblogIds(instanceName, statusIds) {
+  let reblogIds = await Promise.all(statusIds.map(async timelineItemId => {
     let status = await database.getStatus(instanceName, timelineItemId)
     return status.reblog && status.reblog.id
-  }))).filter(identity)
-  let existingItemIds = new Set([].concat(timelineItemIds).concat(reblogIds))
+  }))
+  return reblogIds.filter(identity)
+}
+
+async function getExistingItemIdsSet(instanceName, timelineName) {
+  let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
+  if (timelineName === 'notifications') {
+    return new Set(timelineItemIds)
+  }
+  let reblogIds = await getReblogIds(instanceName, timelineItemIds)
+  return new Set([].concat(timelineItemIds).concat(reblogIds))
+}
+
+async function removeDuplicates (instanceName, timelineName, updates) {
+  // remove duplicates, including duplicates due to reblogs
+  let existingItemIds = await getExistingItemIdsSet(instanceName, timelineName)
   return updates.filter(update => !existingItemIds.has(update.id))
 }
 
-async function processFreshChanges (instanceName, timelineName) {
-  mark('processFreshChanges')
-  let freshChanges = store.getForTimeline(instanceName, timelineName, 'freshChanges')
-  if (freshChanges.updates && freshChanges.updates.length) {
-    let updates = freshChanges.updates.slice()
-    freshChanges.updates = []
-    store.setForTimeline(instanceName, timelineName, {freshChanges: freshChanges})
+async function processFreshUpdates (instanceName, timelineName) {
+  mark('processFreshUpdates')
+  let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates')
+  if (freshUpdates && freshUpdates.length) {
+    let updates = freshUpdates.slice()
+    store.setForTimeline(instanceName, timelineName, {freshUpdates: []})
 
     updates = await removeDuplicates(instanceName, timelineName, updates)
 
@@ -35,37 +46,54 @@ async function processFreshChanges (instanceName, timelineName) {
       console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd')
       store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
     }
-    stop('processFreshChanges')
+    stop('processFreshUpdates')
   }
 }
 
-const lazilyProcessFreshChanges = throttle((instanceName, timelineName) => {
+const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
   scheduleIdleTask(() => {
-    processFreshChanges(instanceName, timelineName)
+    /* no await */ processFreshUpdates(instanceName, timelineName)
   })
 }, 5000)
 
-function handleStreamMessage (instanceName, timelineName, message) {
-  mark('handleStreamMessage')
+function processUpdate(instanceName, timelineName, update) {
+  let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
+  freshUpdates.push(update)
+  store.setForTimeline(instanceName, timelineName, {freshUpdates: freshUpdates})
+  lazilyProcessFreshUpdates(instanceName, timelineName)
+}
+
+function processDelete(instanceName, deletion) {
+  // TODO
+}
+
+function processMessage (instanceName, timelineName, message) {
+  mark('processMessage')
   let { event, payload } = message
-  let key = event === 'update' ? 'updates' : 'deletes'
-  let freshChanges = store.getForTimeline(instanceName, timelineName, 'freshChanges') || {}
-  freshChanges[key] = freshChanges[key] || []
-  freshChanges[key].push(JSON.parse(payload))
-  store.setForTimeline(instanceName, timelineName, {freshChanges: freshChanges})
-  lazilyProcessFreshChanges(instanceName, timelineName)
-  stop('handleStreamMessage')
+  let parsedPayload = JSON.parse(payload)
+  switch (event) {
+    case 'delete':
+      processDelete(instanceName, parsedPayload)
+      break
+    case 'update':
+      processUpdate(instanceName, timelineName, parsedPayload)
+      break
+    case 'notification':
+      processUpdate(instanceName, 'notifications', parsedPayload)
+      break
+  }
+  stop('processMessage')
 }
 
 export function createStream (streamingApi, instanceName, accessToken, timelineName) {
   return new TimelineStream(streamingApi, accessToken, timelineName, {
     onMessage (msg) {
-      if (msg.event !== 'update' && msg.event !== 'delete') {
+      if (msg.event !== 'update' && msg.event !== 'delete' && msg.event !== 'notification') {
         console.error("don't know how to handle event", msg)
         return
       }
       scheduleIdleTask(() => {
-        handleStreamMessage(instanceName, timelineName, msg)
+        processMessage(instanceName, timelineName, msg)
       })
     },
     onOpen () {
