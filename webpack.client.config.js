@@ -54,7 +54,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       minChunks: 2,
-      async: true,
+      async: false,
       children: true
     })
   ].concat(isDev ? [
