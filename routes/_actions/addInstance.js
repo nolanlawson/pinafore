@@ -35,8 +35,10 @@ async function redirectToOauth () {
 }
 
 export async function logInToInstance () {
-  store.set({logInToInstanceLoading: true})
-  store.set({logInToInstanceError: null})
+  store.set({
+    logInToInstanceLoading: true,
+    logInToInstanceError: null
+  })
   try {
     await redirectToOauth()
   } catch (err) {
