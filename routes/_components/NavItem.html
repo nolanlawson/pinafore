@@ -1,7 +1,7 @@
-<a class='main-nav-link {{forceCurrent || page === name ? "selected" : ""}}'
-   aria-label='{{forceCurrent || page === name ? `${label} (current page)` : label}}'
-   aria-current="{{forceCurrent || page === name}}"
-   href='{{href}}'>
+<a class='main-nav-link {{page === name ? "selected" : ""}}'
+   aria-label='{{ariaLabel}}'
+   aria-current="{{page === name}}"
+   :href >
   {{#if name === 'notifications'}}
     <div class="nav-link-svg-wrapper">
       <svg>
@@ -115,6 +115,16 @@
   export default {
     store: () => store,
     computed: {
+      ariaLabel: (page, name, label, numberOfNotifications) => {
+        let res = label
+        if (page === name) {
+          res += ' (current page)'
+        }
+        if (name === 'notifications') {
+          res += ` (${numberOfNotifications})`
+        }
+        return res
+      },
       numberOfNotifications: ($timelines, $currentInstance, $currentTimeline) => {
         return $currentTimeline !== 'notifications' &&
           $timelines &&
