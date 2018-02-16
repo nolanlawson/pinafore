@@ -2,10 +2,23 @@
    aria-label='{{forceCurrent || page === name ? `${label} (current page)` : label}}'
    aria-current="{{forceCurrent || page === name}}"
    href='{{href}}'>
-  <svg>
-    <use xlink:href="{{svg}}" />
-  </svg>
-  <span>{{label}}</span>
+  {{#if name === 'notifications'}}
+    <div class="nav-link-svg-wrapper">
+      <svg>
+        <use xlink:href="{{svg}}" />
+      </svg>
+      {{#if numberOfNotifications}}
+        <span class="nav-link-notifications" aria-hidden="true">
+          {{numberOfNotifications}}
+        </span>
+      {{/if}}
+    </div>
+  {{else}}
+    <svg>
+      <use xlink:href="{{svg}}" />
+    </svg>
+  {{/if}}
+  <span class="nav-link-label">{{label}}</span>
 </a>
 <style>
   .main-nav-link {
@@ -15,6 +28,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .nav-link-svg-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .nav-link-notifications {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translate(10px, 7px);
+    z-index: 10;
+    border: 1px solid var(--nav-bg);
+    background: var(--nav-svg-fill);
+    color: var(--nav-bg);
+    border-radius: 100%;
+    font-size: 0.9em;
+    margin: 3px 0;
   }
 
   .main-nav-link.selected {
@@ -32,7 +69,7 @@
     border-bottom: 1px solid var(--nav-a-border-hover);
   }
 
-  .main-nav-link:hover span {
+  .main-nav-link:hover .nav-link-label {
     color: var(--nav-text-color-hover);
   }
   .main-nav-link:hover svg {
@@ -46,7 +83,7 @@
     fill: var(--nav-svg-fill);
   }
 
-  .main-nav-link span {
+  .main-nav-link .nav-link-label {
     font-size: 16px;
     color: var(--nav-text-color);
     padding-left: 10px;
@@ -56,7 +93,7 @@
   }
 
   @media (max-width: 991px) {
-    .main-nav-link span {
+    .main-nav-link .nav-link-label {
       display: none;
     }
     .main-nav-link svg {
@@ -66,8 +103,27 @@
     .main-nav-link {
       padding: 20px 0;
     }
+    .nav-link-notifications {
+      transform: translate(15px, 7px);
+      margin: 3px 1px 4px;
+    }
   }
 </style>
 <script>
+  import { store } from '../_store/store'
+
+  export default {
+    store: () => store,
+    computed: {
+      numberOfNotifications: ($timelines, $currentInstance, $currentTimeline) => {
+        return $currentTimeline !== 'notifications' &&
+          $timelines &&
+          $timelines[$currentInstance] &&
+          $timelines[$currentInstance].notifications &&
+          $timelines[$currentInstance].notifications.itemIdsToAdd &&
+          $timelines[$currentInstance].notifications.itemIdsToAdd.length
+      }
+    }
+  }
 
 </script>
