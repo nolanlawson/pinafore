@@ -3,7 +3,6 @@ import { updateLists } from '../_actions/lists'
 import { createStream } from '../_actions/streaming'
 
 export function instanceObservers (store) {
-
   // stream to watch for home timeline updates and notifications
   let currentInstanceStream
 
@@ -38,6 +37,5 @@ export function instanceObservers (store) {
     if (process.env.NODE_ENV !== 'production') {
       window.currentInstanceStream = currentInstanceStream
     }
-
   })
 }

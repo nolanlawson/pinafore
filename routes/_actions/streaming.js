@@ -6,7 +6,7 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import throttle from 'lodash/throttle'
 import { mark, stop } from '../_utils/marks'
 
-async function getReblogIds(instanceName, statusIds) {
+async function getReblogIds (instanceName, statusIds) {
   let reblogIds = await Promise.all(statusIds.map(async timelineItemId => {
     let status = await database.getStatus(instanceName, timelineItemId)
     return status.reblog && status.reblog.id
@@ -14,7 +14,7 @@ async function getReblogIds(instanceName, statusIds) {
   return reblogIds.filter(identity)
 }
 
-async function getExistingItemIdsSet(instanceName, timelineName) {
+async function getExistingItemIdsSet (instanceName, timelineName) {
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
   if (timelineName === 'notifications') {
     return new Set(timelineItemIds)
@@ -56,14 +56,14 @@ const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
   })
 }, 5000)
 
-function processUpdate(instanceName, timelineName, update) {
+function processUpdate (instanceName, timelineName, update) {
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
   freshUpdates.push(update)
   store.setForTimeline(instanceName, timelineName, {freshUpdates: freshUpdates})
   lazilyProcessFreshUpdates(instanceName, timelineName)
 }
 
-function processDelete(instanceName, deletion) {
+function processDelete (instanceName, deletion) {
   // TODO
 }
 

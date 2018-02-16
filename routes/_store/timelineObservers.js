@@ -2,7 +2,6 @@ import { updateInstanceInfo } from '../_actions/instances'
 import { createStream } from '../_actions/streaming'
 
 export function timelineObservers (store) {
-
   // stream to watch for local/federated/etc. updates. home and notification
   // updates are handled in timelineObservers.js
   let currentTimelineStream
