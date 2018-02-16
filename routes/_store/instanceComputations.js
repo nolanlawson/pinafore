@@ -76,4 +76,23 @@ export function instanceComputations (store) {
       return list ? list.title : ''
     }
   )
+
+  store.compute('numberOfNotifications',
+    ['timelines', 'currentInstance', 'currentTimeline'],
+    (timelines, currentInstance, currentTimeline) => {
+      return currentTimeline !== 'notifications' &&
+        timelines &&
+        timelines[currentInstance] &&
+        timelines[currentInstance].notifications &&
+        timelines[currentInstance].notifications.itemIdsToAdd &&
+        timelines[currentInstance].notifications.itemIdsToAdd.length
+    }
+  )
+
+  store.compute('hasNotifications',
+    ['numberOfNotifications'],
+    (numberOfNotifications) => {
+      return !!numberOfNotifications
+    }
+  )
 }

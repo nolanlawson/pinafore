@@ -3,10 +3,10 @@
 <head>
 	<meta charset='utf-8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name='theme-color' content='#4169e1'>
+	<meta id='theThemeColor' name='theme-color' content='#4169e1'>
 
 	<link rel='manifest' href='/manifest.json'>
-	<link rel='icon' type='image/png' href='/favicon.png'>
+	<link id='theFavicon' rel='icon' type='image/png' href='/favicon.png'>
 
 	<style>
 /* auto-generated w/ build-sass.js */
@@ -56,7 +56,7 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
 				link.href = `/theme-${theme}.css`
 				document.head.appendChild(link)
         if (window.__themeColors[theme]) {
-          document.querySelector('meta[name="theme-color"]').content = window.__themeColors[theme]
+          document.getElementById('theThemeColor').content = window.__themeColors[theme]
         }
       }
 		}

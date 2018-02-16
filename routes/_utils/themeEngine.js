@@ -1,6 +1,6 @@
 import { loadCSS } from 'fg-loadcss'
 
-let meta = process.browser && document.querySelector('meta[name="theme-color"]')
+let meta = process.browser && document.getElementById('theThemeColor')
 
 export function switchToTheme (themeName) {
   let clazzList = document.body.classList

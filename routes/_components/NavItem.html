@@ -7,9 +7,9 @@
       <svg>
         <use xlink:href="{{svg}}" />
       </svg>
-      {{#if numberOfNotifications}}
+      {{#if $hasNotifications}}
         <span class="nav-link-notifications" aria-hidden="true">
-          {{numberOfNotifications}}
+          {{$numberOfNotifications}}
         </span>
       {{/if}}
     </div>
@@ -115,23 +115,15 @@
   export default {
     store: () => store,
     computed: {
-      ariaLabel: (page, name, label, numberOfNotifications) => {
+      ariaLabel: (page, name, label, $numberOfNotifications) => {
         let res = label
         if (page === name) {
           res += ' (current page)'
         }
         if (name === 'notifications') {
-          res += ` (${numberOfNotifications})`
+          res += ` (${$numberOfNotifications})`
         }
         return res
-      },
-      numberOfNotifications: ($timelines, $currentInstance, $currentTimeline) => {
-        return $currentTimeline !== 'notifications' &&
-          $timelines &&
-          $timelines[$currentInstance] &&
-          $timelines[$currentInstance].notifications &&
-          $timelines[$currentInstance].notifications.itemIdsToAdd &&
-          $timelines[$currentInstance].notifications.itemIdsToAdd.length
       }
     }
   }
