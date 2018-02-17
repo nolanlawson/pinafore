@@ -64,3 +64,8 @@ export function hasInCache (cache, instanceName, key) {
   }
   return res
 }
+
+export function deleteFromCache (cache, instanceName, key) {
+  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  instanceCache.delete(key)
+}

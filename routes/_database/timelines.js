@@ -1,7 +1,10 @@
 import { toPaddedBigInt, toReversePaddedBigInt } from './utils'
 import { cloneForStorage } from './helpers'
 import { dbPromise, getDatabase } from './databaseLifecycle'
-import { accountsCache, getInCache, hasInCache, notificationsCache, setInCache, statusesCache } from './cache'
+import {
+  accountsCache, deleteFromCache, getInCache, hasInCache, notificationsCache, setInCache,
+  statusesCache
+} from './cache'
 import { scheduleCleanup } from './cleanup'
 import {
   ACCOUNTS_STORE,
@@ -254,6 +257,82 @@ export async function getNotification (instanceName, id) {
 }
 
 //
+// lookup by reblogs
+//
+
+export async function getReblogsForStatus (instanceName, id) {
+  const db = await getDatabase(instanceName)
+  await dbPromise(db, STATUSES_STORE, 'readonly', (statusesStore, callback) => {
+    statusesStore.index(REBLOG_ID).getAll(IDBKeyRange.only(id)).onsuccess = e => {
+      callback(e.target.result)
+    }
+  })
+}
+
+//
+// deletes
+//
+
+export async function deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
+  for (let statusId of statusIds) {
+    deleteFromCache(statusesCache, instanceName, statusId)
+  }
+  for (let notificationId of notificationIds) {
+    deleteFromCache(notificationsCache, instanceName, notificationId)
+  }
+  const db = await getDatabase(instanceName)
+  let storeNames = [
+    STATUSES_STORE,
+    STATUS_TIMELINES_STORE,
+    NOTIFICATIONS_STORE,
+    NOTIFICATION_TIMELINES_STORE,
+    PINNED_STATUSES_STORE
+  ]
+  await dbPromise(db, storeNames, 'readwrite', (stores) => {
+    let [
+      statusesStore,
+      statusTimelinesStore,
+      notificationsStore,
+      notificationTimelinesStore,
+      pinnedStatusesStore
+    ] = stores
+
+    function deleteStatus (statusId) {
+      pinnedStatusesStore.delete(statusId).onerror = e => {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+      statusesStore.delete(statusId)
+      let getAllReq = statusTimelinesStore.index('statusId')
+        .getAllKeys(IDBKeyRange.only(statusId))
+      getAllReq.onsuccess = e => {
+        for (let result of e.target.result) {
+          statusTimelinesStore.delete(result)
+        }
+      }
+    }
+
+    function deleteNotification (notificationId) {
+      notificationsStore.delete(notificationId)
+      let getAllReq = notificationTimelinesStore.index('statusId')
+        .getAllKeys(IDBKeyRange.only(notificationId))
+      getAllReq.onsuccess = e => {
+        for (let result of e.target.result) {
+          notificationTimelinesStore.delete(result)
+        }
+      }
+    }
+
+    for (let statusId of statusIds) {
+      deleteStatus(statusId)
+    }
+    for (let notificationId of notificationIds) {
+      deleteNotification(notificationId)
+    }
+  })
+}
+
+//
 // pinned statuses
 //
 
@@ -293,6 +372,19 @@ export async function getPinnedStatuses (instanceName, accountId) {
         })
       })
       callback(res)
+    }
+  })
+}
+
+//
+// notifications by status
+//
+
+export async function getNotificationIdsForStatus (instanceName, statusId) {
+  const db = await getDatabase(instanceName)
+  return dbPromise(db, NOTIFICATIONS_STORE, 'readonly', (notificationStore, callback) => {
+    notificationStore.index(statusId).getAllKeys(IDBKeyRange.only(statusId)).onsuccess = e => {
+      callback(Array.from(e.target.result))
     }
   })
 }

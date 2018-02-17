@@ -7,13 +7,13 @@ import {
   NOTIFICATIONS_STORE,
   NOTIFICATION_TIMELINES_STORE,
   PINNED_STATUSES_STORE,
-  TIMESTAMP
+  TIMESTAMP, REBLOG_ID
 } from './constants'
 
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 1
+const DB_VERSION = 3
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -32,20 +32,29 @@ export function getDatabase (instanceName) {
     }
     req.onupgradeneeded = (e) => {
       let db = req.result
-      db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
-        .createIndex(TIMESTAMP, TIMESTAMP)
-      db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
-        .createIndex('statusId', 'statusId')
-      db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
-        .createIndex(TIMESTAMP, TIMESTAMP)
-      db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
-        .createIndex('notificationId', 'notificationId')
-      db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
-        .createIndex(TIMESTAMP, TIMESTAMP)
-      db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
-        .createIndex(TIMESTAMP, TIMESTAMP)
-      db.createObjectStore(META_STORE, {keyPath: 'key'})
-      db.createObjectStore(PINNED_STATUSES_STORE, {keyPath: 'id'})
+      let tx = e.currentTarget.transaction
+      if (e.oldVersion < 1) {
+        db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
+          .createIndex(TIMESTAMP, TIMESTAMP)
+        db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
+          .createIndex('statusId', 'statusId')
+        db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
+          .createIndex(TIMESTAMP, TIMESTAMP)
+        db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
+          .createIndex('notificationId', 'notificationId')
+        db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
+          .createIndex(TIMESTAMP, TIMESTAMP)
+        db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
+          .createIndex(TIMESTAMP, TIMESTAMP)
+        db.createObjectStore(META_STORE, {keyPath: 'key'})
+        db.createObjectStore(PINNED_STATUSES_STORE, {keyPath: 'id'})
+      }
+      if (e.oldVersion < 2) {
+        tx.objectStore(STATUSES_STORE).createIndex(REBLOG_ID, REBLOG_ID)
+      }
+      if (e.oldVersion < 3) {
+        tx.objectStore(NOTIFICATIONS_STORE).createIndex('statusId', 'statusId')
+      }
     }
     req.onsuccess = () => resolve(req.result)
   })
