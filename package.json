@@ -91,11 +91,19 @@
       "caches",
       "__routes__",
       "__shell__",
-      "__assets__"
+      "__assets__",
+      "cy",
+      "Cypress",
+      "expect",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "describe",
+      "it"
     ],
     "ignore": [
       "dist",
-      "cypress",
       "routes/_utils/asyncModules.js"
     ]
   }

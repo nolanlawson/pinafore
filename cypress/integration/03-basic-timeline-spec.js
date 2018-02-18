@@ -25,9 +25,9 @@ describe('Basic timeline spec', () => {
     cy.getNthVirtualArticle(10).get('.status-content p').should('contain', "here's a secret kitten")
     cy.getNthVirtualArticle(11).get('.status-content p').should('contain', "here's a kitten")
     cy.getNthVirtualArticle(11).scrollIntoView()
-    cy.getNthVirtualArticle(12).get('.status-content p').should('contain', "hello admin")
-    cy.getNthVirtualArticle(13).get('.status-content p').should('contain', "hello foobar")
-    cy.getNthVirtualArticle(14).get('.status-content p').should('contain', "hello world")
+    cy.getNthVirtualArticle(12).get('.status-content p').should('contain', 'hello admin')
+    cy.getNthVirtualArticle(13).get('.status-content p').should('contain', 'hello foobar')
+    cy.getNthVirtualArticle(14).get('.status-content p').should('contain', 'hello world')
     cy.getNthVirtualArticle(14).scrollIntoView()
 
     for (let i = 0; i < 30; i++) {
@@ -36,6 +36,5 @@ describe('Basic timeline spec', () => {
     }
 
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-setsize', (30 + 15).toString())
-
   })
 })

@@ -19,7 +19,7 @@ const mastodonDir = path.join(dir, '../mastodon')
 
 let childProc
 
-async function cloneMastodon() {
+async function cloneMastodon () {
   try {
     await stat(mastodonDir)
   } catch (e) {
@@ -30,7 +30,7 @@ async function cloneMastodon() {
   }
 }
 
-async function restoreMastodonData() {
+async function restoreMastodonData () {
   console.log('Restoring mastodon data...')
   try {
     await exec('dropdb mastodon_development', {cwd: mastodonDir})
@@ -46,7 +46,7 @@ async function restoreMastodonData() {
   await exec(`tar -xzf "${tgzFile}"`, {cwd: systemDir})
 }
 
-async function runMastodon() {
+async function runMastodon () {
   console.log('Running mastodon...')
   let cmds = [
     'gem install bundler',
@@ -71,7 +71,7 @@ async function runMastodon() {
   await waitForMastodonToStart()
 }
 
-async function main() {
+async function main () {
   await cloneMastodon()
   await restoreMastodonData()
   await runMastodon()

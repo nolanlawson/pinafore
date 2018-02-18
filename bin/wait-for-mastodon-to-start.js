@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 
-async function waitForMastodonToStart() {
+async function waitForMastodonToStart () {
   while (true) {
     try {
       let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
