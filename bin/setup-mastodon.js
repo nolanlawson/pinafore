@@ -7,7 +7,7 @@ const fs = require('fs')
 const stat = pify(fs.stat.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 const mkdirp = pify(require('mkdirp'))
-const fetch = require('node-fetch')
+const waitForMastodonToStart = require('./wait-for-mastodon-to-start')
 
 const envFile = `
 PAPERCLIP_SECRET=foo
@@ -68,18 +68,7 @@ async function runMastodon() {
     console.error(data.toString('utf8').replace(/\n$/, ''))
   })
 
-  while (true) {
-    try {
-      let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
-      if (json.uri) {
-        break
-      }
-    } catch (err) {
-      console.log('Waiting for Mastodon to start up...')
-      await new Promise(resolve => setTimeout(resolve, 1000))
-    }
-  }
-  console.log('Mastodon started up')
+  await waitForMastodonToStart()
 }
 
 async function main() {

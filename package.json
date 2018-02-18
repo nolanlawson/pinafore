@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "lint": "standard",
-    "dev": "npm run build-svg && concurrently --kill-others \"npm run build-sass-watch\" \"node server.js\"",
+    "dev": "npm run build-svg && run-p --race build-sass-watch serve",
+    "serve": "node server.js",
     "build": "npm run globalize-css && npm run build-sass && npm run build-svg && sapper build && npm run deglobalize-css",
     "start": "cross-env NODE_ENV=production node server.js",
     "build-svg": "node ./bin/build-svg.js",
@@ -13,7 +14,9 @@
     "run-mastodon": "cd mastodon && docker-compose run --rm web rake db:migrate && docker-compose up",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run",
+    "test": "run-p --race run-mastodon dev test-mastodon",
+    "test-mastodon": "run-s wait-for-mastodon-to-start cy:run",
+    "wait-for-mastodon-to-start": "node bin/wait-for-mastodon-to-start.js",
     "globalize-css": "node ./bin/globalize-css.js",
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
     "setup-mastodon": "node ./bin/setup-mastodon.js"
@@ -25,7 +28,6 @@
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.0",
     "compression": "^1.7.1",
-    "concurrently": "^3.5.1",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.7",
     "express": "^4.16.2",
