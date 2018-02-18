@@ -5,3 +5,4 @@ yarn.lock
 cypress/screenshots
 templates/.*
 assets/*.css
+/mastodon

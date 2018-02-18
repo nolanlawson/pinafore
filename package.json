@@ -15,12 +15,14 @@
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
     "globalize-css": "node ./bin/globalize-css.js",
-    "deglobalize-css": "node ./bin/globalize-css.js --reverse"
+    "deglobalize-css": "node ./bin/globalize-css.js --reverse",
+    "setup-mastodon": "node ./bin/setup-mastodon.js"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.2",
     "a11y-dialog": "^4.0.1",
     "cheerio": "^1.0.0-rc.2",
+    "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.0",
     "compression": "^1.7.1",
     "concurrently": "^3.5.1",
@@ -44,7 +46,6 @@
     "pify": "^3.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
-    "rimraf": "^2.6.2",
     "sapper": "nolanlawson/sapper#fix-style-loader-built",
     "serve-static": "^1.13.1",
     "standard": "^10.0.3",
