@@ -23,3 +23,26 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (email, password) => {
+  // mastodon throws some uncaught TypeErrors
+  cy.on('uncaught:exception', (err) => {
+    expect(err.name).to.include('TypeError')
+    expect(err.message).to.include('Illegal invocation')
+    return false
+  })
+
+  cy.visit('/settings/instances/add')
+  cy.get('#instanceInput').clear().type('localhost:3000')
+  cy.get('.add-new-instance').submit()
+  cy.url().should('equal', 'http://localhost:3000/auth/sign_in')
+  cy.get('input#user_email').should('exist')
+  cy.get('input#user_password').should('exist')
+  cy.get('input#user_email').type(email)
+  cy.get('input#user_password').type(password)
+  cy.get('form#new_user').submit()
+  cy.url().should('contain', '/oauth/authorize')
+
+  cy.get('button').contains('Authorize').click()
+  cy.url().should('equal', 'http://localhost:4002/')
+})

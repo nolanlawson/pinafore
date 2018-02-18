@@ -1,4 +1,4 @@
-describe('Basic test', () => {
+describe('Basic spec', () => {
 	beforeEach(() => {
 		cy.visit('/')
 	})
@@ -6,6 +6,14 @@ describe('Basic test', () => {
 	it('has the correct <h1>', () => {
 		cy.contains('h1', 'Pinafore')
 	})
+
+  it('navigates to about', () => {
+    cy.get('nav a').contains('Settings').click()
+    cy.url().should('contain', '/settings')
+    cy.get('a').contains('About').click()
+    cy.url().should('contain', '/settings/about')
+    cy.contains('h1', 'About Pinafore')
+  })
 
 	it('navigates to /settings/instances/add', () => {
 		cy.contains('log in to an instance').click()

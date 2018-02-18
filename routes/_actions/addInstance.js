@@ -47,7 +47,10 @@ export async function logInToInstance () {
       (navigator.onLine
         ? `Is this a valid Mastodon instance?`
         : `Are you offline?`)
-    store.set({logInToInstanceError: error})
+    store.set({
+      logInToInstanceError: error,
+      logInToInstanceErrorForText: store.get('instanceNameInSearch')
+    })
   } finally {
     store.set({logInToInstanceLoading: false})
   }
