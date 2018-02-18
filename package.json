@@ -11,15 +11,14 @@
     "build-svg": "node ./bin/build-svg.js",
     "build-sass": "node ./bin/build-sass.js",
     "build-sass-watch": "node ./bin/build-sass.js --watch",
-    "run-mastodon": "cd mastodon && docker-compose run --rm web rake db:migrate && docker-compose up",
+    "run-mastodon": "node ./bin/run-mastodon",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race run-mastodon dev test-mastodon",
     "test-mastodon": "run-s wait-for-mastodon-to-start cy:run",
     "wait-for-mastodon-to-start": "node bin/wait-for-mastodon-to-start.js",
     "globalize-css": "node ./bin/globalize-css.js",
-    "deglobalize-css": "node ./bin/globalize-css.js --reverse",
-    "setup-mastodon": "node ./bin/setup-mastodon.js"
+    "deglobalize-css": "node ./bin/globalize-css.js --reverse"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.2",
@@ -30,6 +29,7 @@
     "compression": "^1.7.1",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.7",
+    "cypress": "^2.0.1",
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "fg-loadcss": "^2.0.1",

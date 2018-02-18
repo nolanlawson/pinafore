@@ -1,19 +1,23 @@
-describe('Sapper template app', () => {
+describe('Basic test', () => {
 	beforeEach(() => {
 		cy.visit('/')
-	});
+	})
 
 	it('has the correct <h1>', () => {
-		cy.contains('h1', 'Great success!')
-	});
+		cy.contains('h1', 'Pinafore')
+	})
 
-	it('navigates to /about', () => {
-		cy.get('nav a').contains('about').click();
-		cy.url().should('include', '/about');
-	});
+	it('navigates to /settings/instances/add', () => {
+		cy.contains('log in to an instance').click()
+		cy.url().should('contain', '/settings/instances/add')
+	})
 
-	it('navigates to /blog', () => {
-		cy.get('nav a').contains('blog').click();
-		cy.url().should('include', '/blog');
-	});
-});
+  it('navigates to settings/instances', () => {
+    cy.get('nav a').contains('Settings').click()
+    cy.url().should('contain', '/settings')
+    cy.get('a').contains('Instances').click()
+    cy.url().should('contain', '/settings/instances')
+    cy.contains("You're not logged in to any instances")
+  })
+	
+})
