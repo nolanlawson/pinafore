@@ -19,7 +19,7 @@
     "wait-for-mastodon-to-start": "node bin/wait-for-mastodon-to-start.js",
     "globalize-css": "node ./bin/globalize-css.js",
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
-    "backup-mastodon-for-tests": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
+    "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.2",
