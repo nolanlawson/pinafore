@@ -1,10 +1,13 @@
 const pify = require('pify')
-const exec = require('child-process-promise').exec;
+const exec = require('child-process-promise').exec
+const spawn = require('child-process-promise').spawn
 const dir = __dirname
 const path = require('path')
 const fs = require('fs')
-const exists = pify(fs.exists.bind(fs))
+const stat = pify(fs.stat.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
+const mkdirp = pify(require('mkdirp'))
+const fetch = require('node-fetch')
 
 const envFile = `
 PAPERCLIP_SECRET=foo
@@ -12,20 +15,86 @@ SECRET_KEY_BASE=bar
 OTP_SECRET=foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar
 `
 
-async function main() {
-  let mastodonDir = path.join(dir, '../mastodon')
-  if (!(await exists(mastodonDir))) {
+const mastodonDir = path.join(dir, '../mastodon')
+
+let childProc
+
+async function cloneMastodon() {
+  try {
+    await stat(mastodonDir)
+  } catch (e) {
+    console.log('Cloning mastodon...')
     await exec(`git clone https://github.com/tootsuite/mastodon "${mastodonDir}"`)
     await exec(`git checkout v2.2.0`, {cwd: mastodonDir})
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
-
-  await exec(`gem install bundler`, {cwd: mastodonDir})
-  await exec(`gem install foreman`, {cwd: mastodonDir})
-  await exec(`bundle install`, {cwd: mastodonDir})
-  await exec(`yarn --pure-lockfile`, {cwd: mastodonDir})
-  await exec(`foreman start`, {cwd: mastodonDir})
 }
+
+async function restoreMastodonData() {
+  console.log('Restoring mastodon data...')
+  try {
+    await exec('dropdb mastodon_development', {cwd: mastodonDir})
+  } catch (e) { /* ignore */ }
+  await exec('createdb mastodon_development', {cwd: mastodonDir})
+
+  let dumpFile = path.join(dir, '../fixtures/dump.sql')
+  await exec(`pg_restore -Fc -d mastodon_development "${dumpFile}"`, {cwd: mastodonDir})
+
+  let tgzFile = path.join(dir, '../fixtures/system.tgz')
+  let systemDir = path.join(mastodonDir, 'public/system')
+  await mkdirp(systemDir)
+  await exec(`tar -xzf "${tgzFile}"`, {cwd: systemDir})
+}
+
+async function runMastodon() {
+  console.log('Running mastodon...')
+  let cmds = [
+    'gem install bundler',
+    'gem install foreman',
+    'bundle install',
+    'yarn --pure-lockfile'
+  ]
+
+  for (let cmd of cmds) {
+    console.log(cmd)
+    await exec(cmd, {cwd: mastodonDir})
+  }
+  const promise = spawn('foreman', ['start'], {cwd: mastodonDir})
+  childProc = promise.childProcess
+  childProc.stdout.on('data', function (data) {
+    console.log(data.toString('utf8').replace(/\n$/, ''))
+  })
+  childProc.stderr.on('data', function (data) {
+    console.error(data.toString('utf8').replace(/\n$/, ''))
+  })
+
+  while (true) {
+    try {
+      let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
+      if (json.uri) {
+        break
+      }
+    } catch (err) {
+      console.log('Waiting for Mastodon to start up...')
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
+  }
+  console.log('Mastodon started up')
+}
+
+async function main() {
+  await cloneMastodon()
+  await restoreMastodonData()
+  await runMastodon()
+}
+
+process.on('SIGINT', function () {
+  if (childProc) {
+    console.log('killing child process')
+    childProc.kill()
+  }
+  process.exit(0)
+})
 
 main().catch(err => {
   console.error(err)
