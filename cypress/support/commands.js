@@ -46,3 +46,7 @@ Cypress.Commands.add('login', (email, password) => {
   cy.get('button').contains('Authorize').click()
   cy.url().should('equal', 'http://localhost:4002/')
 })
+
+Cypress.Commands.add('getNthVirtualArticle', (n) => {
+  return cy.get(`.virtual-list-item[aria-hidden=false] .status-article[aria-posinset=${n}]`)
+})
