@@ -24,12 +24,12 @@ describe('Login spec', () => {
 
   it('Logs out', () => {
     cy.login('foobar@localhost:3000', 'foobarfoobar')
-    cy.get('nav a').contains('Settings').click()
+    cy.get('nav a[aria-label=Settings]').click()
     cy.get('a').contains('Instances').click()
     cy.get('a').contains('localhost:3000').click()
     cy.url().should('contain', '/settings/instances/localhost:3000')
     cy.get('button').contains('Log out').click()
-    cy.get('button').contains('OK').click()
+    cy.get('#modal-dialog button').contains('OK').click()
     cy.url().should('contain', '/settings/instances')
     cy.contains("You're not logged in to any instances")
   })

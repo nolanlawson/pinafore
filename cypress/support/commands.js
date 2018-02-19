@@ -64,5 +64,6 @@ Cypress.Commands.add('validateTimeline', (timeline) => {
       cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'followed you')
     }
     cy.getNthVirtualArticle(i).scrollIntoView()
+    cy.get('.loading-footer').should('not.exist')
   })
 })

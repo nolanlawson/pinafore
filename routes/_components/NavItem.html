@@ -122,7 +122,7 @@
         if (page === name) {
           res += ' (current page)'
         }
-        if (name === 'notifications') {
+        if (name === 'notifications' && $numberOfNotifications) {
           res += ` (${$numberOfNotifications})`
         }
         return res

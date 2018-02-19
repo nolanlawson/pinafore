@@ -8,7 +8,7 @@ describe('Basic spec', () => {
   })
 
   it('navigates to about', () => {
-    cy.get('nav a').contains('Settings').click()
+    cy.get('nav a[aria-label=Settings]').click()
     cy.url().should('contain', '/settings')
     cy.get('a').contains('About').click()
     cy.url().should('contain', '/settings/about')
@@ -21,7 +21,7 @@ describe('Basic spec', () => {
   })
 
   it('navigates to settings/instances', () => {
-    cy.get('nav a').contains('Settings').click()
+    cy.get('nav a[aria-label=Settings]').click()
     cy.url().should('contain', '/settings')
     cy.get('a').contains('Instances').click()
     cy.url().should('contain', '/settings/instances')

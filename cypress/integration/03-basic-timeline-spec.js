@@ -44,7 +44,7 @@ describe('Basic timeline spec', () => {
   })
 
   it('Shows notifications', () => {
-    cy.get('nav a').contains('Notifications').click()
+    cy.get('nav a[aria-label=Notifications]').click()
     cy.url().should('contain', '/notifications')
 
     cy.validateTimeline(notifications)
@@ -52,14 +52,14 @@ describe('Basic timeline spec', () => {
   })
 
   it('Shows the local timeline', () => {
-    cy.get('nav a').contains('Local').click()
+    cy.get('nav a[aria-label=Local]').click()
     cy.url().should('contain', '/local')
 
     cy.validateTimeline(localTimeline)
   })
 
   it('Shows the federated timeline', () => {
-    cy.get('nav a').contains('Community').click()
+    cy.get('nav a[aria-label=Community]').click()
     cy.url().should('contain', '/community')
     cy.get('a').contains('Federated').click()
     cy.url().should('contain', '/federated')
