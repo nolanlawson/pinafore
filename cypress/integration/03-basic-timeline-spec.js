@@ -99,5 +99,4 @@ describe('Basic timeline spec', () => {
     cy.url().should('contain', '/favorites')
     cy.validateTimeline(favorites)
   })
-
 })
