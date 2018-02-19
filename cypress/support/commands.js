@@ -48,7 +48,7 @@ Cypress.Commands.add('login', (email, password) => {
 })
 
 Cypress.Commands.add('getNthVirtualArticle', (n) => {
-  return cy.get(`.virtual-list-item[aria-hidden=false] .status-article[aria-posinset=${n}]`)
+  return cy.get(`.virtual-list-item[aria-hidden=false] article[aria-posinset=${n}]`)
 })
 
 Cypress.Commands.add('validateTimeline', (timeline) => {
@@ -58,6 +58,10 @@ Cypress.Commands.add('validateTimeline', (timeline) => {
     }
     if (status.spoiler) {
       cy.getNthVirtualArticle(i).get('.status-spoiler p').should('contain', status.spoiler)
+    }
+    if (status.followedBy) {
+      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.followedBy)
+      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'followed you')
     }
     cy.getNthVirtualArticle(i).scrollIntoView()
   })

@@ -28,6 +28,12 @@ describe('Basic timeline spec', () => {
   localTimeline.splice(0, 3)
   localTimeline.splice(9, 2)
 
+  const notifications = [
+    {followedBy: 'quux'},
+    {content: 'hello foobar'},
+    {followedBy: 'admin'}
+  ]
+
   it('Shows the home timeline', () => {
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-setsize')
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-posinset', '0')
@@ -35,6 +41,14 @@ describe('Basic timeline spec', () => {
     cy.validateTimeline(homeTimeline)
 
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-setsize', (30 + 15).toString())
+  })
+
+  it('Shows notifications', () => {
+    cy.get('nav a').contains('Notifications').click()
+    cy.url().should('contain', '/notifications')
+
+    cy.validateTimeline(notifications)
+
   })
 
   it('Shows the local timeline', () => {
