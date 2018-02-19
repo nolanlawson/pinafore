@@ -13,7 +13,7 @@
     "build-sass": "node ./bin/build-sass.js",
     "build-sass-watch": "node ./bin/build-sass.js --watch",
     "run-mastodon": "node ./bin/run-mastodon",
-    "cy:run": "cypress run",
+    "cy:run": "cypress run --browser chrome",
     "cy:open": "cypress open",
     "test": "run-p --race run-mastodon build-and-start test-mastodon",
     "test-mastodon": "run-s wait-for-mastodon-to-start cy:run",
