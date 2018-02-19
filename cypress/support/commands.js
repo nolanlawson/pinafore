@@ -50,3 +50,15 @@ Cypress.Commands.add('login', (email, password) => {
 Cypress.Commands.add('getNthVirtualArticle', (n) => {
   return cy.get(`.virtual-list-item[aria-hidden=false] .status-article[aria-posinset=${n}]`)
 })
+
+Cypress.Commands.add('validateTimeline', (timeline) => {
+  timeline.forEach((status, i) => {
+    if (status.content) {
+      cy.getNthVirtualArticle(i).get('.status-content p').should('contain', status.content)
+    }
+    if (status.spoiler) {
+      cy.getNthVirtualArticle(i).get('.status-spoiler p').should('contain', status.spoiler)
+    }
+    cy.getNthVirtualArticle(i).scrollIntoView()
+  })
+})

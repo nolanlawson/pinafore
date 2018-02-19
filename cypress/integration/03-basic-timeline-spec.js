@@ -1,40 +1,55 @@
+const times = require('lodash/times')
+
 describe('Basic timeline spec', () => {
-  before(() => {
-    cy.login('foobar@localhost:3000', 'foobarfoobar')
-  })
   beforeEach(() => {
+    cy.login('foobar@localhost:3000', 'foobarfoobar')
     cy.visit('/')
   })
 
-  it('Shows some articles', () => {
+  const homeTimeline = [
+    {content: 'this is unlisted'},
+    {content: 'this is followers-only'},
+    {content: 'direct'},
+    {spoiler: 'kitten CW'},
+    {content: 'secret video'},
+    {content: "here's a video"},
+    {spoiler: 'CW'},
+    {content: "here's a secret animated kitten gif"},
+    {content: "here's an animated kitten gif"},
+    {content: "here's 2 kitten photos"},
+    {content: "here's a secret kitten"},
+    {content: "here's a kitten"},
+    {content: 'hello admin'},
+    {content: 'hello foobar'},
+    {content: 'hello world'}
+  ].concat(times(30, i => ({content: (30 - i).toString()})))
+
+  const localTimeline = homeTimeline.slice()
+  localTimeline.splice(0, 3)
+  localTimeline.splice(9, 2)
+
+  it('Shows the home timeline', () => {
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-setsize')
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-posinset', '0')
-    cy.getNthVirtualArticle(0).get('.status-content p').should('contain', 'this is unlisted')
 
-    cy.getNthVirtualArticle(1).get('.status-content p').should('contain', 'this is followers-only')
-    cy.getNthVirtualArticle(2).get('.status-content p').should('contain', 'direct')
-    cy.getNthVirtualArticle(3).get('.status-spoiler p').should('contain', 'kitten CW')
-    cy.getNthVirtualArticle(4).get('.status-content p').should('contain', 'secret video')
-    cy.getNthVirtualArticle(4).scrollIntoView()
-    cy.getNthVirtualArticle(5).get('.status-content p').should('contain', "here's a video")
-    cy.getNthVirtualArticle(6).get('.status-spoiler p').should('contain', 'CW')
-    cy.getNthVirtualArticle(7).get('.status-content p').should('contain', "here's a secret animated kitten gif")
-    cy.getNthVirtualArticle(8).get('.status-content p').should('contain', "here's an animated kitten gif")
-    cy.getNthVirtualArticle(8).scrollIntoView()
-    cy.getNthVirtualArticle(9).get('.status-content p').should('contain', "here's 2 kitten photos")
-    cy.getNthVirtualArticle(10).get('.status-content p').should('contain', "here's a secret kitten")
-    cy.getNthVirtualArticle(11).get('.status-content p').should('contain', "here's a kitten")
-    cy.getNthVirtualArticle(11).scrollIntoView()
-    cy.getNthVirtualArticle(12).get('.status-content p').should('contain', 'hello admin')
-    cy.getNthVirtualArticle(13).get('.status-content p').should('contain', 'hello foobar')
-    cy.getNthVirtualArticle(14).get('.status-content p').should('contain', 'hello world')
-    cy.getNthVirtualArticle(14).scrollIntoView()
-
-    for (let i = 0; i < 30; i++) {
-      cy.getNthVirtualArticle(15 + i).scrollIntoView()
-      cy.getNthVirtualArticle(15 + i).get('.status-content p').should('contain', (30 - i).toString())
-    }
+    cy.validateTimeline(homeTimeline)
 
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-setsize', (30 + 15).toString())
+  })
+
+  it('Shows the local timeline', () => {
+    cy.get('nav a').contains('Local').click()
+    cy.url().should('contain', '/local')
+
+    cy.validateTimeline(localTimeline)
+  })
+
+  it('Shows the federated timeline', () => {
+    cy.get('nav a').contains('Community').click()
+    cy.url().should('contain', '/community')
+    cy.get('a').contains('Federated').click()
+    cy.url().should('contain', '/federated')
+
+    cy.validateTimeline(localTimeline) // local is same as federated in this case
   })
 })
