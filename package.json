@@ -15,7 +15,7 @@
     "run-mastodon": "node ./bin/run-mastodon",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race run-mastodon build-and-start test-mastodon",
+    "test": "run-p --race run-mastodon dev test-mastodon",
     "test-mastodon": "run-s wait-for-mastodon-to-start cy:run",
     "wait-for-mastodon-to-start": "node bin/wait-for-mastodon-to-start.js",
     "globalize-css": "node ./bin/globalize-css.js",
