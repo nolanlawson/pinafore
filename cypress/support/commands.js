@@ -65,6 +65,14 @@ Cypress.Commands.add('validateTimeline', (timeline) => {
       cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.followedBy)
       cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'followed you')
     }
+    if (status.rebloggedBy) {
+      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.rebloggedBy)
+      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'boosted')
+    }
+    if (status.favoritedBy) {
+      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.favoritedBy)
+      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'favorited')
+    }
     cy.wait(50)
     cy.getNthVirtualArticle(i).scrollIntoView()
     cy.get('.loading-footer').should('not.exist')
