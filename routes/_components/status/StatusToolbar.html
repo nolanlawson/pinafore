@@ -4,10 +4,11 @@
     href="#fa-reply"
     />
   <IconButton
-    label="Boost"
-    pressable="true"
+    label="{{boostLabel}}"
+    pressable="{{!boostDisabled}}"
     pressed="{{status.reblogged}}"
-    href="{{status.visibility === 'private' ? '#fa-lock' : status.visibility === 'direct' ? '#fa-envelope' : '#fa-retweet'}}"
+    disabled="{{boostDisabled}}"
+    href="{{boostIcon}}"
   />
   <IconButton
     label="Favorite"
@@ -37,6 +38,32 @@
   export default {
     components: {
       IconButton
+    },
+    computed: {
+      visibility: (status) => status.visibility,
+      boostLabel: (visibility) => {
+        switch (visibility) {
+          case 'private':
+            return 'Cannot be boosted because this is followers-only'
+          case 'direct':
+            return 'Cannot be boosted because this is a direct message'
+          default:
+            return 'Boost'
+        }
+      },
+      boostIcon: (visibility) => {
+        switch (visibility) {
+          case 'private':
+            return '#fa-lock'
+          case 'direct':
+            return '#fa-envelope'
+          default:
+            return '#fa-retweet'
+        }
+      },
+      boostDisabled: (visibility) => {
+        return visibility === 'private' || visibility === 'direct'
+      }
     }
   }
 </script>

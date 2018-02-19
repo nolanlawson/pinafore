@@ -1,4 +1,4 @@
-describe('Login spec', () => {
+describe('02-login-spec.js', () => {
   beforeEach(() => {
     cy.visit('/')
     cy.wait(500)

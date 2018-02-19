@@ -1,7 +1,6 @@
-describe('Pinned statuses', () => {
+describe('04-pinned-statuses.js', () => {
   beforeEach(() => {
     cy.login('foobar@localhost:3000', 'foobarfoobar')
-    cy.visit('/')
     cy.wait(500)
   })
 

@@ -1,4 +1,4 @@
-describe('Basic spec', () => {
+describe('01-basic-spec.js', () => {
   beforeEach(() => {
     cy.visit('/')
     cy.wait(500)

@@ -1,11 +1,11 @@
 <article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
-         tabindex="0"
+         tabindex="{{ !isStatusInNotification || notification.type === 'follow' ? '0' : '' }}"
          delegate-click-key="{{elementKey}}"
          delegate-keydown-key="{{elementKey}}"
          focus-key="{{elementKey}}"
          aria-posinset="{{index}}"
          aria-setsize="{{length}}"
-         aria-label="Status by {{originalStatus.account.display_name || originalStatus.account.username}}"
+         aria-label="{{ariaLabel}}"
          on:recalculateHeight>
   {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog || timelineType === 'pinned'}}
     <StatusHeader :notification :status :isStatusInNotification :timelineType />
@@ -160,7 +160,12 @@
       originalAccount: (originalStatus) => originalStatus.account,
       isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
       isStatusInNotification: (status, notification) => notification && notification.status && notification.type !== 'mention' && notification.status.id === status.id,
-      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId]
+      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId],
+      visibility: (originalStatus) => originalStatus.visibility,
+      ariaLabel: (originalAccount, visibility) => {
+        return (visibility === 'direct' ? 'Direct message' : 'Status') +
+          ` by ${originalAccount.display_name || originalAccount.username}`
+      }
     }
   }
 </script>

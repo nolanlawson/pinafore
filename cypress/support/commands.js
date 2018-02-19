@@ -56,22 +56,22 @@ Cypress.Commands.add('getNthVirtualArticle', (n) => {
 Cypress.Commands.add('validateTimeline', (timeline) => {
   timeline.forEach((status, i) => {
     if (status.content) {
-      cy.getNthVirtualArticle(i).get('.status-content p').should('contain', status.content)
+      cy.getNthVirtualArticle(i).find('.status-content p').should('contain', status.content)
     }
     if (status.spoiler) {
-      cy.getNthVirtualArticle(i).get('.status-spoiler p').should('contain', status.spoiler)
+      cy.getNthVirtualArticle(i).find('.status-spoiler p').should('contain', status.spoiler)
     }
     if (status.followedBy) {
-      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.followedBy)
-      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'followed you')
+      cy.getNthVirtualArticle(i).find('.status-header span').should('contain', status.followedBy)
+      cy.getNthVirtualArticle(i).find('.status-header span').should('contain', 'followed you')
     }
     if (status.rebloggedBy) {
-      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.rebloggedBy)
-      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'boosted')
+      cy.getNthVirtualArticle(i).find('.status-header span').should('contain', status.rebloggedBy)
+      cy.getNthVirtualArticle(i).find('.status-header span').should('contain', 'boosted')
     }
     if (status.favoritedBy) {
-      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', status.favoritedBy)
-      cy.getNthVirtualArticle(i).get('.status-header span').should('contain', 'favorited')
+      cy.getNthVirtualArticle(i).find('.status-header span').should('contain', status.favoritedBy)
+      cy.getNthVirtualArticle(i).find('.status-header span').should('contain', 'favorited')
     }
     cy.wait(50)
     cy.getNthVirtualArticle(i).scrollIntoView()

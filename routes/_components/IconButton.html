@@ -3,6 +3,7 @@
           aria-label="{{label}}"
           aria-pressed="{{!!pressed}}"
           class="icon-button {{pressed ? 'pressed' : ''}} {{big ? 'big-icon' : ''}}"
+          disabled="{{disabled}}"
           on:click
   >
     <svg>
@@ -13,6 +14,7 @@
   <button type="button"
           aria-label="{{label}}"
           class="icon-button {{big ? 'big-icon' : ''}}"
+          disabled="{{disabled}}"
           on:click
   >
     <svg>

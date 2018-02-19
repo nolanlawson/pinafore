@@ -1,9 +1,8 @@
 const times = require('lodash/times')
 
-describe('Basic timeline spec', () => {
+describe('03-basic-timeline-spec.js', () => {
   beforeEach(() => {
     cy.login('foobar@localhost:3000', 'foobarfoobar')
-    cy.visit('/')
     cy.wait(500)
   })
 
