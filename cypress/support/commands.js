@@ -33,8 +33,10 @@ Cypress.Commands.add('login', (email, password) => {
   })
 
   cy.visit('/settings/instances/add')
+  cy.wait(500)
   cy.get('#instanceInput').clear().type('localhost:3000')
   cy.get('.add-new-instance').submit()
+  cy.wait(500)
   cy.url().should('equal', 'http://localhost:3000/auth/sign_in')
   cy.get('input#user_email').should('exist')
   cy.get('input#user_password').should('exist')

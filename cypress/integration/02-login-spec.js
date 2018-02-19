@@ -1,6 +1,7 @@
 describe('Login spec', () => {
   beforeEach(() => {
     cy.visit('/')
+    cy.wait(500)
   })
 
   it('Cannot log in to a fake instance', () => {
@@ -24,6 +25,7 @@ describe('Login spec', () => {
 
   it('Logs out', () => {
     cy.login('foobar@localhost:3000', 'foobarfoobar')
+    cy.wait(500)
     cy.get('nav a[aria-label=Settings]').click()
     cy.get('a').contains('Instances').click()
     cy.get('a').contains('localhost:3000').click()

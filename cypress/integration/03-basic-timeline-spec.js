@@ -4,6 +4,7 @@ describe('Basic timeline spec', () => {
   beforeEach(() => {
     cy.login('foobar@localhost:3000', 'foobarfoobar')
     cy.visit('/')
+    cy.wait(500)
   })
 
   const homeTimeline = [

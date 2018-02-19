@@ -1,6 +1,7 @@
 describe('Basic spec', () => {
   beforeEach(() => {
     cy.visit('/')
+    cy.wait(500)
   })
 
   it('has the correct <h1>', () => {
