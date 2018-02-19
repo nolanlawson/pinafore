@@ -4,7 +4,7 @@ describe('05-status-types.js', () => {
     cy.wait(500)
   })
 
-  it("shows direct vs followers-only vs regular", () => {
+  it('shows direct vs followers-only vs regular', () => {
     cy.getNthVirtualArticle(1).should('have.attr', 'aria-label', 'Status by admin')
     cy.getNthVirtualArticle(1).find('.status-content').should('contain', 'notification of unlisted message')
     cy.getNthVirtualArticle(1).find('.status-toolbar button:nth-child(2)')
@@ -24,7 +24,7 @@ describe('05-status-types.js', () => {
       .and('have.attr', 'disabled')
   })
 
-  it("shows direct vs followers-only vs regular in notifications", () => {
+  it('shows direct vs followers-only vs regular in notifications', () => {
     cy.visit('/notifications')
     cy.wait(500)
 
@@ -45,8 +45,5 @@ describe('05-status-types.js', () => {
     cy.getNthVirtualArticle(4).find('.status-toolbar button:nth-child(2)')
       .should('have.attr', 'aria-label', 'Cannot be boosted because this is a direct message')
       .and('have.attr', 'disabled')
-
-
   })
-
 })
