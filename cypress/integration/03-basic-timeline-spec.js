@@ -60,10 +60,6 @@ describe('Basic timeline spec', () => {
     {content: 'pinned toot 1'}
   ]
 
-  const pinnedStatuses = [
-    {content: 'this is unlisted'}
-  ]
-
   it('Shows the home timeline', () => {
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-setsize')
     cy.get('.virtual-list-item[aria-hidden=false] .status-article:first').should('have.attr', 'aria-posinset', '0')
