@@ -8,7 +8,7 @@
       </div>
       <div class="account-profile-name">
         <ExternalLink href="{{profile.url}}" showIcon="true" normalIconColor="true">
-          {{profile.display_name}}
+          {{profile.display_name || profile.acct}}
         </ExternalLink>
       </div>
       <div class="account-profile-username">
@@ -24,8 +24,10 @@
       <div class="account-profile-follow">
         {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
           <IconButton
-            label="{{relationship && relationship.following ? 'Unfollow' : 'Follow'}}"
-            href="{{relationship && relationship.following ? '#fa-user-times' : '#fa-user-plus'}}"
+            label="{{following ? 'Unfollow' : 'Follow'}}"
+            href="{{following ? '#fa-user-times' : '#fa-user-plus'}}"
+            pressable="true"
+            pressed="{{following}}"
             big="true"
           />
         {{/if}}
@@ -195,7 +197,8 @@
           note = `<p>${note}</p>`
         }
         return note
-      }
+      },
+      following: (relationship) => relationship && relationship.following
     },
     store: () => store,
     components: {
