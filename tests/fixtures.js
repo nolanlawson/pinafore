@@ -52,3 +52,8 @@ export const favorites = [
   {content: 'notification of unlisted message'},
   {content: 'pinned toot 1'}
 ]
+
+export const quuxStatuses = [
+  {content: 'pinned toot 2'},
+  {content: 'pinned toot 1'}
+].concat(times(25, i => ({content: `unlisted thread ${25 - i}`})))
