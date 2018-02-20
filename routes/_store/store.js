@@ -42,7 +42,7 @@ export const store = new PinaforeStore({
 mixins(PinaforeStore)
 computations(store)
 
-export function initStore() {
+export function initStore () {
   observers(store)
 }
 
