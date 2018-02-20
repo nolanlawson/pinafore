@@ -26,7 +26,7 @@ In separate terminals:
 
 3\. Run a debuggable TestCafé instance:
 
-    npx testcafe --hostname localhost --skip-js-errors --debug-mode chrome tests/spec
+    npx testcafe --hostname localhost --skip-js-errors --debug-mode firefox tests/spec
 
 If you want to export the current data in the Mastodon instance as canned data, so that it can be loaded later:
 
@@ -41,6 +41,15 @@ Lint:
 Run integration tests:
 
     npm test
+
+Run tests for a particular browser:
+
+    BROWSER=chrome npm run test-browser
+    BROWSER=chrome:headless npm run test-browser
+    BROWSER=firefox npm run test-browser
+    BROWSER=firefox:headless npm run test-browser
+    BROWSER=safari npm run test-browser
+    BROWSER=edge npm run test-browser
 
 Automatically fix most linting issues:
 
