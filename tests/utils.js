@@ -6,20 +6,6 @@ export const addInstanceButton = $('.add-new-instance button')
 
 export const getUrl = exec(() => window.location.href)
 
-export function login(t, username, password) {
-  return t.click($('a').withText('log in to an instance'))
-    .expect(getUrl()).contains('/settings/instances/add')
-    .typeText(instanceInput, 'localhost:3000')
-    .click(addInstanceButton)
-    .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')
-    .typeText($('input#user_email'), username)
-    .typeText($('input#user_password'), password)
-    .click($('button[type=submit]'))
-    .expect(getUrl()).contains('/oauth/authorize')
-    .click($('button[type=submit]:not(.negative)'))
-    .expect(getUrl()).eql('http://localhost:4002/')
-}
-
 export function getNthVirtualArticle (n) {
   return $(`.virtual-list-item[aria-hidden="false"] article[aria-posinset="${n}"]`)
 }
