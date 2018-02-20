@@ -10,7 +10,7 @@ export function getNthVirtualArticle (n) {
   return $(`.virtual-list-item[aria-hidden="false"] article[aria-posinset="${n}"]`)
 }
 
-export async function validateTimeline(t, timeline) {
+export async function validateTimeline (t, timeline) {
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]
     if (status.content) {

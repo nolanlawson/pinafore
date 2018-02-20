@@ -41,3 +41,7 @@ Lint:
 Run integration tests:
 
     npm test
+
+Automatically fix most linting issues:
+
+    npx standard --fix

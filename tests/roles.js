@@ -1,7 +1,7 @@
 import { Selector as $, Role } from 'testcafe'
 import { addInstanceButton, getUrl, instanceInput } from './utils'
 
-function login(t, username, password) {
+function login (t, username, password) {
   return t.typeText(instanceInput, 'localhost:3000')
     .click(addInstanceButton)
     .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')

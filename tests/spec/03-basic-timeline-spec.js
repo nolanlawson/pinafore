@@ -1,10 +1,10 @@
 import { Selector as $ } from 'testcafe'
-import { getUrl, login, validateTimeline } from '../utils'
+import { getUrl, validateTimeline } from '../utils'
 import { homeTimeline, notifications, localTimeline, favorites } from '../fixtures'
 import { foobarRole } from '../roles'
 
-fixture `03-basic-timeline-spec.js`
-  .page `http://localhost:4002`
+fixture`03-basic-timeline-spec.js`
+  .page`http://localhost:4002`
 
 const firstArticle = $('.virtual-list-item[aria-hidden=false] .status-article')
 

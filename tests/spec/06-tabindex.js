@@ -2,8 +2,8 @@ import { Selector as $ } from 'testcafe'
 import { getNthVirtualArticle } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture `06-tabindex.js`
-  .page `http://localhost:4002`
+fixture`06-tabindex.js`
+  .page`http://localhost:4002`
 
 test('shows correct tabindex in home timeline', async t => {
   await t.useRole(foobarRole)

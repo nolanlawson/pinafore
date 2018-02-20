@@ -1,8 +1,8 @@
 import { getNthVirtualArticle } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture `05-status-types.js`
-  .page `http://localhost:4002`
+fixture`05-status-types.js`
+  .page`http://localhost:4002`
 
 test('shows direct vs followers-only vs regular', async t => {
   await t.useRole(foobarRole)

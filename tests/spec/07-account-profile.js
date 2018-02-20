@@ -2,8 +2,8 @@ import { Selector as $ } from 'testcafe'
 import { getUrl } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture `07-account-profile.js`
-  .page `http://localhost:4002`
+fixture`07-account-profile.js`
+  .page`http://localhost:4002`
 
 test('shows account profile', async t => {
   await t.useRole(foobarRole)

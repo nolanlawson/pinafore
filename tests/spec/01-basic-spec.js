@@ -1,8 +1,8 @@
 import { Selector as $ } from 'testcafe'
 import { getUrl, settingsButton } from '../utils'
 
-fixture `01-basic-spec.js`
-  .page `http://localhost:4002`
+fixture`01-basic-spec.js`
+  .page`http://localhost:4002`
 
 test('has the correct <h1>', async t => {
   await t
