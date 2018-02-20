@@ -22,7 +22,7 @@ class PinaforeStore extends LocalStorageStore {
   }
 }
 
-const store = new PinaforeStore({
+export const store = new PinaforeStore({
   instanceNameInSearch: '',
   queryInSearch: '',
   currentInstance: null,
@@ -41,10 +41,11 @@ const store = new PinaforeStore({
 
 mixins(PinaforeStore)
 computations(store)
-observers(store)
+
+export function initStore() {
+  observers(store)
+}
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging
 }
-
-export { store }
