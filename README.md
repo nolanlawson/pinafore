@@ -24,9 +24,9 @@ In separate terminals:
 
     npm run dev
 
-3\. Run a Cypress dev environment:
+3\. Run a debuggable TestCafé instance:
 
-    npm run cy:open 
+    npx testcafe --hostname localhost --skip-js-errors --debug-mode chrome tests/spec
 
 If you want to export the current data in the Mastodon instance as canned data, so that it can be loaded later:
 
@@ -38,6 +38,6 @@ Lint:
 
     npm run lint
 
-Run Cypress tests:
+Run integration tests:
 
     npm test
