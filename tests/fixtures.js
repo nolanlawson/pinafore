@@ -57,3 +57,5 @@ export const quuxStatuses = [
   {content: 'pinned toot 2'},
   {content: 'pinned toot 1'}
 ].concat(times(25, i => ({content: `unlisted thread ${25 - i}`})))
+
+export const quuxThread = times(25, i => ({content: `unlisted thread ${i + 1}`}))
