@@ -41,10 +41,7 @@ export const store = new PinaforeStore({
 
 mixins(PinaforeStore)
 computations(store)
-
-export function initStore () {
-  observers(store)
-}
+observers(store)
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging

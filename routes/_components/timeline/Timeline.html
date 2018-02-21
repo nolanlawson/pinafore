@@ -208,7 +208,9 @@
           stop('handleItemIdsToAdd')
         }
         this.observe('itemIdsToAddStringified', itemIdsToAddStringified => {
-          scheduleIdleTask(handleItemIdsToAdd)
+          if (itemIdsToAddStringified) {
+            scheduleIdleTask(handleItemIdsToAdd)
+          }
         })
       },
       setupFocus() {
