@@ -1,19 +1,13 @@
-import { Selector as $ } from 'testcafe'
-import { getNthStatus } from '../utils'
+import { closeDialogButton, getNthStatus, modalDialogContents, scrollToStatus } from '../utils'
 import { foobarRole } from '../roles'
-
-const modalDialogContents = $('.modal-dialog-contents')
-const closeDialogButton = $('.close-dialog-button')
 
 fixture`08-status-media.js`
   .page`http://localhost:4002`
 
 test('shows sensitive images and videos', async t => {
   await t.useRole(foobarRole)
-    .hover(getNthStatus(3))
-    .hover(getNthStatus(6))
-    .hover(getNthStatus(7))
-    .expect(getNthStatus(7).find('.status-media img').exists).notOk()
+  await scrollToStatus(t, 7)
+  await t.expect(getNthStatus(7).find('.status-media img').exists).notOk()
     .click(getNthStatus(7).find('.status-sensitive-media-button'))
     .expect(getNthStatus(7).find('.status-media img').getAttribute('alt')).eql('kitten')
     .expect(getNthStatus(7).find('.status-media img').hasAttribute('src')).ok()
@@ -25,11 +19,8 @@ test('shows sensitive images and videos', async t => {
 
 test('click and close image and video modals', async t => {
   await t.useRole(foobarRole)
-    .hover(getNthStatus(3))
-    .hover(getNthStatus(6))
-    .hover(getNthStatus(7))
-    .hover(getNthStatus(9))
-    .expect(modalDialogContents.exists).notOk()
+  await scrollToStatus(t, 9)
+  await t.expect(modalDialogContents.exists).notOk()
     .click(getNthStatus(9).find('.play-video-button'))
     .expect(modalDialogContents.exists).ok()
     .click(closeDialogButton)

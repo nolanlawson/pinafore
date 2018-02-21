@@ -3,8 +3,16 @@ import { ClientFunction as exec, Selector as $ } from 'testcafe'
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
 export const addInstanceButton = $('.add-new-instance button')
+export const modalDialogContents = $('.modal-dialog-contents')
+export const closeDialogButton = $('.close-dialog-button')
 
 export const getUrl = exec(() => window.location.href)
+
+export const getActiveElementClass = exec(() =>
+  document.activeElement ? document.activeElement.getAttribute('class') : ''
+)
+
+export const goBack = exec(() => window.history.back())
 
 export function getNthStatus (n) {
   return $(`[aria-hidden="false"] > article[aria-posinset="${n}"]`)
@@ -57,4 +65,11 @@ export async function scrollToBottomOfTimeline (t) {
     }
     lastSize = newSize
   }
+}
+
+export async function scrollToStatus (t, n) {
+  for (let i = 0; i < n; i += 2) {
+    await t.hover(getNthStatus(n))
+  }
+  await t.hover(getNthStatus(n))
 }
