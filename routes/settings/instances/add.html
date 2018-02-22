@@ -20,6 +20,12 @@
       </div>
       {{/if}}
 
+      <noscript>
+        <div class="form-error" role="alert">
+          You must enable JavaScript to log in.
+        </div>
+      </noscript>
+
       <label for="instanceInput">Instance:</label>
       <input class="new-instance-input" type="text" id="instanceInput"
              bind:value='$instanceNameInSearch' placeholder='' required
