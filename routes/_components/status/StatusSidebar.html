@@ -4,7 +4,13 @@
 <style>
   :global(.status-sidebar) {
     grid-area: sidebar;
-    margin-right: 10px;
+    margin-right: 15px;
+  }
+
+  @media (max-width: 767px) {
+    :global(.status-sidebar) {
+      margin-right: 5px;
+    }
   }
 </style>
 <script>
