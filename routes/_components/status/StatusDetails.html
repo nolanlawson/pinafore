@@ -2,13 +2,13 @@
   <ExternalLink class="status-absolute-date" href="{{status.url}}" showIcon="true">
     <time datetime={{createdAtDate}} title="{{formattedDate}}">{{formattedDate}}</time>
   </ExternalLink>
-  <a class="status-favs-reblogs" href="/statuses/{{statusId}}/reblogs">
+  <a class="status-favs-reblogs" href="/statuses/{{statusId}}/reblogs" aria-label="{{favoritesLabel}}">
     <svg>
       <use xlink:href="#fa-retweet"/>
     </svg>
     <span>{{numReblogs}}</span>
   </a>
-  <a class="status-favs-reblogs" href="/statuses/{{statusId}}/favorites">
+  <a class="status-favs-reblogs" href="/statuses/{{statusId}}/favorites" aria-label="{{reblogsLabel}}">
     <svg>
       <use xlink:href="#fa-star" />
     </svg>
@@ -95,7 +95,19 @@
       createdAtDate: (status) => status.created_at,
       numReblogs: (status) => status.reblogs_count || 0,
       numFavs: (status) => status.favourites_count || 0,
-      formattedDate: (createdAtDate) => formatter.format(new Date(createdAtDate))
+      formattedDate: (createdAtDate) => formatter.format(new Date(createdAtDate)),
+      reblogsLabel: (numReblogs) => {
+        // TODO: intl
+        return numReblogs === 1
+          ? `Boosted ${numReblogs} time`
+          : `Boosted ${numReblogs} times`
+      },
+      favoritesLabel: (numFavs) => {
+        // TODO: intl
+        return numFavs === 1
+          ? `Favorited ${numFavs} time`
+          : `Favorited ${numFavs} times`
+      }
     },
     components: {
       ExternalLink

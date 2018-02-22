@@ -2,7 +2,7 @@
   <div class="search-result-account">
     <Avatar :account size="small" className="search-result-account-avatar"/>
     <div class="search-result-account-name">
-      {{account.display_name}}
+      {{account.display_name || account.acct}}
     </div>
     <div class="search-result-account-username">
       {{'@' + account.acct}}
