@@ -1,4 +1,4 @@
-export function thunk(fn) {
+export function thunk (fn) {
   let value
   let called
   return () => {

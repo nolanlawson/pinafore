@@ -12,13 +12,13 @@ const enabled = thunk(() => process.browser &&
 
 const perf = process.browser && performance
 
-export function mark(name) {
+export function mark (name) {
   if (enabled()) {
     perf.mark(`start ${name}`)
   }
 }
 
-export function stop(name) {
+export function stop (name) {
   if (enabled()) {
     perf.mark(`end ${name}`)
     perf.measure(name, `start ${name}`, `end ${name}`)
