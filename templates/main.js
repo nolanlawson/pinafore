@@ -6,6 +6,7 @@ import '../routes/_utils/historyEvents'
 import '../routes/_utils/loadingMask'
 
 loadPolyfills().then(() => {
+  console.log('init()')
   // `routes` is an array of route objects injected by Sapper
   init(document.querySelector('#sapper'), __routes__)
 })

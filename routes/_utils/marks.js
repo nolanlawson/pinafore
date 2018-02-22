@@ -1,25 +1,26 @@
-import noop from 'lodash/noop'
+import { thunk } from './thunk'
 
-const enableMarks = process.browser &&
+// Lazily invoke because URLSearchParams isn't supported in Edge 16,
+// so we need the polyfill.
+const enabled = thunk(() => process.browser &&
   performance.mark &&
-  (process.env.NODE_ENV !== 'production' ||
-  new URLSearchParams(location.search).get('marks') === 'true')
+  (
+    process.env.NODE_ENV !== 'production' ||
+    new URLSearchParams(location.search).get('marks') === 'true'
+  )
+)
 
 const perf = process.browser && performance
 
-function doMark (name) {
-  perf.mark(`start ${name}`)
+export function mark(name) {
+  if (enabled()) {
+    perf.mark(`start ${name}`)
+  }
 }
 
-function doStop (name) {
-  perf.mark(`end ${name}`)
-  perf.measure(name, `start ${name}`, `end ${name}`)
-}
-
-const mark = enableMarks ? doMark : noop
-const stop = enableMarks ? doStop : noop
-
-export {
-  mark,
-  stop
+export function stop(name) {
+  if (enabled()) {
+    perf.mark(`end ${name}`)
+    perf.measure(name, `start ${name}`, `end ${name}`)
+  }
 }
