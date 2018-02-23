@@ -6,9 +6,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-dialog-slot">
-      <slot></slot>
-    </div>
+    <slot></slot>
   </div>
 </div>
 <style>
@@ -33,13 +31,18 @@
     padding: 0;
     border: 1px solid var(--main-border);
     border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+    max-height: calc(100% - 20px);
   }
+
   .modal-dialog-document {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     max-width: calc(100vw - 20px);
+    flex: 1;
   }
   .close-dialog-button-wrapper {
     text-align: right;
@@ -55,10 +58,6 @@
     padding: 0 15px;
     font-size: 48px;
     color: var(--button-primary-text);
-  }
-
-  .modal-dialog-slot {
-    max-width: 100%;
   }
 
   @media (max-width: 767px) {
