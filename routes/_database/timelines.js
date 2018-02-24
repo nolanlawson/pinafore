@@ -390,13 +390,29 @@ export async function getNotificationIdsForStatus (instanceName, statusId) {
 }
 
 //
-// insert statuses
+// update statuses
 //
 
-export async function insertStatus(instanceName, status) {
+async function updateStatus (instanceName, statusId, updateFunc) {
   const db = await getDatabase(instanceName)
-  cacheStatus(statusesCache, status)
+  if (hasInCache(statusesCache, instanceName, statusId)) {
+    let status = getInCache(statusesCache, instanceName, statusId)
+    updateFunc(status)
+    cacheStatus(status, instanceName)
+  }
   return dbPromise(db, STATUSES_STORE, 'readwrite', (statusesStore) => {
-    putStatus(statusesStore, status)
+    statusesStore.get(statusId).onsuccess = e => {
+      let status = e.target.result
+      updateFunc(status)
+      putStatus(statusesStore, status)
+    }
+  })
+}
+
+export async function setStatusFavorited (instanceName, statusId, favorited) {
+  return updateStatus(instanceName, statusId, status => {
+    let delta = (favorited ? 1 : 0) - (status.favourited ? 1 : 0)
+    status.favourited = favorited
+    status.favourites_count = (status.favourites_count || 0) + delta
   })
 }

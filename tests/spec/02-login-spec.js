@@ -1,10 +1,8 @@
 import { Selector as $ } from 'testcafe'
-import { addInstanceButton, getUrl, instanceInput, settingsButton } from '../utils'
+import { addInstanceButton, formError, getUrl, instanceInput, settingsButton } from '../utils'
 
 fixture`02-login-spec.js`
   .page`http://localhost:4002`
-
-const formError = $('.form-error')
 
 function manualLogin (t, username, password) {
   return t.click($('a').withText('log in to an instance'))

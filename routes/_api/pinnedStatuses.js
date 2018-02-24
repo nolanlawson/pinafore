@@ -1,5 +1,5 @@
 import { getWithTimeout, paramsString } from '../_utils/ajax'
-import { basename } from './utils'
+import { auth, basename } from './utils'
 
 export async function getPinnedStatuses (instanceName, accessToken, accountId) {
   let url = `${basename(instanceName)}/api/v1/accounts/${accountId}/statuses`
@@ -7,7 +7,5 @@ export async function getPinnedStatuses (instanceName, accessToken, accountId) {
     limit: 40,
     pinned: true
   })
-  return getWithTimeout(url, {
-    'Authorization': `Bearer ${accessToken}`
-  })
+  return getWithTimeout(url, auth(accessToken))
 }

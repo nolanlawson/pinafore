@@ -1,5 +1,5 @@
 import { Selector as $ } from 'testcafe'
-import { getNthStatus, getUrl } from '../utils'
+import { getFavoritesCount, getNthStatus, getReblogsCount, getUrl } from '../utils'
 import { foobarRole } from '../roles'
 
 fixture`11-reblog-favorites-count.js`
@@ -9,7 +9,7 @@ test('shows favorites', async t => {
   await t.useRole(foobarRole)
     .click(getNthStatus(0))
     .expect(getUrl()).contains('/statuses/99549266679020981')
-    .expect($('.status-favs-reblogs').nth(0).getAttribute('aria-label')).eql('Favorited 2 times')
+    .expect(getFavoritesCount()).eql(2)
     .expect($('.icon-button[aria-label="Favorite"]').getAttribute('aria-pressed')).eql('true')
     .click($('.status-favs-reblogs').nth(1))
     .expect(getUrl()).contains('/statuses/99549266679020981/favorites')
@@ -23,7 +23,7 @@ test('shows boosts', async t => {
   await t.useRole(foobarRole)
     .click(getNthStatus(0))
     .expect(getUrl()).contains('/statuses/99549266679020981')
-    .expect($('.status-favs-reblogs').nth(1).getAttribute('aria-label')).eql('Boosted 1 time')
+    .expect(getReblogsCount()).eql(1)
     .expect($('.icon-button[aria-label="Boost"]').getAttribute('aria-pressed')).eql('false')
     .click($('.status-favs-reblogs').nth(0))
     .expect(getUrl()).contains('/statuses/99549266679020981/reblogs')

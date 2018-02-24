@@ -15,7 +15,7 @@
     <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
       {{#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}}
-      <div class="form-error" role="alert">
+      <div class="form-error form-error-user-error" role="alert">
         Error: {{$logInToInstanceError}}
       </div>
       {{/if}}

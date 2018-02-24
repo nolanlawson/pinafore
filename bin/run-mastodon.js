@@ -60,13 +60,10 @@ async function runMastodon () {
     await exec(cmd, {cwd: mastodonDir})
   }
   const promise = spawn('foreman', ['start'], {cwd: mastodonDir})
+  const log = fs.createWriteStream('mastodon.log', {flags: 'a'})
   childProc = promise.childProcess
-  childProc.stdout.on('data', function (data) {
-    console.log(data.toString('utf8').replace(/\n$/, ''))
-  })
-  childProc.stderr.on('data', function (data) {
-    console.error(data.toString('utf8').replace(/\n$/, ''))
-  })
+  childProc.stdout.pipe(log)
+  childProc.stderr.pipe(log)
 
   await waitForMastodonToStart()
 }

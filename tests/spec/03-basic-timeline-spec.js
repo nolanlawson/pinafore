@@ -1,21 +1,20 @@
 import { Selector as $ } from 'testcafe'
-import { getUrl, validateTimeline } from '../utils'
+import { getFirstVisibleStatus, getUrl, validateTimeline } from '../utils'
 import { homeTimeline, notifications, localTimeline, favorites } from '../fixtures'
 import { foobarRole } from '../roles'
 
 fixture`03-basic-timeline-spec.js`
   .page`http://localhost:4002`
 
-const firstArticle = $('.virtual-list-item[aria-hidden=false] .status-article')
-
 test('Shows the home timeline', async t => {
   await t.useRole(foobarRole)
-    .expect(firstArticle.hasAttribute('aria-setsize')).ok()
-    .expect(firstArticle.getAttribute('aria-posinset')).eql('0')
+    .expect(getFirstVisibleStatus().exists).ok()
+    .expect(getFirstVisibleStatus().hasAttribute('aria-setsize')).ok()
+    .expect(getFirstVisibleStatus().getAttribute('aria-posinset')).eql('0')
 
   await validateTimeline(t, homeTimeline)
 
-  await t.expect(firstArticle.getAttribute('aria-setsize')).eql('49')
+  await t.expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql('49')
 })
 
 test('Shows notifications', async t => {

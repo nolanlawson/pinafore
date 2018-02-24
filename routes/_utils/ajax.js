@@ -9,14 +9,21 @@ function fetchWithTimeout (url, options) {
 
 async function _post (url, body, headers, timeout) {
   let fetchFunc = timeout ? fetchWithTimeout : fetch
-  return (await fetchFunc(url, {
-    method: 'POST',
-    headers: Object.assign(headers, {
+  let opts = {
+    method: 'POST'
+  }
+  if (body) {
+    opts.headers = Object.assign(headers, {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify(body)
-  })).json()
+    })
+    opts.body = JSON.stringify(body)
+  } else {
+    opts.headers = Object.assign(headers, {
+      'Accept': 'application/json'
+    })
+  }
+  return (await fetchFunc(url, opts)).json()
 }
 
 async function _get (url, headers, timeout) {

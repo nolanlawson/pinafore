@@ -97,8 +97,8 @@ export function instanceComputations (store) {
   )
 
   store.compute('currentStatusModifications',
-    ['statusModifications', 'instanceName'],
-    (statusModifications, instanceName) => {
-      return statusModifications[instanceName]
+    ['statusModifications', 'currentInstance'],
+    (statusModifications, currentInstance) => {
+      return statusModifications[currentInstance]
     })
 }

@@ -5,3 +5,4 @@ yarn.lock
 templates/.*
 assets/*.css
 /mastodon
+mastodon.log

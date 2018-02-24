@@ -2,8 +2,10 @@
   <button type="button"
           aria-label="{{label}}"
           aria-pressed="{{!!pressed}}"
-          class="icon-button {{pressed ? 'pressed' : ''}} {{big ? 'big-icon' : ''}}"
+          class="{{computedClass}}"
           disabled="{{disabled}}"
+          delegate-click-key="{{delegateKey}}"
+          delegate-keydown-key="{{delegateKey}}"
           on:click
   >
     <svg>
@@ -13,8 +15,10 @@
 {{else}}
   <button type="button"
           aria-label="{{label}}"
-          class="icon-button {{big ? 'big-icon' : ''}}"
+          class="{{computedClass}}"
           disabled="{{disabled}}"
+          delegate-click-key="{{delegateKey}}"
+          delegate-keydown-key="{{delegateKey}}"
           on:click
   >
     <svg>
@@ -44,7 +48,7 @@
     fill: var(--action-button-fill-color-hover);
   }
 
-  button.icon-button:active svg {
+  button.icon-button.not-pressable:active svg {
     fill: var(--action-button-fill-color-active);
   }
 
@@ -60,3 +64,19 @@
     fill: var(--action-button-fill-color-pressed-active);
   }
 </style>
+<script>
+  import identity from 'lodash/identity'
+
+  export default {
+    computed: {
+      computedClass: (pressable, pressed, big) => {
+        return [
+          'icon-button',
+          !pressable && 'not-pressable',
+          pressed && 'pressed',
+          big && 'big-icon',
+        ].filter(identity).join(' ')
+      }
+    }
+  }
+</script>

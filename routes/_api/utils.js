@@ -13,3 +13,9 @@ export function basename (instanceName) {
   }
   return `https://${instanceName}`
 }
+
+export function auth (accessToken) {
+  return {
+    'Authorization': `Bearer ${accessToken}`
+  }
+}

@@ -15,6 +15,8 @@
     pressable="true"
     pressed="{{favorited}}"
     href="#fa-star"
+    delegateKey="{{favoriteKey}}"
+    ref:favoriteNode
     />
   <IconButton
     label="Show more actions"
@@ -34,12 +36,33 @@
 <script>
   import IconButton from '../IconButton.html'
   import { store } from '../../_store/store'
+  import { registerDelegate, unregisterDelegate } from '../../_utils/delegate'
+  import { setFavorited } from '../../_actions/favorite'
 
   export default {
+    oncreate() {
+      this.onFavoriteClick = this.onFavoriteClick.bind(this)
+
+      let favoriteKey = this.get('favoriteKey')
+      registerDelegate('click', favoriteKey, this.onFavoriteClick)
+      registerDelegate('keydown', favoriteKey, this.onFavoriteClick)
+    },
+    ondestroy() {
+      let favoriteKey = this.get('favoriteKey')
+      unregisterDelegate('click', favoriteKey, this.onFavoriteClick)
+      unregisterDelegate('keydown', favoriteKey, this.onFavoriteClick)
+    },
     components: {
       IconButton
     },
     store: () => store,
+    methods: {
+      onFavoriteClick() {
+        let statusId = this.get('statusId')
+        let favorited = this.get('favorited')
+        /* no await */ setFavorited(statusId, !favorited)
+      }
+    },
     computed: {
       visibility: (status) => status.visibility,
       boostLabel: (visibility) => {
@@ -70,7 +93,9 @@
           return $currentStatusModifications.favorites[status.id]
         }
         return status.favourited
-      }
+      },
+      statusId: (status) => status.id,
+      favoriteKey: (statusId, timelineType, timelineValue) => `fav-${timelineType}-${timelineValue}-${statusId}`
     }
   }
 </script>

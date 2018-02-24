@@ -28,7 +28,7 @@
   {{#if isStatusInOwnThread}}
   <StatusDetails status="{{originalStatus}}" />
   {{/if}}
-  <StatusToolbar :status :isStatusInOwnThread />
+  <StatusToolbar status="{{originalStatus}}" :isStatusInOwnThread :timelineType :timelineValue />
 </article>
 
 <style>

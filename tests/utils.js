@@ -1,10 +1,23 @@
 import { ClientFunction as exec, Selector as $ } from 'testcafe'
 
+const SCROLL_INTERVAL = 3
+
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
 export const addInstanceButton = $('.add-new-instance button')
 export const modalDialogContents = $('.modal-dialog-contents')
 export const closeDialogButton = $('.close-dialog-button')
+export const notificationsNavButton = $('nav a[href="/notifications"]')
+export const homeNavButton = $('nav a[href="/"]')
+export const formError = $('.form-error-user-error')
+
+export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
+  innerCount: el => parseInt(el.innerText, 10)
+})
+
+export const reblogsCountElement = $('.status-favs-reblogs:nth-child(2)').addCustomDOMProperties({
+  innerCount: el => parseInt(el.innerText, 10)
+})
 
 export const getUrl = exec(() => window.location.href)
 
@@ -15,11 +28,31 @@ export const getActiveElementClass = exec(() =>
 export const goBack = exec(() => window.history.back())
 
 export function getNthStatus (n) {
-  return $(`[aria-hidden="false"] > article[aria-posinset="${n}"]`)
+  return $(`div[aria-hidden="false"] > article[aria-posinset="${n}"]`)
 }
 
 export function getLastVisibleStatus () {
-  return $(`[aria-hidden="false"] > article[aria-posinset]`).nth(-1)
+  return $(`div[aria-hidden="false"] > article[aria-posinset]`).nth(-1)
+}
+
+export function getFirstVisibleStatus () {
+  return $(`div[aria-hidden="false"] > article[aria-posinset]`).nth(0)
+}
+
+export function getNthFavoriteButton (n) {
+  return getNthStatus(n).find('.status-toolbar button:nth-child(3)')
+}
+
+export function getNthFavorited (n) {
+  return getNthFavoriteButton(n).getAttribute('aria-pressed')
+}
+
+export function getFavoritesCount () {
+  return favoritesCountElement.innerCount
+}
+
+export function getReblogsCount () {
+  return reblogsCountElement.innerCount
 }
 
 export async function validateTimeline (t, timeline) {
@@ -47,23 +80,47 @@ export async function validateTimeline (t, timeline) {
     }
 
     // hovering forces TestCafé to scroll to that element: https://git.io/vABV2
-    if (i % 3 === 2) { // only scroll every nth element
+    if (i % SCROLL_INTERVAL === (SCROLL_INTERVAL - 1)) { // only scroll every nth element
       await t.hover(getNthStatus(i))
         .expect($('.loading-footer').exist).notOk()
     }
   }
 }
 
-export async function scrollToBottomOfTimeline (t) {
-  let lastSize = null
+export async function scrollTimelineUp (t) {
+  let oldFirstItem = await getFirstVisibleStatus().getAttribute('aria-posinset')
+  await t.hover(getFirstVisibleStatus())
+  let newFirstItem
   while (true) {
-    await t.hover(getLastVisibleStatus())
-      .expect($('.loading-footer').exist).notOk()
-    let newSize = await getLastVisibleStatus().getAttribute('aria-setsize')
-    if (newSize === lastSize) {
+    newFirstItem = await getFirstVisibleStatus().getAttribute('aria-posinset')
+    if (newFirstItem === '0' || newFirstItem !== oldFirstItem) {
       break
     }
-    lastSize = newSize
+  }
+}
+
+export async function scrollToTopOfTimeline (t) {
+  let i = await getFirstVisibleStatus().getAttribute('aria-posinset')
+  while (true) {
+    await t.hover(getNthStatus(i))
+      .expect($('.loading-footer').exist).notOk()
+    i -= SCROLL_INTERVAL
+    if (i <= 0) {
+      break
+    }
+  }
+}
+
+export async function scrollToBottomOfTimeline (t) {
+  let i = 0
+  while (true) {
+    await t.hover(getNthStatus(i))
+      .expect($('.loading-footer').exist).notOk()
+    let size = await getNthStatus(i).getAttribute('aria-setsize')
+    i += SCROLL_INTERVAL
+    if (i >= size - 1) {
+      break
+    }
   }
 }
 
