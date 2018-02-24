@@ -17,8 +17,10 @@
     async oncreate() {
       let makeProps = this.get('makeProps')
       let key = this.get('key')
-      let props = await makeProps(key)
-      this.set({ props: props })
+      if (makeProps) {
+        let props = await makeProps(key)
+        this.set({props: props})
+      }
     },
     components: {
       PseudoVirtualListItem
