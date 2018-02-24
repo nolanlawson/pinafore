@@ -1,4 +1,4 @@
-import { get, paramsString } from '../_utils/ajax'
+import { getWithTimeout, paramsString } from '../_utils/ajax'
 import { basename } from './utils'
 
 function getTimelineUrlPath (timeline) {
@@ -57,14 +57,14 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since) 
     // special case - this is a list of descendents and ancestors
     let statusUrl = `${basename(instanceName)}/api/v1/statuses/${timeline.split('/').slice(-1)[0]}}`
     return Promise.all([
-      get(url, {'Authorization': `Bearer ${accessToken}`}),
-      get(statusUrl, {'Authorization': `Bearer ${accessToken}`})
+      getWithTimeout(url, {'Authorization': `Bearer ${accessToken}`}),
+      getWithTimeout(statusUrl, {'Authorization': `Bearer ${accessToken}`})
     ]).then(res => {
       return [].concat(res[0].ancestors).concat([res[1]]).concat(res[0].descendants)
     })
   }
 
-  return get(url, {
+  return getWithTimeout(url, {
     'Authorization': `Bearer ${accessToken}`
   })
 }

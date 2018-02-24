@@ -1,4 +1,4 @@
-import { get, paramsString } from '../_utils/ajax'
+import { getWithTimeout, paramsString } from '../_utils/ajax'
 import { basename } from './utils'
 
 export function search (instanceName, accessToken, query) {
@@ -6,7 +6,7 @@ export function search (instanceName, accessToken, query) {
     q: query,
     resolve: true
   })
-  return get(url, {
+  return getWithTimeout(url, {
     'Authorization': `Bearer ${accessToken}`
   })
 }

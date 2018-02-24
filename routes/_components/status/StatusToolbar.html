@@ -13,7 +13,7 @@
   <IconButton
     label="Favorite"
     pressable="true"
-    pressed="{{status.favourited}}"
+    pressed="{{favorited}}"
     href="#fa-star"
     />
   <IconButton
@@ -32,13 +32,14 @@
   }
 </style>
 <script>
-
   import IconButton from '../IconButton.html'
+  import { store } from '../../_store/store'
 
   export default {
     components: {
       IconButton
     },
+    store: () => store,
     computed: {
       visibility: (status) => status.visibility,
       boostLabel: (visibility) => {
@@ -63,6 +64,12 @@
       },
       boostDisabled: (visibility) => {
         return visibility === 'private' || visibility === 'direct'
+      },
+      favorited: (status, $currentStatusModifications) => {
+        if ($currentStatusModifications && status.id in $currentStatusModifications.favorites) {
+          return $currentStatusModifications.favorites[status.id]
+        }
+        return status.favourited
       }
     }
   }

@@ -36,7 +36,8 @@ export const store = new PinaforeStore({
   pinnedPages: {},
   instanceLists: {},
   pinnedStatuses: {},
-  instanceInfos: {}
+  instanceInfos: {},
+  statusModifications: {}
 })
 
 mixins(PinaforeStore)

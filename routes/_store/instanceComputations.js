@@ -95,4 +95,10 @@ export function instanceComputations (store) {
       return !!numberOfNotifications
     }
   )
+
+  store.compute('currentStatusModifications',
+    ['statusModifications', 'instanceName'],
+    (statusModifications, instanceName) => {
+      return statusModifications[instanceName]
+    })
 }

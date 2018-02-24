@@ -388,3 +388,15 @@ export async function getNotificationIdsForStatus (instanceName, statusId) {
     }
   })
 }
+
+//
+// insert statuses
+//
+
+export async function insertStatus(instanceName, status) {
+  const db = await getDatabase(instanceName)
+  cacheStatus(statusesCache, status)
+  return dbPromise(db, STATUSES_STORE, 'readwrite', (statusesStore) => {
+    putStatus(statusesStore, status)
+  })
+}

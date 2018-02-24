@@ -1,4 +1,4 @@
-import { get, paramsString } from '../_utils/ajax'
+import { getWithTimeout, paramsString } from '../_utils/ajax'
 import { basename } from './utils'
 
 export async function getPinnedStatuses (instanceName, accessToken, accountId) {
@@ -7,7 +7,7 @@ export async function getPinnedStatuses (instanceName, accessToken, accountId) {
     limit: 40,
     pinned: true
   })
-  return get(url, {
+  return getWithTimeout(url, {
     'Authorization': `Bearer ${accessToken}`
   })
 }
