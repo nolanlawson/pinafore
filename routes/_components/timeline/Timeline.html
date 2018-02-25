@@ -67,6 +67,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
   import { importPseudoVirtualList } from '../../_utils/asyncModules'
+  import isEqual from 'lodash/isEqual'
 
   export default {
     oncreate() {
@@ -138,11 +139,9 @@
           && timelineValue
       },
       itemIdsToAdd: ($itemIdsToAdd) => $itemIdsToAdd,
-      // TODO: hack to avoid getting called too often
-      itemIdsToAddStringified: (itemIdsToAdd) => JSON.stringify(itemIdsToAdd),
       headerProps: (itemIdsToAdd) => {
         return {
-          count: (itemIdsToAdd && itemIdsToAdd.length) || 0,
+          count: itemIdsToAdd ? itemIdsToAdd.length : 0,
           onClick: showMoreItemsForCurrentTimeline
         }
       }
@@ -188,15 +187,10 @@
         let instanceName = this.store.get('currentInstance')
         let timelineName = this.get('timeline')
         let handleItemIdsToAdd = () => {
-          let itemIdsToAdd = this.get('itemIdsToAdd')
-          if (!itemIdsToAdd || !itemIdsToAdd.length) {
-            return
-          }
           mark('handleItemIdsToAdd')
           let scrollTop = this.get('scrollTop')
           let shouldShowHeader = this.store.get('shouldShowHeader')
           let showHeader = this.store.get('showHeader')
-          //console.log('handleItemIdsToAdd', (itemIdsToAdd && itemIdsToAdd.length) || 0)
           if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
             // if the user is scrolled to the top and we're not showing the header, then
             // just insert the statuses. this is "chat room mode"
@@ -207,10 +201,13 @@
           }
           stop('handleItemIdsToAdd')
         }
-        this.observe('itemIdsToAddStringified', itemIdsToAddStringified => {
-          if (itemIdsToAddStringified) {
-            scheduleIdleTask(handleItemIdsToAdd)
+        this.observe('itemIdsToAdd', (newItemIdsToAdd, oldItemIdsToAdd) => {
+          if (!newItemIdsToAdd ||
+              !newItemIdsToAdd.length ||
+              isEqual(newItemIdsToAdd, oldItemIdsToAdd)) {
+            return
           }
+          scheduleIdleTask(handleItemIdsToAdd)
         })
       },
       setupFocus() {

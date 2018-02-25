@@ -30,6 +30,7 @@
   import { virtualListStore } from './virtualListStore'
   import throttle from 'lodash/throttle'
   import { mark, stop } from '../../_utils/marks'
+  import isEqual from 'lodash/isEqual'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 400
   const SCROLL_EVENT_THROTTLE = 1000
@@ -52,11 +53,12 @@
         this.store.setForRealm({showHeader: showHeader})
         stop('set showHeader')
       })
-      this.observe('itemsStringified', (itemsStringified) => {
-        let items = typeof itemsStringified === 'undefined' ? undefined :
-          JSON.parse(itemsStringified)
+      this.observe('items', (newItems, oldItems) => {
+        if (!newItems || isEqual(newItems, oldItems)) {
+          return
+        }
         mark('set items')
-        this.store.setForRealm({items: items})
+        this.store.setForRealm({items: newItems})
         stop('set items')
       })
       this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
@@ -102,8 +104,6 @@
       scrollTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
-      // TODO: hack to avoid getting called too often
-      itemsStringified: (items) => JSON.stringify(items)
     }
   }
 </script>
