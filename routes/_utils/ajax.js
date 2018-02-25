@@ -7,7 +7,7 @@ function fetchWithTimeout (url, options) {
   })
 }
 
-async function throwErrorIfInvalidResponse(response) {
+async function throwErrorIfInvalidResponse (response) {
   let json = await response.json()
   if (response.status >= 200 && response.status < 300) {
     return json

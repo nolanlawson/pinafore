@@ -5,7 +5,7 @@ import {
 } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`12-favorite-unfavorite.js`
+fixture`30-favorite-unfavorite.js`
   .page`http://localhost:4002`
 
 test('favorites a status', async t => {
@@ -54,7 +54,7 @@ test('unfavorites a status', async t => {
     .expect(getNthFavorited(1)).eql('true')
 })
 
-test('Keeps the correct count', async t => {
+test('Keeps the correct favorites count', async t => {
   await t.useRole(foobarRole)
     .hover(getNthStatus(4))
     .click(getNthFavoriteButton(4))

@@ -4,11 +4,13 @@
     href="#fa-reply"
     />
   <IconButton
-    label="{{boostLabel}}"
-    pressable="{{!boostDisabled}}"
-    pressed="{{status.reblogged}}"
-    disabled="{{boostDisabled}}"
-    href="{{boostIcon}}"
+    label="{{reblogLabel}}"
+    pressable="{{!reblogDisabled}}"
+    pressed="{{reblogged}}"
+    disabled="{{reblogDisabled}}"
+    href="{{reblogIcon}}"
+    delegateKey="{{reblogKey}}"
+    ref:reblogNode
   />
   <IconButton
     label="Favorite"
@@ -38,17 +40,19 @@
   import { store } from '../../_store/store'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
+  import { setReblogged } from '../../_actions/reblog'
 
   export default {
     oncreate() {
       this.onFavoriteClick = this.onFavoriteClick.bind(this)
+      this.onReblogClick = this.onReblogClick.bind(this)
 
-      let favoriteKey = this.get('favoriteKey')
-      registerClickDelegate(favoriteKey, this.onFavoriteClick)
+      registerClickDelegate(this.get('favoriteKey'), this.onFavoriteClick)
+      registerClickDelegate(this.get('reblogKey'), this.onReblogClick)
     },
     ondestroy() {
-      let favoriteKey = this.get('favoriteKey')
-      unregisterClickDelegate(favoriteKey)
+      unregisterClickDelegate(this.get('favoriteKey'))
+      unregisterClickDelegate(this.get('reblogKey'))
     },
     components: {
       IconButton
@@ -59,11 +63,16 @@
         let statusId = this.get('statusId')
         let favorited = this.get('favorited')
         /* no await */ setFavorited(statusId, !favorited)
+      },
+      onReblogClick() {
+        let statusId = this.get('statusId')
+        let reblogged = this.get('reblogged')
+        /* no await */ setReblogged(statusId, !reblogged)
       }
     },
     computed: {
       visibility: (status) => status.visibility,
-      boostLabel: (visibility) => {
+      reblogLabel: (visibility) => {
         switch (visibility) {
           case 'private':
             return 'Cannot be boosted because this is followers-only'
@@ -73,7 +82,7 @@
             return 'Boost'
         }
       },
-      boostIcon: (visibility) => {
+      reblogIcon: (visibility) => {
         switch (visibility) {
           case 'private':
             return '#fa-lock'
@@ -83,8 +92,14 @@
             return '#fa-retweet'
         }
       },
-      boostDisabled: (visibility) => {
+      reblogDisabled: (visibility) => {
         return visibility === 'private' || visibility === 'direct'
+      },
+      reblogged: (status, $currentStatusModifications) => {
+        if ($currentStatusModifications && status.id in $currentStatusModifications.reblogs) {
+          return $currentStatusModifications.reblogs[status.id]
+        }
+        return status.reblogged
       },
       favorited: (status, $currentStatusModifications) => {
         if ($currentStatusModifications && status.id in $currentStatusModifications.favorites) {
@@ -93,7 +108,8 @@
         return status.favourited
       },
       statusId: (status) => status.id,
-      favoriteKey: (statusId, timelineType, timelineValue) => `fav-${timelineType}-${timelineValue}-${statusId}`
+      favoriteKey: (statusId, timelineType, timelineValue) => `fav-${timelineType}-${timelineValue}-${statusId}`,
+      reblogKey: (statusId, timelineType, timelineValue) => `reblog-${timelineType}-${timelineValue}-${statusId}`,
     }
   }
 </script>

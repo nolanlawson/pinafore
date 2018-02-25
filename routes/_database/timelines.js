@@ -416,3 +416,11 @@ export async function setStatusFavorited (instanceName, statusId, favorited) {
     status.favourites_count = (status.favourites_count || 0) + delta
   })
 }
+
+export async function setStatusReblogged (instanceName, statusId, reblogged) {
+  return updateStatus(instanceName, statusId, status => {
+    let delta = (reblogged ? 1 : 0) - (status.reblogged ? 1 : 0)
+    status.reblogged = reblogged
+    status.reblogs_count = (status.reblogs_count || 0) + delta
+  })
+}

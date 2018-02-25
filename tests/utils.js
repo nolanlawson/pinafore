@@ -51,6 +51,14 @@ export function getFavoritesCount () {
   return favoritesCountElement.innerCount
 }
 
+export function getNthReblogButton (n) {
+  return getNthStatus(n).find('.status-toolbar button:nth-child(2)')
+}
+
+export function getNthReblogged (n) {
+  return getNthReblogButton(n).getAttribute('aria-pressed')
+}
+
 export function getReblogsCount () {
   return reblogsCountElement.innerCount
 }
