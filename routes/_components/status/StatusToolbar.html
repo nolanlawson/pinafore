@@ -36,7 +36,7 @@
 <script>
   import IconButton from '../IconButton.html'
   import { store } from '../../_store/store'
-  import { registerDelegate, unregisterDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
 
   export default {
@@ -44,13 +44,11 @@
       this.onFavoriteClick = this.onFavoriteClick.bind(this)
 
       let favoriteKey = this.get('favoriteKey')
-      registerDelegate('click', favoriteKey, this.onFavoriteClick)
-      registerDelegate('keydown', favoriteKey, this.onFavoriteClick)
+      registerClickDelegate(favoriteKey, this.onFavoriteClick)
     },
     ondestroy() {
       let favoriteKey = this.get('favoriteKey')
-      unregisterDelegate('click', favoriteKey, this.onFavoriteClick)
-      unregisterDelegate('keydown', favoriteKey, this.onFavoriteClick)
+      unregisterClickDelegate(favoriteKey)
     },
     components: {
       IconButton

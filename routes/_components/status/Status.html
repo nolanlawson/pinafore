@@ -1,7 +1,6 @@
 <article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
          tabindex="0"
-         delegate-click-key="{{elementKey}}"
-         delegate-keydown-key="{{elementKey}}"
+         delegate-key="{{elementKey}}"
          focus-key="{{elementKey}}"
          aria-posinset="{{index}}"
          aria-setsize="{{length}}"
@@ -91,7 +90,7 @@
   import { store } from '../../_store/store'
   import identity from 'lodash/identity'
   import { goto } from 'sapper/runtime.js'
-  import { registerDelegate, unregisterDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
 
   export default {
     oncreate() {
@@ -99,15 +98,13 @@
       let onClickOrKeydown = this.onClickOrKeydown.bind(this)
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
-        registerDelegate('click', elementKey, onClickOrKeydown)
-        registerDelegate('keydown', elementKey, onClickOrKeydown)
+        registerClickDelegate(elementKey, onClickOrKeydown)
       }
     },
     ondestroy() {
       let elementKey = this.get('elementKey')
       if (!this.get('isStatusInOwnThread')) {
-        unregisterDelegate('click', elementKey)
-        unregisterDelegate('keydown', elementKey)
+        unregisterClickDelegate(elementKey)
       }
     },
     components: {

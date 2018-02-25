@@ -15,7 +15,7 @@ function onEvent (e) {
     return
   }
   mark('delegate onEvent')
-  let attr = `delegate-${type}-key`
+  let attr = `delegate-key`
   let key
   let element = target
   while (element) {
@@ -24,24 +24,18 @@ function onEvent (e) {
     }
     element = element.parentElement
   }
-  if (key && callbacks[type] && callbacks[type][key]) {
-    callbacks[type][key](e)
+  if (key && callbacks[key]) {
+    callbacks[key](e)
   }
   stop('delegate onEvent')
 }
 
-export function registerDelegate (type, key, callback) {
-  mark('delegate registerDelegate')
-  callbacks[type] = callbacks[type] || {}
-  callbacks[type][key] = callback
-  stop('delegate registerDelegate')
+export function registerClickDelegate (key, callback) {
+  callbacks[key] = callback
 }
 
-export function unregisterDelegate (type, key) {
-  mark('delegate unregisterDelegate')
-  callbacks[type] = callbacks[type] || {}
-  delete callbacks[type][key]
-  stop('delegate unregisterDelegate')
+export function unregisterClickDelegate (key) {
+  delete callbacks[key]
 }
 
 if (process.browser) {
