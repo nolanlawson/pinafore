@@ -7,6 +7,17 @@ function fetchWithTimeout (url, options) {
   })
 }
 
+async function throwErrorIfInvalidResponse(response) {
+  let json = await response.json()
+  if (response.status >= 200 && response.status < 300) {
+    return json
+  }
+  if (json && json.error) {
+    throw new Error(response.status + ': ' + json.error)
+  }
+  throw new Error('Request failed: ' + response.status)
+}
+
 async function _post (url, body, headers, timeout) {
   let fetchFunc = timeout ? fetchWithTimeout : fetch
   let opts = {
@@ -23,17 +34,19 @@ async function _post (url, body, headers, timeout) {
       'Accept': 'application/json'
     })
   }
-  return (await fetchFunc(url, opts)).json()
+  let response = await fetchFunc(url, opts)
+  return throwErrorIfInvalidResponse(response)
 }
 
 async function _get (url, headers, timeout) {
   let fetchFunc = timeout ? fetchWithTimeout : fetch
-  return (await fetchFunc(url, {
+  let response = await fetchFunc(url, {
     method: 'GET',
     headers: Object.assign(headers, {
       'Accept': 'application/json'
     })
-  })).json()
+  })
+  return throwErrorIfInvalidResponse(response)
 }
 
 export async function post (url, body, headers = {}) {

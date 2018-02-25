@@ -11,12 +11,9 @@ export async function setFavorited (statusId, favorited) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   try {
-    let result = await (favorited
+    await (favorited
         ? favoriteStatus(instanceName, accessToken, statusId)
         : unfavoriteStatus(instanceName, accessToken, statusId))
-    if (result.error) {
-      throw new Error(result.error)
-    }
     await database.setStatusFavorited(instanceName, statusId, favorited)
     let statusModifications = store.get('statusModifications')
     let currentStatusModifications = statusModifications[instanceName] =
