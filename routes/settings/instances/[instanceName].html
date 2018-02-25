@@ -14,7 +14,7 @@
                       href="{{verifyCredentials.url}}">
           {{'@' + verifyCredentials.acct}}
         </ExternalLink>
-        <span class="acct-display-name">{{verifyCredentials.display_name}}</span>
+        <span class="acct-display-name">{{verifyCredentials.display_name || verifyCredentials.acct}}</span>
       </div>
       <h2>Theme:</h2>
       <form class="theme-chooser" aria-label="Choose a theme">
