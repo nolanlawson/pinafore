@@ -3,11 +3,13 @@
 // for a good breakdown of the concepts behind this.
 
 import Queue from 'tiny-queue'
+import { mark, stop } from './marks'
 
 const taskQueue = new Queue()
 let runningRequestIdleCallback = false
 
 function runTasks (deadline) {
+  mark('scheduleIdleTask:runTasks()')
   while (taskQueue.length && deadline.timeRemaining() > 0) {
     taskQueue.shift()()
   }
@@ -16,6 +18,7 @@ function runTasks (deadline) {
   } else {
     runningRequestIdleCallback = false
   }
+  stop('scheduleIdleTask:runTasks()')
 }
 
 export function scheduleIdleTask (task) {

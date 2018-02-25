@@ -1,4 +1,5 @@
-{{#if props}}
+{{#await asyncProps}}
+{{then props}}
   <PseudoVirtualListItem :component
                          :props
                          :key
@@ -10,20 +11,15 @@
                          :height
                          on:scrollToPosition
   />
-{{/if}}
+{{/await}}
 <script>
   import PseudoVirtualListItem from './PseudoVirtualListItem.html'
   export default {
-    async oncreate() {
-      let makeProps = this.get('makeProps')
-      let key = this.get('key')
-      if (makeProps) {
-        let props = await makeProps(key)
-        this.set({props: props})
-      }
-    },
     components: {
       PseudoVirtualListItem
+    },
+    computed: {
+      asyncProps: async (makeProps, key) => makeProps && makeProps(key)
     }
   }
 </script>
