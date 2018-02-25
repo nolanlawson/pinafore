@@ -1,10 +1,9 @@
-const isLocalhost = process.browser && process.env.NODE_ENV !== 'production' &&
-  (document.location.hostname === 'localhost' ||
-  document.location.hostname === '127.0.0.1')
+const isLocalhost = !process.browser ||
+  location.hostname === 'localhost' ||
+  location.hostname === '127.0.0.1'
 
 function targetIsLocalhost (instanceName) {
-  return process.browser && process.env.NODE_ENV !== 'production' &&
-    (instanceName.startsWith('localhost:') || instanceName.startsWith('127.0.0.1:'))
+  return instanceName.startsWith('localhost:') || instanceName.startsWith('127.0.0.1:')
 }
 
 export function basename (instanceName) {
