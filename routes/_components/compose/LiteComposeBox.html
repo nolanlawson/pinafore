@@ -13,6 +13,14 @@
       ref:textarea
       bind:value=inputText
     ></textarea>
+    <div class="compose-profile-length-gauge {{overLimit ? 'over-char-limit' : ''}}"
+         style="transform: scaleX({{inputLengthAsFractionOfMax}});"
+         aria-hidden="true"
+    ></div>
+    <span class="compose-profile-length {{overLimit ? 'over-char-limit' : ''}}"
+          aria-label="{{inputLengthLabel}}">
+      {{inputLengthToDisplay}}
+    </span>
     <button class="primary compose-profile-button">
       Toot!
     </button>
@@ -31,10 +39,11 @@
     grid-template-areas:
       "avatar display-name handle"
       "avatar input        input"
+      "avatar gauge        gauge"
+      "avatar length       length"
       "avatar button       button";
     grid-template-columns: min-content minmax(0, max-content) 1fr;
     grid-template-rows: min-content min-content min-content;
-    grid-row-gap: 10px;
     border-bottom: 1px solid var(--main-border);
     width: 560px;
     max-width: calc(100vw - 40px);
@@ -77,13 +86,40 @@
     padding: 5px;
     border: 1px solid var(--input-border);
     min-height: 75px;
+    margin-top: 10px;
     resize: none;
+    overflow: hidden;
   }
 
   .compose-profile-button {
     grid-area: button;
     justify-self: right;
     text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  .compose-profile-length-gauge {
+    grid-area: gauge;
+    height: 2px;
+    background: var(--main-theme-color);
+    margin-left: 5px;
+    transform-origin: left;
+  }
+
+  .compose-profile-length {
+    grid-area: length;
+    margin-top: 5px;
+    justify-self: right;
+    color: var(--main-theme-color);
+    font-size: 1.1em;
+  }
+
+  .compose-profile-length.over-char-limit {
+    color: var(--warning-color);
+  }
+
+  .compose-profile-length-gauge.over-char-limit {
+    background: var(--warning-color);
   }
 
   @media (max-width: 767px) {
@@ -106,6 +142,8 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import debounce from 'lodash/debounce'
   import { mark, stop } from '../../_utils/marks'
+
+  const CHAR_LIMIT = 500
 
   export default {
     oncreate() {
@@ -137,7 +175,18 @@
     },
     store: () => store,
     computed: {
-      currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose
+      currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose,
+      inputLength: (inputText) => inputText ? inputText.length : 0,
+      inputLengthToDisplay: (inputLength) => (inputLength <= CHAR_LIMIT ? inputLength : CHAR_LIMIT - inputLength),
+      inputLengthAsFractionOfMax: (inputLength) => (Math.min(CHAR_LIMIT, inputLength)) / CHAR_LIMIT,
+      overLimit: (inputLength) => inputLength > CHAR_LIMIT,
+      inputLengthLabel: (overLimit, inputLengthToDisplay) => {
+        if (overLimit) {
+          return `${inputLengthToDisplay} characters over limit`
+        } else {
+          return `${inputLengthToDisplay} characters`
+        }
+      }
     }
   }
 </script>
