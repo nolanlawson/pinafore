@@ -13,8 +13,8 @@
       ref:textarea
       bind:value=inputText
     ></textarea>
-    <div class="compose-profile-length-gauge"
-         style="transform: scaleX({{inputLengthAsFractionOfMaxAfterRaf || 0}});"
+    <div class="compose-profile-length-gauge {{shouldAnimate ? 'should-animate' : ''}}"
+         style="transform: scaleX({{inputLengthAsFractionOfMaxRoundedAfterRaf || 0}});"
          aria-hidden="true"
     ></div>
     <span class="compose-profile-length"
@@ -110,6 +110,9 @@
     margin-left: 5px;
     transform-origin: left;
   }
+  .compose-profile-length-gauge.should-animate {
+    transition: transform 0.2s linear;
+  }
 
   .compose-profile-length {
     grid-area: length;
@@ -177,11 +180,12 @@
           stop('set inputLengthToDisplayAfterRaf')
         })
       })
-      this.observe('inputLengthAsFractionOfMax', inputLengthAsFractionOfMax => {
+      this.observe('inputLengthAsFractionOfMaxRounded', inputLengthAsFractionOfMaxRounded => {
         requestAnimationFrame(() => {
-          mark('set inputLengthAsFractionOfMaxAfterRaf')
-          this.set({inputLengthAsFractionOfMaxAfterRaf: inputLengthAsFractionOfMax})
-          stop('set inputLengthAsFractionOfMaxAfterRaf')
+          mark('set inputLengthAsFractionOfMaxRoundedAfterRaf')
+          this.set({inputLengthAsFractionOfMaxRoundedAfterRaf: inputLengthAsFractionOfMaxRounded})
+          stop('set inputLengthAsFractionOfMaxRoundedAfterRaf')
+          requestAnimationFrame(() => this.set({shouldAnimate: true}))
         })
       })
     },
@@ -201,7 +205,13 @@
       currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose,
       inputLength: (inputText) => inputText ? inputText.length : 0,
       inputLengthToDisplay: (inputLength) => (inputLength <= CHAR_LIMIT ? inputLength : CHAR_LIMIT - inputLength),
-      inputLengthAsFractionOfMax: (inputLength) => Math.round(100 * (Math.min(CHAR_LIMIT, inputLength)) / CHAR_LIMIT) / 100,
+      inputLengthAsFractionOfMax: (inputLength) => (Math.min(CHAR_LIMIT, inputLength) / CHAR_LIMIT),
+      inputLengthAsFractionOfMaxRounded: (inputLengthAsFractionOfMax) => {
+        // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
+        let int = Math.round(inputLengthAsFractionOfMax * 100)
+        int -= (int % 2)
+        return int / 100
+      },
       overLimit: (inputLength) => inputLength > CHAR_LIMIT,
       inputLengthLabel: (overLimit, inputLengthToDisplay) => {
         if (overLimit) {
