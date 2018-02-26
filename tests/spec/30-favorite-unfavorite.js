@@ -28,6 +28,7 @@ test('favorites a status', async t => {
     .expect(getUrl()).contains('/notifications')
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
+    .hover(getNthStatus(4))
     .expect(getNthFavorited(4)).eql('true')
     .click(getNthFavoriteButton(4))
     .expect(getNthFavorited(4)).eql('false')
