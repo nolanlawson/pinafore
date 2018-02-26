@@ -4,9 +4,12 @@
 
 <Layout page='home'>
   {{#if $isUserLoggedIn}}
-  <LazyTimeline timeline='home' />
+    {{#if $currentVerifyCredentials}}
+      <LiteComposeBox verifyCredentials="{{$currentVerifyCredentials}}"/>
+    {{/if}}
+    <LazyTimeline timeline='home' />
   {{else}}
-  <NotLoggedInHome/>
+    <NotLoggedInHome/>
   {{/if}}
 </Layout>
 
@@ -15,6 +18,7 @@
   import Layout from './_components/Layout.html'
   import NotLoggedInHome from './_components/NotLoggedInHome.html'
   import LazyTimeline from './_components/timeline/LazyTimeline.html'
+  import LiteComposeBox from './_components/compose/LiteComposeBox.html'
   import { store } from './_store/store.js'
 
 	export default {
@@ -22,7 +26,8 @@
 		components: {
 		  Layout,
       LazyTimeline,
-			NotLoggedInHome
+			NotLoggedInHome,
+      LiteComposeBox
 		}
 	}
 </script>

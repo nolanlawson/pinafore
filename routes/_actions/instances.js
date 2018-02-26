@@ -67,6 +67,10 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
   )
 }
 
+export async function updateVerifyCredentialsForCurrentInstance () {
+  await updateVerifyCredentialsForInstance(store.get('currentInstance'))
+}
+
 export async function updateInstanceInfo (instanceName) {
   await cacheFirstUpdateAfter(
     () => getInstanceInfo(instanceName),

@@ -1,0 +1,139 @@
+<div class="lite-compose-box">
+  <div class="compose-profile-current-user">
+    <Avatar account="{{verifyCredentials}}" className="compose-profile-avatar" size="small"/>
+    <a class="compose-profile-display-name" href="/accounts/{{verifyCredentials.id}}">
+      {{verifyCredentials.display_name || verifyCredentials.acct}}
+    </a>
+    <span class="compose-profile-handle">
+      {{'@' + verifyCredentials.acct}}
+    </span>
+    <textarea
+      class="compose-profile-input"
+      placeholder="What's on your mind?"
+      ref:textarea
+      bind:value=inputText
+    ></textarea>
+    <button class="primary compose-profile-button">
+      Toot!
+    </button>
+  </div>
+</div>
+<style>
+  .lite-compose-box {
+    display: grid;
+    flex-direction: row;
+  }
+  .compose-profile-current-user {
+    border-radius: 4px;
+    padding: 20px;
+    display: grid;
+    align-items: flex-start;
+    grid-template-areas:
+      "avatar display-name handle"
+      "avatar input        input"
+      "avatar button       button";
+    grid-template-columns: min-content minmax(0, max-content) 1fr;
+    grid-template-rows: min-content min-content min-content;
+    grid-row-gap: 10px;
+    border-bottom: 1px solid var(--main-border);
+    width: 560px;
+    max-width: calc(100vw - 40px);
+  }
+  :global(.compose-profile-avatar) {
+    grid-area: avatar;
+    margin-right: 15px;
+  }
+  .compose-profile-display-name {
+    color: var(--deemphasized-text-color);
+    grid-area: display-name;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+    margin-left: 5px;
+    font-weight: 600;
+  }
+  .compose-profile-display-name,
+  .compose-profile-display-name:hover,
+  .compose-profile-display-name:visited {
+    color: var(--body-text-color);
+  }
+  :global(.compose-profile-handle) {
+    grid-area: handle;
+    color: var(--deemphasized-text-color);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+    margin-left: 5px;
+  }
+
+  :global(.compose-profile-input) {
+    font-size: 1.1em;
+    grid-area: input;
+    margin-left: 5px;
+    padding: 5px;
+    border: 1px solid var(--input-border);
+    min-height: 75px;
+    resize: none;
+  }
+
+  .compose-profile-button {
+    grid-area: button;
+    justify-self: right;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 767px) {
+    .compose-profile-current-user {
+      padding: 10px 10px;
+      max-width: calc(100vw - 20px);
+      width: 580px;
+    }
+    :global(.compose-profile-avatar) {
+      grid-area: avatar;
+      margin-right: 5px;
+    }
+  }
+
+</style>
+<script>
+  import Avatar from '../Avatar.html'
+  import { store } from '../../_store/store'
+  import autosize from 'autosize'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import debounce from 'lodash/debounce'
+
+  export default {
+    oncreate() {
+      autosize(this.refs.textarea)
+      this.set({inputText: store.get('currentInputTextInCompose')})
+      autosize.update(this.refs.textarea)
+
+      const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+      this.observe('inputText', inputText => {
+        let inputTextInCompose = this.store.get('inputTextInCompose')
+        let currentInstance = this.store.get('currentInstance')
+        inputTextInCompose[currentInstance] = inputText || ''
+        this.store.set({inputTextInCompose: inputTextInCompose})
+        saveText()
+      }, {init: false})
+    },
+    ondestroy() {
+      autosize.destroy(this.refs.textarea)
+    },
+    data: () => ({
+      inputText: ''
+    }),
+    components: {
+      Avatar
+    },
+    store: () => store,
+    computed: {
+      currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose
+    }
+  }
+</script>

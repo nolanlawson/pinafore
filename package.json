@@ -25,6 +25,7 @@
   "dependencies": {
     "@gamestdio/websocket": "^0.2.2",
     "a11y-dialog": "^4.0.1",
+    "autosize": "^4.0.0",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.0",

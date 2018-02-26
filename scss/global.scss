@@ -68,6 +68,7 @@ a:hover {
 input {
   border: 1px solid var(--input-border);
   padding: 5px;
+  box-sizing: border-box;
 }
 
 button {
