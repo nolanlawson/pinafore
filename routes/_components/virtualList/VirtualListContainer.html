@@ -29,9 +29,11 @@
           }
         })
       } else {
-        this.store.setForRealm({
-          scrollHeight: node.scrollHeight,
-          offsetHeight: node.offsetHeight
+        requestAnimationFrame(() => {
+          this.store.setForRealm({
+            scrollHeight: node.scrollHeight,
+            offsetHeight: node.offsetHeight
+          })
         })
       }
       stop('onCreate VirtualListContainer')

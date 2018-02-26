@@ -153,8 +153,14 @@
   export default {
     oncreate() {
       this.set({inputText: store.get('currentInputTextInCompose')})
-      const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
+      requestAnimationFrame(() => {
+        mark('autosize()')
+        autosize(this.refs.textarea)
+        stop('autosize()')
+      })
+
+      const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
       this.observe('inputText', inputText => {
         let inputTextInCompose = this.store.get('inputTextInCompose')
         let currentInstance = this.store.get('currentInstance')
@@ -162,12 +168,6 @@
         this.store.set({inputTextInCompose: inputTextInCompose})
         saveText()
       }, {init: false})
-
-      requestAnimationFrame(() => {
-        mark('autosize()')
-        autosize(this.refs.textarea)
-        stop('autosize()')
-      })
 
       // Avoid input delays by updating these values after a rAF
       this.observe('inputLengthToDisplay', inputLengthToDisplay => {
