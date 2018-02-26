@@ -105,12 +105,14 @@
   import autosize from 'autosize'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import debounce from 'lodash/debounce'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate() {
-      autosize(this.refs.textarea)
       this.set({inputText: store.get('currentInputTextInCompose')})
-      autosize.update(this.refs.textarea)
+      mark('autosize()')
+      autosize(this.refs.textarea) // TODO: this layout thrashes, could maybe find a better design
+      stop('autosize()')
 
       const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
@@ -123,7 +125,9 @@
       }, {init: false})
     },
     ondestroy() {
+      mark('autosize.destroy()')
       autosize.destroy(this.refs.textarea)
+      stop('autosize.destroy()')
     },
     data: () => ({
       inputText: ''
