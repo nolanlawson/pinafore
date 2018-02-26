@@ -87,6 +87,7 @@
     margin-top: 10px;
     resize: none;
     overflow: hidden;
+    word-wrap: break-word;
     /* Text must be at least 16px or else iOS Safari zooms in */
     font-size: 1.2em;
     /* Hack to make Edge stretch the element all the way to the right.
@@ -152,10 +153,6 @@
   export default {
     oncreate() {
       this.set({inputText: store.get('currentInputTextInCompose')})
-      mark('autosize()')
-      autosize(this.refs.textarea) // TODO: this layout thrashes, could maybe find a better design
-      stop('autosize()')
-
       const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
       this.observe('inputText', inputText => {
@@ -165,6 +162,12 @@
         this.store.set({inputTextInCompose: inputTextInCompose})
         saveText()
       }, {init: false})
+
+      requestAnimationFrame(() => {
+        mark('autosize()')
+        autosize(this.refs.textarea)
+        stop('autosize()')
+      })
 
       // Avoid input delays by updating these values after a rAF
       this.observe('inputLengthToDisplay', inputLengthToDisplay => {
