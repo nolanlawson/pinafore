@@ -1,4 +1,4 @@
-<div class="lite-compose-box">
+<div class="lite-compose-box {{overLimit ? 'over-char-limit' : ''}}">
   <div class="compose-profile-current-user">
     <Avatar account="{{verifyCredentials}}" className="compose-profile-avatar" size="small"/>
     <a class="compose-profile-display-name" href="/accounts/{{verifyCredentials.id}}">
@@ -13,13 +13,13 @@
       ref:textarea
       bind:value=inputText
     ></textarea>
-    <div class="compose-profile-length-gauge {{overLimit ? 'over-char-limit' : ''}}"
-         style="transform: scaleX({{inputLengthAsFractionOfMax}});"
+    <div class="compose-profile-length-gauge"
+         style="transform: scaleX({{inputLengthAsFractionOfMaxAfterRaf || 0}});"
          aria-hidden="true"
     ></div>
-    <span class="compose-profile-length {{overLimit ? 'over-char-limit' : ''}}"
+    <span class="compose-profile-length"
           aria-label="{{inputLengthLabel}}">
-      {{inputLengthToDisplay}}
+      {{inputLengthToDisplayAfterRaf || '0'}}
     </span>
     <button class="primary compose-profile-button">
       Toot!
@@ -88,6 +88,7 @@
     margin-top: 10px;
     resize: none;
     overflow: hidden;
+    width: calc(100% - 5px);
   }
 
   .compose-profile-button {
@@ -113,11 +114,11 @@
     font-size: 1.1em;
   }
 
-  .compose-profile-length.over-char-limit {
+  .over-char-limit .compose-profile-length {
     color: var(--warning-color);
   }
 
-  .compose-profile-length-gauge.over-char-limit {
+  .over-char-limit .compose-profile-length-gauge {
     background: var(--warning-color);
   }
 
@@ -137,7 +138,7 @@
 <script>
   import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
-  import autosize from 'autosize'
+  import { autosize } from '../../_utils/autosize'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import debounce from 'lodash/debounce'
   import { mark, stop } from '../../_utils/marks'
@@ -160,6 +161,22 @@
         this.store.set({inputTextInCompose: inputTextInCompose})
         saveText()
       }, {init: false})
+
+      // Avoid input delays by updating these values after a rAF
+      this.observe('inputLengthToDisplay', inputLengthToDisplay => {
+        requestAnimationFrame(() => {
+          mark('set inputLengthToDisplayAfterRaf')
+          this.set({inputLengthToDisplayAfterRaf: inputLengthToDisplay})
+          stop('set inputLengthToDisplayAfterRaf')
+        })
+      })
+      this.observe('inputLengthAsFractionOfMax', inputLengthAsFractionOfMax => {
+        requestAnimationFrame(() => {
+          mark('set inputLengthAsFractionOfMaxAfterRaf')
+          this.set({inputLengthAsFractionOfMaxAfterRaf: inputLengthAsFractionOfMax})
+          stop('set inputLengthAsFractionOfMaxAfterRaf')
+        })
+      })
     },
     ondestroy() {
       mark('autosize.destroy()')
@@ -177,7 +194,7 @@
       currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose,
       inputLength: (inputText) => inputText ? inputText.length : 0,
       inputLengthToDisplay: (inputLength) => (inputLength <= CHAR_LIMIT ? inputLength : CHAR_LIMIT - inputLength),
-      inputLengthAsFractionOfMax: (inputLength) => (Math.min(CHAR_LIMIT, inputLength)) / CHAR_LIMIT,
+      inputLengthAsFractionOfMax: (inputLength) => Math.round(100 * (Math.min(CHAR_LIMIT, inputLength)) / CHAR_LIMIT) / 100,
       overLimit: (inputLength) => inputLength > CHAR_LIMIT,
       inputLengthLabel: (overLimit, inputLengthToDisplay) => {
         if (overLimit) {

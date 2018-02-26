@@ -135,3 +135,9 @@ button::-moz-focus-inner {
 input:required, input:invalid {
   box-shadow: none;
 }
+
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+}
