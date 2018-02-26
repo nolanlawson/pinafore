@@ -79,7 +79,6 @@
   }
 
   :global(.compose-profile-input) {
-    font-size: 1.1em;
     grid-area: input;
     margin-left: 5px;
     padding: 5px;
@@ -88,6 +87,11 @@
     margin-top: 10px;
     resize: none;
     overflow: hidden;
+    /* Text must be at least 16px or else iOS Safari zooms in */
+    font-size: 1.2em;
+    /* Hack to make Edge stretch the element all the way to the right.
+     * Also desktop Safari makes the gauge stretch too far to the right without it.
+     */
     width: calc(100% - 5px);
   }
 
