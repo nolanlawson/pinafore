@@ -15,9 +15,18 @@ function assign (ta) {
     return
   }
 
+  let heightOffset = null
   let cachedHeight = null
 
   function init () {
+    const style = window.getComputedStyle(ta, null)
+
+    if (style.boxSizing === 'content-box') {
+      heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom))
+    } else {
+      heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
+    }
+
     update()
   }
 
@@ -33,7 +42,7 @@ function assign (ta) {
 
     ta.style.height = ''
 
-    let endHeight = ta.scrollHeight
+    let endHeight = ta.scrollHeight + heightOffset
 
     if (ta.scrollHeight === 0) {
       // If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
