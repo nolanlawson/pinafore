@@ -1,0 +1,54 @@
+<Avatar account="{{verifyCredentials}}" className="compose-box-avatar" size="small"/>
+<a class="compose-box-display-name" href="/accounts/{{verifyCredentials.id}}">
+  {{verifyCredentials.display_name || verifyCredentials.acct}}
+</a>
+<span class="compose-box-handle">
+  {{'@' + verifyCredentials.acct}}
+</span>
+<style>
+  :global(.compose-box-avatar) {
+    grid-area: avatar;
+    margin-right: 15px;
+  }
+  .compose-box-display-name {
+    color: var(--deemphasized-text-color);
+    grid-area: display-name;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+    margin-left: 5px;
+    font-weight: 600;
+  }
+  .compose-box-display-name,
+  .compose-box-display-name:hover,
+  .compose-box-display-name:visited {
+    color: var(--body-text-color);
+  }
+  :global(.compose-box-handle) {
+    grid-area: handle;
+    color: var(--deemphasized-text-color);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+    margin-left: 5px;
+  }
+
+  @media (max-width: 767px) {
+    :global(.compose-box-avatar) {
+      grid-area: avatar;
+      margin-right: 5px;
+    }
+  }
+</style>
+<script>
+  import Avatar from '../Avatar.html'
+  export default {
+    components: {
+      Avatar
+    }
+  }
+</script>

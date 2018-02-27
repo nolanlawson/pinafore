@@ -1,32 +1,20 @@
-<div class="lite-compose-box {{overLimit ? 'over-char-limit' : ''}}">
-  <div class="compose-box-current-user">
-    <Avatar account="{{verifyCredentials}}" className="compose-box-avatar" size="small"/>
-    <a class="compose-box-display-name" href="/accounts/{{verifyCredentials.id}}">
-      {{verifyCredentials.display_name || verifyCredentials.acct}}
-    </a>
-    <span class="compose-box-handle">
-      {{'@' + verifyCredentials.acct}}
-    </span>
-    <textarea
-      class="compose-box-input"
-      placeholder="What's on your mind?"
-      ref:textarea
-      bind:value=inputText
-    ></textarea>
-    <ComposeLengthGauge :inputLength />
-    <ComposeToolbar />
-    <ComposeLengthIndicator :inputLength />
-    <button class="primary compose-box-button">
-      Toot!
-    </button>
-  </div>
+<div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
+  <ComposeAuthor :verifyCredentials />
+  <textarea
+    class="compose-box-input"
+    placeholder="What's on your mind?"
+    ref:textarea
+    bind:value=inputText
+  ></textarea>
+  <ComposeLengthGauge :inputLength />
+  <ComposeToolbar />
+  <ComposeLengthIndicator :inputLength />
+  <button class="primary compose-box-button">
+    Toot!
+  </button>
 </div>
 <style>
-  .lite-compose-box {
-    display: grid;
-    flex-direction: row;
-  }
-  .compose-box-current-user {
+  .compose-box {
     border-radius: 4px;
     padding: 20px;
     display: grid;
@@ -41,36 +29,6 @@
     border-bottom: 1px solid var(--main-border);
     width: 560px;
     max-width: calc(100vw - 40px);
-  }
-  :global(.compose-box-avatar) {
-    grid-area: avatar;
-    margin-right: 15px;
-  }
-  .compose-box-display-name {
-    color: var(--deemphasized-text-color);
-    grid-area: display-name;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.1em;
-    margin-left: 5px;
-    font-weight: 600;
-  }
-  .compose-box-display-name,
-  .compose-box-display-name:hover,
-  .compose-box-display-name:visited {
-    color: var(--body-text-color);
-  }
-  :global(.compose-box-handle) {
-    grid-area: handle;
-    color: var(--deemphasized-text-color);
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.1em;
-    margin-left: 5px;
   }
 
   :global(.compose-box-input) {
@@ -98,20 +56,15 @@
   }
 
   @media (max-width: 767px) {
-    .compose-box-current-user {
+    .compose-box {
       padding: 10px 10px;
       max-width: calc(100vw - 20px);
       width: 580px;
-    }
-    :global(.compose-box-avatar) {
-      grid-area: avatar;
-      margin-right: 5px;
     }
   }
 
 </style>
 <script>
-  import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
   import { autosize } from '../../_utils/autosize'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
@@ -120,6 +73,7 @@
   import ComposeToolbar from './ComposeToolbar.html'
   import ComposeLengthGauge from './ComposeLengthGauge.html'
   import ComposeLengthIndicator from './ComposeLengthIndicator.html'
+  import ComposeAuthor from './ComposeAuthor.html'
 
   export default {
     oncreate() {
@@ -149,7 +103,7 @@
       inputText: ''
     }),
     components: {
-      Avatar,
+      ComposeAuthor,
       ComposeToolbar,
       ComposeLengthGauge,
       ComposeLengthIndicator
