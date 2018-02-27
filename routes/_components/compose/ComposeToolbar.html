@@ -1,0 +1,22 @@
+<div class="compose-box-toolbar">
+  <IconButton label="Insert emoji" href="#fa-smile" />
+  <IconButton label="Add media" href="#fa-camera" />
+  <IconButton label="Adjust privacy" href="#fa-globe" />
+  <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
+</div>
+<style>
+  .compose-box-toolbar {
+    grid-area: toolbar;
+    align-self: center;
+    display: flex;
+    align-items: center;
+  }
+</style>
+<script>
+  import IconButton from '../IconButton.html'
+  export default {
+    components: {
+      IconButton
+    }
+  }
+</script>

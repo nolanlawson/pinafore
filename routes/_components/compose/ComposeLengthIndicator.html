@@ -1,0 +1,46 @@
+<span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
+      aria-label="{{inputLengthLabel}}">
+      {{inputLengthToDisplayAfterRaf || '0'}}
+    </span>
+<style>
+  .compose-box-length {
+    grid-area: length;
+    justify-self: right;
+    color: var(--main-theme-color);
+    font-size: 1.3em;
+    align-self: center;
+  }
+
+  .compose-box-length.over-char-limit {
+    color: var(--warning-color);
+  }
+</style>
+<script>
+  import { CHAR_LIMIT } from '../../_static/statuses'
+  import { mark, stop } from '../../_utils/marks'
+
+  export default {
+    oncreate() {
+      // Avoid input delays by updating these values after a rAF
+      this.observe('inputLengthToDisplay', inputLengthToDisplay => {
+        requestAnimationFrame(() => {
+          mark('set inputLengthToDisplayAfterRaf')
+          this.set({inputLengthToDisplayAfterRaf: inputLengthToDisplay})
+          stop('set inputLengthToDisplayAfterRaf')
+        })
+      })
+    },
+    computed: {
+      overLimit: (inputLength) => inputLength > CHAR_LIMIT,
+      inputLength: (inputText) => inputText ? inputText.length : 0,
+      inputLengthToDisplay: (inputLength) => (inputLength <= CHAR_LIMIT ? inputLength : CHAR_LIMIT - inputLength),
+      inputLengthLabel: (overLimit, inputLengthToDisplay) => {
+        if (overLimit) {
+          return `${inputLengthToDisplay} characters over limit`
+        } else {
+          return `${inputLengthToDisplay} characters`
+        }
+      }
+    }
+  }
+</script>

@@ -1,33 +1,22 @@
 <div class="lite-compose-box {{overLimit ? 'over-char-limit' : ''}}">
-  <div class="compose-profile-current-user">
-    <Avatar account="{{verifyCredentials}}" className="compose-profile-avatar" size="small"/>
-    <a class="compose-profile-display-name" href="/accounts/{{verifyCredentials.id}}">
+  <div class="compose-box-current-user">
+    <Avatar account="{{verifyCredentials}}" className="compose-box-avatar" size="small"/>
+    <a class="compose-box-display-name" href="/accounts/{{verifyCredentials.id}}">
       {{verifyCredentials.display_name || verifyCredentials.acct}}
     </a>
-    <span class="compose-profile-handle">
+    <span class="compose-box-handle">
       {{'@' + verifyCredentials.acct}}
     </span>
     <textarea
-      class="compose-profile-input"
+      class="compose-box-input"
       placeholder="What's on your mind?"
       ref:textarea
       bind:value=inputText
     ></textarea>
-    <div class="compose-profile-length-gauge {{shouldAnimate ? 'should-animate' : ''}}"
-         style="transform: scaleX({{inputLengthAsFractionOfMaxRoundedAfterRaf || 0}});"
-         aria-hidden="true"
-    ></div>
-    <div class="compose-profile-toolbar">
-      <IconButton label="Insert emoji" href="#fa-smile" />
-      <IconButton label="Add media" href="#fa-camera" />
-      <IconButton label="Adjust privacy" href="#fa-globe" />
-      <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
-    </div>
-    <span class="compose-profile-length"
-          aria-label="{{inputLengthLabel}}">
-      {{inputLengthToDisplayAfterRaf || '0'}}
-    </span>
-    <button class="primary compose-profile-button">
+    <ComposeLengthGauge :inputLength />
+    <ComposeToolbar />
+    <ComposeLengthIndicator :inputLength />
+    <button class="primary compose-box-button">
       Toot!
     </button>
   </div>
@@ -37,7 +26,7 @@
     display: grid;
     flex-direction: row;
   }
-  .compose-profile-current-user {
+  .compose-box-current-user {
     border-radius: 4px;
     padding: 20px;
     display: grid;
@@ -53,11 +42,11 @@
     width: 560px;
     max-width: calc(100vw - 40px);
   }
-  :global(.compose-profile-avatar) {
+  :global(.compose-box-avatar) {
     grid-area: avatar;
     margin-right: 15px;
   }
-  .compose-profile-display-name {
+  .compose-box-display-name {
     color: var(--deemphasized-text-color);
     grid-area: display-name;
     min-width: 0;
@@ -68,12 +57,12 @@
     margin-left: 5px;
     font-weight: 600;
   }
-  .compose-profile-display-name,
-  .compose-profile-display-name:hover,
-  .compose-profile-display-name:visited {
+  .compose-box-display-name,
+  .compose-box-display-name:hover,
+  .compose-box-display-name:visited {
     color: var(--body-text-color);
   }
-  :global(.compose-profile-handle) {
+  :global(.compose-box-handle) {
     grid-area: handle;
     color: var(--deemphasized-text-color);
     min-width: 0;
@@ -84,7 +73,7 @@
     margin-left: 5px;
   }
 
-  :global(.compose-profile-input) {
+  :global(.compose-box-input) {
     grid-area: input;
     margin: 10px 0 0 5px;
     padding: 10px;
@@ -101,54 +90,20 @@
     width: calc(100% - 5px);
   }
 
-  .compose-profile-button {
+  .compose-box-button {
     grid-area: button;
     justify-self: right;
     text-transform: uppercase;
     margin-top: 10px;
   }
 
-  .compose-profile-length-gauge {
-    grid-area: gauge;
-    margin: 0 0 5px 5px;
-    height: 2px;
-    background: var(--main-theme-color);
-    transform-origin: left;
-  }
-  .compose-profile-length-gauge.should-animate {
-    transition: transform 0.2s linear;
-  }
-
-  .compose-profile-length {
-    grid-area: length;
-    justify-self: right;
-    color: var(--main-theme-color);
-    font-size: 1.3em;
-    align-self: center;
-  }
-
-  .over-char-limit .compose-profile-length {
-    color: var(--warning-color);
-  }
-
-  .over-char-limit .compose-profile-length-gauge {
-    background: var(--warning-color);
-  }
-
-  .compose-profile-toolbar {
-    grid-area: toolbar;
-    align-self: center;
-    display: flex;
-    align-items: center;
-  }
-
   @media (max-width: 767px) {
-    .compose-profile-current-user {
+    .compose-box-current-user {
       padding: 10px 10px;
       max-width: calc(100vw - 20px);
       width: 580px;
     }
-    :global(.compose-profile-avatar) {
+    :global(.compose-box-avatar) {
       grid-area: avatar;
       margin-right: 5px;
     }
@@ -162,9 +117,9 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import debounce from 'lodash/debounce'
   import { mark, stop } from '../../_utils/marks'
-  import IconButton from '../IconButton.html'
-
-  const CHAR_LIMIT = 500
+  import ComposeToolbar from './ComposeToolbar.html'
+  import ComposeLengthGauge from './ComposeLengthGauge.html'
+  import ComposeLengthIndicator from './ComposeLengthIndicator.html'
 
   export default {
     oncreate() {
@@ -184,23 +139,6 @@
         this.store.set({inputTextInCompose: inputTextInCompose})
         saveText()
       }, {init: false})
-
-      // Avoid input delays by updating these values after a rAF
-      this.observe('inputLengthToDisplay', inputLengthToDisplay => {
-        requestAnimationFrame(() => {
-          mark('set inputLengthToDisplayAfterRaf')
-          this.set({inputLengthToDisplayAfterRaf: inputLengthToDisplay})
-          stop('set inputLengthToDisplayAfterRaf')
-        })
-      })
-      this.observe('inputLengthAsFractionOfMaxRounded', inputLengthAsFractionOfMaxRounded => {
-        requestAnimationFrame(() => {
-          mark('set inputLengthAsFractionOfMaxRoundedAfterRaf')
-          this.set({inputLengthAsFractionOfMaxRoundedAfterRaf: inputLengthAsFractionOfMaxRounded})
-          stop('set inputLengthAsFractionOfMaxRoundedAfterRaf')
-          requestAnimationFrame(() => this.set({shouldAnimate: true}))
-        })
-      })
     },
     ondestroy() {
       mark('autosize.destroy()')
@@ -212,28 +150,14 @@
     }),
     components: {
       Avatar,
-      IconButton
+      ComposeToolbar,
+      ComposeLengthGauge,
+      ComposeLengthIndicator
     },
     store: () => store,
     computed: {
       currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose,
       inputLength: (inputText) => inputText ? inputText.length : 0,
-      inputLengthToDisplay: (inputLength) => (inputLength <= CHAR_LIMIT ? inputLength : CHAR_LIMIT - inputLength),
-      inputLengthAsFractionOfMax: (inputLength) => (Math.min(CHAR_LIMIT, inputLength) / CHAR_LIMIT),
-      inputLengthAsFractionOfMaxRounded: (inputLengthAsFractionOfMax) => {
-        // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
-        let int = Math.round(inputLengthAsFractionOfMax * 100)
-        int -= (int % 2)
-        return int / 100
-      },
-      overLimit: (inputLength) => inputLength > CHAR_LIMIT,
-      inputLengthLabel: (overLimit, inputLengthToDisplay) => {
-        if (overLimit) {
-          return `${inputLengthToDisplay} characters over limit`
-        } else {
-          return `${inputLengthToDisplay} characters`
-        }
-      }
     }
   }
 </script>
