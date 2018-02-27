@@ -19,7 +19,12 @@ export function changeTheme (instanceName, newTheme) {
 
 export function switchToInstance (instanceName) {
   let instanceThemes = store.get('instanceThemes')
-  store.set({currentInstance: instanceName})
+  store.set({
+    currentInstance: instanceName,
+    searchResults: null,
+    queryInSearch: '',
+    rawInputTextInCompose: ''
+  })
   store.save()
   switchToTheme(instanceThemes[instanceName])
 }
@@ -41,7 +46,8 @@ export async function logOutOfInstance (instanceName) {
     loggedInInstancesInOrder: loggedInInstancesInOrder,
     currentInstance: newInstance,
     searchResults: null,
-    queryInSearch: ''
+    queryInSearch: '',
+    rawInputTextInCompose: ''
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)

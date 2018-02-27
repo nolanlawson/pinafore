@@ -1,4 +1,4 @@
-<div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{overLimit ? 'over-char-limit' : ''}}"
+<div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{$rawInputTextInComposeOverLimit ? 'over-char-limit' : ''}}"
      style="transform: scaleX({{inputLengthAsFractionRoundedAfterRaf || 0}});"
      aria-hidden="true"
 ></div>
@@ -20,9 +20,11 @@
 <script>
   import { CHAR_LIMIT } from '../../_static/statuses'
   import { mark, stop } from '../../_utils/marks'
+  import { store } from '../../_store/store'
 
   export default {
     oncreate() {
+      // perf improvement for keyboard input latency
       this.observe('inputLengthAsFractionRounded', inputLengthAsFractionRounded => {
         requestAnimationFrame(() => {
           mark('set inputLengthAsFractionRoundedAfterRaf')
@@ -32,9 +34,11 @@
         })
       })
     },
+    store: () => store,
     computed: {
-      overLimit: (inputLength) => inputLength > CHAR_LIMIT,
-      inputLengthAsFraction: (inputLength) => (Math.min(CHAR_LIMIT, inputLength) / CHAR_LIMIT),
+      inputLengthAsFraction: ($rawInputTextInComposeLength) => {
+        return Math.min(CHAR_LIMIT, $rawInputTextInComposeLength) / CHAR_LIMIT
+      },
       inputLengthAsFractionRounded: (inputLengthAsFraction) => {
         // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
         let int = Math.round(inputLengthAsFraction * 100)

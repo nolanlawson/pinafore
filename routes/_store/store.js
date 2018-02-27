@@ -39,7 +39,8 @@ export const store = new PinaforeStore({
   pinnedStatuses: {},
   instanceInfos: {},
   statusModifications: {},
-  inputTextInCompose: {}
+  inputTextInCompose: {},
+  rawInputTextInCompose: ''
 })
 
 mixins(PinaforeStore)

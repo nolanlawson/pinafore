@@ -27,5 +27,5 @@ module.exports = [
   {id: 'fa-ban', src: 'node_modules/font-awesome-svg-png/white/svg/ban.svg', title: 'Ban'},
   {id: 'fa-camera', src: 'node_modules/font-awesome-svg-png/white/svg/camera.svg', title: 'Camera'},
   {id: 'fa-smile', src: 'node_modules/font-awesome-svg-png/white/svg/smile-o.svg', title: 'Smile'},
-  {id: 'fa-exclamation-triangle', src: 'node_modules/font-awesome-svg-png/white/svg/exclamation-triangle.svg', title: 'Warning'},
+  {id: 'fa-exclamation-triangle', src: 'node_modules/font-awesome-svg-png/white/svg/exclamation-triangle.svg', title: 'Warning'}
 ]

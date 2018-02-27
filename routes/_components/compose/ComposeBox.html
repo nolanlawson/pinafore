@@ -1,17 +1,10 @@
 <div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
   <ComposeAuthor :verifyCredentials />
-  <textarea
-    class="compose-box-input"
-    placeholder="What's on your mind?"
-    ref:textarea
-    bind:value=inputText
-  ></textarea>
-  <ComposeLengthGauge :inputLength />
+  <ComposeInput />
+  <ComposeLengthGauge />
   <ComposeToolbar />
-  <ComposeLengthIndicator :inputLength />
-  <button class="primary compose-box-button">
-    Toot!
-  </button>
+  <ComposeLengthIndicator />
+  <ComposeButton />
 </div>
 <style>
   .compose-box {
@@ -31,30 +24,6 @@
     max-width: calc(100vw - 40px);
   }
 
-  :global(.compose-box-input) {
-    grid-area: input;
-    margin: 10px 0 0 5px;
-    padding: 10px;
-    border: 1px solid var(--input-border);
-    min-height: 75px;
-    resize: none;
-    overflow: hidden;
-    word-wrap: break-word;
-    /* Text must be at least 16px or else iOS Safari zooms in */
-    font-size: 1.2em;
-    /* Hack to make Edge stretch the element all the way to the right.
-     * Also desktop Safari makes the gauge stretch too far to the right without it.
-     */
-    width: calc(100% - 5px);
-  }
-
-  .compose-box-button {
-    grid-area: button;
-    justify-self: right;
-    text-transform: uppercase;
-    margin-top: 10px;
-  }
-
   @media (max-width: 767px) {
     .compose-box {
       padding: 10px 10px;
@@ -62,56 +31,23 @@
       width: 580px;
     }
   }
-
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import { autosize } from '../../_utils/autosize'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import debounce from 'lodash/debounce'
-  import { mark, stop } from '../../_utils/marks'
   import ComposeToolbar from './ComposeToolbar.html'
   import ComposeLengthGauge from './ComposeLengthGauge.html'
   import ComposeLengthIndicator from './ComposeLengthIndicator.html'
   import ComposeAuthor from './ComposeAuthor.html'
+  import ComposeInput from './ComposeInput.html'
+  import ComposeButton from './ComposeButton.html'
 
   export default {
-    oncreate() {
-      this.set({inputText: store.get('currentInputTextInCompose')})
-
-      requestAnimationFrame(() => {
-        mark('autosize()')
-        autosize(this.refs.textarea)
-        stop('autosize()')
-      })
-
-      const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-      this.observe('inputText', inputText => {
-        let inputTextInCompose = this.store.get('inputTextInCompose')
-        let currentInstance = this.store.get('currentInstance')
-        inputTextInCompose[currentInstance] = inputText || ''
-        this.store.set({inputTextInCompose: inputTextInCompose})
-        saveText()
-      }, {init: false})
-    },
-    ondestroy() {
-      mark('autosize.destroy()')
-      autosize.destroy(this.refs.textarea)
-      stop('autosize.destroy()')
-    },
-    data: () => ({
-      inputText: ''
-    }),
     components: {
       ComposeAuthor,
       ComposeToolbar,
       ComposeLengthGauge,
-      ComposeLengthIndicator
-    },
-    store: () => store,
-    computed: {
-      currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose,
-      inputLength: (inputText) => inputText ? inputText.length : 0,
+      ComposeLengthIndicator,
+      ComposeInput,
+      ComposeButton
     }
   }
 </script>

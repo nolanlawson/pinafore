@@ -1,4 +1,4 @@
-<span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
+<span class="compose-box-length {{$rawInputTextInComposeOverLimit ? 'over-char-limit' : ''}}"
       aria-label="{{inputLengthLabel}}">
       {{inputLengthToDisplayAfterRaf || '0'}}
     </span>
@@ -18,10 +18,11 @@
 <script>
   import { CHAR_LIMIT } from '../../_static/statuses'
   import { mark, stop } from '../../_utils/marks'
+  import { store } from '../../_store/store'
 
   export default {
     oncreate() {
-      // Avoid input delays by updating these values after a rAF
+      // perf improvement for keyboard input latency
       this.observe('inputLengthToDisplay', inputLengthToDisplay => {
         requestAnimationFrame(() => {
           mark('set inputLengthToDisplayAfterRaf')
@@ -30,12 +31,15 @@
         })
       })
     },
+    store: () => store,
     computed: {
-      overLimit: (inputLength) => inputLength > CHAR_LIMIT,
-      inputLength: (inputText) => inputText ? inputText.length : 0,
-      inputLengthToDisplay: (inputLength) => (inputLength <= CHAR_LIMIT ? inputLength : CHAR_LIMIT - inputLength),
-      inputLengthLabel: (overLimit, inputLengthToDisplay) => {
-        if (overLimit) {
+      inputLengthToDisplay: ($rawInputTextInComposeLength) => {
+        return ($rawInputTextInComposeLength <= CHAR_LIMIT
+          ? $rawInputTextInComposeLength
+          : CHAR_LIMIT - $rawInputTextInComposeLength)
+      },
+      inputLengthLabel: ($rawInputTextInComposeOverLimit, inputLengthToDisplay) => {
+        if ($rawInputTextInComposeOverLimit) {
           return `${inputLengthToDisplay} characters over limit`
         } else {
           return `${inputLengthToDisplay} characters`
