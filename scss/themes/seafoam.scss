@@ -1,5 +1,5 @@
-$main-theme-color: teal;
-$body-bg-color: lighten($main-theme-color, 70%);
+$main-theme-color: #177380;
+$body-bg-color: lighten($main-theme-color, 60%);
 $anchor-color: $main-theme-color;
 $main-text-color: #333;
 $border-color: #dadada;
@@ -7,7 +7,7 @@ $main-bg-color: white;
 $secondary-text-color: white;
 $toast-border: #fafafa;
 $toast-bg: #333;
-$focus-outline: lighten($main-theme-color, 30%);
+$focus-outline: lighten($main-theme-color, 50%);
 
 @import "_base.scss";
 

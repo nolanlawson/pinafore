@@ -17,6 +17,12 @@
          style="transform: scaleX({{inputLengthAsFractionOfMaxRoundedAfterRaf || 0}});"
          aria-hidden="true"
     ></div>
+    <div class="compose-profile-toolbar">
+      <IconButton label="Insert emoji" href="#fa-smile" />
+      <IconButton label="Add media" href="#fa-camera" />
+      <IconButton label="Adjust privacy" href="#fa-globe" />
+      <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
+    </div>
     <span class="compose-profile-length"
           aria-label="{{inputLengthLabel}}">
       {{inputLengthToDisplayAfterRaf || '0'}}
@@ -37,12 +43,12 @@
     display: grid;
     align-items: flex-start;
     grid-template-areas:
-      "avatar display-name handle"
-      "avatar input        input"
-      "avatar gauge        gauge"
-      "avatar length       length"
-      "avatar button       button";
-    grid-template-columns: min-content minmax(0, max-content) 1fr;
+      "avatar display-name handle   handle"
+      "avatar input        input    input"
+      "avatar gauge        gauge    gauge"
+      "avatar toolbar      toolbar  length"
+      "avatar button       button   button";
+    grid-template-columns: min-content minmax(0, max-content) 1fr 1fr;
     border-bottom: 1px solid var(--main-border);
     width: 560px;
     max-width: calc(100vw - 40px);
@@ -80,11 +86,10 @@
 
   :global(.compose-profile-input) {
     grid-area: input;
-    margin-left: 5px;
+    margin: 10px 0 0 5px;
     padding: 10px;
     border: 1px solid var(--input-border);
     min-height: 75px;
-    margin-top: 10px;
     resize: none;
     overflow: hidden;
     word-wrap: break-word;
@@ -105,9 +110,9 @@
 
   .compose-profile-length-gauge {
     grid-area: gauge;
+    margin: 0 0 5px 5px;
     height: 2px;
     background: var(--main-theme-color);
-    margin-left: 5px;
     transform-origin: left;
   }
   .compose-profile-length-gauge.should-animate {
@@ -116,10 +121,10 @@
 
   .compose-profile-length {
     grid-area: length;
-    margin-top: 5px;
     justify-self: right;
     color: var(--main-theme-color);
-    font-size: 1.1em;
+    font-size: 1.3em;
+    align-self: center;
   }
 
   .over-char-limit .compose-profile-length {
@@ -128,6 +133,13 @@
 
   .over-char-limit .compose-profile-length-gauge {
     background: var(--warning-color);
+  }
+
+  .compose-profile-toolbar {
+    grid-area: toolbar;
+    align-self: center;
+    display: flex;
+    align-items: center;
   }
 
   @media (max-width: 767px) {
@@ -150,6 +162,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import debounce from 'lodash/debounce'
   import { mark, stop } from '../../_utils/marks'
+  import IconButton from '../IconButton.html'
 
   const CHAR_LIMIT = 500
 
@@ -198,7 +211,8 @@
       inputText: ''
     }),
     components: {
-      Avatar
+      Avatar,
+      IconButton
     },
     store: () => store,
     computed: {
