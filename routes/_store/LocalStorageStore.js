@@ -30,6 +30,9 @@ export class LocalStorageStore extends Store {
         }
       })
     })
+    if (process.browser) {
+      window.addEventListener('beforeunload', () => this.save())
+    }
   }
 
   save () {
