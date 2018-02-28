@@ -14,7 +14,7 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'autoplayGifs',
   'markMediaAsSensitive',
   'pinnedPages',
-  'inputTextInCompose'
+  'composeText'
 ])
 
 class PinaforeStore extends LocalStorageStore {
@@ -39,8 +39,8 @@ export const store = new PinaforeStore({
   pinnedStatuses: {},
   instanceInfos: {},
   statusModifications: {},
-  inputTextInCompose: {},
-  rawInputTextInCompose: ''
+  composeText: {},
+  rawComposeText: ''
 })
 
 mixins(PinaforeStore)

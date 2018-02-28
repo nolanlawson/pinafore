@@ -2,7 +2,7 @@
   class="compose-box-input"
   placeholder="What's on your mind?"
   ref:textarea
-  bind:value=$rawInputTextInCompose
+  bind:value=$rawComposeText
 ></textarea>
 <style>
   .compose-box-input {
@@ -31,7 +31,7 @@
 
   export default {
     oncreate() {
-      this.store.set({rawInputTextInCompose: store.get('currentInputTextInCompose')})
+      this.store.set({rawComposeText: store.get('currentComposeText')})
 
       requestAnimationFrame(() => {
         mark('autosize()')
@@ -40,11 +40,11 @@
       })
 
       const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-      this.observe('rawInputTextInCompose', rawInputTextInCompose => {
-        let inputTextInCompose = this.store.get('inputTextInCompose')
+      this.observe('rawComposeText', rawComposeText => {
+        let composeText = this.store.get('composeText')
         let currentInstance = this.store.get('currentInstance')
-        inputTextInCompose[currentInstance] = rawInputTextInCompose || ''
-        this.store.set({inputTextInCompose: inputTextInCompose})
+        composeText[currentInstance] = rawComposeText || ''
+        this.store.set({composeText: composeText})
         saveText()
       }, {init: false})
     },
@@ -55,8 +55,8 @@
     },
     store: () => store,
     computed: {
-      rawInputTextInCompose: ($rawInputTextInCompose) => $rawInputTextInCompose,
-      currentInputTextInCompose: ($currentInputTextInCompose) => $currentInputTextInCompose,
+      rawComposeText: ($rawComposeText) => $rawComposeText,
+      currentComposeText: ($currentComposeText) => $currentComposeText,
     }
   }
 </script>

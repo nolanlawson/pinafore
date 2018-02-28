@@ -23,7 +23,7 @@ export function switchToInstance (instanceName) {
     currentInstance: instanceName,
     searchResults: null,
     queryInSearch: '',
-    rawInputTextInCompose: ''
+    rawComposeText: ''
   })
   store.save()
   switchToTheme(instanceThemes[instanceName])
@@ -47,7 +47,7 @@ export async function logOutOfInstance (instanceName) {
     currentInstance: newInstance,
     searchResults: null,
     queryInSearch: '',
-    rawInputTextInCompose: ''
+    rawComposeText: ''
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)

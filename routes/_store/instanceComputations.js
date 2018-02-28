@@ -102,8 +102,8 @@ export function instanceComputations (store) {
       return statusModifications[currentInstance]
     })
 
-  store.compute('currentInputTextInCompose',
-    ['inputTextInCompose', 'currentInstance'],
-    (inputTextInCompose, currentInstance) => (inputTextInCompose[currentInstance] || '')
+  store.compute('currentComposeText',
+    ['composeText', 'currentInstance'],
+    (composeText, currentInstance) => (composeText[currentInstance] || '')
   )
 }

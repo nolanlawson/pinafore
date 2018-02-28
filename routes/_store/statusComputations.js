@@ -1,13 +1,13 @@
 import { CHAR_LIMIT } from '../_static/statuses'
 
 export function statusComputations (store) {
-  store.compute('rawInputTextInComposeLength',
-    ['rawInputTextInCompose'],
-    (rawInputTextInCompose) => rawInputTextInCompose.length
+  store.compute('rawComposeTextLength',
+    ['rawComposeText'],
+    (rawComposeText) => rawComposeText.length
   )
 
-  store.compute('rawInputTextInComposeOverLimit',
-    ['rawInputTextInComposeLength'],
-    (rawInputTextInComposeLength) => rawInputTextInComposeLength > CHAR_LIMIT
+  store.compute('rawComposeTextOverLimit',
+    ['rawComposeTextLength'],
+    (rawComposeTextLength) => rawComposeTextLength > CHAR_LIMIT
   )
 }

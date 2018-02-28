@@ -1,4 +1,4 @@
-<span class="compose-box-length {{$rawInputTextInComposeOverLimit ? 'over-char-limit' : ''}}"
+<span class="compose-box-length {{$rawComposeTextOverLimit ? 'over-char-limit' : ''}}"
       aria-label="{{inputLengthLabel}}">
       {{inputLengthToDisplayAfterRaf || '0'}}
     </span>
@@ -33,13 +33,13 @@
     },
     store: () => store,
     computed: {
-      inputLengthToDisplay: ($rawInputTextInComposeLength) => {
-        return ($rawInputTextInComposeLength <= CHAR_LIMIT
-          ? $rawInputTextInComposeLength
-          : CHAR_LIMIT - $rawInputTextInComposeLength)
+      inputLengthToDisplay: ($rawComposeTextLength) => {
+        return ($rawComposeTextLength <= CHAR_LIMIT
+          ? $rawComposeTextLength
+          : CHAR_LIMIT - $rawComposeTextLength)
       },
-      inputLengthLabel: ($rawInputTextInComposeOverLimit, inputLengthToDisplay) => {
-        if ($rawInputTextInComposeOverLimit) {
+      inputLengthLabel: ($rawComposeTextOverLimit, inputLengthToDisplay) => {
+        if ($rawComposeTextOverLimit) {
           return `${inputLengthToDisplay} characters over limit`
         } else {
           return `${inputLengthToDisplay} characters`
