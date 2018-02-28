@@ -10,6 +10,9 @@ export const closeDialogButton = $('.close-dialog-button')
 export const notificationsNavButton = $('nav a[href="/notifications"]')
 export const homeNavButton = $('nav a[href="/"]')
 export const formError = $('.form-error-user-error')
+export const composeInput = $('.compose-box-input')
+export const composeButton = $('.compose-box-button')
+export const composeLengthIndicator = $('.compose-box-length')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
