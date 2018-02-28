@@ -50,3 +50,11 @@ export async function getLists (instanceName) {
 export async function setLists (instanceName, value) {
   return setMetaProperty(instanceName, 'lists', value)
 }
+
+export async function getCustomEmoji (instanceName) {
+  return getMetaProperty(instanceName, 'customEmoji')
+}
+
+export async function setCustomEmoji (instanceName, value) {
+  return setMetaProperty(instanceName, 'customEmoji', value)
+}

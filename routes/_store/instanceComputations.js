@@ -106,4 +106,9 @@ export function instanceComputations (store) {
     ['composeText', 'currentInstance'],
     (composeText, currentInstance) => (composeText[currentInstance] || '')
   )
+
+  store.compute('currentCustomEmoji',
+    ['customEmoji', 'currentInstance'],
+    (customEmoji, currentInstance) => (customEmoji[currentInstance] || [])
+  )
 }

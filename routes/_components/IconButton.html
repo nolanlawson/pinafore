@@ -1,12 +1,10 @@
-{{#if pressable}}
+{{#if delegateKey}}
   <button type="button"
           aria-label="{{label}}"
-          aria-pressed="{{!!pressed}}"
+          aria-pressed="{{pressable ? !!pressed : ''}}"
           class="{{computedClass}}"
-          disabled="{{disabled}}"
-          delegate-key="{{delegateKey}}"
-          on:click
-  >
+          :disabled
+          delegate-key="{{delegateKey}}" >
     <svg>
       <use xlink:href="{{href}}" />
     </svg>
@@ -14,11 +12,10 @@
 {{else}}
   <button type="button"
           aria-label="{{label}}"
+          aria-pressed="{{pressable ? !!pressed : ''}}"
           class="{{computedClass}}"
-          disabled="{{disabled}}"
-          delegate-key="{{delegateKey}}"
-          on:click
-  >
+          :disabled
+          on:click >
     <svg>
       <use xlink:href="{{href}}" />
     </svg>

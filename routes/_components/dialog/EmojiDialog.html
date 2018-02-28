@@ -1,0 +1,82 @@
+<ModalDialog :label :shown :closed :title background="var(--main-bg)">
+  <div class="custom-emoji-container">
+    {{#if emojis.length}}
+      <ul class="custom-emoji-list">
+        {{#each emojis as emoji}}
+          <li class="custom-emoji">
+            <button type="button" on:click="onClickEmoji(emoji)">
+              <img src="{{$autoplayGifs ? emoji.url : emoji.static_url}}"
+                   alt=":{{emoji.shortcode}}:"
+                   title=":{{emoji.shortcode}}:"
+              />
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <div class="custom-emoji-no-emoji">No custom emoji found for this instance.</div>
+    {{/if}}
+  </div>
+</ModalDialog>
+<style>
+  .custom-emoji-container {
+    max-width: 100%;
+    width: 400px;
+    height: 300px;
+    overflow: scroll;
+  }
+  .custom-emoji-no-emoji {
+    font-size: 1.3em;
+    padding: 20px;
+  }
+  .custom-emoji-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+    grid-gap: 5px;
+    padding: 20px 10px;
+  }
+  .custom-emoji button {
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    background: none;
+  }
+  .custom-emoji img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import { store } from '../../_store/store'
+  import { insertEmoji } from '../../_actions/emoji'
+
+  export default {
+    components: {
+      ModalDialog
+    },
+    store: () => store,
+    computed: {
+      emojis: ($currentCustomEmoji) => {
+        if (!$currentCustomEmoji) {
+          return []
+        }
+        return $currentCustomEmoji.filter(emoji => emoji.visible_in_picker)
+      }
+    },
+    methods: {
+      async show() {
+        this.set({shown: true})
+      },
+      onClickEmoji(emoji) {
+        insertEmoji(emoji)
+        this.set({closed: true})
+      }
+    }
+  }
+</script>

@@ -40,7 +40,8 @@ export const store = new PinaforeStore({
   instanceInfos: {},
   statusModifications: {},
   composeText: {},
-  rawComposeText: ''
+  rawComposeText: '',
+  customEmoji: {}
 })
 
 mixins(PinaforeStore)

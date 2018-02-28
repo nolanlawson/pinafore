@@ -5,6 +5,7 @@ import { switchToTheme } from '../_utils/themeEngine'
 import { database } from '../_database/database'
 import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
+import { updateCustomEmojiForInstance } from './emoji'
 
 const REDIRECT_URI = (typeof location !== 'undefined'
   ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -85,8 +86,9 @@ async function registerNewInstance (code) {
   })
   store.save()
   switchToTheme('default')
-  // fire off request for account so it's cached
-  updateVerifyCredentialsForInstance(currentRegisteredInstanceName)
+  // fire off these requests so they're cached
+  /* no await */ updateVerifyCredentialsForInstance(currentRegisteredInstanceName)
+  /* no await */ updateCustomEmojiForInstance(currentRegisteredInstanceName)
   goto('/')
 }
 

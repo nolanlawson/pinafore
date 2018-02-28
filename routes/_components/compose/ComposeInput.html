@@ -40,12 +40,30 @@
       })
 
       const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
       this.observe('rawComposeText', rawComposeText => {
         let composeText = this.store.get('composeText')
         let currentInstance = this.store.get('currentInstance')
         composeText[currentInstance] = rawComposeText || ''
         this.store.set({composeText: composeText})
         saveText()
+      }, {init: false})
+
+      this.observe('emojiToInsert', emojiToInsert => {
+        if (!emojiToInsert) {
+          return
+        }
+        requestAnimationFrame(() => {
+          let idx = this.refs.textarea.selectionStart || 0
+          let oldText = this.store.get('rawComposeText')
+          let newText = oldText.substring(0, idx) +
+            ':' + emojiToInsert.shortcode + ': ' +
+            oldText.substring(idx)
+          this.store.set({
+            rawComposeText: newText,
+            emojiToInsert: null
+          })
+        })
       }, {init: false})
     },
     ondestroy() {
@@ -57,6 +75,7 @@
     computed: {
       rawComposeText: ($rawComposeText) => $rawComposeText,
       currentComposeText: ($currentComposeText) => $currentComposeText,
+      emojiToInsert: ($emojiToInsert) => $emojiToInsert
     }
   }
 </script>

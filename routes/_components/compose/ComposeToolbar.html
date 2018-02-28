@@ -1,5 +1,9 @@
 <div class="compose-box-toolbar">
-  <IconButton label="Insert emoji" href="#fa-smile" />
+  <IconButton
+    label="Insert emoji"
+    href="#fa-smile"
+    on:click="onEmojiClick()"
+  />
   <IconButton label="Add media" href="#fa-camera" />
   <IconButton label="Adjust privacy" href="#fa-globe" />
   <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
@@ -14,9 +18,21 @@
 </style>
 <script>
   import IconButton from '../IconButton.html'
+  import { store } from '../../_store/store'
+  import { updateCustomEmojiForInstance } from '../../_actions/emoji'
+  import { importDialogs } from '../../_utils/asyncModules'
+
   export default {
     components: {
       IconButton
+    },
+    store: () => store,
+    methods: {
+      async onEmojiClick() {
+        /* no await */ updateCustomEmojiForInstance(this.store.get('currentInstance'))
+        let dialogs = await importDialogs()
+        dialogs.showEmojiDialog()
+      }
     }
   }
 </script>
