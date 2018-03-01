@@ -14,6 +14,9 @@ export const composeInput = $('.compose-box-input')
 export const composeButton = $('.compose-box-button')
 export const composeLengthIndicator = $('.compose-box-length')
 export const emojiButton = $('.compose-box-toolbar button:first-child')
+export const emailInput = $('input#user_email')
+export const passwordInput = $('input#user_password')
+export const authorizeInput = $('button[type=submit]:not(.negative)')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)

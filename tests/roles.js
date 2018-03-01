@@ -1,15 +1,15 @@
-import { Selector as $, Role } from 'testcafe'
-import { addInstanceButton, getUrl, instanceInput } from './utils'
+import { Role } from 'testcafe'
+import { authorizeInput, emailInput, getUrl, instanceInput, passwordInput } from './utils'
 
 function login (t, username, password) {
-  return t.typeText(instanceInput, 'localhost:3000')
-    .click(addInstanceButton)
+  return t.typeText(instanceInput, 'localhost:3000', {paste: true})
+    .pressKey('enter')
     .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')
-    .typeText($('input#user_email'), username)
-    .typeText($('input#user_password'), password)
-    .click($('button[type=submit]'))
+    .typeText(emailInput, username, {paste: true})
+    .typeText(passwordInput, password, {paste: true})
+    .pressKey('enter')
     .expect(getUrl()).contains('/oauth/authorize')
-    .click($('button[type=submit]:not(.negative)'))
+    .click(authorizeInput)
     .expect(getUrl()).eql('http://localhost:4002/')
 }
 

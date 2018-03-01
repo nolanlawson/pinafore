@@ -1,5 +1,8 @@
 import { Selector as $ } from 'testcafe'
-import { addInstanceButton, formError, getUrl, instanceInput, settingsButton } from '../utils'
+import {
+  authorizeInput, emailInput, formError, getUrl, instanceInput, passwordInput,
+  settingsButton
+} from '../utils'
 
 fixture`02-login-spec.js`
   .page`http://localhost:4002`
@@ -8,37 +11,33 @@ function manualLogin (t, username, password) {
   return t.click($('a').withText('log in to an instance'))
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'localhost:3000')
-    .click(addInstanceButton)
+    .pressKey('enter')
     .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')
-    .typeText($('input#user_email'), username)
-    .typeText($('input#user_password'), password)
-    .click($('button[type=submit]'))
+    .typeText(emailInput, username, {paste: true})
+    .typeText(passwordInput, password, {paste: true})
+    .pressKey('enter')
     .expect(getUrl()).contains('/oauth/authorize')
-    .click($('button[type=submit]:not(.negative)'))
+    .click(authorizeInput)
     .expect(getUrl()).eql('http://localhost:4002/')
 }
 
 test('Cannot log in to a fake instance', async t => {
   await t.click($('a').withText('log in to an instance'))
     .expect(getUrl()).contains('/settings/instances/add')
-    .typeText(instanceInput, 'fake.nolanlawson.com')
-    .click(addInstanceButton)
+    .typeText(instanceInput, 'fake.nolanlawson.com', {paste: true})
+    .pressKey('enter')
     .expect(formError.exists).ok()
     .expect(formError.innerText).contains('Is this a valid Mastodon instance?')
-    .typeText(instanceInput, '.biz')
+    .typeText(instanceInput, '.biz', {paste: true})
     .expect(formError.exists).notOk()
-    .typeText(instanceInput, 'fake.nolanlawson.com', {replace: true})
+    .typeText(instanceInput, 'fake.nolanlawson.com', {paste: true, replace: true})
     .expect(formError.exists).ok()
     .expect(formError.innerText).contains('Is this a valid Mastodon instance?')
 })
 
-test('Logs in to localhost:3000', async t => {
+test('Logs in and logs out of localhost:3000', async t => {
   await manualLogin(t, 'foobar@localhost:3000', 'foobarfoobar')
     .expect($('article.status-article').exists).ok()
-})
-
-test('Logs out', async t => {
-  await manualLogin(t, 'foobar@localhost:3000', 'foobarfoobar')
     .click(settingsButton)
     .click($('a').withText('Instances'))
     .click($('a').withText('localhost:3000'))
