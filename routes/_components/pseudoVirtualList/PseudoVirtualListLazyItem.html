@@ -1,5 +1,4 @@
-{{#await asyncProps}}
-{{then props}}
+{{#if props}}
   <PseudoVirtualListItem :component
                          :props
                          :key
@@ -11,15 +10,21 @@
                          :height
                          on:scrollToPosition
   />
-{{/await}}
+{{/if}}
 <script>
   import PseudoVirtualListItem from './PseudoVirtualListItem.html'
   export default {
+    oncreate() {
+      // TODO: there appears to be a bug in {{#await}} that means we have to do this manually.
+      // Some items may appear on top of other items because their offset is 0 and never updated.
+      let makeProps = this.get('makeProps')
+      let key = this.get('key')
+      if (makeProps) {
+        makeProps(key).then(props => this.set({props: props}))
+      }
+    },
     components: {
       PseudoVirtualListItem
-    },
-    computed: {
-      asyncProps: async (makeProps, key) => makeProps && makeProps(key)
     }
   }
 </script>
