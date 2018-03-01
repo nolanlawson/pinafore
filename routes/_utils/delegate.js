@@ -15,11 +15,10 @@ function onEvent (e) {
     return
   }
   mark('delegate onEvent')
-  let attr = `delegate-key`
   let key
   let element = target
   while (element) {
-    if ((key = element.getAttribute(attr))) {
+    if ((key = element.getAttribute('delegate-key'))) {
       break
     }
     element = element.parentElement
