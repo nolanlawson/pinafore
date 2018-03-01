@@ -4,7 +4,14 @@
     href="#fa-smile"
     on:click="onEmojiClick()"
   />
-  <IconButton label="Add media" href="#fa-camera" />
+  <IconButton label="Add media"
+              href="#fa-camera"
+              on:click="onMediaClick()"
+  />
+  <input ref:input
+         style="display: none;"
+         type="file"
+         accept=".jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,image/jpeg,image/png,image/gif,video/webm,video/mp4">
   <IconButton label="Adjust privacy" href="#fa-globe" />
   <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
 </div>
@@ -32,7 +39,11 @@
         /* no await */ updateCustomEmojiForInstance(this.store.get('currentInstance'))
         let dialogs = await importDialogs()
         dialogs.showEmojiDialog()
+      },
+      onMediaClick() {
+        this.refs.input.click()
       }
     }
+
   }
 </script>
