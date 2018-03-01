@@ -13,6 +13,7 @@ export const formError = $('.form-error-user-error')
 export const composeInput = $('.compose-box-input')
 export const composeButton = $('.compose-box-button')
 export const composeLengthIndicator = $('.compose-box-length')
+export const emojiButton = $('.compose-box-toolbar button:first-child')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -29,6 +30,10 @@ export const getActiveElementClass = exec(() =>
 )
 
 export const goBack = exec(() => window.history.back())
+
+export const getComposeSelectionStart = exec(() => composeInput().selectionStart, {
+  dependencies: { composeInput }
+})
 
 export function getNthStatus (n) {
   return $(`div[aria-hidden="false"] > article[aria-posinset="${n}"]`)

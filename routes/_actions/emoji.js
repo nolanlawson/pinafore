@@ -2,6 +2,7 @@ import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { database } from '../_database/database'
 import { getCustomEmoji } from '../_api/emoji'
 import { store } from '../_store/store'
+import { substring } from 'stringz'
 
 export async function updateCustomEmojiForInstance (instanceName) {
   await cacheFirstUpdateAfter(
@@ -17,5 +18,12 @@ export async function updateCustomEmojiForInstance (instanceName) {
 }
 
 export function insertEmoji (emoji) {
-  store.set({emojiToInsert: emoji})
+  let idx = store.get('composeSelectionStart') || 0
+  let oldText = store.get('rawComposeText')
+  let pre = substring(oldText, 0, idx)
+  let post = substring(oldText, idx)
+  let newText = `${pre}:${emoji.shortcode}: ${post}`
+  store.set({
+    rawComposeText: newText
+  })
 }

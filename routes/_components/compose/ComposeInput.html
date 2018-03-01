@@ -3,6 +3,7 @@
   placeholder="What's on your mind?"
   ref:textarea
   bind:value=$rawComposeText
+  on:blur="onBlur()"
 ></textarea>
 <style>
   .compose-box-input {
@@ -48,34 +49,21 @@
         this.store.set({composeText: composeText})
         saveText()
       }, {init: false})
-
-      this.observe('emojiToInsert', emojiToInsert => {
-        if (!emojiToInsert) {
-          return
-        }
-        requestAnimationFrame(() => {
-          let idx = this.refs.textarea.selectionStart || 0
-          let oldText = this.store.get('rawComposeText')
-          let newText = oldText.substring(0, idx) +
-            ':' + emojiToInsert.shortcode + ': ' +
-            oldText.substring(idx)
-          this.store.set({
-            rawComposeText: newText,
-            emojiToInsert: null
-          })
-        })
-      }, {init: false})
     },
     ondestroy() {
       mark('autosize.destroy()')
       autosize.destroy(this.refs.textarea)
       stop('autosize.destroy()')
     },
+    methods: {
+      onBlur() {
+        this.store.set({composeSelectionStart: this.refs.textarea.selectionStart})
+      }
+    },
     store: () => store,
     computed: {
       rawComposeText: ($rawComposeText) => $rawComposeText,
-      currentComposeText: ($currentComposeText) => $currentComposeText,
-      emojiToInsert: ($emojiToInsert) => $emojiToInsert
+      currentComposeText: ($currentComposeText) => $currentComposeText
     }
   }
 </script>

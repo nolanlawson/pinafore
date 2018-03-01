@@ -34,15 +34,13 @@
     store: () => store,
     computed: {
       inputLengthToDisplay: ($rawComposeTextLength) => {
-        return ($rawComposeTextLength <= CHAR_LIMIT
-          ? $rawComposeTextLength
-          : CHAR_LIMIT - $rawComposeTextLength)
+        return CHAR_LIMIT - $rawComposeTextLength
       },
       inputLengthLabel: ($rawComposeTextOverLimit, inputLengthToDisplay) => {
         if ($rawComposeTextOverLimit) {
           return `${inputLengthToDisplay} characters over limit`
         } else {
-          return `${inputLengthToDisplay} characters`
+          return `${inputLengthToDisplay} characters remaining`
         }
       }
     }
