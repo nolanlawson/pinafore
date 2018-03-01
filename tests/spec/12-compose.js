@@ -81,3 +81,13 @@ test('inserts custom emoji correctly', async t => {
     .click($('button img[title=":blobpeek:"]'))
     .expect(composeInput.value).eql(':blobnom: hello :blobpats: world foobar :blobpeek: ')
 })
+
+test('inserts emoji without typing anything', async t => {
+  await t.useRole(foobarRole)
+    .click(emojiButton)
+    .click($('button img[title=":blobpats:"]'))
+    .expect(composeInput.value).eql(':blobpats: ')
+    .click(emojiButton)
+    .click($('button img[title=":blobpeek:"]'))
+    .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
+})
