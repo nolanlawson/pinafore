@@ -8,12 +8,13 @@
               href="#fa-camera"
               on:click="onMediaClick()"
   />
+  <IconButton label="Adjust privacy" href="#fa-globe" />
+  <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
   <input ref:input
+         on:change="onFileChange(event)"
          style="display: none;"
          type="file"
          accept=".jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,image/jpeg,image/png,image/gif,video/webm,video/mp4">
-  <IconButton label="Adjust privacy" href="#fa-globe" />
-  <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
 </div>
 <style>
   .compose-box-toolbar {
@@ -42,6 +43,9 @@
       },
       onMediaClick() {
         this.refs.input.click()
+      },
+      onFileChange(e) {
+        let file = e.target.files[0]
       }
     }
 
