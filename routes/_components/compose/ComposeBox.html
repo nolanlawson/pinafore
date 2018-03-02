@@ -4,6 +4,7 @@
   <ComposeLengthGauge />
   <ComposeToolbar />
   <ComposeLengthIndicator />
+  <ComposeMedia />
   <ComposeButton />
 </div>
 <style>
@@ -13,11 +14,12 @@
     display: grid;
     align-items: flex-start;
     grid-template-areas:
-      "avatar display-name handle   handle"
-      "avatar input        input    input"
-      "avatar gauge        gauge    gauge"
-      "avatar toolbar      toolbar  length"
-      "avatar button       button   button";
+      "avatar display-name handle    handle"
+      "avatar input        input     input"
+      "avatar gauge        gauge     gauge"
+      "avatar toolbar      toolbar   length"
+      "avatar media        media     media"
+      "avatar button       button    button";
     grid-template-columns: min-content minmax(0, max-content) 1fr 1fr;
     border-bottom: 1px solid var(--main-border);
     width: 560px;
@@ -39,6 +41,7 @@
   import ComposeAuthor from './ComposeAuthor.html'
   import ComposeInput from './ComposeInput.html'
   import ComposeButton from './ComposeButton.html'
+  import ComposeMedia from './ComposeMedia.html'
 
   export default {
     components: {
@@ -47,7 +50,8 @@
       ComposeLengthGauge,
       ComposeLengthIndicator,
       ComposeInput,
-      ComposeButton
+      ComposeButton,
+      ComposeMedia
     }
   }
 </script>

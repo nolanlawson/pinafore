@@ -29,6 +29,7 @@
   import { store } from '../../_store/store'
   import { updateCustomEmojiForInstance } from '../../_actions/emoji'
   import { importDialogs } from '../../_utils/asyncModules'
+  import { doMediaUpload } from '../../_actions/media'
 
   export default {
     components: {
@@ -46,6 +47,7 @@
       },
       onFileChange(e) {
         let file = e.target.files[0]
+        doMediaUpload(file)
       }
     }
 

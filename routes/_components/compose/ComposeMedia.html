@@ -1,0 +1,94 @@
+{{#if $mediaToUpload && $mediaToUpload.length}}
+  <div class="compose-media-container" style="grid-template-columns: repeat({{$mediaToUpload.length}}, 1fr);">
+    {{#each $mediaToUpload as media}}
+      <div class="compose-media">
+        <img src="{{media.data.preview_url}}" alt="{{media.file.name}}"/>
+        <div class="compose-media-delete">
+          <button class="compose-media-delete-button" data-a11y-dialog-hide aria-label="Delete {{media.file.name}}">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="compose-media-alt">
+          <input type="text"
+                 placeholder="Description"
+                 aria-label="Describe {{media.file.name}} for the visually impaired">
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+<style>
+  .compose-media-container {
+    grid-area: media;
+    display: grid;
+    grid-column-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    background: var(--form-bg);
+    padding: 5px;
+    border-radius: 4px;
+  }
+  .compose-media {
+    height: 200px;
+    overflow: hidden;
+    flex-direction: column;
+    position: relative;
+    display: flex;
+    background: var(--main-bg);
+  }
+  .compose-media img {
+    object-fit: contain;
+    object-position: center center;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+  }
+  .compose-media-alt {
+    z-index: 10;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .compose-media-alt input {
+    width: 100%;
+    font-size: 1.2em;
+    background: var(--alt-input-bg);
+  }
+  .compose-media-alt input:focus {
+    background: var(--main-bg);
+  }
+  .compose-media-delete {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    margin: 2px;
+  }
+  .compose-media-delete-button {
+    padding: 0 0 7px;
+    background: none;
+    border: none;
+  }
+  .compose-media-delete-button:hover {
+    background: var(--toast-border);
+  }
+  .compose-media-delete-button span {
+    padding: 0 10px 7px;
+    font-size: 32px;
+    color: var(--button-text);
+  }
+</style>
+<script>
+  import { store } from '../../_store/store'
+
+  export default {
+    store: () => store
+  }
+</script>

@@ -24,11 +24,14 @@ async function _post (url, body, headers, timeout) {
     method: 'POST'
   }
   if (body) {
-    opts.headers = Object.assign(headers, {
+    let isFormData = body instanceof FormData
+    opts.headers = Object.assign(headers, isFormData ? {
+      'Accept': 'application/json'
+    } : {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     })
-    opts.body = JSON.stringify(body)
+    opts.body = isFormData ? body : JSON.stringify(body)
   } else {
     opts.headers = Object.assign(headers, {
       'Accept': 'application/json'
