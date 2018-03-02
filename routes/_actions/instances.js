@@ -33,6 +33,7 @@ export async function logOutOfInstance (instanceName) {
   let loggedInInstances = store.get('loggedInInstances')
   let instanceThemes = store.get('instanceThemes')
   let loggedInInstancesInOrder = store.get('loggedInInstancesInOrder')
+  let composeText = store.get('composeText')
   let currentInstance = store.get('currentInstance')
   loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
   let newInstance = instanceName === currentInstance
@@ -40,6 +41,7 @@ export async function logOutOfInstance (instanceName) {
     : currentInstance
   delete loggedInInstances[instanceName]
   delete instanceThemes[instanceName]
+  delete composeText[instanceName]
   store.set({
     loggedInInstances: loggedInInstances,
     instanceThemes: instanceThemes,
@@ -47,7 +49,8 @@ export async function logOutOfInstance (instanceName) {
     currentInstance: newInstance,
     searchResults: null,
     queryInSearch: '',
-    rawComposeText: ''
+    rawComposeText: '',
+    composeText: composeText
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)
