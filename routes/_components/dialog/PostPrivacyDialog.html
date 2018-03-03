@@ -1,0 +1,98 @@
+<ModalDialog :label :shown :closed :title background="var(--main-bg)">
+  <ul class="post-privacy">
+    {{#each postPrivacyOptions as option}}
+      <li class="post-privacy-item">
+        <button class="post-privacy-button" on:click="onClick(option)">
+          <svg>
+            <use xlink:href="{{option.icon}}" />
+          </svg>
+          <span>
+            {{option.label}}
+          </span>
+          <svg class="{{isSelected(option, postPrivacy) ? '' : 'hidden'}}"
+               aria-hidden="{{!isSelected(option, postPrivacy)}}">
+            <use xlink:href="#fa-check" />
+          </svg>
+        </button>
+      </li>
+    {{/each}}
+  </ul>
+</ModalDialog>
+<style>
+  .post-privacy {
+    list-style: none;
+    width: 100%;
+    border: 1px solid var(--settings-list-item-border);
+    box-sizing: border-box;
+    min-width: 300px;
+    max-width: calc(100vw - 20px);
+  }
+  .post-privacy-item {
+    border: 1px solid var(--settings-list-item-border);
+    font-size: 1.3em;
+    display: flex;
+  }
+  .post-privacy-item svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--svg-fill);
+  }
+  .post-privacy-button {
+    flex: 1;
+    padding: 20px;
+    background: var(--settings-list-item-bg);
+    border: none;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+  }
+  .post-privacy-button span {
+    flex: 1;
+  }
+  .post-privacy-button:hover {
+    background: var(--settings-list-item-bg-hover);
+  }
+  .post-privacy-button:active {
+    background: var(--settings-list-item-bg-active);
+  }
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import { store } from '../../_store/store'
+  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
+
+  export default {
+    components: {
+      ModalDialog
+    },
+    store: () => store,
+    data: () => ({
+      postPrivacyOptions: POST_PRIVACY_OPTIONS
+    }),
+    helpers: {
+      isSelected: (option, postPrivacy) => postPrivacy.key === option.key
+    },
+    methods: {
+      async show() {
+        this.set({shown: true})
+      },
+      onClick(option) {
+        let postPrivacy = store.get('postPrivacy')
+        let instanceName = store.get('currentInstance')
+        let realm = this.get('realm')
+        postPrivacy[instanceName] = postPrivacy[instanceName] || {}
+        postPrivacy[instanceName][realm] = option.key
+        store.set({postPrivacy})
+        this.set({closed: true})
+      }
+    },
+    computed: {
+      postPrivacy: (postPrivacyKey) => {
+        return POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey)
+      },
+      postPrivacyKey: ($currentPostPrivacy, $currentVerifyCredentials, realm) => {
+        return $currentPostPrivacy[realm] || $currentVerifyCredentials.source.privacy
+      }
+    }
+  }
+</script>

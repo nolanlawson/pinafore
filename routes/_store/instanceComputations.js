@@ -1,4 +1,21 @@
+function computeForInstance (store, computedKey, key, defaultValue) {
+  store.compute(computedKey,
+    [key, 'currentInstance'],
+    (instanceData, currentInstance) => (currentInstance && instanceData[currentInstance]) || defaultValue)
+}
+
 export function instanceComputations (store) {
+  computeForInstance(store, 'currentTheme', 'instanceThemes', 'default')
+  computeForInstance(store, 'currentVerifyCredentials', 'verifyCredentials', null)
+  computeForInstance(store, 'currentInstanceInfo', 'instanceInfos', null)
+  computeForInstance(store, 'pinnedPage', 'pinnedPages', '/local')
+  computeForInstance(store, 'lists', 'instanceLists', [])
+  computeForInstance(store, 'currentStatusModifications', 'statusModifications', null)
+  computeForInstance(store, 'currentComposeText', 'composeText', {})
+  computeForInstance(store, 'currentUploadedMedia', 'uploadedMedia', {})
+  computeForInstance(store, 'currentCustomEmoji', 'customEmoji', [])
+  computeForInstance(store, 'currentPostPrivacy', 'postPrivacy', {})
+
   store.compute(
     'isUserLoggedIn',
     ['currentInstance', 'loggedInInstances'],
@@ -34,37 +51,6 @@ export function instanceComputations (store) {
   )
 
   store.compute(
-    'currentTheme',
-    ['currentInstance', 'instanceThemes'],
-    (currentInstance, instanceThemes) => {
-      return instanceThemes[currentInstance] || 'default'
-    }
-  )
-
-  store.compute(
-    'currentVerifyCredentials',
-    ['currentInstance', 'verifyCredentials'],
-    (currentInstance, verifyCredentials) => verifyCredentials && verifyCredentials[currentInstance]
-  )
-
-  store.compute(
-    'currentInstanceInfo',
-    ['currentInstance', 'instanceInfos'],
-    (currentInstance, instanceInfos) => instanceInfos && instanceInfos[currentInstance]
-  )
-
-  store.compute(
-    'pinnedPage',
-    ['pinnedPages', 'currentInstance'],
-    (pinnedPages, currentInstance) => (currentInstance && pinnedPages[currentInstance]) || '/local')
-
-  store.compute(
-    'lists',
-    ['instanceLists', 'currentInstance'],
-    (instanceLists, currentInstance) => (currentInstance && instanceLists[currentInstance]) || []
-  )
-
-  store.compute(
     'pinnedListTitle',
     ['lists', 'pinnedPage'],
     (lists, pinnedPage) => {
@@ -91,29 +77,6 @@ export function instanceComputations (store) {
 
   store.compute('hasNotifications',
     ['numberOfNotifications'],
-    (numberOfNotifications) => {
-      return !!numberOfNotifications
-    }
-  )
-
-  store.compute('currentStatusModifications',
-    ['statusModifications', 'currentInstance'],
-    (statusModifications, currentInstance) => {
-      return statusModifications[currentInstance]
-    })
-
-  store.compute('currentComposeText',
-    ['composeText', 'currentInstance'],
-    (composeText, currentInstance) => (composeText[currentInstance] || {})
-  )
-
-  store.compute('currentUploadedMedia',
-    ['uploadedMedia', 'currentInstance'],
-    (uploadedMedia, currentInstance) => (uploadedMedia[currentInstance] || {})
-  )
-
-  store.compute('currentCustomEmoji',
-    ['customEmoji', 'currentInstance'],
-    (customEmoji, currentInstance) => (customEmoji[currentInstance] || [])
+    (numberOfNotifications) => !!numberOfNotifications
   )
 }

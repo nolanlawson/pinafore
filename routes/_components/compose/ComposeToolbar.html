@@ -4,14 +4,22 @@
     href="#fa-smile"
     on:click="onEmojiClick()"
   />
-  <IconButton className="{{$uploadingMedia ? 'spin' : ''}}"
-              label="Add media"
-              href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
-              on:click="onMediaClick()"
-              disabled="{{$uploadingMedia || (uploadedMedia.length === 4)}}"
+  <IconButton
+    className="{{$uploadingMedia ? 'spin' : ''}}"
+    label="Add media"
+    href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
+    on:click="onMediaClick()"
+    disabled="{{$uploadingMedia || (uploadedMedia.length === 4)}}"
   />
-  <IconButton label="Adjust privacy" href="#fa-globe" />
-  <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
+  <IconButton
+    label="Adjust privacy (currently {{postPrivacy.label}})"
+    href="{{postPrivacy.icon}}"
+    on:click="onPostPrivacyClick()"
+  />
+  <IconButton
+    label="Add content warning"
+    href="#fa-exclamation-triangle"
+  />
   <input ref:input
          on:change="onFileChange(event)"
          style="display: none;"
@@ -32,6 +40,7 @@
   import { updateCustomEmojiForInstance } from '../../_actions/emoji'
   import { importDialogs } from '../../_utils/asyncModules'
   import { doMediaUpload } from '../../_actions/media'
+  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
 
   export default {
     oncreate() {
@@ -62,10 +71,20 @@
         let file = e.target.files[0]
         let realm = this.get('realm')
         doMediaUpload(realm, file)
+      },
+      async onPostPrivacyClick() {
+        let dialogs = await importDialogs()
+        dialogs.showPostPrivacyDialog(this.get('realm'))
       }
     },
     computed: {
-      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || []
+      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || [],
+      postPrivacy: (postPrivacyKey) => {
+        return POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey)
+      },
+      postPrivacyKey: ($currentPostPrivacy, $currentVerifyCredentials, realm) => {
+        return $currentPostPrivacy[realm] || $currentVerifyCredentials.source.privacy
+      }
     }
   }
 </script>

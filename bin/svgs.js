@@ -14,6 +14,7 @@ module.exports = [
   {id: 'fa-eye', src: 'node_modules/font-awesome-svg-png/white/svg/eye.svg', title: 'Show Sensitive Content'},
   {id: 'fa-eye-slash', src: 'node_modules/font-awesome-svg-png/white/svg/eye-slash.svg', title: 'Hide Sensitive Content'},
   {id: 'fa-lock', src: 'node_modules/font-awesome-svg-png/white/svg/lock.svg', title: 'Locked'},
+  {id: 'fa-unlock', src: 'node_modules/font-awesome-svg-png/white/svg/unlock.svg', title: 'Unlocked'},
   {id: 'fa-envelope', src: 'node_modules/font-awesome-svg-png/white/svg/envelope.svg', title: 'Sealed Envelope'},
   {id: 'fa-user-times', src: 'node_modules/font-awesome-svg-png/white/svg/user-times.svg', title: 'Stop Following'},
   {id: 'fa-user-plus', src: 'node_modules/font-awesome-svg-png/white/svg/user-plus.svg', title: 'Follow'},
@@ -25,7 +26,8 @@ module.exports = [
   {id: 'fa-bars', src: 'node_modules/font-awesome-svg-png/white/svg/bars.svg', title: 'List'},
   {id: 'fa-volume-off', src: 'node_modules/font-awesome-svg-png/white/svg/volume-off.svg', title: 'Volume off'},
   {id: 'fa-ban', src: 'node_modules/font-awesome-svg-png/white/svg/ban.svg', title: 'Ban'},
-  {id: 'fa-camera', src: 'node_modules/font-awesome-svg-png/white/svg/camera.svg', title: 'Camera'},
-  {id: 'fa-smile', src: 'node_modules/font-awesome-svg-png/white/svg/smile-o.svg', title: 'Smile'},
-  {id: 'fa-exclamation-triangle', src: 'node_modules/font-awesome-svg-png/white/svg/exclamation-triangle.svg', title: 'Warning'}
+  {id: 'fa-camera', src: 'node_modules/font-awesome-svg-png/white/svg/camera.svg', title: 'Add media'},
+  {id: 'fa-smile', src: 'node_modules/font-awesome-svg-png/white/svg/smile-o.svg', title: 'Custom emoji'},
+  {id: 'fa-exclamation-triangle', src: 'node_modules/font-awesome-svg-png/white/svg/exclamation-triangle.svg', title: 'Content warning'},
+  {id: 'fa-check', src: 'node_modules/font-awesome-svg-png/white/svg/check.svg', title: 'Check'}
 ]

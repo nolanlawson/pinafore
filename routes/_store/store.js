@@ -15,7 +15,8 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'markMediaAsSensitive',
   'pinnedPages',
   'composeText',
-  'uploadedMedia'
+  'uploadedMedia',
+  'postPrivacy'
 ])
 
 class PinaforeStore extends LocalStorageStore {
@@ -43,7 +44,9 @@ export const store = new PinaforeStore({
   composeText: {},
   rawComposeText: '',
   customEmoji: {},
-  uploadedMedia: {}
+  uploadedMedia: {},
+  postPrivacy: {},
+  verifyCredentials: {}
 })
 
 mixins(PinaforeStore)

@@ -63,7 +63,7 @@ export async function logOutOfInstance (instanceName) {
 }
 
 function setStoreVerifyCredentials (instanceName, thisVerifyCredentials) {
-  let verifyCredentials = store.get('verifyCredentials') || {}
+  let verifyCredentials = store.get('verifyCredentials')
   verifyCredentials[instanceName] = thisVerifyCredentials
   store.set({verifyCredentials: verifyCredentials})
 }
