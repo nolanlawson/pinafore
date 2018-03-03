@@ -1,8 +1,11 @@
 <div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
   <ComposeAuthor />
+  {{#if contentWarningShown}}
+    <ComposeContentWarning :realm :contentWarning />
+  {{/if}}
   <ComposeInput :realm :text />
   <ComposeLengthGauge :textLength :textOverLimit />
-  <ComposeToolbar :realm :postPrivacy :media />
+  <ComposeToolbar :realm :postPrivacy :media :contentWarningShown />
   <ComposeLengthIndicator :textLength :textOverLimit />
   <ComposeMedia :realm :media />
   <ComposeButton :textLength :textOverLimit />
@@ -14,12 +17,13 @@
     display: grid;
     align-items: flex-start;
     grid-template-areas:
-      "avatar display-name handle    handle"
-      "avatar input        input     input"
-      "avatar gauge        gauge     gauge"
-      "avatar toolbar      toolbar   length"
-      "avatar media        media     media"
-      "avatar button       button    button";
+      "avatar name       handle    handle"
+      "avatar cw         cw        cw"
+      "avatar input      input     input"
+      "avatar gauge      gauge     gauge"
+      "avatar toolbar    toolbar   length"
+      "avatar media      media     media"
+      "avatar button     button    button";
     grid-template-columns: min-content minmax(0, max-content) 1fr 1fr;
     border-bottom: 1px solid var(--main-border);
     width: 560px;
@@ -42,6 +46,7 @@
   import ComposeInput from './ComposeInput.html'
   import ComposeButton from './ComposeButton.html'
   import ComposeMedia from './ComposeMedia.html'
+  import ComposeContentWarning from './ComposeContentWarning.html'
   import { measureText } from '../../_utils/measureText'
   import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
@@ -54,7 +59,8 @@
       ComposeLengthIndicator,
       ComposeInput,
       ComposeButton,
-      ComposeMedia
+      ComposeMedia,
+      ComposeContentWarning
     },
     store: () => store,
     computed: {
@@ -65,7 +71,9 @@
       defaultPostPrivacyKey: ($currentVerifyCredentials) => $currentVerifyCredentials.source.privacy,
       postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
       textLength: (text) => measureText(text),
-      textOverLimit: (textLength) => textLength > CHAR_LIMIT
+      textOverLimit: (textLength) => textLength > CHAR_LIMIT,
+      contentWarningShown: (composeData) => composeData.contentWarningShown,
+      contentWarning: (composeData) => composeData.contentWarning || ''
     }
   }
 </script>

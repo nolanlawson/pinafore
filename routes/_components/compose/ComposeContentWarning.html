@@ -1,0 +1,49 @@
+<input class="content-warning-input"
+       type="text"
+       placeholder="Content warning"
+       aria-label="Content warning"
+       bind:value=rawText
+/>
+<style>
+  .content-warning-input {
+    grid-area: cw;
+    font-size: 1.2em;
+    margin: 10px 0 0 5px;
+    padding: 10px;
+    border: 1px solid var(--input-border);
+    width: calc(100% - 5px);
+  }
+</style>
+<script>
+  import { store } from '../../_store/store'
+  import debounce from 'lodash/debounce'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+
+  export default {
+    oncreate() {
+      this.setupSyncFromStore()
+      this.setupSyncToStore()
+    },
+    store: () => store,
+    data: () => ({
+      rawText: ''
+    }),
+    methods: {
+      setupSyncFromStore() {
+        this.observe('contentWarning', contentWarning => {
+          this.set({rawText: contentWarning})
+        })
+      },
+      setupSyncToStore() {
+        const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+        this.observe('rawText', rawText => {
+          this.store.setComposeData(this.get('realm'), {
+            contentWarning: rawText
+          })
+          saveText()
+        }, {init: false})
+      }
+    }
+  }
+</script>

@@ -33,6 +33,7 @@ test('inserts media', async t => {
 test('removes media', async t => {
   await t.useRole(foobarRole)
   await (uploadKittenImage(1)())
+  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
   await (uploadKittenImage(2)())
   await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
     .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')

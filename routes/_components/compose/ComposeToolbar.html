@@ -17,8 +17,11 @@
     on:click="onPostPrivacyClick()"
   />
   <IconButton
-    label="Add content warning"
+    label="{{contentWarningShown ? 'Remove content warning' : 'Add content warning'}}"
     href="#fa-exclamation-triangle"
+    on:click="onContentWarningClick()"
+    pressable="true"
+    pressed="{{contentWarningShown}}"
   />
   <input ref:input
          on:change="onFileChange(event)"
@@ -40,7 +43,7 @@
   import { updateCustomEmojiForInstance } from '../../_actions/emoji'
   import { importDialogs } from '../../_utils/asyncModules'
   import { doMediaUpload } from '../../_actions/media'
-  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
+  import { toggleContentWarningShown } from '../../_actions/contentWarnings'
 
   export default {
     oncreate() {
@@ -75,6 +78,9 @@
       async onPostPrivacyClick() {
         let dialogs = await importDialogs()
         dialogs.showPostPrivacyDialog(this.get('realm'))
+      },
+      onContentWarningClick() {
+        toggleContentWarningShown(this.get('realm'))
       }
     }
   }
