@@ -9,7 +9,7 @@
     label="Add media"
     href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
     on:click="onMediaClick()"
-    disabled="{{$uploadingMedia || (composeMedia.length === 4)}}"
+    disabled="{{$uploadingMedia || (media.length === 4)}}"
   />
   <IconButton
     label="Adjust privacy (currently {{postPrivacy.label}})"
@@ -62,7 +62,7 @@
       async onEmojiClick() {
         /* no await */ updateCustomEmojiForInstance(this.store.get('currentInstance'))
         let dialogs = await importDialogs()
-        dialogs.showEmojiDialog()
+        dialogs.showEmojiDialog(this.get('realm'))
       },
       onMediaClick() {
         this.refs.input.click()
@@ -75,16 +75,6 @@
       async onPostPrivacyClick() {
         let dialogs = await importDialogs()
         dialogs.showPostPrivacyDialog(this.get('realm'))
-      }
-    },
-    computed: {
-      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
-      composeMedia: (composeData) => composeData.media || [],
-      postPrivacy: (postPrivacyKey) => {
-        return POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey)
-      },
-      postPrivacyKey: (composeData, $currentVerifyCredentials) => {
-        return composeData.postPrivacy || $currentVerifyCredentials.source.privacy
       }
     }
   }

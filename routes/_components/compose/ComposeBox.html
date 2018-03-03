@@ -1,11 +1,11 @@
 <div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
   <ComposeAuthor />
-  <ComposeInput :realm />
-  <ComposeLengthGauge />
-  <ComposeToolbar :realm />
-  <ComposeLengthIndicator />
-  <ComposeMedia :realm />
-  <ComposeButton />
+  <ComposeInput :realm :text />
+  <ComposeLengthGauge :textLength :textOverLimit />
+  <ComposeToolbar :realm :postPrivacy :media />
+  <ComposeLengthIndicator :textLength :textOverLimit />
+  <ComposeMedia :realm :media />
+  <ComposeButton :textLength :textOverLimit />
 </div>
 <style>
   .compose-box {
@@ -42,6 +42,9 @@
   import ComposeInput from './ComposeInput.html'
   import ComposeButton from './ComposeButton.html'
   import ComposeMedia from './ComposeMedia.html'
+  import { measureText } from '../../_utils/measureText'
+  import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
+  import { store } from '../../_store/store'
 
   export default {
     components: {
@@ -52,6 +55,17 @@
       ComposeInput,
       ComposeButton,
       ComposeMedia
+    },
+    store: () => store,
+    computed: {
+      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
+      text: (composeData) => composeData.text || '',
+      media: (composeData) => composeData.media || [],
+      postPrivacy: (postPrivacyKey) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
+      defaultPostPrivacyKey: ($currentVerifyCredentials) => $currentVerifyCredentials.source.privacy,
+      postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
+      textLength: (text) => measureText(text),
+      textOverLimit: (textLength) => textLength > CHAR_LIMIT
     }
   }
 </script>

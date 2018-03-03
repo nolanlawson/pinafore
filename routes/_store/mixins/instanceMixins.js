@@ -1,10 +1,9 @@
 export function instanceMixins (Store) {
-  Store.prototype.setComposeData = function (realm, key, value) {
+  Store.prototype.setComposeData = function (realm, obj) {
     let composeData = this.get('composeData')
     let instanceName = this.get('currentInstance')
-    composeData[instanceName] = composeData[instanceName] || {}
-    composeData[instanceName][realm] = composeData[instanceName][realm] || {}
-    composeData[instanceName][realm][key] = value
+    let instanceNameData = composeData[instanceName] = composeData[instanceName] || {}
+    instanceNameData[realm] = Object.assign(instanceNameData[realm] || {}, obj)
     this.set({composeData})
   }
 

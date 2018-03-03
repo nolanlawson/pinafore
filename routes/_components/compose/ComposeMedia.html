@@ -1,20 +1,19 @@
-{{#if composeMedia.length}}
-  <div class="compose-media-container" style="grid-template-columns: repeat({{composeMedia.length}}, 1fr);">
-    {{#each composeMedia as media, i}}
+{{#if media.length}}
+  <div class="compose-media-container" style="grid-template-columns: repeat({{media.length}}, 1fr);">
+    {{#each media as mediaItem, i}}
       <div class="compose-media">
-        <img src="{{media.data.preview_url}}" alt="{{media.file.name}}"/>
+        <img src="{{mediaItem.data.preview_url}}" alt="{{mediaItem.file.name}}"/>
         <div class="compose-media-delete">
           <button class="compose-media-delete-button"
-                  data-a11y-dialog-hide aria-label="Delete {{media.file.name}}"
-                  on:click="onDeleteMedia(i)"
-          >
+                  data-a11y-dialog-hide aria-label="Delete {{mediaItem.file.name}}"
+                  on:click="onDeleteMedia(i)" >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="compose-media-alt">
           <input type="text"
                  placeholder="Description"
-                 aria-label="Describe {{media.file.name}} for the visually impaired">
+                 aria-label="Describe {{mediaItem.file.name}} for the visually impaired">
         </div>
       </div>
     {{/each}}
@@ -98,10 +97,6 @@
       onDeleteMedia(i) {
         deleteMedia(this.get('realm'), i)
       }
-    },
-    computed: {
-      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
-      composeMedia: (composeData) => composeData.media || []
     }
   }
 </script>

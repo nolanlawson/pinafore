@@ -22,8 +22,7 @@ export function switchToInstance (instanceName) {
   store.set({
     currentInstance: instanceName,
     searchResults: null,
-    queryInSearch: '',
-    rawComposeText: ''
+    queryInSearch: ''
   })
   store.save()
   switchToTheme(instanceThemes[instanceName])
@@ -49,7 +48,6 @@ export async function logOutOfInstance (instanceName) {
     currentInstance: newInstance,
     searchResults: null,
     queryInSearch: '',
-    rawComposeText: '',
     composeData: composeData
   })
   store.save()

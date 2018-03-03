@@ -1,11 +1,12 @@
 import EmojiDialog from './EmojiDialog.html'
 
-export function showEmojiDialog () {
+export function showEmojiDialog (realm) {
   let emojiDialog = new EmojiDialog({
     target: document.getElementById('modal-dialog'),
     data: {
       label: 'Emoji dialog',
-      title: 'Custom emoji'
+      title: 'Custom emoji',
+      realm
     }
   })
   emojiDialog.show()

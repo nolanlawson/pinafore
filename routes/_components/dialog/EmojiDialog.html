@@ -74,7 +74,7 @@
         this.set({shown: true})
       },
       onClickEmoji(emoji) {
-        insertEmoji(emoji)
+        insertEmoji(this.get('realm'), emoji)
         this.set({closed: true})
       }
     }

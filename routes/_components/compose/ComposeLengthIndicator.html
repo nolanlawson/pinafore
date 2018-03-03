@@ -1,6 +1,6 @@
-<span class="compose-box-length {{$rawComposeTextOverLimit ? 'over-char-limit' : ''}}"
-      aria-label="{{inputLengthLabel}}">
-      {{inputLengthToDisplayAfterRaf || '0'}}
+<span class="compose-box-length {{textOverLimit ? 'over-char-limit' : ''}}"
+      aria-label="{{lengthLabel}}">
+      {{lengthToDisplayAfterRaf || '0'}}
     </span>
 <style>
   .compose-box-length {
@@ -23,24 +23,24 @@
   export default {
     oncreate() {
       // perf improvement for keyboard input latency
-      this.observe('inputLengthToDisplay', inputLengthToDisplay => {
+      this.observe('lengthToDisplay', lengthToDisplay => {
         requestAnimationFrame(() => {
-          mark('set inputLengthToDisplayAfterRaf')
-          this.set({inputLengthToDisplayAfterRaf: inputLengthToDisplay})
-          stop('set inputLengthToDisplayAfterRaf')
+          mark('set lengthToDisplayAfterRaf')
+          this.set({lengthToDisplayAfterRaf: lengthToDisplay})
+          stop('set lengthToDisplayAfterRaf')
         })
       })
     },
     store: () => store,
     computed: {
-      inputLengthToDisplay: ($rawComposeTextLength) => {
-        return CHAR_LIMIT - $rawComposeTextLength
+      lengthToDisplay: (textLength) => {
+        return CHAR_LIMIT - textLength
       },
-      inputLengthLabel: ($rawComposeTextOverLimit, inputLengthToDisplay) => {
-        if ($rawComposeTextOverLimit) {
-          return `${inputLengthToDisplay} characters over limit`
+      lengthLabel: (textOverLimit, lengthToDisplay) => {
+        if (textOverLimit) {
+          return `${lengthToDisplay} characters over limit`
         } else {
-          return `${inputLengthToDisplay} characters remaining`
+          return `${lengthToDisplay} characters remaining`
         }
       }
     }

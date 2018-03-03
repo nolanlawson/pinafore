@@ -17,13 +17,11 @@ export async function updateCustomEmojiForInstance (instanceName) {
   )
 }
 
-export function insertEmoji (emoji) {
+export function insertEmoji (realm, emoji) {
   let idx = store.get('composeSelectionStart') || 0
-  let oldText = store.get('rawComposeText') || ''
+  let oldText = store.getComposeData(realm, 'text')
   let pre = oldText ? substring(oldText, 0, idx) : ''
   let post = oldText ? substring(oldText, idx) : ''
   let newText = `${pre}:${emoji.shortcode}: ${post}`
-  store.set({
-    rawComposeText: newText
-  })
+  store.setComposeData(realm, {text: newText})
 }

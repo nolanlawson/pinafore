@@ -16,8 +16,8 @@
   export default {
     store: () => store,
     computed: {
-      disabled: ($rawComposeTextOverLimit, $rawComposeTextLength) => {
-        return $rawComposeTextOverLimit || $rawComposeTextLength === 0
+      disabled: (textOverLimit, textLength) => {
+        return textOverLimit || textLength === 0
       }
     }
   }

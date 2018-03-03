@@ -39,7 +39,6 @@ export const store = new PinaforeStore({
   pinnedStatuses: {},
   instanceInfos: {},
   statusModifications: {},
-  rawComposeText: '',
   customEmoji: {},
   composeData: {},
   verifyCredentials: {}

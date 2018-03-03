@@ -2,7 +2,7 @@
   class="compose-box-input"
   placeholder="What's on your mind?"
   ref:textarea
-  bind:value=$rawComposeText
+  bind:value=rawText
   on:blur="onBlur()"
 ></textarea>
 <style>
@@ -41,17 +41,16 @@
     },
     methods: {
       setupSyncFromStore() {
-        let composeText = this.get('composeText')
-        this.store.set({
-          rawComposeText: composeText
+        this.observe('text', text => {
+          this.set({rawText: text})
         })
       },
       setupSyncToStore() {
         const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
-        this.observe('rawComposeText', rawComposeText => {
+        this.observe('rawText', rawText => {
           let realm = this.get('realm')
-          this.store.setComposeData(realm, 'text', rawComposeText)
+          this.store.setComposeData(realm, {text: rawText})
           saveText()
         }, {init: false})
       },
@@ -72,10 +71,8 @@
       }
     },
     store: () => store,
-    computed: {
-      rawComposeText: ($rawComposeText) => $rawComposeText,
-      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
-      composeText: (composeData) => composeData.text || ''
-    }
+    data: () => ({
+      rawText: ''
+    })
   }
 </script>
