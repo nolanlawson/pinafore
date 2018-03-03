@@ -60,6 +60,7 @@
   import ModalDialog from './ModalDialog.html'
   import { store } from '../../_store/store'
   import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
+  import { setPostPrivacy } from '../../_actions/postPrivacy'
 
   export default {
     components: {
@@ -77,21 +78,17 @@
         this.set({shown: true})
       },
       onClick(option) {
-        let postPrivacy = store.get('postPrivacy')
-        let instanceName = store.get('currentInstance')
-        let realm = this.get('realm')
-        postPrivacy[instanceName] = postPrivacy[instanceName] || {}
-        postPrivacy[instanceName][realm] = option.key
-        store.set({postPrivacy})
+        setPostPrivacy(this.get('realm'), option.key)
         this.set({closed: true})
       }
     },
     computed: {
+      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
       postPrivacy: (postPrivacyKey) => {
         return POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey)
       },
-      postPrivacyKey: ($currentPostPrivacy, $currentVerifyCredentials, realm) => {
-        return $currentPostPrivacy[realm] || $currentVerifyCredentials.source.privacy
+      postPrivacyKey: (composeData, $currentVerifyCredentials) => {
+        return composeData.postPrivacy || $currentVerifyCredentials.source.privacy
       }
     }
   }

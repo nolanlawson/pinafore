@@ -1,5 +1,5 @@
-import { CHAR_LIMIT } from '../_static/statuses'
-import { measureText } from '../_utils/measureText'
+import { CHAR_LIMIT } from '../../_static/statuses'
+import { measureText } from '../../_utils/measureText'
 
 export function statusComputations (store) {
   store.compute('rawComposeTextLength',

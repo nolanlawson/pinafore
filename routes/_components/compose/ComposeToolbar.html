@@ -9,7 +9,7 @@
     label="Add media"
     href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
     on:click="onMediaClick()"
-    disabled="{{$uploadingMedia || (uploadedMedia.length === 4)}}"
+    disabled="{{$uploadingMedia || (composeMedia.length === 4)}}"
   />
   <IconButton
     label="Adjust privacy (currently {{postPrivacy.label}})"
@@ -78,12 +78,13 @@
       }
     },
     computed: {
-      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || [],
+      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
+      composeMedia: (composeData) => composeData.media || [],
       postPrivacy: (postPrivacyKey) => {
         return POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey)
       },
-      postPrivacyKey: ($currentPostPrivacy, $currentVerifyCredentials, realm) => {
-        return $currentPostPrivacy[realm] || $currentVerifyCredentials.source.privacy
+      postPrivacyKey: (composeData, $currentVerifyCredentials) => {
+        return composeData.postPrivacy || $currentVerifyCredentials.source.privacy
       }
     }
   }

@@ -1,6 +1,6 @@
-import { observers } from './observers'
-import { computations } from './computations'
-import { mixins } from './mixins'
+import { observers } from './observers/observers'
+import { computations } from './computations/computations'
+import { mixins } from './mixins/mixins'
 import { LocalStorageStore } from './LocalStorageStore'
 
 const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
@@ -14,9 +14,7 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'autoplayGifs',
   'markMediaAsSensitive',
   'pinnedPages',
-  'composeText',
-  'uploadedMedia',
-  'postPrivacy'
+  'composeData'
 ])
 
 class PinaforeStore extends LocalStorageStore {
@@ -41,11 +39,9 @@ export const store = new PinaforeStore({
   pinnedStatuses: {},
   instanceInfos: {},
   statusModifications: {},
-  composeText: {},
   rawComposeText: '',
   customEmoji: {},
-  uploadedMedia: {},
-  postPrivacy: {},
+  composeData: {},
   verifyCredentials: {}
 })
 

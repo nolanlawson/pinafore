@@ -11,10 +11,8 @@ export function instanceComputations (store) {
   computeForInstance(store, 'pinnedPage', 'pinnedPages', '/local')
   computeForInstance(store, 'lists', 'instanceLists', [])
   computeForInstance(store, 'currentStatusModifications', 'statusModifications', null)
-  computeForInstance(store, 'currentComposeText', 'composeText', {})
-  computeForInstance(store, 'currentUploadedMedia', 'uploadedMedia', {})
   computeForInstance(store, 'currentCustomEmoji', 'customEmoji', [])
-  computeForInstance(store, 'currentPostPrivacy', 'postPrivacy', {})
+  computeForInstance(store, 'currentComposeData', 'composeData', {})
 
   store.compute(
     'isUserLoggedIn',

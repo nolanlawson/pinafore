@@ -9,21 +9,15 @@ export async function doMediaUpload (realm, file) {
   store.set({uploadingMedia: true})
   try {
     let response = await uploadMedia(instanceName, accessToken, file)
-    let uploadedMedia = store.get('uploadedMedia')
-    uploadedMedia[instanceName] = uploadedMedia[instanceName] || {}
-    uploadedMedia[instanceName][realm] = uploadedMedia[instanceName][realm] || []
-    uploadedMedia[instanceName][realm].push({
+    let composeMedia = store.getComposeData(realm, 'media') || []
+    composeMedia.push({
       data: response,
-      file: {
-        name: file.name
-      }
+      file: { name: file.name }
     })
     let rawComposeText = store.get('rawComposeText') || ''
     rawComposeText += ' ' + response.text_url
-    store.set({
-      uploadedMedia,
-      rawComposeText
-    })
+    store.setComposeData(realm, 'media', composeMedia)
+    store.set({rawComposeText})
     scheduleIdleTask(() => store.save())
   } catch (e) {
     console.error(e)
@@ -34,18 +28,14 @@ export async function doMediaUpload (realm, file) {
 }
 
 export function deleteMedia (realm, i) {
-  let uploadedMedia = store.get('uploadedMedia')
-  let instanceName = store.get('currentInstance')
-  let uploadedMediaArray = uploadedMedia[instanceName][realm]
-  let deletedMedia = uploadedMediaArray.splice(i, 1)[0]
+  let composeMedia = store.getComposeData(realm, 'media')
+  let deletedMedia = composeMedia.splice(i, 1)[0]
 
   let rawComposeText = store.get('rawComposeText') || ''
 
   rawComposeText = rawComposeText.replace(' ' + deletedMedia.data.text_url, '')
 
-  store.set({
-    uploadedMedia,
-    rawComposeText
-  })
+  store.setComposeData(realm, 'media', composeMedia)
+  store.set({rawComposeText})
   scheduleIdleTask(() => store.save())
 }

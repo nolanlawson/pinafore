@@ -41,22 +41,17 @@
     },
     methods: {
       setupSyncFromStore() {
-        let currentComposeText = store.get('currentComposeText')
-        let realm = this.get('realm')
+        let composeText = this.get('composeText')
         this.store.set({
-          rawComposeText: currentComposeText[realm] || ''
+          rawComposeText: composeText
         })
       },
       setupSyncToStore() {
         const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawComposeText', rawComposeText => {
-          let composeText = this.store.get('composeText')
-          let currentInstance = this.store.get('currentInstance')
           let realm = this.get('realm')
-          composeText[currentInstance] = composeText[currentInstance] || {}
-          composeText[currentInstance][realm] = rawComposeText || ''
-          this.store.set({composeText: composeText})
+          this.store.setComposeData(realm, 'text', rawComposeText)
           saveText()
         }, {init: false})
       },
@@ -79,8 +74,8 @@
     store: () => store,
     computed: {
       rawComposeText: ($rawComposeText) => $rawComposeText,
-      currentComposeText: ($currentComposeText) => $currentComposeText,
-      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || []
+      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
+      composeText: (composeData) => composeData.text || ''
     }
   }
 </script>

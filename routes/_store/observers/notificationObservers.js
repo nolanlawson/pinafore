@@ -1,5 +1,5 @@
-import { setFavicon } from '../_utils/setFavicon'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { setFavicon } from '../../_utils/setFavicon'
+import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
 let currentFaviconHasNotifications = false
 

@@ -1,4 +1,4 @@
-function timelineMixins (Store) {
+export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {
     let timelines = this.get('timelines') || {}
     let timelineData = timelines[instanceName] || {}
@@ -18,8 +18,4 @@ function timelineMixins (Store) {
     let timelineName = this.get('currentTimeline')
     this.setForTimeline(instanceName, timelineName, obj)
   }
-}
-
-export function mixins (Store) {
-  timelineMixins(Store)
 }

@@ -1,6 +1,6 @@
-import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../_actions/instances'
-import { updateLists } from '../_actions/lists'
-import { createStream } from '../_actions/streaming'
+import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances'
+import { updateLists } from '../../_actions/lists'
+import { createStream } from '../../_actions/streaming'
 
 export function instanceObservers (store) {
   // stream to watch for home timeline updates and notifications
