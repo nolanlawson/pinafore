@@ -1,4 +1,4 @@
-import { getNthDeleteMediaButton, getNthMedia, mediaButton, uploadKittenImage } from '../utils'
+import { composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton, uploadKittenImage } from '../utils'
 import { foobarRole } from '../roles'
 
 fixture`13-compose-media.js`
@@ -39,4 +39,18 @@ test('removes media', async t => {
     .click(getNthDeleteMediaButton(2))
     .expect(getNthMedia(2).exists).notOk()
     .expect(getNthMedia(1).exists).ok()
+    .click(getNthDeleteMediaButton(1))
+    .expect(getNthMedia(2).exists).notOk()
+})
+
+test('changes URLs as media is added/removed', async t => {
+  await t.useRole(foobarRole)
+  await (uploadKittenImage(1)())
+  await t.expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+$/)
+  await (uploadKittenImage(1)())
+  await t.expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+ http:\/\/localhost:3000\/media\/\S+$/)
+    .click(getNthDeleteMediaButton(1))
+    .expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+$/)
+    .click(getNthDeleteMediaButton(1))
+    .expect(composeInput.value).eql('')
 })

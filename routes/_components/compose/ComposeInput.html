@@ -79,7 +79,8 @@
     store: () => store,
     computed: {
       rawComposeText: ($rawComposeText) => $rawComposeText,
-      currentComposeText: ($currentComposeText) => $currentComposeText
+      currentComposeText: ($currentComposeText) => $currentComposeText,
+      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || []
     }
   }
 </script>

@@ -14,7 +14,8 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'autoplayGifs',
   'markMediaAsSensitive',
   'pinnedPages',
-  'composeText'
+  'composeText',
+  'uploadedMedia'
 ])
 
 class PinaforeStore extends LocalStorageStore {

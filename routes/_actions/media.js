@@ -1,6 +1,7 @@
 import { store } from '../_store/store'
 import { uploadMedia } from '../_api/media'
 import { toast } from '../_utils/toast'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 export async function doMediaUpload (realm, file) {
   let instanceName = store.get('currentInstance')
@@ -13,9 +14,17 @@ export async function doMediaUpload (realm, file) {
     uploadedMedia[instanceName][realm] = uploadedMedia[instanceName][realm] || []
     uploadedMedia[instanceName][realm].push({
       data: response,
-      file: file
+      file: {
+        name: file.name
+      }
     })
-    store.set({ uploadedMedia })
+    let rawComposeText = store.get('rawComposeText') || ''
+    rawComposeText += ' ' + response.text_url
+    store.set({
+      uploadedMedia,
+      rawComposeText
+    })
+    scheduleIdleTask(() => store.save())
   } catch (e) {
     console.error(e)
     toast.say('Failed to upload media: ' + (e.message || ''))
@@ -28,7 +37,15 @@ export function deleteMedia (realm, i) {
   let uploadedMedia = store.get('uploadedMedia')
   let instanceName = store.get('currentInstance')
   let uploadedMediaArray = uploadedMedia[instanceName][realm]
+  let deletedMedia = uploadedMediaArray.splice(i, 1)[0]
 
-  uploadedMediaArray.splice(i, 1)
-  store.set({uploadedMedia})
+  let rawComposeText = store.get('rawComposeText') || ''
+
+  rawComposeText = rawComposeText.replace(' ' + deletedMedia.data.text_url, '')
+
+  store.set({
+    uploadedMedia,
+    rawComposeText
+  })
+  scheduleIdleTask(() => store.save())
 }
