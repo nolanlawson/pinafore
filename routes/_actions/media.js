@@ -2,7 +2,7 @@ import { store } from '../_store/store'
 import { uploadMedia } from '../_api/media'
 import { toast } from '../_utils/toast'
 
-export async function doMediaUpload(file) {
+export async function doMediaUpload (file) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   store.set({uploadingMedia: true})

@@ -1,10 +1,11 @@
 import { ClientFunction as exec, Selector as $ } from 'testcafe'
+import * as images from './images'
+import * as blobUtils from './blobUtils'
 
 const SCROLL_INTERVAL = 3
 
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
-export const addInstanceButton = $('.add-new-instance button')
 export const modalDialogContents = $('.modal-dialog-contents')
 export const closeDialogButton = $('.close-dialog-button')
 export const notificationsNavButton = $('nav a[href="/notifications"]')
@@ -36,6 +37,17 @@ export const goBack = exec(() => window.history.back())
 
 export const getComposeSelectionStart = exec(() => composeInput().selectionStart, {
   dependencies: { composeInput }
+})
+
+export const uploadMedia = exec(() => {
+  let blob = blobUtils.base64StringToBlob(images.image1, 'image/png')
+  blob.name = 'foo.png'
+  window.__fakeFileInput(blob)
+}, {
+  dependencies: {
+    images,
+    blobUtils
+  }
 })
 
 export function getNthStatus (n) {
@@ -102,18 +114,6 @@ export async function validateTimeline (t, timeline) {
     if (i % SCROLL_INTERVAL === (SCROLL_INTERVAL - 1)) { // only scroll every nth element
       await t.hover(getNthStatus(i))
         .expect($('.loading-footer').exist).notOk()
-    }
-  }
-}
-
-export async function scrollTimelineUp (t) {
-  let oldFirstItem = await getFirstVisibleStatus().getAttribute('aria-posinset')
-  await t.hover(getFirstVisibleStatus())
-  let newFirstItem
-  while (true) {
-    newFirstItem = await getFirstVisibleStatus().getAttribute('aria-posinset')
-    if (newFirstItem === '0' || newFirstItem !== oldFirstItem) {
-      break
     }
   }
 }

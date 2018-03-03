@@ -96,7 +96,11 @@
       "__assets__",
       "test",
       "fixture",
-      "Element"
+      "Element",
+      "FormData",
+      "atob",
+      "btoa",
+      "Blob"
     ],
     "ignore": [
       "dist",

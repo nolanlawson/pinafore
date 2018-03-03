@@ -2,7 +2,7 @@ import { Selector as $ } from 'testcafe'
 import {
   composeButton, composeInput, composeLengthIndicator, emojiButton, getComposeSelectionStart, getUrl,
   homeNavButton,
-  notificationsNavButton
+  notificationsNavButton, uploadMedia
 } from '../utils'
 import { foobarRole } from '../roles'
 import times from 'lodash/times'
@@ -90,4 +90,10 @@ test('inserts emoji without typing anything', async t => {
     .click(emojiButton)
     .click($('button img[title=":blobpeek:"]'))
     .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
+})
+
+test('inserts media', async t => {
+  await t.useRole(foobarRole)
+  await uploadMedia()
+  await t.expect($('.compose-media:nth-child(1) img').getAttribute('alt')).eql('foo.png')
 })
