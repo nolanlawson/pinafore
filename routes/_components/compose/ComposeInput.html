@@ -32,30 +32,46 @@
 
   export default {
     oncreate() {
-      this.store.set({rawComposeText: store.get('currentComposeText')})
-
-      requestAnimationFrame(() => {
-        mark('autosize()')
-        autosize(this.refs.textarea)
-        stop('autosize()')
-      })
-
-      const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-
-      this.observe('rawComposeText', rawComposeText => {
-        let composeText = this.store.get('composeText')
-        let currentInstance = this.store.get('currentInstance')
-        composeText[currentInstance] = rawComposeText || ''
-        this.store.set({composeText: composeText})
-        saveText()
-      }, {init: false})
+      this.setupSyncFromStore()
+      this.setupSyncToStore()
+      this.setupAutosize()
     },
     ondestroy() {
-      mark('autosize.destroy()')
-      autosize.destroy(this.refs.textarea)
-      stop('autosize.destroy()')
+      this.teardownAutosize()
     },
     methods: {
+      setupSyncFromStore() {
+        let currentComposeText = store.get('currentComposeText')
+        let realm = this.get('realm')
+        this.store.set({
+          rawComposeText: currentComposeText[realm] || ''
+        })
+      },
+      setupSyncToStore() {
+        const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+        this.observe('rawComposeText', rawComposeText => {
+          let composeText = this.store.get('composeText')
+          let currentInstance = this.store.get('currentInstance')
+          let realm = this.get('realm')
+          composeText[currentInstance] = composeText[currentInstance] || {}
+          composeText[currentInstance][realm] = rawComposeText || ''
+          this.store.set({composeText: composeText})
+          saveText()
+        }, {init: false})
+      },
+      setupAutosize() {
+        requestAnimationFrame(() => {
+          mark('autosize()')
+          autosize(this.refs.textarea)
+          stop('autosize()')
+        })
+      },
+      teardownAutosize() {
+        mark('autosize.destroy()')
+        autosize.destroy(this.refs.textarea)
+        stop('autosize.destroy()')
+      },
       onBlur() {
         this.store.set({composeSelectionStart: this.refs.textarea.selectionStart})
       }

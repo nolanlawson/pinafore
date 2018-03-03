@@ -5,7 +5,7 @@
 <Layout page='home'>
   {{#if $isUserLoggedIn}}
     {{#if $currentVerifyCredentials}}
-      <ComposeBox verifyCredentials="{{$currentVerifyCredentials}}"/>
+      <ComposeBox realm="home" />
     {{/if}}
     <LazyTimeline timeline='home' />
   {{else}}

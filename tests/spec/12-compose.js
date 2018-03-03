@@ -2,7 +2,7 @@ import { Selector as $ } from 'testcafe'
 import {
   composeButton, composeInput, composeLengthIndicator, emojiButton, getComposeSelectionStart, getUrl,
   homeNavButton,
-  notificationsNavButton, uploadMedia
+  notificationsNavButton
 } from '../utils'
 import { foobarRole } from '../roles'
 import times from 'lodash/times'

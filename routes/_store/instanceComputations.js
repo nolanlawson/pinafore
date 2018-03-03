@@ -104,7 +104,12 @@ export function instanceComputations (store) {
 
   store.compute('currentComposeText',
     ['composeText', 'currentInstance'],
-    (composeText, currentInstance) => (composeText[currentInstance] || '')
+    (composeText, currentInstance) => (composeText[currentInstance] || {})
+  )
+
+  store.compute('currentUploadedMedia',
+    ['uploadedMedia', 'currentInstance'],
+    (uploadedMedia, currentInstance) => (uploadedMedia[currentInstance] || {})
   )
 
   store.compute('currentCustomEmoji',

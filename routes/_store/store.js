@@ -41,7 +41,8 @@ export const store = new PinaforeStore({
   statusModifications: {},
   composeText: {},
   rawComposeText: '',
-  customEmoji: {}
+  customEmoji: {},
+  uploadedMedia: {}
 })
 
 mixins(PinaforeStore)

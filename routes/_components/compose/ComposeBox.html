@@ -1,10 +1,10 @@
 <div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
-  <ComposeAuthor :verifyCredentials />
-  <ComposeInput />
+  <ComposeAuthor />
+  <ComposeInput :realm />
   <ComposeLengthGauge />
-  <ComposeToolbar />
+  <ComposeToolbar :realm />
   <ComposeLengthIndicator />
-  <ComposeMedia />
+  <ComposeMedia :realm />
   <ComposeButton />
 </div>
 <style>

@@ -8,7 +8,7 @@
               label="Add media"
               href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
               on:click="onMediaClick()"
-              disabled="{{$uploadingMedia || ($uploadedMedia && $uploadedMedia.length === 4)}}"
+              disabled="{{$uploadingMedia || (uploadedMedia.length === 4)}}"
   />
   <IconButton label="Adjust privacy" href="#fa-globe" />
   <IconButton label="Add content warning" href="#fa-exclamation-triangle" />
@@ -60,9 +60,12 @@
       },
       onFileChange(e) {
         let file = e.target.files[0]
-        doMediaUpload(file)
+        let realm = this.get('realm')
+        doMediaUpload(realm, file)
       }
+    },
+    computed: {
+      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || []
     }
-
   }
 </script>

@@ -1,6 +1,6 @@
-{{#if $uploadedMedia && $uploadedMedia.length}}
-  <div class="compose-media-container" style="grid-template-columns: repeat({{$uploadedMedia.length}}, 1fr);">
-    {{#each $uploadedMedia as media, i}}
+{{#if uploadedMedia.length}}
+  <div class="compose-media-container" style="grid-template-columns: repeat({{uploadedMedia.length}}, 1fr);">
+    {{#each uploadedMedia as media, i}}
       <div class="compose-media">
         <img src="{{media.data.preview_url}}" alt="{{media.file.name}}"/>
         <div class="compose-media-delete">
@@ -96,8 +96,11 @@
     store: () => store,
     methods: {
       onDeleteMedia(i) {
-        deleteMedia(i)
+        deleteMedia(this.get('realm'), i)
       }
+    },
+    computed: {
+      uploadedMedia: ($currentUploadedMedia, realm) => $currentUploadedMedia[realm] || []
     }
   }
 </script>
