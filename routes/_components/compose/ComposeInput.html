@@ -49,9 +49,11 @@
         const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
+          mark('observe rawText')
           let realm = this.get('realm')
           this.store.setComposeData(realm, {text: rawText})
           saveText()
+          stop('observe rawText')
         }, {init: false})
       },
       setupAutosize() {
