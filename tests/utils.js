@@ -57,6 +57,10 @@ export function getNthMedia (n) {
   return $(`.compose-media:nth-child(${n}) img`)
 }
 
+export function getNthDeleteMediaButton (n) {
+  return $(`.compose-media:nth-child(${n}) .compose-media-delete-button`)
+}
+
 export function getNthStatus (n) {
   return $(`div[aria-hidden="false"] > article[aria-posinset="${n}"]`)
 }

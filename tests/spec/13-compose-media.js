@@ -1,5 +1,4 @@
-import { Selector as $ } from 'testcafe'
-import { getNthMedia, mediaButton, uploadKittenImage } from '../utils'
+import { getNthDeleteMediaButton, getNthMedia, mediaButton, uploadKittenImage } from '../utils'
 import { foobarRole } from '../roles'
 
 fixture`13-compose-media.js`
@@ -25,6 +24,10 @@ test('inserts media', async t => {
     .expect(getNthMedia(3).getAttribute('alt')).eql('kitten3.jpg')
     .expect(getNthMedia(4).getAttribute('alt')).eql('kitten4.jpg')
     .expect(mediaButton.getAttribute('disabled')).eql('')
+    .click(getNthDeleteMediaButton(4))
+    .click(getNthDeleteMediaButton(3))
+    .click(getNthDeleteMediaButton(2))
+    .click(getNthDeleteMediaButton(1))
 })
 
 test('removes media', async t => {
@@ -33,7 +36,7 @@ test('removes media', async t => {
   await (uploadKittenImage(2)())
   await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
     .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
-    .click($('.compose-media:nth-child(2) .compose-media-delete-button'))
+    .click(getNthDeleteMediaButton(2))
     .expect(getNthMedia(2).exists).notOk()
     .expect(getNthMedia(1).exists).ok()
 })
