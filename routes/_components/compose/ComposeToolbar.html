@@ -4,9 +4,11 @@
     href="#fa-smile"
     on:click="onEmojiClick()"
   />
-  <IconButton label="Add media"
-              href="#fa-camera"
+  <IconButton className="{{$uploadingMedia ? 'spin' : ''}}"
+              label="Add media"
+              href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
               on:click="onMediaClick()"
+              disabled="{{$uploadingMedia || ($uploadedMedia && $uploadedMedia.length === 4)}}"
   />
   <IconButton label="Adjust privacy" href="#fa-globe" />
   <IconButton label="Add content warning" href="#fa-exclamation-triangle" />

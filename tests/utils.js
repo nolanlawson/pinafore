@@ -15,6 +15,7 @@ export const composeInput = $('.compose-box-input')
 export const composeButton = $('.compose-box-button')
 export const composeLengthIndicator = $('.compose-box-length')
 export const emojiButton = $('.compose-box-toolbar button:first-child')
+export const mediaButton = $('.compose-box-toolbar button:nth-child(2)')
 export const emailInput = $('input#user_email')
 export const passwordInput = $('input#user_password')
 export const authorizeInput = $('button[type=submit]:not(.negative)')
@@ -39,16 +40,22 @@ export const getComposeSelectionStart = exec(() => composeInput().selectionStart
   dependencies: { composeInput }
 })
 
-export const uploadMedia = exec(() => {
-  let blob = blobUtils.base64StringToBlob(images.image1, 'image/png')
-  blob.name = 'foo.png'
+export const uploadKittenImage = i => (exec(() => {
+  let image = images[`kitten${i}`]
+  let blob = blobUtils.base64StringToBlob(image.data, 'image/png')
+  blob.name = image.name
   window.__fakeFileInput(blob)
 }, {
   dependencies: {
     images,
-    blobUtils
+    blobUtils,
+    i
   }
-})
+}))
+
+export function getNthMedia (n) {
+  return $(`.compose-media:nth-child(${n}) img`)
+}
 
 export function getNthStatus (n) {
   return $(`div[aria-hidden="false"] > article[aria-posinset="${n}"]`)

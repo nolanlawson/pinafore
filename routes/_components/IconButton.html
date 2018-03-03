@@ -64,12 +64,13 @@
 
   export default {
     computed: {
-      computedClass: (pressable, pressed, big) => {
+      computedClass: (pressable, pressed, big, className) => {
         return [
           'icon-button',
           !pressable && 'not-pressable',
           pressed && 'pressed',
           big && 'big-icon',
+          className
         ].filter(identity).join(' ')
       }
     }

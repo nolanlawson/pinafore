@@ -1,4 +1,4 @@
-<svg class="loading-spinner-icon {{maskStyle ? 'mask-style' : ''}}"
+<svg class="loading-spinner-icon spin {{maskStyle ? 'mask-style' : ''}}"
      style="width: {{size || 64}}px; height: {{size || 64}}px;"
      aria-label="Loading"
 >
@@ -7,22 +7,9 @@
 <style>
   .loading-spinner-icon {
     fill: var(--svg-fill);
-    animation: spin 2s infinite linear;
   }
 
   .loading-spinner-icon.mask-style {
     fill: var(--mask-svg-fill);
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
   }
 </style>

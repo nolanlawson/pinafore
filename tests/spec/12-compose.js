@@ -91,9 +91,3 @@ test('inserts emoji without typing anything', async t => {
     .click($('button img[title=":blobpeek:"]'))
     .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
 })
-
-test('inserts media', async t => {
-  await t.useRole(foobarRole)
-  await uploadMedia()
-  await t.expect($('.compose-media:nth-child(1) img').getAttribute('alt')).eql('foo.png')
-})
