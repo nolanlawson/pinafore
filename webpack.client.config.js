@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const config = require('sapper/webpack/config.js')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
@@ -12,6 +11,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.html']
   },
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [
       {
@@ -52,11 +52,6 @@ module.exports = {
     setImmediate: false
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      minChunks: 2,
-      async: false,
-      children: true
-    })
   ].concat(isDev ? [
     new webpack.HotModuleReplacementPlugin()
   ] : [
@@ -67,16 +62,6 @@ module.exports = {
     /* disable while https://github.com/sveltejs/sapper/issues/79 is open */
     // new ExtractTextPlugin('main.css'),
     new LodashModuleReplacementPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new UglifyJSPlugin({
-      parallel: true,
-      uglifyOptions: {
-        comments: false,
-        compress: {
-          drop_console: true
-        }
-      }
-    }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
       generateStatsFile: true,
