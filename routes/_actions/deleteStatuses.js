@@ -2,7 +2,6 @@ import { getIdsThatRebloggedThisStatus, getIdThatThisStatusReblogged, getNotific
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { database } from '../_database/database'
-import identity from 'lodash/identity'
 
 function deleteStatusIdsFromStore (instanceName, idsToDelete) {
   let idsToDeleteSet = new Set(idsToDelete)
@@ -27,7 +26,7 @@ async function deleteStatusesAndNotifications (instanceName, statusIdsToDelete, 
 async function doDeleteStatus (instanceName, statusId) {
   let reblogId = await getIdThatThisStatusReblogged(instanceName, statusId)
   let rebloggedIds = await getIdsThatRebloggedThisStatus(reblogId || statusId)
-  let statusIdsToDelete = Array.from(new Set([statusId, reblogId].concat(rebloggedIds).filter(identity)))
+  let statusIdsToDelete = Array.from(new Set([statusId, reblogId].concat(rebloggedIds).filter(Boolean)))
   let notificationIdsToDelete = new Set(await getNotificationIdsForStatuses(instanceName, statusIdsToDelete))
   await Promise.all([
     deleteStatusesAndNotifications(instanceName, statusIdsToDelete, notificationIdsToDelete)

@@ -91,7 +91,6 @@
   import StatusContent from './StatusContent.html'
   import StatusSpoiler from './StatusSpoiler.html'
   import { store } from '../../_store/store'
-  import identity from 'lodash/identity'
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
 
@@ -129,7 +128,7 @@
           originalStatus.visibility === 'direct' && 'status-direct',
           timelineType !== 'search' && 'status-in-timeline',
           isStatusInOwnThread && 'status-in-own-thread'
-        ].filter(identity).join(' ')
+        ].filter(Boolean).join(' ')
       }
     },
     methods: {

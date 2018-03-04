@@ -1,4 +1,3 @@
-import identity from 'lodash/identity'
 import { database } from '../_database/database'
 
 export async function getIdThatThisStatusReblogged (instanceName, statusId) {
@@ -10,7 +9,7 @@ export async function getIdsThatTheseStatusesReblogged (instanceName, statusIds)
   let reblogIds = await Promise.all(statusIds.map(async statusId => {
     return getIdThatThisStatusReblogged(instanceName, statusId)
   }))
-  return reblogIds.filter(identity)
+  return reblogIds.filter(Boolean)
 }
 
 export async function getIdsThatRebloggedThisStatus (instanceName, statusId) {
