@@ -1,7 +1,10 @@
 <div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
   <ComposeAuthor />
   {{#if contentWarningShown}}
-    <ComposeContentWarning :realm :contentWarning />
+    <div class="compose-content-warning-wrapper"
+         transition:slide="{duration: 333}">
+      <ComposeContentWarning :realm :contentWarning />
+    </div>
   {{/if}}
   <ComposeInput :realm :text />
   <ComposeLengthGauge :length :overLimit />
@@ -30,6 +33,10 @@
     max-width: calc(100vw - 40px);
   }
 
+  .compose-content-warning-wrapper {
+    grid-area: cw;
+  }
+
   @media (max-width: 767px) {
     .compose-box {
       padding: 10px 10px;
@@ -50,6 +57,7 @@
   import { measureText } from '../../_utils/measureText'
   import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
+  import { slide } from 'svelte-transitions'
 
   export default {
     components: {
@@ -78,6 +86,9 @@
       overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
       contentWarning: (composeData) => composeData.contentWarning || ''
+    },
+    transitions: {
+      slide
     }
   }
 </script>
