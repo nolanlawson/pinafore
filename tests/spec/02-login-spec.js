@@ -1,6 +1,6 @@
 import { Selector as $ } from 'testcafe'
 import {
-  authorizeInput, emailInput, formError, getUrl, instanceInput, passwordInput,
+  authorizeInput, emailInput, formError, getFirstVisibleStatus, getUrl, instanceInput, passwordInput,
   settingsButton
 } from '../utils'
 
@@ -37,6 +37,8 @@ test('Cannot log in to a fake instance', async t => {
 
 test('Logs in and logs out of localhost:3000', async t => {
   await manualLogin(t, 'foobar@localhost:3000', 'foobarfoobar')
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .hover(getFirstVisibleStatus())
     .expect($('article.status-article').exists).ok()
     .click(settingsButton)
     .click($('a').withText('Instances'))

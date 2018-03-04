@@ -1,5 +1,5 @@
 import { Selector as $ } from 'testcafe'
-import { getFirstVisibleStatus, getUrl, validateTimeline } from '../utils'
+import { getFirstVisibleStatus, getNthStatus, getUrl, validateTimeline } from '../utils'
 import { homeTimeline, notifications, localTimeline, favorites } from '../fixtures'
 import { foobarRole } from '../roles'
 
@@ -8,6 +8,7 @@ fixture`03-basic-timeline-spec.js`
 
 test('Shows the home timeline', async t => {
   await t.useRole(foobarRole)
+    .hover(getNthStatus(0))
     .expect(getFirstVisibleStatus().exists).ok()
     .expect(getFirstVisibleStatus().hasAttribute('aria-setsize')).ok()
     .expect(getFirstVisibleStatus().getAttribute('aria-posinset')).eql('0')

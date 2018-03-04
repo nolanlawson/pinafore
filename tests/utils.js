@@ -2,7 +2,7 @@ import { ClientFunction as exec, Selector as $ } from 'testcafe'
 import * as images from './images'
 import * as blobUtils from './blobUtils'
 
-const SCROLL_INTERVAL = 3
+const SCROLL_INTERVAL = 2
 
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
