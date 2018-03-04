@@ -4,11 +4,11 @@
     <ComposeContentWarning :realm :contentWarning />
   {{/if}}
   <ComposeInput :realm :text />
-  <ComposeLengthGauge :textLength :textOverLimit />
+  <ComposeLengthGauge :length :overLimit />
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown />
-  <ComposeLengthIndicator :textLength :textOverLimit />
+  <ComposeLengthIndicator :length :overLimit />
   <ComposeMedia :realm :media />
-  <ComposeButton :textLength :textOverLimit />
+  <ComposeButton :length :overLimit />
 </div>
 <style>
   .compose-box {
@@ -71,7 +71,11 @@
       defaultPostPrivacyKey: ($currentVerifyCredentials) => $currentVerifyCredentials.source.privacy,
       postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
       textLength: (text) => measureText(text),
-      textOverLimit: (textLength) => textLength > CHAR_LIMIT,
+      contentWarningLength: (contentWarning) => measureText(contentWarning),
+      length: (textLength, contentWarningLength, contentWarningShown) => {
+        return textLength + (contentWarningShown ? contentWarningLength : 0)
+      },
+      overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
       contentWarning: (composeData) => composeData.contentWarning || ''
     }

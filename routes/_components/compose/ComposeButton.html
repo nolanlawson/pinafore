@@ -16,9 +16,7 @@
   export default {
     store: () => store,
     computed: {
-      disabled: (textOverLimit, textLength) => {
-        return textOverLimit || textLength === 0
-      }
+      disabled: (overLimit, length) => overLimit || length === 0
     }
   }
 </script>

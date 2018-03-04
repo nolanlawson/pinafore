@@ -1,4 +1,4 @@
-<span class="compose-box-length {{textOverLimit ? 'over-char-limit' : ''}}"
+<span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
       aria-label="{{lengthLabel}}">
       {{lengthToDisplayAfterRaf || '0'}}
     </span>
@@ -33,11 +33,9 @@
     },
     store: () => store,
     computed: {
-      lengthToDisplay: (textLength) => {
-        return CHAR_LIMIT - textLength
-      },
-      lengthLabel: (textOverLimit, lengthToDisplay) => {
-        if (textOverLimit) {
+      lengthToDisplay: (length) => CHAR_LIMIT - length,
+      lengthLabel: (overLimit, lengthToDisplay) => {
+        if (overLimit) {
           return `${lengthToDisplay} characters over limit`
         } else {
           return `${lengthToDisplay} characters remaining`
