@@ -1,16 +1,21 @@
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {
-    let timelines = this.get('timelines') || {}
-    let timelineData = timelines[instanceName] || {}
-    timelineData[timelineName] = Object.assign(timelineData[timelineName] || {}, obj)
-    timelines[instanceName] = timelineData
-    this.set({timelines: timelines})
+    let valuesToSet = {}
+    for (let key of Object.keys(obj)) {
+      let rootKey = `timelineData_${key}`
+      let root = this.get(rootKey) || {}
+      let instanceData = root[instanceName] = root[instanceName] || {}
+      instanceData[timelineName] = obj[key]
+      valuesToSet[rootKey] = root
+    }
+
+    this.set(valuesToSet)
   }
 
   Store.prototype.getForTimeline = function (instanceName, timelineName, key) {
-    let timelines = this.get('timelines') || {}
-    let timelineData = timelines[instanceName] || {}
-    return (timelineData[timelineName] || {})[key]
+    let rootKey = `timelineData_${key}`
+    let root = this.get(rootKey)
+    return root && root[instanceName] && root[instanceName][timelineName]
   }
 
   Store.prototype.setForCurrentTimeline = function (obj) {
