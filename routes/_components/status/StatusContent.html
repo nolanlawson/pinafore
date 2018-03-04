@@ -127,6 +127,11 @@
             }
           }
         }
+        let externalLinks = Array.from(this.refs.node.querySelectorAll(
+          'a[rel="nofollow noopener"]'))
+        for (let link of externalLinks) {
+          link.setAttribute('title', link.getAttribute('href'))
+        }
         stop('hydrateContent')
       }
     }
