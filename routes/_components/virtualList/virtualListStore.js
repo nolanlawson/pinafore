@@ -1,5 +1,6 @@
 import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
+import { reselect } from '../../_utils/reselect'
 
 const VIEWPORT_RENDER_FACTOR = 3
 
@@ -21,9 +22,10 @@ virtualListStore.computeForRealm('scrollHeight', 0)
 virtualListStore.computeForRealm('offsetHeight', 0)
 virtualListStore.computeForRealm('itemHeights', {})
 
-virtualListStore.compute('visibleItems',
+virtualListStore.compute('rawVisibleItems',
     ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'showHeader', 'headerHeight'],
     (items, scrollTop, itemHeights, offsetHeight, showHeader, headerHeight) => {
+      window.rawVisibleItemsComputed = (window.rawVisibleItemsComputed || 0) + 1
       mark('compute visibleItems')
       if (!items) {
         return null
@@ -57,6 +59,8 @@ virtualListStore.compute('visibleItems',
       stop('compute visibleItems')
       return visibleItems
     })
+
+reselect(virtualListStore, 'visibleItems', 'rawVisibleItems')
 
 virtualListStore.compute('heightWithoutFooter',
     ['items', 'itemHeights', 'showHeader', 'headerHeight'],
@@ -97,6 +101,14 @@ virtualListStore.compute('allVisibleItemsHaveHeight',
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.virtualListStore = virtualListStore
+
+  virtualListStore.observe('visibleItems', () => {
+    window.visibleItemsChangedCount = (window.visibleItemsChangedCount || 0) + 1
+  })
+
+  virtualListStore.observe('rawVisibleItems', () => {
+    window.rawVisibleItemsChangedCount = (window.rawVisibleItemsChangedCount || 0) + 1
+  })
 }
 
 export {
