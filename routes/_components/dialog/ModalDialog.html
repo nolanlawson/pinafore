@@ -1,5 +1,12 @@
-<div class="modal-dialog-backdrop" tabindex="-1" data-a11y-dialog-hide></div>
-<div class="modal-dialog-contents" role="dialog" aria-label="{{label}}" ref:node>
+<div class="modal-dialog-backdrop {{fadedIn ? '' : 'hidden'}}"
+     tabindex="-1"
+     data-a11y-dialog-hide
+></div>
+<div class="modal-dialog-contents {{fadedIn ? '' : 'hidden'}}"
+     role="dialog"
+     aria-label="{{label}}"
+     ref:node
+>
   <div class="modal-dialog-document" role="document" style="background: {{background || '#000'}};">
     <div class="modal-dialog-header">
       {{#if title}}
@@ -26,6 +33,7 @@
     bottom: 0;
     top: 0;
     background: rgba(51, 51, 51, 0.9);
+    transition: opacity 0.2s linear;
   }
   .modal-dialog-contents {
     z-index: 10010;
@@ -39,6 +47,7 @@
     display: flex;
     flex-direction: row;
     max-height: calc(100% - 20px);
+    transition: opacity 0.2s linear;
   }
 
   .modal-dialog-document {
@@ -94,6 +103,9 @@
       this.observe('shown', shown => {
         if (shown) {
           a11yDialog.show()
+          requestAnimationFrame(() => {
+            this.set({ fadedIn: true })
+          })
         }
       })
       this.observe('closed', closed => {
