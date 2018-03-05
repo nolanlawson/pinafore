@@ -1,3 +1,4 @@
+const restoreMastodonData = require ('./restore-mastodon-data')
 const pify = require('pify')
 const exec = require('child-process-promise').exec
 const spawn = require('child-process-promise').spawn
@@ -30,8 +31,8 @@ async function cloneMastodon () {
   }
 }
 
-async function restoreMastodonData () {
-  console.log('Restoring mastodon data...')
+async function setupMastodonDatabase() {
+  console.log('Setting up mastodon database...')
   try {
     await exec('dropdb mastodon_development', {cwd: mastodonDir})
   } catch (e) { /* ignore */ }
@@ -70,8 +71,9 @@ async function runMastodon () {
 
 async function main () {
   await cloneMastodon()
-  await restoreMastodonData()
+  await setupMastodonDatabase()
   await runMastodon()
+  //await restoreMastodonData()
 }
 
 process.on('SIGINT', function () {
