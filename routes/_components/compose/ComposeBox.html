@@ -11,7 +11,7 @@
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown />
   <ComposeLengthIndicator :length :overLimit />
   <ComposeMedia :realm :media />
-  <ComposeButton :length :overLimit />
+  <ComposeButton :length :overLimit on:click="onClickPostButton()" />
 </div>
 <style>
   .compose-box {
@@ -58,6 +58,7 @@
   import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
+  import { postStatus } from '../../_actions/statuses'
 
   export default {
     components: {
@@ -89,6 +90,20 @@
     },
     transitions: {
       slide
+    },
+    methods: {
+      onClickPostButton() {
+        let text = this.get('text')
+        let media = this.get('media')
+        let postPrivacyKey = this.get('postPrivacyKey')
+        let contentWarning = this.get('contentWarning')
+        let sensitive = media.length && !!contentWarning
+        let realm = this.get('realm')
+        let mediaIds = media.map(_ => _.data.id)
+
+        /* no await */ postStatus(realm, text, null, mediaIds,
+          sensitive, contentWarning, postPrivacyKey)
+      }
     }
   }
 </script>

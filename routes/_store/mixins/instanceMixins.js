@@ -14,4 +14,13 @@ export function instanceMixins (Store) {
       composeData[instanceName][realm] &&
       composeData[instanceName][realm][key]
   }
+
+  Store.prototype.clearComposeData = function (realm) {
+    let composeData = this.get('composeData')
+    let instanceName = this.get('currentInstance')
+    if (composeData && composeData[instanceName]) {
+      delete composeData[instanceName][realm]
+    }
+    this.set({composeData})
+  }
 }

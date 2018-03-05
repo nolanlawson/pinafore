@@ -1,6 +1,15 @@
 <button class="primary compose-box-button"
-        :disabled >
-  Toot!
+        :disabled
+        on:click>
+  <span class="{{$postingStatus ? 'hidden' : ''}}">
+    Toot!
+  </span>
+  <div class="compose-box-button-spinner {{$postingStatus ? 'spin' : 'hidden'}}"
+       aria-hidden="true">
+    <svg>
+      <use xlink:href="#fa-spinner" />
+    </svg>
+  </div>
 </button>
 <style>
   .compose-box-button {
@@ -8,6 +17,24 @@
     justify-self: right;
     text-transform: uppercase;
     margin-top: 10px;
+    position: relative;
+  }
+  .compose-box-button-spinner {
+    pointer-events: none;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .compose-box-button-spinner svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--button-primary-text);
   }
 </style>
 <script>
@@ -16,7 +43,7 @@
   export default {
     store: () => store,
     computed: {
-      disabled: (overLimit, length) => overLimit || length === 0
+      disabled: ($postingStatus, overLimit, length) => $postingStatus || overLimit || length === 0
     }
   }
 </script>
