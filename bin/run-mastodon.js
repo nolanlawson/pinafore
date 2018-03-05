@@ -47,6 +47,8 @@ async function restoreMastodonData () {
   await exec(`tar -xzf "${tgzFile}"`, {cwd: systemDir})
 }
 
+// Update all mastodon timestamps so that they occurred very recently,
+// to avoid issues with data being truncated because it's too old.
 async function modifyMastodonData () {
   const pgp = pgPromise()
   const db = pgp({
@@ -55,6 +57,9 @@ async function modifyMastodonData () {
     database: 'mastodon_development',
     user: process.env.USER
   })
+
+  let referenceDate = Date.now() - (24 * 60 * 60 * 1000)
+  let count = 0
 
   let tables = [
     'users', 'statuses', 'status_pins', 'conversations', 'oauth_access_grants',
@@ -66,9 +71,7 @@ async function modifyMastodonData () {
     let results = await db.any(
       `SELECT id FROM ${table} ORDER BY created_at DESC`,
       [])
-    let referenceDate = Date.now() - (24 * 60 * 60 * 1000)
 
-    let count = 0
     for (let row of results) {
       let updated = new Date(referenceDate - (1000 * ++count))
       let created = new Date(referenceDate - (1000 * ++count))
@@ -82,6 +85,40 @@ async function modifyMastodonData () {
           [created, row.id])
       }
     }
+  }
+  let statusIds = (await db.any(
+    `SELECT id FROM statuses ORDER BY id DESC`,
+    []
+  )).map(_ => _.id)
+  let statusIdTables = [
+    'favourites', 'media_attachments', 'mentions', 'preview_cards_statuses',
+    'status_pins', 'statuses_tags'
+  ]
+  let activityIdTables = [
+    'notifications'
+  ]
+  let allTables = ['statuses'].concat(statusIdTables).concat(activityIdTables)
+  for (let table of allTables) {
+    db.none(`ALTER TABLE ${table} DISABLE TRIGGER ALL`)
+  }
+  for (let statusId of statusIds) {
+    let newStatusId = referenceDate - (1000 * ++count)
+    await db.none(
+      'UPDATE statuses SET id = $1 WHERE id = $2',
+      [newStatusId, statusId])
+    for (let statusIdTable of statusIdTables) {
+      await db.none(
+        `UPDATE ${statusIdTable} SET status_id = $1 WHERE status_id = $2`,
+        [newStatusId, statusId])
+    }
+    for (let activityIdTable of activityIdTables) {
+      await db.none(
+        `UPDATE ${activityIdTable} SET activity_id = $1 WHERE activity_id = $2`,
+        [newStatusId, statusId])
+    }
+  }
+  for (let table of allTables) {
+    db.none(`ALTER TABLE ${table} ENABLE TRIGGER ALL`)
   }
   db.$pool.end()
 }
