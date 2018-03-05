@@ -24,7 +24,7 @@ export async function getNotificationIdsForStatuses (instanceName, statusIds) {
   return database.getNotificationIdsForStatuses(instanceName, statusIds)
 }
 
-export async function postStatus(realm, text, inReplyToId, mediaIds,
+export async function postStatus (realm, text, inReplyToId, mediaIds,
                                  sensitive, spoilerText, visibility) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')

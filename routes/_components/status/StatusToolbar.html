@@ -44,11 +44,8 @@
 
   export default {
     oncreate() {
-      this.onFavoriteClick = this.onFavoriteClick.bind(this)
-      this.onReblogClick = this.onReblogClick.bind(this)
-
-      registerClickDelegate(this.get('favoriteKey'), this.onFavoriteClick)
-      registerClickDelegate(this.get('reblogKey'), this.onReblogClick)
+      registerClickDelegate(this.get('favoriteKey'), () => this.onFavoriteClick())
+      registerClickDelegate(this.get('reblogKey'), () => this.onReblogClick())
     },
     ondestroy() {
       unregisterClickDelegate(this.get('favoriteKey'))

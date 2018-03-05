@@ -6,7 +6,7 @@
          aria-setsize="{{length}}"
          aria-label="{{ariaLabel}}"
          on:recalculateHeight>
-  {{#if (notification && (notification.type === 'reblog' || notification.type === 'favourite')) || status.reblog || timelineType === 'pinned'}}
+  {{#if showHeader}}
     <StatusHeader :notification :status :isStatusInNotification :timelineType />
   {{/if}}
   <StatusAuthorName status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
@@ -16,7 +16,8 @@
   {{/if}}
   <StatusSidebar status="{{originalStatus}}" :isStatusInOwnThread />
   {{#if originalStatus.spoiler_text}}
-    <StatusSpoiler status="{{originalStatus}}" :isStatusInOwnThread :contextualStatusId :isStatusInNotification on:recalculateHeight />
+    <StatusSpoiler status="{{originalStatus}}" :isStatusInOwnThread :contextualStatusId :isStatusInNotification
+                   :timelineType :timelineValue on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
@@ -97,10 +98,9 @@
   export default {
     oncreate() {
       let elementKey = this.get('elementKey')
-      let onClickOrKeydown = this.onClickOrKeydown.bind(this)
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
-        registerClickDelegate(elementKey, onClickOrKeydown)
+        registerClickDelegate(elementKey, (e) => this.onClickOrKeydown(e))
       }
     },
     ondestroy() {
@@ -164,6 +164,11 @@
       ariaLabel: (originalAccount, visibility) => {
         return (visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`
+      },
+      showHeader: (notification, status, timelineType) => {
+        return (notification && (notification.type === 'reblog' || notification.type === 'favourite'))
+          || status.reblog
+          || timelineType === 'pinned'
       }
     }
   }

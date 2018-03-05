@@ -42,10 +42,11 @@
       }
       this.store.setForRealm({intersectionStates: intersectionStates})
 
-      this.set({intersectionObserver: new IntersectionObserver(this.onIntersection.bind(this), {
+      let intersectionObserver = new IntersectionObserver(this.onIntersection.bind(this), {
         root: document.querySelector(this.get('containerQuery')),
         rootMargin: '300% 0px'
-      })})
+      })
+      this.set({intersectionObserver})
       this.observe('allItemsHaveHeight', allItemsHaveHeight => {
         console.log('allItemsHaveHeight', allItemsHaveHeight)
         if (allItemsHaveHeight && !this.get('initialized')) {

@@ -1,7 +1,7 @@
 import { auth, basename } from './utils'
 import { postWithTimeout } from '../_utils/ajax'
 
-export async function postStatus(instanceName, accessToken, text, inReplyToId, mediaIds,
+export async function postStatus (instanceName, accessToken, text, inReplyToId, mediaIds,
                                  sensitive, spoilerText, visibility) {
   let url = `${basename(instanceName)}/api/v1/statuses`
 

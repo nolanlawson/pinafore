@@ -2,7 +2,7 @@
   <p>{{status.spoiler_text}}</p>
 </div>
 <div class="status-spoiler-button {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
-  <button type="button" on:click="onClickSpoilerButton()">
+  <button type="button" delegate-key="{{delegateKey}}">
     {{spoilerShown ? 'Show less' : 'Show more'}}
   </button>
 </div>
@@ -40,11 +40,20 @@
 </style>
 <script>
   import { store } from '../../_store/store'
+  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
 
   export default {
+    oncreate() {
+      registerClickDelegate(this.get('delegateKey'), () => this.onClickSpoilerButton())
+    },
+    ondestroy() {
+      unregisterClickDelegate(this.get('delegateKey'))
+    },
     store: () => store,
     computed: {
-      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId]
+      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId],
+      statusId: (status) => status.id,
+      delegateKey: (statusId, timelineType, timelineValue) => `spoiler-${timelineType}-${timelineValue}-${statusId}`
     },
     methods: {
       onClickSpoilerButton() {
