@@ -51,8 +51,7 @@ module.exports = {
   node: {
     setImmediate: false
   },
-  plugins: [
-  ].concat(isDev ? [
+  plugins: isDev ? [
     new webpack.HotModuleReplacementPlugin()
   ] : [
     new webpack.DefinePlugin({
@@ -72,6 +71,6 @@ module.exports = {
       openAnalyzer: false,
       logLevel: 'silent' // do not bother Webpacker, who runs with --json and parses stdout
     })
-  ]).filter(Boolean),
-  devtool: isDev && 'inline-source-map'
+  ],
+  devtool: isDev ? 'cheap-module-source-map' : 'source-map'
 }
