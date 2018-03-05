@@ -8,6 +8,7 @@ const stat = pify(fs.stat.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 const mkdirp = pify(require('mkdirp'))
 const waitForMastodonToStart = require('./wait-for-mastodon-to-start')
+const pgPromise = require('pg-promise')
 
 const envFile = `
 PAPERCLIP_SECRET=foo
@@ -46,6 +47,45 @@ async function restoreMastodonData () {
   await exec(`tar -xzf "${tgzFile}"`, {cwd: systemDir})
 }
 
+async function modifyMastodonData () {
+  const pgp = pgPromise()
+  const db = pgp({
+    host: '127.0.0.1',
+    port: 5432,
+    database: 'mastodon_development',
+    user: process.env.USER
+  })
+
+  let tables = [
+    'users', 'statuses', 'status_pins', 'conversations', 'oauth_access_grants',
+    'oauth_applications', 'session_activations', 'web_settings', 'oauth_access_tokens',
+    'mentions', 'notifications', 'favourites', 'follows', 'media_attachments',
+    'preview_cards', 'stream_entries'
+  ]
+  for (let table of tables) {
+    let results = await db.any(
+      `SELECT id FROM ${table} ORDER BY created_at DESC`,
+      [])
+    let referenceDate = Date.now() - (24 * 60 * 60 * 1000)
+
+    let count = 0
+    for (let row of results) {
+      let updated = new Date(referenceDate - (1000 * ++count))
+      let created = new Date(referenceDate - (1000 * ++count))
+      try {
+        await db.none(
+          `UPDATE ${table} SET updated_at = $1, created_at = $2 WHERE id = $3`,
+          [updated, created, row.id])
+      } catch (e) {
+        await db.none(
+          `UPDATE ${table} SET created_at = $1 WHERE id = $2`,
+          [created, row.id])
+      }
+    }
+  }
+  db.$pool.end()
+}
+
 async function runMastodon () {
   console.log('Running mastodon...')
   let cmds = [
@@ -71,6 +111,7 @@ async function runMastodon () {
 async function main () {
   await cloneMastodon()
   await restoreMastodonData()
+  await modifyMastodonData()
   await runMastodon()
 }
 

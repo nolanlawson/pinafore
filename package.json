@@ -47,6 +47,7 @@
     "npm-run-all": "^4.1.2",
     "p-any": "^1.1.0",
     "performance-now": "^2.1.0",
+    "pg-promise": "^8.1.1",
     "pify": "^3.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
