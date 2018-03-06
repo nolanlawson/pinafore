@@ -74,7 +74,7 @@ export const actions = times(30, i => ({
   {
     user: 'foobar',
     post: {
-      text: "content warning",
+      text: 'content warning',
       spoiler: 'CW'
     }
   },

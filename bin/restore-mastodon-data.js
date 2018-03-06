@@ -15,7 +15,7 @@ global.File = FileApi.File
 global.FormData = FileApi.FormData
 global.fetch = fetch
 
-async function submitMedia(accessToken, filename, alt) {
+async function submitMedia (accessToken, filename, alt) {
   let form = new FormData()
   form.append('file', fs.createReadStream(path.join(__dirname, '../tests/images/' + filename)))
   form.append('description', alt)

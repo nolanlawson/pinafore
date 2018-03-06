@@ -34,7 +34,7 @@ async function cloneMastodon () {
   }
 }
 
-async function setupMastodonDatabase() {
+async function setupMastodonDatabase () {
   console.log('Setting up mastodon database...')
   try {
     await exec('dropdb mastodon_development', {cwd: mastodonDir})
