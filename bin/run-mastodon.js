@@ -1,4 +1,4 @@
-const restoreMastodonData = require ('./restore-mastodon-data')
+const restoreMastodonData = require('./restore-mastodon-data')
 const pify = require('pify')
 const exec = require('child-process-promise').exec
 const spawn = require('child-process-promise').spawn
@@ -71,7 +71,7 @@ async function runMastodon () {
 
 async function main () {
   await cloneMastodon()
-  await setupMastodonDatabase()
+  //await setupMastodonDatabase()
   await runMastodon()
   //await restoreMastodonData()
 }

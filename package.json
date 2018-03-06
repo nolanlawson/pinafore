@@ -12,7 +12,7 @@
     "build-svg": "node ./bin/build-svg.js",
     "build-sass": "node ./bin/build-sass.js",
     "build-sass-watch": "node ./bin/build-sass.js --watch",
-    "run-mastodon": "node ./bin/run-mastodon",
+    "run-mastodon": "node -r @std/esm ./bin/run-mastodon",
     "run-testcafe": "cross-env-shell testcafe --hostname localhost --skip-js-errors $BROWSER tests/spec",
     "test": "cross-env BROWSER=chrome:headless npm run test-browser",
     "test-browser": "run-p --race run-mastodon dev test-mastodon",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.2",
+    "@std/esm": "^0.25.0",
     "a11y-dialog": "^4.0.1",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
@@ -34,6 +35,7 @@
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "fg-loadcss": "^2.0.1",
+    "file-api": "^0.10.4",
     "font-awesome-svg-png": "^1.2.2",
     "glob": "^7.1.2",
     "idb-keyval": "^2.3.0",
@@ -105,5 +107,8 @@
       "dist",
       "routes/_utils/asyncModules.js"
     ]
+  },
+  "@std/esm": {
+    "mode": "js"
   }
 }
