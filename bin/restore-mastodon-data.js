@@ -1,6 +1,6 @@
 import { actions } from './mastodon-data'
 import { users } from '../tests/users'
-import { postStatus } from '../routes/_api/statuses'
+import { pinStatus, postStatus } from '../routes/_api/statuses'
 import { uploadMedia } from '../routes/_api/media'
 import { followAccount } from '../routes/_api/follow'
 import { favoriteStatus } from '../routes/_api/favorite'
@@ -37,7 +37,7 @@ export async function restoreMastodonData () {
           type: type,
           buffer: await readFile(path.join(__dirname, '../tests/images/' + mediaItem))
         })
-        let mediaResponse = await uploadMedia('localhost:3000', accessToken, file)
+        let mediaResponse = await uploadMedia('localhost:3000', accessToken, file, 'kitten')
         return mediaResponse.id
       }))
       let status = await postStatus('localhost:3000', accessToken, text, inReplyTo, mediaIds,
@@ -51,8 +51,10 @@ export async function restoreMastodonData () {
       await favoriteStatus('localhost:3000', accessToken, internalIdsToIds[action.favorite])
     } else if (action.boost) {
       await reblogStatus('localhost:3000', accessToken, internalIdsToIds[action.boost])
+    } else if (action.pin) {
+      await pinStatus('localhost:3000', accessToken, internalIdsToIds[action.pin])
     }
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise(resolve => setTimeout(resolve, 1500))
   }
   console.log('Restored mastodon data')
 }

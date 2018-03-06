@@ -18,7 +18,7 @@ test('modal preserves focus', async t => {
 test('timeline preserves focus', async t => {
   await t.useRole(foobarRole)
     .click(getNthStatus(0))
-    .expect(getUrl()).contains('/statuses/99549266679020981')
+    .expect(getUrl()).contains('/statuses/')
 
   await goBack()
   await t.expect(getActiveElementClass()).eql('status-article status-in-timeline')

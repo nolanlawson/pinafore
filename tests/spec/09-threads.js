@@ -13,7 +13,7 @@ test('Shows a thread', async t => {
   await scrollToBottomOfTimeline(t)
   await t
     .click(getNthStatus(26))
-    .expect(getUrl()).contains('/statuses/99549257018049016')
+    .expect(getUrl()).contains('/statuses/')
 
   await validateTimeline(t, quuxThread)
 
@@ -30,7 +30,7 @@ test('Scrolls to proper point in thread', async t => {
     .hover(getNthStatus(8))
     .hover(getNthStatus(10))
     .click(getNthStatus(10))
-    .expect(getUrl()).contains('/statuses/99549263341916700')
+    .expect(getUrl()).contains('/statuses/')
     .expect(getNthStatus(16).innerText).contains('unlisted thread 17')
     .expect(Math.round(getNthStatus(16).boundingClientRect.top))
       .eql(Math.round($('.container').boundingClientRect.top))

@@ -14,10 +14,18 @@ export const actions = times(30, i => ({
   },
   {
     user: 'admin',
+    follow: 'foobar'
+  },
+  {
+    user: 'admin',
     post: {
       text: '@foobar hello foobar',
       privacy: 'unlisted'
     }
+  },
+  {
+    user: 'quux',
+    follow: 'foobar'
   },
   {
     user: 'foobar',
@@ -93,29 +101,18 @@ export const actions = times(30, i => ({
       spoiler: 'kitten CW'
     }
   },
-  // notifications for foobar
   {
-    user: 'admin',
-    follow: 'foobar'
-  },
-  {
-    user: 'admin',
+    user: 'foobar',
     post: {
-      text: '@foobar direct',
+      internalId: 11,
+      text: 'direct',
       privacy: 'direct'
     }
   },
   {
-    user: 'quux',
-    follow: 'foobar'
-  },
-  {
-    user: 'admin',
-    follow: 'quux'
-  },
-  {
     user: 'foobar',
     post: {
+      internalId: 10,
       text: 'this is followers-only',
       privacy: 'private'
     }
@@ -127,6 +124,10 @@ export const actions = times(30, i => ({
       text: 'this is unlisted',
       privacy: 'unlisted'
     }
+  },
+  {
+    user: 'admin',
+    follow: 'quux'
   },
   {
     user: 'admin',
@@ -171,7 +172,16 @@ export const actions = times(30, i => ({
   {
     user: 'admin',
     favorite: 2
-  },
+  }
+]).concat(times(25, i => ({
+  user: 'quux',
+  post: {
+    internalId: 100 + i,
+    text: 'unlisted thread ' + (i + 1),
+    privacy: 'unlisted',
+    inReplyTo: i > 0 && (100 + i)
+  }
+}))).concat([
   {
     user: 'quux',
     post: {
@@ -187,16 +197,7 @@ export const actions = times(30, i => ({
       text: 'pinned toot 2',
       privacy: 'unlisted'
     }
-  }
-]).concat(times(25, i => ({
-  user: 'quux',
-  post: {
-    internalId: 100 + i,
-    text: 'unlisted thread ' + (i + 1),
-    privacy: 'unlisted',
-    inReplyTo: i > 0 && (100 + i)
-  }
-}))).concat([
+  },
   {
     user: 'quux',
     pin: 5
@@ -214,12 +215,28 @@ export const actions = times(30, i => ({
     favorite: 5
   },
   {
+    user: 'admin',
+    favorite: 6
+  },
+  {
     user: 'foobar',
     favorite: 5
   },
   {
-    user: 'admin',
-    favorite: 6
+    user: 'foobar',
+    favorite: 2
+  },
+  {
+    user: 'foobar',
+    favorite: 10
+  },
+  {
+    user: 'foobar',
+    favorite: 3
+  },
+  {
+    user: 'foobar',
+    pin: 2
   },
   {
     user: 'ExternalLinks',
