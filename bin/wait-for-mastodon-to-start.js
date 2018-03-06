@@ -1,6 +1,6 @@
-const fetch = require('node-fetch')
+import fetch from 'node-fetch'
 
-async function waitForMastodonToStart () {
+export async function waitForMastodonToStart () {
   while (true) {
     try {
       let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
@@ -15,8 +15,6 @@ async function waitForMastodonToStart () {
   }
   console.log('Mastodon started up')
 }
-
-module.exports = waitForMastodonToStart
 
 if (require.main === module) {
   waitForMastodonToStart().catch(err => {

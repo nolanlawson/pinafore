@@ -1,14 +1,16 @@
-const restoreMastodonData = require('./restore-mastodon-data')
-const pify = require('pify')
-const exec = require('child-process-promise').exec
-const spawn = require('child-process-promise').spawn
-const dir = __dirname
-const path = require('path')
-const fs = require('fs')
+import { restoreMastodonData } from './restore-mastodon-data'
+import pify from 'pify'
+import childProcessPromise from 'child-process-promise'
+import path from 'path'
+import fs from 'fs'
+import { waitForMastodonToStart } from './wait-for-mastodon-to-start'
+
+const exec = childProcessPromise.exec
+const spawn = childProcessPromise.spawn
+const mkdirp = pify(mkdirpCB)
 const stat = pify(fs.stat.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
-const mkdirp = pify(require('mkdirp'))
-const waitForMastodonToStart = require('./wait-for-mastodon-to-start')
+const dir = __dirname
 
 const envFile = `
 PAPERCLIP_SECRET=foo
@@ -71,9 +73,9 @@ async function runMastodon () {
 
 async function main () {
   await cloneMastodon()
-  //await setupMastodonDatabase()
+  await setupMastodonDatabase()
   await runMastodon()
-  //await restoreMastodonData()
+  await restoreMastodonData()
 }
 
 process.on('SIGINT', function () {

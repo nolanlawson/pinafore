@@ -5,16 +5,20 @@ import { uploadMedia } from '../routes/_api/media'
 import { followAccount } from '../routes/_api/follow'
 import { favoriteStatus } from '../routes/_api/favorite'
 import { reblogStatus } from '../routes/_api/reblog'
-
+import fetch from 'node-fetch'
+import FileApi from 'file-api'
 import path from 'path'
-global.File = require('file-api').File
-global.FormData = require('file-api').FormData
-global.fetch = require('node-fetch')
 
-async function restoreMastodonData () {
+global.File = FileApi.File
+global.FormData = FileApi.FormData
+global.fetch = fetch
+
+export async function restoreMastodonData () {
+  debugger
   console.log('Restoring mastodon data...')
   let internalIdsToIds = {}
   for (let action of actions) {
+    console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
     if (action.post) {
       let { text, media, sensitive, spoiler, privacy, inReplyTo, internalId } = action.post
@@ -32,13 +36,16 @@ async function restoreMastodonData () {
         internalIdsToIds[internalId] = status.id
       }
     } else if (action.follow) {
-      await followAccount('localhost:3000', accessToken, action.follow)
+      await followAccount('localhost:3000', accessToken, users[action.follow].id)
     } else if (action.favorite) {
       await favoriteStatus('localhost:3000', accessToken, internalIdsToIds[action.favorite])
     } else if (action.boost) {
-      await reblogStatus('localhost:3000', accessToken, internalIdsToIds[action.favorite])
+      await reblogStatus('localhost:3000', accessToken, internalIdsToIds[action.boost])
     }
   }
 }
 
-module.exports = restoreMastodonData
+restoreMastodonData().catch(err => {
+  console.error(err)
+  process.exit(1)
+})

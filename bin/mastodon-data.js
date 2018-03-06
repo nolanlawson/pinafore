@@ -1,8 +1,8 @@
-const times = require('lodash/times')
+import times from 'lodash/times'
 
 export const actions = times(30, i => ({
   post: {
-    text: (i + 1)
+    text: '' + (i + 1)
   },
   user: 'admin'
 })).concat([
@@ -97,6 +97,14 @@ export const actions = times(30, i => ({
   },
   {
     user: 'admin',
+    follow: 'quux'
+  },
+  {
+    user: 'foobar',
+    follow: 'quux'
+  },
+  {
+    user: 'admin',
     post: {
       internalId: 3,
       text: '@foobar notification of direct message',
@@ -141,10 +149,6 @@ export const actions = times(30, i => ({
   },
   {
     user: 'admin',
-    boost: 2
-  },
-  {
-    user: 'admin',
     favorite: 2
   },
   {
@@ -179,10 +183,6 @@ export const actions = times(30, i => ({
   {
     user: 'quux',
     pin: 6
-  },
-  {
-    user: 'admin',
-    boost: 5
   },
   {
     user: 'admin',

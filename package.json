@@ -109,6 +109,7 @@
     ]
   },
   "@std/esm": {
-    "mode": "js"
+    "mode": "js",
+    "cjs": "vars"
   }
 }
