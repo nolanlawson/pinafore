@@ -75,7 +75,7 @@ async function main () {
   await setupMastodonDatabase()
   await runMastodon()
   await waitForMastodonApiToStart()
-  //await restoreMastodonData()
+  await restoreMastodonData()
   await waitForMastodonUiToStart()
 }
 
