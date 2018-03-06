@@ -76,7 +76,7 @@ async function main () {
   await cloneMastodon()
   await setupMastodonDatabase()
   await runMastodon()
-  await restoreMastodonData()
+  //await restoreMastodonData()
 }
 
 process.on('SIGINT', function () {

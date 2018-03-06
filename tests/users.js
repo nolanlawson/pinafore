@@ -2,19 +2,19 @@ export const users = {
   admin: {
     username: 'admin',
     password: 'mastodonadmin',
-    accessToken: '1a62cc93aa6ccdad5a1048bd37b627c9df72f68c7f4b87d2daaeb83010ff44ab',
+    accessToken: 'f954c8de1fcc0080ff706fa2516d05b60de0d8f5b536255a85ef85a6c32e4afb',
     id: 1
   },
   foobar: {
     username: 'foobar',
     password: 'foobarfoobar',
-    accessToken: '67868cd5b1f1279697ffffdb44c144b0ae427d74f4540717b67bf4a9c5c5c346',
+    accessToken: 'b48d72074a467e77a18eafc0d52e373dcf2492bcb3fefadc302a81300ec69002',
     id: 2
   },
   quux: {
     username: 'quux',
     password: 'quuxquuxquux',
-    accessToken: 'd100083c1749392da7e1c12e63a6fba75f15ea1fbce93361d722889abf418464',
+    accessToken: '894d3583dbf7d0f4f4784a06db86bdadb6ef0d99453d15afbc03e0c103bd78af',
     id: 3
   },
   ExternalLinks: {
