@@ -52,6 +52,7 @@ export async function restoreMastodonData () {
     } else if (action.boost) {
       await reblogStatus('localhost:3000', accessToken, internalIdsToIds[action.boost])
     }
+    await new Promise(resolve => setTimeout(resolve, 2000))
   }
   console.log('Restored mastodon data')
 }

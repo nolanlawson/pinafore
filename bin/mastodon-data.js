@@ -13,6 +13,20 @@ export const actions = times(30, i => ({
     }
   },
   {
+    user: 'admin',
+    post: {
+      text: '@foobar hello foobar',
+      privacy: 'unlisted'
+    }
+  },
+  {
+    user: 'foobar',
+    post: {
+      text: '@admin hello admin',
+      privacy: 'unlisted'
+    }
+  },
+  {
     user: 'foobar',
     post: {
       text: "here's a kitten",
@@ -87,8 +101,8 @@ export const actions = times(30, i => ({
   {
     user: 'admin',
     post: {
-      text: '@foobar hello foobar',
-      privacy: 'unlisted'
+      text: '@foobar direct',
+      privacy: 'direct'
     }
   },
   {
@@ -152,6 +166,10 @@ export const actions = times(30, i => ({
   },
   {
     user: 'admin',
+    boost: 2
+  },
+  {
+    user: 'admin',
     favorite: 2
   },
   {
@@ -159,7 +177,7 @@ export const actions = times(30, i => ({
     post: {
       internalId: 5,
       text: 'pinned toot 1',
-      privacy: 'private'
+      privacy: 'unlisted'
     }
   },
   {
@@ -167,7 +185,7 @@ export const actions = times(30, i => ({
     post: {
       internalId: 6,
       text: 'pinned toot 2',
-      privacy: 'private'
+      privacy: 'unlisted'
     }
   }
 ]).concat(times(25, i => ({
@@ -175,7 +193,7 @@ export const actions = times(30, i => ({
   post: {
     internalId: 100 + i,
     text: 'unlisted thread ' + (i + 1),
-    privacy: 'private',
+    privacy: 'unlisted',
     inReplyTo: i > 0 && (100 + i)
   }
 }))).concat([
@@ -186,6 +204,10 @@ export const actions = times(30, i => ({
   {
     user: 'quux',
     pin: 6
+  },
+  {
+    user: 'admin',
+    boost: 5
   },
   {
     user: 'admin',
@@ -203,21 +225,21 @@ export const actions = times(30, i => ({
     user: 'ExternalLinks',
     post: {
       text: 'here are some hashtags: #kitten #kitties',
-      privacy: 'private'
+      privacy: 'unlisted'
     }
   },
   {
     user: 'ExternalLinks',
     post: {
       text: 'here are some external links: https://joinmastodon.org https://github.com/tootsuite/mastodon',
-      privacy: 'private'
+      privacy: 'unlisted'
     }
   },
   {
     user: 'ExternalLinks',
     post: {
       text: 'here are some users: @admin @quux',
-      privacy: 'private'
+      privacy: 'unlisted'
     }
   }
 ])
