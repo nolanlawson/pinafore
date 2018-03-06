@@ -75,8 +75,8 @@ async function main () {
   await setupMastodonDatabase()
   await runMastodon()
   await waitForMastodonApiToStart()
-  await restoreMastodonData()
   await waitForMastodonUiToStart()
+  await restoreMastodonData()
 }
 
 process.on('SIGINT', function () {
