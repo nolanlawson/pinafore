@@ -8,6 +8,10 @@ import { reblogStatus } from '../routes/_api/reblog'
 import fetch from 'node-fetch'
 import FileApi from 'file-api'
 import path from 'path'
+import fs from 'fs'
+import pify from 'pify'
+
+const readFile = pify(fs.readFile.bind(fs))
 
 global.File = FileApi.File
 global.FormData = FileApi.FormData
@@ -26,7 +30,13 @@ export async function restoreMastodonData () {
         inReplyTo = internalIdsToIds[inReplyTo]
       }
       let mediaIds = media && await Promise.all(media.map(async mediaItem => {
-        let file = new File(path.join(__dirname, '../tests/images/' + mediaItem))
+        let type = mediaItem.endsWith('gif') ? 'image/gif'
+          : mediaItem.endsWith('jpg') ? 'image/jpg' : 'video/mp4'
+        let file = new File({
+          name: mediaItem,
+          type: type,
+          buffer: await readFile(path.join(__dirname, '../tests/images/' + mediaItem))
+        })
         let mediaResponse = await uploadMedia('localhost:3000', accessToken, file)
         return mediaResponse.id
       }))
@@ -43,4 +53,5 @@ export async function restoreMastodonData () {
       await reblogStatus('localhost:3000', accessToken, internalIdsToIds[action.boost])
     }
   }
+  console.log('Restored mastodon data')
 }

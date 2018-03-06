@@ -1,23 +1,40 @@
 import fetch from 'node-fetch'
 
-export async function waitForMastodonToStart () {
+export async function waitForMastodonUiToStart () {
   while (true) {
     try {
-      let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
       let html = await ((await fetch('http://127.0.0.1:3035/packs/common.js')).text())
-      if (json.uri && html) {
+      if (html) {
         break
       }
     } catch (err) {
-      console.log('Waiting for Mastodon to start up...')
+      console.log('Waiting for Mastodon UI to start up...')
       await new Promise(resolve => setTimeout(resolve, 1000))
     }
   }
-  console.log('Mastodon started up')
+  console.log('Mastodon UI started up')
+}
+
+export async function waitForMastodonApiToStart () {
+  while (true) {
+    try {
+      let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
+      if (json.uri) {
+        break
+      }
+    } catch (err) {
+      console.log('Waiting for Mastodon API to start up...')
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
+  }
+  console.log('Mastodon API started up')
 }
 
 if (require.main === module) {
-  waitForMastodonToStart().catch(err => {
+  Promise.all([
+    waitForMastodonApiToStart(),
+    waitForMastodonUiToStart()
+  ]).catch(err => {
     console.error(err)
     process.exit(1)
   })

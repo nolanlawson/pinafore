@@ -17,7 +17,7 @@
     "test": "cross-env BROWSER=chrome:headless npm run test-browser",
     "test-browser": "run-p --race run-mastodon dev test-mastodon",
     "test-mastodon": "run-s wait-for-mastodon-to-start run-testcafe",
-    "wait-for-mastodon-to-start": "node bin/wait-for-mastodon-to-start.js",
+    "wait-for-mastodon-to-start": "node -r @std/esm bin/wait-for-mastodon-to-start.js",
     "globalize-css": "node ./bin/globalize-css.js",
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
     "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."

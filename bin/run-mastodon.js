@@ -3,7 +3,7 @@ import pify from 'pify'
 import childProcessPromise from 'child-process-promise'
 import path from 'path'
 import fs from 'fs'
-import { waitForMastodonToStart } from './wait-for-mastodon-to-start'
+import { waitForMastodonApiToStart, waitForMastodonUiToStart } from './wait-for-mastodon-to-start'
 import mkdirpCB from 'mkdirp'
 
 const exec = childProcessPromise.exec
@@ -68,15 +68,15 @@ async function runMastodon () {
   childProc = promise.childProcess
   childProc.stdout.pipe(log)
   childProc.stderr.pipe(log)
-
-  await waitForMastodonToStart()
 }
 
 async function main () {
   await cloneMastodon()
   await setupMastodonDatabase()
   await runMastodon()
+  await waitForMastodonApiToStart()
   await restoreMastodonData()
+  await waitForMastodonUiToStart()
 }
 
 process.on('SIGINT', function () {

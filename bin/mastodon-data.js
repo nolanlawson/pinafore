@@ -101,7 +101,18 @@ export const actions = times(30, i => ({
   },
   {
     user: 'foobar',
-    follow: 'quux'
+    post: {
+      text: 'this is followers-only',
+      privacy: 'private'
+    }
+  },
+  {
+    user: 'foobar',
+    post: {
+      internalId: 2,
+      text: 'this is unlisted',
+      privacy: 'unlisted'
+    }
   },
   {
     user: 'admin',
@@ -138,14 +149,6 @@ export const actions = times(30, i => ({
   {
     user: 'admin',
     boost: 1
-  },
-  {
-    user: 'foobar',
-    post: {
-      internalId: 2,
-      text: 'this is unlisted',
-      privacy: 'private'
-    }
   },
   {
     user: 'admin',
