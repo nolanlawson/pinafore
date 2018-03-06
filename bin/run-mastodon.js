@@ -3,7 +3,7 @@ import pify from 'pify'
 import childProcessPromise from 'child-process-promise'
 import path from 'path'
 import fs from 'fs'
-import { waitForMastodonApiToStart, waitForMastodonUiToStart } from './wait-for-mastodon-to-start'
+import { waitForMastodonUiToStart, waitForMastodonApiToStart } from './wait-for-mastodon-to-start'
 import mkdirpCB from 'mkdirp'
 
 const exec = childProcessPromise.exec

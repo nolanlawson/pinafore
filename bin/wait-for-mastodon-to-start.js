@@ -31,10 +31,9 @@ export async function waitForMastodonApiToStart () {
 }
 
 if (require.main === module) {
-  Promise.all([
-    waitForMastodonApiToStart(),
-    waitForMastodonUiToStart()
-  ]).catch(err => {
+  Promise.resolve()
+    .then(waitForMastodonApiToStart)
+    .then(waitForMastodonUiToStart).catch(err => {
     console.error(err)
     process.exit(1)
   })
