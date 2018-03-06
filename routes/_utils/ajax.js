@@ -1,4 +1,4 @@
-const TIMEOUT = 15000
+const TIMEOUT = process.browser ? 15000 : 60000
 
 function fetchWithTimeout (url, options) {
   return new Promise((resolve, reject) => {

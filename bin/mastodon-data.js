@@ -89,7 +89,8 @@ export const actions = times(30, i => ({
     user: 'foobar',
     post: {
       text: "here's a secret video",
-      media: ['kitten2.mp4']
+      media: ['kitten2.mp4'],
+      sensitive: true
     }
   },
   {
@@ -104,7 +105,7 @@ export const actions = times(30, i => ({
   {
     user: 'foobar',
     post: {
-      internalId: 11,
+      internalId: 'foobar-direct',
       text: 'direct',
       privacy: 'direct'
     }
@@ -112,7 +113,7 @@ export const actions = times(30, i => ({
   {
     user: 'foobar',
     post: {
-      internalId: 10,
+      internalId: 'foobar-this-is-followers-only',
       text: 'this is followers-only',
       privacy: 'private'
     }
@@ -120,7 +121,7 @@ export const actions = times(30, i => ({
   {
     user: 'foobar',
     post: {
-      internalId: 2,
+      internalId: 'foobar-this-is-unlisted',
       text: 'this is unlisted',
       privacy: 'unlisted'
     }
@@ -132,60 +133,60 @@ export const actions = times(30, i => ({
   {
     user: 'admin',
     post: {
-      internalId: 3,
+      internalId: 'notification-of-direct-message',
       text: '@foobar notification of direct message',
       privacy: 'direct'
     }
   },
   {
     user: 'admin',
-    favorite: 3
+    favorite: 'notification-of-direct-message'
   },
   {
     user: 'admin',
     post: {
-      internalId: 4,
+      internalId: 'notification-of-followers-only',
       text: '@foobar notification of followers-only message',
       privacy: 'private'
     }
   },
   {
     user: 'admin',
-    favorite: 4
+    favorite: 'notification-of-followers-only'
   },
   {
     user: 'admin',
     post: {
-      internalId: 1,
+      internalId: 'notification-of-unlisted-message',
       text: '@foobar notification of unlisted message',
       privacy: 'unlisted'
     }
   },
   {
     user: 'admin',
-    boost: 1
+    boost: 'notification-of-unlisted-message'
   },
   {
     user: 'admin',
-    boost: 2
+    boost: 'foobar-this-is-unlisted'
   },
   {
     user: 'admin',
-    favorite: 2
+    favorite: 'foobar-this-is-unlisted'
   }
 ]).concat(times(25, i => ({
   user: 'quux',
   post: {
-    internalId: 100 + i,
+    internalId: `quux-thread-${i}`,
     text: 'unlisted thread ' + (i + 1),
     privacy: 'unlisted',
-    inReplyTo: i > 0 && (100 + i)
+    inReplyTo: i > 0 && `quux-thread-${i - 1}`
   }
 }))).concat([
   {
     user: 'quux',
     post: {
-      internalId: 5,
+      internalId: 'pinned-toot-1',
       text: 'pinned toot 1',
       privacy: 'unlisted'
     }
@@ -193,50 +194,50 @@ export const actions = times(30, i => ({
   {
     user: 'quux',
     post: {
-      internalId: 6,
+      internalId: 'pinned-toot-2',
       text: 'pinned toot 2',
       privacy: 'unlisted'
     }
   },
   {
     user: 'quux',
-    pin: 5
+    pin: 'pinned-toot-2'
   },
   {
     user: 'quux',
-    pin: 6
+    pin: 'pinned-toot-1'
   },
   {
     user: 'admin',
-    boost: 5
+    boost: 'pinned-toot-1'
   },
   {
     user: 'admin',
-    favorite: 5
+    favorite: 'pinned-toot-1'
   },
   {
     user: 'admin',
-    favorite: 6
+    favorite: 'pinned-toot-2'
   },
   {
     user: 'foobar',
-    favorite: 5
+    favorite: 'pinned-toot-1'
   },
   {
     user: 'foobar',
-    favorite: 2
+    favorite: 'notification-of-unlisted-message'
   },
   {
     user: 'foobar',
-    favorite: 10
+    favorite: 'notification-of-followers-only'
   },
   {
     user: 'foobar',
-    favorite: 3
+    favorite: 'notification-of-direct-message'
   },
   {
     user: 'foobar',
-    pin: 2
+    pin: 'foobar-this-is-unlisted'
   },
   {
     user: 'ExternalLinks',

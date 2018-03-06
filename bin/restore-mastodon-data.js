@@ -46,6 +46,11 @@ export async function restoreMastodonData () {
   for (let action of actions) {
     console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
+
+    if (action.post || action.boost) {
+      await new Promise(resolve => setTimeout(resolve, 1100))
+    }
+
     if (action.post) {
       let { text, media, sensitive, spoiler, privacy, inReplyTo, internalId } = action.post
       if (typeof inReplyTo !== 'undefined') {
@@ -69,7 +74,6 @@ export async function restoreMastodonData () {
     } else if (action.pin) {
       await pinStatus('localhost:3000', accessToken, internalIdsToIds[action.pin])
     }
-    await new Promise(resolve => setTimeout(resolve, 1500))
   }
   console.log('Restored mastodon data')
 }

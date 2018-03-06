@@ -75,19 +75,24 @@ async function main () {
   await setupMastodonDatabase()
   await runMastodon()
   await waitForMastodonApiToStart()
-  await restoreMastodonData()
+  //await restoreMastodonData()
   await waitForMastodonUiToStart()
 }
 
-process.on('SIGINT', function () {
+function shutdownMastodon() {
   if (childProc) {
     console.log('killing child process')
     childProc.kill()
   }
+}
+
+process.on('SIGINT', function () {
+  shutdownMastodon()
   process.exit(0)
 })
 
 main().catch(err => {
   console.error(err)
+  shutdownMastodon()
   process.exit(1)
 })
