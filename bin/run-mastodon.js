@@ -4,6 +4,7 @@ import childProcessPromise from 'child-process-promise'
 import path from 'path'
 import fs from 'fs'
 import { waitForMastodonToStart } from './wait-for-mastodon-to-start'
+import mkdirpCB from 'mkdirp'
 
 const exec = childProcessPromise.exec
 const spawn = childProcessPromise.spawn

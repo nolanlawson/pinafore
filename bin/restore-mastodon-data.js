@@ -44,8 +44,3 @@ export async function restoreMastodonData () {
     }
   }
 }
-
-restoreMastodonData().catch(err => {
-  console.error(err)
-  process.exit(1)
-})
