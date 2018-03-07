@@ -1,5 +1,5 @@
 import { Selector as $ } from 'testcafe'
-import { getUrl, settingsButton } from '../utils'
+import { getUrl, logInToInstanceLink, settingsButton } from '../utils'
 
 fixture`001-basic-spec.js`
   .page`http://localhost:4002`
@@ -19,7 +19,7 @@ test('navigates to about', async t => {
 })
 
 test('navigates to /settings/instances/add', async t => {
-  await t.click($('a').withText('log in to an instance'))
+  await t.click(logInToInstanceLink)
     .expect(getUrl()).contains('/settings/instances/add')
 })
 

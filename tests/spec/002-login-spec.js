@@ -1,6 +1,7 @@
 import { Selector as $ } from 'testcafe'
 import {
-  authorizeInput, emailInput, formError, getFirstVisibleStatus, getUrl, instanceInput, passwordInput,
+  authorizeInput, emailInput, formError, getFirstVisibleStatus, getUrl, instanceInput, logInToInstanceLink,
+  passwordInput,
   settingsButton
 } from '../utils'
 
@@ -8,7 +9,7 @@ fixture`002-login-spec.js`
   .page`http://localhost:4002`
 
 function manualLogin (t, username, password) {
-  return t.click($('a').withText('log in to an instance'))
+  return t.click(logInToInstanceLink)
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'localhost:3000')
     .pressKey('enter')
@@ -22,7 +23,7 @@ function manualLogin (t, username, password) {
 }
 
 test('Cannot log in to a fake instance', async t => {
-  await t.click($('a').withText('log in to an instance'))
+  await t.click(logInToInstanceLink)
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'fake.nolanlawson.com', {paste: true})
     .pressKey('enter')

@@ -22,6 +22,7 @@ export const contentWarningButton = $('.compose-box-toolbar button:nth-child(4)'
 export const emailInput = $('input#user_email')
 export const passwordInput = $('input#user_password')
 export const authorizeInput = $('button[type=submit]:not(.negative)')
+export const logInToInstanceLink = $('a[href="/settings/instances/add"]')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)

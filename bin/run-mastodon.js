@@ -79,7 +79,7 @@ async function main () {
   await waitForMastodonUiToStart()
 }
 
-function shutdownMastodon() {
+function shutdownMastodon () {
   if (childProc) {
     console.log('killing child process')
     childProc.kill()
