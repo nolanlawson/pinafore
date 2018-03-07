@@ -3,7 +3,7 @@ import { getFirstVisibleStatus, getNthStatus, getUrl, validateTimeline } from '.
 import { homeTimeline, notifications, localTimeline, favorites } from '../fixtures'
 import { foobarRole } from '../roles'
 
-fixture`03-basic-timeline-spec.js`
+fixture`003-basic-timeline-spec.js`
   .page`http://localhost:4002`
 
 test('Shows the home timeline', async t => {

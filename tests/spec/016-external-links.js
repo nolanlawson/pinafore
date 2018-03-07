@@ -2,7 +2,7 @@ import { getNthStatus, getUrl } from '../utils'
 import { foobarRole } from '../roles'
 import { Selector as $ } from 'testcafe'
 
-fixture`16-external-links.js`
+fixture`016-external-links.js`
   .page`http://localhost:4002`
 
 function getAnchor (nthStatus, nthAnchor) {

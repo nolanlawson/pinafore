@@ -3,7 +3,7 @@ import { getNthStatus, getUrl, homeNavButton, notificationsNavButton, validateTi
 import { favoriteStatusAsAdmin } from '../serverActions'
 import { notifications } from '../fixtures'
 
-fixture`32-notifications.js`
+fixture`102-notifications.js`
   .page`http://localhost:4002`
 
 test('shows unread notifications', async t => {

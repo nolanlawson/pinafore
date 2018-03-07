@@ -1,7 +1,7 @@
 import { postPrivacyButton } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`14-compose-post-privacy.js`
+fixture`014-compose-post-privacy.js`
   .page`http://localhost:4002`
 
 test('Changes post privacy', async t => {

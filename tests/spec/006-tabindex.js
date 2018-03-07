@@ -2,7 +2,7 @@ import { Selector as $ } from 'testcafe'
 import { getNthStatus } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`06-tabindex.js`
+fixture`006-tabindex.js`
   .page`http://localhost:4002`
 
 test('shows correct tabindex in home timeline', async t => {

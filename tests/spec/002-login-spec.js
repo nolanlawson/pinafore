@@ -4,7 +4,7 @@ import {
   settingsButton
 } from '../utils'
 
-fixture`02-login-spec.js`
+fixture`002-login-spec.js`
   .page`http://localhost:4002`
 
 function manualLogin (t, username, password) {

@@ -1,7 +1,7 @@
 import { composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton, uploadKittenImage } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`13-compose-media.js`
+fixture`013-compose-media.js`
   .page`http://localhost:4002`
 
 test('inserts media', async t => {

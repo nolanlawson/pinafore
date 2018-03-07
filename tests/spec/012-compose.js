@@ -7,7 +7,7 @@ import {
 import { foobarRole } from '../roles'
 import times from 'lodash/times'
 
-fixture`12-compose.js`
+fixture`012-compose.js`
   .page`http://localhost:4002`
 
 test('shows compose limits', async t => {

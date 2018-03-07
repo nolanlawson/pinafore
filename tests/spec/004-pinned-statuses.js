@@ -2,7 +2,7 @@ import { Selector as $ } from 'testcafe'
 import { getUrl } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`04-pinned-statuses.js`
+fixture`004-pinned-statuses.js`
   .page`http://localhost:4002`
 
 test("shows a user's pinned statuses", async t => {

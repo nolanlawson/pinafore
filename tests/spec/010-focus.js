@@ -3,7 +3,7 @@ import {
 } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`10-focus.js`
+fixture`010-focus.js`
   .page`http://localhost:4002`
 
 test('modal preserves focus', async t => {

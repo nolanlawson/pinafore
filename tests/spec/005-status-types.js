@@ -1,7 +1,7 @@
 import { getNthStatus } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`05-status-types.js`
+fixture`005-status-types.js`
   .page`http://localhost:4002`
 
 test('shows direct vs followers-only vs regular', async t => {

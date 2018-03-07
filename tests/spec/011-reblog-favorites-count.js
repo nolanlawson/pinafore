@@ -2,7 +2,7 @@ import { Selector as $ } from 'testcafe'
 import { getFavoritesCount, getNthStatus, getReblogsCount, getUrl } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`11-reblog-favorites-count.js`
+fixture`011-reblog-favorites-count.js`
   .page`http://localhost:4002`
 
 test('shows favorites', async t => {

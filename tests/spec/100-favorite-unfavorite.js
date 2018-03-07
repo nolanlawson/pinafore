@@ -5,7 +5,7 @@ import {
 } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`30-favorite-unfavorite.js`
+fixture`130-favorite-unfavorite.js`
   .page`http://localhost:4002`
 
 test('favorites a status', async t => {

@@ -1,7 +1,7 @@
 import { closeDialogButton, getNthStatus, modalDialogContents, scrollToStatus } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`08-status-media.js`
+fixture`008-status-media.js`
   .page`http://localhost:4002`
 
 test('shows sensitive images and videos', async t => {

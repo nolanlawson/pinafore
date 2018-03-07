@@ -3,7 +3,7 @@ import { getUrl, validateTimeline } from '../utils'
 import { foobarRole } from '../roles'
 import { quuxStatuses } from '../fixtures'
 
-fixture`07-account-profile.js`
+fixture`007-account-profile.js`
   .page`http://localhost:4002`
 
 test('shows account profile', async t => {

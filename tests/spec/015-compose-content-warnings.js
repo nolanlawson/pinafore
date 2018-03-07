@@ -4,7 +4,7 @@ import {
 } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`15-compose-content-warnings.js`
+fixture`015-compose-content-warnings.js`
   .page`http://localhost:4002`
 
 test('Changes content warnings', async t => {

@@ -3,7 +3,7 @@ import { getNthStatus, getUrl, validateTimeline, scrollToBottomOfTimeline } from
 import { foobarRole } from '../roles'
 import { quuxThread } from '../fixtures'
 
-fixture`09-threads.js`
+fixture`009-threads.js`
   .page`http://localhost:4002`
 
 test('Shows a thread', async t => {

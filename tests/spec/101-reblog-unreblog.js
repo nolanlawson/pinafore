@@ -5,7 +5,7 @@ import {
 } from '../utils'
 import { foobarRole } from '../roles'
 
-fixture`31-reblog-unreblog.js`
+fixture`101-reblog-unreblog.js`
   .page`http://localhost:4002`
 
 test('reblogs a status', async t => {
