@@ -21,7 +21,8 @@ OTP_SECRET=foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoo
 
 const mastodonDir = path.join(dir, '../mastodon')
 
-let childProc
+let railsChildProc
+let webpackChildProc
 
 async function cloneMastodon () {
   try {
@@ -54,7 +55,6 @@ async function runMastodon () {
   console.log('Running mastodon...')
   let cmds = [
     'gem install bundler',
-    'gem install foreman',
     'bundle install',
     'yarn --pure-lockfile'
   ]
@@ -63,11 +63,19 @@ async function runMastodon () {
     console.log(cmd)
     await exec(cmd, {cwd: mastodonDir})
   }
-  const promise = spawn('foreman', ['start'], {cwd: mastodonDir})
   const log = fs.createWriteStream('mastodon.log', {flags: 'a'})
-  childProc = promise.childProcess
-  childProc.stdout.pipe(log)
-  childProc.stderr.pipe(log)
+
+  railsChildProc = spawn(
+    'bundle', ['exec', 'rails', 'server'], {cwd: mastodonDir}
+  ).childProcess
+  railsChildProc.stdout.pipe(log)
+  railsChildProc.stderr.pipe(log)
+
+  webpackChildProc = spawn(
+    './bin/webpack-dev-server', [], {cwd: mastodonDir}
+  ).childProcess
+  webpackChildProc.stdout.pipe(log)
+  webpackChildProc.stderr.pipe(log)
 }
 
 async function main () {
@@ -79,10 +87,14 @@ async function main () {
   await waitForMastodonUiToStart()
 }
 
-function shutdownMastodon() {
-  if (childProc) {
-    console.log('killing child process')
-    childProc.kill()
+function shutdownMastodon () {
+  if (railsChildProc) {
+    console.log('killing rails child process')
+    railsChildProc.kill()
+  }
+  if (webpackChildProc) {
+    console.log('killing webpack child process')
+    webpackChildProc.kill()
   }
 }
 
