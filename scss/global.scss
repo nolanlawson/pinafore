@@ -71,7 +71,7 @@ input {
   box-sizing: border-box;
 }
 
-button {
+button, .button {
   font-size: 1.2em;
   background: var(--button-bg);
   border-radius: 2px;
@@ -82,6 +82,7 @@ button {
 
   &:hover {
     background: var(--button-bg-hover);
+    text-decoration: none;
   }
 
   &:active {

@@ -2,13 +2,11 @@
    target="_blank"
    href="{{href}}"
    class="{{className || ''}} {{showIcon ? 'external-link-with-icon' : ''}} {{normalIconColor ? 'normal-icon-color' : ''}}">
-  <slot></slot>
-  {{#if showIcon}}
+  <slot></slot>{{#if showIcon}}
     <svg>
       <use xlink:href="#fa-external-link" />
     </svg>
-  {{/if}}
-</a>
+  {{/if}}</a>
 <style>
   .external-link-with-icon {
     display: inline-flex;
