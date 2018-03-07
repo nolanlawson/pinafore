@@ -42,6 +42,18 @@ main {
   }
 }
 
+footer {
+  width: 602px;
+  max-width: 100vw;
+  box-sizing: border-box;
+  margin: 20px auto;
+  border-radius: 1px;
+  background: var(--main-bg);
+  font-size: 0.9em;
+  padding: 10px 20px;
+  border: 1px solid var(--main-border);
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 0.5em 0;
   font-weight: 400;
