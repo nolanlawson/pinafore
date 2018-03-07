@@ -47,10 +47,6 @@ export async function restoreMastodonData () {
     console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
 
-    if (action.post || action.boost) {
-      await new Promise(resolve => setTimeout(resolve, 1100))
-    }
-
     if (action.post) {
       let { text, media, sensitive, spoiler, privacy, inReplyTo, internalId } = action.post
       if (typeof inReplyTo !== 'undefined') {
