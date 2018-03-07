@@ -34,7 +34,7 @@ if (require.main === module) {
   Promise.resolve()
     .then(waitForMastodonApiToStart)
     .then(waitForMastodonUiToStart).catch(err => {
-      console.error(err)
-      process.exit(1)
-    })
+    console.error(err)
+    process.exit(1)
+  })
 }
