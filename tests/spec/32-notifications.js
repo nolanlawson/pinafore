@@ -9,8 +9,13 @@ fixture`32-notifications.js`
 test('shows unread notifications', async t => {
   await t.useRole(foobarRole)
     .hover(getNthStatus(0))
+    .hover(getNthStatus(2))
+    .hover(getNthStatus(4))
+    .hover(getNthStatus(5))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-  await favoriteStatusAsAdmin('99548061995124415')
+  let statusId = (await getNthStatus(5).find('.status-relative-date').getAttribute('href'))
+    .split('/').slice(-1)[0]
+  await favoriteStatusAsAdmin(statusId)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1)')
     .click(notificationsNavButton)
