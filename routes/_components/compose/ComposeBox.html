@@ -61,6 +61,13 @@
   import { postStatus } from '../../_actions/statuses'
 
   export default {
+    oncreate() {
+      this.observe('postedStatusForRealm', postedStatusForRealm => {
+        if (postedStatusForRealm === this.get('realm')) {
+          window.history.back()
+        }
+      }, {init: false})
+    },
     components: {
       ComposeAuthor,
       ComposeToolbar,
@@ -86,7 +93,8 @@
       },
       overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
-      contentWarning: (composeData) => composeData.contentWarning || ''
+      contentWarning: (composeData) => composeData.contentWarning || '',
+      postedStatusForRealm: ($postedStatusForRealm) => $postedStatusForRealm
     },
     transitions: {
       slide
@@ -101,7 +109,9 @@
         let realm = this.get('realm')
         let mediaIds = media.map(_ => _.data.id)
 
-        /* no await */ postStatus(realm, text, null, mediaIds,
+        let inReplyTo = realm === 'home' ? null : realm
+
+        /* no await */ postStatus(realm, text, inReplyTo, mediaIds,
           sensitive, contentWarning, postPrivacyKey)
       }
     }

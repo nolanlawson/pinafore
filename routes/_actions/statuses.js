@@ -35,12 +35,18 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     return
   }
 
-  store.set({postingStatus: true})
+  store.set({
+    postingStatus: true,
+    postedStatusForRealm: null
+  })
   try {
     let status = await postStatusToServer(instanceName, accessToken, text,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility)
     addStatusOrNotification(instanceName, 'home', status)
     store.clearComposeData(realm)
+    store.set({
+      postedStatusForRealm: realm
+    })
   } catch (e) {
     toast.say('Unable to post status: ' + (e.message || ''))
   } finally {

@@ -157,7 +157,9 @@
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notification ? notification.id : ''}/${status.id}`
       },
       originalAccount: (originalStatus) => originalStatus.account,
-      isStatusInOwnThread: (timelineType, timelineValue, statusId) => timelineType === 'status' && timelineValue === statusId,
+      isStatusInOwnThread: (timelineType, timelineValue, statusId) => {
+        return (timelineType === 'status' || timelineType === 'reply') && timelineValue === statusId
+      },
       isStatusInNotification: (status, notification) => notification && notification.status && notification.type !== 'mention' && notification.status.id === status.id,
       spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId],
       visibility: (originalStatus) => originalStatus.visibility,

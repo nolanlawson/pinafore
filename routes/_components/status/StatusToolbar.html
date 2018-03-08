@@ -2,6 +2,9 @@
   <IconButton
     label="Reply"
     href="#fa-reply"
+    disabled="{{disableReply}}"
+    delegateKey="{{replyKey}}"
+    ref:replyNode
     />
   <IconButton
     label="{{reblogLabel}}"
@@ -41,15 +44,18 @@
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
   import { setReblogged } from '../../_actions/reblog'
+  import { goto } from 'sapper/runtime.js'
 
   export default {
     oncreate() {
       registerClickDelegate(this.get('favoriteKey'), () => this.onFavoriteClick())
       registerClickDelegate(this.get('reblogKey'), () => this.onReblogClick())
+      registerClickDelegate(this.get('replyKey'), () => this.onReplyClick())
     },
     ondestroy() {
       unregisterClickDelegate(this.get('favoriteKey'))
       unregisterClickDelegate(this.get('reblogKey'))
+      unregisterClickDelegate(this.get('replyKey'))
     },
     components: {
       IconButton
@@ -65,6 +71,10 @@
         let statusId = this.get('statusId')
         let reblogged = this.get('reblogged')
         /* no await */ setReblogged(statusId, !reblogged)
+      },
+      onReplyClick() {
+        let statusId = this.get('statusId')
+        goto(`/statuses/${statusId}/reply`)
       }
     },
     computed: {
@@ -105,8 +115,10 @@
         return status.favourited
       },
       statusId: (status) => status.id,
+      disableReply: (statusId, timelineType, timelineValue) => timelineType === 'reply' && statusId === timelineValue,
       favoriteKey: (statusId, timelineType, timelineValue) => `fav-${timelineType}-${timelineValue}-${statusId}`,
       reblogKey: (statusId, timelineType, timelineValue) => `reblog-${timelineType}-${timelineValue}-${statusId}`,
+      replyKey: (statusId, timelineType, timelineValue) => `reply-${timelineType}-${timelineValue}-${statusId}`,
     }
   }
 </script>
