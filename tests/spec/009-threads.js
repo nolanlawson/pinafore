@@ -1,14 +1,14 @@
 import { Selector as $ } from 'testcafe'
 import {
   getNthStatus, getUrl, validateTimeline, scrollToBottomOfTimeline, getFirstVisibleStatus,
-  goBack, forceOffline, forceOnline, homeNavButton, searchNavButton, searchInput, getNthSearchResult
+  goBack, forceOffline, forceOnline, searchNavButton, searchInput, getNthSearchResult
 } from '../utils'
 import { foobarRole } from '../roles'
 import { bazThreadRelativeTo2, bazThreadRelativeTo2b, bazThreadRelativeTo2B2, quuxThread } from '../fixtures'
 
 fixture`009-threads.js`
   .page`http://localhost:4002`
-/*
+
 test('Shows a thread', async t => {
   await t.useRole(foobarRole)
     .click($('a').withText('quux'))
@@ -38,7 +38,6 @@ test('Scrolls to proper point in thread', async t => {
     .expect(Math.round(getNthStatus(16).boundingClientRect.top))
       .eql(Math.round($('.container').boundingClientRect.top))
 })
-*/
 
 async function navigateToBazAccount(t) {
   await t.click(searchNavButton)
