@@ -1,9 +1,9 @@
 import times from 'lodash/times'
 
-function unrollThread(user, prefix, privacy, thread) {
+function unrollThread (user, prefix, privacy, thread) {
   let res = []
 
-  function unroll(node, parentKey) {
+  function unroll (node, parentKey) {
     if (!node) {
       return
     }
@@ -284,7 +284,7 @@ export const actions = times(30, i => ({
     }
   }
 ].concat(unrollThread('baz', 'bazthread-', 'unlisted', {
-  'thread 1' : {
+  'thread 1': {
     'thread 2': {
       'thread 2a': null,
       'thread 2b': {
@@ -322,5 +322,5 @@ export const actions = times(30, i => ({
       text: 'thread 2b2a',
       inReplyTo: 'bazthread-thread 2b2'
     }
-  },
+  }
 ]))

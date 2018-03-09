@@ -7,7 +7,7 @@ const notifyOffline = debounce(() => {
   toast.say('You seem to be offline. You can still read toots while offline.')
 }, OFFLINE_DELAY)
 
-export function onlineObservers(store) {
+export function onlineObservers (store) {
   if (!process.browser) {
     return
   }

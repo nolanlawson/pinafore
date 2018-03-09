@@ -39,7 +39,7 @@ test('Scrolls to proper point in thread', async t => {
       .eql(Math.round($('.container').boundingClientRect.top))
 })
 
-async function navigateToBazAccount(t) {
+async function navigateToBazAccount (t) {
   await t.click(searchNavButton)
     .expect(getUrl()).contains('/search')
     .typeText(searchInput, 'baz', {paste: true})
@@ -48,7 +48,7 @@ async function navigateToBazAccount(t) {
     .expect(getUrl()).contains('/accounts/5')
 }
 
-async function validateForkedThread(t) {
+async function validateForkedThread (t) {
   await t.hover(getNthStatus(1))
     .click(getNthStatus(2))
     .expect(getUrl()).contains('/statuses')

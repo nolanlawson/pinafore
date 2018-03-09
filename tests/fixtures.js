@@ -85,5 +85,5 @@ export const bazThreadRelativeTo2 = [
   {content: 'thread 2b1'},
   {content: 'thread 2b2'},
   {content: 'thread 2b2a'},
-  {content: 'thread 2c'},
+  {content: 'thread 2c'}
 ]
