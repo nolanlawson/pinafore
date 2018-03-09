@@ -7,13 +7,15 @@ import {
   NOTIFICATIONS_STORE,
   NOTIFICATION_TIMELINES_STORE,
   PINNED_STATUSES_STORE,
-  TIMESTAMP, REBLOG_ID, THREADS_STORE
+  TIMESTAMP,
+  REBLOG_ID,
+  THREADS_STORE
 } from './constants'
 
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 4
+const DB_VERSION = 5
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -33,30 +35,24 @@ export function getDatabase (instanceName) {
     req.onupgradeneeded = (e) => {
       let db = req.result
       let tx = e.currentTarget.transaction
-      if (e.oldVersion < 1) {
+      if (e.oldVersion < 5) {
         db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
           .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(STATUS_TIMELINES_STORE, {keyPath: 'id'})
-          .createIndex('statusId', 'statusId')
+        db.createObjectStore(STATUS_TIMELINES_STORE)
+          .createIndex('statusId', '')
         db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
           .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(NOTIFICATION_TIMELINES_STORE, {keyPath: 'id'})
-          .createIndex('notificationId', 'notificationId')
+        db.createObjectStore(NOTIFICATION_TIMELINES_STORE)
+          .createIndex('notificationId', '')
         db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
           .createIndex(TIMESTAMP, TIMESTAMP)
         db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
           .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(META_STORE, {keyPath: 'key'})
-        db.createObjectStore(PINNED_STATUSES_STORE, {keyPath: 'id'})
-      }
-      if (e.oldVersion < 2) {
+        db.createObjectStore(META_STORE)
+        db.createObjectStore(PINNED_STATUSES_STORE)
         tx.objectStore(STATUSES_STORE).createIndex(REBLOG_ID, REBLOG_ID)
-      }
-      if (e.oldVersion < 3) {
         tx.objectStore(NOTIFICATIONS_STORE).createIndex('statusId', 'statusId')
-      }
-      if (e.oldVersion < 4) {
-        db.createObjectStore(THREADS_STORE, {keyPath: 'id'})
+        db.createObjectStore(THREADS_STORE)
       }
     }
     req.onsuccess = () => resolve(req.result)

@@ -4,6 +4,7 @@ import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
   NOTIFICATIONS_STORE,
+  PINNED_STATUSES_STORE,
   RELATIONSHIPS_STORE,
   STATUS_TIMELINES_STORE,
   STATUSES_STORE,
@@ -38,11 +39,11 @@ function cleanupStatuses (statusesStore, statusTimelinesStore, threadsStore, cut
       results.forEach(result => {
         statusesStore.delete(result.id)
         threadsStore.delete(result.id)
-        let req = statusTimelinesStore.index('statusId').getAll(IDBKeyRange.only(result.id))
+        let req = statusTimelinesStore.index('statusId').getAllKeys(IDBKeyRange.only(result.id))
         req.onsuccess = e => {
-          let results = e.target.result
-          results.forEach(result => {
-            statusTimelinesStore.delete(result.id)
+          let keys = e.target.result
+          keys.forEach(key => {
+            statusTimelinesStore.delete(key)
           })
         }
       })
@@ -56,11 +57,11 @@ function cleanupNotifications (notificationsStore, notificationTimelinesStore, c
     results => {
       results.forEach(result => {
         notificationsStore.delete(result.id)
-        let req = notificationTimelinesStore.index('notificationId').getAll(IDBKeyRange.only(result.id))
+        let req = notificationTimelinesStore.index('notificationId').getAllKeys(IDBKeyRange.only(result.id))
         req.onsuccess = e => {
-          let results = e.target.result
-          results.forEach(result => {
-            notificationTimelinesStore.delete(result.id)
+          let keys = e.target.result
+          keys.forEach(key => {
+            notificationTimelinesStore.delete(key)
           })
         }
       })
@@ -68,12 +69,20 @@ function cleanupNotifications (notificationsStore, notificationTimelinesStore, c
   )
 }
 
-function cleanupAccounts (accountsStore, cutoff) {
+function cleanupAccounts (accountsStore, pinnedStatusesStore, cutoff) {
   batchedGetAll(
     () => accountsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     (results) => {
       results.forEach(result => {
         accountsStore.delete(result.id)
+        let keyRange = IDBKeyRange.bound(result.id + '\u0000', result.id + '\u0000\uffff')
+        let req = pinnedStatusesStore.getAllKeys(keyRange)
+        req.onsuccess = e => {
+          let keys = e.target.result
+          keys.forEach(key => {
+            pinnedStatusesStore.delete(key)
+          })
+        }
       })
     }
   )
@@ -101,7 +110,8 @@ async function cleanup (instanceName) {
     NOTIFICATION_TIMELINES_STORE,
     ACCOUNTS_STORE,
     RELATIONSHIPS_STORE,
-    THREADS_STORE
+    THREADS_STORE,
+    PINNED_STATUSES_STORE
   ]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
     let [
@@ -111,14 +121,15 @@ async function cleanup (instanceName) {
       notificationTimelinesStore,
       accountsStore,
       relationshipsStore,
-      threadsStore
+      threadsStore,
+      pinnedStatusesStore
     ] = stores
 
     let cutoff = Date.now() - TIME_AGO
 
     cleanupStatuses(statusesStore, statusTimelinesStore, threadsStore, cutoff)
     cleanupNotifications(notificationsStore, notificationTimelinesStore, cutoff)
-    cleanupAccounts(accountsStore, cutoff)
+    cleanupAccounts(accountsStore, pinnedStatusesStore, cutoff)
     cleanupRelationships(relationshipsStore, cutoff)
   })
   stop(`cleanup:${instanceName}`)

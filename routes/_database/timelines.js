@@ -46,8 +46,8 @@ async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
     timelineStore.getAll(keyRange, limit).onsuccess = e => {
       let timelineResults = e.target.result
       let res = new Array(timelineResults.length)
-      timelineResults.forEach((timelineResult, i) => {
-        fetchNotification(notificationsStore, statusesStore, accountsStore, timelineResult.notificationId, notification => {
+      timelineResults.forEach((notificationId, i) => {
+        fetchNotification(notificationsStore, statusesStore, accountsStore, notificationId, notification => {
           res[i] = notification
         })
       })
@@ -65,8 +65,8 @@ async function getStatusTimeline (instanceName, timeline, maxId, limit) {
     getReq.onsuccess = e => {
       let timelineResults = e.target.result
       let res = new Array(timelineResults.length)
-      timelineResults.forEach((timelineResult, i) => {
-        fetchStatus(statusesStore, accountsStore, timelineResult.statusId, status => {
+      timelineResults.forEach((statusId, i) => {
+        fetchStatus(statusesStore, accountsStore, statusId, status => {
           res[i] = status
         })
       })
@@ -81,7 +81,7 @@ async function getStatusThread (instanceName, statusId) {
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ threadsStore, statusesStore, accountsStore ] = stores
     threadsStore.get(statusId).onsuccess = e => {
-      let thread = e.target.result.thread
+      let thread = e.target.result
       let res = new Array(thread.length)
       thread.forEach((otherStatusId, i) => {
         fetchStatus(statusesStore, accountsStore, otherStatusId, status => {
@@ -196,10 +196,7 @@ async function insertTimelineNotifications (instanceName, timeline, notification
     let [ timelineStore, notificationsStore, accountsStore, statusesStore ] = stores
     for (let notification of notifications) {
       storeNotification(notificationsStore, statusesStore, accountsStore, notification)
-      timelineStore.put({
-        id: createTimelineId(timeline, notification.id),
-        notificationId: notification.id
-      })
+      timelineStore.put(notification.id, createTimelineId(timeline, notification.id))
     }
   })
 }
@@ -214,10 +211,7 @@ async function insertTimelineStatuses (instanceName, timeline, statuses) {
     let [ timelineStore, statusesStore, accountsStore ] = stores
     for (let status of statuses) {
       storeStatus(statusesStore, accountsStore, status)
-      timelineStore.put({
-        id: createTimelineId(timeline, status.id),
-        statusId: status.id
-      })
+      timelineStore.put(status.id, createTimelineId(timeline, status.id))
     }
   })
 }
@@ -230,10 +224,7 @@ async function insertStatusThread (instanceName, statusId, statuses) {
   let storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
     let [ threadsStore, statusesStore, accountsStore ] = stores
-    threadsStore.put({
-      id: statusId,
-      thread: statuses.map(_ => _.id)
-    })
+    threadsStore.put(statuses.map(_ => _.id), statusId)
     for (let status of statuses) {
       storeStatus(statusesStore, accountsStore, status)
     }
@@ -374,10 +365,7 @@ export async function insertPinnedStatuses (instanceName, accountId, statuses) {
     let [ pinnedStatusesStore, statusesStore, accountsStore ] = stores
     statuses.forEach((status, i) => {
       storeStatus(statusesStore, accountsStore, status)
-      pinnedStatusesStore.put({
-        id: accountId + '\u0000' + toPaddedBigInt(i),
-        statusId: status.id
-      })
+      pinnedStatusesStore.put(status.id, accountId + '\u0000' + toPaddedBigInt(i))
     })
   })
 }
@@ -394,8 +382,8 @@ export async function getPinnedStatuses (instanceName, accountId) {
     pinnedStatusesStore.getAll(keyRange).onsuccess = e => {
       let pinnedResults = e.target.result
       let res = new Array(pinnedResults.length)
-      pinnedResults.forEach((pinnedResult, i) => {
-        fetchStatus(statusesStore, accountsStore, pinnedResult.statusId, status => {
+      pinnedResults.forEach((statusId, i) => {
+        fetchStatus(statusesStore, accountsStore, statusId, status => {
           res[i] = status
         })
       })

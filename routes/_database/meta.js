@@ -9,7 +9,7 @@ async function getMetaProperty (instanceName, key) {
   const db = await getDatabase(instanceName)
   let result = await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
     store.get(key).onsuccess = (e) => {
-      callback(e.target.result && e.target.result.value)
+      callback(e.target.result)
     }
   })
   setInCache(metaCache, instanceName, key, result)
@@ -20,10 +20,7 @@ async function setMetaProperty (instanceName, key, value) {
   setInCache(metaCache, instanceName, key, value)
   const db = await getDatabase(instanceName)
   return dbPromise(db, META_STORE, 'readwrite', (store) => {
-    store.put({
-      key: key,
-      value: value
-    })
+    store.put(value, key)
   })
 }
 
