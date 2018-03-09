@@ -87,6 +87,10 @@ export function getFirstVisibleStatus () {
   return $(`div[aria-hidden="false"] > article[aria-posinset]`).nth(0)
 }
 
+export function getNthReplyButton (n) {
+  return getNthStatus(n).find('.status-toolbar button:nth-child(1)')
+}
+
 export function getNthFavoriteButton (n) {
   return getNthStatus(n).find('.status-toolbar button:nth-child(3)')
 }

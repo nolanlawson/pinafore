@@ -58,12 +58,19 @@
   import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
-  import { postStatus } from '../../_actions/statuses'
+  import { postStatus, insertHandleForReply } from '../../_actions/compose'
 
   export default {
     oncreate() {
+      let realm = this.get('realm')
+      if (realm !== 'home') {
+        // if this is a reply, populate the handle immediately
+        insertHandleForReply(realm)
+      }
+
+      // if this is a reply, go back immediately after it's posted
       this.observe('postedStatusForRealm', postedStatusForRealm => {
-        if (postedStatusForRealm === this.get('realm')) {
+        if (postedStatusForRealm === realm) {
           window.history.back()
         }
       }, {init: false})
