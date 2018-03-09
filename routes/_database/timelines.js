@@ -14,20 +14,12 @@ import {
   STATUSES_STORE,
   ACCOUNT_ID,
   REBLOG_ID,
-  STATUS_ID
+  STATUS_ID, THREADS_STORE
 } from './constants'
 
 function createTimelineKeyRange (timeline, maxId) {
   let negBigInt = maxId && toReversePaddedBigInt(maxId)
   let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
-  let end = timeline + '\u0000\uffff'
-  return IDBKeyRange.bound(start, end, true, true)
-}
-
-// special case for threads – these are in chronological order rather than reverse
-// chronological order, and we fetch everything all at once rather than paginating
-function createKeyRangeForStatusThread (timeline) {
-  let start = timeline + '\u0000'
   let end = timeline + '\u0000\uffff'
   return IDBKeyRange.bound(start, end, true, true)
 }
@@ -69,18 +61,9 @@ async function getStatusTimeline (instanceName, timeline, maxId, limit) {
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ timelineStore, statusesStore, accountsStore ] = stores
-    // Status threads are a special case - these are in forward chronological order
-    // and we fetch them all at once instead of paginating.
-    let isStatusThread = timeline.startsWith('status/')
-    let getReq = isStatusThread
-      ? timelineStore.getAll(createKeyRangeForStatusThread(timeline))
-      : timelineStore.getAll(createTimelineKeyRange(timeline, maxId), limit)
-
+    let getReq = timelineStore.getAll(createTimelineKeyRange(timeline, maxId), limit)
     getReq.onsuccess = e => {
       let timelineResults = e.target.result
-      if (isStatusThread) {
-        timelineResults = timelineResults.reverse()
-      }
       let res = new Array(timelineResults.length)
       timelineResults.forEach((timelineResult, i) => {
         fetchStatus(statusesStore, accountsStore, timelineResult.statusId, status => {
@@ -92,10 +75,33 @@ async function getStatusTimeline (instanceName, timeline, maxId, limit) {
   })
 }
 
+async function getStatusThread (instanceName, statusId) {
+  let storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  const db = await getDatabase(instanceName)
+  return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+    let [ threadsStore, statusesStore, accountsStore ] = stores
+    threadsStore.get(statusId).onsuccess = e => {
+      let thread = e.target.result.thread
+      let res = new Array(thread.length)
+      thread.forEach((otherStatusId, i) => {
+        fetchStatus(statusesStore, accountsStore, otherStatusId, status => {
+          res[i] = status
+        })
+      })
+      callback(res)
+    }
+  })
+}
+
 export async function getTimeline (instanceName, timeline, maxId = null, limit = 20) {
-  return timeline === 'notifications'
-    ? getNotificationTimeline(instanceName, timeline, maxId, limit)
-    : getStatusTimeline(instanceName, timeline, maxId, limit)
+  if (timeline === 'notifications') {
+    return getNotificationTimeline(instanceName, timeline, maxId, limit)
+  } else if (timeline.startsWith('status/')) {
+    let statusId = timeline.split('/').slice(-1)[0]
+    return getStatusThread(instanceName, statusId)
+  } else {
+    return getStatusTimeline(instanceName, timeline, maxId, limit)
+  }
 }
 
 //
@@ -177,7 +183,6 @@ function createTimelineId (timeline, id) {
 }
 
 async function insertTimelineNotifications (instanceName, timeline, notifications) {
-  /* no await */ scheduleCleanup()
   for (let notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
     setInCache(accountsCache, instanceName, notification.account.id, notification.account)
@@ -200,7 +205,6 @@ async function insertTimelineNotifications (instanceName, timeline, notification
 }
 
 async function insertTimelineStatuses (instanceName, timeline, statuses) {
-  /* no await */ scheduleCleanup()
   for (let status of statuses) {
     cacheStatus(status, instanceName)
   }
@@ -218,10 +222,34 @@ async function insertTimelineStatuses (instanceName, timeline, statuses) {
   })
 }
 
+async function insertStatusThread (instanceName, statusId, statuses) {
+  for (let status of statuses) {
+    cacheStatus(status, instanceName)
+  }
+  const db = await getDatabase(instanceName)
+  let storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  await dbPromise(db, storeNames, 'readwrite', (stores) => {
+    let [ threadsStore, statusesStore, accountsStore ] = stores
+    threadsStore.put({
+      id: statusId,
+      thread: statuses.map(_ => _.id)
+    })
+    for (let status of statuses) {
+      storeStatus(statusesStore, accountsStore, status)
+    }
+  })
+}
+
 export async function insertTimelineItems (instanceName, timeline, timelineItems) {
-  return timeline === 'notifications'
-    ? insertTimelineNotifications(instanceName, timeline, timelineItems)
-    : insertTimelineStatuses(instanceName, timeline, timelineItems)
+  /* no await */ scheduleCleanup()
+  if (timeline === 'notifications') {
+    return insertTimelineNotifications(instanceName, timeline, timelineItems)
+  } else if (timeline.startsWith('status/')) {
+    let statusId = timeline.split('/').slice(-1)[0]
+    return insertStatusThread(instanceName, statusId, timelineItems)
+  } else {
+    return insertTimelineStatuses(instanceName, timeline, timelineItems)
+  }
 }
 
 //

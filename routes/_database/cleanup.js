@@ -7,6 +7,7 @@ import {
   RELATIONSHIPS_STORE,
   STATUS_TIMELINES_STORE,
   STATUSES_STORE,
+  THREADS_STORE,
   TIMESTAMP
 } from './constants'
 import debounce from 'lodash/debounce'
@@ -30,12 +31,13 @@ function batchedGetAll (callGetAll, callback) {
   nextBatch()
 }
 
-function cleanupStatuses (statusesStore, statusTimelinesStore, cutoff) {
+function cleanupStatuses (statusesStore, statusTimelinesStore, threadsStore, cutoff) {
   batchedGetAll(
     () => statusesStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     results => {
       results.forEach(result => {
         statusesStore.delete(result.id)
+        threadsStore.delete(result.id)
         let req = statusTimelinesStore.index('statusId').getAll(IDBKeyRange.only(result.id))
         req.onsuccess = e => {
           let results = e.target.result
@@ -98,7 +100,8 @@ async function cleanup (instanceName) {
     NOTIFICATIONS_STORE,
     NOTIFICATION_TIMELINES_STORE,
     ACCOUNTS_STORE,
-    RELATIONSHIPS_STORE
+    RELATIONSHIPS_STORE,
+    THREADS_STORE
   ]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
     let [
@@ -107,12 +110,13 @@ async function cleanup (instanceName) {
       notificationsStore,
       notificationTimelinesStore,
       accountsStore,
-      relationshipsStore
+      relationshipsStore,
+      threadsStore
     ] = stores
 
     let cutoff = Date.now() - TIME_AGO
 
-    cleanupStatuses(statusesStore, statusTimelinesStore, cutoff)
+    cleanupStatuses(statusesStore, statusTimelinesStore, threadsStore, cutoff)
     cleanupNotifications(notificationsStore, notificationTimelinesStore, cutoff)
     cleanupAccounts(accountsStore, cutoff)
     cleanupRelationships(relationshipsStore, cutoff)

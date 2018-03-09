@@ -7,13 +7,13 @@ import {
   NOTIFICATIONS_STORE,
   NOTIFICATION_TIMELINES_STORE,
   PINNED_STATUSES_STORE,
-  TIMESTAMP, REBLOG_ID
+  TIMESTAMP, REBLOG_ID, THREADS_STORE
 } from './constants'
 
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 3
+const DB_VERSION = 4
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -54,6 +54,9 @@ export function getDatabase (instanceName) {
       }
       if (e.oldVersion < 3) {
         tx.objectStore(NOTIFICATIONS_STORE).createIndex('statusId', 'statusId')
+      }
+      if (e.oldVersion < 4) {
+        db.createObjectStore(THREADS_STORE, {keyPath: 'id'})
       }
     }
     req.onsuccess = () => resolve(req.result)
