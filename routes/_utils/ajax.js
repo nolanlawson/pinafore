@@ -69,9 +69,12 @@ export async function get (url, headers = {}) {
 }
 
 export function paramsString (paramsObject) {
-  let params = new URLSearchParams()
-  Object.keys(paramsObject).forEach(key => {
-    params.set(key, paramsObject[key])
+  let res = ''
+  Object.keys(paramsObject).forEach((key, i) => {
+    if (i > 0) {
+      res += '&'
+    }
+    res += encodeURIComponent(key) + '=' + encodeURIComponent(paramsObject[key])
   })
-  return params.toString()
+  return res
 }

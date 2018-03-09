@@ -77,9 +77,9 @@
 
   export default {
     async oncreate () {
-      let params = new URLSearchParams(location.search)
-      if (params.has('code')) {
-        handleOauthCode(params.get('code'))
+      let codeMatch = location.search.match(/code=([^&]+)/)
+      if (codeMatch) {
+        handleOauthCode(codeMatch[1])
       }
     },
     components: {
