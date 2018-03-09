@@ -41,7 +41,8 @@ export const store = new PinaforeStore({
   statusModifications: {},
   customEmoji: {},
   composeData: {},
-  verifyCredentials: {}
+  verifyCredentials: {},
+  online: !process.browser || navigator.onLine
 })
 
 mixins(PinaforeStore)

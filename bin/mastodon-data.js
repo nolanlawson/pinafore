@@ -1,5 +1,28 @@
 import times from 'lodash/times'
 
+function unrollThread(user, prefix, privacy, thread) {
+  let res = []
+
+  function unroll(node, parentKey) {
+    if (!node) {
+      return
+    }
+    for (let key of Object.keys(node)) {
+      res.push({
+        user: user,
+        post: {
+          internalId: prefix + key,
+          text: key,
+          inReplyTo: parentKey && (prefix + parentKey)
+        }
+      })
+      unroll(node[key], key)
+    }
+  }
+  unroll(thread)
+  return res
+}
+
 export const actions = times(30, i => ({
   post: {
     text: '' + (i + 1)
@@ -260,4 +283,44 @@ export const actions = times(30, i => ({
       privacy: 'unlisted'
     }
   }
-])
+].concat(unrollThread('baz', 'bazthread-', 'unlisted', {
+  'thread 1' : {
+    'thread 2': {
+      'thread 2a': null,
+      'thread 2b': {
+        'thread 2b1': null
+      },
+      'thread 2c': null
+    },
+    'thread 3': {
+      'thread 3a': null,
+      'thread 3b': null,
+      'thread 3c': null
+    }
+  }
+})).concat([
+  {
+    user: 'baz',
+    post: {
+      internalId: 'bazthread-thread 2b2',
+      text: 'thread 2b2',
+      inReplyTo: 'bazthread-thread 2b'
+    }
+  },
+  {
+    user: 'baz',
+    post: {
+      internalId: 'bazthread-thread 2d',
+      text: 'thread 2d',
+      inReplyTo: 'bazthread-thread 2'
+    }
+  },
+  {
+    user: 'baz',
+    post: {
+      internalId: 'bazthread-thread 2b2a',
+      text: 'thread 2b2a',
+      inReplyTo: 'bazthread-thread 2b2'
+    }
+  },
+]))

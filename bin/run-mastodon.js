@@ -53,8 +53,7 @@ async function setupMastodonDatabase () {
 async function runMastodon () {
   console.log('Running mastodon...')
   let cmds = [
-    'gem install bundler',
-    'gem install foreman',
+    'gem install bundler foreman',
     'bundle install',
     'yarn --pure-lockfile'
   ]

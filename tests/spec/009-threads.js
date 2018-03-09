@@ -1,11 +1,14 @@
 import { Selector as $ } from 'testcafe'
-import { getNthStatus, getUrl, validateTimeline, scrollToBottomOfTimeline } from '../utils'
+import {
+  getNthStatus, getUrl, validateTimeline, scrollToBottomOfTimeline, getFirstVisibleStatus,
+  goBack, forceOffline, forceOnline, homeNavButton, searchNavButton, searchInput, getNthSearchResult
+} from '../utils'
 import { foobarRole } from '../roles'
-import { quuxThread } from '../fixtures'
+import { bazThreadRelativeTo2, bazThreadRelativeTo2b, bazThreadRelativeTo2B2, quuxThread } from '../fixtures'
 
 fixture`009-threads.js`
   .page`http://localhost:4002`
-
+/*
 test('Shows a thread', async t => {
   await t.useRole(foobarRole)
     .click($('a').withText('quux'))
@@ -34,4 +37,47 @@ test('Scrolls to proper point in thread', async t => {
     .expect(getNthStatus(16).innerText).contains('unlisted thread 17')
     .expect(Math.round(getNthStatus(16).boundingClientRect.top))
       .eql(Math.round($('.container').boundingClientRect.top))
+})
+*/
+
+async function navigateToBazAccount(t) {
+  await t.click(searchNavButton)
+    .expect(getUrl()).contains('/search')
+    .typeText(searchInput, 'baz', {paste: true})
+    .pressKey('enter')
+    .click(getNthSearchResult(1))
+    .expect(getUrl()).contains('/accounts/5')
+}
+
+async function validateForkedThread(t) {
+  await t.hover(getNthStatus(1))
+    .click(getNthStatus(2))
+    .expect(getUrl()).contains('/statuses')
+  await validateTimeline(t, bazThreadRelativeTo2B2)
+  await goBack()
+  await t.hover(getNthStatus(3))
+    .hover(getNthStatus(5))
+    .hover(getNthStatus(7))
+    .hover(getNthStatus(9))
+    .click(getNthStatus(9))
+    .expect(getUrl()).contains('/statuses')
+  await validateTimeline(t, bazThreadRelativeTo2b)
+  await goBack()
+  await t.hover(getNthStatus(11))
+    .click(getNthStatus(11))
+    .expect(getUrl()).contains('/statuses')
+  await validateTimeline(t, bazThreadRelativeTo2)
+}
+
+test('Forked threads look correct online and offline', async t => {
+  await t.useRole(foobarRole)
+    .hover(getFirstVisibleStatus())
+  await navigateToBazAccount(t)
+  await validateForkedThread(t)
+  await t.navigateTo('/')
+    .hover(getFirstVisibleStatus())
+  await navigateToBazAccount(t)
+  await forceOffline()
+  await validateForkedThread(t)
+  await forceOnline()
 })

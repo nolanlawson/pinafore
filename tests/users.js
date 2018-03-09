@@ -22,5 +22,11 @@ export const users = {
     password: 'ExternalLinksExternalLink',
     accessToken: 'e9a463ba1729ae0049a97a312af702cb3d08d84de1cc8d6da3fad90af068117b',
     id: 4
+  },
+  baz: {
+    username: 'baz',
+    password: 'bazbazbaz',
+    accessToken: '0639238783efdfde849304bc89ec0c4b60b5ef5f261f60859fcd597de081cfdc',
+    id: 5
   }
 }

@@ -59,3 +59,31 @@ export const quuxStatuses = [
 ].concat(times(25, i => ({content: `unlisted thread ${25 - i}`})))
 
 export const quuxThread = times(25, i => ({content: `unlisted thread ${i + 1}`}))
+
+export const bazThreadRelativeTo2B2 = [
+  {content: 'thread 1'},
+  {content: 'thread 2'},
+  {content: 'thread 2b'},
+  {content: 'thread 2b2'},
+  {content: 'thread 2b2a'}
+]
+
+export const bazThreadRelativeTo2b = [
+  {content: 'thread 1'},
+  {content: 'thread 2'},
+  {content: 'thread 2b'},
+  {content: 'thread 2b1'},
+  {content: 'thread 2b2'},
+  {content: 'thread 2b2a'}
+]
+
+export const bazThreadRelativeTo2 = [
+  {content: 'thread 1'},
+  {content: 'thread 2'},
+  {content: 'thread 2a'},
+  {content: 'thread 2b'},
+  {content: 'thread 2b1'},
+  {content: 'thread 2b2'},
+  {content: 'thread 2b2a'},
+  {content: 'thread 2c'},
+]

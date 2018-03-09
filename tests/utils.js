@@ -10,6 +10,7 @@ export const modalDialogContents = $('.modal-dialog-contents')
 export const closeDialogButton = $('.close-dialog-button')
 export const notificationsNavButton = $('nav a[href="/notifications"]')
 export const homeNavButton = $('nav a[href="/"]')
+export const searchNavButton = $('nav a[href="/search"]')
 export const formError = $('.form-error-user-error')
 export const composeInput = $('.compose-box-input')
 export const composeContentWarning = $('.content-warning-input')
@@ -23,6 +24,7 @@ export const emailInput = $('input#user_email')
 export const passwordInput = $('input#user_password')
 export const authorizeInput = $('button[type=submit]:not(.negative)')
 export const logInToInstanceLink = $('a[href="/settings/instances/add"]')
+export const searchInput = $('.search-input')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -40,6 +42,10 @@ export const getActiveElementClass = exec(() =>
 
 export const goBack = exec(() => window.history.back())
 
+export const forceOffline = exec(() => window.store.set({online: false}))
+
+export const forceOnline = exec(() => window.store.set({online: true}))
+
 export const getComposeSelectionStart = exec(() => composeInput().selectionStart, {
   dependencies: { composeInput }
 })
@@ -56,6 +62,10 @@ export const uploadKittenImage = i => (exec(() => {
     i
   }
 }))
+
+export function getNthSearchResult (n) {
+  return $(`.search-result:nth-child(${n}) a`)
+}
 
 export function getNthMedia (n) {
   return $(`.compose-media:nth-child(${n}) img`)
