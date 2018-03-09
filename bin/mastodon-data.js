@@ -13,6 +13,7 @@ function unrollThread (user, prefix, privacy, thread) {
         post: {
           internalId: prefix + key,
           text: key,
+          privacy: privacy,
           inReplyTo: parentKey && (prefix + parentKey)
         }
       })

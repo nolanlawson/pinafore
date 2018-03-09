@@ -73,7 +73,7 @@ test('Forked threads look correct online and offline', async t => {
     .hover(getFirstVisibleStatus())
   await navigateToBazAccount(t)
   await validateForkedThread(t)
-  await t.navigateTo('/')
+  await t.navigateTo('/') // clears in-memory cache while still preserving IDB cache
     .hover(getFirstVisibleStatus())
   await navigateToBazAccount(t)
   await forceOffline()
