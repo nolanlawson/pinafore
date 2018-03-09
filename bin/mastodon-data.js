@@ -305,7 +305,8 @@ export const actions = times(30, i => ({
     post: {
       internalId: 'bazthread-thread 2b2',
       text: 'thread 2b2',
-      inReplyTo: 'bazthread-thread 2b'
+      inReplyTo: 'bazthread-thread 2b',
+      privacy: 'unlisted'
     }
   },
   {
@@ -313,7 +314,8 @@ export const actions = times(30, i => ({
     post: {
       internalId: 'bazthread-thread 2d',
       text: 'thread 2d',
-      inReplyTo: 'bazthread-thread 2'
+      inReplyTo: 'bazthread-thread 2',
+      privacy: 'unlisted'
     }
   },
   {
@@ -321,7 +323,8 @@ export const actions = times(30, i => ({
     post: {
       internalId: 'bazthread-thread 2b2a',
       text: 'thread 2b2a',
-      inReplyTo: 'bazthread-thread 2b2'
+      inReplyTo: 'bazthread-thread 2b2',
+      privacy: 'unlisted'
     }
   }
 ]))
