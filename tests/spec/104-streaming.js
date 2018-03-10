@@ -1,7 +1,6 @@
 import { foobarRole } from '../roles'
 import {
-  getFirstVisibleStatus, getNthReplyButton, getNthStatus, getUrl, homeNavButton, notificationsNavButton,
-  postStatusButton, scrollContainerToTop, showMoreButton, sleep
+  getNthStatus, scrollContainerToTop, showMoreButton, sleep
 } from '../utils'
 import { postAsAdmin } from '../serverActions'
 
@@ -20,6 +19,7 @@ test('new incoming toots show a button if scrolled down', async t => {
     .hover(getNthStatus(0))
     .hover(getNthStatus(2))
     .hover(getNthStatus(4))
+  await sleep(1000)
   await postAsAdmin('hello my ragtime gal')
   await postAsAdmin('send me a kiss by wire')
   await sleep(4000)

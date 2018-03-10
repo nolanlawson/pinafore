@@ -5,11 +5,7 @@
           on:click="onClickPlayVideoButton()"
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
-    <div class="svg-wrapper">
-      <svg>
-        <use xlink:href="#fa-play-circle" />
-      </svg>
-    </div>
+    <PlayVideoIcon />
     <img alt="{{media.description || ''}}"
          src="{{imageError ? oneTransparentPixel : media.preview_url}}"
          width="{{inlineWidth}}"
@@ -81,25 +77,6 @@
     background: none;
     position: relative;
   }
-  .play-video-button .svg-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 40;
-    pointer-events: none;
-  }
-  .play-video-button svg {
-    width: 72px;
-    height: 72px;
-    fill: var(--mask-svg-fill);
-    border-radius: 100%;
-    background: var(--mask-opaque-bg);
-  }
   .show-image-button {
     margin: 0;
     padding: 0;
@@ -124,6 +101,7 @@
   import { importDialogs } from '../../_utils/asyncModules'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
+  import PlayVideoIcon from '../PlayVideoIcon.html'
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
 
   export default {
@@ -168,7 +146,8 @@
       mouseover
     },
     components: {
-      NonAutoplayGifv
+      NonAutoplayGifv,
+      PlayVideoIcon
     }
   }
 </script>

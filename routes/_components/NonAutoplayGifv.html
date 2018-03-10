@@ -26,15 +26,21 @@
          on:imgLoadError="set({imageError: true})"
          />
   {{/if}}
+  <PlayVideoIcon className="{{playing ? 'hidden' : ''}}"/>
 </div>
 <style>
   .non-autoplay-gifv {
     cursor: zoom-in;
+    position: relative;
+  }
+  :global(.non-autoplay-gifv .play-video-icon) {
+    transition: opacity 0.2s linear;
   }
 </style>
 <script>
   import { mouseover } from '../_utils/events'
   import { imgLoad, imgLoadError } from '../_utils/events'
+  import PlayVideoIcon from './PlayVideoIcon.html'
   import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
 
   export default {
@@ -50,6 +56,9 @@
     },
     data: () => ({
       oneTransparentPixel: ONE_TRANSPARENT_PIXEL
-    })
+    }),
+    components: {
+      PlayVideoIcon
+    }
   }
 </script>
