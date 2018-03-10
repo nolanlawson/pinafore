@@ -30,19 +30,19 @@
 
     {{#if $lists.length}}
 
-      <h2 class="community-header">
-        Lists
-      </h2>
+    <h2 class="community-header">
+      Lists
+    </h2>
 
-      <PageList label="Lists">
-        {{#each $lists as list}}
-        <PageListItem href="/lists/{{list.id}}"
-                      label="{{list.title}}"
-                      icon="#fa-bars"
-                      pinnable="true"
-        />
-        {{/each}}
-      </PageList>
+    <PageList label="Lists">
+      {{#each $lists as list}}
+      <PageListItem href="/lists/{{list.id}}"
+                    label="{{list.title}}"
+                    icon="#fa-bars"
+                    pinnable="true"
+      />
+      {{/each}}
+    </PageList>
 
     {{/if}}
 
@@ -80,6 +80,7 @@
   .community-page {
     margin: 20px;
   }
+
   @media (max-width: 767px) {
     .community-page {
       margin: 20px 10px;
@@ -87,25 +88,25 @@
   }
 </style>
 <script>
-  import Layout from '../_components/Layout.html'
-  import FreeTextLayout from '../_components/FreeTextLayout.html'
-  import { store } from '../_store/store.js'
-  import HiddenFromSSR from '../_components/HiddenFromSSR'
-  import PageList from './_components/PageList.html'
-  import PageListItem from './_components/PageListItem.html'
-  import { updateLists } from '../_actions/lists'
+import Layout from '../_components/Layout.html'
+import FreeTextLayout from '../_components/FreeTextLayout.html'
+import { store } from '../_store/store.js'
+import HiddenFromSSR from '../_components/HiddenFromSSR'
+import PageList from './_components/PageList.html'
+import PageListItem from './_components/PageListItem.html'
+import { updateLists } from '../_actions/lists'
 
-  export default {
-    async oncreate() {
-      await updateLists()
-    },
-    store: () => store,
-    components: {
-      Layout,
-      FreeTextLayout,
-      HiddenFromSSR,
-      PageList,
-      PageListItem
-    }
-  };
+export default {
+  async oncreate () {
+    await updateLists()
+  },
+  store: () => store,
+  components: {
+    Layout,
+    FreeTextLayout,
+    HiddenFromSSR,
+    PageList,
+    PageListItem
+  }
+}
 </script>

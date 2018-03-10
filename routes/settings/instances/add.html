@@ -37,7 +37,9 @@
     </form>
 
     {{#if !$isUserLoggedIn}}
-    <p>Don't have an instance? <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink></p>
+    <p>Don't have an instance?
+      <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink>
+    </p>
     {{/if}}
   </SettingsLayout>
 </Layout>
@@ -50,6 +52,7 @@
     margin: 5px;
     background-color: var(--main-bg);
   }
+
   input.new-instance-input {
     min-width: 60%;
     max-width: 100%;
@@ -69,30 +72,30 @@
   }
 </style>
 <script>
-  import Layout from '../../_components/Layout.html';
-  import SettingsLayout from '../_components/SettingsLayout.html'
-  import { store } from '../../_store/store'
-  import { logInToInstance, handleOauthCode } from '../../_actions/addInstance'
-  import ExternalLink from '../../_components/ExternalLink.html'
+import Layout from '../../_components/Layout.html'
+import SettingsLayout from '../_components/SettingsLayout.html'
+import { store } from '../../_store/store'
+import { logInToInstance, handleOauthCode } from '../../_actions/addInstance'
+import ExternalLink from '../../_components/ExternalLink.html'
 
-  export default {
-    async oncreate () {
-      let codeMatch = location.search.match(/code=([^&]+)/)
-      if (codeMatch) {
-        handleOauthCode(codeMatch[1])
-      }
-    },
-    components: {
-      Layout,
-      SettingsLayout,
-      ExternalLink
-    },
-    store: () => store,
-    methods: {
-      onSubmit(event) {
-        event.preventDefault()
-        logInToInstance()
-      }
+export default {
+  async oncreate () {
+    let codeMatch = location.search.match(/code=([^&]+)/)
+    if (codeMatch) {
+      handleOauthCode(codeMatch[1])
+    }
+  },
+  components: {
+    Layout,
+    SettingsLayout,
+    ExternalLink
+  },
+  store: () => store,
+  methods: {
+    onSubmit (event) {
+      event.preventDefault()
+      logInToInstance()
     }
   }
+}
 </script>

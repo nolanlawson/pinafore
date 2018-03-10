@@ -1,10 +1,10 @@
 <:Head>
-	<title>Pinafore – Notifications</title>
+  <title>Pinafore – Notifications</title>
 </:Head>
 
 <Layout page='notifications'>
   {{#if $isUserLoggedIn}}
-  <LazyTimeline timeline='notifications' />
+  <LazyTimeline timeline='notifications'/>
   {{else}}
   <HiddenFromSSR>
     <FreeTextLayout>
@@ -17,19 +17,19 @@
 </Layout>
 
 <script>
-  import Layout from './_components/Layout.html'
-  import LazyTimeline from './_components/timeline/LazyTimeline.html'
-  import FreeTextLayout from './_components/FreeTextLayout.html'
-  import { store } from './_store/store.js'
-  import HiddenFromSSR from './_components/HiddenFromSSR'
+import Layout from './_components/Layout.html'
+import LazyTimeline from './_components/timeline/LazyTimeline.html'
+import FreeTextLayout from './_components/FreeTextLayout.html'
+import { store } from './_store/store.js'
+import HiddenFromSSR from './_components/HiddenFromSSR'
 
-  export default {
-    store: () => store,
-    components: {
-      Layout,
-      LazyTimeline,
-      FreeTextLayout,
-      HiddenFromSSR
-    }
-  };
+export default {
+  store: () => store,
+  components: {
+    Layout,
+    LazyTimeline,
+    FreeTextLayout,
+    HiddenFromSSR
+  }
+}
 </script>

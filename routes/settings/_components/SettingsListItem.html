@@ -2,7 +2,7 @@
   <a :href>
     {{#if icon}}
     <svg>
-      <use xlink:href="{{icon}}" />
+      <use xlink:href="{{icon}}"/>
     </svg>
     {{/if}}
     {{#if ariaLabel}}
@@ -23,22 +23,27 @@
     display: flex;
     flex-direction: column;
   }
+
   .settings-list-item a {
     display: flex;
     padding: 20px 40px;
     background: var(--settings-list-item-bg);
   }
+
   .settings-list-item a, .settings-list-item a:visited {
     color: var(--settings-list-item-text);
   }
+
   .settings-list-item a:hover {
     text-decoration: none;
     background: var(--settings-list-item-bg-hover);
     color: var(--settings-list-item-text-hover);
   }
+
   .settings-list-item a:active {
     background: var(--settings-list-item-bg-active);
   }
+
   .settings-list-item svg {
     width: 24px;
     height: 24px;
@@ -46,9 +51,11 @@
     margin-right: 20px;
     fill: var(--svg-fill);
   }
+
   .settings-list-item .offset-for-icon {
     margin-left: 44px;
   }
+
   .settings-list-item span {
     white-space: nowrap;
     overflow: hidden;
@@ -59,9 +66,11 @@
     .settings-list-item a {
       padding: 20px 10px;
     }
+
     .settings-list-item svg {
       margin-right: 10px;
     }
+
     .settings-list-item .offset-for-icon {
       margin-left: 34px;
     }

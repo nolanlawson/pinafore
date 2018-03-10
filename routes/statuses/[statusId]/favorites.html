@@ -3,26 +3,26 @@
 </:Head>
 
 <Layout page='favorites'>
-  <DynamicPageBanner title="Favorites" icon="#fa-star" />
-  <AccountsListPage :accountsFetcher />
+  <DynamicPageBanner title="Favorites" icon="#fa-star"/>
+  <AccountsListPage :accountsFetcher/>
 </Layout>
 <script>
-  import Layout from '../../_components/Layout.html'
-  import { getFavorites } from '../../_api/reblogsAndFavs'
-  import AccountsListPage from '../../_components/AccountsListPage.html'
-  import { store } from '../../_store/store'
-  import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
+import Layout from '../../_components/Layout.html'
+import { getFavorites } from '../../_api/reblogsAndFavs'
+import AccountsListPage from '../../_components/AccountsListPage.html'
+import { store } from '../../_store/store'
+import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
 
-  export default {
-    computed: {
-      statusId: params => params.statusId,
-      accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getFavorites($currentInstance, $accessToken, statusId)
-    },
-    store: () => store,
-    components: {
-      Layout,
-      AccountsListPage,
-      DynamicPageBanner
-    }
+export default {
+  computed: {
+    statusId: params => params.statusId,
+    accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getFavorites($currentInstance, $accessToken, statusId)
+  },
+  store: () => store,
+  components: {
+    Layout,
+    AccountsListPage,
+    DynamicPageBanner
   }
+}
 </script>

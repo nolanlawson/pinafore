@@ -15,21 +15,21 @@
 
 
 <script>
-  import Layout from './_components/Layout.html'
-  import NotLoggedInHome from './_components/NotLoggedInHome.html'
-  import LazyTimeline from './_components/timeline/LazyTimeline.html'
-  import ComposeBox from './_components/compose/ComposeBox.html'
-  import { store } from './_store/store.js'
+import Layout from './_components/Layout.html'
+import NotLoggedInHome from './_components/NotLoggedInHome.html'
+import LazyTimeline from './_components/timeline/LazyTimeline.html'
+import ComposeBox from './_components/compose/ComposeBox.html'
+import { store } from './_store/store.js'
 
-	export default {
-		store: () => store,
-		components: {
-		  Layout,
-      LazyTimeline,
-			NotLoggedInHome,
-      ComposeBox
-		}
-	}
+export default {
+  store: () => store,
+  components: {
+    Layout,
+    LazyTimeline,
+    NotLoggedInHome,
+    ComposeBox
+  }
+}
 </script>
 <style>
 </style>

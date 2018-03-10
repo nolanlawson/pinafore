@@ -30,19 +30,19 @@
   }
 </style>
 <script>
-  import Layout from './_components/Layout.html'
-  import FreeTextLayout from './_components/FreeTextLayout.html'
-  import { store } from './_store/store.js'
-  import HiddenFromSSR from './_components/HiddenFromSSR'
-  import Search from './_components/search/Search.html'
+import Layout from './_components/Layout.html'
+import FreeTextLayout from './_components/FreeTextLayout.html'
+import { store } from './_store/store.js'
+import HiddenFromSSR from './_components/HiddenFromSSR'
+import Search from './_components/search/Search.html'
 
-  export default {
-    store: () => store,
-    components: {
-      Layout,
-      Search,
-      FreeTextLayout,
-      HiddenFromSSR
-    }
+export default {
+  store: () => store,
+  components: {
+    Layout,
+    Search,
+    FreeTextLayout,
+    HiddenFromSSR
   }
+}
 </script>

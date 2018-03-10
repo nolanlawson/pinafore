@@ -31,20 +31,21 @@
     padding: 20px;
     line-height: 2em;
   }
+
   .setting-group {
     padding: 5px 0;
   }
 </style>
 <script>
-  import Layout from '../_components/Layout.html';
-  import SettingsLayout from './_components/SettingsLayout.html'
-  import { store } from '../_store/store'
+import Layout from '../_components/Layout.html'
+import SettingsLayout from './_components/SettingsLayout.html'
+import { store } from '../_store/store'
 
-  export default {
-    components: {
-      Layout,
-      SettingsLayout
-    },
-    store: () => store
-  };
+export default {
+  components: {
+    Layout,
+    SettingsLayout
+  },
+  store: () => store
+}
 </script>

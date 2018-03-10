@@ -2,11 +2,11 @@
   <ul>
     {{#each navItems as navItem}}
     <li>
-      <SettingsNavItem :page name="{{navItem.name}}" href="{{navItem.href}}" label="{{navItem.label}}" />
+      <SettingsNavItem :page name="{{navItem.name}}" href="{{navItem.href}}" label="{{navItem.label}}"/>
     </li>
     {{/each}}
     <li>
-      <SettingsNavItem :page name="{{page}}" href="/{{page}}" :label />
+      <SettingsNavItem :page name="{{page}}" href="/{{page}}" :label/>
     </li>
   </ul>
 </nav>
@@ -38,37 +38,37 @@
 
 </style>
 <script>
-  import SettingsNavItem from './SettingsNavItem.html'
+import SettingsNavItem from './SettingsNavItem.html'
 
-  const NAV_ITEMS = {
-    'settings': 'Settings',
-    'settings/about': 'About Pinafore',
-    'settings/general': 'General',
-    'settings/instances': 'Instances',
-    'settings/instances/add': 'Add an instance',
-  }
+const NAV_ITEMS = {
+  'settings': 'Settings',
+  'settings/about': 'About Pinafore',
+  'settings/general': 'General',
+  'settings/instances': 'Instances',
+  'settings/instances/add': 'Add an instance',
+}
 
-  export default {
-    components: {
-      SettingsNavItem
-    },
-    computed: {
-      navItems: page => {
-        let res = []
-        let breadcrumbs = page.split('/')
-        let path = ''
-        for (let i = 0; i < breadcrumbs.length - 1; i++) {
-          let currentPage = breadcrumbs[i]
-          path += currentPage
-          res.push({
-            label: NAV_ITEMS[path],
-            href: `/${path}`,
-            name: path
-          })
-          path += '/'
-        }
-        return res
+export default {
+  components: {
+    SettingsNavItem
+  },
+  computed: {
+    navItems: page => {
+      let res = []
+      let breadcrumbs = page.split('/')
+      let path = ''
+      for (let i = 0; i < breadcrumbs.length - 1; i++) {
+        let currentPage = breadcrumbs[i]
+        path += currentPage
+        res.push({
+          label: NAV_ITEMS[path],
+          href: `/${path}`,
+          name: path
+        })
+        path += '/'
       }
+      return res
     }
   }
+}
 </script>

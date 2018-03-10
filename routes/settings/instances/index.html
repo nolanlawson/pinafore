@@ -10,11 +10,11 @@
     <p>Instances you've logged in to:</p>
     <SettingsList label="Instances">
       {{#each $loggedInInstancesAsList as instance}}
-        <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
-                          icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
-                          href="/settings/instances/{{instance.name}}"
-                          label="{{instance.name}}"
-                          ariaLabel="{{instance.name}} {{instance.name === $currentInstance ? '(current instance)' : ''}}" />
+      <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
+                        icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
+                        href="/settings/instances/{{instance.name}}"
+                        label="{{instance.name}}"
+                        ariaLabel="{{instance.name}} {{instance.name === $currentInstance ? '(current instance)' : ''}}"/>
       {{/each}}
     </SettingsList>
     <p><a href="/settings/instances/add">Add another instance</a></p>
@@ -25,19 +25,19 @@
   </SettingsLayout>
 </Layout>
 <script>
-  import { store } from '../../_store/store'
-  import Layout from '../../_components/Layout.html'
-  import SettingsLayout from '../_components/SettingsLayout.html'
-  import SettingsList from '../_components/SettingsList.html'
-  import SettingsListItem from '../_components/SettingsListItem.html'
+import { store } from '../../_store/store'
+import Layout from '../../_components/Layout.html'
+import SettingsLayout from '../_components/SettingsLayout.html'
+import SettingsList from '../_components/SettingsList.html'
+import SettingsListItem from '../_components/SettingsListItem.html'
 
-  export default {
-    components: {
-      Layout,
-      SettingsLayout,
-      SettingsList,
-      SettingsListItem
-    },
-    store: () => store
-  }
+export default {
+  components: {
+    Layout,
+    SettingsLayout,
+    SettingsList,
+    SettingsListItem
+  },
+  store: () => store
+}
 </script>

@@ -2,10 +2,10 @@
   <title>Pinafore – Status</title>
 </:Head>
 
-<Layout page='statuses' >
+<Layout page='statuses'>
   {{#if $isUserLoggedIn}}
   <DynamicPageBanner title=""/>
-  <LazyTimeline timeline='status/{{params.statusId}}' />
+  <LazyTimeline timeline='status/{{params.statusId}}'/>
   {{else}}
   <HiddenFromSSR>
     <FreeTextLayout>
@@ -17,21 +17,21 @@
   {{/if}}
 </Layout>
 <script>
-  import Layout from '../../_components/Layout.html'
-  import LazyTimeline from '../../_components/timeline/LazyTimeline.html'
-  import FreeTextLayout from '../../_components/FreeTextLayout.html'
-  import { store } from '../../_store/store.js'
-  import HiddenFromSSR from '../../_components/HiddenFromSSR'
-  import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
+import Layout from '../../_components/Layout.html'
+import LazyTimeline from '../../_components/timeline/LazyTimeline.html'
+import FreeTextLayout from '../../_components/FreeTextLayout.html'
+import { store } from '../../_store/store.js'
+import HiddenFromSSR from '../../_components/HiddenFromSSR'
+import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
 
-  export default {
-    store: () => store,
-    components: {
-      Layout,
-      LazyTimeline,
-      FreeTextLayout,
-      HiddenFromSSR,
-      DynamicPageBanner
-    }
+export default {
+  store: () => store,
+  components: {
+    Layout,
+    LazyTimeline,
+    FreeTextLayout,
+    HiddenFromSSR,
+    DynamicPageBanner
   }
+}
 </script>

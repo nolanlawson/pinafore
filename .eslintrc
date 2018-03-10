@@ -1,0 +1,30 @@
+{
+  "extends": "standard",
+  "globals": {
+    "fetch": true,
+    "IDBKeyRange": true,
+    "IDBObjectStore": true,
+    "indexedDB": true,
+    "requestAnimationFrame": true,
+    "requestIdleCallback": true,
+    "location": true,
+    "localStorage": true,
+    "IntersectionObserver": true,
+    "URL": true,
+    "Event": true,
+    "history": true,
+    "performance": true,
+    "self": true,
+    "caches": true,
+    "__routes__": true,
+    "__shell__": true,
+    "__assets__": true,
+    "test": true,
+    "fixture": true,
+    "Element": true,
+    "FormData": true,
+    "atob": true,
+    "btoa": true,
+    "Blob": true
+  }
+}

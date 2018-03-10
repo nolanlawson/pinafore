@@ -4,15 +4,15 @@
 
 <Layout page='tags'>
   {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="" />
-    {{#if $currentAccountProfile}}
-      <AccountProfile profile="{{$currentAccountProfile}}"
-                      relationship="{{$currentAccountRelationship}}"
-                      verifyCredentials="{{$currentVerifyCredentials}}"
-      />
-    {{/if}}
-  <PinnedStatuses accountId="{{params.accountId}}" />
-  <LazyTimeline timeline='account/{{params.accountId}}' />
+  <DynamicPageBanner title=""/>
+  {{#if $currentAccountProfile}}
+  <AccountProfile profile="{{$currentAccountProfile}}"
+                  relationship="{{$currentAccountRelationship}}"
+                  verifyCredentials="{{$currentVerifyCredentials}}"
+  />
+  {{/if}}
+  <PinnedStatuses accountId="{{params.accountId}}"/>
+  <LazyTimeline timeline='account/{{params.accountId}}'/>
   {{else}}
   <HiddenFromSSR>
     <FreeTextLayout>
@@ -24,41 +24,41 @@
   {{/if}}
 </Layout>
 <script>
-  import Layout from '../_components/Layout.html'
-  import LazyTimeline from '../_components/timeline/LazyTimeline.html'
-  import FreeTextLayout from '../_components/FreeTextLayout.html'
-  import { store } from '../_store/store.js'
-  import HiddenFromSSR from '../_components/HiddenFromSSR'
-  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
-  import { updateProfileAndRelationship } from '../_actions/accounts'
-  import AccountProfile from '../_components/AccountProfile.html'
-  import { updateVerifyCredentialsForInstance } from '../_actions/instances'
-  import PinnedStatuses from '../_components/timeline/PinnedStatuses.html'
+import Layout from '../_components/Layout.html'
+import LazyTimeline from '../_components/timeline/LazyTimeline.html'
+import FreeTextLayout from '../_components/FreeTextLayout.html'
+import { store } from '../_store/store.js'
+import HiddenFromSSR from '../_components/HiddenFromSSR'
+import DynamicPageBanner from '../_components/DynamicPageBanner.html'
+import { updateProfileAndRelationship } from '../_actions/accounts'
+import AccountProfile from '../_components/AccountProfile.html'
+import { updateVerifyCredentialsForInstance } from '../_actions/instances'
+import PinnedStatuses from '../_components/timeline/PinnedStatuses.html'
 
-  export default {
-    oncreate() {
-      let accountId = this.get('params').accountId
-      let instanceName = this.store.get('currentInstance')
-      updateProfileAndRelationship(accountId)
-      updateVerifyCredentialsForInstance(instanceName)
+export default {
+  oncreate () {
+    let accountId = this.get('params').accountId
+    let instanceName = this.store.get('currentInstance')
+    updateProfileAndRelationship(accountId)
+    updateVerifyCredentialsForInstance(instanceName)
+  },
+  store: () => store,
+  computed: {
+    profileName: ($currentAccountProfile) => {
+      return ($currentAccountProfile && ('@' + $currentAccountProfile.acct)) || ''
     },
-    store: () => store,
-    computed: {
-      profileName: ($currentAccountProfile) => {
-        return ($currentAccountProfile && ('@' + $currentAccountProfile.acct)) || ''
-      },
-      shortProfileName: ($currentAccountProfile) => {
-        return ($currentAccountProfile && ('@' + $currentAccountProfile.username)) || ''
-      }
-    },
-    components: {
-      Layout,
-      LazyTimeline,
-      FreeTextLayout,
-      HiddenFromSSR,
-      DynamicPageBanner,
-      AccountProfile,
-      PinnedStatuses
+    shortProfileName: ($currentAccountProfile) => {
+      return ($currentAccountProfile && ('@' + $currentAccountProfile.username)) || ''
     }
+  },
+  components: {
+    Layout,
+    LazyTimeline,
+    FreeTextLayout,
+    HiddenFromSSR,
+    DynamicPageBanner,
+    AccountProfile,
+    PinnedStatuses
   }
+}
 </script>
