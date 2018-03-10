@@ -12,3 +12,9 @@ export function toReversePaddedBigInt (id) {
   }
   return res
 }
+
+export function byItemIds (a, b) {
+  let aPadded = toPaddedBigInt(a)
+  let bPadded = toPaddedBigInt(b)
+  return aPadded < bPadded ? -1 : aPadded === bPadded ? 0 : 1
+}

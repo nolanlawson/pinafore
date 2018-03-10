@@ -4,6 +4,7 @@ import { getTimeline } from '../_api/timelines'
 import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
 import { mergeArrays } from '../_utils/arrays'
+import { byItemIds } from '../_utils/sorting'
 
 const FETCH_LIMIT = 20
 
@@ -74,39 +75,41 @@ export async function setupTimeline () {
   stop('setupTimeline')
 }
 
-export async function fetchTimelineItemsOnScrollToBottom () {
-  let timelineName = store.get('currentTimeline')
-  let instanceName = store.get('currentInstance')
+export async function fetchTimelineItemsOnScrollToBottom (instanceName, timelineName) {
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })
   await fetchTimelineItemsAndPossiblyFallBack()
   store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
 }
 
-export async function showMoreItemsForCurrentTimeline () {
-  mark('showMoreItemsForCurrentTimeline')
-  let instanceName = store.get('currentInstance')
-  let timelineName = store.get('currentTimeline')
-  let itemIdsToAdd = store.get('itemIdsToAdd')
+export async function showMoreItemsForTimeline (instanceName, timelineName) {
+  mark('showMoreItemsForTimeline')
+  let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
+  itemIdsToAdd = itemIdsToAdd.sort(byItemIds).reverse()
   addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
   store.setForTimeline(instanceName, timelineName, {
     itemIdsToAdd: [],
     shouldShowHeader: false,
     showHeader: false
   })
-  stop('showMoreItemsForCurrentTimeline')
+  stop('showMoreItemsForTimeline')
 }
 
-export async function showMoreItemsForCurrentThread () {
-  mark('showMoreItemsForCurrentThread')
-  let instanceName = store.get('currentInstance')
-  let timelineName = store.get('currentTimeline')
-  let itemIdsToAdd = store.get('itemIdsToAdd')
-  // TODO: update database and do the thread merge correctly
+export async function showMoreItemsForCurrentTimeline () {
+  return showMoreItemsForTimeline(
+    store.get('currentInstance'),
+    store.get('currentTimeline')
+  )
+}
+
+export async function showMoreItemsForThread (instanceName, timelineName) {
+  mark('showMoreItemsForThread')
+  let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
+  // TODO: update database and do the thread merge correctly
   timelineItemIds = timelineItemIds.concat(itemIdsToAdd)
   store.setForTimeline(instanceName, timelineName, {
     itemIdsToAdd: [],
     timelineItemIds: timelineItemIds
   })
-  stop('showMoreItemsForCurrentThread')
+  stop('showMoreItemsForThread')
 }

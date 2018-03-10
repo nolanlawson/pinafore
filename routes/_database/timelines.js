@@ -1,4 +1,4 @@
-import { toPaddedBigInt, toReversePaddedBigInt } from './utils'
+import { toPaddedBigInt, toReversePaddedBigInt } from '../_utils/sorting'
 import { cloneForStorage } from './helpers'
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import {

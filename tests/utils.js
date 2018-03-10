@@ -26,6 +26,7 @@ export const authorizeInput = $('button[type=submit]:not(.negative)')
 export const logInToInstanceLink = $('a[href="/settings/instances/add"]')
 export const searchInput = $('.search-input')
 export const postStatusButton = $('.compose-box-button')
+export const showMoreButton = $('.more-items-header button')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -34,6 +35,8 @@ export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addC
 export const reblogsCountElement = $('.status-favs-reblogs:nth-child(2)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
 })
+
+export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeout))
 
 export const getUrl = exec(() => window.location.href)
 
@@ -49,6 +52,10 @@ export const forceOnline = exec(() => window.store.set({online: true}))
 
 export const getComposeSelectionStart = exec(() => composeInput().selectionStart, {
   dependencies: { composeInput }
+})
+
+export const scrollContainerToTop = exec(() => {
+  document.getElementsByClassName('container')[0].scrollTop = 0
 })
 
 export const uploadKittenImage = i => (exec(() => {

@@ -64,11 +64,12 @@
     initializeTimeline,
     fetchTimelineItemsOnScrollToBottom,
     setupTimeline,
-    showMoreItemsForCurrentThread
+    showMoreItemsForTimeline,
+    showMoreItemsForThread,
+    showMoreItemsForCurrentTimeline
   } from '../../_actions/timeline'
   import LoadingPage from '../LoadingPage.html'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
-  import { showMoreItemsForCurrentTimeline } from '../../_actions/timeline'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
   import { importPseudoVirtualList } from '../../_utils/asyncModules'
@@ -178,7 +179,10 @@
             this.get('timelineType') === 'status') { // for status contexts, we've already fetched the whole thread
           return
         }
-        fetchTimelineItemsOnScrollToBottom()
+        fetchTimelineItemsOnScrollToBottom(
+          this.get('currentInstance'),
+          this.get('timeline')
+        )
       },
       onScrollToTop() {
         if (this.store.get('shouldShowHeader')) {
@@ -202,11 +206,11 @@
           let showHeader = this.store.get('showHeader')
           if (timelineName.startsWith('status/')) {
             // this is a thread, just insert the statuses already
-            showMoreItemsForCurrentThread()
+            showMoreItemsForThread(instanceName, timelineName)
           } else if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
             // if the user is scrolled to the top and we're not showing the header, then
             // just insert the statuses. this is "chat room mode"
-            showMoreItemsForCurrentTimeline()
+            showMoreItemsForTimeline(instanceName, timelineName)
           } else {
             // user hasn't scrolled to the top, show a header instead
             this.store.setForTimeline(instanceName, timelineName, {shouldShowHeader: true})
