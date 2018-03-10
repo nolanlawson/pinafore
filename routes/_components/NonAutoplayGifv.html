@@ -17,11 +17,13 @@
       playsinline
       />
   {{else}}
-    <img class="{{class}}"
+    <img class="{{class}} {{imageError ? 'image-error' : ''}}"
          alt="{{label}}"
-         src="{{staticSrc}}"
+         src="{{imageError ? oneTransparentPixel : staticSrc}}"
          width="{{width}}"
          height="{{height}}"
+         on:imgLoad="set({imageLoaded: true})"
+         on:imgLoadError="set({imageError: true})"
          />
   {{/if}}
 </div>
@@ -32,6 +34,9 @@
 </style>
 <script>
   import { mouseover } from '../_utils/events'
+  import { imgLoad, imgLoadError } from '../_utils/events'
+  import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
+
   export default {
     methods: {
       onMouseOver(mouseOver) {
@@ -39,7 +44,12 @@
       }
     },
     events: {
-      mouseover
-    }
+      mouseover,
+      imgLoad,
+      imgLoadError
+    },
+    data: () => ({
+      oneTransparentPixel: ONE_TRANSPARENT_PIXEL
+    })
   }
 </script>

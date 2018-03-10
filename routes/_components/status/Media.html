@@ -2,17 +2,21 @@
   <button type="button"
           class="play-video-button"
           aria-label="Play video: {{media.description || ''}}"
-          on:click="onClickPlayVideoButton()">
+          on:click="onClickPlayVideoButton()"
+          style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
+  >
     <div class="svg-wrapper">
       <svg>
         <use xlink:href="#fa-play-circle" />
       </svg>
     </div>
     <img alt="{{media.description || ''}}"
-         src="{{media.preview_url}}"
+         src="{{imageError ? oneTransparentPixel : media.preview_url}}"
          width="{{inlineWidth}}"
          height="{{inlineHeight}}"
-         class="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
+         class="{{noNativeWidthHeight ? 'no-native-width-height' : ''}} {{imageError ? 'image-error' : ''}}"
+         on:imgLoad="set({imageLoaded: true})"
+         on:imgLoadError="set({imageError: true})"
     />
   </button>
 {{else}}
@@ -21,6 +25,7 @@
           aria-label="Show image: {{media.description || ''}}"
           on:click="onClickShowImageButton()"
           on:mouseover="set({mouseover: event})"
+          style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
   {{#if media.type === 'gifv' && $autoplayGifs}}
     <video
@@ -119,6 +124,7 @@
   import { importDialogs } from '../../_utils/asyncModules'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
+  import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
 
   export default {
     computed: {
@@ -154,7 +160,7 @@
       }
     },
     data: () => ({
-      oneTransparentPixel: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+      oneTransparentPixel: ONE_TRANSPARENT_PIXEL
     }),
     events: {
       imgLoad,
