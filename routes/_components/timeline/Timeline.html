@@ -60,7 +60,12 @@
   import VirtualList from '../virtualList/VirtualList.html'
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_database/database'
-  import { initializeTimeline, fetchTimelineItemsOnScrollToBottom, setupTimeline } from '../../_actions/timeline'
+  import {
+    initializeTimeline,
+    fetchTimelineItemsOnScrollToBottom,
+    setupTimeline,
+    showMoreItemsForCurrentThread
+  } from '../../_actions/timeline'
   import LoadingPage from '../LoadingPage.html'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
   import { showMoreItemsForCurrentTimeline } from '../../_actions/timeline'
@@ -195,7 +200,10 @@
           let scrollTop = this.get('scrollTop')
           let shouldShowHeader = this.store.get('shouldShowHeader')
           let showHeader = this.store.get('showHeader')
-          if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
+          if (timelineName.startsWith('status/')) {
+            // this is a thread, just insert the statuses already
+            showMoreItemsForCurrentThread()
+          } else if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
             // if the user is scrolled to the top and we're not showing the header, then
             // just insert the statuses. this is "chat room mode"
             showMoreItemsForCurrentTimeline()

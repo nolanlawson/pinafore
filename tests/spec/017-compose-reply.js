@@ -31,7 +31,7 @@ test('account handle populated correctly for replies', async t => {
     .expect(composeInput.value).eql('')
 })
 
-test('replying to posts wth mentions', async t => {
+test('replying to posts with mentions', async t => {
   await t.useRole(foobarRole)
     .click(getNthReplyButton(1))
     .expect(getUrl()).contains('/statuses')

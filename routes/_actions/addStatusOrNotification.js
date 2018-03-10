@@ -20,6 +20,43 @@ async function removeDuplicates (instanceName, timelineName, updates) {
   return updates.filter(update => !existingItemIds.has(update.id))
 }
 
+async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
+  updates = await removeDuplicates(instanceName, timelineName, updates)
+
+  await database.insertTimelineItems(instanceName, timelineName, updates)
+
+  let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
+  if (updates && updates.length) {
+    itemIdsToAdd = itemIdsToAdd.concat(updates.map(_ => _.id))
+    console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd')
+    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
+  }
+}
+
+async function insertUpdatesIntoThreads (instanceName, updates) {
+  if (!updates.length) {
+    return
+  }
+
+  let threads = store.getThreadsForTimeline(instanceName)
+
+  for (let timelineName of Object.keys(threads)) {
+    let thread = threads[timelineName]
+    let updatesForThisThread = updates.filter(status => {
+      return thread.includes(status.in_reply_to_id) && !thread.includes(status.id)
+    })
+    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
+    for (let update of updatesForThisThread) {
+      if (!itemIdsToAdd.includes(update.id)) {
+        itemIdsToAdd.push(update.id)
+      }
+    }
+    console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd for thread', timelineName)
+    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
+    console.log('timelineName', timelineName, 'itemIdsToAdd', itemIdsToAdd)
+  }
+}
+
 async function processFreshUpdates (instanceName, timelineName) {
   mark('processFreshUpdates')
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates')
@@ -27,18 +64,10 @@ async function processFreshUpdates (instanceName, timelineName) {
     let updates = freshUpdates.slice()
     store.setForTimeline(instanceName, timelineName, {freshUpdates: []})
 
-    updates = await removeDuplicates(instanceName, timelineName, updates)
-
-    await database.insertTimelineItems(instanceName, timelineName, updates)
-
-    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-    if (updates && updates.length) {
-      itemIdsToAdd = itemIdsToAdd.concat(updates.map(_ => _.id))
-      console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd')
-      store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
-    }
-    stop('processFreshUpdates')
+    await insertUpdatesIntoTimeline(instanceName, timelineName, updates)
+    await insertUpdatesIntoThreads(instanceName, updates.filter(status => status.in_reply_to_id))
   }
+  stop('processFreshUpdates')
 }
 
 const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {

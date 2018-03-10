@@ -25,6 +25,7 @@ export const passwordInput = $('input#user_password')
 export const authorizeInput = $('button[type=submit]:not(.negative)')
 export const logInToInstanceLink = $('a[href="/settings/instances/add"]')
 export const searchInput = $('.search-input')
+export const postStatusButton = $('.compose-box-button')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)

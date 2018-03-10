@@ -1,3 +1,5 @@
+import pickBy from 'lodash/pickBy'
+
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {
     let valuesToSet = {}
@@ -22,5 +24,19 @@ export function timelineMixins (Store) {
     let instanceName = this.get('currentInstance')
     let timelineName = this.get('currentTimeline')
     this.setForTimeline(instanceName, timelineName, obj)
+  }
+
+  Store.prototype.getThreadsForTimeline = function (instanceName) {
+    let root = this.get('timelineData_timelineItemIds') || {}
+    let instanceData = root[instanceName] = root[instanceName] || {}
+
+    return pickBy(instanceData, (value, key) => {
+      return key.startsWith('status/')
+    })
+  }
+
+  Store.prototype.getThreadsForCurrentTimeline = function () {
+    let instanceName = this.get('currentInstance')
+    return this.getThreadsForTimeline(instanceName)
   }
 }

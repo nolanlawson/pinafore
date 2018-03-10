@@ -95,3 +95,18 @@ export async function showMoreItemsForCurrentTimeline () {
   })
   stop('showMoreItemsForCurrentTimeline')
 }
+
+export async function showMoreItemsForCurrentThread () {
+  mark('showMoreItemsForCurrentThread')
+  let instanceName = store.get('currentInstance')
+  let timelineName = store.get('currentTimeline')
+  let itemIdsToAdd = store.get('itemIdsToAdd')
+  // TODO: update database and do this merge correctly
+  let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
+  timelineItemIds = timelineItemIds.concat(itemIdsToAdd)
+  store.setForTimeline(instanceName, timelineName, {
+    itemIdsToAdd: [],
+    timelineItemIds: timelineItemIds
+  })
+  stop('showMoreItemsForCurrentThread')
+}

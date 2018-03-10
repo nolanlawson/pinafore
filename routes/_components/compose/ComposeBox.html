@@ -66,14 +66,14 @@
       if (realm !== 'home') {
         // if this is a reply, populate the handle immediately
         insertHandleForReply(realm)
-      }
 
-      // if this is a reply, go back immediately after it's posted
-      this.observe('postedStatusForRealm', postedStatusForRealm => {
-        if (postedStatusForRealm === realm) {
-          window.history.back()
-        }
-      }, {init: false})
+        // if this is a reply, go back immediately after it's posted
+        this.observe('postedStatusForRealm', postedStatusForRealm => {
+          if (postedStatusForRealm === realm) {
+            window.history.back()
+          }
+        }, {init: false})
+      }
     },
     components: {
       ComposeAuthor,
