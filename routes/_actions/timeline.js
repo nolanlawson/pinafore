@@ -101,7 +101,7 @@ export async function showMoreItemsForCurrentThread () {
   let instanceName = store.get('currentInstance')
   let timelineName = store.get('currentTimeline')
   let itemIdsToAdd = store.get('itemIdsToAdd')
-  // TODO: update database and do this merge correctly
+  // TODO: update database and do the thread merge correctly
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
   timelineItemIds = timelineItemIds.concat(itemIdsToAdd)
   store.setForTimeline(instanceName, timelineName, {

@@ -53,7 +53,6 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
     }
     console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd for thread', timelineName)
     store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
-    console.log('timelineName', timelineName, 'itemIdsToAdd', itemIdsToAdd)
   }
 }
 
