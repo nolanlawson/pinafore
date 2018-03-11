@@ -2,15 +2,52 @@
 
 An alternative web client for [Mastodon](https://joinmastodon.org]).
 
+## Goals and non-goals
+
+This section lays out some high-level goals for Pinafore, as well as the goals it _doesn't_ intend to tackle.
+
+### Goals
+
+- Support the most common use cases
+- Fast even on low-end phones
+- Works offline in read-only mode
+- Progressive Web App features
+- Multi-instance support
+- Support latest versions of Chrome, Edge, Firefox, and Safari
+- a11y (keyboard navigation, screen readers)
+
+### Possible future goals
+
+- Works as an alternative frontend self-hosted by instances
+- Ship in the Android/iOS app stores as a Cordova app
+- Support Pleroma/non-Mastodon backends
+- i18n
+
+### Non-goals
+
+- Supporting old browsers, proxy browsers, or text-based browsers
+- React Native / NativeScript / hybrid-native version
+- Full functionality with JavaScript disabled
+- Emoji support beyond the built-in system emoji
+- Custom emoji keyboard
+- Multi-column support
+- Keyboard shortcuts
+- Admin/moderation panel
+- Works offline in read-write mode
+
 ## Building
 
     npm install
     npm run build
     PORT=4002 npm start
 
+Now it's running at `localhost:4002`.
+
 ## Development
 
     npm run dev
+
+Now it's running at `localhost:4002`.
 
 ## Testing in development mode
 
