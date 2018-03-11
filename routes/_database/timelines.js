@@ -86,13 +86,20 @@ async function getStatusThread (instanceName, statusId) {
     let keyRange = createThreadKeyRange(statusId)
     threadsStore.getAll(keyRange).onsuccess = e => {
       let thread = e.target.result
-      let res = new Array(thread.length)
-      thread.forEach((otherStatusId, i) => {
-        fetchStatus(statusesStore, accountsStore, otherStatusId, status => {
-          res[i] = status
+      if (thread.length) {
+        let res = new Array(thread.length)
+        callback(res)
+        thread.forEach((otherStatusId, i) => {
+          fetchStatus(statusesStore, accountsStore, otherStatusId, status => {
+            res[i] = status
+          })
         })
-      })
-      callback(res)
+      } else {
+        // thread not cached; just make a "fake" thread with only one status in it
+        fetchStatus(statusesStore, accountsStore, statusId, status => {
+          callback([status])
+        })
+      }
     }
   })
 }
