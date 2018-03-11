@@ -186,3 +186,10 @@ export async function scrollToStatus (t, n) {
   }
   await t.hover(getNthStatus(n))
 }
+
+export async function clickToNotificationsAndBackHome (t) {
+  await t.click(notificationsNavButton)
+    .expect(getUrl()).eql('http://localhost:4002/notifications')
+    .click(homeNavButton)
+    .expect(getUrl()).eql('http://localhost:4002/')
+}

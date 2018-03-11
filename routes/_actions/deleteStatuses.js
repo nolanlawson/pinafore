@@ -35,9 +35,7 @@ async function doDeleteStatus (instanceName, statusId) {
   let rebloggedIds = await getIdsThatRebloggedThisStatus(instanceName, statusId)
   let statusIdsToDelete = Array.from(new Set([statusId].concat(rebloggedIds).filter(Boolean)))
   let notificationIdsToDelete = new Set(await getNotificationIdsForStatuses(instanceName, statusIdsToDelete))
-  await Promise.all([
-    deleteStatusesAndNotifications(instanceName, statusIdsToDelete, notificationIdsToDelete)
-  ])
+  await deleteStatusesAndNotifications(instanceName, statusIdsToDelete, notificationIdsToDelete)
 }
 
 export function deleteStatus (instanceName, statusId) {

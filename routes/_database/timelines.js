@@ -1,4 +1,5 @@
-import { toPaddedBigInt, toReversePaddedBigInt } from '../_utils/sorting'
+import difference from 'lodash/difference'
+import times from 'lodash/times'
 import { cloneForStorage } from './helpers'
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import {
@@ -16,13 +17,15 @@ import {
   REBLOG_ID,
   STATUS_ID, THREADS_STORE
 } from './constants'
-
-function createTimelineKeyRange (timeline, maxId) {
-  let negBigInt = maxId && toReversePaddedBigInt(maxId)
-  let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
-  let end = timeline + '\u0000\uffff'
-  return IDBKeyRange.bound(start, end, true, true)
-}
+import {
+  createThreadKeyRange,
+  createTimelineKeyRange,
+  createTimelineId,
+  createThreadId,
+  createPinnedStatusKeyRange,
+  createPinnedStatusId
+} from './keys'
+import { deleteAll } from './utils'
 
 function cacheStatus (status, instanceName) {
   setInCache(statusesCache, instanceName, status.id, status)
@@ -80,7 +83,8 @@ async function getStatusThread (instanceName, statusId) {
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ threadsStore, statusesStore, accountsStore ] = stores
-    threadsStore.get(statusId).onsuccess = e => {
+    let keyRange = createThreadKeyRange(statusId)
+    threadsStore.getAll(keyRange).onsuccess = e => {
       let thread = e.target.result
       let res = new Array(thread.length)
       thread.forEach((otherStatusId, i) => {
@@ -177,11 +181,6 @@ function fetchNotification (notificationsStore, statusesStore, accountsStore, id
   }
 }
 
-function createTimelineId (timeline, id) {
-  // reverse chronological order, prefixed by timeline
-  return timeline + '\u0000' + toReversePaddedBigInt(id)
-}
-
 async function insertTimelineNotifications (instanceName, timeline, notifications) {
   for (let notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
@@ -224,10 +223,18 @@ async function insertStatusThread (instanceName, statusId, statuses) {
   let storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
     let [ threadsStore, statusesStore, accountsStore ] = stores
-    threadsStore.put(statuses.map(_ => _.id), statusId)
-    for (let status of statuses) {
-      storeStatus(statusesStore, accountsStore, status)
+    threadsStore.getAllKeys(createThreadKeyRange(statusId)).onsuccess = e => {
+      let existingKeys = e.target.result
+      let newKeys = times(statuses.length, i => createThreadId(statusId, i))
+      let keysToDelete = difference(existingKeys, newKeys)
+      for (let key of keysToDelete) {
+        threadsStore.delete(key)
+      }
     }
+    statuses.forEach((otherStatus, i) => {
+      storeStatus(statusesStore, accountsStore, otherStatus)
+      threadsStore.put(otherStatus.id, createThreadId(statusId, i))
+    })
   })
 }
 
@@ -323,7 +330,8 @@ export async function deleteStatusesAndNotifications (instanceName, statusIds, n
     STATUS_TIMELINES_STORE,
     NOTIFICATIONS_STORE,
     NOTIFICATION_TIMELINES_STORE,
-    PINNED_STATUSES_STORE
+    PINNED_STATUSES_STORE,
+    THREADS_STORE
   ]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
     let [
@@ -331,33 +339,41 @@ export async function deleteStatusesAndNotifications (instanceName, statusIds, n
       statusTimelinesStore,
       notificationsStore,
       notificationTimelinesStore,
-      pinnedStatusesStore
+      pinnedStatusesStore,
+      threadsStore
     ] = stores
 
     function deleteStatus (statusId) {
-      pinnedStatusesStore.delete(statusId).onerror = e => {
-        e.preventDefault()
-        e.stopPropagation()
-      }
       statusesStore.delete(statusId)
-      let getAllReq = statusTimelinesStore.index('statusId')
-        .getAllKeys(IDBKeyRange.only(statusId))
-      getAllReq.onsuccess = e => {
-        for (let result of e.target.result) {
-          statusTimelinesStore.delete(result)
-        }
-      }
+      deleteAll(
+        pinnedStatusesStore,
+        pinnedStatusesStore.index('statusId'),
+        IDBKeyRange.only(statusId)
+      )
+      deleteAll(
+        statusTimelinesStore,
+        statusTimelinesStore.index('statusId'),
+        IDBKeyRange.only(statusId)
+      )
+      deleteAll(
+        threadsStore,
+        threadsStore.index('statusId'),
+        IDBKeyRange.only(statusId)
+      )
+      deleteAll(
+        threadsStore,
+        threadsStore,
+        createThreadKeyRange(statusId)
+      )
     }
 
     function deleteNotification (notificationId) {
       notificationsStore.delete(notificationId)
-      let getAllReq = notificationTimelinesStore.index('statusId')
-        .getAllKeys(IDBKeyRange.only(notificationId))
-      getAllReq.onsuccess = e => {
-        for (let result of e.target.result) {
-          notificationTimelinesStore.delete(result)
-        }
-      }
+      deleteAll(
+        notificationTimelinesStore,
+        notificationTimelinesStore.index('statusId'),
+        IDBKeyRange.only(notificationId)
+      )
     }
 
     for (let statusId of statusIds) {
@@ -383,7 +399,7 @@ export async function insertPinnedStatuses (instanceName, accountId, statuses) {
     let [ pinnedStatusesStore, statusesStore, accountsStore ] = stores
     statuses.forEach((status, i) => {
       storeStatus(statusesStore, accountsStore, status)
-      pinnedStatusesStore.put(status.id, accountId + '\u0000' + toPaddedBigInt(i))
+      pinnedStatusesStore.put(status.id, createPinnedStatusId(accountId, i))
     })
   })
 }
@@ -393,10 +409,7 @@ export async function getPinnedStatuses (instanceName, accountId) {
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
     let [ pinnedStatusesStore, statusesStore, accountsStore ] = stores
-    let keyRange = IDBKeyRange.bound(
-      accountId + '\u0000',
-      accountId + '\u0000\uffff'
-    )
+    let keyRange = createPinnedStatusKeyRange(accountId)
     pinnedStatusesStore.getAll(keyRange).onsuccess = e => {
       let pinnedResults = e.target.result
       let res = new Array(pinnedResults.length)
@@ -406,19 +419,6 @@ export async function getPinnedStatuses (instanceName, accountId) {
         })
       })
       callback(res)
-    }
-  })
-}
-
-//
-// notifications by status
-//
-
-export async function getNotificationIdsForStatus (instanceName, statusId) {
-  const db = await getDatabase(instanceName)
-  return dbPromise(db, NOTIFICATIONS_STORE, 'readonly', (notificationStore, callback) => {
-    notificationStore.index(statusId).getAllKeys(IDBKeyRange.only(statusId)).onsuccess = e => {
-      callback(Array.from(e.target.result))
     }
   })
 }

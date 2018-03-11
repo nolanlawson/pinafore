@@ -14,6 +14,8 @@ import {
 import debounce from 'lodash/debounce'
 import { store } from '../_store/store'
 import { mark, stop } from '../_utils/marks'
+import { deleteAll } from './utils'
+import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 
 const BATCH_SIZE = 20
 const TIME_AGO = 14 * 24 * 60 * 60 * 1000 // two weeks ago
@@ -34,18 +36,20 @@ function batchedGetAll (callGetAll, callback) {
 
 function cleanupStatuses (statusesStore, statusTimelinesStore, threadsStore, cutoff) {
   batchedGetAll(
-    () => statusesStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
+    () => statusesStore.index(TIMESTAMP).getAllKeys(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     results => {
-      results.forEach(result => {
-        statusesStore.delete(result.id)
-        threadsStore.delete(result.id)
-        let req = statusTimelinesStore.index('statusId').getAllKeys(IDBKeyRange.only(result.id))
-        req.onsuccess = e => {
-          let keys = e.target.result
-          keys.forEach(key => {
-            statusTimelinesStore.delete(key)
-          })
-        }
+      results.forEach(statusId => {
+        statusesStore.delete(statusId)
+        deleteAll(
+          statusTimelinesStore,
+          statusTimelinesStore.index('statusId'),
+          IDBKeyRange.only(statusId)
+        )
+        deleteAll(
+          threadsStore,
+          threadsStore,
+          createThreadKeyRange(statusId)
+        )
       })
     }
   )
@@ -53,17 +57,15 @@ function cleanupStatuses (statusesStore, statusTimelinesStore, threadsStore, cut
 
 function cleanupNotifications (notificationsStore, notificationTimelinesStore, cutoff) {
   batchedGetAll(
-    () => notificationsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
+    () => notificationsStore.index(TIMESTAMP).getAllKeys(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
     results => {
-      results.forEach(result => {
-        notificationsStore.delete(result.id)
-        let req = notificationTimelinesStore.index('notificationId').getAllKeys(IDBKeyRange.only(result.id))
-        req.onsuccess = e => {
-          let keys = e.target.result
-          keys.forEach(key => {
-            notificationTimelinesStore.delete(key)
-          })
-        }
+      results.forEach(notificationId => {
+        notificationsStore.delete(notificationId)
+        deleteAll(
+          notificationTimelinesStore,
+          notificationTimelinesStore.index('notificationId'),
+          IDBKeyRange.only(notificationId)
+        )
       })
     }
   )
@@ -71,18 +73,15 @@ function cleanupNotifications (notificationsStore, notificationTimelinesStore, c
 
 function cleanupAccounts (accountsStore, pinnedStatusesStore, cutoff) {
   batchedGetAll(
-    () => accountsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
-    (results) => {
-      results.forEach(result => {
-        accountsStore.delete(result.id)
-        let keyRange = IDBKeyRange.bound(result.id + '\u0000', result.id + '\u0000\uffff')
-        let req = pinnedStatusesStore.getAllKeys(keyRange)
-        req.onsuccess = e => {
-          let keys = e.target.result
-          keys.forEach(key => {
-            pinnedStatusesStore.delete(key)
-          })
-        }
+    () => accountsStore.index(TIMESTAMP).getAllKeys(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
+    results => {
+      results.forEach(accountId => {
+        accountsStore.delete(accountId)
+        deleteAll(
+          pinnedStatusesStore,
+          pinnedStatusesStore,
+          createPinnedStatusKeyRange(accountId)
+        )
       })
     }
   )
@@ -90,10 +89,10 @@ function cleanupAccounts (accountsStore, pinnedStatusesStore, cutoff) {
 
 function cleanupRelationships (relationshipsStore, cutoff) {
   batchedGetAll(
-    () => relationshipsStore.index(TIMESTAMP).getAll(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
-    (results) => {
-      results.forEach(result => {
-        relationshipsStore.delete(result.id)
+    () => relationshipsStore.index(TIMESTAMP).getAllKeys(IDBKeyRange.upperBound(cutoff), BATCH_SIZE),
+    results => {
+      results.forEach(relationshipId => {
+        relationshipsStore.delete(relationshipId)
       })
     }
   )

@@ -20,6 +20,11 @@ export async function postAsAdmin (text) {
     null, null, false, null, 'public')
 }
 
+export async function postReplyAsAdmin (text, inReplyTo) {
+  return postStatus(instanceName, users.admin.accessToken, text,
+    inReplyTo, null, false, null, 'public')
+}
+
 export async function deleteAsAdmin (statusId) {
   return deleteStatus(instanceName, users.admin.accessToken, statusId)
 }

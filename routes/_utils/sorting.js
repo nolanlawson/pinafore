@@ -1,7 +1,11 @@
 import padStart from 'lodash/padStart'
 
+export function zeroPad (str, toSize) {
+  return padStart(str, toSize, '0')
+}
+
 export function toPaddedBigInt (id) {
-  return padStart(id, 30, '0')
+  return zeroPad(id, 30)
 }
 
 export function toReversePaddedBigInt (id) {

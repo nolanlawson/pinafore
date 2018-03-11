@@ -13,10 +13,12 @@ import {
   STATUS_ID
 } from './constants'
 
+import forEach from 'lodash/forEach'
+
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 6
+const DB_VERSION = 7
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -35,28 +37,46 @@ export function getDatabase (instanceName) {
     }
     req.onupgradeneeded = (e) => {
       let db = req.result
-      let tx = e.currentTarget.transaction
-      if (e.oldVersion < 5) {
-        db.createObjectStore(STATUSES_STORE, {keyPath: 'id'})
-          .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(STATUS_TIMELINES_STORE)
-          .createIndex('statusId', '')
-        db.createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'})
-          .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(NOTIFICATION_TIMELINES_STORE)
-          .createIndex('notificationId', '')
-        db.createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'})
-          .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'})
-          .createIndex(TIMESTAMP, TIMESTAMP)
-        db.createObjectStore(META_STORE)
-        db.createObjectStore(PINNED_STATUSES_STORE)
-        tx.objectStore(STATUSES_STORE).createIndex(REBLOG_ID, REBLOG_ID)
-        tx.objectStore(NOTIFICATIONS_STORE).createIndex('statusId', 'statusId')
-        db.createObjectStore(THREADS_STORE)
+
+      function createObjectStore (name, init, indexes) {
+        let store = init
+          ? db.createObjectStore(name, init)
+          : db.createObjectStore(name)
+        if (indexes) {
+          forEach(indexes, (indexValue, indexKey) => {
+            store.createIndex(indexKey, indexValue)
+          })
+        }
       }
-      if (e.oldVersion < 6) {
-        tx.objectStore(NOTIFICATIONS_STORE).createIndex(STATUS_ID, STATUS_ID)
+
+      if (e.oldVersion < 7) {
+        createObjectStore(STATUSES_STORE, {keyPath: 'id'}, {
+          [TIMESTAMP]: TIMESTAMP,
+          [REBLOG_ID]: REBLOG_ID
+        })
+        createObjectStore(STATUS_TIMELINES_STORE, null, {
+          'statusId': ''
+        })
+        createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'}, {
+          [TIMESTAMP]: TIMESTAMP,
+          [STATUS_ID]: STATUS_ID
+        })
+        createObjectStore(NOTIFICATION_TIMELINES_STORE, null, {
+          'notificationId': ''
+        })
+        createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'}, {
+          [TIMESTAMP]: TIMESTAMP
+        })
+        createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'}, {
+          [TIMESTAMP]: TIMESTAMP
+        })
+        createObjectStore(THREADS_STORE, null, {
+          'statusId': ''
+        })
+        createObjectStore(PINNED_STATUSES_STORE, null, {
+          'statusId': ''
+        })
+        createObjectStore(META_STORE)
       }
     }
     req.onsuccess = () => resolve(req.result)
