@@ -29,6 +29,7 @@
             pressable="true"
             pressed="{{following}}"
             big="true"
+            on:click="onFollowButtonClick()"
           />
         {{/if}}
       </div>
@@ -186,6 +187,8 @@
   import ExternalLink from './ExternalLink.html'
   import Avatar from './Avatar.html'
   import { store } from '../_store/store'
+  import { setAccountFollowed } from '../_actions/follow'
+  import { database } from '../_database/database'
 
   export default {
     computed: {
@@ -199,6 +202,15 @@
         return note
       },
       following: (relationship) => relationship && relationship.following
+    },
+    methods: {
+      async onFollowButtonClick() {
+        let accountId = this.get('profile').id
+        let instanceName = this.store.get('currentInstance')
+        let following = this.get('following')
+        await setAccountFollowed(accountId, !following)
+        this.set({relationship: await database.getRelationship(instanceName, accountId)})
+      }
     },
     store: () => store,
     components: {
