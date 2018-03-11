@@ -1,6 +1,7 @@
 import { foobarRole } from '../roles'
 import {
   clickToNotificationsAndBackHome, forceOffline, forceOnline, getNthStatus, getUrl, homeNavButton,
+  notificationsNavButton,
   sleep
 } from '../utils'
 import { deleteAsAdmin, postAsAdmin, postReplyAsAdmin } from '../serverActions'
@@ -52,4 +53,16 @@ test('deleted statuses are removed from threads', async t => {
     .expect(getNthStatus(1).exists).notOk()
     .expect(getNthStatus(0).innerText).contains("I won't delete this")
   await forceOnline()
+})
+
+test('deleted statuses result in deleted notifications', async t => {
+  await t.useRole(foobarRole)
+    .hover(getNthStatus(0))
+    .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
+  let status = await postAsAdmin("@foobar yo yo foobar what's up")
+  await sleep(2000)
+  await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1)')
+  await deleteAsAdmin(status.id)
+  await sleep(5000)
+  await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
 })

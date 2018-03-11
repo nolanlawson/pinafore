@@ -301,13 +301,15 @@ export async function getReblogsForStatus (instanceName, id) {
 
 export async function getNotificationIdsForStatuses (instanceName, statusIds) {
   const db = await getDatabase(instanceName)
-  await dbPromise(db, NOTIFICATIONS_STORE, 'readonly', (notificationsStore, callback) => {
+  return dbPromise(db, NOTIFICATIONS_STORE, 'readonly', (notificationsStore, callback) => {
     let res = []
     callback(res)
     statusIds.forEach(statusId => {
       let req = notificationsStore.index(STATUS_ID).getAllKeys(IDBKeyRange.only(statusId))
       req.onsuccess = e => {
-        res = res.concat(e.target.result)
+        for (let id of e.target.result) {
+          res.push(id)
+        }
       }
     })
   })
@@ -371,7 +373,7 @@ export async function deleteStatusesAndNotifications (instanceName, statusIds, n
       notificationsStore.delete(notificationId)
       deleteAll(
         notificationTimelinesStore,
-        notificationTimelinesStore.index('statusId'),
+        notificationTimelinesStore.index('notificationId'),
         IDBKeyRange.only(notificationId)
       )
     }
