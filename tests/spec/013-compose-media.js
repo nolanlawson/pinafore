@@ -28,6 +28,7 @@ test('inserts media', async t => {
     .click(getNthDeleteMediaButton(3))
     .click(getNthDeleteMediaButton(2))
     .click(getNthDeleteMediaButton(1))
+    .expect(mediaButton.hasAttribute('disabled')).notOk()
 })
 
 test('removes media', async t => {
