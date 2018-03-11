@@ -97,7 +97,8 @@ async function getStatusThread (instanceName, statusId) {
       } else {
         // thread not cached; just make a "fake" thread with only one status in it
         fetchStatus(statusesStore, accountsStore, statusId, status => {
-          callback([status])
+          let res = [status]
+          callback(res)
         })
       }
     }
