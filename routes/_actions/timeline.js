@@ -5,14 +5,17 @@ import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
 import { mergeArrays } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'
+import isEqual from 'lodash/isEqual'
 
 const FETCH_LIMIT = 20
 
 async function fetchTimelineItems (instanceName, accessToken, timelineName, lastTimelineItemId, online) {
   mark('fetchTimelineItems')
   let items
+  let stale = false
   if (!online) {
     items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+    stale = true
   } else {
     try {
       items = await getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, FETCH_LIMIT)
@@ -21,24 +24,33 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')
       items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+      stale = true
     }
   }
   stop('fetchTimelineItems')
-  return items
+  return { items, stale }
 }
 
-async function addTimelineItems (instanceName, timelineName, newItems) {
-  console.log('addTimelineItems, length:', newItems.length)
+async function addTimelineItems (instanceName, timelineName, items, stale) {
+  console.log('addTimelineItems, length:', items.length)
   mark('addTimelineItems')
-  let newIds = newItems.map(item => item.id)
-  addTimelineItemIds(instanceName, timelineName, newIds)
+  let newIds = items.map(item => item.id)
+  addTimelineItemIds(instanceName, timelineName, newIds, stale)
   stop('addTimelineItems')
 }
 
-export async function addTimelineItemIds (instanceName, timelineName, newIds) {
+export async function addTimelineItemIds (instanceName, timelineName, newIds, newStale) {
   let oldIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
-  let merged = mergeArrays(oldIds, newIds)
-  store.setForTimeline(instanceName, timelineName, { timelineItemIds: merged })
+  let oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemIdsAreStale')
+
+  let mergedIds = mergeArrays(oldIds, newIds)
+
+  if (!isEqual(oldIds, mergedIds)) {
+    store.setForTimeline(instanceName, timelineName, {timelineItemIds: mergedIds})
+  }
+  if (oldStale !== newStale) {
+    store.setForTimeline(instanceName, timelineName, {timelineItemIdsAreStale: newStale})
+  }
 }
 
 async function fetchTimelineItemsAndPossiblyFallBack () {
@@ -49,8 +61,8 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
   let lastTimelineItemId = store.get('lastTimelineItemId')
   let online = store.get('online')
 
-  let newItems = await fetchTimelineItems(instanceName, accessToken, timelineName, lastTimelineItemId, online)
-  addTimelineItems(instanceName, timelineName, newItems)
+  let { items, stale } = await fetchTimelineItems(instanceName, accessToken, timelineName, lastTimelineItemId, online)
+  addTimelineItems(instanceName, timelineName, items, stale)
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
 
@@ -69,7 +81,17 @@ export function initializeTimeline () {
 
 export async function setupTimeline () {
   mark('setupTimeline')
-  if (!store.get('timelineItemIds')) {
+  // If we don't have any item ids, or if the current item ids are stale
+  // (i.e. via offline mode), then we need to re-fetch
+  // Also do this if it's a thread, because threads change pretty frequently and
+  // we don't have a good way to update them.
+
+  let timelineItemIds = store.get('timelineItemIds')
+  let timelineItemIdsAreStale = store.get('timelineItemIdsAreStale')
+  let currentTimeline = store.get('currentTimeline')
+  if (!timelineItemIds ||
+      timelineItemIdsAreStale ||
+      currentTimeline.startsWith('status/')) {
     await fetchTimelineItemsAndPossiblyFallBack()
   }
   stop('setupTimeline')
@@ -85,7 +107,7 @@ export async function showMoreItemsForTimeline (instanceName, timelineName) {
   mark('showMoreItemsForTimeline')
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
   itemIdsToAdd = itemIdsToAdd.sort(byItemIds).reverse()
-  addTimelineItemIds(instanceName, timelineName, itemIdsToAdd)
+  addTimelineItemIds(instanceName, timelineName, itemIdsToAdd, false)
   store.setForTimeline(instanceName, timelineName, {
     itemIdsToAdd: [],
     shouldShowHeader: false,
