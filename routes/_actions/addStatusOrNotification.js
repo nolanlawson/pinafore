@@ -38,7 +38,7 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
     return
   }
 
-  let threads = store.getThreadsForTimeline(instanceName)
+  let threads = store.getThreads(instanceName)
 
   for (let timelineName of Object.keys(threads)) {
     let thread = threads[timelineName]

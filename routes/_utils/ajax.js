@@ -52,6 +52,17 @@ async function _get (url, headers, timeout) {
   return throwErrorIfInvalidResponse(response)
 }
 
+async function _delete (url, headers, timeout) {
+  let fetchFunc = timeout ? fetchWithTimeout : fetch
+  let response = await fetchFunc(url, {
+    method: 'DELETE',
+    headers: Object.assign(headers, {
+      'Accept': 'application/json'
+    })
+  })
+  return throwErrorIfInvalidResponse(response)
+}
+
 export async function post (url, body, headers = {}) {
   return _post(url, body, headers, false)
 }
@@ -66,6 +77,10 @@ export async function getWithTimeout (url, headers = {}) {
 
 export async function get (url, headers = {}) {
   return _get(url, headers, false)
+}
+
+export async function deleteWithTimeout (url, headers = {}) {
+  return _delete(url, headers, true)
 }
 
 export function paramsString (paramsObject) {

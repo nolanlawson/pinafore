@@ -1,21 +1,28 @@
-import { getIdsThatRebloggedThisStatus, getIdThatThisStatusReblogged, getNotificationIdsForStatuses } from './statuses'
+import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './statuses'
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { database } from '../_database/database'
+import forEach from 'lodash/forEach'
 
 function deleteStatusIdsFromStore (instanceName, idsToDelete) {
   let idsToDeleteSet = new Set(idsToDelete)
-  let timelines = store.get('timelines')
-  if (timelines && timelines[instanceName]) {
-    Object.keys(timelines[instanceName]).forEach(timelineName => {
-      let timelineData = timelines[instanceName][timelineName]
-      if (timelineName !== 'notifications') {
-        timelineData.timelineItemIds = timelineData.timelineItemIds.filter(_ => !idsToDeleteSet.has(_))
-        timelineData.itemIdsToAdd = timelineData.itemIdsToAdd.filter(_ => !idsToDeleteSet.has(_))
-      }
+  let idWasNotDeleted = id => !idsToDeleteSet.has(id)
+
+  let timelinesToTimelineItemIds = store.getAllTimelineData(instanceName, 'timelineItemIds')
+
+  forEach(timelinesToTimelineItemIds, (timelineItemIds, timelineName) => {
+    store.setForTimeline(instanceName, timelineName, {
+      timelineItemIds: timelineItemIds.filter(idWasNotDeleted)
     })
-    store.set({timelines: timelines})
-  }
+  })
+
+  let timelinesToItemIdsToAdd = store.getAllTimelineData(instanceName, 'itemIdsToAdd')
+
+  forEach(timelinesToItemIdsToAdd, (itemIdsToAdd, timelineName) => {
+    store.setForTimeline(instanceName, timelineName, {
+      itemIdsToAdd: itemIdsToAdd.filter(idWasNotDeleted)
+    })
+  })
 }
 
 async function deleteStatusesAndNotifications (instanceName, statusIdsToDelete, notificationIdsToDelete) {
@@ -24,9 +31,9 @@ async function deleteStatusesAndNotifications (instanceName, statusIdsToDelete, 
 }
 
 async function doDeleteStatus (instanceName, statusId) {
-  let reblogId = await getIdThatThisStatusReblogged(instanceName, statusId)
-  let rebloggedIds = await getIdsThatRebloggedThisStatus(reblogId || statusId)
-  let statusIdsToDelete = Array.from(new Set([statusId, reblogId].concat(rebloggedIds).filter(Boolean)))
+  console.log('deleting statusId', statusId)
+  let rebloggedIds = await getIdsThatRebloggedThisStatus(instanceName, statusId)
+  let statusIdsToDelete = Array.from(new Set([statusId].concat(rebloggedIds).filter(Boolean)))
   let notificationIdsToDelete = new Set(await getNotificationIdsForStatuses(instanceName, statusIdsToDelete))
   await Promise.all([
     deleteStatusesAndNotifications(instanceName, statusIdsToDelete, notificationIdsToDelete)

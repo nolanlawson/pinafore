@@ -9,13 +9,14 @@ import {
   PINNED_STATUSES_STORE,
   TIMESTAMP,
   REBLOG_ID,
-  THREADS_STORE
+  THREADS_STORE,
+  STATUS_ID
 } from './constants'
 
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 5
+const DB_VERSION = 6
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -53,6 +54,9 @@ export function getDatabase (instanceName) {
         tx.objectStore(STATUSES_STORE).createIndex(REBLOG_ID, REBLOG_ID)
         tx.objectStore(NOTIFICATIONS_STORE).createIndex('statusId', 'statusId')
         db.createObjectStore(THREADS_STORE)
+      }
+      if (e.oldVersion < 6) {
+        tx.objectStore(NOTIFICATIONS_STORE).createIndex(STATUS_ID, STATUS_ID)
       }
     }
     req.onsuccess = () => resolve(req.result)

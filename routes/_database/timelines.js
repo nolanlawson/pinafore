@@ -289,6 +289,24 @@ export async function getReblogsForStatus (instanceName, id) {
 }
 
 //
+// lookups by statusId
+//
+
+export async function getNotificationIdsForStatuses (instanceName, statusIds) {
+  const db = await getDatabase(instanceName)
+  await dbPromise(db, NOTIFICATIONS_STORE, 'readonly', (notificationsStore, callback) => {
+    let res = []
+    callback(res)
+    statusIds.forEach(statusId => {
+      let req = notificationsStore.index(STATUS_ID).getAllKeys(IDBKeyRange.only(statusId))
+      req.onsuccess = e => {
+        res = res.concat(e.target.result)
+      }
+    })
+  })
+}
+
+//
 // deletes
 //
 

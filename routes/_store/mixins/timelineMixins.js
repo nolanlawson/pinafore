@@ -20,23 +20,22 @@ export function timelineMixins (Store) {
     return root && root[instanceName] && root[instanceName][timelineName]
   }
 
+  Store.prototype.getAllTimelineData = function (instanceName, key) {
+    let root = this.get(`timelineData_${key}`) || {}
+    return root[instanceName] || {}
+  }
+
   Store.prototype.setForCurrentTimeline = function (obj) {
     let instanceName = this.get('currentInstance')
     let timelineName = this.get('currentTimeline')
     this.setForTimeline(instanceName, timelineName, obj)
   }
 
-  Store.prototype.getThreadsForTimeline = function (instanceName) {
-    let root = this.get('timelineData_timelineItemIds') || {}
-    let instanceData = root[instanceName] = root[instanceName] || {}
+  Store.prototype.getThreads = function (instanceName) {
+    let instanceData = this.getAllTimelineData(instanceName, 'timelineItemIds')
 
     return pickBy(instanceData, (value, key) => {
       return key.startsWith('status/')
     })
-  }
-
-  Store.prototype.getThreadsForCurrentTimeline = function () {
-    let instanceName = this.get('currentInstance')
-    return this.getThreadsForTimeline(instanceName)
   }
 }

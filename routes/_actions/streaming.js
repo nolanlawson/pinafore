@@ -7,16 +7,15 @@ import { addStatusOrNotification } from './addStatusOrNotification'
 function processMessage (instanceName, timelineName, message) {
   mark('processMessage')
   let { event, payload } = message
-  let parsedPayload = JSON.parse(payload)
   switch (event) {
     case 'delete':
-      deleteStatus(instanceName, parsedPayload)
+      deleteStatus(instanceName, payload)
       break
     case 'update':
-      addStatusOrNotification(instanceName, timelineName, parsedPayload)
+      addStatusOrNotification(instanceName, timelineName, JSON.parse(payload))
       break
     case 'notification':
-      addStatusOrNotification(instanceName, 'notifications', parsedPayload)
+      addStatusOrNotification(instanceName, 'notifications', JSON.parse(payload))
       break
   }
   stop('processMessage')
