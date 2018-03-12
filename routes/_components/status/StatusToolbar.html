@@ -4,7 +4,6 @@
     href="#fa-reply"
     disabled="{{disableReply}}"
     delegateKey="{{replyKey}}"
-    ref:replyNode
     />
   <IconButton
     label="{{reblogLabel}}"
@@ -13,7 +12,6 @@
     disabled="{{reblogDisabled}}"
     href="{{reblogIcon}}"
     delegateKey="{{reblogKey}}"
-    ref:reblogNode
   />
   <IconButton
     label="Favorite"
@@ -21,11 +19,11 @@
     pressed="{{favorited}}"
     href="#fa-star"
     delegateKey="{{favoriteKey}}"
-    ref:favoriteNode
-    />
+  />
   <IconButton
-    label="Show more actions"
+    label="Show more options"
     href="#fa-ellipsis-h"
+    delegateKey="{{optionsKey}}"
   />
 </div>
 <style>
@@ -45,17 +43,21 @@
   import { setFavorited } from '../../_actions/favorite'
   import { setReblogged } from '../../_actions/reblog'
   import { goto } from 'sapper/runtime.js'
+  import { importDialogs } from '../../_utils/asyncModules'
+  import { updateProfileAndRelationship } from '../../_actions/accounts'
 
   export default {
     oncreate() {
       registerClickDelegate(this.get('favoriteKey'), () => this.onFavoriteClick())
       registerClickDelegate(this.get('reblogKey'), () => this.onReblogClick())
       registerClickDelegate(this.get('replyKey'), () => this.onReplyClick())
+      registerClickDelegate(this.get('optionsKey'), () => this.onOptionsClick())
     },
     ondestroy() {
       unregisterClickDelegate(this.get('favoriteKey'))
       unregisterClickDelegate(this.get('reblogKey'))
       unregisterClickDelegate(this.get('replyKey'))
+      unregisterClickDelegate(this.get('optionsKey'))
     },
     components: {
       IconButton
@@ -75,6 +77,14 @@
       onReplyClick() {
         let statusId = this.get('statusId')
         goto(`/statuses/${statusId}/reply`)
+      },
+      async onOptionsClick() {
+        let statusId = this.get('statusId')
+        let accountId = this.get('accountId')
+        let updateRelationshipPromise = updateProfileAndRelationship(accountId)
+        let dialogs = await importDialogs()
+        await updateRelationshipPromise
+        dialogs.showStatusOptionsDialog(statusId)
       }
     },
     computed: {
@@ -115,10 +125,13 @@
         return status.favourited
       },
       statusId: (status) => status.id,
+      accountId: (status) => status.account.id,
       disableReply: (statusId, timelineType, timelineValue) => timelineType === 'reply' && statusId === timelineValue,
-      favoriteKey: (statusId, timelineType, timelineValue) => `fav-${timelineType}-${timelineValue}-${statusId}`,
-      reblogKey: (statusId, timelineType, timelineValue) => `reblog-${timelineType}-${timelineValue}-${statusId}`,
-      replyKey: (statusId, timelineType, timelineValue) => `reply-${timelineType}-${timelineValue}-${statusId}`,
+      keyPrefix: (timelineType, timelineValue, statusId) => `${timelineType}-${timelineValue}-${statusId}`,
+      favoriteKey: (keyPrefix) => `${keyPrefix}-fav`,
+      reblogKey: (keyPrefix) => `${keyPrefix}-reblog`,
+      replyKey: (keyPrefix) => `${keyPrefix}-reply`,
+      optionsKey: (keyPrefix) => `${keyPrefix}-options`,
     }
   }
 </script>

@@ -1,0 +1,52 @@
+<ModalDialog :label :shown :closed :title background="var(--main-bg)">
+  <GenericDialogList :items on:click="onClick(event)"/>
+</ModalDialog>
+<script>
+import ModalDialog from './ModalDialog.html'
+import { store } from '../../_store/store'
+import GenericDialogList from './GenericDialogList.html'
+import { setAccountFollowed } from '../../_actions/follow'
+
+export default {
+  computed: {
+    relationship: ($currentAccountRelationship) => $currentAccountRelationship,
+    account: ($currentAccountProfile) => $currentAccountProfile,
+    following: (relationship) => relationship && !!relationship.following,
+    accountName: (account) => account && (account.display_name || account.acct),
+    accountId: (account) => account && account.id,
+    followLabel: (following, accountName) => {
+      if (typeof following === 'undefined' || !accountName) {
+        return ''
+      }
+      return following ? `Unfollow ${accountName}` : `Follow ${accountName}`
+    },
+    items: (followLabel, following) => {
+      return [
+        {
+          key: 'follow',
+          label: followLabel,
+          icon: following ? '#fa-user-times' : '#fa-user-plus'
+        }
+      ]
+    }
+  },
+  components: {
+    ModalDialog,
+    GenericDialogList
+  },
+  store: () => store,
+  methods: {
+    async show() {
+      this.set({shown: true})
+    },
+    async onClick(item) {
+      if (item.key === 'follow') {
+        let accountId = this.get('accountId')
+        let following = this.get('following')
+        await setAccountFollowed(accountId, !following, true)
+        this.set({closed: true})
+      }
+    }
+  }
+}
+</script>
