@@ -1,5 +1,5 @@
 <div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{overLimit ? 'over-char-limit' : ''}}"
-     style="transform: scaleX({{inputLengthAsFractionRoundedAfterRaf || 0}});"
+     style="transform: scaleX({{lengthAsFractionRoundedAfterRaf || 0}});"
      aria-hidden="true"
 ></div>
 <style>
@@ -25,11 +25,11 @@
   export default {
     oncreate() {
       // perf improvement for keyboard input latency
-      this.observe('inputLengthAsFractionRounded', inputLengthAsFractionRounded => {
+      this.observe('lengthAsFractionRounded', lengthAsFractionRounded => {
         requestAnimationFrame(() => {
-          mark('set inputLengthAsFractionRoundedAfterRaf')
-          this.set({inputLengthAsFractionRoundedAfterRaf: inputLengthAsFractionRounded})
-          stop('set inputLengthAsFractionRoundedAfterRaf')
+          mark('set lengthAsFractionRoundedAfterRaf')
+          this.set({lengthAsFractionRoundedAfterRaf: lengthAsFractionRounded})
+          stop('set lengthAsFractionRoundedAfterRaf')
           requestAnimationFrame(() => this.set({shouldAnimate: true}))
         })
       })
