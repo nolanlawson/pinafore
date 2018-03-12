@@ -1,6 +1,6 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "pinafore",
+  "description": "Alternative web client for Mastodon",
   "version": "0.0.1",
   "scripts": {
     "lint": "standard",
@@ -111,5 +111,23 @@
   "@std/esm": {
     "mode": "js",
     "cjs": "vars"
+  },
+  "now": {
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "files": [
+      "assets",
+      "bin",
+      "original-assets",
+      "routes",
+      "scss",
+      "templates",
+      "package.json",
+      "package-lock.json",
+      "server.js",
+      "webpack.client.config.js",
+      "webpack.server.config.js"
+    ]
   }
 }
