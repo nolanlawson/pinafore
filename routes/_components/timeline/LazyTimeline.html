@@ -15,6 +15,7 @@
 <script>
   import { importTimeline } from '../../_utils/asyncModules'
   import { store } from '../../_store/store'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
     oncreate() {
@@ -25,7 +26,12 @@
     },
     store: () => store,
     data: () => ({
-      importTimeline: importTimeline()
+      importTimeline: importTimeline().then(timeline => {
+        return new Promise((resolve) => {
+          // make column-switching more responsive by delaying this load
+          scheduleIdleTask(() => resolve(timeline))
+        })
+      })
     })
   }
 </script>
