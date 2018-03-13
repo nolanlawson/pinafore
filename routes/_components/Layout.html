@@ -5,28 +5,18 @@
     <slot></slot>
   </main>
   {{#if !$isUserLoggedIn && page === 'home'}}
-    <HiddenFromSSR>
-      <footer>
-        <p>
-          Pinafore is <ExternalLink href="https://github.com/nolanlawson/pinafore">open-source software</ExternalLink>
-          created by <ExternalLink href="https://nolanlawson.com">Nolan Lawson</ExternalLink> and distributed under the
-          <ExternalLink href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">AGPL License</ExternalLink>.
-        </p>
-      </footer>
-    </HiddenFromSSR>
+    <InformationalFooter />
   {{/if}}
 </div>
 <script>
 	import Nav from './Nav.html';
   import { store } from '../_store/store'
-  import ExternalLink from './ExternalLink.html'
-  import HiddenFromSSR from './HiddenFromSSR.html'
+  import InformationalFooter from './InformationalFooter.html'
 
 	export default {
 		components: {
 			Nav,
-      ExternalLink,
-      HiddenFromSSR
+      InformationalFooter
 		},
     store: () => store
 	}
