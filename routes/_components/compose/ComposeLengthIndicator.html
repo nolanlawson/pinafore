@@ -1,6 +1,6 @@
 <span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
       aria-label="{{lengthLabel}}">
-      {{lengthToDisplayAfterRaf || '0'}}
+      {{lengthToDisplayDeferred || '0'}}
     </span>
 <style>
   .compose-box-length {
@@ -19,26 +19,28 @@
   import { CHAR_LIMIT } from '../../_static/statuses'
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
     oncreate() {
+      this.set({lengthToDisplayDeferred: this.get('lengthToDisplay')})
       // perf improvement for keyboard input latency
-      this.observe('lengthToDisplay', lengthToDisplay => {
-        requestAnimationFrame(() => {
-          mark('set lengthToDisplayAfterRaf')
-          this.set({lengthToDisplayAfterRaf: lengthToDisplay})
-          stop('set lengthToDisplayAfterRaf')
+      this.observe('lengthToDisplay', () => {
+        scheduleIdleTask(() => {
+          mark('set lengthToDisplayDeferred')
+          this.set({lengthToDisplayDeferred: this.get('lengthToDisplay')})
+          stop('set lengthToDisplayDeferred')
         })
-      })
+      }, {init: false})
     },
     store: () => store,
     computed: {
       lengthToDisplay: (length) => CHAR_LIMIT - length,
-      lengthLabel: (overLimit, lengthToDisplay) => {
+      lengthLabel: (overLimit, lengthToDisplayDeferred) => {
         if (overLimit) {
-          return `${lengthToDisplay} characters over limit`
+          return `${lengthToDisplayDeferred} characters over limit`
         } else {
-          return `${lengthToDisplay} characters remaining`
+          return `${lengthToDisplayDeferred} characters remaining`
         }
       }
     }

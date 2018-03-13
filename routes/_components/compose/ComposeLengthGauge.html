@@ -1,5 +1,5 @@
 <div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{overLimit ? 'over-char-limit' : ''}}"
-     style="transform: scaleX({{lengthAsFractionRoundedAfterRaf || 0}});"
+     style="transform: scaleX({{lengthAsFractionDeferred || 0}});"
      aria-hidden="true"
 ></div>
 <style>
@@ -21,27 +21,27 @@
   import { CHAR_LIMIT } from '../../_static/statuses'
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
     oncreate() {
+      this.set({lengthAsFractionDeferred: this.get('lengthAsFraction')})
       // perf improvement for keyboard input latency
-      this.observe('lengthAsFractionRounded', lengthAsFractionRounded => {
-        requestAnimationFrame(() => {
-          mark('set lengthAsFractionRoundedAfterRaf')
-          this.set({lengthAsFractionRoundedAfterRaf: lengthAsFractionRounded})
-          stop('set lengthAsFractionRoundedAfterRaf')
+      this.observe('lengthAsFraction', () => {
+        scheduleIdleTask(() => {
+          mark('set lengthAsFractionDeferred')
+          this.set({lengthAsFractionDeferred: this.get('lengthAsFraction')})
+          stop('set lengthAsFractionDeferred')
           requestAnimationFrame(() => this.set({shouldAnimate: true}))
         })
-      })
+      }, {init: false})
     },
     store: () => store,
     computed: {
-      lengthAsFraction: (length) => Math.min(CHAR_LIMIT, length) / CHAR_LIMIT,
-      lengthAsFractionRounded: (lengthAsFraction) => {
+      lengthAsFraction: (length) => {
         // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
-        let int = Math.round(lengthAsFraction * 100)
-        int -= (int % 2)
-        return int / 100
+        let int = Math.round(Math.min(CHAR_LIMIT, length) / CHAR_LIMIT * 100)
+        return (int - (int % 2)) / 100
       }
     }
 }
