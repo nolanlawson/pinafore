@@ -1,4 +1,4 @@
-import { composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton, uploadKittenImage } from '../utils'
+import { composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton, sleep, uploadKittenImage } from '../utils'
 import { foobarRole } from '../roles'
 
 fixture`013-compose-media.js`
@@ -33,6 +33,7 @@ test('inserts media', async t => {
 
 test('removes media', async t => {
   await t.useRole(foobarRole)
+    .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
   await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
   await (uploadKittenImage(2)())
@@ -47,6 +48,7 @@ test('removes media', async t => {
 
 test('changes URLs as media is added/removed', async t => {
   await t.useRole(foobarRole)
+    .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
   await t.expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+$/)
   await (uploadKittenImage(1)())
