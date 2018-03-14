@@ -1,4 +1,4 @@
-import { composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton, sleep, uploadKittenImage } from '../utils'
+import { composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton, uploadKittenImage } from '../utils'
 import { foobarRole } from '../roles'
 
 fixture`013-compose-media.js`
