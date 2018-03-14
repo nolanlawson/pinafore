@@ -1,31 +1,21 @@
 <:Head>
   <title>Pinafore – Settings</title>
 </:Head>
-
 <Layout page='settings'>
-  <SettingsLayout page='settings' label="Settings">
-    <h1>Settings</h1>
-
-    <SettingsList>
-      <SettingsListItem href="/settings/general" label="General"/>
-      <SettingsListItem href="/settings/instances" label="Instances"/>
-      <SettingsListItem href="/settings/about" label="About Pinafore"/>
-    </SettingsList>
-
-  </SettingsLayout>
+  <LazyPage :pageComponent :params />
 </Layout>
 <script>
-  import Layout from '../_components/Layout.html';
-  import SettingsLayout from './_components/SettingsLayout.html'
-  import SettingsList from './_components/SettingsList.html'
-  import SettingsListItem from './_components/SettingsListItem.html'
+  import Layout from '../_components/Layout.html'
+  import LazyPage from '../_components/LazyPage.html'
+  import pageComponent from '../_pages/settings/index.html'
 
   export default {
     components: {
       Layout,
-      SettingsLayout,
-      SettingsList,
-      SettingsListItem
-    }
-  };
+      LazyPage
+    },
+    data: () => ({
+      pageComponent
+    })
+  }
 </script>

@@ -1,48 +1,21 @@
 <:Head>
   <title>Pinafore – Search</title>
 </:Head>
-
 <Layout page='search'>
-  {{#if $isUserLoggedIn}}
-  <div class="search-page">
-    <Search></Search>
-  </div>
-  {{else}}
-  <HiddenFromSSR>
-    <FreeTextLayout>
-      <h1>Search</h1>
-
-      <p>You can search once logged in to an instance.</p>
-    </FreeTextLayout>
-  </HiddenFromSSR>
-  {{/if}}
+  <LazyPage :pageComponent :params />
 </Layout>
-<style>
-  .search-page {
-    min-height: 60vh;
-    padding: 20px 20px;
-  }
-
-  @media (max-width: 767px) {
-    .search-page {
-      padding: 20px 10px;
-    }
-  }
-</style>
 <script>
   import Layout from './_components/Layout.html'
-  import FreeTextLayout from './_components/FreeTextLayout.html'
-  import { store } from './_store/store.js'
-  import HiddenFromSSR from './_components/HiddenFromSSR'
-  import Search from './_components/search/Search.html'
+  import LazyPage from './_components/LazyPage.html'
+  import pageComponent from './_pages/search.html'
 
   export default {
-    store: () => store,
     components: {
       Layout,
-      Search,
-      FreeTextLayout,
-      HiddenFromSSR
-    }
+      LazyPage
+    },
+    data: () => ({
+      pageComponent
+    })
   }
 </script>

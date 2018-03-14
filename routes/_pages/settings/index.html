@@ -1,0 +1,23 @@
+<SettingsLayout page='settings' label="Settings">
+  <h1>Settings</h1>
+
+  <SettingsList>
+    <SettingsListItem href="/settings/general" label="General"/>
+    <SettingsListItem href="/settings/instances" label="Instances"/>
+    <SettingsListItem href="/settings/about" label="About Pinafore"/>
+  </SettingsList>
+
+</SettingsLayout>
+<script>
+  import SettingsLayout from '../../_components/settings/SettingsLayout.html'
+  import SettingsList from '../../_components/settings/SettingsList.html'
+  import SettingsListItem from '../../_components/settings/SettingsListItem.html'
+
+  export default {
+    components: {
+      SettingsLayout,
+      SettingsList,
+      SettingsListItem
+    }
+  };
+</script>

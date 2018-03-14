@@ -1,35 +1,21 @@
 <:Head>
 	<title>Pinafore – Home</title>
 </:Head>
-
 <Layout page='home'>
-  {{#if $isUserLoggedIn}}
-    {{#if $currentVerifyCredentials}}
-      <ComposeBox realm="home" />
-    {{/if}}
-    <LazyTimeline timeline='home' />
-  {{else}}
-    <NotLoggedInHome/>
-  {{/if}}
+  <LazyPage :pageComponent :params />
 </Layout>
-
-
 <script>
   import Layout from './_components/Layout.html'
-  import NotLoggedInHome from './_components/NotLoggedInHome.html'
-  import LazyTimeline from './_components/timeline/LazyTimeline.html'
-  import ComposeBox from './_components/compose/ComposeBox.html'
-  import { store } from './_store/store.js'
+  import LazyPage from './_components/LazyPage.html'
+  import pageComponent from './_pages/index.html'
 
-	export default {
-		store: () => store,
-		components: {
-		  Layout,
-      LazyTimeline,
-			NotLoggedInHome,
-      ComposeBox
-		}
-	}
+  export default {
+    components: {
+      Layout,
+      LazyPage
+    },
+    data: () => ({
+      pageComponent
+    })
+  }
 </script>
-<style>
-</style>

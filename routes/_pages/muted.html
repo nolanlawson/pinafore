@@ -1,0 +1,20 @@
+<DynamicPageBanner title="Muted users" icon="#fa-volume-off" />
+<AccountsListPage :accountsFetcher />
+<script>
+  import AccountsListPage from '.././_components/AccountsListPage.html'
+  import { store } from '.././_store/store'
+  import { getMutedAccounts } from '.././_api/blockedAndMuted'
+  import DynamicPageBanner from '.././_components/DynamicPageBanner.html'
+
+  export default {
+    computed: {
+      statusId: params => params.statusId,
+      accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getMutedAccounts($currentInstance, $accessToken, statusId)
+    },
+    store: () => store,
+    components: {
+      AccountsListPage,
+      DynamicPageBanner
+    }
+  }
+</script>

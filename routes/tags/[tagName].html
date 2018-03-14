@@ -1,37 +1,21 @@
 <:Head>
   <title>Pinafore – #{{params.tagName}}</title>
 </:Head>
-
 <Layout page='tags'>
-  {{#if $isUserLoggedIn}}
-  <DynamicPageBanner title="{{'#' + params.tagName}}"/>
-  <LazyTimeline timeline='tag/{{params.tagName}}' />
-  {{else}}
-  <HiddenFromSSR>
-    <FreeTextLayout>
-      <h1>#{{params.tagName}}</h1>
-
-      <p>A hashtag timeline will appear here when logged in.</p>
-    </FreeTextLayout>
-  </HiddenFromSSR>
-  {{/if}}
+  <LazyPage :pageComponent :params />
 </Layout>
 <script>
   import Layout from '../_components/Layout.html'
-  import LazyTimeline from '../_components/timeline/LazyTimeline.html'
-  import FreeTextLayout from '../_components/FreeTextLayout.html'
-  import { store } from '../_store/store.js'
-  import HiddenFromSSR from '../_components/HiddenFromSSR'
-  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
+  import LazyPage from '../_components/LazyPage.html'
+  import pageComponent from '../_pages/tags/[tagName].html'
 
   export default {
-    store: () => store,
     components: {
       Layout,
-      LazyTimeline,
-      FreeTextLayout,
-      HiddenFromSSR,
-      DynamicPageBanner
-    }
+      LazyPage
+    },
+    data: () => ({
+      pageComponent
+    })
   }
 </script>

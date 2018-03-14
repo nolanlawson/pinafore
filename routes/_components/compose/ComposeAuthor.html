@@ -46,10 +46,12 @@
 </style>
 <script>
   import Avatar from '../Avatar.html'
+  import { store } from '../../_store/store'
   export default {
     components: {
       Avatar
     },
+    store: () => store,
     computed: {
       verifyCredentials: ($currentVerifyCredentials) => $currentVerifyCredentials
     }

@@ -1,0 +1,25 @@
+{{#if $isUserLoggedIn}}
+  {{#if $currentVerifyCredentials}}
+    <ComposeBox realm="home" />
+  {{/if}}
+  <LazyTimeline timeline='home' />
+{{else}}
+  <NotLoggedInHome/>
+{{/if}}
+<style>
+</style>
+<script>
+  import NotLoggedInHome from '.././_components/NotLoggedInHome.html'
+  import LazyTimeline from '.././_components/timeline/LazyTimeline.html'
+  import ComposeBox from '.././_components/compose/ComposeBox.html'
+  import { store } from '.././_store/store.js'
+
+	export default {
+		store: () => store,
+		components: {
+		  LazyTimeline,
+			NotLoggedInHome,
+      ComposeBox
+		}
+	}
+</script>

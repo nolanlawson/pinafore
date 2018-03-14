@@ -1,0 +1,105 @@
+{{#if $isUserLoggedIn}}
+<div class="community-page">
+
+  <h2 class="community-header">
+    Timelines
+  </h2>
+
+  <PageList label="Timelines">
+    <PageListItem href="/local"
+                  label="Local Timeline"
+                  icon="#fa-users"
+                  pinnable="true"
+    />
+    <PageListItem href="/federated"
+                  label="Federated Timeline"
+                  icon="#fa-globe"
+                  pinnable="true"
+    />
+    <PageListItem href="/favorites"
+                  label="Favorites"
+                  icon="#fa-star"
+                  pinnable="true"
+    />
+  </PageList>
+
+  {{#if $lists.length}}
+
+    <h2 class="community-header">
+      Lists
+    </h2>
+
+    <PageList label="Lists">
+      {{#each $lists as list}}
+      <PageListItem href="/lists/{{list.id}}"
+                    label="{{list.title}}"
+                    icon="#fa-bars"
+                    pinnable="true"
+      />
+      {{/each}}
+    </PageList>
+
+  {{/if}}
+
+  <h2 class="community-header">
+    Instance settings
+  </h2>
+
+  <PageList label="Instance settings">
+    <PageListItem href="/muted"
+                  label="Muted users"
+                  icon="#fa-volume-off"
+    />
+    <PageListItem href="/blocked"
+                  label="Blocked users"
+                  icon="#fa-ban"
+    />
+    <PageListItem href="/pinned"
+                  label="Pinned toots"
+                  icon="#fa-thumb-tack"
+    />
+  </PageList>
+
+</div>
+{{else}}
+<HiddenFromSSR>
+  <FreeTextLayout>
+    <h1>Community</h1>
+
+    <p>Community options appear here when logged in.</p>
+  </FreeTextLayout>
+</HiddenFromSSR>
+{{/if}}
+<style>
+  .community-page {
+    margin: 20px;
+  }
+  @media (max-width: 767px) {
+    .community-page {
+      margin: 20px 10px;
+    }
+  }
+</style>
+<script>
+  import FreeTextLayout from '../../_components/FreeTextLayout.html'
+  import { store } from '../../_store/store.js'
+  import HiddenFromSSR from '../../_components/HiddenFromSSR'
+  import PageList from '../../_components/community/PageList.html'
+  import PageListItem from '../../_components/community/PageListItem.html'
+  import { updateLists } from '../../_actions/lists'
+
+  export default {
+    async oncreate() {
+      if (this.store.get('currentInstance')) {
+        await updateLists()
+      }
+    },
+    store: () => store,
+    components: {
+      FreeTextLayout,
+      HiddenFromSSR,
+      PageList,
+      PageListItem
+    }
+  };
+</script>

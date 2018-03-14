@@ -1,0 +1,35 @@
+{{#if $isUserLoggedIn}}
+{{#if $pinnedPage !== `/lists/${params.listId}`}}
+  <DynamicPageBanner title="{{listTitle}}" icon="#fa-bars"/>
+{{/if}}
+<LazyTimeline timeline='list/{{params.listId}}' />
+{{else}}
+<HiddenFromSSR>
+  <FreeTextLayout>
+    <h1>List</h1>
+
+    <p>A list will appear here when logged in.</p>
+  </FreeTextLayout>
+</HiddenFromSSR>
+{{/if}}
+<script>
+  import LazyTimeline from '../../_components/timeline/LazyTimeline.html'
+  import FreeTextLayout from '../../_components/FreeTextLayout.html'
+  import { store } from '../../_store/store.js'
+  import HiddenFromSSR from '../../_components/HiddenFromSSR'
+  import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
+
+  export default {
+    computed: {
+      list: (params, $lists) => $lists && $lists.find(_ => _.id === params['listId']),
+      listTitle: (list) => list ? list.title : ''
+    },
+    store: () => store,
+    components: {
+      LazyTimeline,
+      FreeTextLayout,
+      HiddenFromSSR,
+      DynamicPageBanner
+    }
+  }
+</script>

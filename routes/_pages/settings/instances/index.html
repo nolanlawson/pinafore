@@ -1,0 +1,35 @@
+<SettingsLayout page='settings/instances' label="Instances">
+  <h1>Instances</h1>
+
+  {{#if $isUserLoggedIn}}
+  <p>Instances you've logged in to:</p>
+  <SettingsList label="Instances">
+    {{#each $loggedInInstancesAsList as instance}}
+      <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
+                        icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
+                        href="/settings/instances/{{instance.name}}"
+                        label="{{instance.name}}"
+                        ariaLabel="{{instance.name}} {{instance.name === $currentInstance ? '(current instance)' : ''}}" />
+    {{/each}}
+  </SettingsList>
+  <p><a href="/settings/instances/add">Add another instance</a></p>
+  {{else}}
+  <p>You're not logged in to any instances.</p>
+  <p><a href="/settings/instances/add">Log in to an instance</a> to start using Pinafore.</p>
+  {{/if}}
+</SettingsLayout>
+<script>
+  import { store } from '../../../_store/store'
+  import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
+  import SettingsList from '../../../_components/settings/SettingsList.html'
+  import SettingsListItem from '../../../_components/settings/SettingsListItem.html'
+
+  export default {
+    components: {
+      SettingsLayout,
+      SettingsList,
+      SettingsListItem
+    },
+    store: () => store
+  }
+</script>

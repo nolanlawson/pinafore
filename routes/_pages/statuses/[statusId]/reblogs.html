@@ -1,0 +1,20 @@
+<DynamicPageBanner title="Boosts" icon="#fa-retweet" />
+<AccountsListPage :accountsFetcher />
+<script>
+  import { getReblogs } from '../../../_api/reblogsAndFavs'
+  import AccountsListPage from '../../../_components/AccountsListPage.html'
+  import { store } from '../../../_store/store'
+  import DynamicPageBanner from '../../../_components/DynamicPageBanner.html'
+
+  export default {
+    computed: {
+      statusId: params => params.statusId,
+      accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getReblogs($currentInstance, $accessToken, statusId)
+    },
+    store: () => store,
+    components: {
+      AccountsListPage,
+      DynamicPageBanner
+    }
+  }
+</script>

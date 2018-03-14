@@ -1,0 +1,90 @@
+<SettingsLayout page='settings/instances/add' label="Add an Instance">
+  <h1 id="add-an-instance-h1">Add an Instance</h1>
+
+  {{#if $isUserLoggedIn}}
+  <p>Connect to an instance to log in.</p>
+  {{else}}
+  <p>Log in to an instance to use Pinafore.</p>
+  {{/if}}
+
+  <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
+
+    {{#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}}
+    <div class="form-error form-error-user-error" role="alert">
+      Error: {{$logInToInstanceError}}
+    </div>
+    {{/if}}
+
+    <noscript>
+      <div class="form-error" role="alert">
+        You must enable JavaScript to log in.
+      </div>
+    </noscript>
+
+    <label for="instanceInput">Instance:</label>
+    <input class="new-instance-input" type="text" id="instanceInput"
+           bind:value='$instanceNameInSearch' placeholder='' required
+    >
+    <button class="primary" type="submit" id="submitButton"
+            disabled="{{!$instanceNameInSearch || $logInToInstanceLoading}}">
+      Add instance
+    </button>
+  </form>
+
+  {{#if !$isUserLoggedIn}}
+  <p>Don't have an instance? <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink></p>
+  {{/if}}
+</SettingsLayout>
+<style>
+  .form-error {
+    border: 2px solid red;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 1.3em;
+    margin: 5px;
+    background-color: var(--main-bg);
+  }
+  input.new-instance-input {
+    min-width: 60%;
+    max-width: 100%;
+  }
+
+  form.add-new-instance {
+    background: var(--form-bg);
+    padding: 5px 10px 15px;
+    margin: 20px auto;
+    border: 1px solid var(--form-border);
+    border-radius: 4px;
+  }
+
+  form.add-new-instance label, form.add-new-instance input, form.add-new-instance button {
+    display: block;
+    margin: 20px 5px;
+  }
+</style>
+<script>
+  import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
+  import { store } from '../../../_store/store'
+  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
+  import ExternalLink from '../../../_components/ExternalLink.html'
+
+  export default {
+    async oncreate () {
+      let codeMatch = location.search.match(/code=([^&]+)/)
+      if (codeMatch) {
+        handleOauthCode(codeMatch[1])
+      }
+    },
+    components: {
+      SettingsLayout,
+      ExternalLink
+    },
+    store: () => store,
+    methods: {
+      onSubmit(event) {
+        event.preventDefault()
+        logInToInstance()
+      }
+    }
+  }
+</script>

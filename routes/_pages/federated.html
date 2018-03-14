@@ -1,0 +1,31 @@
+{{#if $isUserLoggedIn}}
+{{#if $pinnedPage !== '/federated'}}
+  <DynamicPageBanner title="Federated Timeline" icon="#fa-globe"/>
+{{/if}}
+<LazyTimeline timeline='federated' />
+{{else}}
+<HiddenFromSSR>
+  <FreeTextLayout>
+    <h1>Federated</h1>
+
+    <p>Your federated timeline will appear here when logged in.</p>
+  </FreeTextLayout>
+</HiddenFromSSR>
+{{/if}}
+<script>
+  import LazyTimeline from '.././_components/timeline/LazyTimeline.html'
+  import FreeTextLayout from '.././_components/FreeTextLayout.html'
+  import { store } from '.././_store/store.js'
+  import HiddenFromSSR from '.././_components/HiddenFromSSR'
+  import DynamicPageBanner from '.././_components/DynamicPageBanner.html'
+
+  export default {
+    store: () => store,
+    components: {
+      LazyTimeline,
+      FreeTextLayout,
+      HiddenFromSSR,
+      DynamicPageBanner
+    }
+  }
+</script>

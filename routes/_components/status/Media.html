@@ -103,6 +103,7 @@
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
+  import { store } from '../../_store/store'
 
   export default {
     computed: {
@@ -140,6 +141,7 @@
     data: () => ({
       oneTransparentPixel: ONE_TRANSPARENT_PIXEL
     }),
+    store: () => store,
     events: {
       imgLoad,
       imgLoadError,
