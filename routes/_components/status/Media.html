@@ -6,13 +6,14 @@
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
     <PlayVideoIcon />
-    <img alt="{{media.description || ''}}"
-         src="{{imageError ? oneTransparentPixel : media.preview_url}}"
-         width="{{inlineWidth}}"
-         height="{{inlineHeight}}"
-         class="{{noNativeWidthHeight ? 'no-native-width-height' : ''}} {{imageError ? 'image-error' : ''}}"
-         on:imgLoad="set({imageLoaded: true})"
-         on:imgLoadError="set({imageError: true})"
+    <LazyImage
+      alt="{{media.description}}"
+      src="{{media.preview_url}}"
+      fallback="{{oneTransparentPixel}}"
+      width="{{inlineWidth}}"
+      height="{{inlineHeight}}"
+      background="var(--loading-bg)"
+      className="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
     />
   </button>
 {{else}}
@@ -48,25 +49,23 @@
       playing="{{mouseover}}"
     />
   {{else}}
-    <img class="{{!imageLoaded ? 'image-loading' : ''}} {{imageError ? 'image-error' : ''}} {{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
-         on:imgLoad="set({imageLoaded: true})"
-         on:imgLoadError="set({imageError: true})"
-         alt="{{media.description || ''}}"
-         src="{{imageError ? oneTransparentPixel : media.preview_url}}"
-         width="{{inlineWidth}}"
-         height="{{inlineHeight}}"
+    <LazyImage
+      alt="{{media.description}}"
+      src="{{media.preview_url}}"
+      fallback="{{oneTransparentPixel}}"
+      width="{{inlineWidth}}"
+      height="{{inlineHeight}}"
+      background="var(--loading-bg)"
+      className="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
     />
   {{/if}}
 </button>
 {{/if}}
 <style>
-  :global(.status-media img.image-loading, .status-media img.image-error) {
-    background: var(--loading-bg);
-  }
   :global(.status-media video, .status-media img) {
     object-fit: cover;
   }
-  .no-native-width-height {
+  :global(.no-native-width-height) {
     background-color: var(--mask-bg);
   }
   .play-video-button {
@@ -86,24 +85,28 @@
     cursor: zoom-in;
   }
 
-  :global(.status-media video, .status-media img) {
+  :global(.status-media video, .status-media img, .status-media .lazy-image,
+          .status-media .show-image-button, .status-media .non-autoplay-gifv,
+          .status-media .play-video-button) {
     max-width: calc(100vw - 40px);
   }
   @media (max-width: 767px) {
-    :global(.status-media video, .status-media img) {
+    :global(.status-media video, .status-media img, .status-media .lazy-image,
+            .status-media .show-image-button, .status-media .non-autoplay-gifv,
+            .status-media .play-video-button) {
       max-width: calc(100vw - 20px);
     }
   }
 </style>
 <script>
   import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT } from '../../_static/media'
-  import { imgLoad, imgLoadError } from '../../_utils/events'
   import { importDialogs } from '../../_utils/asyncModules'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
   import { store } from '../../_store/store'
+  import LazyImage from '../LazyImage.html'
 
   export default {
     computed: {
@@ -143,13 +146,12 @@
     }),
     store: () => store,
     events: {
-      imgLoad,
-      imgLoadError,
       mouseover
     },
     components: {
       NonAutoplayGifv,
-      PlayVideoIcon
+      PlayVideoIcon,
+      LazyImage
     }
   }
 </script>

@@ -1,0 +1,47 @@
+<div class="lazy-image"
+     style="width: {{width}}px; height: {{height}}px; background: {{background}};">
+  {{#if displaySrc}}
+    <img
+      class="{{hidden ? 'hidden' : ''}} {{className || ''}}"
+      aria-hidden="{{ariaHidden || ''}}"
+      alt="{{alt || ''}}"
+      src="{{displaySrc}}"
+      :width
+      :height
+    />
+  {{/if}}
+</div>
+<style>
+  .lazy-image {
+    overflow: hidden;
+  }
+  .lazy-image img {
+    transition: opacity 0.2s linear;
+  }
+</style>
+<script>
+  export default {
+    oncreate() {
+      requestAnimationFrame(() => {
+        let img = new Image()
+        let src = this.get('src')
+        let fallback = this.get('fallback')
+        img.onload = () => {
+          requestAnimationFrame(() => {
+            this.set({
+              displaySrc: src,
+              hidden: true
+            })
+            requestAnimationFrame(() => {
+              this.set({hidden: false})
+            })
+          })
+        }
+        img.onerror = () => {
+          this.set({displaySrc: fallback})
+        }
+        img.src = src
+      })
+    }
+  }
+</script>

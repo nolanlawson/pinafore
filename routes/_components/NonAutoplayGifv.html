@@ -17,14 +17,15 @@
       playsinline
       />
   {{else}}
-    <img class="{{class}} {{imageError ? 'image-error' : ''}}"
-         alt="{{label}}"
-         src="{{imageError ? oneTransparentPixel : staticSrc}}"
-         width="{{width}}"
-         height="{{height}}"
-         on:imgLoad="set({imageLoaded: true})"
-         on:imgLoadError="set({imageError: true})"
-         />
+    <LazyImage
+      alt="{{label}}"
+      src="{{staticSrc}}"
+      fallback="{{oneTransparentPixel}}"
+      :width
+      :height
+      background="var(--loading-bg)"
+      className="{{class}}"
+    />
   {{/if}}
   <PlayVideoIcon className="{{playing ? 'hidden' : ''}}"/>
 </div>
@@ -39,9 +40,9 @@
 </style>
 <script>
   import { mouseover } from '../_utils/events'
-  import { imgLoad, imgLoadError } from '../_utils/events'
   import PlayVideoIcon from './PlayVideoIcon.html'
   import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
+  import LazyImage from './LazyImage.html'
 
   export default {
     methods: {
@@ -50,15 +51,14 @@
       }
     },
     events: {
-      mouseover,
-      imgLoad,
-      imgLoadError
+      mouseover
     },
     data: () => ({
       oneTransparentPixel: ONE_TRANSPARENT_PIXEL
     }),
     components: {
-      PlayVideoIcon
+      PlayVideoIcon,
+      LazyImage
     }
   }
 </script>
