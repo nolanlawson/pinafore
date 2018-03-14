@@ -20,28 +20,31 @@
   }
 </style>
 <script>
+
+  import { mark, stop } from '../_utils/marks'
+
   export default {
     oncreate() {
-      requestAnimationFrame(() => {
-        let img = new Image()
-        let src = this.get('src')
-        let fallback = this.get('fallback')
-        img.onload = () => {
-          requestAnimationFrame(() => {
-            this.set({
-              displaySrc: src,
-              hidden: true
-            })
-            requestAnimationFrame(() => {
-              this.set({hidden: false})
-            })
+      mark('LazyImage oncreate()')
+      let img = new Image()
+      let src = this.get('src')
+      let fallback = this.get('fallback')
+      img.onload = () => {
+        requestAnimationFrame(() => {
+          this.set({
+            displaySrc: src,
+            hidden: true
           })
-        }
-        img.onerror = () => {
-          this.set({displaySrc: fallback})
-        }
-        img.src = src
-      })
+          requestAnimationFrame(() => {
+            this.set({hidden: false})
+          })
+        })
+      }
+      img.onerror = () => {
+        this.set({displaySrc: fallback})
+      }
+      img.src = src
+      stop('LazyImage oncreate()')
     }
   }
 </script>
