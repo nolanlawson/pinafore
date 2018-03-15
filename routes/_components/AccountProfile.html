@@ -24,8 +24,8 @@
       <div class="account-profile-follow">
         {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
           <IconButton
-            label="{{following ? 'Unfollow' : 'Follow'}}"
-            href="{{following ? '#fa-user-times' : '#fa-user-plus'}}"
+            label="{{followLabel}}"
+            href="{{followIcon}}"
             pressable="true"
             pressed="{{following}}"
             big="true"
@@ -201,14 +201,34 @@
         }
         return note
       },
-      following: (relationship) => relationship && relationship.following
+      following: (relationship) => relationship && relationship.following,
+      followRequested: (relationship) => relationship && relationship.requested,
+      followLabel: (following, followRequested) => {
+        if (following) {
+          return 'Unfollow'
+        } else if (followRequested) {
+          return 'Unfollow (follow requested)'
+        } else {
+          return 'Follow'
+        }
+      },
+      followIcon: (following, followRequested) => {
+        if (following) {
+          return '#fa-user-times'
+        } else if (followRequested) {
+          return '#fa-hourglass'
+        } else {
+          return '#fa-user-plus'
+        }
+      }
     },
     methods: {
       async onFollowButtonClick() {
         let accountId = this.get('profile').id
         let instanceName = this.store.get('currentInstance')
         let following = this.get('following')
-        await setAccountFollowed(accountId, !following)
+        let followRequested = this.get('followRequested')
+        await setAccountFollowed(accountId, !(following || followRequested))
         this.set({relationship: await database.getRelationship(instanceName, accountId)})
       }
     },

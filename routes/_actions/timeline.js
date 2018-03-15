@@ -40,10 +40,10 @@ async function addTimelineItems (instanceName, timelineName, items, stale) {
 }
 
 export async function addTimelineItemIds (instanceName, timelineName, newIds, newStale) {
-  let oldIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
+  let oldIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
   let oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemIdsAreStale')
 
-  let mergedIds = mergeArrays(oldIds, newIds)
+  let mergedIds = mergeArrays(oldIds || [], newIds)
 
   if (!isEqual(oldIds, mergedIds)) {
     store.setForTimeline(instanceName, timelineName, {timelineItemIds: mergedIds})

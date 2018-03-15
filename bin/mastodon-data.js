@@ -326,5 +326,12 @@ export const actions = times(30, i => ({
       inReplyTo: 'bazthread-thread 2b2',
       privacy: 'unlisted'
     }
+  },
+  {
+    user: 'LockedAccount',
+    post: {
+      text: 'This account is locked',
+      privacy: 'private'
+    }
   }
 ]))

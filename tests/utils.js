@@ -27,6 +27,10 @@ export const logInToInstanceLink = $('a[href="/settings/instances/add"]')
 export const searchInput = $('.search-input')
 export const postStatusButton = $('.compose-box-button')
 export const showMoreButton = $('.more-items-header button')
+export const accountProfileName = $('.account-profile .account-profile-name')
+export const accountProfileUsername = $('.account-profile .account-profile-username')
+export const accountProfileFollowedBy = $('.account-profile .account-profile-followed-by')
+export const accountProfileFollowButton = $('.account-profile .account-profile-follow button')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)

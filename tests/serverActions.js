@@ -4,6 +4,7 @@ import FileApi from 'file-api'
 import { users } from './users'
 import { postStatus } from '../routes/_api/statuses'
 import { deleteStatus } from '../routes/_api/delete'
+import { authorizeFollowRequest, getFollowRequests } from '../routes/_actions/followRequests'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -27,4 +28,12 @@ export async function postReplyAsAdmin (text, inReplyTo) {
 
 export async function deleteAsAdmin (statusId) {
   return deleteStatus(instanceName, users.admin.accessToken, statusId)
+}
+
+export async function getFollowRequestsAsLockedAccount () {
+  return getFollowRequests(instanceName, users.LockedAccount.accessToken)
+}
+
+export async function authorizeFollowRequestAsLockedAccount (id) {
+  return authorizeFollowRequest(instanceName, users.LockedAccount.accessToken, id)
 }

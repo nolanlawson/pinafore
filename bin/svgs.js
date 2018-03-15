@@ -30,5 +30,6 @@ module.exports = [
   {id: 'fa-smile', src: 'node_modules/font-awesome-svg-png/white/svg/smile-o.svg', title: 'Custom emoji'},
   {id: 'fa-exclamation-triangle', src: 'node_modules/font-awesome-svg-png/white/svg/exclamation-triangle.svg', title: 'Content warning'},
   {id: 'fa-check', src: 'node_modules/font-awesome-svg-png/white/svg/check.svg', title: 'Check'},
-  {id: 'fa-trash', src: 'node_modules/font-awesome-svg-png/white/svg/trash-o.svg', title: 'Delete'}
+  {id: 'fa-trash', src: 'node_modules/font-awesome-svg-png/white/svg/trash-o.svg', title: 'Delete'},
+  {id: 'fa-hourglass', src: 'node_modules/font-awesome-svg-png/white/svg/hourglass.svg', title: 'Follow requested'}
 ]

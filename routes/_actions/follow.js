@@ -2,6 +2,7 @@ import { store } from '../_store/store'
 import { followAccount, unfollowAccount } from '../_api/follow'
 import { database } from '../_database/database'
 import { toast } from '../_utils/toast'
+import { updateProfileAndRelationship } from './accounts'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   let instanceName = store.get('currentInstance')
@@ -12,11 +13,18 @@ export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
     } else {
       await unfollowAccount(instanceName, accessToken, accountId)
     }
+    await updateProfileAndRelationship(accountId)
     let relationship = await database.getRelationship(instanceName, accountId)
-    relationship.following = follow
-    await database.setRelationship(instanceName, relationship)
     if (toastOnSuccess) {
-      toast.say(`${follow ? 'Followed' : 'Unfollowed'}`)
+      if (follow) {
+        if (relationship.requested) {
+          toast.say('Requested to follow account')
+        } else {
+          toast.say('Followed account')
+        }
+      } else {
+        toast.say('Unfollowed account')
+      }
     }
   } catch (e) {
     console.error(e)

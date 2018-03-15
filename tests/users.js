@@ -28,5 +28,11 @@ export const users = {
     password: 'bazbazbaz',
     accessToken: '0639238783efdfde849304bc89ec0c4b60b5ef5f261f60859fcd597de081cfdc',
     id: 5
+  },
+  LockedAccount: {
+    username: 'LockedAccount',
+    password: 'LockedAccountLockedAccount',
+    accessToken: '39ed9aeffa4b25eda4940f22f29fea66e625c6282c2a8bf0430203c9779e9e98',
+    id: 6
   }
 }
