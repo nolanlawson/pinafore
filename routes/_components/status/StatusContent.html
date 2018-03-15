@@ -95,13 +95,13 @@
         if (!this.refs.node) {
           return
         }
+        let node = this.refs.node
         let status = this.get('status')
         let statusId = this.get('statusId')
         let count = 0
         mark('hydrateContent')
         if (status.tags && status.tags.length) {
-          let anchorTags = Array.from(this.refs.node.querySelectorAll(
-            'a[class~=hashtag][href^=http]'))
+          let anchorTags = node.querySelectorAll('a[class~=hashtag][href^=http]')
           for (let tag of status.tags) {
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
@@ -114,8 +114,7 @@
           }
         }
         if (status.mentions && status.mentions.length) {
-          let anchorTags = Array.from(this.refs.node.querySelectorAll(
-            'a[class~=mention][href^=http]'))
+          let anchorTags = node.querySelectorAll('a[class~=mention][href^=http]')
           for (let mention of status.mentions) {
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href') === mention.url) {
@@ -127,8 +126,7 @@
             }
           }
         }
-        let externalLinks = Array.from(this.refs.node.querySelectorAll(
-          'a[rel="nofollow noopener"]'))
+        let externalLinks = node.querySelectorAll('a[rel="nofollow noopener"]')
         for (let link of externalLinks) {
           link.setAttribute('title', link.getAttribute('href'))
         }
