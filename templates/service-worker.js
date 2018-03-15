@@ -11,29 +11,24 @@ const cached = new Set(toCache)
 const routes = __routes__
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches
-      .open(ASSETS)
-      .then(cache => cache.addAll(toCache))
-      .then(() => {
-        self.skipWaiting()
-      })
-  )
+  event.waitUntil((async function () {
+    let cache = await caches.open(ASSETS)
+    await cache.addAll(toCache)
+    self.skipWaiting()
+  })())
 })
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(async keys => {
-      // delete old caches
-      for (const key of keys) {
-        if (key !== ASSETS) {
-          await caches.delete(key)
-        }
+  event.waitUntil((async function () {
+    let keys = await caches.keys()
+    // delete old caches
+    for (let key of keys) {
+      if (key !== ASSETS) {
+        await caches.delete(key)
       }
-
-      await self.clients.claim()
-    })
-  )
+    }
+    await self.clients.claim()
+  })())
 })
 
 const CACHE_FIRST = [
@@ -49,47 +44,39 @@ self.addEventListener('fetch', event => {
     return
   }
 
-  // always serve assets and webpack-generated files from cache
-  if (cached.has(url.pathname)) {
-    event.respondWith(caches.match(req))
-    return
-  }
+  event.respondWith((async function () {
+    // always serve assets and webpack-generated files from cache
+    if (cached.has(url.pathname)) {
+      return caches.match(req)
+    }
 
-  // for pages, you might want to serve a shell `index.html` file,
-  // which Sapper has generated for you. It's not right for every
-  // app, but if it's right for yours then uncomment this section
+    // for pages, you might want to serve a shell `index.html` file,
+    // which Sapper has generated for you. It's not right for every
+    // app, but if it's right for yours then uncomment this section
 
-  if (url.origin === self.origin && routes.find(route => route.pattern.test(url.pathname))) {
-    event.respondWith(caches.match('/index.html'))
-    return
-  }
+    if (url.origin === self.origin &&
+        routes.find(route => route.pattern.test(url.pathname))) {
+      return caches.match('/index.html')
+    }
 
-  // For non-GET requests, go network-only
-  if (req.method !== 'GET') {
-    event.respondWith(fetch(req))
-    return
-  }
-
-  // For these, go cache-first.
-  if (CACHE_FIRST.some(pattern => url.pathname.startsWith(pattern))) {
-    event.respondWith(caches
-      .open(`offline${timestamp}`)
-      .then(async cache => {
-        let response = await cache.match(req)
-        if (response) {
-          // update asynchronously
-          fetch(req).then(response => {
-            cache.put(req, response.clone())
-          })
-          return response
-        }
-        response = await fetch(req)
-        cache.put(req, response.clone())
+    // For these GET requests, go cache-first
+    if (req.method === 'GET' &&
+        CACHE_FIRST.some(pattern => url.pathname.startsWith(pattern))) {
+      let cache = await caches.open(`offline${timestamp}`)
+      let response = await cache.match(req)
+      if (response) {
+        // update asynchronously
+        fetch(req).then(response => {
+          cache.put(req, response.clone())
+        })
         return response
-      }))
-    return
-  }
+      }
+      response = await fetch(req)
+      cache.put(req, response.clone())
+      return response
+    }
 
-  // for everything else, go network-only
-  event.respondWith(fetch(req))
+    // for everything else, go network-only
+    return fetch(req)
+  })())
 })
