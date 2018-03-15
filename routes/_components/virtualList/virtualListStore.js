@@ -40,14 +40,14 @@ virtualListStore.compute('rawVisibleItems',
         let height = itemHeights[key] || 0
         let currentOffset = totalOffset
         totalOffset += height
-        let isBelowViewport = (currentOffset < scrollTop)
-        if (isBelowViewport) {
-          if (scrollTop - renderBuffer > currentOffset) {
-            continue // below the area we want to render
+        let isAboveViewport = (currentOffset < scrollTop)
+        if (isAboveViewport) {
+          if ((scrollTop - height - renderBuffer) > currentOffset) {
+            continue // above the area we want to render
           }
         } else {
           if (currentOffset > (scrollTop + height + renderBuffer)) {
-            break // above the area we want to render
+            break // below the area we want to render
           }
         }
         visibleItems.push({
