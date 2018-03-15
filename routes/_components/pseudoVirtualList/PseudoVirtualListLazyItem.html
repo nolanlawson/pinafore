@@ -14,6 +14,7 @@
 <script>
   import PseudoVirtualListItem from './PseudoVirtualListItem.html'
   import { mark, stop } from '../../_utils/marks'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
     async oncreate() {
@@ -23,7 +24,7 @@
       let key = this.get('key')
       if (makeProps) {
         let props = await makeProps(key)
-        requestAnimationFrame(() => { // delay slightly to avoid slow scrolling
+        scheduleIdleTask(() => { // delay to avoid slow scrolling
           mark('PseudoVirtualListLazyItem set props')
           this.set({props: props})
           stop('PseudoVirtualListLazyItem set props')
