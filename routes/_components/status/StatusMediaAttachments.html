@@ -5,7 +5,7 @@
   <button type="button"
           class="status-sensitive-media-button"
           aria-label="Hide sensitive media"
-          on:click="onClickSensitiveMediaButton()" >
+          delegate-key="{{delegateKey}}" >
     <div class="svg-wrapper">
       <svg>
         <use xlink:href="#fa-eye-slash" />
@@ -17,7 +17,7 @@
     <button type="button"
             class="status-sensitive-media-button"
             aria-label="Show sensitive media"
-            on:click="onClickSensitiveMediaButton()" >
+            delegate-key="{{delegateKey}}" >
 
       <div class="status-sensitive-media-warning">
         <span>Sensitive content. Click to show.</span>
@@ -126,15 +126,24 @@
 <script>
   import MediaAttachments from './MediaAttachments.html'
   import { store } from '../../_store/store'
+  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
 
   export default {
+    oncreate() {
+      registerClickDelegate(this.get('delegateKey'), () => this.onClickSensitiveMediaButton())
+    },
+    ondestroy() {
+      unregisterClickDelegate(this.get('delegateKey'))
+    },
     components: {
       MediaAttachments
     },
     store: () => store,
     computed: {
       mediaAttachments: (status) => status.media_attachments,
-      sensitiveShown: ($sensitivesShown, contextualStatusId) => !!$sensitivesShown[contextualStatusId]
+      sensitiveShown: ($sensitivesShown, contextualStatusId) => !!$sensitivesShown[contextualStatusId],
+      statusId: (status) => status.id,
+      delegateKey: (statusId) => `sensitive-${statusId}`,
     },
     methods: {
       onClickSensitiveMediaButton() {

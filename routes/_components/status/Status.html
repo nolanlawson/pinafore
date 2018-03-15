@@ -1,7 +1,7 @@
 <article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
          tabindex="0"
-         delegate-key="{{elementKey}}"
-         focus-key="{{elementKey}}"
+         delegate-key="{{delegateKey}}"
+         focus-key="{{delegateKey}}"
          aria-posinset="{{index}}"
          aria-setsize="{{length}}"
          aria-label="{{ariaLabel}}"
@@ -17,18 +17,18 @@
   <StatusSidebar status="{{originalStatus}}" :isStatusInOwnThread />
   {{#if originalStatus.spoiler_text}}
     <StatusSpoiler status="{{originalStatus}}" :isStatusInOwnThread :contextualStatusId :isStatusInNotification
-                   :timelineType :timelineValue on:recalculateHeight />
+                   on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
     <StatusContent status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
   {{/if}}
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
-    <StatusMediaAttachments status="{{originalStatus}}" :contextualStatusId on:recalculateHeight />
+    <StatusMediaAttachments status="{{originalStatus}}" :timelineType :timelineValue />
   {{/if}}
   {{#if isStatusInOwnThread}}
   <StatusDetails status="{{originalStatus}}" />
   {{/if}}
-  <StatusToolbar status="{{originalStatus}}" :isStatusInOwnThread :timelineType :timelineValue />
+  <StatusToolbar status="{{originalStatus}}" :isStatusInOwnThread />
 </article>
 
 <style>
@@ -98,16 +98,16 @@
 
   export default {
     oncreate() {
-      let elementKey = this.get('elementKey')
+      let delegateKey = this.get('delegateKey')
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
-        registerClickDelegate(elementKey, (e) => this.onClickOrKeydown(e))
+        registerClickDelegate(delegateKey, (e) => this.onClickOrKeydown(e))
       }
     },
     ondestroy() {
-      let elementKey = this.get('elementKey')
+      let delegateKey = this.get('delegateKey')
       if (!this.get('isStatusInOwnThread')) {
-        unregisterClickDelegate(elementKey)
+        unregisterClickDelegate(delegateKey)
       }
     },
     components: {
@@ -153,7 +153,7 @@
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
       statusId: (originalStatus) => originalStatus.id,
-      elementKey: (statusId, timelineType, timelineValue) => `status-${timelineType}-${timelineValue}-${statusId}`,
+      delegateKey: (statusId) => `status-${statusId}`,
       contextualStatusId: ($currentInstance, timelineType, timelineValue, status, notification) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notification ? notification.id : ''}/${status.id}`
       },

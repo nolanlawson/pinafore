@@ -53,7 +53,7 @@
     computed: {
       spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId],
       statusId: (status) => status.id,
-      delegateKey: (statusId, timelineType, timelineValue) => `spoiler-${timelineType}-${timelineValue}-${statusId}`
+      delegateKey: (statusId) => `spoiler-${statusId}`
     },
     methods: {
       onClickSpoilerButton() {

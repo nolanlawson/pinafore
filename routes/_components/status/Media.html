@@ -2,7 +2,7 @@
   <button type="button"
           class="play-video-button"
           aria-label="Play video: {{media.description || ''}}"
-          on:click="onClickPlayVideoButton()"
+          delegate-key="{{delegateKey}}"
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
     <PlayVideoIcon />
@@ -20,7 +20,7 @@
   <button type="button"
           class="show-image-button"
           aria-label="Show image: {{media.description || ''}}"
-          on:click="onClickShowImageButton()"
+          delegate-key="{{delegateKey}}"
           on:mouseover="set({mouseover: event})"
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
@@ -107,8 +107,21 @@
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
   import { store } from '../../_store/store'
   import LazyImage from '../LazyImage.html'
+  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
 
   export default {
+    oncreate() {
+      registerClickDelegate(this.get('delegateKey'), () => {
+        if (this.get('media').type === 'video') {
+          this.onClickPlayVideoButton()
+        } else {
+          this.onClickShowImageButton()
+        }
+      })
+    },
+    ondestroy() {
+      unregisterClickDelegate(this.get('delegateKey'))
+    },
     computed: {
       // width/height to show inline
       inlineWidth: smallWidth => smallWidth || DEFAULT_MEDIA_WIDTH,
@@ -123,7 +136,8 @@
       smallHeight: small => small && small.height,
       originalWidth: original => original && original.width,
       originalHeight: original => original && original.height,
-      noNativeWidthHeight: (smallWidth, smallHeight) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number'
+      noNativeWidthHeight: (smallWidth, smallHeight) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number',
+      delegateKey: (media) => `media-${media.id}`
     },
     methods: {
       async onClickPlayVideoButton() {

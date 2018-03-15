@@ -126,12 +126,10 @@
       },
       statusId: (status) => status.id,
       accountId: (status) => status.account.id,
-      disableReply: (statusId, timelineType, timelineValue) => timelineType === 'reply' && statusId === timelineValue,
-      keyPrefix: (timelineType, timelineValue, statusId) => `${timelineType}-${timelineValue}-${statusId}`,
-      favoriteKey: (keyPrefix) => `${keyPrefix}-fav`,
-      reblogKey: (keyPrefix) => `${keyPrefix}-reblog`,
-      replyKey: (keyPrefix) => `${keyPrefix}-reply`,
-      optionsKey: (keyPrefix) => `${keyPrefix}-options`,
+      favoriteKey: (statusId) => `fav-${statusId}`,
+      reblogKey: (statusId) => `reblog-${statusId}`,
+      replyKey: (statusId) => `reply-${statusId}`,
+      optionsKey: (statusId) => `options-${statusId}`,
     }
   }
 </script>
