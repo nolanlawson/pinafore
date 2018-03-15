@@ -8,14 +8,22 @@
 {{/if}}
 <script>
   import VirtualListItem from './VirtualListItem'
+  import { mark, stop } from '../../_utils/marks'
+  import { staggeredRequestAnimationFrame } from '../../_utils/staggeredRequestAnimationFrame'
+
   export default {
-    oncreate() {
+    async oncreate() {
       // TODO: there appears to be a bug in {{#await}} that means we have to do this manually.
       // Some items may appear on top of other items because their offset is 0 and never updated.
       let makeProps = this.get('makeProps')
       let key = this.get('key')
       if (makeProps) {
-        makeProps(key).then(props => this.set({props: props}))
+        let props = await makeProps(key)
+        staggeredRequestAnimationFrame(() => {
+          mark('VirtualListLazyItem set props')
+          this.set({props: props})
+          stop('VirtualListLazyItem set props')
+        })
       }
     },
     components: {
