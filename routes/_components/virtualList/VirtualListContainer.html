@@ -74,12 +74,12 @@
         detachFullscreenListener(this.onFullscreenChange)
       },
       onScroll(event) {
-        mark('onScroll')
-        this.store.setForRealm({
-          scrollTop: event.target.scrollTop,
-          scrollHeight: event.target.scrollHeight
+        let { scrollTop, scrollHeight } = event.target
+        requestAnimationFrame(() => { // delay slightly to improve scroll perf
+          mark('onScroll -> setForRealm()')
+          this.store.setForRealm({scrollTop, scrollHeight})
+          stop('onScroll -> setForRealm()')
         })
-        stop('onScroll')
       },
       onFullscreenChange() {
         mark('onFullscreenChange')
