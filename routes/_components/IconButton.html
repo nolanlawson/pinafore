@@ -60,16 +60,19 @@
   }
 </style>
 <script>
+
+  import { classname } from '../_utils/classname'
+
   export default {
     computed: {
       computedClass: (pressable, pressed, big, className) => {
-        return [
+        return classname(
           'icon-button',
           !pressable && 'not-pressable',
           pressed && 'pressed',
           big && 'big-icon',
           className
-        ].filter(Boolean).join(' ')
+        )
       }
     }
   }

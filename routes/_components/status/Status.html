@@ -94,6 +94,7 @@
   import { store } from '../../_store/store'
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { classname } from '../../_utils/classname'
 
   export default {
     oncreate() {
@@ -124,11 +125,11 @@
     store: () => store,
     helpers: {
       getClasses(originalStatus, timelineType, isStatusInOwnThread) {
-        return [
+        return classname(
           originalStatus.visibility === 'direct' && 'status-direct',
           timelineType !== 'search' && 'status-in-timeline',
           isStatusInOwnThread && 'status-in-own-thread'
-        ].filter(Boolean).join(' ')
+        )
       }
     },
     methods: {
