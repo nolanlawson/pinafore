@@ -46,6 +46,12 @@
   </h2>
 
   <PageList label="Instance settings">
+    {{#if isLockedAccount}}
+    <PageListItem href="/requests"
+                  label="Follow requests"
+                  icon="#fa-user-plus"
+     />
+    {{/if}}
     <PageListItem href="/muted"
                   label="Muted users"
                   icon="#fa-volume-off"
@@ -100,6 +106,9 @@
       HiddenFromSSR,
       PageList,
       PageListItem
+    },
+    computed: {
+      isLockedAccount: ($currentVerifyCredentials) => $currentVerifyCredentials && $currentVerifyCredentials.locked
     }
   };
 </script>

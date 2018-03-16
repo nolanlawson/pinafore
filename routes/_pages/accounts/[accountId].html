@@ -1,6 +1,6 @@
 {{#if $isUserLoggedIn}}
 <DynamicPageBanner title="" />
-  {{#if $currentAccountProfile}}
+  {{#if $currentAccountProfile && $currentVerifyCredentials}}
     <AccountProfile profile="{{$currentAccountProfile}}"
                     relationship="{{$currentAccountRelationship}}"
                     verifyCredentials="{{$currentVerifyCredentials}}"
@@ -25,7 +25,6 @@
   import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
   import AccountProfile from '../../_components/AccountProfile.html'
-  import { updateVerifyCredentialsForInstance } from '../../_actions/instances'
   import PinnedStatuses from '../../_components/timeline/PinnedStatuses.html'
 
   export default {
@@ -33,7 +32,6 @@
       let accountId = this.get('params').accountId
       let instanceName = this.store.get('currentInstance')
       updateProfileAndRelationship(accountId)
-      updateVerifyCredentialsForInstance(instanceName)
     },
     store: () => store,
     computed: {
