@@ -5,7 +5,7 @@
   <a class="status-favs-reblogs"
      href="/statuses/{{originalStatusId}}/reblogs"
      aria-label="{{favoritesLabel}}">
-    <svg>
+    <svg class="status-favs-reblogs-svg">
       <use xlink:href="#fa-retweet"/>
     </svg>
     <span>{{numReblogs}}</span>
@@ -13,7 +13,7 @@
   <a class="status-favs-reblogs"
      href="/statuses/{{originalStatusId}}/favorites"
      aria-label="{{reblogsLabel}}">
-    <svg>
+    <svg class="status-favs-reblogs-svg">
       <use xlink:href="#fa-star" />
     </svg>
     <span>{{numFavs}}</span>
@@ -57,7 +57,7 @@
     color: var(--deemphasized-text-color);
   }
 
-  .status-favs-reblogs svg {
+  .status-favs-reblogs-svg {
     fill: var(--deemphasized-text-color);
     width: 18px;
     height: 18px;

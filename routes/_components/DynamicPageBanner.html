@@ -1,6 +1,6 @@
 <div class="dynamic-page-banner {{icon ? 'dynamic-page-with-icon' : ''}}">
   {{#if icon}}
-  <svg>
+  <svg class="dynamic-page-banner-svg">
     <use xlink:href="{{icon}}" />
   </svg>
   {{/if}}
@@ -20,18 +20,18 @@
   .dynamic-page-banner.dynamic-page-with-icon {
     grid-template-columns: min-content 1fr min-content;
   }
-  .dynamic-page-banner svg {
+  .dynamic-page-banner-svg {
     width: 24px;
     height: 24px;
     fill: var(--body-text-color);
   }
-  h1.dynamic-page-title {
+  .dynamic-page-title {
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  button.dynamic-page-go-back {
+  .dynamic-page-go-back {
     font-size: 1.3em;
     color: var(--anchor-text);
     border: 0;
@@ -39,10 +39,10 @@
     background: none;
     justify-self: flex-end;
   }
-  button.dynamic-page-go-back:hover {
+  .dynamic-page-go-back:hover {
     text-decoration: underline;
   }
-  button.dynamic-page-go-back::before {
+  .dynamic-page-go-back::before {
     content: '<';
     margin-right: 5px;
   }
@@ -50,10 +50,10 @@
     .dynamic-page-banner {
       margin: 20px 10px 20px;
     }
-    h1.dynamic-page-title {
+    .dynamic-page-title {
       font-size: 1.3em;
     }
-    button.dynamic-page-go-back {
+    .dynamic-page-go-back {
       font-size: 1.3em;
     }
   }

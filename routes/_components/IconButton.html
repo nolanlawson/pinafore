@@ -5,7 +5,7 @@
           class="{{computedClass}}"
           :disabled
           delegate-key="{{delegateKey}}" >
-    <svg>
+    <svg class="icon-button-svg">
       <use xlink:href="{{href}}" />
     </svg>
   </button>
@@ -16,46 +16,46 @@
           class="{{computedClass}}"
           :disabled
           on:click >
-    <svg>
+    <svg class="icon-button-svg">
       <use xlink:href="{{href}}" />
     </svg>
   </button>
 {{/if}}
 <style>
-  button.icon-button {
+  .icon-button {
     padding: 6px 10px;
     background: none;
     border: none;
   }
 
-  button.icon-button svg {
+  .icon-button-svg {
     width: 24px;
     height: 24px;
     fill: var(--action-button-fill-color);
   }
 
-  button.icon-button.big-icon svg {
+  .icon-button.big-icon .icon-button-svg {
     width: 32px;
     height: 32px;
   }
 
-  button.icon-button:hover svg {
+  .icon-button:hover .icon-button-svg {
     fill: var(--action-button-fill-color-hover);
   }
 
-  button.icon-button.not-pressable:active svg {
+  .icon-button.not-pressable:active .icon-button-svg {
     fill: var(--action-button-fill-color-active);
   }
 
-  button.icon-button.pressed svg {
+  .icon-button.pressed .icon-button-svg {
     fill: var(--action-button-fill-color-pressed)
   }
 
-  button.icon-button.pressed:hover svg {
+  .icon-button.pressed:hover .icon-button-svg {
     fill: var(--action-button-fill-color-pressed-hover);
   }
 
-  button.icon-button.pressed:active svg {
+  .icon-button.pressed:active .icon-button-svg {
     fill: var(--action-button-fill-color-pressed-active);
   }
 </style>

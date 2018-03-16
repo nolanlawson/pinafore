@@ -8,7 +8,7 @@
            bind:value="$queryInSearch">
   </div>
   <button type="submit" class="primary search-button" aria-label="Search" disabled="{{$searchLoading}}">
-    <svg>
+    <svg class="search-button-svg">
       <use xlink:href="#fa-search" />
     </svg>
   </button>
@@ -39,7 +39,7 @@
     border-radius: 10px;
     flex: 1;
   }
-  .search-button svg {
+  .search-button-svg {
     fill: var(--button-primary-text);
     width: 18px;
     height: 18px;

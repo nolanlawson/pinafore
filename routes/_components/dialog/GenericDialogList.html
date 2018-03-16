@@ -2,13 +2,13 @@
   {{#each items as item @key}}
   <li class="generic-dialog-list-item">
     <button class="generic-dialog-list-button" on:click="fire('click', item)">
-      <svg>
+      <svg class="generic-dialog-list-item-svg">
         <use xlink:href="{{item.icon}}" />
       </svg>
       <span>
             {{item.label}}
           </span>
-      <svg class="{{item.selected ? '' : 'hidden'}}" aria-hidden="{{!item.selected}}">
+      <svg class="generic-dialog-list-item-svg {{item.selected ? '' : 'hidden'}}" aria-hidden="{{!item.selected}}">
         <use xlink:href="#fa-check" />
       </svg>
     </button>
@@ -29,7 +29,7 @@
     font-size: 1.2em;
     display: flex;
   }
-  .generic-dialog-list-item svg {
+  .generic-dialog-list-item-svg {
     width: 24px;
     height: 24px;
     fill: var(--svg-fill);

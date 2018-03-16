@@ -1,5 +1,5 @@
 <div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}}">
-  <svg>
+  <svg class="status-header-svg">
     <use xlink:href="{{icon}}"/>
   </svg>
   <span>
@@ -55,13 +55,13 @@
     align-items: center;
   }
 
-  .status-header svg {
+  .status-header-svg {
     width: 18px;
     height: 18px;
     fill: var(--deemphasized-text-color);
   }
 
-  .status-header.status-in-notification svg {
+  .status-header.status-in-notification .status-header-svg {
     fill: var(--body-text-color);
   }
 </style>

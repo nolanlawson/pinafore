@@ -1,7 +1,7 @@
 <li class="settings-list-item">
   <a :href>
     {{#if icon}}
-    <svg>
+    <svg class="settings-list-item-svg">
       <use xlink:href="{{icon}}" />
     </svg>
     {{/if}}
@@ -39,7 +39,7 @@
   .settings-list-item a:active {
     background: var(--settings-list-item-bg-active);
   }
-  .settings-list-item svg {
+  .settings-list-item-svg {
     width: 24px;
     height: 24px;
     display: inline-block;
@@ -59,7 +59,7 @@
     .settings-list-item a {
       padding: 20px 10px;
     }
-    .settings-list-item svg {
+    .settings-list-item-svg {
       margin-right: 10px;
     }
     .settings-list-item .offset-for-icon {

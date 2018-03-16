@@ -4,7 +4,7 @@
    :href >
   {{#if name === 'notifications'}}
     <div class="nav-link-svg-wrapper">
-      <svg>
+      <svg class="nav-link-svg">
         <use xlink:href="{{svg}}" />
       </svg>
       {{#if $hasNotifications}}
@@ -14,7 +14,7 @@
       {{/if}}
     </div>
   {{else}}
-    <svg>
+    <svg class="nav-link-svg">
       <use xlink:href="{{svg}}" />
     </svg>
   {{/if}}
@@ -75,11 +75,11 @@
   .main-nav-link:hover .nav-link-label {
     color: var(--nav-text-color-hover);
   }
-  .main-nav-link:hover svg {
+  .main-nav-link:hover .nav-link-svg {
     fill: var(--nav-svg-fill-hover);
   }
 
-  .main-nav-link svg {
+  .main-nav-link .nav-link-svg {
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -99,7 +99,7 @@
     .main-nav-link .nav-link-label {
       display: none;
     }
-    .main-nav-link svg {
+    .main-nav-link .nav-link-svg {
       width: 25px;
       height: 25px;
     }

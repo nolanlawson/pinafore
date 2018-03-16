@@ -6,7 +6,7 @@
   </span>
   <div class="compose-box-button-spinner {{$postingStatus ? 'spin' : 'hidden'}}"
        aria-hidden="true">
-    <svg>
+    <svg class="compose-box-button-spinner-svg">
       <use xlink:href="#fa-spinner" />
     </svg>
   </div>
@@ -31,7 +31,7 @@
     left: 0;
     right: 0;
   }
-  .compose-box-button-spinner svg {
+  .compose-box-button-spinner-svg {
     width: 24px;
     height: 24px;
     fill: var(--button-primary-text);
