@@ -4,7 +4,7 @@ import {
   notificationsNavButton,
   sleep
 } from '../utils'
-import { deleteAsAdmin, postAsAdmin, postReplyAsAdmin } from '../serverActions'
+import { deleteAs, postAs, postReplyAs } from '../serverActions'
 
 fixture`105-deletes.js`
   .page`http://localhost:4002`
@@ -12,10 +12,10 @@ fixture`105-deletes.js`
 test('deleted statuses are removed from the timeline', async t => {
   await t.useRole(foobarRole)
     .hover(getNthStatus(0))
-  let status = await postAsAdmin("I'm gonna delete this")
+  let status = await postAs('admin', "I'm gonna delete this")
   await sleep(1000)
   await t.expect(getNthStatus(0).innerText).contains("I'm gonna delete this")
-  await deleteAsAdmin(status.id)
+  await deleteAs('admin', status.id)
   await sleep(1000)
   await t.expect(getNthStatus(0).innerText).notContains("I'm gonna delete this")
   await clickToNotificationsAndBackHome(t)
@@ -33,8 +33,8 @@ test('deleted statuses are removed from the timeline', async t => {
 test('deleted statuses are removed from threads', async t => {
   await t.useRole(foobarRole)
     .hover(getNthStatus(0))
-  let status = await postAsAdmin("I won't delete this")
-  let reply = await postReplyAsAdmin('But I will delete this', status.id)
+  let status = await postAs('admin', "I won't delete this")
+  let reply = await postReplyAs('admin', 'But I will delete this', status.id)
   await sleep(5000)
   await t.expect(getNthStatus(0).innerText).contains('But I will delete this')
     .expect(getNthStatus(1).innerText).contains("I won't delete this")
@@ -42,7 +42,7 @@ test('deleted statuses are removed from threads', async t => {
     .expect(getUrl()).contains('/statuses')
     .expect(getNthStatus(0).innerText).contains("I won't delete this")
     .expect(getNthStatus(1).innerText).contains('But I will delete this')
-  await deleteAsAdmin(reply.id)
+  await deleteAs('admin', reply.id)
   await sleep(1000)
   await t.expect(getNthStatus(1).exists).notOk()
     .expect(getNthStatus(0).innerText).contains("I won't delete this")
@@ -59,10 +59,10 @@ test('deleted statuses result in deleted notifications', async t => {
   await t.useRole(foobarRole)
     .hover(getNthStatus(0))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-  let status = await postAsAdmin("@foobar yo yo foobar what's up")
+  let status = await postAs('admin', "@foobar yo yo foobar what's up")
   await sleep(2000)
   await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1)')
-  await deleteAsAdmin(status.id)
+  await deleteAs('admin', status.id)
   await sleep(5000)
   await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
 })

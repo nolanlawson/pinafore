@@ -2,7 +2,7 @@ import { foobarRole } from '../roles'
 import {
   getNthStatus, scrollContainerToTop, showMoreButton, sleep
 } from '../utils'
-import { postAsAdmin } from '../serverActions'
+import { postAs } from '../serverActions'
 
 fixture`104-streaming.js`
   .page`http://localhost:4002`
@@ -10,7 +10,7 @@ fixture`104-streaming.js`
 test('new incoming statuses show up immediately', async t => {
   await t.useRole(foobarRole)
     .hover(getNthStatus(0))
-  await postAsAdmin('hello my baby hello my honey')
+  await postAs('admin', 'hello my baby hello my honey')
   await t.expect(getNthStatus(0).innerText).contains('hello my baby hello my honey')
 })
 
@@ -20,8 +20,8 @@ test('new incoming toots show a button if scrolled down', async t => {
     .hover(getNthStatus(2))
     .hover(getNthStatus(4))
   await sleep(1000)
-  await postAsAdmin('hello my ragtime gal')
-  await postAsAdmin('send me a kiss by wire')
+  await postAs('admin', 'hello my ragtime gal')
+  await postAs('admin', 'send me a kiss by wire')
   await sleep(4000)
   await t.hover(getNthStatus(2))
     .hover(getNthStatus(0))
@@ -29,7 +29,7 @@ test('new incoming toots show a button if scrolled down', async t => {
   await sleep(1000)
   await t
     .expect(showMoreButton.innerText).contains('Show 2 more')
-  await postAsAdmin("baby my heart's on fire")
+  await postAs('admin', "baby my heart's on fire")
   await sleep(4000)
   await t.expect(showMoreButton.innerText).contains('Show 3 more')
     .click(showMoreButton)

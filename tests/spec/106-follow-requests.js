@@ -5,7 +5,7 @@ import {
   sleep
 } from '../utils'
 import {
-  authorizeFollowRequestAsLockedAccount, getFollowRequestsAsLockedAccount
+  authorizeFollowRequestAs, getFollowRequestsAs
 } from '../serverActions'
 
 fixture`106-follow-requests.js`
@@ -22,8 +22,8 @@ test('can request to follow an account', async t => {
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow (follow requested)')
 
-  let requests = await getFollowRequestsAsLockedAccount()
-  await authorizeFollowRequestAsLockedAccount(requests.slice(-1)[0].id)
+  let requests = await getFollowRequestsAs('LockedAccount')
+  await authorizeFollowRequestAs('LockedAccount', requests.slice(-1)[0].id)
 
   await sleep(2000)
 

@@ -1,6 +1,6 @@
 import { foobarRole } from '../roles'
 import { getNthStatus, getUrl, homeNavButton, notificationsNavButton, validateTimeline } from '../utils'
-import { favoriteStatusAsAdmin } from '../serverActions'
+import { favoriteStatusAs } from '../serverActions'
 import { notifications } from '../fixtures'
 
 fixture`102-notifications.js`
@@ -15,7 +15,7 @@ test('shows unread notifications', async t => {
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
   let statusId = (await getNthStatus(5).find('.status-relative-date').getAttribute('href'))
     .split('/').slice(-1)[0]
-  await favoriteStatusAsAdmin(statusId)
+  await favoriteStatusAs('admin', statusId)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1)')
     .click(notificationsNavButton)
