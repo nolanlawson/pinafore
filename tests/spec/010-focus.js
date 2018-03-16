@@ -1,5 +1,6 @@
 import {
-  getNthStatus, scrollToStatus, closeDialogButton, modalDialogContents, getActiveElementClass, goBack, getUrl
+  getNthStatus, scrollToStatus, closeDialogButton, modalDialogContents, getActiveElementClass, goBack, getUrl,
+  goBackButton, getActiveElementInnerText
 } from '../utils'
 import { foobarRole } from '../roles'
 
@@ -21,5 +22,26 @@ test('timeline preserves focus', async t => {
     .expect(getUrl()).contains('/statuses/')
 
   await goBack()
-  await t.expect(getActiveElementClass()).eql('status-article status-in-timeline')
+  await t.expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getActiveElementClass()).eql('status-article status-in-timeline')
+})
+
+test('timeline link preserves focus', async t => {
+  await t.useRole(foobarRole)
+    .click(getNthStatus(0).find('.status-header a'))
+    .expect(getUrl()).contains('/accounts/')
+    .click(goBackButton)
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getActiveElementInnerText()).eql('admin')
+})
+
+test('notification timeline preserves focus', async t => {
+  await t.useRole(foobarRole)
+    .navigateTo('/notifications')
+  await scrollToStatus(t, 5)
+  await t.click(getNthStatus(5).find('.status-header a'))
+    .expect(getUrl()).contains('/accounts/')
+    .click(goBackButton)
+    .expect(getUrl()).eql('http://localhost:4002/notifications')
+    .expect(getActiveElementInnerText()).eql('quux')
 })

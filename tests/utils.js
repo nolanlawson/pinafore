@@ -31,6 +31,7 @@ export const accountProfileName = $('.account-profile .account-profile-name')
 export const accountProfileUsername = $('.account-profile .account-profile-username')
 export const accountProfileFollowedBy = $('.account-profile .account-profile-followed-by')
 export const accountProfileFollowButton = $('.account-profile .account-profile-follow button')
+export const goBackButton = $('.dynamic-page-go-back')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -46,6 +47,10 @@ export const getUrl = exec(() => window.location.href)
 
 export const getActiveElementClass = exec(() =>
   document.activeElement ? document.activeElement.getAttribute('class') : ''
+)
+
+export const getActiveElementInnerText = exec(() =>
+  document.activeElement && document.activeElement.innerText
 )
 
 export const goBack = exec(() => window.history.back())
