@@ -10,34 +10,134 @@
     <StatusHeader :notification :notificationId :status :statusId :timelineType
                   :account :accountId :uuid :isStatusInNotification />
   {{/if}}
-  <StatusAuthorName :isStatusInNotification :isStatusInOwnThread :originalAccountId
-                    :originalAccount :uuid />
-  <StatusAuthorHandle :isStatusInNotification :originalAccount />
+  <!-- StatusAuthorName -->
+  <a class="status-author-name {{isStatusInNotification ? 'status-in-notification' : '' }} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
+     href="/accounts/{{originalAccountId}}"
+     focus-key="{{authorNameKey}}">
+    {{originalAccount.display_name || originalAccount.username}}
+  </a>
+  <!-- StatusAuthorName -->
+  <!-- StatusAuthorHandle -->
+  <span class="status-author-handle {{isStatusInNotification ? 'status-in-notification' : '' }}">
+    {{'@' + originalAccount.acct}}
+  </span>
+  <!-- StatusAuthorHandle -->
   {{#if !isStatusInOwnThread}}
-    <StatusRelativeDate :isStatusInNotification :originalStatus :originalStatusId :uuid />
+    <!-- StatusRelativeDate -->
+    <a class="status-relative-date {{isStatusInNotification ? 'status-in-notification' : '' }}"
+       href="/statuses/{{originalStatusId}}"
+       focus-key="{{relativeDateKey}}">
+      <time datetime={{createdAtDate}} title="{{relativeDate}}"
+            aria-label="{{relativeDate}} – click to show thread">
+        {{relativeDate}}
+      </time>
+    </a>
+    <!-- StatusRelativeDate -->
   {{/if}}
-  <StatusSidebar :isStatusInOwnThread :originalAccount />
+  <!-- StatusSidebar -->
+  <Avatar account={{originalAccount}}
+          className="status-sidebar"
+          size="{{isStatusInOwnThread ? 'medium' : 'small'}}" />
+  <!-- StatusSidebar -->
   {{#if originalStatus.spoiler_text}}
-    <StatusSpoiler :isStatusInOwnThread :isStatusInNotification
-                   :originalStatus :uuid
-                   on:recalculateHeight />
+    <!-- StatusSpoiler -->
+    <div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
+      <p>{{originalStatus.spoiler_text}}</p>
+    </div>
+    <div class="status-spoiler-button {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
+      <button type="button" delegate-key="{{spoilerKey}}">
+        {{spoilerShown ? 'Show less' : 'Show more'}}
+      </button>
+    </div>
+    <!-- StatusSpoiler -->
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
-    <StatusContent :isStatusInOwnThread :isStatusInNotification
-                   :originalStatus :uuid />
+    <!-- StatusContent -->
+    <div class="status-content {{isStatusInOwnThread ? 'status-in-own-thread' : ''}} {{isStatusInNotification ? 'status-in-notification' : ''}}"
+      ref:contentNode>
+      {{{massagedContent}}}
+    </div>
+    <!-- StatusContent -->
   {{/if}}
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
-    <StatusMediaAttachments :originalStatus :uuid
-                            on:recalculateHeight />
+    <!-- StatusMediaAttachments -->
+    {{#if sensitive }}
+    <div class="status-sensitive-media-container {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}">
+      {{#if sensitiveShown}}
+      <button type="button"
+              class="status-sensitive-media-button"
+              aria-label="Hide sensitive media"
+              delegate-key="{{mediaAttachmentsKey}}" >
+        <div class="svg-wrapper">
+          <svg>
+            <use xlink:href="#fa-eye-slash" />
+          </svg>
+        </div>
+      </button>
+      <MediaAttachments :mediaAttachments :sensitive />
+      {{else}}
+      <button type="button"
+              class="status-sensitive-media-button"
+              aria-label="Show sensitive media"
+              delegate-key="{{mediaAttachmentsKey}}" >
+
+        <div class="status-sensitive-media-warning">
+          <span>Sensitive content. Click to show.</span>
+        </div>
+        <div class="svg-wrapper">
+          <svg>
+            <use xlink:href="#fa-eye" />
+          </svg>
+        </div>
+      </button>
+      {{/if}}
+    </div>
+    {{else}}
+    <MediaAttachments :mediaAttachments :sensitive />
+    {{/if}}
+    <!-- StatusMediaAttachments -->
   {{/if}}
   {{#if isStatusInOwnThread}}
   <StatusDetails :originalStatus :originalStatusId />
   {{/if}}
-  <StatusToolbar :originalStatus :originalStatusId :originalAccountId
-                 :isStatusInOwnThread :uuid />
+  <!-- StatusToolbar -->
+  <div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
+    <IconButton
+      label="Reply"
+      href="#fa-reply"
+      disabled="{{disableReply}}"
+      delegateKey="{{replyKey}}"
+    />
+    <IconButton
+      label="{{reblogLabel}}"
+      pressable="{{!reblogDisabled}}"
+      pressed="{{reblogged}}"
+      disabled="{{reblogDisabled}}"
+      href="{{reblogIcon}}"
+      delegateKey="{{reblogKey}}"
+    />
+    <IconButton
+      label="Favorite"
+      pressable="true"
+      pressed="{{favorited}}"
+      href="#fa-star"
+      delegateKey="{{favoriteKey}}"
+    />
+    <IconButton
+      label="Show more options"
+      href="#fa-ellipsis-h"
+      delegateKey="{{optionsKey}}"
+    />
+  </div>
+  <!-- StatusToolbar -->
 </article>
 
 <style>
+
+  /*
+   * Status
+   */
+
   .status-article {
     cursor: pointer;
     max-width: calc(100vw - 40px);
@@ -85,48 +185,340 @@
       width: 580px;
     }
   }
+
+  /*
+   * StatusAuthorName
+   */
+
+  .status-author-name {
+    grid-area: author-name;
+    align-self: center;
+    margin-left: 5px;
+    font-size: 1.1em;
+    min-width: 0;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status-author-name.status-in-own-thread {
+    font-size: 1.3em;
+  }
+
+  .status-author-name, .status-author-name:hover, .status-author-name:visited {
+    color: var(--body-text-color);
+  }
+
+  .status-author-name.status-in-notification,
+  .status-author-name.status-in-notification:hover,
+  .status-author-name.status-in-notification:visited {
+    color: var(--very-deemphasized-text-color);
+  }
+
+  /*
+   * StatusAuthorHandle
+   */
+
+  .status-author-handle {
+    grid-area: author-handle;
+    align-self: center;
+    margin-left: 5px;
+    color: var(--deemphasized-text-color);
+    font-size: 1.1em;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status-author-handle.status-in-notification {
+    color: var(--very-deemphasized-text-color);
+  }
+
+  /*
+   * StatusRelativeDate
+   */
+
+  .status-relative-date {
+    grid-area: relative-date;
+    align-self: center;
+    margin-left: 5px;
+    margin-right: 10px;
+    font-size: 1.1em;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .status-relative-date, .status-relative-date:hover, .status-relative-date:visited {
+    color: var(--deemphasized-text-color);
+  }
+
+  .status-relative-date.status-in-notification,
+  .status-relative-date.status-in-notification:hover,
+  .status-relative-date.status-in-notification:visited {
+    color: var(--very-deemphasized-text-color);
+  }
+
+  /*
+   * StatusSidebar
+   */
+
+  :global(.status-sidebar) {
+    grid-area: sidebar;
+    margin-right: 15px;
+  }
+
+  @media (max-width: 767px) {
+    :global(.status-sidebar) {
+      margin-right: 5px;
+    }
+  }
+
+  /*
+   * StatusSpoiler
+   */
+
+  .status-spoiler {
+    grid-area: spoiler;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+    margin: 10px 5px;
+  }
+
+  .status-spoiler.status-in-own-thread {
+    font-size: 1.3em;
+    margin: 20px 5px 10px;
+  }
+
+  .status-spoiler.status-in-notification {
+    color: var(--very-deemphasized-text-color);
+  }
+
+  .status-spoiler-button {
+    grid-area: spoiler-btn;
+    margin: 10px 5px;
+  }
+
+  .status-spoiler-button.status-in-own-thread {
+  }
+
+  .status-spoiler-button button {
+    padding: 5px 10px;
+    font-size: 1.1em;
+  }
+
+  /*
+   * StatusContent
+   */
+
+  .status-content {
+    margin: 10px 10px 10px 5px;
+    grid-area: content;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+  }
+
+  .status-content.status-in-own-thread {
+    font-size: 1.3em;
+    margin: 20px 10px 20px 5px;
+  }
+
+  :global(.status-content .status-emoji) {
+    width: 20px;
+    height: 20px;
+    margin: -3px 0;
+  }
+
+  :global(.status-content p) {
+    margin: 0 0 20px;
+  }
+
+  :global(.status-content p:first-child) {
+    margin: 0 0 20px;
+  }
+
+  :global(.status-content p:last-child) {
+    margin: 0;
+  }
+
+  .status-content.status-in-notification {
+    color: var(--very-deemphasized-text-color);
+  }
+  :global(.status-content.status-in-notification a, .status-content.status-in-notification a:hover) {
+    color: var(--very-deemphasized-link-color);
+  }
+
+  :global(.status-content .invisible) {
+    /* copied from Mastodon */
+    font-size: 0;
+    line-height: 0;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  /*
+   * StatusMediaAttachments
+   */
+
+  .status-sensitive-media-container {
+    grid-area: media;
+    margin: 10px 0;
+    position: relative;
+    border-radius: 0;
+    border: none;
+    background: none;
+  }
+
+  .status-sensitive-media-button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  .status-sensitive-media-button:hover {
+    background: none;
+  }
+
+  .status-sensitive-media-button:active {
+    background: none;
+  }
+
+  .status-sensitive-media-shown .status-sensitive-media-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 90;
+  }
+
+  .status-sensitive-media-hidden .status-sensitive-media-button {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .status-sensitive-media-container.status-sensitive-media-hidden {
+    width: 100%;
+    margin: 10px auto;
+    height: 200px;
+  }
+
+  .status-sensitive-media-container .status-sensitive-media-warning {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--deemphasized-text-color);
+    z-index: 60;
+  }
+
+  .status-sensitive-media-container .svg-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    z-index: 40;
+    pointer-events: none;
+    background: var(--mask-bg);
+  }
+  .status-sensitive-media-hidden .svg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .status-sensitive-media-container.status-sensitive-media-shown .svg-wrapper {
+    background: none;
+  }
+  .status-sensitive-media-container svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--mask-svg-fill);
+    border-radius: 2px;
+    background: var(--mask-opaque-bg);
+    margin: 1px;
+    padding: 6px 10px;
+  }
+  .status-sensitive-media-container.status-sensitive-media-hidden svg {
+    fill: var(--deemphasized-text-color);
+    background: var(--mask-opaque-bg);
+  }
+
+  /*
+   * StatusToolbar
+   */
+
+  .status-toolbar {
+    grid-area: toolbar;
+    display: flex;
+    justify-content: space-between;
+  }
+  .status-toolbar.status-in-own-thread {
+    margin-left: 58px;
+  }
+
 </style>
 <script>
-  import StatusSidebar from './StatusSidebar.html'
   import StatusHeader from './StatusHeader.html'
-  import StatusAuthorName from './StatusAuthorName.html'
-  import StatusAuthorHandle from './StatusAuthorHandle.html'
-  import StatusRelativeDate from './StatusRelativeDate.html'
   import StatusDetails from './StatusDetails.html'
-  import StatusToolbar from './StatusToolbar.html'
-  import StatusMediaAttachments from './StatusMediaAttachments.html'
-  import StatusContent from './StatusContent.html'
-  import StatusSpoiler from './StatusSpoiler.html'
+  import MediaAttachments from './MediaAttachments.html'
+  import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
+  import { mark, stop } from '../../_utils/marks'
+  import { replaceAll } from '../../_utils/strings'
+  import IconButton from '../IconButton.html'
+  import { setFavorited } from '../../_actions/favorite'
+  import { setReblogged } from '../../_actions/reblog'
+  import { importDialogs } from '../../_utils/asyncModules'
+  import { updateProfileAndRelationship } from '../../_actions/accounts'
+  import timeago from 'timeago.js'
+  const timeagoInstance = timeago()
 
   export default {
     oncreate() {
-      let delegateKey = this.get('delegateKey')
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
-        registerClickDelegate(delegateKey, (e) => this.onClickOrKeydown(e))
+        registerClickDelegate(this.get('delegateKey'), (e) => this.onClickOrKeydown(e))
       }
+      registerClickDelegate(this.get('spoilerKey'), () => this.onClickSpoilerButton())
+      registerClickDelegate(this.get('mediaAttachmentsKey'), () => this.onClickSensitiveMediaButton())
+      registerClickDelegate(this.get('favoriteKey'), () => this.onFavoriteClick())
+      registerClickDelegate(this.get('reblogKey'), () => this.onReblogClick())
+      registerClickDelegate(this.get('replyKey'), () => this.onReplyClick())
+      registerClickDelegate(this.get('optionsKey'), () => this.onOptionsClick())
+      this.hydrateContent()
     },
     ondestroy() {
-      let delegateKey = this.get('delegateKey')
       if (!this.get('isStatusInOwnThread')) {
-        unregisterClickDelegate(delegateKey)
+        unregisterClickDelegate(this.get('delegateKey'))
       }
+      unregisterClickDelegate(this.get('spoilerKey'))
+      unregisterClickDelegate(this.get('mediaAttachmentsKey'))
+      unregisterClickDelegate(this.get('favoriteKey'))
+      unregisterClickDelegate(this.get('reblogKey'))
+      unregisterClickDelegate(this.get('replyKey'))
+      unregisterClickDelegate(this.get('optionsKey'))
     },
     components: {
-      StatusSidebar,
       StatusHeader,
-      StatusAuthorName,
-      StatusAuthorHandle,
-      StatusRelativeDate,
       StatusDetails,
-      StatusToolbar,
-      StatusMediaAttachments,
-      StatusContent,
-      StatusSpoiler
+      MediaAttachments,
+      Avatar,
+      IconButton
     },
     store: () => store,
     helpers: {
@@ -154,6 +546,83 @@
           e.stopPropagation()
           goto(`/statuses/${this.get('originalStatusId')}`)
         }
+      },
+      onClickSpoilerButton() {
+        let uuid = this.get('uuid')
+        let $spoilersShown = this.store.get('spoilersShown')
+        $spoilersShown[uuid] = !$spoilersShown[uuid]
+        this.store.set({'spoilersShown': $spoilersShown})
+        this.fire('recalculateHeight')
+      },
+      hydrateContent() {
+        if (!this.refs.contentNode) {
+          return
+        }
+        let contentNode = this.refs.contentNode
+        let originalStatus = this.get('originalStatus')
+        let uuid = this.get('uuid')
+        let count = 0
+        mark('hydrateContent')
+        if (originalStatus.tags && originalStatus.tags.length) {
+          let anchorTags = contentNode.querySelectorAll('a[class~=hashtag][href^=http]')
+          for (let tag of originalStatus.tags) {
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
+                anchorTag.setAttribute('href', `/tags/${tag.name}`)
+                anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
+                anchorTag.removeAttribute('target')
+                anchorTag.removeAttribute('rel')
+              }
+            }
+          }
+        }
+        if (originalStatus.mentions && originalStatus.mentions.length) {
+          let anchorTags = contentNode.querySelectorAll('a[class~=mention][href^=http]')
+          for (let mention of originalStatus.mentions) {
+            for (let anchorTag of anchorTags) {
+              if (anchorTag.getAttribute('href') === mention.url) {
+                anchorTag.setAttribute('href', `/accounts/${mention.id}`)
+                anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
+                anchorTag.removeAttribute('target')
+                anchorTag.removeAttribute('rel')
+              }
+            }
+          }
+        }
+        let externalLinks = contentNode.querySelectorAll('a[rel="nofollow noopener"]')
+        for (let link of externalLinks) {
+          link.setAttribute('title', link.getAttribute('href'))
+        }
+        stop('hydrateContent')
+      },
+      onClickSensitiveMediaButton() {
+        let uuid = this.get('uuid')
+        let $sensitivesShown = this.store.get('sensitivesShown') || {}
+        $sensitivesShown[uuid] = !$sensitivesShown[uuid]
+        this.store.set({'sensitivesShown': $sensitivesShown})
+        this.fire('recalculateHeight')
+      },
+      onFavoriteClick() {
+        let originalStatusId = this.get('originalStatusId')
+        let favorited = this.get('favorited')
+        /* no await */ setFavorited(originalStatusId, !favorited)
+      },
+      onReblogClick() {
+        let originalStatusId = this.get('originalStatusId')
+        let reblogged = this.get('reblogged')
+        /* no await */ setReblogged(originalStatusId, !reblogged)
+      },
+      onReplyClick() {
+        let originalStatusId = this.get('originalStatusId')
+        goto(`/statuses/${originalStatusId}/reply`)
+      },
+      async onOptionsClick() {
+        let originalStatusId = this.get('originalStatusId')
+        let originalAccountId = this.get('originalAccountId')
+        let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
+        let dialogs = await importDialogs()
+        await updateRelationshipPromise
+        dialogs.showStatusOptionsDialog(originalStatusId)
       }
     },
     computed: {
@@ -187,7 +656,86 @@
         return (notification && (notification.type === 'reblog' || notification.type === 'favourite'))
           || status.reblog
           || timelineType === 'pinned'
-      }
+      },
+      authorNameKey: (uuid) => `status-author-name-${uuid}`,
+      createdAtDate: (originalStatus) => originalStatus.created_at,
+      relativeDate: (createdAtDate, isStatusInOwnThread) => {
+        if (isStatusInOwnThread) {
+          return '' // avoid expensive computation when not needed
+        }
+        mark('compute relativeDate')
+        let res = timeagoInstance.format(createdAtDate)
+        stop('compute relativeDate')
+        return res
+      },
+      relativeDateKey: (uuid) => `status-relative-date-${uuid}`,
+      spoilerKey: (uuid) => `spoiler-${uuid}`,
+      massagedContent: (originalStatus, $autoplayGifs) => {
+        let content = originalStatus.content
+        // emojify
+        if (originalStatus.emojis && originalStatus.emojis.length) {
+          for (let emoji of originalStatus.emojis) {
+            let { shortcode, url, static_url } = emoji
+            let urlToUse = $autoplayGifs ? url : static_url
+            let shortcodeWithColons = `:${shortcode}:`
+            content = replaceAll(
+              content,
+              shortcodeWithColons,
+              `<img class="status-emoji" draggable="false" src="${urlToUse}"
+                    alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
+            )
+          }
+        }
+        // GNU Social and Pleroma don't add <p> tags
+        if (!content.startsWith('<p>')) {
+          content = `<p>${content}</p>`
+        }
+        return content
+      },
+      mediaAttachments: (originalStatus) => originalStatus.media_attachments,
+      sensitiveShown: ($sensitivesShown, uuid) => !!$sensitivesShown[uuid],
+      sensitive: (originalStatus, $markMediaAsSensitive) => originalStatus.sensitive || $markMediaAsSensitive,
+      mediaAttachmentsKey: (uuid) => `sensitive-${uuid}`,
+      visibility: (originalStatus) => originalStatus.visibility,
+      reblogLabel: (visibility) => {
+        switch (visibility) {
+          case 'private':
+            return 'Cannot be boosted because this is followers-only'
+          case 'direct':
+            return 'Cannot be boosted because this is a direct message'
+          default:
+            return 'Boost'
+        }
+      },
+      reblogIcon: (visibility) => {
+        switch (visibility) {
+          case 'private':
+            return '#fa-lock'
+          case 'direct':
+            return '#fa-envelope'
+          default:
+            return '#fa-retweet'
+        }
+      },
+      reblogDisabled: (visibility) => {
+        return visibility === 'private' || visibility === 'direct'
+      },
+      reblogged: (originalStatusId, $currentStatusModifications, originalStatus) => {
+        if ($currentStatusModifications && originalStatusId in $currentStatusModifications.reblogs) {
+          return $currentStatusModifications.reblogs[originalStatusId]
+        }
+        return originalStatus.reblogged
+      },
+      favorited: (originalStatusId, $currentStatusModifications, originalStatus) => {
+        if ($currentStatusModifications && originalStatusId in $currentStatusModifications.favorites) {
+          return $currentStatusModifications.favorites[originalStatusId]
+        }
+        return originalStatus.favourited
+      },
+      favoriteKey: (uuid) => `fav-${uuid}`,
+      reblogKey: (uuid) => `reblog-${uuid}`,
+      replyKey: (uuid) => `reply-${uuid}`,
+      optionsKey: (uuid) => `options-${uuid}`
     }
   }
 </script>
