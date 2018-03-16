@@ -23,7 +23,8 @@
     <StatusContent status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
   {{/if}}
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
-    <StatusMediaAttachments status="{{originalStatus}}" :timelineType :timelineValue />
+    <StatusMediaAttachments status="{{originalStatus}}" :timelineType :timelineValue
+                            on:recalculateHeight :contextualStatusId />
   {{/if}}
   {{#if isStatusInOwnThread}}
   <StatusDetails status="{{originalStatus}}" />
