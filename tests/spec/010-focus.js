@@ -13,7 +13,7 @@ test('modal preserves focus', async t => {
   await t.click(getNthStatus(9).find('.play-video-button'))
     .click(closeDialogButton)
     .expect(modalDialogContents.exists).notOk()
-    .expect(getActiveElementClass()).eql('play-video-button')
+    .expect(getActiveElementClass()).contains('play-video-button')
 })
 
 test('timeline preserves focus', async t => {
@@ -23,7 +23,7 @@ test('timeline preserves focus', async t => {
 
   await goBack()
   await t.expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getActiveElementClass()).eql('status-article status-in-timeline')
+    .expect(getActiveElementClass()).contains('status-article status-in-timeline')
 })
 
 test('timeline link preserves focus', async t => {

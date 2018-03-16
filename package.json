@@ -58,7 +58,7 @@
     "standard": "^10.0.3",
     "stringz": "^0.4.0",
     "style-loader": "^0.19.1",
-    "svelte": "^1.54.0",
+    "svelte": "^1.57.4",
     "svelte-extras": "^1.6.0",
     "svelte-loader": "^2.3.3",
     "svelte-transitions": "^1.1.1",
