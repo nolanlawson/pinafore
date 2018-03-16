@@ -1,5 +1,5 @@
 <div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
-  <p>{{status.spoiler_text}}</p>
+  <p>{{originalStatus.spoiler_text}}</p>
 </div>
 <div class="status-spoiler-button {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
   <button type="button" delegate-key="{{delegateKey}}">
@@ -51,15 +51,14 @@
     },
     store: () => store,
     computed: {
-      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId],
-      statusId: (status) => status.id,
-      delegateKey: (statusId) => `spoiler-${statusId}`
+      spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
+      delegateKey: (uuid) => `spoiler-${uuid}`
     },
     methods: {
       onClickSpoilerButton() {
-        let contextualStatusId = this.get('contextualStatusId')
+        let uuid = this.get('uuid')
         let $spoilersShown = this.store.get('spoilersShown')
-        $spoilersShown[contextualStatusId] = !$spoilersShown[contextualStatusId]
+        $spoilersShown[uuid] = !$spoilersShown[uuid]
         this.store.set({'spoilersShown': $spoilersShown})
         this.fire('recalculateHeight')
       }

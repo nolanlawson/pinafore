@@ -10,7 +10,8 @@
            aria-posinset="{{index}}" aria-setsize="{{length}}"
   >
     <div class="follow-notification-offset">
-      <StatusHeader :status :notification isStatusInNotification="true" />
+      <StatusHeader :notification :notificationId :status :statusId :timelineType
+                    :account :accountId :uuid isStatusInNotification="true" />
     </div>
   </article>
 {{/if}}
@@ -35,10 +36,23 @@
 <script>
   import Status from './Status.html'
   import StatusHeader from './StatusHeader.html'
+  import { store } from '../../_store/store'
+
   export default {
     components: {
       Status,
       StatusHeader
+    },
+    store: () => store,
+    computed: {
+      account: (notification) => notification.account,
+      accountId: (account) => account.id,
+      notificationId: (notification) => notification.id,
+      status: (notification) => notification.status,
+      statusId: (status) => status && status.id,
+      uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => {
+        return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId}/${statusId || ''}`
+      },
     }
   }
 </script>

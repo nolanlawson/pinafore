@@ -244,7 +244,7 @@
         if (activeElement) {
           let focusKey = activeElement.getAttribute('focus-key')
           if (focusKey) {
-            lastFocusedElementSelector = `[focus-key=${focusKey}]`
+            lastFocusedElementSelector = `[focus-key=${JSON.stringify(focusKey)}]`
           }
         }
         console.log('saving focus to ', lastFocusedElementSelector)

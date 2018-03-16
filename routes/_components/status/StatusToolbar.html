@@ -65,30 +65,30 @@
     store: () => store,
     methods: {
       onFavoriteClick() {
-        let statusId = this.get('statusId')
+        let originalStatusId = this.get('originalStatusId')
         let favorited = this.get('favorited')
-        /* no await */ setFavorited(statusId, !favorited)
+        /* no await */ setFavorited(originalStatusId, !favorited)
       },
       onReblogClick() {
-        let statusId = this.get('statusId')
+        let originalStatusId = this.get('originalStatusId')
         let reblogged = this.get('reblogged')
-        /* no await */ setReblogged(statusId, !reblogged)
+        /* no await */ setReblogged(originalStatusId, !reblogged)
       },
       onReplyClick() {
-        let statusId = this.get('statusId')
-        goto(`/statuses/${statusId}/reply`)
+        let originalStatusId = this.get('originalStatusId')
+        goto(`/statuses/${originalStatusId}/reply`)
       },
       async onOptionsClick() {
-        let statusId = this.get('statusId')
-        let accountId = this.get('accountId')
-        let updateRelationshipPromise = updateProfileAndRelationship(accountId)
+        let originalStatusId = this.get('originalStatusId')
+        let originalAccountId = this.get('originalAccountId')
+        let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
         let dialogs = await importDialogs()
         await updateRelationshipPromise
-        dialogs.showStatusOptionsDialog(statusId)
+        dialogs.showStatusOptionsDialog(originalStatusId)
       }
     },
     computed: {
-      visibility: (status) => status.visibility,
+      visibility: (originalStatus) => originalStatus.visibility,
       reblogLabel: (visibility) => {
         switch (visibility) {
           case 'private':
@@ -112,24 +112,22 @@
       reblogDisabled: (visibility) => {
         return visibility === 'private' || visibility === 'direct'
       },
-      reblogged: (status, $currentStatusModifications) => {
-        if ($currentStatusModifications && status.id in $currentStatusModifications.reblogs) {
-          return $currentStatusModifications.reblogs[status.id]
+      reblogged: (originalStatusId, $currentStatusModifications, originalStatus) => {
+        if ($currentStatusModifications && originalStatusId in $currentStatusModifications.reblogs) {
+          return $currentStatusModifications.reblogs[originalStatusId]
         }
-        return status.reblogged
+        return originalStatus.reblogged
       },
-      favorited: (status, $currentStatusModifications) => {
-        if ($currentStatusModifications && status.id in $currentStatusModifications.favorites) {
-          return $currentStatusModifications.favorites[status.id]
+      favorited: (originalStatusId, $currentStatusModifications, originalStatus) => {
+        if ($currentStatusModifications && originalStatusId in $currentStatusModifications.favorites) {
+          return $currentStatusModifications.favorites[originalStatusId]
         }
-        return status.favourited
+        return originalStatus.favourited
       },
-      statusId: (status) => status.id,
-      accountId: (status) => status.account.id,
-      favoriteKey: (statusId) => `fav-${statusId}`,
-      reblogKey: (statusId) => `reblog-${statusId}`,
-      replyKey: (statusId) => `reply-${statusId}`,
-      optionsKey: (statusId) => `options-${statusId}`,
+      favoriteKey: (uuid) => `fav-${uuid}`,
+      reblogKey: (uuid) => `reblog-${uuid}`,
+      replyKey: (uuid) => `reply-${uuid}`,
+      optionsKey: (uuid) => `options-${uuid}`,
     }
   }
 </script>

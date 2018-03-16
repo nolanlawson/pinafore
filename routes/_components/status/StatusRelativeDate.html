@@ -1,8 +1,11 @@
 <a class="status-relative-date {{isStatusInNotification ? 'status-in-notification' : '' }}"
-   href="/statuses/{{status.id}}"
+   href="/statuses/{{originalStatusId}}"
    focus-key="{{focusKey}}"
 >
-  <time datetime={{createdAtDate}} title="{{relativeDate}}" aria-label="{{relativeDate}} – click to show thread">{{relativeDate}}</time>
+  <time datetime={{createdAtDate}} title="{{relativeDate}}"
+        aria-label="{{relativeDate}} – click to show thread">
+    {{relativeDate}}
+  </time>
 </a>
 <style>
   .status-relative-date {
@@ -32,15 +35,14 @@
 
   export default {
     computed: {
-      createdAtDate: (status) => status.created_at,
-      statusId: (status) => status.id,
+      createdAtDate: (originalStatus) => originalStatus.created_at,
       relativeDate: (createdAtDate) => {
         mark('compute relativeDate')
         let res = timeagoInstance.format(createdAtDate)
         stop('compute relativeDate')
         return res
       },
-      focusKey: (statusId) => `status-relative-date-${statusId}`
+      focusKey: (uuid) => `status-relative-date-${uuid}`
     }
   }
 </script>

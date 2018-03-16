@@ -7,29 +7,34 @@
          aria-label="{{ariaLabel}}"
          on:recalculateHeight>
   {{#if showHeader}}
-    <StatusHeader :notification :status :isStatusInNotification :timelineType />
+    <StatusHeader :notification :notificationId :status :statusId :timelineType
+                  :account :accountId :uuid :isStatusInNotification />
   {{/if}}
-  <StatusAuthorName status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
-  <StatusAuthorHandle status="{{originalStatus}}" :isStatusInNotification />
+  <StatusAuthorName :isStatusInNotification :isStatusInOwnThread :originalAccountId
+                    :originalAccount :uuid />
+  <StatusAuthorHandle :isStatusInNotification :originalAccount />
   {{#if !isStatusInOwnThread}}
-    <StatusRelativeDate status="{{originalStatus}}" :isStatusInNotification />
+    <StatusRelativeDate :isStatusInNotification :originalStatus :originalStatusId :uuid />
   {{/if}}
-  <StatusSidebar status="{{originalStatus}}" :isStatusInOwnThread />
+  <StatusSidebar :isStatusInOwnThread :originalAccount />
   {{#if originalStatus.spoiler_text}}
-    <StatusSpoiler status="{{originalStatus}}" :isStatusInOwnThread :contextualStatusId :isStatusInNotification
+    <StatusSpoiler :isStatusInOwnThread :isStatusInNotification
+                   :originalStatus :uuid
                    on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
-    <StatusContent status="{{originalStatus}}" :isStatusInOwnThread :isStatusInNotification />
+    <StatusContent :isStatusInOwnThread :isStatusInNotification
+                   :originalStatus :uuid />
   {{/if}}
   {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
-    <StatusMediaAttachments status="{{originalStatus}}" :timelineType :timelineValue
-                            on:recalculateHeight :contextualStatusId />
+    <StatusMediaAttachments :originalStatus :uuid
+                            on:recalculateHeight />
   {{/if}}
   {{#if isStatusInOwnThread}}
-  <StatusDetails status="{{originalStatus}}" />
+  <StatusDetails :originalStatus :originalStatusId />
   {{/if}}
-  <StatusToolbar status="{{originalStatus}}" :isStatusInOwnThread />
+  <StatusToolbar :originalStatus :originalStatusId :originalAccountId
+                 :isStatusInOwnThread :uuid />
 </article>
 
 <style>
@@ -147,26 +152,35 @@
             parentElement.parentElement.localName !== 'button') {
           e.preventDefault()
           e.stopPropagation()
-          goto(`/statuses/${this.get('statusId')}`)
+          goto(`/statuses/${this.get('originalStatusId')}`)
         }
       }
     },
     computed: {
       originalStatus: (status) => status.reblog ? status.reblog : status,
-      statusId: (originalStatus) => originalStatus.id,
-      delegateKey: (statusId) => `status-${statusId}`,
-      contextualStatusId: ($currentInstance, timelineType, timelineValue, status, notification) => {
-        return `${$currentInstance}/${timelineType}/${timelineValue}/${notification ? notification.id : ''}/${status.id}`
+      originalStatusId: (originalStatus) => originalStatus.id,
+      statusId: (status) => status.id,
+      notificationId: (notification) => notification && notification.id,
+      account: (notification, status) => {
+        return (notification && notification.account) || status.account
       },
+      accountId: (account) => account.id,
       originalAccount: (originalStatus) => originalStatus.account,
-      isStatusInOwnThread: (timelineType, timelineValue, statusId) => {
-        return (timelineType === 'status' || timelineType === 'reply') && timelineValue === statusId
+      originalAccountId: (originalAccount) => originalAccount.id,
+      uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => {
+        return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       },
-      isStatusInNotification: (status, notification) => notification && notification.status && notification.type !== 'mention' && notification.status.id === status.id,
-      spoilerShown: ($spoilersShown, contextualStatusId) => !!$spoilersShown[contextualStatusId],
-      visibility: (originalStatus) => originalStatus.visibility,
-      ariaLabel: (originalAccount, visibility) => {
-        return (visibility === 'direct' ? 'Direct message' : 'Status') +
+      delegateKey: (uuid) => `status-${uuid}`,
+      isStatusInOwnThread: (timelineType, timelineValue, originalStatusId) => {
+        return (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
+      },
+      isStatusInNotification: (originalStatusId, notification) => {
+        return notification && notification.status &&
+          notification.type !== 'mention' && notification.status.id === originalStatusId
+      },
+      spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
+      ariaLabel: (originalAccount, originalStatus) => {
+        return (originalStatus.visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`
       },
       showHeader: (notification, status, timelineType) => {

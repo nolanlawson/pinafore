@@ -66,11 +66,11 @@
     },
     store: () => store,
     computed: {
-      massagedContent: (status, $autoplayGifs) => {
-        let content = status.content
+      massagedContent: (originalStatus, $autoplayGifs) => {
+        let content = originalStatus.content
         // emojify
-        if (status.emojis && status.emojis.length) {
-          for (let emoji of status.emojis) {
+        if (originalStatus.emojis && originalStatus.emojis.length) {
+          for (let emoji of originalStatus.emojis) {
             let { shortcode, url, static_url } = emoji
             let urlToUse = $autoplayGifs ? url : static_url
             let shortcodeWithColons = `:${shortcode}:`
@@ -87,8 +87,7 @@
           content = `<p>${content}</p>`
         }
         return content
-      },
-      statusId: (status) => status.id
+      }
     },
     methods: {
       hydrateContent() {
@@ -96,30 +95,30 @@
           return
         }
         let node = this.refs.node
-        let status = this.get('status')
-        let statusId = this.get('statusId')
+        let originalStatus = this.get('originalStatus')
+        let uuid = this.get('uuid')
         let count = 0
         mark('hydrateContent')
-        if (status.tags && status.tags.length) {
+        if (originalStatus.tags && originalStatus.tags.length) {
           let anchorTags = node.querySelectorAll('a[class~=hashtag][href^=http]')
-          for (let tag of status.tags) {
+          for (let tag of originalStatus.tags) {
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
                 anchorTag.setAttribute('href', `/tags/${tag.name}`)
-                anchorTag.setAttribute('focus-key', `status-content-link-${statusId}-${++count}`)
+                anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
                 anchorTag.removeAttribute('target')
                 anchorTag.removeAttribute('rel')
               }
             }
           }
         }
-        if (status.mentions && status.mentions.length) {
+        if (originalStatus.mentions && originalStatus.mentions.length) {
           let anchorTags = node.querySelectorAll('a[class~=mention][href^=http]')
-          for (let mention of status.mentions) {
+          for (let mention of originalStatus.mentions) {
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href') === mention.url) {
                 anchorTag.setAttribute('href', `/accounts/${mention.id}`)
-                anchorTag.setAttribute('focus-key', `status-content-link-${statusId}-${++count}`)
+                anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
                 anchorTag.removeAttribute('target')
                 anchorTag.removeAttribute('rel')
               }

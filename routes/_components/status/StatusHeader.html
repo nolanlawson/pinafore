@@ -6,9 +6,9 @@
     {{#if timelineType === 'pinned'}}
       Pinned toot
     {{else}}
-      <a href="/accounts/{{account.id}}"
+      <a href="/accounts/{{accountId}}"
          focus-key="{{focusKey}}" >
-        {{account.display_name || ('@' + account.username)}}
+        {{account.display_name || account.username}}
       </a>
       {{#if notification && notification.type === 'reblog'}}
         boosted your status
@@ -68,9 +68,7 @@
 <script>
   export default {
     computed: {
-      statusId: (status) => status && status.id,
-      notificationId: (notification) => notification && notification.id,
-      focusKey: (statusId, notificationId) => `status-header-${statusId}-${notificationId}`,
+      focusKey: (uuid) => `status-header-${uuid}`,
       icon: (notification, status, timelineType) => {
         if (timelineType === 'pinned') {
           return '#fa-thumb-tack'
@@ -80,12 +78,6 @@
           return '#fa-user-plus'
         }
         return '#fa-star'
-      },
-      account: (notification, status) => {
-        if (notification && notification.account) {
-          return notification.account
-        }
-        return status.account
       }
     }
   }

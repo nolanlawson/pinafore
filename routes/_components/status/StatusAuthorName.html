@@ -1,8 +1,8 @@
 <a class="status-author-name {{isStatusInNotification ? 'status-in-notification' : '' }} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
-   href="/accounts/{{status.account.id}}"
+   href="/accounts/{{originalAccountId}}"
    focus-key="{{focusKey}}"
 >
-  {{status.account.display_name || status.account.username}}
+  {{originalAccount.display_name || originalAccount.username}}
 </a>
 <style>
   .status-author-name {
@@ -35,8 +35,7 @@
 <script>
   export default {
     computed: {
-      statusId: (status) => status.id,
-      focusKey: (statusId) => `status-author-name-${statusId}`
+      focusKey: (uuid) => `status-author-name-${uuid}`
     }
   }
 </script>

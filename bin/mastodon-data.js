@@ -188,10 +188,6 @@ export const actions = times(30, i => ({
   },
   {
     user: 'admin',
-    boost: 'notification-of-unlisted-message'
-  },
-  {
-    user: 'admin',
     boost: 'foobar-this-is-unlisted'
   },
   {
