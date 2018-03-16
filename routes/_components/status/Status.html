@@ -1,4 +1,4 @@
-<article class="status-article {{getClasses(originalStatus, timelineType, isStatusInOwnThread)}}"
+<article class="{{className}}"
          tabindex="0"
          delegate-key="{{delegateKey}}"
          focus-key="{{delegateKey}}"
@@ -19,7 +19,7 @@
   <StatusSidebar :isStatusInOwnThread :originalAccount />
   {{#if originalStatus.spoiler_text}}
     <StatusSpoiler :isStatusInOwnThread :isStatusInNotification
-                   :originalStatus :uuid
+                   :originalStatus :uuid :spoilerShown
                    on:recalculateHeight />
   {{/if}}
   {{#if !originalStatus.spoiler_text || spoilerShown}}
@@ -34,7 +34,7 @@
   <StatusDetails :originalStatus :originalStatusId />
   {{/if}}
   <StatusToolbar :originalStatus :originalStatusId :originalAccountId
-                 :isStatusInOwnThread :uuid />
+                 :isStatusInOwnThread :uuid :visibility />
 </article>
 
 <style>
@@ -129,15 +129,6 @@
       StatusSpoiler
     },
     store: () => store,
-    helpers: {
-      getClasses(originalStatus, timelineType, isStatusInOwnThread) {
-        return classname(
-          originalStatus.visibility === 'direct' && 'status-direct',
-          timelineType !== 'search' && 'status-in-timeline',
-          isStatusInOwnThread && 'status-in-own-thread'
-        )
-      }
-    },
     methods: {
       onClickOrKeydown(e) {
         let { type, keyCode } = e
@@ -167,6 +158,7 @@
       accountId: (account) => account.id,
       originalAccount: (originalStatus) => originalStatus.account,
       originalAccountId: (originalAccount) => originalAccount.id,
+      visibility: (originalStatus) => originalStatus.visibility,
       uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       },
@@ -179,14 +171,22 @@
           notification.type !== 'mention' && notification.status.id === originalStatusId
       },
       spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
-      ariaLabel: (originalAccount, originalStatus) => {
-        return (originalStatus.visibility === 'direct' ? 'Direct message' : 'Status') +
+      ariaLabel: (originalAccount, originalStatus, visibility) => {
+        return (visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`
       },
       showHeader: (notification, status, timelineType) => {
         return (notification && (notification.type === 'reblog' || notification.type === 'favourite'))
           || status.reblog
           || timelineType === 'pinned'
+      },
+      className: (visibility, timelineType, isStatusInOwnThread) => {
+        return classname(
+          'status-article',
+          visibility === 'direct' && 'status-direct',
+          timelineType !== 'search' && 'status-in-timeline',
+          isStatusInOwnThread && 'status-in-own-thread'
+        )
       }
     }
   }

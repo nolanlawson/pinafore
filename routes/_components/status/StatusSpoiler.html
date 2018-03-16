@@ -51,7 +51,6 @@
     },
     store: () => store,
     computed: {
-      spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
       delegateKey: (uuid) => `spoiler-${uuid}`
     },
     methods: {
