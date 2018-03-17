@@ -5,6 +5,7 @@ const ASSETS = `cache${timestamp}`
 // `assets` is an array of everything in the `assets` directory
 const toCache = __shell__.concat(__assets__)
   .filter(filename => !filename.endsWith('.map'))
+  .filter(filename => !filename.startsWith('apple-icon'))
 const cached = new Set(toCache)
 
 // `routes` is an array of `{ pattern: RegExp }` objects that
