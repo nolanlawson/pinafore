@@ -18,7 +18,7 @@ import forEach from 'lodash/forEach'
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 8
+const DB_VERSION = 9
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -49,7 +49,7 @@ export function getDatabase (instanceName) {
         }
       }
 
-      if (e.oldVersion < 7) {
+      if (e.oldVersion < DB_VERSION) {
         createObjectStore(STATUSES_STORE, {keyPath: 'id'}, {
           [TIMESTAMP]: TIMESTAMP,
           [REBLOG_ID]: REBLOG_ID
