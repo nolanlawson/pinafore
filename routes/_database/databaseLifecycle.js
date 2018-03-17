@@ -18,7 +18,7 @@ import forEach from 'lodash/forEach'
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 7
+const DB_VERSION = 8
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
