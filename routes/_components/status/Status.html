@@ -16,7 +16,8 @@
   {{#if !isStatusInOwnThread}}
     <StatusRelativeDate :isStatusInNotification :originalStatus :originalStatusId :uuid />
   {{/if}}
-  <StatusSidebar :isStatusInOwnThread :originalAccount />
+  <StatusSidebar :isStatusInOwnThread :originalAccount
+                 :originalAccountId :uuid />
   {{#if originalStatus.spoiler_text}}
     <StatusSpoiler :isStatusInOwnThread :isStatusInNotification
                    :originalStatus :uuid :spoilerShown

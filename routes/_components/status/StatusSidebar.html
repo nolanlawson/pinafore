@@ -1,14 +1,28 @@
-<Avatar account={{originalAccount}}
-        className="status-sidebar"
-        size="{{isStatusInOwnThread ? 'medium' : 'small'}}" />
+<a class="status-sidebar size-{{size}}"
+   href="/accounts/{{originalAccountId}}"
+   focus-key="{{focusKey}}" >
+  <Avatar account={{originalAccount}}
+          isLink="true"
+          :size />
+</a>
 <style>
-  :global(.status-sidebar) {
+  .status-sidebar {
     grid-area: sidebar;
     margin-right: 15px;
   }
 
+  .status-sidebar.size-small {
+    width: 48px;
+    height: 48px;
+  }
+
+  .status-sidebar.size-medium {
+    width: 64px;
+    height: 64px;
+  }
+
   @media (max-width: 767px) {
-    :global(.status-sidebar) {
+    .status-sidebar {
       margin-right: 5px;
     }
   }
@@ -18,6 +32,10 @@
   export default {
     components: {
       Avatar
+    },
+    computed: {
+      focusKey: (uuid) => `status-author-avatar-${uuid}`,
+      size: (isStatusInOwnThread) => isStatusInOwnThread ? 'medium' : 'small'
     }
   }
 </script>

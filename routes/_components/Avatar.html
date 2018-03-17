@@ -6,8 +6,14 @@
   <img class="{{className || ''}} avatar size-{{size}}" aria-hidden="true" alt=""
      src="{{account.avatar}}" on:imgLoadError="set({error: true})" />
 {{else}}
-  <NonAutoplayImg className="{{className || ''}} avatar size-{{size}}" ariaHidden="true" alt=""
-       src="{{account.avatar}}" staticSrc="{{account.avatar_static}}" on:imgLoadError="set({error: true})" />
+  <NonAutoplayImg className="{{className || ''}} avatar size-{{size}}"
+                  ariaHidden="true"
+                  alt=""
+                  src="{{account.avatar}}"
+                  staticSrc="{{account.avatar_static}}"
+                  :isLink
+                  on:imgLoadError="set({error: true})"
+  />
 {{/if}}
 <style>
   :global(.avatar) {

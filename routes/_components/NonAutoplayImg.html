@@ -5,7 +5,7 @@
        src="{{src}}"
        on:imgLoadError />
 {{else}}
-  <img class="{{className || ''}} non-autoplay-zoom-in"
+  <img class="{{className || ''}} non-autoplay-zoom-in {{isLink ? 'is-link' : ''}}"
        aria-hidden="{{ariaHidden}}"
        alt="{{alt}}"
        src="{{staticSrc}}"
@@ -16,6 +16,9 @@
 <style>
   .non-autoplay-zoom-in {
     cursor: zoom-in;
+  }
+  .non-autoplay-zoom-in.is-link {
+    cursor: pointer;
   }
 </style>
 <script>

@@ -33,6 +33,11 @@ test('timeline link preserves focus', async t => {
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getActiveElementInnerText()).eql('admin')
+    .click(getNthStatus(0).find('.status-sidebar'))
+    .expect(getUrl()).contains('/accounts/')
+    .click(goBackButton)
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getActiveElementClass()).contains('status-sidebar')
 })
 
 test('notification timeline preserves focus', async t => {
