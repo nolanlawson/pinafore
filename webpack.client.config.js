@@ -60,7 +60,10 @@ module.exports = {
     }),
     /* disable while https://github.com/sveltejs/sapper/issues/79 is open */
     // new ExtractTextPlugin('main.css'),
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      caching: true
+    }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
       generateStatsFile: true,
