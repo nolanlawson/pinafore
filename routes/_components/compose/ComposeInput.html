@@ -43,6 +43,9 @@
       setupSyncFromStore() {
         this.observe('text', text => {
           this.set({rawText: text})
+          if (this.get('autoFocus')) {
+            this.refs.textarea.focus()
+          }
         })
       },
       setupSyncToStore() {

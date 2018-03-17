@@ -4,7 +4,8 @@
           aria-pressed="{{pressable ? !!pressed : ''}}"
           class="{{computedClass}}"
           :disabled
-          delegate-key="{{delegateKey}}" >
+          delegate-key="{{delegateKey}}"
+          focus-key="{{focusKey || ''}}" >
     <svg class="icon-button-svg">
       <use xlink:href="{{href}}" />
     </svg>
@@ -14,6 +15,7 @@
           aria-label="{{label}}"
           aria-pressed="{{pressable ? !!pressed : ''}}"
           class="{{computedClass}}"
+          focus-key="{{focusKey || ''}}"
           :disabled
           on:click >
     <svg class="icon-button-svg">

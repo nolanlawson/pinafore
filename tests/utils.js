@@ -53,6 +53,20 @@ export const getActiveElementInnerText = exec(() =>
   document.activeElement && document.activeElement.innerText
 )
 
+export const getActiveElementAriaLabel = exec(() =>
+  document.activeElement ? document.activeElement.getAttribute('aria-label') : ''
+)
+
+export const getActiveElementInsideNthStatus = exec(() => {
+  let element = document.activeElement
+  while (element) {
+    if (element.hasAttribute('aria-posinset')) {
+      return element.getAttribute('aria-posinset')
+    }
+    element = element.parentElement
+  }
+})
+
 export const goBack = exec(() => window.history.back())
 
 export const forceOffline = exec(() => window.store.set({online: false}))
