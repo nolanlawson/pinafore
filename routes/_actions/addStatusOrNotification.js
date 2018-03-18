@@ -1,5 +1,4 @@
 import throttle from 'lodash/throttle'
-import { getIdsThatTheseStatusesReblogged } from './statuses'
 import { database } from '../_database/database'
 import { mark, stop } from '../_utils/marks'
 import { store } from '../_store/store'
@@ -7,33 +6,31 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import uniqBy from 'lodash/uniqBy'
 import uniq from 'lodash/uniq'
 
-async function getExistingItemIdsSet (instanceName, timelineName) {
+function getExistingItemIdsSet (instanceName, timelineName) {
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
-  if (timelineName === 'notifications') {
-    return new Set(timelineItemIds)
-  }
-  let reblogIds = await getIdsThatTheseStatusesReblogged(instanceName, timelineItemIds)
-  return new Set([].concat(timelineItemIds).concat(reblogIds))
+  return new Set(timelineItemIds)
 }
 
-async function removeDuplicates (instanceName, timelineName, updates) {
+function removeDuplicates (instanceName, timelineName, updates) {
   // remove duplicates, including duplicates due to reblogs
-  let existingItemIds = await getExistingItemIdsSet(instanceName, timelineName)
+  let existingItemIds = getExistingItemIdsSet(instanceName, timelineName)
   return updates.filter(update => !existingItemIds.has(update.id))
 }
 
 async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
-  updates = await removeDuplicates(instanceName, timelineName, updates)
+  updates = removeDuplicates(instanceName, timelineName, updates)
+
+  if (!updates.length) {
+    return
+  }
 
   await database.insertTimelineItems(instanceName, timelineName, updates)
 
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-  if (updates && updates.length) {
-    itemIdsToAdd = itemIdsToAdd.concat(updates.map(_ => _.id))
-    itemIdsToAdd = uniq(itemIdsToAdd)
-    console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd')
-    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
-  }
+
+  itemIdsToAdd = uniq(itemIdsToAdd.concat(updates.map(_ => _.id)))
+  console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd')
+  store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
 }
 
 async function insertUpdatesIntoThreads (instanceName, updates) {
