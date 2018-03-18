@@ -3,15 +3,16 @@ const config = require('sapper/webpack/config.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
-const isDev = config.dev
+const mode = process.env.NODE_ENV
+const isDev = mode === 'development'
 
 module.exports = {
   entry: config.client.entry(),
   output: config.client.output(),
   resolve: {
-    extensions: ['.js', '.html']
+    extensions: ['.js', '.json', '.html']
   },
-  mode: isDev ? 'development' : 'production',
+  mode,
   module: {
     rules: [
       {
@@ -21,50 +22,28 @@ module.exports = {
           loader: 'svelte-loader',
           options: {
             hydratable: true,
-            emitCss: !isDev,
             cascade: false,
-            store: true
+            store: true,
+            hotReload: true
           }
         }
-      },
-      isDev && {
-        test: /\.css$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' }
-        ]
-      },
-      !isDev && {
-        test: /\.css$/,
-        /* disable while https://github.com/sveltejs/sapper/issues/79 is open */
-        /* use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [{ loader: 'css-loader', options: { sourceMap:isDev } }]
-        }) */
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' }
-        ]
       }
-    ].filter(Boolean)
+    ]
   },
   node: {
     setImmediate: false
   },
-  plugins: isDev ? [
-    new webpack.HotModuleReplacementPlugin()
-  ] : [
+  plugins: [
+    isDev && new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.browser': true,
-      'process.env.NODE_ENV': '"production"'
+      'process.env.NODE_ENV': JSON.stringify(mode)
     }),
-    /* disable while https://github.com/sveltejs/sapper/issues/79 is open */
-    // new ExtractTextPlugin('main.css'),
     new LodashModuleReplacementPlugin({
       collections: true,
       caching: true
     }),
-    new BundleAnalyzerPlugin({ // generates report.html and stats.json
+    !isDev && new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
       generateStatsFile: true,
       statsOptions: {
@@ -74,6 +53,6 @@ module.exports = {
       openAnalyzer: false,
       logLevel: 'silent' // do not bother Webpacker, who runs with --json and parses stdout
     })
-  ],
-  devtool: isDev ? 'cheap-module-source-map' : 'source-map'
+  ].filter(Boolean),
+  devtool: isDev ? 'inline-source-map' : 'source-map'
 }

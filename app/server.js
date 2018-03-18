@@ -1,7 +1,10 @@
-const app = require('express')()
-const compression = require('compression')
-const sapper = require('sapper')
-const serveStatic = require('serve-static')
+import express from 'express'
+import compression from 'compression'
+import sapper from 'sapper'
+import serveStatic from 'serve-static'
+import { routes } from './manifest/server.js'
+
+const app = express()
 
 const { PORT = 4002 } = process.env
 
@@ -16,7 +19,7 @@ app.use(compression({ threshold: 0 }))
 
 app.use(serveStatic('assets'))
 
-app.use(sapper())
+app.use(sapper({ routes }))
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`)

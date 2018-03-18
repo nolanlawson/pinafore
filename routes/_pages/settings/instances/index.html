@@ -7,7 +7,7 @@
     {{#each $loggedInInstancesAsList as instance}}
       <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
                         icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
-                        href="/settings/instances/{{instance.name}}"
+                        href="/settings/instances/list/{{instance.name}}"
                         label="{{instance.name}}"
                         ariaLabel="{{instance.name}} {{instance.name === $currentInstance ? '(current instance)' : ''}}" />
     {{/each}}

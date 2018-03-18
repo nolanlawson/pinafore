@@ -6,3 +6,6 @@ templates/.*
 assets/*.css
 /mastodon
 mastodon.log
+/app/manifest
+/build
+/export

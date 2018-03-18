@@ -16,13 +16,13 @@ const now = require('performance-now')
 const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
 const offlineThemeScss = path.join(__dirname, '../scss/themes/_offline.scss')
-const html2xxFile = path.join(__dirname, '../templates/2xx.html')
+const html2xxFile = path.join(__dirname, '../app/template.html')
 const scssDir = path.join(__dirname, '../scss')
 const themesScssDir = path.join(__dirname, '../scss/themes')
 const assetsDir = path.join(__dirname, '../assets')
 
 function doWatch () {
-  var start = now()
+  let start = now()
   chokidar.watch(scssDir).on('change', debounce(() => {
     console.log('Recompiling SCSS...')
     Promise.all([

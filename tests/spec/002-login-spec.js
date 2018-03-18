@@ -44,7 +44,7 @@ test('Logs in and logs out of localhost:3000', async t => {
     .click(settingsButton)
     .click($('a').withText('Instances'))
     .click($('a').withText('localhost:3000'))
-    .expect(getUrl()).contains('/settings/instances/localhost:3000')
+    .expect(getUrl()).contains('/settings/instances/list/localhost:3000')
     .expect($('.instance-name-h1').innerText).eql('localhost:3000')
     .expect($('.acct-handle').innerText).eql('@foobar')
     .expect($('.acct-display-name').innerText).eql('foobar')

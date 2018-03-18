@@ -2,36 +2,36 @@
   <h1 class="instance-name-h1">{{params.instanceName}}</h1>
 
   {{#if verifyCredentials}}
-    <h2>Logged in as:</h2>
-    <div class="acct-current-user">
-      <Avatar account="{{verifyCredentials}}" className="acct-avatar" size="big"/>
-      <ExternalLink class="acct-handle"
-                    href="{{verifyCredentials.url}}">
-        {{'@' + verifyCredentials.acct}}
-      </ExternalLink>
-      <span class="acct-display-name">{{verifyCredentials.display_name || verifyCredentials.acct}}</span>
+  <h2>Logged in as:</h2>
+  <div class="acct-current-user">
+    <Avatar account="{{verifyCredentials}}" className="acct-avatar" size="big"/>
+    <ExternalLink class="acct-handle"
+                  href="{{verifyCredentials.url}}">
+      {{'@' + verifyCredentials.acct}}
+    </ExternalLink>
+    <span class="acct-display-name">{{verifyCredentials.display_name || verifyCredentials.acct}}</span>
+  </div>
+  <h2>Theme:</h2>
+  <form class="theme-chooser" aria-label="Choose a theme">
+    {{#each themes as theme}}
+    <div class="theme-group">
+      <input type="radio" id="choice-theme-{{theme.name}}"
+             value="{{theme.name}}" checked="$currentTheme === theme.name"
+             bind:group="selectedTheme" on:change="onThemeChange()">
+      <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
     </div>
-    <h2>Theme:</h2>
-    <form class="theme-chooser" aria-label="Choose a theme">
-      {{#each themes as theme}}
-        <div class="theme-group">
-          <input type="radio" id="choice-theme-{{theme.name}}"
-                 value="{{theme.name}}" checked="$currentTheme === theme.name"
-                 bind:group="selectedTheme" on:change="onThemeChange()">
-          <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
-        </div>
-      {{/each}}
-    </form>
+    {{/each}}
+  </form>
 
-    <form class="instance-actions" aria-label="Switch to or log out of this instance">
-      {{#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== params.instanceName}}
-        <button class="primary"
-          on:click="onSwitchToThisInstance(event)">
-          Switch to this instance
-        </button>
-      {{/if}}
-      <button on:click="onLogOut(event)">Log out</button>
-    </form>
+  <form class="instance-actions" aria-label="Switch to or log out of this instance">
+    {{#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== params.instanceName}}
+    <button class="primary"
+            on:click="onSwitchToThisInstance(event)">
+      Switch to this instance
+    </button>
+    {{/if}}
+    <button on:click="onLogOut(event)">Log out</button>
+  </form>
   {{/if}}
 </SettingsLayout>
 <style>
@@ -44,8 +44,8 @@
     align-items: center;
     font-size: 1.3em;
     grid-template-areas:
-        "avatar handle"
-        "avatar display-name";
+      "avatar handle"
+      "avatar display-name";
     grid-template-columns: min-content 1fr;
     grid-column-gap: 20px;
     grid-row-gap: 10px;
@@ -91,18 +91,18 @@
   }
 </style>
 <script>
-  import { store } from '../../../_store/store'
-  import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
-  import ExternalLink from '../../../_components/ExternalLink.html'
-  import Avatar from '../../../_components/Avatar.html'
-  import { importDialogs } from '../../../_utils/asyncModules'
+  import { store } from '../../../../_store/store'
+  import SettingsLayout from '../../../../_components/settings/SettingsLayout.html'
+  import ExternalLink from '../../../../_components/ExternalLink.html'
+  import Avatar from '../../../../_components/Avatar.html'
+  import { importDialogs } from '../../../../_utils/asyncModules'
   import {
     changeTheme,
     switchToInstance,
     logOutOfInstance,
     updateVerifyCredentialsForInstance
-  } from '../../../_actions/instances'
-  import { themes } from '../../../_static/themes'
+  } from '../../../../_actions/instances'
+  import { themes } from '../../../../_static/themes'
 
   export default {
     components: {

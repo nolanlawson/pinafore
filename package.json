@@ -5,9 +5,9 @@
   "scripts": {
     "lint": "standard",
     "dev": "npm run build-svg && run-p --race build-sass-watch serve",
-    "serve": "node server.js",
+    "serve": "PORT=4002 sapper dev",
     "build": "npm run globalize-css && npm run build-sass && npm run build-svg && sapper build && npm run deglobalize-css",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "PORT=4002 sapper start",
     "build-and-start": "run-s build start",
     "build-svg": "node ./bin/build-svg.js",
     "build-sass": "node ./bin/build-sass.js",
@@ -53,7 +53,7 @@
     "pify": "^3.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
-    "sapper": "nolanlawson/sapper#monkey-patches",
+    "sapper": "nolanlawson/sapper#ignore-source-maps-built",
     "serve-static": "^1.13.1",
     "standard": "^10.0.3",
     "stringz": "^0.4.0",
@@ -116,6 +116,7 @@
       "NODE_ENV": "production"
     },
     "files": [
+      "app",
       "assets",
       "bin",
       "original-assets",
@@ -124,9 +125,7 @@
       "templates",
       "package.json",
       "package-lock.json",
-      "server.js",
-      "webpack.client.config.js",
-      "webpack.server.config.js"
+      "webpack"
     ]
   }
 }
