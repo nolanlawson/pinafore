@@ -1,13 +1,22 @@
-<div class="{{hidden ? 'hidden' : ''}}">
+<!-- toggled in 2xx.html based on whether the user is logged in or not -->
+<div class="hidden-from-ssr {{shown ? 'shown' : ''}}">
   <slot></slot>
 </div>
+<style>
+  .hidden-from-ssr {
+    opacity: 0;
+  }
+  .hidden-from-ssr.shown {
+    opacity: 1;
+  }
+</style>
 <script>
   export default {
-    data: () => ({
-      hidden: true
-    }),
     oncreate () {
-      this.set({hidden: !process.browser})
-    }
+      this.set({ shown: true })
+    },
+    data: () => ({
+      shown: false
+    })
   }
 </script>

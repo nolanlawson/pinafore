@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset='utf-8' >
-	<meta name="viewport" content="width=device-width, initial-scale=1" >
-	<meta id='theThemeColor' name='theme-color' content='#4169e1' >
+  <meta charset='utf-8' >
+  <meta name="viewport" content="width=device-width, initial-scale=1" >
+  <meta id='theThemeColor' name='theme-color' content='#4169e1' >
   <meta name="description" content="A mobile-optimized web client for Mastodon." >
 
-	<link rel='manifest' href='/manifest.json' >
-	<link id='theFavicon' rel='icon' type='image/png' href='/favicon.png' >
+  <link rel='manifest' href='/manifest.json' >
+  <link id='theFavicon' rel='icon' type='image/png' href='/favicon.png' >
   <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120.png" >
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180.png" >
 
-	<style>
+  <style>
 /* auto-generated w/ build-sass.js */
 body{--button-primary-bg:#6081e6;--button-primary-text:#fff;--button-primary-border:#132c76;--button-primary-bg-active:#456ce2;--button-primary-bg-hover:#6988e7;--button-bg:#e6e6e6;--button-text:#333;--button-border:#a7a7a7;--button-bg-active:#bfbfbf;--button-bg-hover:#f2f2f2;--input-border:#dadada;--anchor-text:#4169e1;--main-bg:#fff;--body-bg:#e8edfb;--body-text-color:#333;--main-border:#dadada;--svg-fill:#4169e1;--form-bg:#f7f7f7;--form-border:#c1c1c1;--nav-bg:#4169e1;--nav-border:#214cce;--nav-a-border:#4169e1;--nav-a-selected-border:#fff;--nav-a-selected-bg:#6d8ce8;--nav-svg-fill:#fff;--nav-text-color:#fff;--nav-a-selected-border-hover:#fff;--nav-a-selected-bg-hover:#839deb;--nav-a-bg-hover:#577ae4;--nav-a-border-hover:#4169e1;--nav-svg-fill-hover:#fff;--nav-text-color-hover:#fff;--action-button-fill-color:#90a8ee;--action-button-fill-color-hover:#a2b6f0;--action-button-fill-color-active:#577ae4;--action-button-fill-color-pressed:#2351dc;--action-button-fill-color-pressed-hover:#3862e0;--action-button-fill-color-pressed-active:#1d44b8;--settings-list-item-bg:#fff;--settings-list-item-text:#4169e1;--settings-list-item-text-hover:#4169e1;--settings-list-item-border:#dadada;--settings-list-item-bg-active:#e6e6e6;--settings-list-item-bg-hover:#fafafa;--toast-bg:#333;--toast-border:#fafafa;--toast-text:#fff;--mask-bg:#333;--mask-svg-fill:#fff;--mask-opaque-bg:rgba(51,51,51,0.8);--loading-bg:#ededed;--deemphasized-text-color:#666;--focus-outline:#c5d1f6;--very-deemphasized-link-color:rgba(65,105,225,0.6);--very-deemphasized-text-color:rgba(102,102,102,0.6);--status-direct-background:#d2dcf8;--main-theme-color:#4169e1;--warning-color:#e01f19;--alt-input-bg:rgba(255,255,255,0.7)}
 body{margin:0;font-family:system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;font-size:14px;line-height:1.4;color:var(--body-text-color);background:var(--body-bg);position:fixed;left:0;right:0;bottom:0;top:0}.container{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;will-change:transform;position:absolute;top:72px;left:0;right:0;bottom:0}@media (max-width: 767px){.container{top:62px}}main{position:relative;width:602px;max-width:100vw;padding:0;box-sizing:border-box;margin:30px auto 15px;background:var(--main-bg);border:1px solid var(--main-border);border-radius:1px;min-height:70vh}@media (max-width: 767px){main{margin:5px auto 15px}}footer{width:602px;max-width:100vw;box-sizing:border-box;margin:20px auto;border-radius:1px;background:var(--main-bg);font-size:0.9em;padding:20px;border:1px solid var(--main-border)}h1,h2,h3,h4,h5,h6{margin:0 0 0.5em 0;font-weight:400;line-height:1.2}h1{font-size:2em}a{color:var(--anchor-text);text-decoration:none}a:visited{color:var(--anchor-text)}a:hover{text-decoration:underline}input{border:1px solid var(--input-border);padding:5px;box-sizing:border-box}button,.button{font-size:1.2em;background:var(--button-bg);border-radius:2px;padding:10px 15px;border:1px solid var(--button-border);cursor:pointer;color:var(--button-text)}button:hover,.button:hover{background:var(--button-bg-hover);text-decoration:none}button:active,.button:active{background:var(--button-bg-active)}button[disabled],.button[disabled]{opacity:0.35;pointer-events:none;cursor:not-allowed}button.primary,.button.primary{border:1px solid var(--button-primary-border);background:var(--button-primary-bg);color:var(--button-primary-text)}button.primary:hover,.button.primary:hover{background:var(--button-primary-bg-hover)}button.primary:active,.button.primary:active{background:var(--button-primary-bg-active)}p,label,input{font-size:1.3em}ul,li,p{padding:0;margin:0}.hidden{opacity:0}*:focus{outline:2px solid var(--focus-outline)}button::-moz-focus-inner{border:0}input:required,input:invalid{box-shadow:none}textarea{font-family:inherit;font-size:inherit;box-sizing:border-box}@keyframes spin{0%{transform:rotate(0deg)}50%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}.spin{animation:spin 2s infinite linear}
@@ -19,28 +19,28 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
 
 </style>
 
-	<noscript>
-		<style>
-			.hidden {
-				opacity: 1;
-			}
-		</style>
-	</noscript>
+  <noscript>
+    <style>
+      .hidden-from-ssr {
+        opacity: 1 !important;
+      }
+    </style>
+  </noscript>
 
-	<!-- Sapper generates a <style> tag containing critical CSS
-	     for the current page. CSS for the rest of the app is
-	     lazily loaded when it precaches secondary pages -->
-	%sapper.styles%
+  <!-- Sapper generates a <style> tag containing critical CSS
+       for the current page. CSS for the rest of the app is
+       lazily loaded when it precaches secondary pages -->
+  %sapper.styles%
 
-	<!-- This contains the contents of the <:Head> component, if
-	     the current page has one -->
-	%sapper.head%
+  <!-- This contains the contents of the <:Head> component, if
+       the current page has one -->
+  %sapper.head%
 </head>
 <body>
   <script>
-		<!-- load theme on startup (handled outside of Sapper/Svelte) -->
+    <!-- load theme on startup (handled outside of Sapper/Svelte) -->
     window.__themeColors = {
-		  'default': "royalblue",
+      'default': "royalblue",
       scarlet:   "#e04e41",
       seafoam:   "#177380",
       hotpants:  "hotpink",
@@ -48,23 +48,29 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
       majesty:   "blueviolet",
       gecko:     "#4ab92f",
       offline:   "#999999"
-		}
-		if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
-		  let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
-		  let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
-			if (theme !== 'default') {
+    }
+    if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
+      let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
+      let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
+      if (theme !== 'default') {
         document.body.classList.add(`theme-${theme}`)
-				let link = document.createElement('link')
-				link.rel = 'stylesheet'
-				link.href = `/theme-${theme}.css`
-				document.head.appendChild(link)
+        let link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = `/theme-${theme}.css`
+        document.head.appendChild(link)
         if (window.__themeColors[theme]) {
           document.getElementById('theThemeColor').content = window.__themeColors[theme]
         }
       }
-		}
-	</script>
-	<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    }
+    if (!localStorage.store_currentInstance) {
+      // if not logged in, show all these "hidden-from-ssr" elements
+      let style = document.createElement('style')
+      style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'
+      document.head.appendChild(style)
+    }
+  </script>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
     <!-- auto-generated w/ build-svg.js -->
     <!-- insert svg here --><svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
 <symbol id="pinafore-logo" viewBox="0 0 100 100"><title>Home</title><path d="M92.12 59.93H59.87V8.23C70.4 14.9 87.34 30 92.12 59.93zM31 26.9A122.4 122.4 0 0 1 9.39 60.35H31zM37.76 99h24.48a30.67 30.67 0 0 0 30.67-30.67H50.52V6.27a5.27 5.27 0 0 0-10.52 0v62.06H7.09A30.67 30.67 0 0 0 37.76 99z"></path></symbol>
@@ -102,12 +108,12 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
 <symbol id="fa-hourglass" viewBox="0 0 1792 1792"><title>Follow requested</title><path d="M1632 1600q14 0 23 9t9 23v128q0 14-9 23t-23 9H160q-14 0-23-9t-9-23v-128q0-14 9-23t23-9h1472zm-1374-64q3-55 16-107t30-95 46-87 53.5-76 64.5-69.5 66-60 70.5-55T671 939t65-43q-43-28-65-43t-66.5-47.5-70.5-55-66-60-64.5-69.5-53.5-76-46-87-30-95-16-107h1276q-3 55-16 107t-30 95-46 87-53.5 76-64.5 69.5-66 60-70.5 55T1121 853t-65 43q43 28 65 43t66.5 47.5 70.5 55 66 60 64.5 69.5 53.5 76 46 87 30 95 16 107H258zM1632 0q14 0 23 9t9 23v128q0 14-9 23t-23 9H160q-14 0-23-9t-9-23V32q0-14 9-23t23-9h1472z"></path></symbol>
 </svg><!-- end insert svg here -->
   </svg>
-	<!-- The application will be rendered inside this element,
-	     because `templates/main.js` references it -->
-	<div id='sapper'>%sapper.html%</div>
+  <!-- The application will be rendered inside this element,
+       because `templates/main.js` references it -->
+  <div id='sapper'>%sapper.html%</div>
 
-	<!-- Toast.html gets rendered here -->
-	<div id="toast"></div>
+  <!-- Toast.html gets rendered here -->
+  <div id="toast"></div>
 
   <!-- ModalDialog.html gets rendered here -->
   <div id="modal-dialog" aria-hidden="true"></div>
@@ -115,9 +121,9 @@ body.offline,body.theme-hotpants.offline,body.theme-majesty.offline,body.theme-o
   <!-- LoadingMask.html gets rendered here -->
   <div id="loading-mask" aria-hidden="true"></div>
 
-	<!-- Sapper creates a <script> tag containing `templates/main.js`
-	     and anything else it needs to hydrate the app and
-	     initialise the router -->
+  <!-- Sapper creates a <script> tag containing `templates/main.js`
+       and anything else it needs to hydrate the app and
+       initialise the router -->
   <script src='%sapper.main%'></script>
 </body>
 </html>
