@@ -76,8 +76,12 @@ const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
 }, 5000)
 
 export function addStatusOrNotification (instanceName, timelineName, newStatusOrNotification) {
+  addStatusesOrNotifications(instanceName, timelineName, [newStatusOrNotification])
+}
+
+export function addStatusesOrNotifications (instanceName, timelineName, newStatusesOrNotifications) {
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
-  freshUpdates.push(newStatusOrNotification)
+  freshUpdates = freshUpdates.concat(newStatusesOrNotifications)
   freshUpdates = uniqBy(freshUpdates, _ => _.id)
   store.setForTimeline(instanceName, timelineName, {freshUpdates: freshUpdates})
   lazilyProcessFreshUpdates(instanceName, timelineName)
