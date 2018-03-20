@@ -118,6 +118,7 @@
             for (let anchorTag of anchorTags) {
               if (anchorTag.getAttribute('href') === mention.url) {
                 anchorTag.setAttribute('href', `/accounts/${mention.id}`)
+                anchorTag.setAttribute('title', `@${mention.acct}`)
                 anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
                 anchorTag.removeAttribute('target')
                 anchorTag.removeAttribute('rel')
