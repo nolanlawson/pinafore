@@ -41,10 +41,19 @@
     },
     methods: {
       setupSyncFromStore() {
+        let textarea = this.refs.textarea
+        let firstTime = true
         this.observe('text', text => {
           this.set({rawText: text})
-          if (this.get('autoFocus')) {
-            this.refs.textarea.focus()
+          if (firstTime) {
+            firstTime = false
+            if (this.get('autoFocus')) {
+              textarea.focus()
+            }
+          } else {
+            mark('autosize.update()')
+            autosize.update(textarea)
+            stop('autosize.update()')
           }
         })
       },
@@ -60,9 +69,10 @@
         }, {init: false})
       },
       setupAutosize() {
+        let textarea = this.refs.textarea
         requestAnimationFrame(() => {
           mark('autosize()')
-          autosize(this.refs.textarea)
+          autosize(textarea)
           stop('autosize()')
         })
       },
@@ -78,6 +88,9 @@
     store: () => store,
     data: () => ({
       rawText: ''
-    })
+    }),
+    computed: {
+      postedStatusForRealm: ($postedStatusForRealm) => $postedStatusForRealm
+    }
   }
 </script>
