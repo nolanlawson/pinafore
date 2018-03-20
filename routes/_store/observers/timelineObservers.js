@@ -43,12 +43,12 @@ export function timelineObservers (store) {
     let accessToken = store.get('accessToken')
     await updateInstanceInfo(currentInstance)
 
-    let checkInstanceAndTimelineAreUnchanged = () => (
+    let currentTimelineIsUnchanged = () => (
       store.get('currentInstance') === currentInstance &&
       store.get('currentTimeline') === currentTimeline
     )
 
-    if (!checkInstanceAndTimelineAreUnchanged()) {
+    if (!currentTimelineIsUnchanged()) {
       return
     }
 
@@ -56,23 +56,23 @@ export function timelineObservers (store) {
       currentTimeline, 'timelineItemIds')
     let firstTimelineItemId = timelineItemIds && timelineItemIds[0]
 
-    if (firstTimelineItemId) {
+    let onOpenStream = async () => {
+      if (!firstTimelineItemId || !currentTimelineIsUnchanged()) {
+        return
+      }
       // fill in the "streaming gap" – i.e. fetch the most recent 20 items so that there isn't
       // a big gap in the timeline if you haven't looked at it in awhile
-      // TODO: race condition here, should start streaming while this request is ongoing
-      let newTimelineItems = await getTimeline(currentInstance, accessToken, currentTimeline,
-        null, firstTimelineItemId)
+      let newTimelineItems = await getTimeline(currentInstance, accessToken,
+        currentTimeline, null, firstTimelineItemId)
       if (newTimelineItems.length) {
         addStatusesOrNotifications(currentInstance, currentTimeline, newTimelineItems)
-      }
-      if (!checkInstanceAndTimelineAreUnchanged()) {
-        return
       }
     }
 
     let instanceInfo = store.get('currentInstanceInfo')
-    currentTimelineStream = createStream(instanceInfo.urls.streaming_api,
-      currentInstance, accessToken, currentTimeline)
+    let streamingApi = instanceInfo.urls.streaming_api
+    currentTimelineStream = createStream(streamingApi, currentInstance, accessToken,
+      currentTimeline, onOpenStream)
 
     if (process.env.NODE_ENV !== 'production') {
       window.currentTimelineStream = currentTimelineStream

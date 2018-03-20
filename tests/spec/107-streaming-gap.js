@@ -10,7 +10,7 @@ fixture`107-streaming-gap.js`
   .page`http://localhost:4002`
 
 test('fills in a status posted while away from timeline', async t => {
-  let timeout = 20000
+  let timeout = 30000
 
   await t.useRole(foobarRole)
     .click(localTimelineNavButton)
@@ -23,7 +23,7 @@ test('fills in a status posted while away from timeline', async t => {
   await t.expect(getNthStatus(0).innerText).contains('posted this while you were away!', {timeout})
     .click(localTimelineNavButton)
     .expect(getNthStatus(0).innerText).contains('posted this while you were away!', {timeout})
-  await sleep(2000)
+    .expect(getNthStatus(1).innerText).contains('heyo', {timeout})
   await postAs('admin', 'posted this while you were watching')
   await t.expect(getNthStatus(0).innerText).contains('posted this while you were watching', {timeout})
 })
