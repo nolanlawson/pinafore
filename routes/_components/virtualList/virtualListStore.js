@@ -2,7 +2,7 @@ import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
 import { reselect } from '../../_utils/reselect'
 
-const VIEWPORT_RENDER_FACTOR = 1.5
+const VIEWPORT_RENDER_FACTOR = 5
 
 class VirtualListStore extends RealmStore {
   constructor (state) {

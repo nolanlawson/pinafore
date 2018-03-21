@@ -1,5 +1,5 @@
 {{#if notification.type === 'mention' || notification.type === 'reblog' || notification.type === 'favourite'}}
-  <Status :index :length :timelineType :timelineValue
+  <Status :index :length :timelineType :timelineValue :focusSelector
           status="{{notification.status}}"
           :notification
           on:recalculateHeight
@@ -8,7 +8,7 @@
   <article class="notification-article"
            tabindex="0"
            aria-posinset="{{index}}" aria-setsize="{{length}}"
-  >
+           ref:node >
     <div class="follow-notification-offset">
       <StatusHeader :notification :notificationId :status :statusId :timelineType
                     :account :accountId :uuid isStatusInNotification="true" />
@@ -37,8 +37,15 @@
   import Status from './Status.html'
   import StatusHeader from './StatusHeader.html'
   import { store } from '../../_store/store'
+  import { restoreFocus } from '../../_utils/restoreFocus'
 
   export default {
+    oncreate() {
+      let focusSelector = this.get('focusSelector')
+      if (this.refs.node && focusSelector) {
+        restoreFocus(this.refs.node, focusSelector)
+      }
+    },
     components: {
       Status,
       StatusHeader

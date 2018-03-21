@@ -79,9 +79,6 @@
       console.log('timeline oncreate()')
       this.setupFocus()
       setupTimeline()
-      if (this.store.get('initialized')) {
-        this.restoreFocus()
-      }
       this.setupStreaming()
     },
     ondestroy() {
@@ -101,12 +98,21 @@
       VirtualListComponent: (timelineType) => {
         return timelineType === 'notifications' ? NotificationVirtualListItem : StatusVirtualListItem
       },
-      makeProps: ($currentInstance, timelineType, timelineValue) => async (itemId) => {
-        let res = { timelineType, timelineValue }
+      makeProps: ($currentInstance, timelineType, timelineValue, $lastFocusedElementSelector) => async (itemId) => {
+        let res = {
+          timelineType,
+          timelineValue
+        }
         if (timelineType === 'notifications') {
           res.notification = await database.getNotification($currentInstance, itemId)
         } else {
           res.status = await database.getStatus($currentInstance, itemId)
+        }
+        if ($lastFocusedElementSelector && $lastFocusedElementSelector.includes(itemId)) {
+          // this selector is guaranteed to contain the statusId. false positives
+          // (e.g. notification id "1" matches notification id "11") are okay
+          // because Status.html won't be able to find the selector which is fine.
+          res.focusSelector = $lastFocusedElementSelector
         }
         return res
       },
@@ -262,22 +268,7 @@
         this.store.setForTimeline(instanceName, timelineName, {
           lastFocusedElementSelector: null
         })
-      },
-      restoreFocus() {
-        let lastFocusedElementSelector = this.store.get('lastFocusedElementSelector')
-        console.log('lastFocused', lastFocusedElementSelector)
-        if (lastFocusedElementSelector) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              let element = document.querySelector(lastFocusedElementSelector)
-              console.log('el', element)
-              if (element) {
-                element.focus()
-              }
-            })
-          })
-        }
-      },
+      }
     }
   }
 </script>
