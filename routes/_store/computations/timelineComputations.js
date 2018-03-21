@@ -18,6 +18,7 @@ export function timelineComputations (store) {
   computeForTimeline(store, 'showHeader', false)
   computeForTimeline(store, 'shouldShowHeader', false)
   computeForTimeline(store, 'timelineItemIdsAreStale', false)
+  computeForTimeline(store, 'shouldRestoreFocus', false)
 
   store.compute('firstTimelineItemId', ['timelineItemIds'], (timelineItemIds) => {
     return timelineItemIds && timelineItemIds[0]

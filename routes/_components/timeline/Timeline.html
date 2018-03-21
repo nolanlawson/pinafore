@@ -177,6 +177,16 @@
       },
       onScrollTopChanged(scrollTop) {
         this.set({scrollTop: scrollTop})
+        if (!this.get('observedOnScrollTopChanged')) {
+          // ignore the first scroll top change, e.g.
+          // because we forced a scroll top change
+          this.set({observedOnScrollTopChanged: true})
+        } else {
+          // after that, don't allow statuses/notifications to call focus()
+          // after we've already started scrolling. that causes scrolling to
+          // jump around
+          this.store.setForCurrentTimeline({shouldRestoreFocus: false})
+        }
       },
       onScrollToBottom() {
         if (!this.store.get('initialized') ||
@@ -233,7 +243,10 @@
       },
       setupFocus() {
         this.onPushState = this.onPushState.bind(this)
-        this.store.setForCurrentTimeline({ignoreBlurEvents: false})
+        this.store.setForCurrentTimeline({
+          ignoreBlurEvents: false,
+          shouldRestoreFocus: true
+        })
         window.addEventListener('pushState', this.onPushState)
       },
       teardownFocus() {

@@ -20,6 +20,12 @@ export function timelineMixins (Store) {
     return root && root[instanceName] && root[instanceName][timelineName]
   }
 
+  Store.prototype.getForCurrentTimeline = function (key) {
+    let instanceName = this.get('currentInstance')
+    let timelineName = this.get('currentTimeline')
+    return this.getForTimeline(instanceName, timelineName, key)
+  }
+
   Store.prototype.getAllTimelineData = function (instanceName, key) {
     let root = this.get(`timelineData_${key}`) || {}
     return root[instanceName] || {}

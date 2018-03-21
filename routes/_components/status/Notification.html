@@ -42,7 +42,8 @@
   export default {
     oncreate() {
       let focusSelector = this.get('focusSelector')
-      if (this.refs.node && focusSelector) {
+      if (this.refs.node && focusSelector &&
+          this.store.getForCurrentTimeline('shouldRestoreFocus')) {
         restoreFocus(this.refs.node, focusSelector)
       }
     },
