@@ -22,6 +22,7 @@ This section lays out some high-level goals for Pinafore, as well as the goals i
 - Ship in the Android/iOS app stores as a Cordova app
 - Support Pleroma/non-Mastodon backends
 - i18n
+- Offline search
 
 ### Non-goals
 
