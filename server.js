@@ -14,7 +14,11 @@ global.fetch = (url, opts) => {
 
 app.use(compression({ threshold: 0 }))
 
-app.use(serveStatic('assets'))
+app.use(serveStatic('assets', {
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'public,max-age=14400')
+  }
+}))
 
 app.use(sapper())
 
