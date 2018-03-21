@@ -6,7 +6,7 @@
           :disabled
           delegate-key="{{delegateKey}}"
           focus-key="{{focusKey || ''}}" >
-    <svg class="icon-button-svg">
+    <svg class="icon-button-svg" ref:svg>
       <use xlink:href="{{href}}" />
     </svg>
   </button>
@@ -18,7 +18,7 @@
           focus-key="{{focusKey || ''}}"
           :disabled
           on:click >
-    <svg class="icon-button-svg">
+    <svg class="icon-button-svg" ref:svg>
       <use xlink:href="{{href}}" />
     </svg>
   </button>
@@ -50,7 +50,7 @@
   }
 
   .icon-button.pressed .icon-button-svg {
-    fill: var(--action-button-fill-color-pressed)
+    fill: var(--action-button-fill-color-pressed);
   }
 
   .icon-button.pressed:hover .icon-button-svg {
@@ -66,6 +66,16 @@
   import { classname } from '../_utils/classname'
 
   export default {
+    oncreate() {
+      this.observe('animation', animation => {
+        if (!animation) {
+          return
+        }
+        let svg = this.refs.svg
+        let animations = animation.map(({properties, options}) => svg.animate(properties, options))
+        animations.forEach(anim => anim.play())
+      })
+    },
     computed: {
       computedClass: (pressable, pressed, big, className) => {
         return classname(

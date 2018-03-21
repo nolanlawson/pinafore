@@ -66,6 +66,7 @@
     "testcafe": "^0.19.0",
     "timeago.js": "^3.0.2",
     "tiny-queue": "^0.2.1",
+    "web-animations-js": "^2.3.1",
     "webpack": "^4.1.0",
     "webpack-bundle-analyzer": "^2.11.1",
     "workerize-loader": "^1.0.1",
@@ -100,7 +101,8 @@
       "FormData",
       "atob",
       "btoa",
-      "Blob"
+      "Blob",
+      "Element"
     ],
     "ignore": [
       "dist",

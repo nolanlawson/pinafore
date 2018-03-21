@@ -13,6 +13,7 @@
     disabled="{{reblogDisabled}}"
     href="{{reblogIcon}}"
     delegateKey="{{reblogKey}}"
+    animation="{{animateReblog && reblogAnimation}}"
   />
   <IconButton
     label="Favorite"
@@ -20,6 +21,7 @@
     pressed="{{favorited}}"
     href="#fa-star"
     delegateKey="{{favoriteKey}}"
+    animation="{{animateFavorite && favoriteAnimation}}"
   />
   <IconButton
     label="Show more options"
@@ -46,6 +48,7 @@
   import { goto } from 'sapper/runtime.js'
   import { importDialogs } from '../../_utils/asyncModules'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
+  import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
 
   export default {
     oncreate() {
@@ -69,11 +72,13 @@
         let originalStatusId = this.get('originalStatusId')
         let favorited = this.get('favorited')
         /* no await */ setFavorited(originalStatusId, !favorited)
+        this.set({animateFavorite: !favorited})
       },
       onReblogClick() {
         let originalStatusId = this.get('originalStatusId')
         let reblogged = this.get('reblogged')
         /* no await */ setReblogged(originalStatusId, !reblogged)
+        this.set({animateReblog: !reblogged})
       },
       onReplyClick() {
         let originalStatusId = this.get('originalStatusId')
@@ -88,6 +93,10 @@
         dialogs.showStatusOptionsDialog(originalStatusId)
       }
     },
+    data: () => ({
+      favoriteAnimation: FAVORITE_ANIMATION,
+      reblogAnimation: REBLOG_ANIMATION
+    }),
     computed: {
       reblogLabel: (visibility) => {
         switch (visibility) {
