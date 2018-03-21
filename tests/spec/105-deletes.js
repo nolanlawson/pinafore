@@ -1,8 +1,7 @@
 import { foobarRole } from '../roles'
 import {
   clickToNotificationsAndBackHome, forceOffline, forceOnline, getNthStatus, getUrl, homeNavButton,
-  notificationsNavButton,
-  sleep
+  notificationsNavButton
 } from '../utils'
 import { deleteAs, postAs, postReplyAs } from '../serverActions'
 

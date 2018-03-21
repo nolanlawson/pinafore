@@ -16,3 +16,18 @@ export async function cacheFirstUpdateAfter (networkFetcher, dbFetcher, dbUpdate
     }
   }
 }
+
+// Make a change that we optimistically show to the user as successful, but which
+// actually depends on a network operation. In the unlikely event that the network
+// operation fails, revert the changes
+export async function optimisticUpdate (doImmediately, networkUpdater, onSuccess, onFailure) {
+  let networkPromise = networkUpdater()
+  doImmediately()
+  try {
+    let response = await networkPromise
+    onSuccess(response)
+  } catch (e) {
+    console.error(e)
+    onFailure(e)
+  }
+}

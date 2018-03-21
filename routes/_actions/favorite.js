@@ -10,18 +10,16 @@ export async function setFavorited (statusId, favorited) {
   }
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
+  let networkPromise = favorited
+    ? favoriteStatus(instanceName, accessToken, statusId)
+    : unfavoriteStatus(instanceName, accessToken, statusId)
+  store.setStatusFavorited(instanceName, statusId, favorited) // optimistic update
   try {
-    await (favorited
-        ? favoriteStatus(instanceName, accessToken, statusId)
-        : unfavoriteStatus(instanceName, accessToken, statusId))
+    await networkPromise
     await database.setStatusFavorited(instanceName, statusId, favorited)
-    let statusModifications = store.get('statusModifications')
-    let currentStatusModifications = statusModifications[instanceName] =
-      (statusModifications[instanceName] || {favorites: {}, reblogs: {}})
-    currentStatusModifications.favorites[statusId] = favorited
-    store.set({statusModifications: statusModifications})
   } catch (e) {
     console.error(e)
     toast.say(`Failed to ${favorited ? 'favorite' : 'unfavorite'}. ` + (e.message || ''))
+    store.setStatusFavorited(instanceName, statusId, !favorited) // undo optimistic update
   }
 }
