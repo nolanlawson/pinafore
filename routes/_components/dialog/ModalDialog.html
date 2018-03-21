@@ -2,7 +2,7 @@
      tabindex="-1"
      data-a11y-dialog-hide
 ></div>
-<div class="modal-dialog-contents {{fadedIn ? '' : 'hidden'}}"
+<div class="modal-dialog-contents {{fadedIn ? '' : 'hidden'}} {{muted ? 'muted-style' : ''}}"
      role="dialog"
      aria-label="{{label}}"
      ref:node
@@ -13,7 +13,8 @@
         <h1 class="modal-dialog-title">{{title}}</h1>
       {{/if}}
       <div class="close-dialog-button-wrapper">
-        <button class="close-dialog-button" data-a11y-dialog-hide aria-label="Close dialog">
+        <button class="close-dialog-button"
+                data-a11y-dialog-hide aria-label="Close dialog">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -86,6 +87,18 @@
     padding: 0 10px 7px;
     font-size: 32px;
     color: var(--button-primary-text);
+  }
+  .muted-style .modal-dialog-header {
+    background: var(--muted-modal-bg);
+  }
+  .muted-style .close-dialog-button:focus {
+    outline: 2px solid var(--muted-modal-focus);
+  }
+  .muted-style .close-dialog-button:hover {
+    background: var(--muted-modal-hover);
+  }
+  .muted-style.modal-dialog-contents {
+    border: none;
   }
 </style>
 <script>

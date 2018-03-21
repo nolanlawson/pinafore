@@ -1,4 +1,4 @@
-<ModalDialog :label :shown background="var(--main-bg)">
+<ModalDialog :label :shown background="var(--muted-modal-bg)" muted="true">
   {{#if type === 'gifv'}}
     <video
       aria-label="Animated GIF: {{description || ''}}"

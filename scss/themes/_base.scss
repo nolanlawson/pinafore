@@ -70,4 +70,8 @@
   --main-theme-color: $main-theme-color;
   --warning-color: #e01f19;
   --alt-input-bg: rgba($main-bg-color, 0.7);
+
+  --muted-modal-bg: transparent;
+  --muted-modal-focus: #999;
+  --muted-modal-hover: rgba(255, 255, 255, 0.2);
 }
