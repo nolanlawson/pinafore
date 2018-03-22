@@ -23,11 +23,9 @@
       let key = this.get('key')
       if (makeProps) {
         let props = await makeProps(key)
-        requestAnimationFrame(() => { // delay slightly to avoid slow scrolling
-          mark('PseudoVirtualListLazyItem set props')
-          this.set({props: props})
-          stop('PseudoVirtualListLazyItem set props')
-        })
+        mark('PseudoVirtualListLazyItem set props')
+        this.set({props: props})
+        stop('PseudoVirtualListLazyItem set props')
       }
     },
     components: {

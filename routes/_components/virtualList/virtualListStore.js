@@ -2,7 +2,7 @@ import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
 import { reselect } from '../../_utils/reselect'
 
-const VIEWPORT_RENDER_FACTOR = 5
+const RENDER_BUFFER_FACTOR = 1.5
 
 class VirtualListStore extends RealmStore {
   constructor (state) {
@@ -30,7 +30,7 @@ virtualListStore.compute('rawVisibleItems',
       if (!items) {
         return null
       }
-      let renderBuffer = VIEWPORT_RENDER_FACTOR * offsetHeight
+      let renderBuffer = RENDER_BUFFER_FACTOR * offsetHeight
       let visibleItems = []
       let totalOffset = showHeader ? headerHeight : 0
       let len = items.length
@@ -46,7 +46,7 @@ virtualListStore.compute('rawVisibleItems',
             continue // above the area we want to render
           }
         } else {
-          if (currentOffset > (scrollTop + height + renderBuffer)) {
+          if (currentOffset > (scrollTop + offsetHeight + renderBuffer)) {
             break // below the area we want to render
           }
         }
