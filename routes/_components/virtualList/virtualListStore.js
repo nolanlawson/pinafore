@@ -4,6 +4,11 @@ import { reselect } from '../../_utils/reselect'
 
 const VIEWPORT_RENDER_FACTOR = 5
 
+// TODO: Hack because compose box takes up roughly this amount of pixels.
+// Ideally we should calculate that the .virtual-list is X number of pixels
+// below the .container and then offset everything by that.
+const HIGH_PRIORITY_TOP_BUFFER = 600
+
 class VirtualListStore extends RealmStore {
   constructor (state) {
     super(state, /* maxSize */ 10)
@@ -46,14 +51,17 @@ virtualListStore.compute('rawVisibleItems',
             continue // above the area we want to render
           }
         } else {
-          if (currentOffset > (scrollTop + height + renderBuffer)) {
+          if (currentOffset > (scrollTop + offsetHeight + renderBuffer)) {
             break // below the area we want to render
           }
         }
+        let lowPriority = ((currentOffset + height + HIGH_PRIORITY_TOP_BUFFER) < scrollTop) ||
+          (currentOffset > (scrollTop + offsetHeight))
         visibleItems.push({
           offset: currentOffset,
           key: key,
-          index: i
+          index: i,
+          lowPriority: lowPriority
         })
       }
       stop('compute visibleItems')

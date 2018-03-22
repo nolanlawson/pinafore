@@ -19,11 +19,18 @@
       let key = this.get('key')
       if (makeProps) {
         let props = await makeProps(key)
-        scheduleIdleTask(() => { // delay slightly to avoid slow scrolling
+        let render = () => {
           mark('VirtualListLazyItem set props')
           this.set({props: props})
           stop('VirtualListLazyItem set props')
-        })
+        }
+        if (this.get('lowPriority')) {
+          console.log('lazy render', this.get('key'))
+          scheduleIdleTask(render)
+        } else {
+          console.log('fast render', this.get('key'))
+          render()
+        }
       }
     },
     components: {
