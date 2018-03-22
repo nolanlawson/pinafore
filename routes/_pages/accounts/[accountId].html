@@ -30,7 +30,6 @@
   export default {
     oncreate() {
       let accountId = this.get('params').accountId
-      let instanceName = this.store.get('currentInstance')
       updateProfileAndRelationship(accountId)
     },
     store: () => store,

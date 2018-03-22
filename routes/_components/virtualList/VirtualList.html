@@ -1,5 +1,7 @@
 <VirtualListContainer :realm :containerQuery >
-  <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
+  <div class="virtual-list {{shown ? '' : 'hidden'}}"
+       style="height: {{$height}}px;"
+       ref:node >
     <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
     {{#if $visibleItems}}
       {{#each $visibleItems as visibleItem @key}}
@@ -31,6 +33,7 @@
   import throttle from 'lodash/throttle'
   import { mark, stop } from '../../_utils/marks'
   import isEqual from 'lodash/isEqual'
+  import { getRectFromEntry, getRootRectFromEntry } from '../../_utils/getRectFromEntry'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 800
   const SCROLL_EVENT_THROTTLE = 1000
@@ -86,6 +89,8 @@
           this.fireScrollToTop()
         }
       })
+
+      this.calculateListOffset()
     },
     data: () => ({
       component: null
@@ -104,6 +109,27 @@
       scrollTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
+    },
+    methods: {
+      calculateListOffset() {
+        let node = this.refs.node
+        let container = document.querySelector(this.get('containerQuery'))
+
+        // TODO: this needs to dynamically update, e.g. after pinned
+        // toots are rendered and thus the distance between the .container
+        // and the .virtual-list has changed.
+        let containerObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            let rect = getRectFromEntry(entry)
+            let rootRect = getRootRectFromEntry(entry, container)
+            let listOffset = rect.top - rootRect.top
+            console.log('listOffset', listOffset)
+            this.store.setForRealm({listOffset})
+          })
+          containerObserver.disconnect()
+        }, {root: container})
+        containerObserver.observe(node)
+      }
     }
   }
 </script>

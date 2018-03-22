@@ -3,16 +3,29 @@
 
 let hasBoundingRectBug
 
+function rectsAreEqual(rectA, rectB) {
+  return rectA.height === rectB.height &&
+  rectA.top === rectB.top &&
+  rectA.width === rectB.width &&
+  rectA.bottom === rectB.bottom &&
+  rectA.left === rectB.left &&
+  rectA.right === rectB.right
+}
+
 export function getRectFromEntry (entry) {
   if (typeof hasBoundingRectBug !== 'boolean') {
     const boundingRect = entry.target.getBoundingClientRect()
     const observerRect = entry.boundingClientRect
-    hasBoundingRectBug = boundingRect.height !== observerRect.height ||
-      boundingRect.top !== observerRect.top ||
-      boundingRect.width !== observerRect.width ||
-      boundingRect.bottom !== observerRect.bottom ||
-      boundingRect.left !== observerRect.left ||
-      boundingRect.right !== observerRect.right
+    hasBoundingRectBug = !rectsAreEqual(boundingRect, observerRect)
   }
   return hasBoundingRectBug ? entry.target.getBoundingClientRect() : entry.boundingClientRect
+}
+
+export function getRootRectFromEntry (entry, root) {
+  if (typeof hasBoundingRectBug !== 'boolean') {
+    const boundingRect = root.getBoundingClientRect()
+    const rootRect = entry.rootBounds
+    hasBoundingRectBug = !rectsAreEqual(boundingRect, rootRect)
+  }
+  return hasBoundingRectBug ? root.getBoundingClientRect() : entry.rootBounds
 }
