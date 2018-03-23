@@ -24,7 +24,7 @@ test('fills in a status posted while away from timeline', async t => {
     .click(localTimelineNavButton)
     .expect(getNthStatus(0).innerText).contains('posted this while you were away!', {timeout})
     .expect(getNthStatus(1).innerText).contains('heyo', {timeout})
-  await sleep(2000)
+  await sleep(5000)
   await postAs('admin', 'posted this while you were watching')
   await t.expect(getNthStatus(0).innerText).contains('posted this while you were watching', {timeout})
 })
