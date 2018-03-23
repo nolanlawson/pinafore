@@ -4,7 +4,7 @@
 let cached
 
 export function isMobile () {
-  if (!cached) {
+  if (typeof cached === 'undefined') {
     cached = !!(process.browser && navigator.userAgent.match(/(iPhone|iPod|iPad|Android)/))
   }
   return cached
