@@ -4,7 +4,7 @@
   "name": "Pinafore for Mastodon",
   "short_name": "Pinafore",
   "display": "minimal-ui",
-  "start_url": "/",
+  "start_url": "/?pwa=true",
   "icons": [
     {
       "src": "icon-48.png",
