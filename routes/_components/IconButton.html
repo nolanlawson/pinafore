@@ -63,13 +63,13 @@
   }
 </style>
 <script>
-
   import { classname } from '../_utils/classname'
+  import { store } from '../_store/store'
 
   export default {
     oncreate() {
       this.observe('animation', animation => {
-        if (!animation) {
+        if (!animation || this.store.get('reduceMotion')) {
           return
         }
         let svg = this.refs.svg
@@ -77,6 +77,7 @@
         animations.forEach(anim => anim.play())
       })
     },
+    store: () => store,
     computed: {
       computedClass: (pressable, pressed, big, className) => {
         return classname(

@@ -13,6 +13,11 @@
              bind:checked="$markMediaAsSensitive" on:change="store.save()">
       <label for="choice-mark-media-sensitive">Always mark media as sensitive</label>
     </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-reduce-motion"
+             bind:checked="$reduceMotion" on:change="store.save()">
+      <label for="choice-reduce-motion">Reduce motion in UI animations</label>
+    </div>
   </form>
 
 </SettingsLayout>

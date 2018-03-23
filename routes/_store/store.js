@@ -13,6 +13,7 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'loggedInInstancesInOrder',
   'autoplayGifs',
   'markMediaAsSensitive',
+  'reduceMotion',
   'pinnedPages',
   'composeData'
 ])
@@ -34,6 +35,7 @@ export const store = new PinaforeStore({
   sensitivesShown: {},
   autoplayGifs: false,
   markMediaAsSensitive: false,
+  reduceMotion: false,
   pinnedPages: {},
   instanceLists: {},
   pinnedStatuses: {},
