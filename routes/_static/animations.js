@@ -23,3 +23,17 @@ export const FAVORITE_ANIMATION = [
 ]
 
 export const REBLOG_ANIMATION = FAVORITE_ANIMATION
+
+export const FOLLOW_BUTTON_ANIMATION = [
+  {
+    properties: [
+      {transform: 'scale(1)'},
+      {transform: 'scale(2)'},
+      {transform: 'scale(1)'}
+    ],
+    options: {
+      duration: 400,
+      easing: 'ease-in-out'
+    }
+  }
+]

@@ -30,6 +30,7 @@
             pressed="{{following}}"
             big="true"
             on:click="onFollowButtonClick()"
+            animation="{{animateFollowButton && followButtonAnimation}}"
           />
         {{/if}}
       </div>
@@ -189,8 +190,25 @@
   import { store } from '../_store/store'
   import { setAccountFollowed } from '../_actions/follow'
   import { database } from '../_database/database'
+  import { FOLLOW_BUTTON_ANIMATION } from '../_static/animations'
 
   export default {
+    methods: {
+      async onFollowButtonClick() {
+        let accountId = this.get('profile').id
+        let instanceName = this.store.get('currentInstance')
+        let following = this.get('following')
+        let followRequested = this.get('followRequested')
+        this.set({animateFollowButton: true})
+        await setAccountFollowed(accountId, !(following || followRequested))
+        let relationship = await database.getRelationship(instanceName, accountId)
+        this.set({relationship})
+      }
+    },
+    store: () => store,
+    data: () => ({
+      followButtonAnimation: FOLLOW_BUTTON_ANIMATION
+    }),
     computed: {
       headerIsMissing: (profile) => profile.header.endsWith('missing.png'),
       note: (profile) => profile.note,
@@ -222,17 +240,6 @@
         }
       }
     },
-    methods: {
-      async onFollowButtonClick() {
-        let accountId = this.get('profile').id
-        let instanceName = this.store.get('currentInstance')
-        let following = this.get('following')
-        let followRequested = this.get('followRequested')
-        await setAccountFollowed(accountId, !(following || followRequested))
-        this.set({relationship: await database.getRelationship(instanceName, accountId)})
-      }
-    },
-    store: () => store,
     components: {
       IconButton,
       ExternalLink,
