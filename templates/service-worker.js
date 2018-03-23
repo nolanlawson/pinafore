@@ -14,7 +14,7 @@ const cached = new Set(toCache)
 const routes = __routes__
 
 self.addEventListener('install', event => {
-  event.waitUntil((async function () {
+  event.waitUntil((async () => {
     let cache = await caches.open(ASSETS)
     await cache.addAll(toCache)
     self.skipWaiting()
@@ -22,7 +22,7 @@ self.addEventListener('install', event => {
 })
 
 self.addEventListener('activate', event => {
-  event.waitUntil((async function () {
+  event.waitUntil((async () => {
     let keys = await caches.keys()
     // delete old caches
     for (let key of keys) {
@@ -47,10 +47,11 @@ self.addEventListener('fetch', event => {
     return
   }
 
-  event.respondWith((async function () {
+  event.respondWith((async () => {
     // always serve assets and webpack-generated files from cache
     if (url.origin === self.origin && cached.has(url.pathname)) {
-      return caches.match(req)
+      let cache = await caches.open(ASSETS)
+      return cache.match(req)
     }
 
     // for pages, you might want to serve a shell `index.html` file,
@@ -59,7 +60,8 @@ self.addEventListener('fetch', event => {
 
     if (url.origin === self.origin &&
         routes.find(route => route.pattern.test(url.pathname))) {
-      return caches.match('/index.html')
+      let cache = await caches.open(ASSETS)
+      return cache.match('/index.html')
     }
 
     // For these GET requests, go cache-first
