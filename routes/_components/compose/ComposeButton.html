@@ -43,7 +43,7 @@
   export default {
     store: () => store,
     computed: {
-      disabled: ($postingStatus, overLimit, length) => $postingStatus || overLimit || length === 0
+      disabled: ($postingStatus, overLimit) => $postingStatus || overLimit
     }
   }
 </script>

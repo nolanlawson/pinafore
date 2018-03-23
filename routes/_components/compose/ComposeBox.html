@@ -115,8 +115,12 @@
         let sensitive = media.length && !!contentWarning
         let realm = this.get('realm')
         let mediaIds = media.map(_ => _.data.id)
-
         let inReplyTo = realm === 'home' ? null : realm
+        let overLimit = this.get('overLimit')
+
+        if (!text || overLimit) {
+          return // do nothing if invalid
+        }
 
         /* no await */ postStatus(realm, text, inReplyTo, mediaIds,
           sensitive, contentWarning, postPrivacyKey)

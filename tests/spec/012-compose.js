@@ -14,7 +14,7 @@ test('shows compose limits', async t => {
   await t.useRole(foobarRole)
     .hover(composeInput)
     .expect(composeLengthIndicator.innerText).eql('500')
-    .expect(composeButton.getAttribute('disabled')).eql('')
+    .expect(composeButton.hasAttribute('disabled')).notOk()
     .typeText(composeInput, 'typing some text')
     .expect(composeLengthIndicator.innerText).eql('484')
     .expect(composeButton.hasAttribute('disabled')).notOk()
@@ -33,13 +33,13 @@ test('shows compose limits', async t => {
     .pressKey('delete')
     .expect(composeInput.value).eql('')
     .expect(composeLengthIndicator.innerText).eql('500')
-    .expect(composeButton.getAttribute('disabled')).eql('')
+    .expect(composeButton.hasAttribute('disabled')).notOk()
 })
 
 test('shows compose limits for URLs/handles', async t => {
   await t.useRole(foobarRole)
     .expect(composeLengthIndicator.innerText).eql('500')
-    .expect(composeButton.getAttribute('disabled')).eql('')
+    .expect(composeButton.hasAttribute('disabled')).notOk()
     .typeText(composeInput, 'hello world ' +
       'http://foo.bar.baz.whatever.example.com/hello ' +
       '@reallylongnamethatstretchesonandon@foo.example.com', {paste: true})
