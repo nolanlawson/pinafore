@@ -6,7 +6,7 @@ export const FAVORITE_ANIMATION = [
       {transform: 'scale(1)'}
     ],
     options: {
-      duration: 400,
+      duration: 333,
       easing: 'ease-in-out'
     }
   },
@@ -16,7 +16,7 @@ export const FAVORITE_ANIMATION = [
       {fill: 'var(--action-button-fill-color-pressed)'}
     ],
     options: {
-      duration: 400,
+      duration: 333,
       easing: 'linear'
     }
   }
@@ -32,7 +32,7 @@ export const FOLLOW_BUTTON_ANIMATION = [
       {transform: 'scale(1)'}
     ],
     options: {
-      duration: 400,
+      duration: 333,
       easing: 'ease-in-out'
     }
   }
