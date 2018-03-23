@@ -55,11 +55,13 @@
     },
     methods: {
       onClickSpoilerButton() {
-        let uuid = this.get('uuid')
-        let $spoilersShown = this.store.get('spoilersShown')
-        $spoilersShown[uuid] = !$spoilersShown[uuid]
-        this.store.set({'spoilersShown': $spoilersShown})
-        this.fire('recalculateHeight')
+        requestAnimationFrame(() => {
+          let uuid = this.get('uuid')
+          let $spoilersShown = this.store.get('spoilersShown')
+          $spoilersShown[uuid] = !$spoilersShown[uuid]
+          this.store.set({'spoilersShown': $spoilersShown})
+          this.fire('recalculateHeight')
+        })
       }
     }
   }
