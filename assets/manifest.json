@@ -35,6 +35,21 @@
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "icon-44.png",
+      "sizes": "44x44",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-50.png",
+      "sizes": "50x50",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-150.png",
+      "sizes": "150x150",
+      "type": "image/png"
     }
   ]
 }
