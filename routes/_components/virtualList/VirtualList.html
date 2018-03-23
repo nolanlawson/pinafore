@@ -1,5 +1,7 @@
 <VirtualListContainer :realm :containerQuery >
-  <div class="virtual-list {{shown ? '' : 'hidden'}}" style="height: {{$height}}px;">
+  <div class="virtual-list {{shown ? '' : 'hidden'}}"
+       style="height: {{$height}}px;"
+       ref:node >
     <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
     {{#if $visibleItems}}
       {{#each $visibleItems as visibleItem @key}}
@@ -85,6 +87,7 @@
         if (scrollTop === 0) {
           this.fireScrollToTop()
         }
+        this.calculateListOffset()
       })
     },
     data: () => ({
@@ -104,6 +107,19 @@
       scrollTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
+    },
+    methods: {
+      calculateListOffset() {
+        // TODO: better way to get the offset top?
+        let node = this.refs.node
+        if (!node) {
+          return
+        }
+        mark('calculateListOffset')
+        let listOffset = node.offsetParent.offsetTop
+        this.store.setForRealm({listOffset})
+        stop('calculateListOffset')
+      }
     }
   }
 </script>

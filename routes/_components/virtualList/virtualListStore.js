@@ -2,7 +2,7 @@ import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
 import { reselect } from '../../_utils/reselect'
 
-const RENDER_BUFFER_FACTOR = 5
+const RENDER_BUFFER_FACTOR = 1.5
 
 class VirtualListStore extends RealmStore {
   constructor (state) {
@@ -20,16 +20,18 @@ virtualListStore.computeForRealm('headerHeight', 0)
 virtualListStore.computeForRealm('scrollTop', 0)
 virtualListStore.computeForRealm('scrollHeight', 0)
 virtualListStore.computeForRealm('offsetHeight', 0)
+virtualListStore.computeForRealm('listOffset', 0)
 virtualListStore.computeForRealm('itemHeights', {})
 
 virtualListStore.compute('rawVisibleItems',
-    ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'showHeader', 'headerHeight'],
-    (items, scrollTop, itemHeights, offsetHeight, showHeader, headerHeight) => {
+    ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'showHeader', 'headerHeight', 'listOffset'],
+    (items, scrollTop, itemHeights, offsetHeight, showHeader, headerHeight, listOffset) => {
       window.rawVisibleItemsComputed = (window.rawVisibleItemsComputed || 0) + 1
       mark('compute visibleItems')
       if (!items) {
         return null
       }
+      let effectiveScrollTop = scrollTop - listOffset
       let renderBuffer = RENDER_BUFFER_FACTOR * offsetHeight
       let visibleItems = []
       let totalOffset = showHeader ? headerHeight : 0
@@ -40,13 +42,13 @@ virtualListStore.compute('rawVisibleItems',
         let height = itemHeights[key] || 0
         let currentOffset = totalOffset
         totalOffset += height
-        let isAboveViewport = (currentOffset < scrollTop)
+        let isAboveViewport = (currentOffset < effectiveScrollTop)
         if (isAboveViewport) {
-          if ((scrollTop - height - renderBuffer) > currentOffset) {
+          if ((effectiveScrollTop - height - renderBuffer) > currentOffset) {
             continue // above the area we want to render
           }
         } else {
-          if (currentOffset > (scrollTop + offsetHeight + renderBuffer)) {
+          if (currentOffset > (effectiveScrollTop + offsetHeight + renderBuffer)) {
             break // below the area we want to render
           }
         }
