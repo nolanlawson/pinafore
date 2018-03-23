@@ -3,7 +3,7 @@
   "theme_color": "#4169e1",
   "name": "Pinafore for Mastodon",
   "short_name": "Pinafore",
-  "display": "minimal-ui",
+  "display": "standalone",
   "start_url": "/?pwa=true",
   "icons": [
     {
