@@ -1,18 +1,18 @@
 <div class="account-profile {{headerIsMissing ? 'header-is-missing' : ''}}"
-     style="background-image: url({{$autoplayGifs ? profile.header : profile.header_static}});">
+     style="background-image: url({{$autoplayGifs ? account.header : account.header_static}});">
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-backdrop"></div>
     <div class="account-profile-grid">
       <div class="account-profile-avatar">
-        <Avatar account="{{profile}}" size="big" />
+        <Avatar :account size="big" />
       </div>
       <div class="account-profile-name">
-        <ExternalLink href="{{profile.url}}" showIcon="true" normalIconColor="true">
-          {{profile.display_name || profile.acct}}
+        <ExternalLink href="{{account.url}}" showIcon="true" normalIconColor="true">
+          {{account.display_name || account.acct}}
         </ExternalLink>
       </div>
       <div class="account-profile-username">
-        {{'@' + profile.acct}}
+        {{'@' + account.acct}}
       </div>
       <div class="account-profile-followed-by">
         {{#if relationship && relationship.followed_by}}
@@ -195,7 +195,7 @@
   export default {
     methods: {
       async onFollowButtonClick() {
-        let accountId = this.get('profile').id
+        let accountId = this.get('account').id
         let instanceName = this.store.get('currentInstance')
         let following = this.get('following')
         let followRequested = this.get('followRequested')
@@ -210,8 +210,8 @@
       followButtonAnimation: FOLLOW_BUTTON_ANIMATION
     }),
     computed: {
-      headerIsMissing: (profile) => profile.header.endsWith('missing.png'),
-      note: (profile) => profile.note,
+      headerIsMissing: (account) => account.header.endsWith('missing.png'),
+      note: (account) => account.note,
       massagedNote: (note) => {
         // GNU Social / Pleroma don't add <p> tags
         if (!note.startsWith('<p>')) {
@@ -220,7 +220,9 @@
         return note
       },
       following: (relationship) => relationship && relationship.following,
-      followRequested: (relationship) => relationship && relationship.requested,
+      followRequested: (relationship, account) => {
+        return relationship && relationship.requested && account && account.locked
+      },
       followLabel: (following, followRequested) => {
         if (following) {
           return 'Unfollow'

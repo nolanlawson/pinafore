@@ -8,16 +8,17 @@ export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   try {
+    let account
     if (follow) {
-      await followAccount(instanceName, accessToken, accountId)
+      account = await followAccount(instanceName, accessToken, accountId)
     } else {
-      await unfollowAccount(instanceName, accessToken, accountId)
+      account = await unfollowAccount(instanceName, accessToken, accountId)
     }
     await updateProfileAndRelationship(accountId)
     let relationship = await database.getRelationship(instanceName, accountId)
     if (toastOnSuccess) {
       if (follow) {
-        if (relationship.requested) {
+        if (account.locked && relationship.requested) {
           toast.say('Requested to follow account')
         } else {
           toast.say('Followed account')

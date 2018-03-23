@@ -1,7 +1,7 @@
 {{#if $isUserLoggedIn}}
 <DynamicPageBanner title="" />
   {{#if $currentAccountProfile && $currentVerifyCredentials}}
-    <AccountProfile profile="{{$currentAccountProfile}}"
+    <AccountProfile account="{{$currentAccountProfile}}"
                     relationship="{{$currentAccountRelationship}}"
                     verifyCredentials="{{$currentVerifyCredentials}}"
     />
