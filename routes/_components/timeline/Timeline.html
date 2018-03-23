@@ -256,31 +256,39 @@
         this.store.setForCurrentTimeline({ ignoreBlurEvents: true })
       },
       saveFocus(e) {
-        let instanceName = this.store.get('currentInstance')
-        let timelineName = this.get('timeline')
-        let lastFocusedElementSelector
-        let activeElement = e.target
-        if (activeElement) {
-          let focusKey = activeElement.getAttribute('focus-key')
-          if (focusKey) {
-            lastFocusedElementSelector = `[focus-key=${JSON.stringify(focusKey)}]`
+        try {
+          let instanceName = this.store.get('currentInstance')
+          let timelineName = this.get('timeline')
+          let lastFocusedElementSelector
+          let activeElement = e.target
+          if (activeElement) {
+            let focusKey = activeElement.getAttribute('focus-key')
+            if (focusKey) {
+              lastFocusedElementSelector = `[focus-key=${JSON.stringify(focusKey)}]`
+            }
           }
+          console.log('saving focus to ', lastFocusedElementSelector)
+          this.store.setForTimeline(instanceName, timelineName, {
+            lastFocusedElementSelector
+          })
+        } catch (err) {
+          console.error('unable to save focus', err)
         }
-        console.log('saving focus to ', lastFocusedElementSelector)
-        this.store.setForTimeline(instanceName, timelineName, {
-          lastFocusedElementSelector
-        })
       },
       clearFocus() {
-        if (this.store.get('ignoreBlurEvents')) {
-          return
+        try {
+          if (this.store.get('ignoreBlurEvents')) {
+            return
+          }
+          console.log('clearing focus')
+          let instanceName = this.store.get('currentInstance')
+          let timelineName = this.get('timeline')
+          this.store.setForTimeline(instanceName, timelineName, {
+            lastFocusedElementSelector: null
+          })
+        } catch (err) {
+          console.error('unable to clear focus', err)
         }
-        console.log('clearing focus')
-        let instanceName = this.store.get('currentInstance')
-        let timelineName = this.get('timeline')
-        this.store.setForTimeline(instanceName, timelineName, {
-          lastFocusedElementSelector: null
-        })
       }
     }
   }
