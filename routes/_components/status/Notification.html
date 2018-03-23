@@ -7,8 +7,7 @@
 {{else}}
   <article class="notification-article"
            tabindex="0"
-           aria-posinset="{{index}}" aria-setsize="{{length}}"
-           ref:node >
+           aria-posinset="{{index}}" aria-setsize="{{length}}" >
     <StatusHeader :notification :notificationId :status :statusId :timelineType
                   :account :accountId :uuid isStatusInNotification="true" />
   </article>
@@ -32,16 +31,8 @@
   import Status from './Status.html'
   import StatusHeader from './StatusHeader.html'
   import { store } from '../../_store/store'
-  import { restoreFocus } from '../../_utils/restoreFocus'
 
   export default {
-    oncreate() {
-      let focusSelector = this.get('focusSelector')
-      if (this.refs.node && focusSelector &&
-          this.store.getForCurrentTimeline('shouldRestoreFocus')) {
-        restoreFocus(this.refs.node, focusSelector)
-      }
-    },
     components: {
       Status,
       StatusHeader

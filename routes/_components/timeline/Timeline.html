@@ -79,6 +79,7 @@
       console.log('timeline oncreate()')
       this.setupFocus()
       setupTimeline()
+      this.restoreFocus()
       this.setupStreaming()
     },
     ondestroy() {
@@ -98,7 +99,7 @@
       VirtualListComponent: (timelineType) => {
         return timelineType === 'notifications' ? NotificationVirtualListItem : StatusVirtualListItem
       },
-      makeProps: ($currentInstance, timelineType, timelineValue, $lastFocusedElementSelector) => async (itemId) => {
+      makeProps: ($currentInstance, timelineType, timelineValue) => async (itemId) => {
         let res = {
           timelineType,
           timelineValue
@@ -107,12 +108,6 @@
           res.notification = await database.getNotification($currentInstance, itemId)
         } else {
           res.status = await database.getStatus($currentInstance, itemId)
-        }
-        if ($lastFocusedElementSelector && $lastFocusedElementSelector.includes(itemId)) {
-          // this selector is guaranteed to contain the statusId. false positives
-          // (e.g. notification id "1" matches notification id "11") are okay
-          // because Status.html won't be able to find the selector which is fine.
-          res.focusSelector = $lastFocusedElementSelector
         }
         return res
       },
@@ -177,16 +172,6 @@
       },
       onScrollTopChanged(scrollTop) {
         this.set({scrollTop: scrollTop})
-        if (!this.get('observedOnScrollTopChanged')) {
-          // ignore the first scroll top change, e.g.
-          // because we forced a scroll top change
-          this.set({observedOnScrollTopChanged: true})
-        } else {
-          // after that, don't allow statuses/notifications to call focus()
-          // after we've already started scrolling. that causes scrolling to
-          // jump around
-          this.store.setForCurrentTimeline({shouldRestoreFocus: false})
-        }
       },
       onScrollToBottom() {
         if (!this.store.get('initialized') ||
@@ -244,8 +229,7 @@
       setupFocus() {
         this.onPushState = this.onPushState.bind(this)
         this.store.setForCurrentTimeline({
-          ignoreBlurEvents: false,
-          shouldRestoreFocus: true
+          ignoreBlurEvents: false
         })
         window.addEventListener('pushState', this.onPushState)
       },
@@ -289,7 +273,22 @@
         } catch (err) {
           console.error('unable to clear focus', err)
         }
-      }
+      },
+      restoreFocus() {
+        let lastFocusedElementSelector = this.store.get('lastFocusedElementSelector')
+        if (!lastFocusedElementSelector) {
+          return
+        }
+        console.log('restoreFocus', lastFocusedElementSelector)
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            let element = document.querySelector(lastFocusedElementSelector)
+            if (element) {
+              element.focus()
+            }
+          })
+        })
+      },
     }
   }
 </script>

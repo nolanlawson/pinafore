@@ -5,8 +5,7 @@
          aria-posinset="{{index}}"
          aria-setsize="{{length}}"
          aria-label="{{ariaLabel}}"
-         on:recalculateHeight
-         ref:node >
+         on:recalculateHeight >
   {{#if showHeader}}
     <StatusHeader :notification :notificationId :status :statusId :timelineType
                   :account :accountId :uuid :isStatusInNotification />
@@ -103,7 +102,6 @@
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
-  import { restoreFocus } from '../../_utils/restoreFocus'
 
   export default {
     oncreate() {
@@ -111,11 +109,6 @@
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
         registerClickDelegate(delegateKey, (e) => this.onClickOrKeydown(e))
-      }
-      let focusSelector = this.get('focusSelector')
-      if (this.refs.node && focusSelector &&
-          this.store.getForCurrentTimeline('shouldRestoreFocus')) {
-        restoreFocus(this.refs.node, focusSelector)
       }
     },
     ondestroy() {
