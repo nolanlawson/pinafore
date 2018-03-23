@@ -1,12 +1,14 @@
 <div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}}">
+  <Avatar :account size="extra-small" className="status-header-avatar"/>
   <svg class="status-header-svg">
     <use xlink:href="{{icon}}"/>
   </svg>
-  <span>
+  <span class="status-header-span">
     {{#if timelineType === 'pinned'}}
       Pinned toot
     {{else}}
       <a href="/accounts/{{accountId}}"
+         class="status-header-a"
          title="{{'@' + account.acct}}"
          focus-key="{{focusKey}}" >
         {{account.display_name || account.username}}
@@ -24,31 +26,6 @@
   </span>
 </div>
 <style>
-  .status-header span {
-    margin-left: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  :global(
-      .status-header span,
-      .status-header a,
-      .status-header a:visited,
-      .status-header a:hover
-  ) {
-    color: var(--deemphasized-text-color);
-  }
-
-  :global(
-      .status-header.status-in-notification span,
-      .status-header.status-in-notification a,
-      .status-header.status-in-notification a:visited,
-      .status-header.status-in-notification a:hover
-  ) {
-    color: var(--body-text-color);
-  }
-
   .status-header {
     grid-area: header;
     margin: 5px 10px 5px 5px;
@@ -56,18 +33,56 @@
     align-items: center;
   }
 
+  :global(.status-header-avatar) {
+    margin-left: 19px; /* offset for avatar, 48px - 24px - 5px */
+  }
+
   .status-header-svg {
+    margin-left: 20px;
     width: 18px;
     height: 18px;
     fill: var(--deemphasized-text-color);
   }
 
+  @media (max-width: 767px) {
+    .status-header-svg {
+      margin-left: 10px;
+    }
+  }
+
   .status-header.status-in-notification .status-header-svg {
     fill: var(--body-text-color);
   }
+
+  .status-header-span {
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status-header-span,
+  .status-header-a,
+  .status-header-a:visited,
+  .status-header-a:hover {
+    color: var(--deemphasized-text-color);
+  }
+
+  .status-in-notification .status-header-span,
+  .status-in-notification .status-header-a,
+  .status-in-notification .status-header-a:visited,
+  .status-in-notification .status-header-a:hover {
+    color: var(--body-text-color);
+  }
 </style>
 <script>
+
+  import Avatar from '../Avatar.html'
+
   export default {
+    components: {
+      Avatar
+    },
     computed: {
       focusKey: (uuid) => `status-header-${uuid}`,
       icon: (notification, status, timelineType) => {

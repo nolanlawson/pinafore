@@ -9,10 +9,8 @@
            tabindex="0"
            aria-posinset="{{index}}" aria-setsize="{{length}}"
            ref:node >
-    <div class="follow-notification-offset">
-      <StatusHeader :notification :notificationId :status :statusId :timelineType
-                    :account :accountId :uuid isStatusInNotification="true" />
-    </div>
+    <StatusHeader :notification :notificationId :status :statusId :timelineType
+                  :account :accountId :uuid isStatusInNotification="true" />
   </article>
 {{/if}}
 <style>
@@ -21,9 +19,6 @@
     max-width: calc(100vw - 40px);
     padding: 10px 20px;
     border-bottom: 1px solid var(--main-border);
-  }
-  .follow-notification-offset {
-    margin-left: 58px; /* offset for avatar, 48px + 10px */
   }
   @media (max-width: 767px) {
     .notification-article {
