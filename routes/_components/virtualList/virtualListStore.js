@@ -2,7 +2,7 @@ import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
 import { reselect } from '../../_utils/reselect'
 
-const RENDER_BUFFER_FACTOR = 1.5
+const RENDER_BUFFER_FACTOR = 2.5
 
 class VirtualListStore extends RealmStore {
   constructor (state) {
