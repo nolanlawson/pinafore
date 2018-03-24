@@ -171,3 +171,7 @@ textarea {
 .spin {
   animation: spin 2s infinite linear;
 }
+
+.ellipsis::after {
+  content: "\2026";
+}
