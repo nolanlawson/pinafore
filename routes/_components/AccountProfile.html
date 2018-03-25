@@ -37,6 +37,32 @@
       <div class="account-profile-note">
         {{{massagedNote}}}
       </div>
+      <div class="account-profile-details">
+        <div class="account-profile-details-item">
+          <span class="account-profile-details-item-title">
+            Toots
+          </span>
+          <span class="account-profile-details-item-datum">
+            {{account.statuses_count || 0}}
+          </span>
+        </div>
+        <div class="account-profile-details-item">
+          <span class="account-profile-details-item-title">
+            Follows
+          </span>
+          <span class="account-profile-details-item-datum">
+            {{account.following_count || 0}}
+          </span>
+        </div>
+        <div class="account-profile-details-item">
+          <span class="account-profile-details-item-title">
+            Followers
+          </span>
+          <span class="account-profile-details-item-datum">
+            {{account.followers_count || 0}}
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -66,7 +92,8 @@
     display: grid;
     grid-template-areas: "avatar     name        followed-by   follow"
                          "avatar     username    username      follow"
-                         "avatar     note        note          follow";
+                         "avatar     note        note          follow"
+                         "details    details     details       details";
     grid-template-columns: min-content auto 1fr min-content;
     grid-column-gap: 10px;
     grid-row-gap: 5px;
@@ -158,6 +185,42 @@
     margin: 0;
   }
 
+  .account-profile-details {
+    grid-area: details;
+    display: flex;
+    margin: 0 5px;
+  }
+
+  .account-profile-details-item {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    justify-content: center;
+    font-size: 1.1em;
+  }
+
+  .account-profile-details-item:hover {
+    background: var(--button-bg-hover);
+    cursor: pointer;
+  }
+
+  .account-profile-details-item:active {
+    background: var(--button-bg-active);
+  }
+
+  .account-profile-details-item-title {
+    text-transform: uppercase;
+    color: var(--deemphasized-text-color);
+    margin-right: 5px;
+  }
+
+  .account-profile-details-item-datum {
+    color: var(--body-text-color);
+    margin-left: 5px;
+    font-weight: 600;
+  }
+
   @media (max-width: 767px) {
     .account-profile-name {
       font-size: 1.3em;
@@ -167,7 +230,8 @@
       grid-template-areas: "avatar     name          follow"
                            "avatar     username      follow"
                            "avatar     followed-by   follow"
-                           "note       note          note";
+                           "note       note          note"
+                           "details    details       details";
       grid-template-columns: min-content minmax(auto, 1fr) min-content;
       grid-template-rows: min-content min-content 1fr min-content;
       padding: 10px;
@@ -195,7 +259,7 @@
   export default {
     methods: {
       async onFollowButtonClick() {
-        let accountId = this.get('account').id
+        let accountId = this.get('accountId')
         let instanceName = this.store.get('currentInstance')
         let following = this.get('following')
         let followRequested = this.get('followRequested')
@@ -210,6 +274,7 @@
       followButtonAnimation: FOLLOW_BUTTON_ANIMATION
     }),
     computed: {
+      accountId: (account) => account.id,
       headerIsMissing: (account) => account.header.endsWith('missing.png'),
       note: (account) => account.note,
       massagedNote: (note) => {
