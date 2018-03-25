@@ -1,7 +1,8 @@
-const app = require('express')()
+const express = require('express')
 const compression = require('compression')
 const sapper = require('sapper')
 const serveStatic = require('serve-static')
+const app = express()
 
 const { PORT = 4002 } = process.env
 
@@ -19,6 +20,9 @@ app.use(serveStatic('assets', {
     res.setHeader('Cache-Control', 'public,max-age=14400')
   }
 }))
+
+app.use('/report.html', express.static('.sapper/client/report.html'))
+app.use('/stats.json', express.static('.sapper/client/stats.json'))
 
 app.use(sapper())
 
