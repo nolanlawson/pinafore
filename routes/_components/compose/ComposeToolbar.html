@@ -1,40 +1,54 @@
 <div class="compose-box-toolbar">
-  <IconButton
-    label="Insert emoji"
-    href="#fa-smile"
-    on:click="onEmojiClick()"
-  />
-  <IconButton
-    className="{{$uploadingMedia ? 'spin' : ''}}"
-    label="Add media"
-    href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
-    on:click="onMediaClick()"
-    disabled="{{$uploadingMedia || (media.length === 4)}}"
-  />
-  <IconButton
-    label="Adjust privacy (currently {{postPrivacy.label}})"
-    href="{{postPrivacy.icon}}"
-    on:click="onPostPrivacyClick()"
-  />
-  <IconButton
-    label="{{contentWarningShown ? 'Remove content warning' : 'Add content warning'}}"
-    href="#fa-exclamation-triangle"
-    on:click="onContentWarningClick()"
-    pressable="true"
-    pressed="{{contentWarningShown}}"
-  />
+  <div class="compose-box-toolbar-items">
+    <IconButton
+      label="Insert emoji"
+      href="#fa-smile"
+      on:click="onEmojiClick()"
+    />
+    <IconButton
+      className="{{$uploadingMedia ? 'spin' : ''}}"
+      label="Add media"
+      href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
+      on:click="onMediaClick()"
+      disabled="{{$uploadingMedia || (media.length === 4)}}"
+    />
+    <IconButton
+      label="Adjust privacy (currently {{postPrivacy.label}})"
+      href="{{postPrivacy.icon}}"
+      on:click="onPostPrivacyClick()"
+    />
+    <IconButton
+      label="{{contentWarningShown ? 'Remove content warning' : 'Add content warning'}}"
+      href="#fa-exclamation-triangle"
+      on:click="onContentWarningClick()"
+      pressable="true"
+      pressed="{{contentWarningShown}}"
+    />
+  </div>
   <input ref:input
          on:change="onFileChange(event)"
          style="display: none;"
          type="file"
          accept=".jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,image/jpeg,image/png,image/gif,video/webm,video/mp4">
+  <div class="compose-autosuggest-wrapper">
+    <ComposeAutosuggest :realm :text />
+  </div>
 </div>
 <style>
   .compose-box-toolbar {
     grid-area: toolbar;
+    position: relative;
     align-self: center;
+  }
+  .compose-box-toolbar-items {
     display: flex;
     align-items: center;
+  }
+  .compose-autosuggest-wrapper {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    z-index: 90;
   }
 </style>
 <script>
@@ -44,6 +58,7 @@
   import { importDialogs } from '../../_utils/asyncModules'
   import { doMediaUpload } from '../../_actions/media'
   import { toggleContentWarningShown } from '../../_actions/contentWarnings'
+  import ComposeAutosuggest from './ComposeAutosuggest.html'
 
   export default {
     oncreate() {
@@ -58,7 +73,8 @@
       }
     },
     components: {
-      IconButton
+      IconButton,
+      ComposeAutosuggest
     },
     store: () => store,
     methods: {

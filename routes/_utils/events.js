@@ -52,3 +52,20 @@ export function blurWithCapture (node, callback) {
     }
   }
 }
+
+export function selectionChange (node, callback) {
+  let events = ['keyup', 'click', 'focus', 'blur']
+  let listener = () => {
+    callback(node.selectionStart)
+  }
+  for (let event of events) {
+    node.addEventListener(event, listener)
+  }
+  return {
+    teardown () {
+      for (let event of events) {
+        node.removeEventListener(event, listener)
+      }
+    }
+  }
+}

@@ -74,4 +74,8 @@
   --muted-modal-bg: transparent;
   --muted-modal-focus: #999;
   --muted-modal-hover: rgba(255, 255, 255, 0.2);
+
+  --compose-autosuggest-item-hover: $compose-background;
+  --compose-autosuggest-item-active: darken($compose-background, 5%);
+  --compose-autosuggest-outline: lighten($focus-outline, 5%);
 }

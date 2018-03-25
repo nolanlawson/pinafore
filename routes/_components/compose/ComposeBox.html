@@ -8,7 +8,7 @@
   {{/if}}
   <ComposeInput :realm :text :autoFocus />
   <ComposeLengthGauge :length :overLimit />
-  <ComposeToolbar :realm :postPrivacy :media :contentWarningShown />
+  <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
   <ComposeLengthIndicator :length :overLimit />
   <ComposeMedia :realm :media />
   <ComposeButton :length :overLimit on:click="onClickPostButton()" />

@@ -10,7 +10,8 @@ import {
   TIMESTAMP,
   REBLOG_ID,
   THREADS_STORE,
-  STATUS_ID
+  STATUS_ID,
+  USERNAME_LOWERCASE
 } from './constants'
 
 import forEach from 'lodash/forEach'
@@ -18,7 +19,9 @@ import forEach from 'lodash/forEach'
 const openReqs = {}
 const databaseCache = {}
 
-const DB_VERSION = 9
+const DB_VERSION_INITIAL = 9
+const DB_VERSION_SEARCH_ACCOUNTS = 10
+const DB_VERSION_CURRENT = 10
 
 export function getDatabase (instanceName) {
   if (!instanceName) {
@@ -29,7 +32,7 @@ export function getDatabase (instanceName) {
   }
 
   databaseCache[instanceName] = new Promise((resolve, reject) => {
-    let req = indexedDB.open(instanceName, DB_VERSION)
+    let req = indexedDB.open(instanceName, DB_VERSION_CURRENT)
     openReqs[instanceName] = req
     req.onerror = reject
     req.onblocked = () => {
@@ -37,6 +40,7 @@ export function getDatabase (instanceName) {
     }
     req.onupgradeneeded = (e) => {
       let db = req.result
+      let tx = e.currentTarget.transaction
 
       function createObjectStore (name, init, indexes) {
         let store = init
@@ -49,7 +53,7 @@ export function getDatabase (instanceName) {
         }
       }
 
-      if (e.oldVersion < DB_VERSION) {
+      if (e.oldVersion < DB_VERSION_INITIAL) {
         createObjectStore(STATUSES_STORE, {keyPath: 'id'}, {
           [TIMESTAMP]: TIMESTAMP,
           [REBLOG_ID]: REBLOG_ID
@@ -77,6 +81,10 @@ export function getDatabase (instanceName) {
           'statusId': ''
         })
         createObjectStore(META_STORE)
+      }
+      if (e.oldVersion < DB_VERSION_SEARCH_ACCOUNTS) {
+        tx.objectStore(ACCOUNTS_STORE)
+          .createIndex(USERNAME_LOWERCASE, USERNAME_LOWERCASE)
       }
     }
     req.onsuccess = () => resolve(req.result)

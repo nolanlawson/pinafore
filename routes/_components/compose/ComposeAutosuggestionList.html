@@ -1,0 +1,90 @@
+<ul class="generic-user-list">
+  {{#each items as account, i @id}}
+  <li class="generic-user-list-item">
+    <button class="generic-user-list-button {{i === selected ? 'selected' : ''}}"
+            tabindex="0"
+            on:click="fire('click', account)">
+      <div class="generic-user-list-grid">
+        <Avatar
+          className="generic-user-list-item-avatar"
+          size="small"
+          :account
+        />
+        <span class="generic-user-list-display-name">
+          {{account.display_name || account.acct}}
+        </span>
+        <span class="generic-user-list-username">
+          {{'@' + account.acct}}
+        </span>
+      </div>
+    </button>
+  </li>
+  {{/each}}
+</ul>
+<style>
+  .generic-user-list {
+    list-style: none;
+    width: 100%;
+    border-radius: 2px;
+    box-sizing: border-box;
+    border: 1px solid var(--compose-autosuggest-outline);
+  }
+  .generic-user-list-item {
+    border-bottom: 1px solid var(--compose-autosuggest-outline);
+    display: flex;
+  }
+  .generic-user-list-item:last-child {
+    border-bottom: none;
+  }
+  .generic-user-list-button {
+    padding: 10px;
+    background: var(--settings-list-item-bg);
+    border: none;
+    margin: 0;
+    flex: 1;
+  }
+  .generic-user-list-grid {
+    display: grid;
+    width: 100%;
+    grid-template-areas: "avatar     display-name"
+    "avatar     username";
+    grid-template-columns: min-content 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 5px;
+  }
+  :global(.generic-user-list-item-avatar) {
+    grid-area: avatar;
+  }
+  .generic-user-list-display-name {
+    grid-area: display-name;
+    font-size: 1.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    text-align: left;
+  }
+  .generic-user-list-username {
+    grid-area: username;
+    font-size: 1em;
+    color: var(--deemphasized-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+  .generic-user-list-button:hover, .generic-user-list-button.selected {
+    background: var(--compose-autosuggest-item-hover);
+  }
+  .generic-user-list-button:active {
+    background: var(--compose-autosuggest-item-active);
+  }
+</style>
+<script>
+  import Avatar from '../Avatar.html'
+  export default {
+    components: {
+      Avatar
+    }
+  }
+</script>

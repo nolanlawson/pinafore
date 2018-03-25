@@ -4,6 +4,9 @@
   ref:textarea
   bind:value=rawText
   on:blur="onBlur()"
+  on:focus="onFocus()"
+  on:selectionChange="onSelectionChange(event)"
+  on:keydown="onKeydown(event)"
 ></textarea>
 <style>
   .compose-box-input {
@@ -29,6 +32,8 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import debounce from 'lodash/debounce'
   import { mark, stop } from '../../_utils/marks'
+  import { selectionChange } from '../../_utils/events'
+  import { clickSelectedAutosuggestionUsername } from '../../_actions/compose'
 
   export default {
     oncreate() {
@@ -82,7 +87,53 @@
         stop('autosize.destroy()')
       },
       onBlur() {
-        this.store.set({composeSelectionStart: this.refs.textarea.selectionStart})
+        this.store.set({composeFocused: false})
+      },
+      onFocus() {
+        this.store.set({composeFocused: true})
+      },
+      onSelectionChange(selectionStart) {
+        this.store.set({composeSelectionStart: selectionStart})
+      },
+      onKeydown(e) {
+        let { keyCode } = e
+        switch (keyCode) {
+          case 9: // tab
+          case 13: //enter
+            this.clickSelectedAutosuggestion(e)
+            break
+          case 38: // up
+            this.incrementAutosuggestSelected(-1, e)
+            break
+          case 40: // down
+            this.incrementAutosuggestSelected(1, e)
+            break
+          default:
+        }
+      },
+      clickSelectedAutosuggestion(event) {
+        let autosuggestionShown = this.store.get('composeAutosuggestionShown')
+        if (!autosuggestionShown) {
+          return
+        }
+        clickSelectedAutosuggestionUsername(this.get('realm'))
+        event.preventDefault()
+      },
+      incrementAutosuggestSelected(increment, event) {
+        let autosuggestionShown = this.store.get('composeAutosuggestionShown')
+        if (!autosuggestionShown) {
+          return
+        }
+        let selected = this.store.get('composeAutosuggestionSelected') || 0
+        let searchResults = this.store.get('composeAutosuggestionSearchResults') || []
+        selected += increment
+        if (selected >= 0) {
+          selected = selected % searchResults.length
+        } else {
+          selected = searchResults.length + selected
+        }
+        this.store.set({composeAutosuggestionSelected: selected})
+        event.preventDefault()
       }
     },
     store: () => store,
@@ -91,6 +142,9 @@
     }),
     computed: {
       postedStatusForRealm: ($postedStatusForRealm) => $postedStatusForRealm
+    },
+    events: {
+      selectionChange
     }
   }
 </script>

@@ -1,6 +1,6 @@
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { getInCache, hasInCache, setInCache } from './cache'
-import { ACCOUNT_ID, REBLOG_ID, STATUS_ID, TIMESTAMP } from './constants'
+import { ACCOUNT_ID, REBLOG_ID, STATUS_ID, TIMESTAMP, USERNAME_LOWERCASE } from './constants'
 
 export async function getGenericEntityWithId (store, cache, instanceName, id) {
   if (hasInCache(cache, instanceName, id)) {
@@ -40,6 +40,10 @@ export function cloneForStorage (obj) {
         break
       case 'reblog':
         res[REBLOG_ID] = value.id
+        break
+      case 'acct':
+        res[key] = value
+        res[USERNAME_LOWERCASE] = value.toLowerCase()
         break
       default:
         res[key] = value

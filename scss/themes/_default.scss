@@ -8,6 +8,7 @@ $secondary-text-color: white;
 $toast-border: #fafafa;
 $toast-bg: #333;
 $focus-outline: lighten($main-theme-color, 30%);
+$compose-background: lighten($main-theme-color, 32%);
 
 @import "_base.scss";
 

@@ -45,3 +45,14 @@ export function createPinnedStatusKeyRange (accountId) {
     accountId + '\u0000\uffff'
   )
 }
+
+//
+// accounts
+//
+
+export function createAccountUsernamePrefixKeyRange (accountUsernamePrefix) {
+  return IDBKeyRange.bound(
+    accountUsernamePrefix,
+    accountUsernamePrefix + '\uffff'
+  )
+}
