@@ -1,61 +1,76 @@
-<ul class="generic-user-list">
-  {{#each items as account, i @id}}
-  <li class="generic-user-list-item">
-    <button class="generic-user-list-button {{i === selected ? 'selected' : ''}}"
+<ul class="compose-autosuggest-list">
+  {{#each items as item, i}}
+  <li class="compose-autosuggest-list-item">
+    <button class="compose-autosuggest-list-button {{i === selected ? 'selected' : ''}}"
             tabindex="0"
-            on:click="fire('click', account)">
-      <div class="generic-user-list-grid">
+            on:click="fire('click', item)">
+      <div class="compose-autosuggest-list-grid">
+        {{#if type === 'account'}}
         <Avatar
-          className="generic-user-list-item-avatar"
+          className="compose-autosuggest-list-item-avatar"
           size="small"
-          :account
+          account="{{item}}"
         />
-        <span class="generic-user-list-display-name">
-          {{account.display_name || account.acct}}
+        <span class="compose-autosuggest-list-display-name">
+            {{item.display_name || item.acct}}
         </span>
-        <span class="generic-user-list-username">
-          {{'@' + account.acct}}
+        <span class="compose-autosuggest-list-username">
+            {{'@' + item.acct}}
         </span>
+        {{else}}
+          <img src="{{$autoplayGifs ? item.url : item.static_url}}"
+               class="compose-autosuggest-list-item-icon"
+               alt="{{':' + item.shortcode + ':'}}"
+          />
+          <span class="compose-autosuggest-list-display-name">
+              {{':' + item.shortcode + ':'}}
+          </span>
+        {{/if}}
       </div>
     </button>
   </li>
   {{/each}}
 </ul>
 <style>
-  .generic-user-list {
+  .compose-autosuggest-list {
     list-style: none;
     width: 100%;
     border-radius: 2px;
     box-sizing: border-box;
     border: 1px solid var(--compose-autosuggest-outline);
   }
-  .generic-user-list-item {
+  .compose-autosuggest-list-item {
     border-bottom: 1px solid var(--compose-autosuggest-outline);
     display: flex;
   }
-  .generic-user-list-item:last-child {
+  .compose-autosuggest-list-item:last-child {
     border-bottom: none;
   }
-  .generic-user-list-button {
+  .compose-autosuggest-list-button {
     padding: 10px;
     background: var(--settings-list-item-bg);
     border: none;
     margin: 0;
     flex: 1;
   }
-  .generic-user-list-grid {
+  .compose-autosuggest-list-grid {
     display: grid;
     width: 100%;
-    grid-template-areas: "avatar     display-name"
-    "avatar     username";
+    grid-template-areas: "icon     display-name"
+                         "icon     username";
     grid-template-columns: min-content 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 5px;
   }
-  :global(.generic-user-list-item-avatar) {
-    grid-area: avatar;
+  :global(.compose-autosuggest-list-item-avatar) {
+    grid-area: icon;
   }
-  .generic-user-list-display-name {
+  .compose-autosuggest-list-item-icon {
+    grid-area: icon;
+    width: 48px;
+    height: 48px;
+  }
+  .compose-autosuggest-list-display-name {
     grid-area: display-name;
     font-size: 1.1em;
     white-space: nowrap;
@@ -64,7 +79,7 @@
     min-width: 0;
     text-align: left;
   }
-  .generic-user-list-username {
+  .compose-autosuggest-list-username {
     grid-area: username;
     font-size: 1em;
     color: var(--deemphasized-text-color);
@@ -73,16 +88,19 @@
     text-overflow: ellipsis;
     text-align: left;
   }
-  .generic-user-list-button:hover, .generic-user-list-button.selected {
+  .compose-autosuggest-list-button:hover, .compose-autosuggest-list-button.selected {
     background: var(--compose-autosuggest-item-hover);
   }
-  .generic-user-list-button:active {
+  .compose-autosuggest-list-button:active {
     background: var(--compose-autosuggest-item-active);
   }
 </style>
 <script>
   import Avatar from '../Avatar.html'
+  import { store } from '../../_store/store'
+
   export default {
+    store: () => store,
     components: {
       Avatar
     }

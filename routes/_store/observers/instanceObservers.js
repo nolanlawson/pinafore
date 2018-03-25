@@ -1,6 +1,7 @@
 import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances'
 import { updateLists } from '../../_actions/lists'
 import { createStream } from '../../_actions/streaming'
+import { updateCustomEmojiForInstance } from '../../_actions/emoji'
 
 export function instanceObservers (store) {
   // stream to watch for home timeline updates and notifications
@@ -22,6 +23,7 @@ export function instanceObservers (store) {
     }
     updateVerifyCredentialsForInstance(currentInstance)
     updateInstanceInfo(currentInstance)
+    updateCustomEmojiForInstance(currentInstance)
     updateLists()
 
     await updateInstanceInfo(currentInstance)

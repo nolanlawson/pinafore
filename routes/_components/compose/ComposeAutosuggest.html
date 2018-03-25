@@ -2,7 +2,8 @@
      aria-hidden="true" >
   <ComposeAutosuggestionList
     items="{{searchResults}}"
-    on:click="onUserSelected(event)"
+    on:click="onClick(event)"
+    :type
     :selected
   />
 </div>
@@ -32,6 +33,7 @@
   import { store } from '../../_store/store'
   import { database } from '../../_database/database'
   import { insertUsername } from '../../_actions/compose'
+  import { insertEmojiAtPosition } from '../../_actions/emoji'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { once } from '../../_utils/once'
   import ComposeAutosuggestionList from './ComposeAutosuggestionList.html'
@@ -39,7 +41,8 @@
   const SEARCH_RESULTS_LIMIT = 4
   const DATABASE_SEARCH_RESULTS_LIMIT = 30
   const MIN_PREFIX_LENGTH = 1
-  const SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
+  const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
+  const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`)
 
   export default {
     oncreate() {
@@ -63,7 +66,7 @@
         } else {
           Promise.race([
             new Promise(resolve => setTimeout(resolve, 200)),
-            new Promise(resolve => this.once('userSelected', resolve))
+            new Promise(resolve => this.once('autosuggestItemSelected', resolve))
           ]).then(updateFocusedState)
         }
       })
@@ -71,11 +74,15 @@
         if (!searchText) {
           return
         }
-        let results = await this.search(searchText)
+        let type = searchText.startsWith('@') ? 'account' : 'emoji'
+        let results = (type === 'account')
+          ? await this.searchAccounts(searchText)
+          : await this.searchEmoji(searchText)
         this.store.set({
           composeAutosuggestionSelected: 0,
           composeAutosuggestionSearchText: searchText,
-          composeAutosuggestionSearchResults: results
+          composeAutosuggestionSearchResults: results,
+          composeAutosuggestionType: type,
         })
       })
       this.observe('shown', shown => {
@@ -84,26 +91,41 @@
     },
     methods: {
       once: once,
-      onUserSelected(account) {
-        this.fire('userSelected')
+      onClick(item) {
+        this.fire('autosuggestItemSelected')
         let realm = this.get('realm')
         let selectionStart = this.store.get('composeSelectionStart')
         let searchText = this.store.get('composeAutosuggestionSearchText')
         let startIndex = selectionStart - searchText.length
         let endIndex = selectionStart
-        /* no await */ insertUsername(realm, account.acct, startIndex, endIndex)
+        if (item.acct) {
+          /* no await */ insertUsername(realm, item.acct, startIndex, endIndex)
+        } else {
+          /* no await */ insertEmojiAtPosition(realm, item, startIndex, endIndex)
+        }
+
       },
-      async search(searchText) {
+      async searchAccounts(searchText) {
+        searchText = searchText.substring(1)
         let currentInstance = this.store.get('currentInstance')
         let results = await database.searchAccountsByUsername(
-          currentInstance, searchText.substring(1), DATABASE_SEARCH_RESULTS_LIMIT)
+          currentInstance, searchText, DATABASE_SEARCH_RESULTS_LIMIT)
         return results.slice(0, SEARCH_RESULTS_LIMIT)
+      },
+      searchEmoji(searchText) {
+        searchText = searchText.toLowerCase().substring(1)
+        let customEmoji = this.store.get('currentCustomEmoji')
+        let results = customEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))
+          .sort((a, b) => a.shortcode.toLowerCase() < b.shortcode.toLowerCase() ? -1 : 1)
+          .slice(0, SEARCH_RESULTS_LIMIT)
+        return results
       }
     },
     computed: {
       composeSelectionStart: ($composeSelectionStart) => $composeSelectionStart,
       composeFocused: ($composeFocused) => $composeFocused,
       searchResults: ($composeAutosuggestionSearchResults) => $composeAutosuggestionSearchResults || [],
+      type: ($composeAutosuggestionType) => $composeAutosuggestionType || 'account',
       selected: ($composeAutosuggestionSelected) => $composeAutosuggestionSelected || 0,
       searchText: (text, composeSelectionStartDeferred) => {
         let selectionStart = composeSelectionStartDeferred || 0
@@ -111,7 +133,8 @@
           return
         }
 
-        let match = text.substring(0, selectionStart).match(SEARCH_REGEX)
+        let textUpToCursor = text.substring(0, selectionStart)
+        let match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
         return match && match[1]
       },
       shown: (composeFocusedDeferred, searchText, searchResults) => {

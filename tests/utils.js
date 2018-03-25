@@ -95,6 +95,10 @@ export const uploadKittenImage = i => (exec(() => {
   }
 }))
 
+export function getNthAutosuggestionResult (n) {
+  return $(`.compose-autosuggest-list-item:nth-child(${n}) button`)
+}
+
 export function getNthSearchResult (n) {
   return $(`.search-result:nth-child(${n}) a`)
 }

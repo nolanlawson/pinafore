@@ -34,6 +34,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { selectionChange } from '../../_utils/events'
   import { clickSelectedAutosuggestionUsername } from '../../_actions/compose'
+  import { clickSelectedAutosuggestionEmoji } from '../../_actions/emoji'
 
   export default {
     oncreate() {
@@ -49,16 +50,19 @@
         let textarea = this.refs.textarea
         let firstTime = true
         this.observe('text', text => {
-          this.set({rawText: text})
+          if (this.get('rawText') !== text) {
+            this.set({rawText: text})
+            // this next autosize is required to resize after
+            // the user clicks the "toot" button
+            mark('autosize.update()')
+            autosize.update(textarea)
+            stop('autosize.update()')
+          }
           if (firstTime) {
             firstTime = false
             if (this.get('autoFocus')) {
               textarea.focus()
             }
-          } else {
-            mark('autosize.update()')
-            autosize.update(textarea)
-            stop('autosize.update()')
           }
         })
       },
@@ -116,7 +120,12 @@
         if (!autosuggestionShown) {
           return
         }
-        clickSelectedAutosuggestionUsername(this.get('realm'))
+        let type = this.store.get('composeAutosuggestionType')
+        if (type === 'account') {
+          /* no await */ clickSelectedAutosuggestionUsername(this.get('realm'))
+        } else { // emoji
+          /* no await */ clickSelectedAutosuggestionEmoji(this.get('realm'))
+        }
         event.preventDefault()
       },
       incrementAutosuggestSelected(increment, event) {
