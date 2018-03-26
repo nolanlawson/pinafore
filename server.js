@@ -17,7 +17,7 @@ app.use(compression({ threshold: 0 }))
 
 app.use(serveStatic('assets', {
   setHeaders: (res) => {
-    res.setHeader('Cache-Control', 'public,max-age=14400')
+    res.setHeader('Cache-Control', 'public,max-age=600')
   }
 }))
 
