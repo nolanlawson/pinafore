@@ -1,4 +1,4 @@
-<div class="compose-box {{overLimit ? 'over-char-limit' : ''}}">
+<div class="compose-box {{overLimit ? 'over-char-limit' : ''}} {{realm === 'dialog' ? 'dialog-size' : '' }}">
   <ComposeAuthor />
   {{#if contentWarningShown}}
     <div class="compose-content-warning-wrapper"
@@ -11,12 +11,16 @@
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
   <ComposeLengthIndicator :length :overLimit />
   <ComposeMedia :realm :media />
-  <ComposeButton :length :overLimit on:click="onClickPostButton()" />
 </div>
+<div class="compose-box-button-sentinel" ref:sentinel></div>
+<div class="compose-box-button-wrapper" >
+ <ComposeButton :length :overLimit :sticky on:click="onClickPostButton()" />
+</div>
+<div class="compose-box-border-bottom"></div>
 <style>
   .compose-box {
     border-radius: 4px;
-    padding: 20px;
+    padding: 20px 20px 0 20px;
     display: grid;
     align-items: flex-start;
     grid-template-areas:
@@ -25,12 +29,31 @@
       "avatar input      input     input"
       "avatar gauge      gauge     gauge"
       "avatar toolbar    toolbar   length"
-      "avatar media      media     media"
-      "avatar button     button    button";
+      "avatar media      media     media";
     grid-template-columns: min-content minmax(0, max-content) 1fr 1fr;
-    border-bottom: 1px solid var(--main-border);
     width: 560px;
     max-width: calc(100vw - 40px);
+  }
+
+  .compose-box.dialog-size {
+    width: 540px;
+    max-width: calc(100vw - 80px);
+  }
+
+  .compose-box-border-bottom {
+    height: 1px;
+    background: var(--main-border);
+    width: 100%;
+  }
+
+  .compose-box-button-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 10px;
+    z-index: 10;
   }
 
   .compose-content-warning-wrapper {
@@ -39,9 +62,16 @@
 
   @media (max-width: 767px) {
     .compose-box {
-      padding: 10px 10px;
+      padding: 10px 10px 0 10px;
       max-width: calc(100vw - 20px);
       width: 580px;
+    }
+    .compose-box.dialog-size {
+      width: 560px;
+      max-width: calc(100vw - 40px);
+    }
+    .compose-box-button-wrapper {
+      top: 5px;
     }
   }
 </style>
@@ -59,20 +89,35 @@
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
   import { postStatus, insertHandleForReply } from '../../_actions/compose'
+  import { importDialogs } from '../../_utils/asyncModules'
 
   export default {
     oncreate() {
       let realm = this.get('realm')
-      if (realm !== 'home') {
+      if (realm === 'home') {
+        this.__stickyObserver = new IntersectionObserver(entries => {
+          this.set({sticky: !entries[0].isIntersecting})
+        })
+        this.__stickyObserver.observe(this.refs.sentinel)
+      } else if (realm !== 'dialog') {
         // if this is a reply, populate the handle immediately
         insertHandleForReply(realm)
+      }
 
+      this.observe('postedStatusForRealm', postedStatusForRealm => {
+        if (postedStatusForRealm !== realm) {
+          return
+        }
+        this.fire('postedStatus')
         // if this is a reply, go back immediately after it's posted
-        this.observe('postedStatusForRealm', postedStatusForRealm => {
-          if (postedStatusForRealm === realm) {
-            window.history.back()
-          }
-        }, {init: false})
+        if (realm !== 'home' && realm !== 'dialog') {
+          window.history.back()
+        }
+      }, {init: false})
+    },
+    ondestroy() {
+      if (this.__stickyObserver) {
+        this.__stickyObserver.disconnect()
       }
     },
     components: {
@@ -107,23 +152,32 @@
       slide
     },
     methods: {
-      onClickPostButton() {
-        let text = this.get('text')
-        let media = this.get('media')
-        let postPrivacyKey = this.get('postPrivacyKey')
-        let contentWarning = this.get('contentWarning')
-        let sensitive = media.length && !!contentWarning
-        let realm = this.get('realm')
-        let mediaIds = media.map(_ => _.data.id)
-        let inReplyTo = realm === 'home' ? null : realm
-        let overLimit = this.get('overLimit')
+      async onClickPostButton() {
+        if (this.get('sticky')) {
+          // when the button is sticky, we're scrolled down the home timeline,
+          // so we should launch a new compose dialog
+          let dialogs = await importDialogs()
+          dialogs.showComposeDialog()
+        } else {
+          // else we're actually posting a new toot
+          let text = this.get('text')
+          let media = this.get('media')
+          let postPrivacyKey = this.get('postPrivacyKey')
+          let contentWarning = this.get('contentWarning')
+          let sensitive = media.length && !!contentWarning
+          let realm = this.get('realm')
+          let mediaIds = media.map(_ => _.data.id)
+          let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
+          let overLimit = this.get('overLimit')
 
-        if (!text || overLimit) {
-          return // do nothing if invalid
+          if (!text || overLimit) {
+            return // do nothing if invalid
+          }
+
+          /* no await */
+          postStatus(realm, text, inReplyTo, mediaIds,
+            sensitive, contentWarning, postPrivacyKey)
         }
-
-        /* no await */ postStatus(realm, text, inReplyTo, mediaIds,
-          sensitive, contentWarning, postPrivacyKey)
       }
     }
   }

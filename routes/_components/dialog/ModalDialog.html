@@ -4,7 +4,7 @@
 ></div>
 <div class="modal-dialog-contents {{fadedIn ? '' : 'hidden'}} {{muted ? 'muted-style' : ''}}"
      role="dialog"
-     aria-label="{{label}}"
+     aria-label="{{label || ''}}"
      ref:node
 >
   <div class="modal-dialog-document" role="document" style="background: {{background || '#000'}};">
@@ -41,7 +41,10 @@
     position: fixed;
     top: 50%;
     left: 50%;
+    -webkit-filter: blur(0);
+    will-change: transform;
     transform: translate(-50%, -50%);
+    -webkit-font-smoothing: antialiased; /* fix for transform:translate causing blurry text in Chrome/Safari */
     padding: 0;
     border: 1px solid var(--main-border);
     border-radius: 2px;

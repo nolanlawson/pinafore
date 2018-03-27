@@ -1,0 +1,22 @@
+<ModalDialog :label :shown :closed :title background="var(--main-bg)">
+  <ComposeBox realm="dialog" on:postedStatus="onPostedStatus()" />
+</ModalDialog>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import ComposeBox from '../compose/ComposeBox.html'
+
+  export default {
+    components: {
+      ModalDialog,
+      ComposeBox
+    },
+    methods: {
+      async show() {
+        this.set({shown: true})
+      },
+      onPostedStatus() {
+        this.set({closed: true})
+      }
+    }
+  }
+</script>

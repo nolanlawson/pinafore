@@ -78,4 +78,6 @@
   --compose-autosuggest-item-hover: $compose-background;
   --compose-autosuggest-item-active: darken($compose-background, 5%);
   --compose-autosuggest-outline: lighten($focus-outline, 5%);
+
+  --compose-button-halo: rgba(255, 255, 255, 0.2);
 }

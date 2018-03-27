@@ -1,26 +1,40 @@
-<button class="primary compose-box-button"
-        :disabled
-        on:click>
-  <span class="{{$postingStatus ? 'hidden' : ''}}">
-    Toot!
-  </span>
-  <div class="compose-box-button-spinner {{$postingStatus ? 'spin' : 'hidden'}}"
-       aria-hidden="true">
-    <svg class="compose-box-button-spinner-svg">
-      <use xlink:href="#fa-spinner" />
-    </svg>
-  </div>
-</button>
+<div class="compose-box-button-halo frosted-glass">
+  <button class="primary compose-box-button"
+          :disabled
+          aria-label="{{sticky ? 'Compose' : 'Toot!'}}"
+          on:click>
+    <span class="{{$postingStatus || sticky ? 'hidden' : ''}}">
+      Toot!
+    </span>
+    <div class="compose-box-button-spinner {{$postingStatus ? 'spin' : 'hidden'}}"
+         aria-hidden="true">
+      <svg class="compose-box-button-svg">
+        <use xlink:href="#fa-spinner" />
+      </svg>
+    </div>
+
+    <div class="compose-box-button-compose {{sticky ? '' : 'hidden'}}"
+         aria-hidden="true">
+      <svg class="compose-box-button-svg">
+        <use xlink:href="#fa-pencil" />
+      </svg>
+    </div>
+  </button>
+</div>
 <style>
+  .compose-box-button-halo {
+    border-radius: 2px;
+    margin: 5px 15px 15px 5px;
+    background: var(--compose-button-halo);
+  }
   .compose-box-button {
     grid-area: button;
     justify-self: right;
     text-transform: uppercase;
-    margin-top: 10px;
     position: relative;
+    margin: 5px;
   }
-  .compose-box-button-spinner {
-    pointer-events: none;
+  .compose-box-button-spinner, .compose-box-button-compose {
     position: absolute;
     display: flex;
     justify-content: center;
@@ -31,10 +45,19 @@
     left: 0;
     right: 0;
   }
-  .compose-box-button-spinner-svg {
+  .compose-box-button-svg {
     width: 24px;
     height: 24px;
     fill: var(--button-primary-text);
+  }
+
+  @media (max-width: 767px) {
+    .compose-box-button-halo {
+      margin: 5px;
+    }
+    .compose-box-button {
+      margin: 5px;
+    }
   }
 </style>
 <script>
