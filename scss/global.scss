@@ -18,10 +18,13 @@ body {
   -webkit-overflow-scrolling: touch;
   will-change: transform; /* avoids "Repaints on Scroll" warning in Chrome */
   position: absolute;
-  top: 72px;
+  top: 42px;
   left: 0;
   right: 0;
   bottom: 0;
+  @media (max-width: 991px) {
+    top: 52px;
+  }
   @media (max-width: 767px) {
     top: 62px;
   }
@@ -47,7 +50,7 @@ footer {
   width: 602px;
   max-width: 100vw;
   box-sizing: border-box;
-  margin: 20px auto;
+  margin: 15px auto;
   border-radius: 1px;
   background: var(--main-bg);
   font-size: 0.9em;
