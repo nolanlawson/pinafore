@@ -53,6 +53,7 @@
         "media   media        media         media"
         "....... toolbar      toolbar       toolbar";
     grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
+    grid-template-rows: repeat(7, max-content);
   }
 
   .status-article.status-in-timeline {
@@ -75,6 +76,7 @@
       "details     details"
       "toolbar     toolbar";
     grid-template-columns: min-content 1fr;
+    grid-template-rows: repeat(6, max-content);
   }
 
   @media (max-width: 767px) {
