@@ -6,9 +6,9 @@
     <span class="{{$postingStatus || sticky ? 'hidden' : ''}}">
       Toot!
     </span>
-    <div class="compose-box-button-spinner {{$postingStatus ? 'spin' : 'hidden'}}"
+    <div class="compose-box-button-spinner"
          aria-hidden="true">
-      <svg class="compose-box-button-svg">
+      <svg class="compose-box-button-svg {{$postingStatus ? 'spin' : 'hidden'}}">
         <use xlink:href="#fa-spinner" />
       </svg>
     </div>
