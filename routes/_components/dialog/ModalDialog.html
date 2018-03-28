@@ -15,7 +15,9 @@
       <div class="close-dialog-button-wrapper">
         <button class="close-dialog-button"
                 data-a11y-dialog-hide aria-label="Close dialog">
-          <span class="close-dialog-button-span" aria-hidden="true">&times;</span>
+          <svg class="close-dialog-button-svg">
+            <use xlink:href="#fa-times" />
+          </svg>
         </button>
       </div>
     </div>
@@ -88,10 +90,11 @@
     justify-content: center;
     align-items: center;
   }
-  .close-dialog-button-span {
-    padding: 0 10px 5px;
-    font-size: 32px;
-    color: var(--button-primary-text);
+  .close-dialog-button-svg {
+    padding: 10px;
+    fill: var(--button-primary-text);
+    width: 24px;
+    height: 24px;
     flex: 1;
   }
   .muted-style .modal-dialog-header {

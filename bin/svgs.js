@@ -32,5 +32,6 @@ module.exports = [
   {id: 'fa-check', src: 'node_modules/font-awesome-svg-png/white/svg/check.svg', title: 'Check'},
   {id: 'fa-trash', src: 'node_modules/font-awesome-svg-png/white/svg/trash-o.svg', title: 'Delete'},
   {id: 'fa-hourglass', src: 'node_modules/font-awesome-svg-png/white/svg/hourglass.svg', title: 'Follow requested'},
-  {id: 'fa-pencil', src: 'node_modules/font-awesome-svg-png/white/svg/pencil.svg', title: 'Compose'}
+  {id: 'fa-pencil', src: 'node_modules/font-awesome-svg-png/white/svg/pencil.svg', title: 'Compose'},
+  {id: 'fa-times', src: 'node_modules/font-awesome-svg-png/white/svg/times.svg', title: 'Close'}
 ]

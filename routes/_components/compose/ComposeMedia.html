@@ -5,9 +5,11 @@
         <img src="{{mediaItem.data.preview_url}}" alt="{{mediaItem.file.name}}"/>
         <div class="compose-media-delete">
           <button class="compose-media-delete-button"
-                  data-a11y-dialog-hide aria-label="Delete {{mediaItem.file.name}}"
+                  aria-label="Delete {{mediaItem.file.name}}"
                   on:click="onDeleteMedia(i)" >
-            <span aria-hidden="true">&times;</span>
+            <svg class="compose-media-delete-button-svg">
+              <use xlink:href="#fa-times" />
+            </svg>
           </button>
         </div>
         <div class="compose-media-alt">
@@ -74,17 +76,17 @@
     margin: 2px;
   }
   .compose-media-delete-button {
-    padding: 0 0 7px;
+    padding: 10px;
     background: none;
     border: none;
   }
   .compose-media-delete-button:hover {
     background: var(--toast-border);
   }
-  .compose-media-delete-button span {
-    padding: 0 10px 7px;
-    font-size: 32px;
-    color: var(--button-text);
+  .compose-media-delete-button-svg {
+    fill: var(--button-text);
+    width: 18px;
+    height: 18px;
   }
 </style>
 <script>
