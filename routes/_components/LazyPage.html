@@ -2,11 +2,13 @@
   <:Component {pageComponent} :params />
 {{/if}}
 <script>
-  import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-
   export default {
     oncreate() {
-      scheduleIdleTask(() => this.set({revealed: true}))
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.set({revealed: true})
+        })
+      })
     },
     data: () => ({
       revealed: !process.browser
