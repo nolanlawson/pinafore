@@ -1,6 +1,8 @@
 <SettingsLayout page='settings/about' label="About Pinafore">
   <h1>About Pinafore</h1>
 
+  <h2>Version {{version}}</h2>
+
   <p>
     Pinafore is <ExternalLink href="https://github.com/nolanlawson/pinafore">free and open-source software</ExternalLink>
     created by <ExternalLink href="https://nolanlawson.com">Nolan Lawson</ExternalLink> and distributed under the
@@ -15,10 +17,15 @@
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import ExternalLink from '../../_components/ExternalLink.html'
 
+  import { version } from '../../../package.json'
+
   export default {
     components: {
       SettingsLayout,
       ExternalLink
-    }
+    },
+    data: () => ({
+      version
+    })
   };
 </script>

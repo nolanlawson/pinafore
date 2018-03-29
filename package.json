@@ -4,9 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "lint": "standard",
-    "dev": "npm run build-svg && run-p --race build-sass-watch serve",
+    "dev": "run-s build-svg serve-dev",
+    "serve-dev": "run-p --race build-sass-watch serve",
     "serve": "node server.js",
-    "build": "npm run globalize-css && npm run build-sass && npm run build-svg && sapper build && npm run deglobalize-css",
+    "build": "run-s globalize-css build-sass build-svg sapper-build deglobalize-css",
+    "sapper-build": "sapper build",
     "start": "cross-env NODE_ENV=production node server.js",
     "build-and-start": "run-s build start",
     "build-svg": "node ./bin/build-svg.js",
