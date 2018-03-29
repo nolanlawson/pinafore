@@ -23,9 +23,7 @@
     "wait-for-mastodon-data": "node -r esm bin/wait-for-mastodon-data.js",
     "globalize-css": "node ./bin/globalize-css.js",
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
-    "deploy-dev": "run-s now now-alias-dev",
-    "now": "now",
-    "now-alias-dev": "now alias dev.pinafore.social",
+    "deploy-dev": "now && sleep 60 && now alias dev.pinafore.social",
     "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
