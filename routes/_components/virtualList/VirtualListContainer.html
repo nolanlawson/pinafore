@@ -6,6 +6,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { isMobile } from '../../_utils/isMobile'
+  import { doubleRAF } from '../../_utils/doubleRAF'
 
   const SCROLL_EVENT_DELAY = 300
 
@@ -26,9 +27,19 @@
             console.log('forcing scroll top to ', scrollTop)
             node.scrollTop = scrollTop
             stop('set scrollTop')
+            doubleRAF(() => {
+              console.log('initialized VirtualList')
+              this.fire('initialized')
+            })
           }
         })
       } else {
+        this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+          if (allVisibleItemsHaveHeight) {
+            console.log('initialized VirtualList')
+            this.fire('initialized')
+          }
+        })
         this.store.setForRealm({
           scrollHeight: node.scrollHeight,
           offsetHeight: node.offsetHeight

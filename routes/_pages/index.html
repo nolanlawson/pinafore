@@ -1,12 +1,17 @@
 {{#if $isUserLoggedIn}}
-  {{#if $currentVerifyCredentials}}
-    <ComposeBox realm="home" />
+  {{#if $currentVerifyCredentials }}
+    <div class="compose-box-reveal {{timelineInitialized ? '' : 'hidden'}}">
+      <ComposeBox realm="home" />
+    </div>
   {{/if}}
-  <LazyTimeline timeline='home' />
+  <LazyTimeline timeline='home' on:initialized="onTimelineInitialized()"/>
 {{else}}
   <NotLoggedInHome/>
 {{/if}}
 <style>
+  .compose-box-reveal {
+    transition: opacity 0.25s linear;
+  }
 </style>
 <script>
   import NotLoggedInHome from '.././_components/NotLoggedInHome.html'
@@ -20,6 +25,11 @@
 		  LazyTimeline,
 			NotLoggedInHome,
       ComposeBox
-		}
+		},
+    methods: {
+		  onTimelineInitialized() {
+		    this.set({timelineInitialized: true})
+      }
+    }
 	}
 </script>

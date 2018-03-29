@@ -4,7 +4,7 @@
      on:focusWithCapture="saveFocus(event)"
      on:blurWithCapture="clearFocus(event)"
 >
-  {{#if !$initialized}}
+  {{#if !initialized}}
     <LoadingPage />
   {{/if}}
   {{#if virtual}}
@@ -13,8 +13,8 @@
                  containerQuery=".container"
                  :makeProps
                  items="{{$timelineItemIds}}"
-                 shown="{{$initialized}}"
-                 showFooter="{{$initialized && $runningUpdate}}"
+                 shown="{{initialized}}"
+                 showFooter="{{initialized && $runningUpdate}}"
                  footerComponent="{{LoadingFooter}}"
                  showHeader="{{$showHeader}}"
                  headerComponent="{{MoreHeaderVirtualWrapper}}"
@@ -22,7 +22,7 @@
                  on:scrollToBottom="onScrollToBottom()"
                  on:scrollToTop="onScrollToTop()"
                  on:scrollTopChanged="onScrollTopChanged(event)"
-                 on:initializedVisibleItems="initialize()"
+                 on:initialized="initialize()"
     />
   {{else}}
     {{#await importPseudoVirtualList}}
@@ -35,9 +35,9 @@
                  containerQuery=".container"
                  :makeProps
                  items="{{$timelineItemIds}}"
-                 shown="{{$initialized}}"
+                 shown="{{initialized}}"
                  scrollToItem="{{scrollToItem}}"
-                 on:initializedVisibleItems="initialize()"
+                 on:initialized="initialize()"
       />
     {{catch error}}
       <div>Component failed to load. Try refreshing! {{error}}</div>
@@ -60,7 +60,6 @@
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_database/database'
   import {
-    initializeTimeline,
     fetchTimelineItemsOnScrollToBottom,
     setupTimeline,
     showMoreItemsForTimeline,
@@ -73,6 +72,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { importPseudoVirtualList } from '../../_utils/asyncModules'
   import isEqual from 'lodash/isEqual'
+  import { doubleRAF } from '../../_utils/doubleRAF'
 
   export default {
     oncreate() {
@@ -167,14 +167,19 @@
           return
         }
         this.set({initializeStarted: true})
-        console.log('timeline initialize()')
-        initializeTimeline()
+        mark('initializeTimeline')
+        doubleRAF(() => {
+          console.log('timeline initialized')
+          this.set({initialized: true})
+          this.fire('initialized')
+          stop('initializeTimeline')
+        })
       },
       onScrollTopChanged(scrollTop) {
         this.set({scrollTop: scrollTop})
       },
       onScrollToBottom() {
-        if (!this.store.get('initialized') ||
+        if (!this.get('initialized') ||
             this.store.get('runningUpdate') ||
             this.get('timelineType') === 'status') { // for status contexts, we've already fetched the whole thread
           return

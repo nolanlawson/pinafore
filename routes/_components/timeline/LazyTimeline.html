@@ -1,7 +1,7 @@
 <div class="lazy-timeline">
   {{#await importTimeline}}
   {{then constructor}}
-    <:Component {constructor} :timeline />
+    <:Component {constructor} :timeline on:initialized />
   {{catch error}}
     <div>Component failed to load. Try refreshing! {{error}}</div>
   {{/await}}

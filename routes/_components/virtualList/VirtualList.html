@@ -1,4 +1,4 @@
-<VirtualListContainer :realm :containerQuery >
+<VirtualListContainer :realm :containerQuery on:initialized >
   <div class="virtual-list {{shown ? '' : 'hidden'}}"
        style="height: {{$height}}px;"
        ref:node >
