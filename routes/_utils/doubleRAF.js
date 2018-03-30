@@ -1,3 +1,3 @@
-export function doubleRAF(fn) {
+export function doubleRAF (fn) {
   requestAnimationFrame(() => requestAnimationFrame(fn))
 }

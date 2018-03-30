@@ -1,5 +1,5 @@
 {{#if $isUserLoggedIn}}
-<LazyTimeline timeline='notifications' />
+  <TimelinePage timeline="notifications" />
 {{else}}
 <HiddenFromSSR>
   <FreeTextLayout>
@@ -10,17 +10,17 @@
 </HiddenFromSSR>
 {{/if}}
 <script>
-  import LazyTimeline from '.././_components/timeline/LazyTimeline.html'
   import FreeTextLayout from '.././_components/FreeTextLayout.html'
   import { store } from '.././_store/store.js'
   import HiddenFromSSR from '.././_components/HiddenFromSSR'
+  import TimelinePage from '../_components/TimelinePage.html'
 
   export default {
     store: () => store,
     components: {
-      LazyTimeline,
       FreeTextLayout,
-      HiddenFromSSR
+      HiddenFromSSR,
+      TimelinePage
     }
   };
 </script>

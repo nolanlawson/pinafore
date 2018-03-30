@@ -1,24 +1,25 @@
 {{#if $isUserLoggedIn}}
-<DynamicPageBanner title="" />
-  {{#if $currentAccountProfile && $currentVerifyCredentials}}
+  <TimelinePage timeline="account/{{params.accountId}}">
+    <DynamicPageBanner title="" />
+    {{#if $currentAccountProfile && $currentVerifyCredentials}}
     <AccountProfile account="{{$currentAccountProfile}}"
                     relationship="{{$currentAccountRelationship}}"
                     verifyCredentials="{{$currentVerifyCredentials}}"
     />
-  {{/if}}
-<PinnedStatuses accountId="{{params.accountId}}" />
-<LazyTimeline timeline='account/{{params.accountId}}' />
+    {{/if}}
+    <PinnedStatuses accountId="{{params.accountId}}" />
+  </TimelinePage>
 {{else}}
-<HiddenFromSSR>
-  <FreeTextLayout>
-    <h1>Profile</h1>
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>Profile</h1>
 
-    <p>A user timeline will appear here when logged in.</p>
-  </FreeTextLayout>
-</HiddenFromSSR>
+      <p>A user timeline will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
 {{/if}}
 <script>
-  import LazyTimeline from '../../_components/timeline/LazyTimeline.html'
+  import TimelinePage from '../../_components/TimelinePage.html'
   import FreeTextLayout from '../../_components/FreeTextLayout.html'
   import { store } from '../../_store/store.js'
   import HiddenFromSSR from '../../_components/HiddenFromSSR'
@@ -42,7 +43,7 @@
       }
     },
     components: {
-      LazyTimeline,
+      TimelinePage,
       FreeTextLayout,
       HiddenFromSSR,
       DynamicPageBanner,

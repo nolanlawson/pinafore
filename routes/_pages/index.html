@@ -1,35 +1,18 @@
 {{#if $isUserLoggedIn}}
-  {{#if $currentVerifyCredentials }}
-    <div class="compose-box-reveal {{timelineInitialized ? '' : 'hidden'}}">
-      <ComposeBox realm="home" />
-    </div>
-  {{/if}}
-  <LazyTimeline timeline='home' on:initialized="onTimelineInitialized()"/>
+  <TimelineHomePage/>
 {{else}}
   <NotLoggedInHome/>
 {{/if}}
-<style>
-  .compose-box-reveal {
-    transition: opacity 0.25s linear;
-  }
-</style>
 <script>
   import NotLoggedInHome from '.././_components/NotLoggedInHome.html'
-  import LazyTimeline from '.././_components/timeline/LazyTimeline.html'
-  import ComposeBox from '.././_components/compose/ComposeBox.html'
   import { store } from '.././_store/store.js'
+  import TimelineHomePage from '../_components/TimelineHomePage.html'
 
 	export default {
 		store: () => store,
 		components: {
-		  LazyTimeline,
 			NotLoggedInHome,
-      ComposeBox
-		},
-    methods: {
-		  onTimelineInitialized() {
-		    this.set({timelineInitialized: true})
-      }
-    }
+      TimelineHomePage
+		}
 	}
 </script>

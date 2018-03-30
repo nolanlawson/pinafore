@@ -1,19 +1,20 @@
 {{#if $isUserLoggedIn}}
-{{#if $pinnedPage !== `/lists/${params.listId}`}}
-  <DynamicPageBanner title="{{listTitle}}" icon="#fa-bars"/>
-{{/if}}
-<LazyTimeline timeline='list/{{params.listId}}' />
+  <TimelinePage timeline="list/{{params.listId}}">
+    {{#if $pinnedPage !== `/lists/${params.listId}`}}
+      <DynamicPageBanner title="{{listTitle}}" icon="#fa-bars"/>
+    {{/if}}
+  </TimelinePage>
 {{else}}
-<HiddenFromSSR>
-  <FreeTextLayout>
-    <h1>List</h1>
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>List</h1>
 
-    <p>A list will appear here when logged in.</p>
-  </FreeTextLayout>
-</HiddenFromSSR>
+      <p>A list will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
 {{/if}}
 <script>
-  import LazyTimeline from '../../_components/timeline/LazyTimeline.html'
+  import TimelinePage from '../../_components/TimelinePage.html'
   import FreeTextLayout from '../../_components/FreeTextLayout.html'
   import { store } from '../../_store/store.js'
   import HiddenFromSSR from '../../_components/HiddenFromSSR'
@@ -26,7 +27,7 @@
     },
     store: () => store,
     components: {
-      LazyTimeline,
+      TimelinePage,
       FreeTextLayout,
       HiddenFromSSR,
       DynamicPageBanner

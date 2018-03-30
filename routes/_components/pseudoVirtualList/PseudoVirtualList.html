@@ -1,4 +1,4 @@
-<div class="pseudo-virtual-list {{shown ? '' : 'hidden'}}" on:initialized ref:node>
+<div class="pseudo-virtual-list" on:initialized ref:node>
   {{#if wrappedItems}}
     {{#each wrappedItems as wrappedItem, i @item}}
       <PseudoVirtualListLazyItem
@@ -18,7 +18,6 @@
 <style>
   .pseudo-virtual-list {
     position: relative;
-    transition: opacity 0.25s linear;
   }
 </style>
 <script>

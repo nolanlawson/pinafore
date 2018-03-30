@@ -1,19 +1,20 @@
 {{#if $isUserLoggedIn}}
-{{#if $pinnedPage !== '/local'}}
-  <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
-{{/if}}
-<LazyTimeline timeline='local' />
+  <TimelinePage timeline="local">
+    {{#if $pinnedPage !== '/local'}}
+      <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
+    {{/if}}
+  </TimelinePage>
 {{else}}
-<HiddenFromSSR>
-  <FreeTextLayout>
-    <h1>Local</h1>
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>Local</h1>
 
-    <p>Your local timeline will appear here when logged in.</p>
-  </FreeTextLayout>
-</HiddenFromSSR>
+      <p>Your local timeline will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
 {{/if}}
 <script>
-  import LazyTimeline from '.././_components/timeline/LazyTimeline.html'
+  import TimelinePage from '.././_components/TimelinePage.html'
   import FreeTextLayout from '.././_components/FreeTextLayout.html'
   import { store } from '.././_store/store.js'
   import HiddenFromSSR from '.././_components/HiddenFromSSR'
@@ -22,7 +23,7 @@
   export default {
     store: () => store,
     components: {
-      LazyTimeline,
+      TimelinePage,
       FreeTextLayout,
       HiddenFromSSR,
       DynamicPageBanner

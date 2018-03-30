@@ -1,19 +1,20 @@
 {{#if $isUserLoggedIn}}
-{{#if $pinnedPage !== '/favorites'}}
-  <DynamicPageBanner title="Favorites" icon="#fa-star"/>
-{{/if}}
-<LazyTimeline timeline='favorites' />
+  <TimelinePage timeline="favorites">
+    {{#if $pinnedPage !== '/favorites'}}
+      <DynamicPageBanner title="Favorites" icon="#fa-star"/>
+    {{/if}}
+  </TimelinePage>
 {{else}}
-<HiddenFromSSR>
-  <FreeTextLayout>
-    <h1>Favorites</h1>
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>Favorites</h1>
 
-    <p>Your favorites will appear here when logged in.</p>
-  </FreeTextLayout>
-</HiddenFromSSR>
+      <p>Your favorites will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
 {{/if}}
 <script>
-  import LazyTimeline from '.././_components/timeline/LazyTimeline.html'
+  import TimelinePage from '.././_components/TimelinePage.html'
   import FreeTextLayout from '.././_components/FreeTextLayout.html'
   import { store } from '.././_store/store.js'
   import HiddenFromSSR from '.././_components/HiddenFromSSR'
@@ -22,7 +23,7 @@
   export default {
     store: () => store,
     components: {
-      LazyTimeline,
+      TimelinePage,
       FreeTextLayout,
       HiddenFromSSR,
       DynamicPageBanner

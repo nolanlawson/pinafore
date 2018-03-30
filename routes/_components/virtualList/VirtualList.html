@@ -1,5 +1,5 @@
-<VirtualListContainer :realm :containerQuery on:initialized >
-  <div class="virtual-list {{shown ? '' : 'hidden'}}"
+<VirtualListContainer :realm :containerQuery on:initialized on:noNeedToScroll >
+  <div class="virtual-list"
        style="height: {{$height}}px;"
        ref:node >
     <VirtualListHeader component="{{headerComponent}}" virtualProps="{{headerProps}}" shown="{{$showHeader}}"/>
@@ -21,7 +21,6 @@
 <style>
   .virtual-list {
     position: relative;
-    transition: opacity 0.25s linear;
   }
 </style>
 <script>

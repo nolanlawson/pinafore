@@ -34,6 +34,7 @@
           }
         })
       } else {
+        this.fire('noNeedToScroll')
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           if (allVisibleItemsHaveHeight) {
             console.log('initialized VirtualList')
