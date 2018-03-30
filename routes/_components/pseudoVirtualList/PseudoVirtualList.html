@@ -75,24 +75,15 @@
       }
     },
     methods: {
-      scrollToPosition(rect) {
+      scrollToPosition(element) {
         if (this.get('scrolledToPosition')) {
           return
         }
         this.set({scrolledToPosition: true})
-        console.log('scrollToPosition', rect.top)
-        let container = document.querySelector(this.get('containerQuery'))
-        if (!container) {
-          return
-        }
-        let containerRect = container.getBoundingClientRect()
-        let scrollTop = rect.top - containerRect.top
-        if (scrollTop !== 0) {
-          requestAnimationFrame(() => {
-            console.log('setting scrollTop to ', scrollTop)
-            container.scrollTop = scrollTop
-          })
-        }
+        requestAnimationFrame(() => {
+          console.log('scrolling element into view')
+          element.scrollIntoView(true)
+        })
       },
       onIntersection(entries) {
         mark('onIntersection')
@@ -107,7 +98,7 @@
             height: rect.height
           }
           if (scrollToItem === key) {
-            this.scrollToPosition(rect)
+            this.scrollToPosition(entry.target)
           }
         }
         intersectionStates = Object.assign(intersectionStates, newIntersectionStates)
