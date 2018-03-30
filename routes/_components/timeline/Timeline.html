@@ -4,17 +4,13 @@
      on:focusWithCapture="saveFocus(event)"
      on:blurWithCapture="clearFocus(event)"
 >
-  {{#if !$initialized}}
-    <LoadingPage />
-  {{/if}}
   {{#if virtual}}
     <VirtualList component="{{VirtualListComponent}}"
                  realm="{{$currentInstance + '/' + timeline}}"
                  containerQuery=".container"
                  :makeProps
                  items="{{$timelineItemIds}}"
-                 shown="{{$initialized}}"
-                 showFooter="{{$initialized && $runningUpdate}}"
+                 showFooter="{{$timelineInitialized && $runningUpdate}}"
                  footerComponent="{{LoadingFooter}}"
                  showHeader="{{$showHeader}}"
                  headerComponent="{{MoreHeaderVirtualWrapper}}"
@@ -22,7 +18,8 @@
                  on:scrollToBottom="onScrollToBottom()"
                  on:scrollToTop="onScrollToTop()"
                  on:scrollTopChanged="onScrollTopChanged(event)"
-                 on:initializedVisibleItems="initialize()"
+                 on:initialized="initialize()"
+                 on:noNeedToScroll="onNoNeedToScroll()"
     />
   {{else}}
     {{#await importPseudoVirtualList}}
@@ -35,20 +32,14 @@
                  containerQuery=".container"
                  :makeProps
                  items="{{$timelineItemIds}}"
-                 shown="{{$initialized}}"
                  scrollToItem="{{scrollToItem}}"
-                 on:initializedVisibleItems="initialize()"
+                 on:initialized="initialize()"
       />
     {{catch error}}
       <div>Component failed to load. Try refreshing! {{error}}</div>
     {{/await}}
   {{/if}}
 </div>
-<style>
-  .timeline {
-    position: relative;
-  }
-</style>
 <script>
   import { store } from '../../_store/store'
   import StatusVirtualListItem from './StatusVirtualListItem.html'
@@ -60,19 +51,18 @@
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_database/database'
   import {
-    initializeTimeline,
     fetchTimelineItemsOnScrollToBottom,
     setupTimeline,
     showMoreItemsForTimeline,
     showMoreItemsForThread,
     showMoreItemsForCurrentTimeline
   } from '../../_actions/timeline'
-  import LoadingPage from '../LoadingPage.html'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
   import { importPseudoVirtualList } from '../../_utils/asyncModules'
   import isEqual from 'lodash/isEqual'
+  import { doubleRAF } from '../../_utils/doubleRAF'
 
   export default {
     oncreate() {
@@ -154,8 +144,7 @@
     },
     store: () => store,
     components: {
-      VirtualList,
-      LoadingPage
+      VirtualList
     },
     events: {
       focusWithCapture,
@@ -167,14 +156,18 @@
           return
         }
         this.set({initializeStarted: true})
-        console.log('timeline initialize()')
-        initializeTimeline()
+        mark('initializeTimeline')
+        doubleRAF(() => {
+          console.log('timeline initialized')
+          this.store.set({timelineInitialized: true})
+          stop('initializeTimeline')
+        })
       },
       onScrollTopChanged(scrollTop) {
         this.set({scrollTop: scrollTop})
       },
       onScrollToBottom() {
-        if (!this.store.get('initialized') ||
+        if (!this.store.get('timelineInitialized') ||
             this.store.get('runningUpdate') ||
             this.get('timelineType') === 'status') { // for status contexts, we've already fetched the whole thread
           return
@@ -289,6 +282,13 @@
           })
         })
       },
+      onNoNeedToScroll() {
+        // If the timeline doesn't need to scroll, then we can safely "preinitialize,"
+        // i.e. render anything above the fold of the timeline. This avoids the affect
+        // where the scrollable content appears to jump around if we need to scroll it.
+        console.log('timeline preinitialized')
+        this.store.set({timelinePreinitialized: true})
+      }
     }
   }
 </script>

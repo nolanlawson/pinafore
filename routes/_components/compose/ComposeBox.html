@@ -1,4 +1,4 @@
-<div class="compose-box {{overLimit ? 'over-char-limit' : ''}} {{realm === 'dialog' ? 'dialog-size' : '' }}">
+<div class="{{className}} {{hideAndFadeIn}}">
   <ComposeAuthor />
   {{#if contentWarningShown}}
     <div class="compose-content-warning-wrapper"
@@ -12,11 +12,11 @@
   <ComposeLengthIndicator :length :overLimit />
   <ComposeMedia :realm :media />
 </div>
-<div class="compose-box-button-sentinel" ref:sentinel></div>
-<div class="compose-box-button-wrapper" >
+<div class="compose-box-button-sentinel {{hideAndFadeIn}}" ref:sentinel></div>
+<div class="compose-box-button-wrapper {{hideAndFadeIn}}" >
  <ComposeButton :length :overLimit :sticky on:click="onClickPostButton()" />
 </div>
-<div class="compose-box-border-bottom"></div>
+<div class="compose-box-border-bottom {{hideAndFadeIn}}"></div>
 <style>
   .compose-box {
     border-radius: 4px;
@@ -38,6 +38,10 @@
   .compose-box.dialog-size {
     width: 540px;
     max-width: calc(100vw - 60px);
+  }
+
+  .compose-box-fade-in {
+    transition: opacity 0.2s linear; /* main page reveal */
   }
 
   .compose-box-border-bottom {
@@ -91,6 +95,7 @@
   import { slide } from 'svelte-transitions'
   import { postStatus, insertHandleForReply } from '../../_actions/compose'
   import { importDialogs } from '../../_utils/asyncModules'
+  import { classname } from '../../_utils/classname'
 
   export default {
     oncreate() {
@@ -133,6 +138,19 @@
     },
     store: () => store,
     computed: {
+      className: (overLimit, realm) => {
+        return classname(
+          'compose-box',
+          overLimit && 'over-char-limit',
+          realm === 'dialog' && 'dialog-size'
+        )
+      },
+      hideAndFadeIn: (hidden) => {
+        return classname(
+          'compose-box-fade-in',
+          hidden && 'hidden'
+        )
+      },
       composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
       text: (composeData) => composeData.text || '',
       media: (composeData) => composeData.media || [],

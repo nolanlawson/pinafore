@@ -1,4 +1,4 @@
-<div class="pseudo-virtual-list {{shown ? '' : 'hidden'}}" on:initializedVisibleItems ref:node>
+<div class="pseudo-virtual-list" on:initialized ref:node>
   {{#if wrappedItems}}
     {{#each wrappedItems as wrappedItem, i @item}}
       <PseudoVirtualListLazyItem
@@ -18,7 +18,6 @@
 <style>
   .pseudo-virtual-list {
     position: relative;
-    transition: opacity 0.25s linear;
   }
 </style>
 <script>
@@ -51,8 +50,8 @@
         console.log('allItemsHaveHeight', allItemsHaveHeight)
         if (allItemsHaveHeight && !this.get('initialized')) {
           this.set({initialized: true})
-          console.log('initializedVisibleItems')
-          this.fire('initializedVisibleItems')
+          console.log('initialized PseudoVirtualList')
+          this.fire('initialized')
         }
       })
       stop('PseudoVirtualList oncreate()')

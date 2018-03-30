@@ -66,19 +66,6 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
 
-export function initializeTimeline () {
-  mark('initializeTimeline')
-  let instanceName = store.get('currentInstance')
-  let timeline = store.get('currentTimeline')
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      console.log('initialized')
-      store.setForTimeline(instanceName, timeline, {initialized: true})
-    })
-  })
-  stop('initializeTimeline')
-}
-
 export async function setupTimeline () {
   mark('setupTimeline')
   // If we don't have any item ids, or if the current item ids are stale

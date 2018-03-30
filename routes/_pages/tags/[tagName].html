@@ -1,17 +1,18 @@
 {{#if $isUserLoggedIn}}
-<DynamicPageBanner title="{{'#' + params.tagName}}"/>
-<LazyTimeline timeline='tag/{{params.tagName}}' />
+  <TimelinePage timeline="tag/{{params.tagName}}">
+    <DynamicPageBanner title="{{'#' + params.tagName}}"/>
+  </TimelinePage>
 {{else}}
-<HiddenFromSSR>
-  <FreeTextLayout>
-    <h1>#{{params.tagName}}</h1>
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>#{{params.tagName}}</h1>
 
-    <p>A hashtag timeline will appear here when logged in.</p>
-  </FreeTextLayout>
-</HiddenFromSSR>
+      <p>A hashtag timeline will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
 {{/if}}
 <script>
-  import LazyTimeline from '../../_components/timeline/LazyTimeline.html'
+  import TimelinePage from '../../_components/TimelinePage.html'
   import FreeTextLayout from '../../_components/FreeTextLayout.html'
   import { store } from '../../_store/store.js'
   import HiddenFromSSR from '../../_components/HiddenFromSSR'
@@ -20,7 +21,7 @@
   export default {
     store: () => store,
     components: {
-      LazyTimeline,
+      TimelinePage,
       FreeTextLayout,
       HiddenFromSSR,
       DynamicPageBanner
