@@ -29,7 +29,7 @@
             pressable="true"
             pressed="{{following}}"
             big="true"
-            on:click="onFollowButtonClick()"
+            on:click="onFollowButtonClick(event)"
             animation="{{animateFollowButton && followButtonAnimation}}"
           />
         {{/if}}
@@ -258,7 +258,9 @@
 
   export default {
     methods: {
-      async onFollowButtonClick() {
+      async onFollowButtonClick(e) {
+        e.preventDefault()
+        e.stopPropagation()
         let accountId = this.get('accountId')
         let instanceName = this.store.get('currentInstance')
         let following = this.get('following')
