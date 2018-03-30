@@ -1,4 +1,4 @@
-<div class="{{className}} {{hideAndFadeIn}}">
+<div class="{{computedClassName}} {{hideAndFadeIn}}">
   <ComposeAuthor />
   {{#if contentWarningShown}}
     <div class="compose-content-warning-wrapper"
@@ -13,10 +13,12 @@
   <ComposeMedia :realm :media />
 </div>
 <div class="compose-box-button-sentinel {{hideAndFadeIn}}" ref:sentinel></div>
-<div class="compose-box-button-wrapper {{hideAndFadeIn}}" >
+<div class="compose-box-button-wrapper {{realm === 'home' ? 'compose-button-sticky' : ''}} {{hideAndFadeIn}}" >
  <ComposeButton :length :overLimit :sticky on:click="onClickPostButton()" />
 </div>
-<div class="compose-box-border-bottom {{hideAndFadeIn}}"></div>
+{{#if !hideBottomBorder}}
+  <div class="compose-box-border-bottom {{hideAndFadeIn}}"></div>
+{{/if}}
 <style>
   .compose-box {
     border-radius: 4px;
@@ -35,7 +37,7 @@
     max-width: calc(100vw - 40px);
   }
 
-  .compose-box.dialog-size {
+  .compose-box.slim-size {
     width: 540px;
     max-width: calc(100vw - 60px);
   }
@@ -54,11 +56,14 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  .compose-box-button-wrapper.compose-button-sticky {
     position: -webkit-sticky;
     position: sticky;
     top: 10px;
     z-index: 1000;
-    pointer-events: none;
   }
 
   .compose-content-warning-wrapper {
@@ -71,7 +76,7 @@
       max-width: calc(100vw - 20px);
       width: 580px;
     }
-    .compose-box.dialog-size {
+    .compose-box.slim-size {
       width: 560px;
       max-width: calc(100vw - 40px);
     }
@@ -115,10 +120,6 @@
           return
         }
         this.fire('postedStatus')
-        // if this is a reply, go back immediately after it's posted
-        if (realm !== 'home' && realm !== 'dialog') {
-          window.history.back()
-        }
       }, {init: false})
     },
     ondestroy() {
@@ -138,11 +139,11 @@
     },
     store: () => store,
     computed: {
-      className: (overLimit, realm) => {
+      computedClassName: (overLimit, realm, size) => {
         return classname(
           'compose-box',
           overLimit && 'over-char-limit',
-          realm === 'dialog' && 'dialog-size'
+          size === 'slim' && 'slim-size'
         )
       },
       hideAndFadeIn: (hidden) => {

@@ -96,6 +96,14 @@ export const uploadKittenImage = i => (exec(() => {
   }
 }))
 
+export function getNthComposeReplyInput (n) {
+  return getNthStatus(n).find('.compose-box-input')
+}
+
+export function getNthComposeReplyButton (n) {
+  return getNthStatus(n).find('.compose-box-button')
+}
+
 export function getNthAutosuggestionResult (n) {
   return $(`.compose-autosuggest-list-item:nth-child(${n}) button`)
 }

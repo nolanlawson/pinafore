@@ -33,6 +33,7 @@ export const store = new PinaforeStore({
   instanceThemes: {},
   spoilersShown: {},
   sensitivesShown: {},
+  repliesShown: {},
   autoplayGifs: false,
   markMediaAsSensitive: false,
   reduceMotion: false,

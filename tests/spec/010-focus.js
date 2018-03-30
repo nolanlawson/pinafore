@@ -1,6 +1,6 @@
 import {
   getNthStatus, scrollToStatus, closeDialogButton, modalDialogContents, getActiveElementClass, goBack, getUrl,
-  goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementAriaLabel, getActiveElementInsideNthStatus
+  goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementInsideNthStatus
 } from '../utils'
 import { foobarRole } from '../roles'
 
@@ -81,12 +81,5 @@ test('thread preserves focus', async t => {
 test('reply preserves focus and moves focus to the text input', async t => {
   await t.useRole(foobarRole)
     .click(getNthReplyButton(1))
-    .expect(getUrl()).contains('/reply')
     .expect(getActiveElementClass()).contains('compose-box-input')
-    .click(goBackButton)
-    .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok()
-    .expect(getActiveElementClass()).contains('icon-button')
-    .expect(getActiveElementAriaLabel()).eql('Reply')
-    .expect(getActiveElementInsideNthStatus()).eql('1')
 })

@@ -1,8 +1,9 @@
 <div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
   <IconButton
-    label="Reply"
+    label="{{replyLabel}}"
+    pressable="true"
+    pressed="{{replyShown}}"
     href="#fa-reply"
-    disabled="{{disableReply}}"
     delegateKey="{{replyKey}}"
     focusKey="{{replyKey}}"
     />
@@ -45,17 +46,16 @@
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
   import { setReblogged } from '../../_actions/reblog'
-  import { goto } from 'sapper/runtime.js'
   import { importDialogs } from '../../_utils/asyncModules'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
   import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
 
   export default {
     oncreate() {
-      registerClickDelegate(this.get('favoriteKey'), () => this.onFavoriteClick())
-      registerClickDelegate(this.get('reblogKey'), () => this.onReblogClick())
-      registerClickDelegate(this.get('replyKey'), () => this.onReplyClick())
-      registerClickDelegate(this.get('optionsKey'), () => this.onOptionsClick())
+      registerClickDelegate(this.get('favoriteKey'), (e) => this.onFavoriteClick(e))
+      registerClickDelegate(this.get('reblogKey'), (e) => this.onReblogClick(e))
+      registerClickDelegate(this.get('replyKey'), (e) => this.onReplyClick(e))
+      registerClickDelegate(this.get('optionsKey'), (e) => this.onOptionsClick(e))
     },
     ondestroy() {
       unregisterClickDelegate(this.get('favoriteKey'))
@@ -68,23 +68,36 @@
     },
     store: () => store,
     methods: {
-      onFavoriteClick() {
+      onFavoriteClick(e) {
+        e.preventDefault()
+        e.stopPropagation()
         let originalStatusId = this.get('originalStatusId')
         let favorited = this.get('favorited')
         /* no await */ setFavorited(originalStatusId, !favorited)
         this.set({animateFavorite: !favorited})
       },
-      onReblogClick() {
+      onReblogClick(e) {
+        e.preventDefault()
+        e.stopPropagation()
         let originalStatusId = this.get('originalStatusId')
         let reblogged = this.get('reblogged')
         /* no await */ setReblogged(originalStatusId, !reblogged)
         this.set({animateReblog: !reblogged})
       },
-      onReplyClick() {
-        let originalStatusId = this.get('originalStatusId')
-        goto(`/statuses/${originalStatusId}/reply`)
+      onReplyClick(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        requestAnimationFrame(() => {
+          let uuid = this.get('uuid')
+          let $repliesShown = this.store.get('repliesShown')
+          $repliesShown[uuid] = !$repliesShown[uuid]
+          this.store.set({'repliesShown': $repliesShown})
+          this.fire('recalculateHeight')
+        })
       },
-      async onOptionsClick() {
+      async onOptionsClick(e) {
+        e.preventDefault()
+        e.stopPropagation()
         let originalStatusId = this.get('originalStatusId')
         let originalAccountId = this.get('originalAccountId')
         let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
@@ -98,6 +111,7 @@
       reblogAnimation: REBLOG_ANIMATION
     }),
     computed: {
+      replyLabel: (replyShown) => replyShown ? 'Close reply' : 'Reply',
       reblogLabel: (visibility) => {
         switch (visibility) {
           case 'private':

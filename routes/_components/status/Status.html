@@ -35,7 +35,11 @@
   <StatusDetails :originalStatus :originalStatusId />
   {{/if}}
   <StatusToolbar :originalStatus :originalStatusId :originalAccountId
-                 :isStatusInOwnThread :uuid :visibility />
+                 :isStatusInOwnThread :uuid :visibility :replyShown
+                 on:recalculateHeight />
+  {{#if replyShown}}
+    <StatusComposeBox :originalStatusId :uuid on:recalculateHeight />
+  {{/if}}
 </article>
 
 <style>
@@ -51,9 +55,10 @@
         "sidebar spoiler-btn  spoiler-btn   spoiler-btn"
         "sidebar content      content       content"
         "media   media        media         media"
-        "....... toolbar      toolbar       toolbar";
+        "....... toolbar      toolbar       toolbar"
+        "compose compose      compose       compose";
     grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
-    grid-template-rows: repeat(7, max-content);
+    grid-template-rows: repeat(8, max-content);
   }
 
   .status-article.status-in-timeline {
@@ -74,9 +79,10 @@
       "content     content"
       "media       media"
       "details     details"
-      "toolbar     toolbar";
+      "toolbar     toolbar"
+      "compose     compose";
     grid-template-columns: min-content 1fr;
-    grid-template-rows: repeat(6, max-content);
+    grid-template-rows: repeat(7, max-content);
   }
 
   @media (max-width: 767px) {
@@ -100,10 +106,13 @@
   import StatusMediaAttachments from './StatusMediaAttachments.html'
   import StatusContent from './StatusContent.html'
   import StatusSpoiler from './StatusSpoiler.html'
+  import StatusComposeBox from './StatusComposeBox.html'
   import { store } from '../../_store/store'
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
+
+  const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
 
   export default {
     oncreate() {
@@ -129,7 +138,8 @@
       StatusToolbar,
       StatusMediaAttachments,
       StatusContent,
-      StatusSpoiler
+      StatusSpoiler,
+      StatusComposeBox
     },
     store: () => store,
     methods: {
@@ -138,12 +148,9 @@
         let { localName, parentElement } = e.target
 
         if ((type === 'click' || (type === 'keydown' && keyCode === 13)) &&
-            localName !== 'a' &&
-            localName !== 'button' &&
-            parentElement.localName !== 'a' &&
-            parentElement.localName !== 'button' &&
-            parentElement.parentElement.localName !== 'a' &&
-            parentElement.parentElement.localName !== 'button') {
+            !INPUT_TAGS.has(localName) &&
+            !INPUT_TAGS.has(parentElement.localName) &&
+            !INPUT_TAGS.has(parentElement.parentElement.localName)) {
           e.preventDefault()
           e.stopPropagation()
           goto(`/statuses/${this.get('originalStatusId')}`)
@@ -174,6 +181,7 @@
           notification.type !== 'mention' && notification.status.id === originalStatusId
       },
       spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
+      replyShown: ($repliesShown, uuid) => !!$repliesShown[uuid],
       ariaLabel: (originalAccount, originalStatus, visibility) => {
         return (visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`

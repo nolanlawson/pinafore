@@ -1,0 +1,57 @@
+<div class="status-article-compose-box">
+  <ComposeBox realm="{{originalStatusId}}"
+              size="slim"
+              autoFocus="true"
+              hideBottomBorder="true"
+              on:postedStatus="onPostedStatus()"
+  />
+</div>
+<style>
+  .status-article-compose-box {
+    grid-area: compose;
+  }
+</style>
+<script>
+  import ComposeBox from '../../_components/compose/ComposeBox.html'
+  import { store } from '../../_store/store'
+  import { doubleRAF } from '../../_utils/doubleRAF'
+
+  export default {
+    oncreate() {
+      let lastContentWarningShown = false
+      this.observe('composeData', composeData => {
+        doubleRAF(() => {
+          this.fire('recalculateHeight')
+          let contentWarningShown = !!composeData.contentWarningShown
+          if (contentWarningShown !== lastContentWarningShown) {
+            // TODO: this animation lasts 333ms, hence need to recalculate again
+            setTimeout(() => {
+              requestAnimationFrame(() => {
+                this.fire('recalculateHeight')
+              })
+            }, 350)
+          }
+          lastContentWarningShown = contentWarningShown
+        })
+      }, {init: false})
+    },
+    components: {
+      ComposeBox
+    },
+    store: () => store,
+    computed: {
+      composeData: ($currentComposeData, originalStatusId) => $currentComposeData[originalStatusId] || {},
+    },
+    methods: {
+      onPostedStatus() {
+        requestAnimationFrame(() => {
+          let uuid = this.get('uuid')
+          let $repliesShown = this.store.get('repliesShown')
+          $repliesShown[uuid] = false
+          this.store.set({'repliesShown': $repliesShown})
+          this.fire('recalculateHeight')
+        })
+      }
+    }
+  }
+</script>

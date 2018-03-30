@@ -1,6 +1,7 @@
 import {
-  composeInput, getNthReplyButton,
-  getNthStatus, getUrl, goBack
+  composeInput,
+  getNthComposeReplyInput, getNthReplyButton,
+  getNthStatus, getUrl, goBack, homeNavButton, notificationsNavButton
 } from '../utils'
 import { foobarRole } from '../roles'
 
@@ -10,34 +11,26 @@ fixture`017-compose-reply.js`
 test('account handle populated correctly for replies', async t => {
   await t.useRole(foobarRole)
     .click(getNthReplyButton(0))
-    .expect(getUrl()).contains('/statuses')
-    .expect(composeInput.value).eql('@quux ')
-    .typeText(composeInput, 'hello quux', {paste: true})
-    .expect(composeInput.value).eql('@quux hello quux')
-  await goBack()
-  await t.click(getNthReplyButton(0))
-    .expect(getUrl()).contains('/statuses')
-    .expect(composeInput.value).eql('@quux hello quux')
-  await goBack()
-  await t.expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getNthComposeReplyInput(0).value).eql('@quux ')
+    .typeText(getNthComposeReplyInput(0), 'hello quux', {paste: true})
+    .expect(getNthComposeReplyInput(0).value).eql('@quux hello quux')
+    .click(notificationsNavButton)
+    .expect(getUrl()).contains('/notifications')
+    .click(homeNavButton)
+    .expect(getUrl()).notContains('/notifications')
+    .expect(getNthComposeReplyInput(0).value).eql('@quux hello quux')
     .expect(composeInput.value).eql('')
-  await t.hover(getNthStatus(2))
+    .hover(getNthStatus(2))
     .hover(getNthStatus(4))
     .click(getNthReplyButton(4))
-    .expect(getUrl()).contains('/statuses')
-    .expect(composeInput.value).eql('')
-  await goBack()
-  await t.expect(getUrl()).eql('http://localhost:4002/')
-    .expect(composeInput.value).eql('')
+    .expect(getNthComposeReplyInput(4).value).eql('')
 })
 
 test('replying to posts with mentions', async t => {
   await t.useRole(foobarRole)
     .click(getNthReplyButton(1))
-    .expect(getUrl()).contains('/statuses')
-    .expect(composeInput.value).eql('@admin ')
+    .expect(getNthComposeReplyInput(1).value).eql('@admin ')
     .navigateTo('/accounts/4')
     .click(getNthReplyButton(0))
-    .expect(getUrl()).contains('/statuses')
-    .expect(composeInput.value).eql('@ExternalLinks @admin @quux ')
+    .expect(getNthComposeReplyInput(0).value).eql('@ExternalLinks @admin @quux ')
 })

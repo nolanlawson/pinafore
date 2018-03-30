@@ -1,6 +1,7 @@
 import { foobarRole } from '../roles'
 import {
-  composeInput, getNthReplyButton, getNthStatus, getUrl, homeNavButton, notificationsNavButton,
+  composeInput, getNthComposeReplyButton, getNthComposeReplyInput, getNthReplyButton, getNthStatus, getUrl,
+  homeNavButton, notificationsNavButton,
   postStatusButton
 } from '../utils'
 
@@ -27,10 +28,9 @@ test('statuses in threads show up in right order', async t => {
     .click(getNthStatus(2))
     .expect(getUrl()).contains('/statuses')
     .click(getNthReplyButton(3))
-    .expect(getUrl()).contains('/reply')
-    .typeText(composeInput, 'my reply!', {paste: true})
-    .click(postStatusButton)
-    .expect(getUrl()).match(/statuses\/[^/]+$/)
+    .typeText(getNthComposeReplyInput(3), 'my reply!', {paste: true})
+    .click(getNthComposeReplyButton(3))
+    .expect(getNthComposeReplyInput(3).exists).notOk()
     .expect(getNthStatus(5).innerText).contains('@baz my reply!')
     .navigateTo('/accounts/5')
     .click(getNthStatus(2))
