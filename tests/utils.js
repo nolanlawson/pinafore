@@ -104,6 +104,10 @@ export function getNthComposeReplyButton (n) {
   return getNthStatus(n).find('.compose-box-button')
 }
 
+export function getNthPostPrivacyButton (n) {
+  return getNthStatus(n).find('.compose-box-toolbar button:nth-child(3)')
+}
+
 export function getNthAutosuggestionResult (n) {
   return $(`.compose-autosuggest-list-item:nth-child(${n}) button`)
 }

@@ -102,6 +102,13 @@
   import { importDialogs } from '../../_utils/asyncModules'
   import { classname } from '../../_utils/classname'
 
+  const PRIVACY_LEVEL = {
+    'direct': 1,
+    'private': 2,
+    'unlisted': 3,
+    'public': 4
+  }
+
   export default {
     oncreate() {
       let realm = this.get('realm')
@@ -156,7 +163,16 @@
       text: (composeData) => composeData.text || '',
       media: (composeData) => composeData.media || [],
       postPrivacy: (postPrivacyKey) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
-      defaultPostPrivacyKey: ($currentVerifyCredentials) => $currentVerifyCredentials.source.privacy,
+      defaultPostPrivacyKey: ($currentVerifyCredentials, replyVisibility) => {
+        let defaultVisibility = $currentVerifyCredentials.source.privacy
+        // return the most private between the user's preferred default privacy
+        // and the privacy of the status they're replying to
+        if (replyVisibility &&
+            PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]) {
+          return replyVisibility
+        }
+        return defaultVisibility
+      },
       postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
       textLength: (text) => measureText(text),
       contentWarningLength: (contentWarning) => measureText(contentWarning),

@@ -38,7 +38,9 @@
                  :isStatusInOwnThread :uuid :visibility :replyShown
                  on:recalculateHeight />
   {{#if replyShown}}
-    <StatusComposeBox :originalStatusId :uuid on:recalculateHeight />
+    <StatusComposeBox :originalStatusId :uuid
+                      :replyVisibility :visibility
+                      on:recalculateHeight />
   {{/if}}
 </article>
 
