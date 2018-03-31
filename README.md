@@ -23,6 +23,7 @@ This section lays out some high-level goals for Pinafore, as well as the goals i
 - Support Pleroma/non-Mastodon backends
 - i18n
 - Offline search
+- Full emoji keyboard
 
 ### Non-goals
 
@@ -30,65 +31,11 @@ This section lays out some high-level goals for Pinafore, as well as the goals i
 - React Native / NativeScript / hybrid-native version
 - Full functionality with JavaScript disabled
 - Emoji support beyond the built-in system emoji
-- Custom emoji keyboard
 - Multi-column support
 - Keyboard shortcuts
 - Admin/moderation panel
 - Works offline in read-write mode
 
-## Building
+## Building and contributing
 
-    npm install
-    npm run build
-    PORT=4002 npm start
-
-Now it's running at `localhost:4002`.
-
-## Development
-
-    npm run dev
-
-Now it's running at `localhost:4002`.
-
-## Testing in development mode
-
-In separate terminals:
-
-1\. Run a Mastodon dev server (note this destroys the `mastodon_development` database and inserts canned data):
-
-    npm run run-mastodon
-
-2\. Run a Pinafore dev server:
-
-    npm run dev
-
-3\. Run a debuggable TestCafé instance:
-
-    npx testcafe --hostname localhost --skip-js-errors --debug-mode firefox tests/spec
-
-If you want to export the current data in the Mastodon instance as canned data, so that it can be loaded later:
-
-    npm run backup-mastodon-data
-
-## Testing
-
-Lint:
-
-    npm run lint
-
-Run integration tests:
-
-    npm test
-
-Run tests for a particular browser:
-
-    BROWSER=chrome npm run test-browser
-    BROWSER=chrome:headless npm run test-browser
-    BROWSER=firefox npm run test-browser
-    BROWSER=firefox:headless npm run test-browser
-    BROWSER=safari npm run test-browser
-    BROWSER=edge npm run test-browser
-
-Automatically fix most linting issues:
-
-    npx standard --fix
+See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md).
