@@ -113,10 +113,7 @@
     oncreate() {
       let realm = this.get('realm')
       if (realm === 'home') {
-        this.__stickyObserver = new IntersectionObserver(entries => {
-          this.set({sticky: !entries[0].isIntersecting})
-        })
-        this.__stickyObserver.observe(this.refs.sentinel)
+        this.setupStickyObserver()
       } else if (realm !== 'dialog') {
         // if this is a reply, populate the handle immediately
         insertHandleForReply(realm)
@@ -130,9 +127,7 @@
       }, {init: false})
     },
     ondestroy() {
-      if (this.__stickyObserver) {
-        this.__stickyObserver.disconnect()
-      }
+      this.teardownStickyObserver()
     },
     components: {
       ComposeAuthor,
@@ -168,7 +163,7 @@
         // return the most private between the user's preferred default privacy
         // and the privacy of the status they're replying to
         if (replyVisibility &&
-            PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]) {
+          PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]) {
           return replyVisibility
         }
         return defaultVisibility
@@ -182,7 +177,8 @@
       overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
       contentWarning: (composeData) => composeData.contentWarning || '',
-      postedStatusForRealm: ($postedStatusForRealm) => $postedStatusForRealm
+      postedStatusForRealm: ($postedStatusForRealm) => $postedStatusForRealm,
+      timelineInitialized: ($timelineInitialized) => $timelineInitialized
     },
     transitions: {
       slide
@@ -213,6 +209,30 @@
           /* no await */
           postStatus(realm, text, inReplyTo, mediaIds,
             sensitive, contentWarning, postPrivacyKey)
+        }
+      },
+      setupStickyObserver() {
+        this.__stickyObserver = new IntersectionObserver(entries => {
+          this.set({sticky: !entries[0].isIntersecting})
+        })
+        this.__stickyObserver.observe(this.refs.sentinel)
+
+        // also create a one-shot observer for the $timelineInitialized event,
+        // due to a bug in Firefox where when the scrollTop is set
+        // manually, the other observer doesn't necessarily fire
+        this.observe('timelineInitialized', timelineInitialized => {
+          if (timelineInitialized) {
+            let observer = new IntersectionObserver(entries => {
+              this.set({sticky: !entries[0].isIntersecting})
+              observer.disconnect()
+            })
+            observer.observe(this.refs.sentinel)
+          }
+        }, {init: false})
+      },
+      teardownStickyObserver() {
+        if (this.__stickyObserver) {
+          this.__stickyObserver.disconnect()
         }
       }
     }
