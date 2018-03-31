@@ -3,18 +3,13 @@
      ref:node
 >
   {{#if playing}}
-    <video
-      style="background: url({{staticSrc}});"
-      class="{{class}}"
-      aria-label="{{label}}"
-      poster="{{poster}}"
-      src="{{src}}"
-      width="{{width}}"
-      height="{{height}}"
-      autoplay
-      muted
-      loop
-      playsinline
+    <AutoplayVideo
+      className="{{class}}"
+      ariaLabel="{{label}}"
+      :poster
+      :src
+      :width
+      :height
       />
   {{else}}
     <LazyImage
@@ -43,6 +38,7 @@
   import PlayVideoIcon from './PlayVideoIcon.html'
   import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
   import LazyImage from './LazyImage.html'
+  import AutoplayVideo from './AutoplayVideo.html'
 
   export default {
     methods: {
@@ -58,7 +54,8 @@
     }),
     components: {
       PlayVideoIcon,
-      LazyImage
+      LazyImage,
+      AutoplayVideo
     }
   }
 </script>

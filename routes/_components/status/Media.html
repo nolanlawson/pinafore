@@ -25,17 +25,13 @@
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
   {{#if media.type === 'gifv' && $autoplayGifs}}
-    <video
-      class="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
-      aria-label="Animated GIF: {{media.description || ''}}"
+    <AutoplayVideo
+      className="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
+      ariaLabel="Animated GIF: {{media.description || ''}}"
       poster="{{media.preview_url}}"
       src="{{media.url}}"
       width="{{inlineWidth}}"
       height="{{inlineHeight}}"
-      autoplay
-      muted
-      loop
-      playsinline
     />
   {{elseif media.type === 'gifv' && !$autoplayGifs}}
     <NonAutoplayGifv
@@ -107,6 +103,7 @@
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
   import { store } from '../../_store/store'
   import LazyImage from '../LazyImage.html'
+  import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
 
   export default {
@@ -165,7 +162,8 @@
     components: {
       NonAutoplayGifv,
       PlayVideoIcon,
-      LazyImage
+      LazyImage,
+      AutoplayVideo
     }
   }
 </script>

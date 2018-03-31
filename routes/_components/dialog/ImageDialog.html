@@ -1,15 +1,11 @@
 <ModalDialog :label :shown background="var(--muted-modal-bg)" muted="true">
   {{#if type === 'gifv'}}
-    <video
-      aria-label="Animated GIF: {{description || ''}}"
-      poster="{{poster}}"
-      src="{{src}}"
-      width="{{width}}"
-      height="{{height}}"
-      autoplay
-      muted
-      loop
-      playsinline
+    <AutoplayVideo
+      ariaLabel="Animated GIF: {{description || ''}}"
+      :poster
+      :src
+      :width
+      :height
     />
   {{else}}
     <img
@@ -30,10 +26,12 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
+  import AutoplayVideo from '../AutoplayVideo.html'
 
   export default {
     components: {
-      ModalDialog
+      ModalDialog,
+      AutoplayVideo
     },
     methods: {
       async show() {
