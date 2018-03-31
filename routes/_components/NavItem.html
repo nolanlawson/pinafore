@@ -34,8 +34,11 @@
   .nav-link-svg-wrapper {
     position: relative;
     display: inline-block;
-    width: 25px;
-    height: 25px;
+  }
+
+  .nav-link-svg-wrapper, .nav-link-svg {
+    width: 20px;
+    height: 20px;
   }
 
   .nav-link-notifications {
@@ -80,14 +83,12 @@
     fill: var(--nav-svg-fill-hover);
   }
 
-  .main-nav-link .nav-link-svg {
-    width: 20px;
-    height: 20px;
+  .nav-link-svg {
     display: inline-block;
     fill: var(--nav-svg-fill);
   }
 
-  .main-nav-link .nav-link-label {
+  .nav-link-label {
     font-size: 16px;
     color: var(--nav-text-color);
     padding-left: 10px;
@@ -100,7 +101,7 @@
     .main-nav-link .nav-link-label {
       display: none;
     }
-    .main-nav-link .nav-link-svg {
+    .nav-link-svg-wrapper, .nav-link-svg {
       width: 25px;
       height: 25px;
     }
