@@ -1,5 +1,7 @@
 <div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}}">
-  <Avatar :account size="extra-small" className="status-header-avatar"/>
+  <div class="status-header-avatar {{timelineType === 'pinned' ? 'hidden' : ''}}">
+    <Avatar :account size="extra-small"/>
+  </div>
   <svg class="status-header-svg">
     <use xlink:href="{{icon}}"/>
   </svg>
@@ -33,7 +35,7 @@
     align-items: center;
   }
 
-  :global(.status-header-avatar) {
+  .status-header-avatar {
     margin-left: 19px; /* offset for avatar, 48px - 24px - 5px */
   }
 
