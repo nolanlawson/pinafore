@@ -1,0 +1,84 @@
+<div class="account-profile-avatar">
+  <Avatar :account size="big" />
+</div>
+<div class="account-profile-name">
+  <ExternalLink href="{{account.url}}" showIcon="true" normalIconColor="true">
+    {{account.display_name || account.acct}}
+  </ExternalLink>
+</div>
+<div class="account-profile-username">
+  {{'@' + account.acct}}
+</div>
+<div class="account-profile-followed-by">
+  {{#if relationship && relationship.followed_by}}
+    <span class="account-profile-followed-by-span">Follows you</span>
+  {{/if}}
+</div>
+<style>
+  .account-profile-followed-by {
+    grid-area: followed-by;
+    align-self: center;
+    text-transform: uppercase;
+    color: var(--deemphasized-text-color);
+    font-size: 0.8em;
+  }
+  .account-profile-followed-by-span {
+    background: rgba(30, 30, 30, 0.2);
+    border-radius: 4px;
+    padding: 3px 5px;
+    white-space: nowrap;
+  }
+  .account-profile-avatar {
+    grid-area: avatar;
+  }
+
+  .account-profile-username {
+    grid-area: username;
+    color: var(--deemphasized-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-self: center;
+  }
+
+  .account-profile-name {
+    grid-area: name;
+    font-size: 1.5em;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  :global(.account-profile-name a) {
+    color: var(--body-text-color);
+    text-decoration: none;
+  }
+  :global(.account-profile-name a:hover) {
+    color: var(--body-text-color);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-name {
+      font-size: 1.3em;
+    }
+    .account-profile-username {
+      font-size: 1.1em;
+    }
+    .account-profile-name, .account-profile-username {
+      align-self: flex-start;
+    }
+  }
+</style>
+<script>
+  import Avatar from '../Avatar.html'
+  import ExternalLink from '../ExternalLink.html'
+
+  export default {
+    components: {
+      Avatar,
+      ExternalLink
+    }
+  }
+</script>

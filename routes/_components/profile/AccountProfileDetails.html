@@ -1,0 +1,63 @@
+<div class="account-profile-details">
+  <div class="account-profile-details-item">
+          <span class="account-profile-details-item-title">
+            Toots
+          </span>
+    <span class="account-profile-details-item-datum">
+            {{account.statuses_count || 0}}
+          </span>
+  </div>
+  <div class="account-profile-details-item">
+          <span class="account-profile-details-item-title">
+            Follows
+          </span>
+    <span class="account-profile-details-item-datum">
+            {{account.following_count || 0}}
+          </span>
+  </div>
+  <div class="account-profile-details-item">
+          <span class="account-profile-details-item-title">
+            Followers
+          </span>
+    <span class="account-profile-details-item-datum">
+            {{account.followers_count || 0}}
+          </span>
+  </div>
+</div>
+<style>
+  .account-profile-details {
+    grid-area: details;
+    display: flex;
+    margin: 0 5px;
+  }
+
+  .account-profile-details-item {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    justify-content: center;
+    font-size: 1.1em;
+  }
+
+  .account-profile-details-item:hover {
+    background: var(--button-bg-hover);
+    cursor: pointer;
+  }
+
+  .account-profile-details-item:active {
+    background: var(--button-bg-active);
+  }
+
+  .account-profile-details-item-title {
+    text-transform: uppercase;
+    color: var(--deemphasized-text-color);
+    margin-right: 5px;
+  }
+
+  .account-profile-details-item-datum {
+    color: var(--body-text-color);
+    margin-left: 5px;
+    font-weight: 600;
+  }
+</style>

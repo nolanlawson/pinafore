@@ -1,0 +1,72 @@
+<div class="account-profile-follow">
+  {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
+    <IconButton
+      label="{{followLabel}}"
+      href="{{followIcon}}"
+      pressable="true"
+      pressed="{{following}}"
+      big="true"
+      on:click="onFollowButtonClick(event)"
+      animation="{{animateFollowButton && followButtonAnimation}}"
+    />
+  {{/if}}
+</div>
+<style>
+  .account-profile-follow {
+    grid-area: follow;
+    align-self: flex-start;
+  }
+</style>
+<script>
+  import IconButton from '../IconButton.html'
+  import { FOLLOW_BUTTON_ANIMATION } from '../../_static/animations'
+  import { store } from '../../_store/store'
+  import { setAccountFollowed } from '../../_actions/follow'
+
+  export default {
+    methods: {
+      async onFollowButtonClick(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let accountId = this.get('accountId')
+        let instanceName = this.store.get('currentInstance')
+        let following = this.get('following')
+        let followRequested = this.get('followRequested')
+        this.set({animateFollowButton: true})
+        await setAccountFollowed(accountId, !(following || followRequested))
+      }
+    },
+    store: () => store,
+    data: () => ({
+      followButtonAnimation: FOLLOW_BUTTON_ANIMATION
+    }),
+    computed: {
+      accountId: (account) => account.id,
+      following: (relationship) => relationship && relationship.following,
+      followRequested: (relationship, account) => {
+        return relationship && relationship.requested && account && account.locked
+      },
+      followLabel: (following, followRequested) => {
+        if (following) {
+          return 'Unfollow'
+        } else if (followRequested) {
+          return 'Unfollow (follow requested)'
+        } else {
+          return 'Follow'
+        }
+      },
+      followIcon: (following, followRequested) => {
+        if (following) {
+          return '#fa-user-times'
+        } else if (followRequested) {
+          return '#fa-hourglass'
+        } else {
+          return '#fa-user-plus'
+        }
+      }
+    },
+    components: {
+      IconButton
+    }
+  }
+</script>

@@ -1,0 +1,45 @@
+<div class="account-profile-note">
+  {{{massagedNote}}}
+</div>
+<style>
+  .account-profile-note {
+    grid-area: note;
+    padding: 10px 0;
+    font-size: 0.9em;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+  }
+
+  :global(.account-profile-note p) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-note p:first-child) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-note p:last-child) {
+    margin: 0;
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-note {
+      padding: 5px 0;
+    }
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      note: (account) => account.note,
+      massagedNote: (note) => {
+        // GNU Social / Pleroma don't add <p> tags
+        if (!note.startsWith('<p>')) {
+          note = `<p>${note}</p>`
+        }
+        return note
+      },
+    }
+  }
+</script>

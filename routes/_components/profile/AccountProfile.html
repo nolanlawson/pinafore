@@ -1,0 +1,98 @@
+<div class="account-profile {{headerImageIsMissing ? 'header-image-is-missing' : ''}}"
+     style="background-image: url({{headerImage}});">
+  <div class="account-profile-grid-wrapper">
+    <div class="account-profile-backdrop"></div>
+    <div class="account-profile-grid">
+      <AccountProfileHeader :account :relationship :verifyCredentials />
+      <AccountProfileFollow :account :relationship :verifyCredentials />
+      <AccountProfileNote :account />
+      <AccountProfileDetails :account />
+    </div>
+  </div>
+</div>
+<style>
+  .account-profile {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding-top: 175px;
+  }
+
+  .account-profile.header-image-is-missing {
+    padding-top: 0;
+    background-color: #ccc;
+  }
+
+  .account-profile-backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+  }
+
+  .account-profile-grid {
+    display: grid;
+    grid-template-areas: "avatar     name        followed-by   follow"
+                         "avatar     username    username      follow"
+                         "avatar     note        note          follow"
+                         "details    details     details       details";
+    grid-template-columns: min-content auto 1fr min-content;
+    grid-column-gap: 10px;
+    grid-row-gap: 5px;
+    padding: 20px;
+    justify-content: center;
+    z-index: 10;
+    position: relative;
+  }
+
+  @supports (-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%)) {
+    :global(.account-profile-grid-wrapper) {
+      -webkit-backdrop-filter: blur(7px) saturate(110%);
+      backdrop-filter: blur(7px) saturate(110%);
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%))) {
+    :global(.account-profile-grid-wrapper) {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-grid {
+      display: grid;
+      grid-template-areas: "avatar     name          follow"
+                           "avatar     username      follow"
+                           "avatar     followed-by   follow"
+                           "note       note          note"
+                           "details    details       details";
+      grid-template-columns: min-content minmax(auto, 1fr) min-content;
+      grid-template-rows: min-content min-content 1fr min-content;
+      padding: 10px;
+    }
+  }
+</style>
+<script>
+  import AccountProfileHeader from './AccountProfileHeader.html'
+  import AccountProfileFollow from './AccountProfileFollow.html'
+  import AccountProfileNote from './AccountProfileNote.html'
+  import AccountProfileDetails from './AccountProfileDetails.html'
+  import { store } from '../../_store/store'
+
+  export default {
+    store: () => store,
+    computed: {
+      headerImageIsMissing: (account) => account.header.endsWith('missing.png'),
+      headerImage: ($autoplayGifs, account) => $autoplayGifs ? account.header : account.header_static
+    },
+    components: {
+      AccountProfileHeader,
+      AccountProfileFollow,
+      AccountProfileNote,
+      AccountProfileDetails
+    }
+  }
+</script>
