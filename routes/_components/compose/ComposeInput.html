@@ -112,6 +112,9 @@
           case 40: // down
             this.incrementAutosuggestSelected(1, e)
             break
+          case 27: // escape
+            this.clearAutosuggestions(e)
+            break
           default:
         }
       },
@@ -127,6 +130,7 @@
           /* no await */ clickSelectedAutosuggestionEmoji(this.get('realm'))
         }
         event.preventDefault()
+        event.stopPropagation()
       },
       incrementAutosuggestSelected(increment, event) {
         let autosuggestionShown = this.store.get('composeAutosuggestionShown')
@@ -143,6 +147,19 @@
         }
         this.store.set({composeAutosuggestionSelected: selected})
         event.preventDefault()
+        event.stopPropagation()
+      },
+      clearAutosuggestions(event) {
+        let autosuggestionShown = this.store.get('composeAutosuggestionShown')
+        if (!autosuggestionShown) {
+          return
+        }
+        this.store.set({
+          composeAutosuggestionSearchResults: [],
+          composeAutosuggestionSelected: 0
+        })
+        event.preventDefault()
+        event.stopPropagation()
       }
     },
     store: () => store,
