@@ -17,11 +17,14 @@
 </style>
 <script>
   import LoadingSpinner from './LoadingSpinner.html'
+
+  const SPINNER_DELAY = 700
+
   export default {
     oncreate() {
       setTimeout(() => {
         this.set({shown: true})
-      }, 200)
+      }, SPINNER_DELAY)
     },
     components: {
       LoadingSpinner
