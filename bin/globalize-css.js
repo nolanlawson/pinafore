@@ -11,7 +11,7 @@ const readFile = pify(fs.readFile.bind(fs))
 const glob = pify(require('glob'))
 const rimraf = pify(require('rimraf'))
 
-const selectorRegex = /\n[ \t]*([0-9\w\- \t.:#,]+?)[ \t]*{/g
+const selectorRegex = /\n[ \t\n]*([0-9\w\- \t\n.:#,]+?)[ \t\n]*{/g
 const styleRegex = /<style>[\s\S]+?<\/style>/
 
 async function main () {
