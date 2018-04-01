@@ -1,27 +1,27 @@
 <div class="account-profile-details">
   <div class="account-profile-details-item">
-          <span class="account-profile-details-item-title">
-            Toots
-          </span>
+    <span class="account-profile-details-item-title">
+      Toots
+    </span>
     <span class="account-profile-details-item-datum">
-            {{account.statuses_count || 0}}
-          </span>
+      {{account.statuses_count || 0}}
+    </span>
   </div>
   <div class="account-profile-details-item">
-          <span class="account-profile-details-item-title">
-            Follows
-          </span>
+    <span class="account-profile-details-item-title">
+      Follows
+    </span>
     <span class="account-profile-details-item-datum">
-            {{account.following_count || 0}}
-          </span>
+      {{account.following_count || 0}}
+    </span>
   </div>
   <div class="account-profile-details-item">
-          <span class="account-profile-details-item-title">
-            Followers
-          </span>
+    <span class="account-profile-details-item-title">
+      Followers
+    </span>
     <span class="account-profile-details-item-datum">
-            {{account.followers_count || 0}}
-          </span>
+      {{account.followers_count || 0}}
+    </span>
   </div>
 </div>
 <style>
@@ -59,5 +59,30 @@
     color: var(--body-text-color);
     margin-left: 5px;
     font-weight: 600;
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-details-item {
+      flex-direction: column;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    .account-profile-details-item:last-child {
+      margin-right: 0;
+    }
+
+    .account-profile-details-item:first-child {
+      margin-left: 0;
+    }
+
+    .account-profile-details-item-title {
+      margin-right: 0;
+      text-align: center;
+    }
+    .account-profile-details-item-datum {
+      margin-left: 0;
+      text-align: center;
+    }
   }
 </style>
