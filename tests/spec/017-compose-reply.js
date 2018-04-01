@@ -1,7 +1,7 @@
 import {
   composeInput,
   getNthComposeReplyInput, getNthPostPrivacyButton, getNthReplyButton,
-  getNthStatus, getUrl, goBack, homeNavButton, notificationsNavButton
+  getNthStatus, getUrl, homeNavButton, notificationsNavButton
 } from '../utils'
 import { foobarRole } from '../roles'
 
