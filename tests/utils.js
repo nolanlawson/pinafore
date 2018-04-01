@@ -6,7 +6,7 @@ const SCROLL_INTERVAL = 3
 
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
-export const modalDialog = $('#modal-dialog')
+export const modalDialog = $('.modal-dialog')
 export const modalDialogContents = $('.modal-dialog-contents')
 export const closeDialogButton = $('.close-dialog-button')
 export const notificationsNavButton = $('nav a[href="/notifications"]')
