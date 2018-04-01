@@ -1,4 +1,4 @@
-<div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}}">
+<div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}} {{notification && notification.type === 'follow' ? 'header-is-follow' : ''}}">
   <div class="status-header-avatar {{timelineType === 'pinned' ? 'hidden' : ''}}">
     <Avatar :account size="extra-small"/>
   </div>
@@ -30,9 +30,12 @@
 <style>
   .status-header {
     grid-area: header;
-    margin: 5px 10px 5px 5px;
+    margin: 0 10px 5px 5px;
     display: flex;
     align-items: center;
+  }
+  .status-header.header-is-follow {
+    margin-bottom: 0; /* standalone, so doesn't need a bottom margin */
   }
 
   .status-header-avatar {
