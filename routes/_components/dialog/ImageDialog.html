@@ -1,4 +1,9 @@
-<ModalDialog :label :shown background="var(--muted-modal-bg)" muted="true">
+<ModalDialog :label
+             :shown
+             background="var(--muted-modal-bg)"
+             muted="true"
+             className="image-modal-dialog"
+>
   {{#if type === 'gifv'}}
     <AutoplayVideo
       ariaLabel="Animated GIF: {{description || ''}}"
@@ -17,7 +22,7 @@
   {{/if}}
 </ModalDialog>
 <style>
-  :global(#modal-dialog img, #modal-dialog video) {
+  :global(.image-modal-dialog img, .image-modal-dialog video) {
     object-fit: contain;
     max-width: calc(100vw - 20px);
     max-height: calc(100% - 20px);

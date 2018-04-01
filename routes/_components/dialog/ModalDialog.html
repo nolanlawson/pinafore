@@ -1,8 +1,8 @@
-<div class="modal-dialog-backdrop {{fadedIn ? '' : 'hidden'}}"
+<div class="{{backdropClass}}"
      tabindex="-1"
      data-a11y-dialog-hide
 ></div>
-<div class="modal-dialog-contents {{fadedIn ? '' : 'hidden'}} {{muted ? 'muted-style' : ''}}"
+<div class="{{contentsClass}}"
      role="dialog"
      aria-label="{{label || ''}}"
      ref:node
@@ -25,7 +25,7 @@
   </div>
 </div>
 <style>
-  :global(#modal-dialog[aria-hidden='true']) {
+  :global(.modal-dialog[aria-hidden='true']) {
     display: none;
   }
   .modal-dialog-backdrop {
@@ -36,6 +36,8 @@
     bottom: 0;
     top: 0;
     background: rgba(51, 51, 51, 0.9);
+  }
+  .modal-dialog-backdrop.should-animate {
     transition: opacity 0.2s linear;
   }
   .modal-dialog-contents {
@@ -51,6 +53,8 @@
     display: flex;
     flex-direction: row;
     max-height: calc(100% - 20px);
+  }
+  .modal-dialog-contents.should-animate {
     transition: opacity 0.2s linear;
   }
 
@@ -113,7 +117,31 @@
 <script>
   import A11yDialog from 'a11y-dialog'
 
+  import { classname } from '../../_utils/classname'
+
   export default {
+    data: () => ({
+      // don't animate if we're showing a modal dialog on top of another modal dialog. it looks ugly
+      shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2
+    }),
+    computed: {
+      backdropClass: (fadedIn, shouldAnimate) => {
+        return classname(
+          'modal-dialog-backdrop',
+          !fadedIn && 'hidden',
+          shouldAnimate && 'should-animate'
+        )
+      },
+      contentsClass: (fadedIn, muted, shouldAnimate, className) => {
+        return classname(
+          'modal-dialog-contents',
+          !fadedIn && 'hidden',
+          muted && 'muted-style',
+          shouldAnimate && 'should-animate',
+          className
+        )
+      }
+    },
     oncreate() {
       let dialogElement = this.refs.node.parentElement
       let a11yDialog = new A11yDialog(dialogElement)
@@ -121,6 +149,7 @@
         a11yDialog.destroy()
         this.fire('close')
         this.destroy()
+        document.body.removeChild(dialogElement)
       })
       this.observe('shown', shown => {
         if (shown) {

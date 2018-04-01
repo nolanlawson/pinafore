@@ -1,8 +1,9 @@
 import ComposeDialog from './ComposeDialog.html'
+import { createDialogElement } from './createDialogElement'
 
 export function showComposeDialog () {
   let dialog = new ComposeDialog({
-    target: document.getElementById('modal-dialog'),
+    target: createDialogElement(),
     data: {
       label: 'Compose dialog'
     }
