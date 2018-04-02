@@ -1,5 +1,9 @@
 This will walk you through the basic usage of Pinafore and its major differences with the Mastodon web UI.
 
+* [Home page](#home-page)
+* [Community page](#community-page)
+* [Multiple instances](#multiple-instances)
+
 ## Home page
 
 The home page is both where you write toots and where you read your home timeline:
