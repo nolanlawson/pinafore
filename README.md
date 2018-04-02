@@ -2,9 +2,9 @@
 
 An alternative web client for [Mastodon](https://joinmastodon.org]), focused on speed and simplicity.
 
-Pinafore is available at [pinafore.social](https://pinafore.social).
+Pinafore is available at [pinafore.social](https://pinafore.social). Bleeding-edge releases are at [dev.pinafore.social](https://dev.pinafore.social).
 
-For bleeding-edge dev releases, there is also [dev.pinafore.social](https://dev.pinafore.social).
+See the [user guide](https://github.com/nolanlawson/pinafore/blob/master/docs/User-Guide.md) for basic usage.
 
 ## Browser support
 
