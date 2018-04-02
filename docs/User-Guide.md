@@ -1,3 +1,5 @@
+# Pinafore user guide
+
 This will walk you through the basic usage of Pinafore and its major differences with the Mastodon web UI.
 
 * [Home page](#home-page)
