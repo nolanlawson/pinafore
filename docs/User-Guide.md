@@ -28,7 +28,7 @@ the top navigation.
 
 ## Multiple instances
 
-You can manage you instances in the settings:
+You can manage your instances in the settings:
 
 ![Screenshot of instance settings with a list of instances](https://github.com/nolanlawson/pinafore/blob/master/docs/Screenshot5.png)
 
