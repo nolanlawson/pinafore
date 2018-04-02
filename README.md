@@ -1,6 +1,21 @@
 # Pinafore
 
-An alternative web client for [Mastodon](https://joinmastodon.org]).
+An alternative web client for [Mastodon](https://joinmastodon.org]), focused on speed and simplicity.
+
+Pinafore is available at [pinafore.social](https://pinafore.social).
+
+For bleeding-edge dev releases, there is also [dev.pinafore.social](https://dev.pinafore.social).
+
+## Browser support
+
+Pinafore supports the latest versions of the following browsers:
+
+- Chrome
+- Edge
+- Firefox
+- Safari
+
+Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Goals and non-goals
 
