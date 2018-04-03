@@ -1,5 +1,5 @@
 <ModalDialog :label :shown :closed :title background="var(--main-bg)">
-  <ComposeBox realm="dialog" size="slim" on:postedStatus="onPostedStatus()" />
+  <ComposeBox realm="dialog" size="slim" autoFocus="true" on:postedStatus="onPostedStatus()" />
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
