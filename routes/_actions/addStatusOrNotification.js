@@ -7,6 +7,8 @@ import uniqBy from 'lodash/uniqBy'
 import uniq from 'lodash/uniq'
 import { isMobile } from '../_utils/isMobile'
 
+const STREAMING_THROTTLE_DELAY = 3000
+
 function getExistingItemIdsSet (instanceName, timelineName) {
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
   return new Set(timelineItemIds)
@@ -75,7 +77,7 @@ const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
   runTask(() => {
     /* no await */ processFreshUpdates(instanceName, timelineName)
   })
-}, 3000)
+}, STREAMING_THROTTLE_DELAY)
 
 export function addStatusOrNotification (instanceName, timelineName, newStatusOrNotification) {
   addStatusesOrNotifications(instanceName, timelineName, [newStatusOrNotification])
