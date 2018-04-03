@@ -65,3 +65,15 @@ export async function clickSelectedAutosuggestionUsername (realm) {
   let endIndex = selectionStart
   await insertUsername(realm, account.acct, startIndex, endIndex)
 }
+
+export function setReplySpoiler (realm, spoiler) {
+  let contentWarning = store.getComposeData(realm, 'contentWarning')
+  let contentWarningShown = store.getComposeData(realm, 'contentWarningShown')
+  if (typeof contentWarningShown === 'undefined' && !contentWarning) {
+    // user hasn't interacted with the CW yet
+    store.setComposeData(realm, {
+      contentWarning: spoiler,
+      contentWarningShown: true
+    })
+  }
+}

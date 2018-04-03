@@ -18,12 +18,12 @@
   {{/if}}
   <StatusSidebar :isStatusInOwnThread :originalAccount
                  :originalAccountId :uuid />
-  {{#if originalStatus.spoiler_text}}
+  {{#if spoilerText}}
     <StatusSpoiler :isStatusInOwnThread :isStatusInNotification
                    :originalStatus :uuid :spoilerShown
                    on:recalculateHeight />
   {{/if}}
-  {{#if !originalStatus.spoiler_text || spoilerShown}}
+  {{#if !spoilerText || spoilerShown}}
     <StatusContent :isStatusInOwnThread :isStatusInNotification
                    :originalStatus :uuid />
   {{/if}}
@@ -38,8 +38,8 @@
                  :isStatusInOwnThread :uuid :visibility :replyShown
                  on:recalculateHeight />
   {{#if replyShown}}
-    <StatusComposeBox :originalStatusId :uuid
-                      :replyVisibility :visibility
+    <StatusComposeBox :originalStatusId :uuid :replyVisibility
+                      :visibility :spoilerText
                       on:recalculateHeight />
   {{/if}}
 </article>
@@ -171,6 +171,7 @@
       originalAccount: (originalStatus) => originalStatus.account,
       originalAccountId: (originalAccount) => originalAccount.id,
       visibility: (originalStatus) => originalStatus.visibility,
+      spoilerText: (originalStatus) => originalStatus.spoiler_text,
       uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       },

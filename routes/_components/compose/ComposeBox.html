@@ -98,7 +98,7 @@
   import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
-  import { postStatus, insertHandleForReply } from '../../_actions/compose'
+  import { postStatus, insertHandleForReply, setReplySpoiler } from '../../_actions/compose'
   import { importDialogs } from '../../_utils/asyncModules'
   import { classname } from '../../_utils/classname'
 
@@ -117,6 +117,12 @@
       } else if (realm !== 'dialog') {
         // if this is a reply, populate the handle immediately
         insertHandleForReply(realm)
+      }
+
+      let replySpoiler = this.get('replySpoiler')
+      if (replySpoiler) {
+        // default spoiler is same as the replied-to status
+        setReplySpoiler(realm, replySpoiler)
       }
 
       this.observe('postedStatusForRealm', postedStatusForRealm => {
