@@ -5,6 +5,7 @@ import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import uniqBy from 'lodash/uniqBy'
 import uniq from 'lodash/uniq'
+import { isMobile } from '../_utils/isMobile'
 
 function getExistingItemIdsSet (instanceName, timelineName) {
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
@@ -70,10 +71,11 @@ async function processFreshUpdates (instanceName, timelineName) {
 }
 
 const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
-  scheduleIdleTask(() => {
+  const runTask = isMobile() ? scheduleIdleTask : requestAnimationFrame
+  runTask(() => {
     /* no await */ processFreshUpdates(instanceName, timelineName)
   })
-}, 5000)
+}, 3000)
 
 export function addStatusOrNotification (instanceName, timelineName, newStatusOrNotification) {
   addStatusesOrNotifications(instanceName, timelineName, [newStatusOrNotification])

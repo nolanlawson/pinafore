@@ -1,5 +1,4 @@
 import { TimelineStream } from '../_api/TimelineStream'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { mark, stop } from '../_utils/marks'
 import { deleteStatus } from './deleteStatuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
@@ -29,9 +28,7 @@ export function createStream (streamingApi, instanceName, accessToken,
         console.error("don't know how to handle event", msg)
         return
       }
-      scheduleIdleTask(() => {
-        processMessage(instanceName, timelineName, msg)
-      })
+      processMessage(instanceName, timelineName, msg)
     },
     onOpen () {
       if (onOpenStream) {
