@@ -32,7 +32,7 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
 
   itemIdsToAdd = uniq(itemIdsToAdd.concat(updates.map(_ => _.id)))
-  console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd')
+  console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd on instance', instanceName, 'on timeline', timelineName)
   store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
 }
 

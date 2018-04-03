@@ -2,6 +2,8 @@ import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_a
 import { updateLists } from '../../_actions/lists'
 import { createStream } from '../../_actions/streaming'
 import { updateCustomEmojiForInstance } from '../../_actions/emoji'
+import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
+import { getTimeline } from '../../_api/timelines'
 
 export function instanceObservers (store) {
   // stream to watch for home timeline updates and notifications
@@ -27,14 +29,55 @@ export function instanceObservers (store) {
     updateLists()
 
     await updateInstanceInfo(currentInstance)
-    let instanceInfo = store.get('currentInstanceInfo')
-    if (!(instanceInfo && store.get('currentInstance') === currentInstance)) {
+
+    let currentInstanceIsUnchanged = () => {
+      return store.get('currentInstance') === currentInstance
+    }
+
+    if (!currentInstanceIsUnchanged()) {
       return
     }
 
+    let instanceInfo = store.get('currentInstanceInfo')
+    if (!instanceInfo) {
+      return
+    }
+
+    let homeTimelineItemIds = store.getForTimeline(currentInstance,
+      'home', 'timelineItemIds')
+    let firstHomeTimelineItemId = homeTimelineItemIds && homeTimelineItemIds[0]
+    let notificationItemIds = store.getForTimeline(currentInstance,
+      'notifications', 'timelineItemIds')
+    let firstNotificationTimelineItemId = notificationItemIds && notificationItemIds[0]
+
+    let onOpenStream = async () => {
+      if (!currentInstanceIsUnchanged()) {
+        return
+      }
+
+      // fill in the "streaming gap" – i.e. fetch the most recent 20 items so that there isn't
+      // a big gap in the timeline if you haven't looked at it in awhile
+      async function fillGap (timelineName, firstTimelineItemId) {
+        if (!firstTimelineItemId) {
+          return
+        }
+        let newTimelineItems = await getTimeline(currentInstance, accessToken,
+          timelineName, null, firstTimelineItemId)
+        if (newTimelineItems.length) {
+          addStatusesOrNotifications(currentInstance, timelineName, newTimelineItems)
+        }
+      }
+
+      await Promise.all([
+        fillGap('home', firstHomeTimelineItemId),
+        fillGap('notifications', firstNotificationTimelineItemId)
+      ])
+    }
+
     let accessToken = store.get('accessToken')
-    currentInstanceStream = createStream(instanceInfo.urls.streaming_api,
-      currentInstance, accessToken, 'home')
+    let streamingApi = instanceInfo.urls.streaming_api
+    currentInstanceStream = createStream(streamingApi,
+      currentInstance, accessToken, 'home', onOpenStream)
 
     if (process.env.NODE_ENV !== 'production') {
       window.currentInstanceStream = currentInstanceStream
