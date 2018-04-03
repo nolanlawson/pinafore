@@ -4,7 +4,7 @@
       Toots
     </span>
     <span class="account-profile-details-item-datum">
-      {{account.statuses_count || 0}}
+      {{numStatusesDisplay}}
     </span>
   </div>
   <div class="account-profile-details-item">
@@ -12,7 +12,7 @@
       Follows
     </span>
     <span class="account-profile-details-item-datum">
-      {{account.following_count || 0}}
+      {{numFollowingDisplay}}
     </span>
   </div>
   <div class="account-profile-details-item">
@@ -20,7 +20,7 @@
       Followers
     </span>
     <span class="account-profile-details-item-datum">
-      {{account.followers_count || 0}}
+      {{numFollowersDisplay}}
     </span>
   </div>
 </div>
@@ -86,3 +86,17 @@
     }
   }
 </style>
+<script>
+  const numberFormat = new Intl.NumberFormat('en-US')
+
+  export default {
+    computed: {
+      numStatuses: account => account.statuses_count || 0,
+      numFollowing: account => account.following_count || 0,
+      numFollowers: account => account.followers_count || 0,
+      numStatusesDisplay: numStatuses => numberFormat.format(numStatuses),
+      numFollowingDisplay: numFollowing => numberFormat.format(numFollowing),
+      numFollowersDisplay: numFollowers => numberFormat.format(numFollowers)
+    }
+  }
+</script>
