@@ -1,4 +1,7 @@
-<Avatar account="{{verifyCredentials}}" className="compose-box-avatar" size="small"/>
+<a href="/accounts/{{verifyCredentials.id}}"
+   class="compose-box-avatar">
+  <Avatar account="{{verifyCredentials}}" size="small"/>
+</a>
 <a class="compose-box-display-name" href="/accounts/{{verifyCredentials.id}}">
   {{verifyCredentials.display_name || verifyCredentials.acct}}
 </a>
@@ -6,7 +9,7 @@
   {{'@' + verifyCredentials.acct}}
 </span>
 <style>
-  :global(.compose-box-avatar) {
+  .compose-box-avatar {
     grid-area: avatar;
     margin-right: 15px;
   }
@@ -38,7 +41,7 @@
   }
 
   @media (max-width: 767px) {
-    :global(.compose-box-avatar) {
+    .compose-box-avatar {
       grid-area: avatar;
       margin-right: 5px;
     }
