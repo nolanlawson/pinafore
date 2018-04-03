@@ -28,12 +28,16 @@
       async onFollowButtonClick(e) {
         e.preventDefault()
         e.stopPropagation()
+        let account = this.get('account')
         let accountId = this.get('accountId')
-        let instanceName = this.store.get('currentInstance')
         let following = this.get('following')
         let followRequested = this.get('followRequested')
         this.set({animateFollowButton: true})
-        await setAccountFollowed(accountId, !(following || followRequested))
+        let newFollowingValue = !(following || followRequested)
+        await setAccountFollowed(accountId, newFollowingValue)
+        if (!account.locked) { // be optimistic, show the user that it succeeded
+          this.set({overrideFollowing: newFollowingValue)
+        }
       }
     },
     store: () => store,
@@ -42,7 +46,12 @@
     }),
     computed: {
       accountId: (account) => account.id,
-      following: (relationship) => relationship && relationship.following,
+      following: (relationship, overrideFollowing) => {
+        if (typeof overrideFollowing === 'boolean') {
+          return overrideFollowing
+        }
+        return relationship && relationship.following
+      },
       followRequested: (relationship, account) => {
         return relationship && relationship.requested && account && account.locked
       },
