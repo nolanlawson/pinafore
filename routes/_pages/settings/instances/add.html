@@ -1,11 +1,5 @@
-<SettingsLayout page='settings/instances/add' label="Add an Instance">
-  <h1 id="add-an-instance-h1">Add an Instance</h1>
-
-  {{#if $isUserLoggedIn}}
-  <p>Connect to an instance to log in.</p>
-  {{else}}
-  <p>Log in to an instance to use Pinafore.</p>
-  {{/if}}
+<SettingsLayout page='settings/instances/add' label="Add instance">
+  <h1 id="add-an-instance-h1">Add instance</h1>
 
   <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
