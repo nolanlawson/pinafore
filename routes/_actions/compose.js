@@ -77,3 +77,21 @@ export function setReplySpoiler (realm, spoiler) {
     })
   }
 }
+
+const PRIVACY_LEVEL = {
+  'direct': 1,
+  'private': 2,
+  'unlisted': 3,
+  'public': 4
+}
+
+export function setReplyVisibility (realm, replyVisibility) {
+  // return the most private between the user's preferred default privacy
+  // and the privacy of the status they're replying to
+  let verifyCredentials = store.get('currentVerifyCredentials')
+  let defaultVisibility = verifyCredentials.source.privacy
+  let visibility = PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]
+    ? replyVisibility
+    : defaultVisibility
+  store.setComposeData(realm, {postPrivacy: visibility})
+}

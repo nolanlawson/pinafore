@@ -98,16 +98,9 @@
   import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
-  import { postStatus, insertHandleForReply, setReplySpoiler } from '../../_actions/compose'
+  import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
   import { importDialogs } from '../../_utils/asyncModules'
   import { classname } from '../../_utils/classname'
-
-  const PRIVACY_LEVEL = {
-    'direct': 1,
-    'private': 2,
-    'unlisted': 3,
-    'public': 4
-  }
 
   export default {
     oncreate() {
@@ -123,6 +116,12 @@
       if (replySpoiler) {
         // default spoiler is same as the replied-to status
         setReplySpoiler(realm, replySpoiler)
+      }
+
+      let replyVisibility = this.get('replyVisibility')
+      if (replyVisibility) {
+        // make sure the visibility is consistent with the replied-to status
+        setReplyVisibility(realm, replyVisibility)
       }
 
       this.observe('postedStatusForRealm', postedStatusForRealm => {
@@ -164,16 +163,7 @@
       text: (composeData) => composeData.text || '',
       media: (composeData) => composeData.media || [],
       postPrivacy: (postPrivacyKey) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
-      defaultPostPrivacyKey: ($currentVerifyCredentials, replyVisibility) => {
-        let defaultVisibility = $currentVerifyCredentials.source.privacy
-        // return the most private between the user's preferred default privacy
-        // and the privacy of the status they're replying to
-        if (replyVisibility &&
-          PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]) {
-          return replyVisibility
-        }
-        return defaultVisibility
-      },
+      defaultPostPrivacyKey: ($currentVerifyCredentials) => $currentVerifyCredentials.source.privacy,
       postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
       textLength: (text) => measureText(text),
       contentWarningLength: (contentWarning) => measureText(contentWarning),
