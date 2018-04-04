@@ -36,7 +36,7 @@
         let newFollowingValue = !(following || followRequested)
         await setAccountFollowed(accountId, newFollowingValue)
         if (!account.locked) { // be optimistic, show the user that it succeeded
-          this.set({overrideFollowing: newFollowingValue)
+          this.set({overrideFollowing: newFollowingValue})
         }
       }
     },
