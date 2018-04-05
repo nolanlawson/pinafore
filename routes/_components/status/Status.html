@@ -113,8 +113,12 @@
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
+  import { checkDomAncestors } from '../../_utils/checkDomAncestors'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
+  const isUserInputElement = node => INPUT_TAGS.has(node.localName)
+  const isToolbar = node => node.classList.contains('status-toolbar')
+  const isStatusArticle = node => node.classList.contains('status-article')
 
   export default {
     oncreate() {
@@ -146,17 +150,26 @@
     store: () => store,
     methods: {
       onClickOrKeydown(e) {
-        let { type, keyCode } = e
-        let { localName, parentElement } = e.target
+        let { type, keyCode, target } = e
 
-        if ((type === 'click' || (type === 'keydown' && keyCode === 13)) &&
-            !INPUT_TAGS.has(localName) &&
-            !INPUT_TAGS.has(parentElement.localName) &&
-            !INPUT_TAGS.has(parentElement.parentElement.localName)) {
-          e.preventDefault()
-          e.stopPropagation()
-          goto(`/statuses/${this.get('originalStatusId')}`)
+        let isClick = type === 'click'
+        let isEnter = type === 'keydown' && keyCode === 13
+        if (!isClick && !isEnter) {
+          return
         }
+        if (checkDomAncestors(target, isUserInputElement, isStatusArticle)) {
+          // this element or any ancestors up to the status-article element is
+          // a user input element
+          return
+        }
+        if (checkDomAncestors(target, isToolbar, isStatusArticle)) {
+          // this element or any of its ancestors is the toolbar
+          return
+        }
+
+        e.preventDefault()
+        e.stopPropagation()
+        goto(`/statuses/${this.get('originalStatusId')}`)
       }
     },
     computed: {
