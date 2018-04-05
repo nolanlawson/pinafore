@@ -23,7 +23,10 @@
     "wait-for-mastodon-data": "node -r esm bin/wait-for-mastodon-data.js",
     "globalize-css": "node ./bin/globalize-css.js",
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
-    "deploy-dev": "now && sleep 60 && now alias dev.pinafore.social && now rm pinafore --safe --yes",
+    "stage-dev": "printf 'User-agent: *\nDisallow: /' > assets/robots.txt",
+    "deploy-dev": "npm run stage-dev && now && sleep 60 && now alias dev.pinafore.social && now rm pinafore --safe --yes",
+    "stage-prod": "rm -f assets/robots.txt",
+    "deploy-prod": "npm run stage-prod && now && sleep 60 && now alias pinafore.social && now rm pinafore --safe --yes",
     "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
