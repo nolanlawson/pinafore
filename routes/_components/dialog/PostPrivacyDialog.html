@@ -1,4 +1,11 @@
-<ModalDialog :label :shown :closed :title background="var(--main-bg)">
+<ModalDialog
+  :label
+  :shown
+  :closed
+  :title
+  background="var(--main-bg)"
+  on:destroyDialog="destroy()"
+>
   <GenericDialogList :items on:click="onClick(event)" />
 </ModalDialog>
 <script>

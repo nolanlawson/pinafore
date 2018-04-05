@@ -1,4 +1,10 @@
-<ModalDialog :label :shown :closed background="var(--main-bg)" on:close="onClose()">
+<ModalDialog
+  :label
+  :shown
+  :closed background="var(--main-bg)"
+  on:close="onClose()"
+  on:destroyDialog="destroy()"
+>
   <form class="confirmation-dialog-form">
     <p>
       {{text}}

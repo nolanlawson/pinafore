@@ -1,8 +1,10 @@
-<ModalDialog :label
-             :shown
-             background="var(--muted-modal-bg)"
-             muted="true"
-             className="video-modal-dialog"
+<ModalDialog
+  :label
+  :shown
+  background="var(--muted-modal-bg)"
+  muted="true"
+  className="video-modal-dialog"
+  on:destroyDialog="destroy()"
 >
   <video poster="{{poster}}"
          src="{{src}}"

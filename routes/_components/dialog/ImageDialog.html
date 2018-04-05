@@ -3,6 +3,7 @@
              background="var(--muted-modal-bg)"
              muted="true"
              className="image-modal-dialog"
+             on:destroyDialog="destroy()"
 >
   {{#if type === 'gifv'}}
     <AutoplayVideo

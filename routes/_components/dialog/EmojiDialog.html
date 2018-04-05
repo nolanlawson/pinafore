@@ -1,4 +1,11 @@
-<ModalDialog :label :shown :closed :title background="var(--main-bg)">
+<ModalDialog
+  :label
+  :shown
+  :closed
+  :title
+  background="var(--main-bg)"
+  on:destroyDialog="destroy()"
+>
   <div class="custom-emoji-container">
     {{#if emojis.length}}
       <ul class="custom-emoji-list">

@@ -148,8 +148,9 @@
       a11yDialog.on('hide', () => {
         a11yDialog.destroy()
         this.fire('close')
-        this.destroy()
-        document.body.removeChild(dialogElement)
+        console.log('destroyDialog()')
+        this.fire('destroyDialog')
+        requestAnimationFrame(() => document.body.removeChild(dialogElement))
       })
       this.observe('shown', shown => {
         if (shown) {
