@@ -3,6 +3,7 @@
               size="slim"
               autoFocus="true"
               hideBottomBorder="true"
+              isReply="true"
               replyVisibility="{{visibility}}"
               replySpoiler="{{spoilerText}}"
               on:postedStatus="onPostedStatus()"
@@ -11,7 +12,6 @@
 <style>
   .status-article-compose-box {
     grid-area: compose;
-    background: var(--main-bg);
   }
 </style>
 <script>

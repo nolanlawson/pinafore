@@ -37,6 +37,10 @@
     max-width: calc(100vw - 40px);
   }
 
+  .compose-box.direct-reply {
+    background-color: var(--status-direct-background);
+  }
+
   .compose-box.slim-size {
     width: 540px;
     max-width: calc(100vw - 60px);
@@ -145,11 +149,12 @@
     },
     store: () => store,
     computed: {
-      computedClassName: (overLimit, realm, size) => {
+      computedClassName: (overLimit, realm, size, postPrivacyKey, isReply) => {
         return classname(
           'compose-box',
           overLimit && 'over-char-limit',
-          size === 'slim' && 'slim-size'
+          size === 'slim' && 'slim-size',
+          isReply && postPrivacyKey === 'direct' && 'direct-reply'
         )
       },
       hideAndFadeIn: (hidden) => {
