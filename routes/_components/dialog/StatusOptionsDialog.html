@@ -23,15 +23,14 @@ export default {
     verifyCredentialsId: (verifyCredentials) => verifyCredentials.id,
     following: (relationship) => relationship && relationship.following,
     followRequested: (relationship) => relationship && relationship.requested,
-    accountName: (account) => account && (account.display_name || account.acct),
     accountId: (account) => account && account.id,
-    followLabel: (following, followRequested, accountName) => {
-      if (typeof following === 'undefined' || !accountName) {
+    followLabel: (following, followRequested, account) => {
+      if (typeof following === 'undefined' || !account) {
         return ''
       }
       return (following || followRequested)
-        ? `Unfollow ${accountName}`
-        : `Follow ${accountName}`
+        ? `Unfollow @${account.acct}`
+        : `Follow @${account.acct}`
     },
     items: (followLabel, following, followRequested, accountId, verifyCredentialsId) => (
       [
