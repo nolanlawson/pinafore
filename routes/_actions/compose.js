@@ -42,6 +42,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
       postedStatusForRealm: realm
     })
   } catch (e) {
+    console.error(e)
     toast.say('Unable to post status: ' + (e.message || ''))
   } finally {
     store.set({postingStatus: false})
