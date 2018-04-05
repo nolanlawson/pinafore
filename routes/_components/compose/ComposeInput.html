@@ -61,7 +61,7 @@
           if (firstTime) {
             firstTime = false
             if (this.get('autoFocus')) {
-              textarea.focus()
+              requestAnimationFrame(() => textarea.focus())
             }
           }
         })
