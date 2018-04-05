@@ -39,6 +39,7 @@ This section lays out some high-level goals for Pinafore, as well as the goals i
 - i18n
 - Offline search
 - Full emoji keyboard
+- Keyboard shortcuts
 
 ### Non-goals
 
@@ -47,9 +48,8 @@ This section lays out some high-level goals for Pinafore, as well as the goals i
 - Full functionality with JavaScript disabled
 - Emoji support beyond the built-in system emoji
 - Multi-column support
-- Keyboard shortcuts
 - Admin/moderation panel
-- Works offline in read-write mode
+- Works offline in read-write mode (would require sophisticated sync logic)
 
 ## Building and contributing
 
