@@ -6,7 +6,7 @@ export function showStatusOptionsDialog (statusId) {
     target: createDialogElement(),
     data: {
       label: 'Status options dialog',
-      title: 'Status options',
+      title: '',
       statusId: statusId
     }
   })
