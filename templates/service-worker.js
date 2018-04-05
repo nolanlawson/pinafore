@@ -15,8 +15,6 @@ const webpackAssets = __shell__
   .filter(filename => !filename.endsWith('.map'))
   .filter(filename => filename !== '/index.html')
 
-const cacheSet = new Set([].concat(assets).concat(webpackAssets))
-
 // `routes` is an array of `{ pattern: RegExp }` objects that
 // match the pages in your app
 const routes = __routes__
@@ -81,16 +79,18 @@ self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     let sameOrigin = url.origin === self.origin
 
-    // always serve webpack-generated resources and
-    // assets from the cache
-    if (sameOrigin && cacheSet.has(url.pathname)) {
-      return caches.match(req)
-    }
-
-    // for routes, serve the /index.html file from the most recent
-    // assets cache
-    if (sameOrigin && routes.find(route => route.pattern.test(url.pathname))) {
-      return caches.match('/index.html')
+    if (sameOrigin) {
+      // always serve webpack-generated resources and
+      // assets from the cache if possible
+      let response = await caches.match(req)
+      if (response) {
+        return response
+      }
+      // for routes, serve the /index.html file from the most recent
+      // assets cache
+      if (routes.find(route => route.pattern.test(url.pathname))) {
+        return caches.match('/index.html')
+      }
     }
 
     // For these GET requests, go cache-first
