@@ -28,6 +28,9 @@
     padding: 6px 10px;
     background: none;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .icon-button-svg {
@@ -41,6 +44,10 @@
     width: 32px;
     height: 32px;
   }
+
+  /*
+   * regular styles
+   */
 
   .icon-button:hover .icon-button-svg {
     fill: var(--action-button-fill-color-hover);
@@ -61,6 +68,35 @@
   .icon-button.pressed:active .icon-button-svg {
     fill: var(--action-button-fill-color-pressed-active);
   }
+
+  /*
+   * muted
+   */
+
+  .icon-button.muted-style .icon-button-svg {
+    fill: var(--action-button-deemphasized-fill-color);
+  }
+
+  .icon-button.muted-style:hover .icon-button-svg {
+    fill: var(--action-button-deemphasized-fill-color-hover);
+  }
+
+  .icon-button.muted-style.not-pressable:active .icon-button-svg {
+    fill: var(--action-button-deemphasized-fill-color-active);
+  }
+
+  .icon-button.muted-style.pressed .icon-button-svg {
+    fill: var(--action-button-deemphasized-fill-color-pressed);
+  }
+
+  .icon-button.muted-style.pressed:hover .icon-button-svg {
+    fill: var(--action-button-deemphasized-fill-color-pressed-hover);
+  }
+
+  .icon-button.muted-style.pressed:active .icon-button-svg {
+    fill: var(--action-button-deemphasized-fill-color-pressed-active);
+  }
+
 </style>
 <script>
   import { classname } from '../_utils/classname'
@@ -79,12 +115,13 @@
     },
     store: () => store,
     computed: {
-      computedClass: (pressable, pressed, big, className) => {
+      computedClass: (pressable, pressed, big, muted, className) => {
         return classname(
           'icon-button',
           !pressable && 'not-pressable',
           pressed && 'pressed',
           big && 'big-icon',
+          muted && 'muted-style',
           className
         )
       }

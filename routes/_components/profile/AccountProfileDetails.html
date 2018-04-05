@@ -23,12 +23,21 @@
       {{numFollowersDisplay}}
     </span>
   </div>
+  <div class="account-profile-more-options">
+    <IconButton
+      label="More options"
+      href="#fa-bars"
+      muted="true"
+      on:click="onMoreOptionsClick()"
+    />
+  </div>
 </div>
 <style>
   .account-profile-details {
     grid-area: details;
     display: flex;
     margin: 0 5px;
+    align-items: center;
   }
 
   .account-profile-details-item {
@@ -87,6 +96,9 @@
   }
 </style>
 <script>
+  import IconButton from '../IconButton.html'
+  import { importDialogs } from '../../_utils/asyncModules'
+
   const numberFormat = new Intl.NumberFormat('en-US')
 
   export default {
@@ -97,6 +109,16 @@
       numStatusesDisplay: numStatuses => numberFormat.format(numStatuses),
       numFollowingDisplay: numFollowing => numberFormat.format(numFollowing),
       numFollowersDisplay: numFollowers => numberFormat.format(numFollowers)
+    },
+    methods: {
+      async onMoreOptionsClick() {
+        let account = this.get('account')
+        let dialogs = await importDialogs()
+        dialogs.showAccountProfileOptionsDialog(account)
+      }
+    },
+    components: {
+      IconButton
     }
   }
 </script>

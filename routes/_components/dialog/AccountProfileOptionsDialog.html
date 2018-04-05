@@ -1,0 +1,48 @@
+<ModalDialog
+  :label
+  :shown
+  :closed
+  :title
+  background="var(--main-bg)"
+  on:destroyDialog="destroy()"
+>
+  <GenericDialogList :items on:click="onClick(event)"/>
+</ModalDialog>
+<script>
+import ModalDialog from './ModalDialog.html'
+import { store } from '../../_store/store'
+import GenericDialogList from './GenericDialogList.html'
+import { goto } from 'sapper/runtime.js'
+
+export default {
+  computed: {
+    items: (account) => (
+      [
+        {
+          key: 'mention',
+          label: 'Mention @' + (account.acct),
+          icon: '#fa-comments'
+        }
+      ]
+    )
+  },
+  components: {
+    ModalDialog,
+    GenericDialogList
+  },
+  store: () => store,
+  methods: {
+    async show() {
+      this.set({shown: true})
+    },
+    onClick() {
+      let account = this.get('account')
+      this.store.setComposeData('home', {
+        text: `@${account.acct} `
+      })
+      this.set({closed: true})
+      goto('/')
+    }
+  }
+}
+</script>

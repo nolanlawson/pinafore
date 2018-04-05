@@ -1,4 +1,7 @@
 @mixin baseTheme() {
+
+  $deemphasized-color: #666;
+
   --button-primary-bg: lighten($main-theme-color, 7%);
   --button-primary-text: $secondary-text-color;
   --button-primary-border: darken($main-theme-color, 30%);
@@ -44,6 +47,13 @@
   --action-button-fill-color-pressed-hover: darken($main-theme-color, 2%);
   --action-button-fill-color-pressed-active: darken($main-theme-color, 15%);
 
+  --action-button-deemphasized-fill-color: $deemphasized-color;
+  --action-button-deemphasized-fill-color-hover: lighten($deemphasized-color, 22%);
+  --action-button-deemphasized-fill-color-active: lighten($deemphasized-color, 5%);
+  --action-button-deemphasized-fill-color-pressed: darken($deemphasized-color, 7%);
+  --action-button-deemphasized-fill-color-pressed-hover: darken($deemphasized-color, 2%);
+  --action-button-deemphasized-fill-color-pressed-active: darken($deemphasized-color, 15%);
+
   --settings-list-item-bg: $main-bg-color;
   --settings-list-item-text: $main-theme-color;
   --settings-list-item-text-hover: $main-theme-color;
@@ -60,7 +70,7 @@
   --mask-opaque-bg: rgba($toast-bg, 0.8);
   --loading-bg: #ededed;
 
-  --deemphasized-text-color: #666;
+  --deemphasized-text-color:$deemphasized-color;
   --focus-outline: $focus-outline;
 
   --very-deemphasized-link-color: rgba($anchor-color, 0.6);
