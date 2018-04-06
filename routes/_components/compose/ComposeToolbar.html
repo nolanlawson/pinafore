@@ -30,7 +30,7 @@
          style="display: none;"
          type="file"
          accept=".jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,image/jpeg,image/png,image/gif,video/webm,video/mp4">
-  <div class="compose-autosuggest-wrapper">
+  <div class="compose-autosuggest-wrapper {{composeAutosuggestionShown ? '' : 'not-shown'}} {{realm === 'dialog' ? 'is-dialog' : ''}}">
     <ComposeAutosuggest :realm :text />
   </div>
 </div>
@@ -49,6 +49,12 @@
     left: 5px;
     top: 0;
     z-index: 7000;
+  }
+  .compose-autosuggest-wrapper.is-dialog {
+    z-index: 11000;
+  }
+  .compose-autosuggest-wrapper.not-shown {
+    pointer-events: none;
   }
 </style>
 <script>
@@ -76,6 +82,9 @@
       ComposeAutosuggest
     },
     store: () => store,
+    computed: {
+      composeAutosuggestionShown: ($composeAutosuggestionShown) => $composeAutosuggestionShown
+    },
     methods: {
       async onEmojiClick() {
         let dialogs = await importDialogs()
