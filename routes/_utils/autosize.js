@@ -4,8 +4,8 @@
 // add deferredUpdate, and add perf marks.
 
 import { mark, stop } from './marks'
-import debounce from 'lodash/debounce'
-import throttle from 'lodash/throttle'
+import debounce from 'lodash-es/debounce'
+import throttle from 'lodash-es/throttle'
 
 const map = new Map()
 let createEvent = (name) => new Event(name, {bubbles: true})

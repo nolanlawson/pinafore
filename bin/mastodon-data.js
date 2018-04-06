@@ -1,4 +1,4 @@
-import times from 'lodash/times'
+import times from 'lodash-es/times'
 
 function unrollThread (user, prefix, privacy, thread) {
   let res = []

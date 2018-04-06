@@ -1,4 +1,4 @@
-import pickBy from 'lodash/pickBy'
+import pickBy from 'lodash-es/pickBy'
 
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {

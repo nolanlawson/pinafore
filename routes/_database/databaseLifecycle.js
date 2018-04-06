@@ -14,7 +14,7 @@ import {
   USERNAME_LOWERCASE
 } from './constants'
 
-import forEach from 'lodash/forEach'
+import forEach from 'lodash-es/forEach'
 
 const openReqs = {}
 const databaseCache = {}

@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce'
+import debounce from 'lodash-es/debounce'
 import { toast } from '../../_utils/toast'
 
 const OFFLINE_DELAY = 1000

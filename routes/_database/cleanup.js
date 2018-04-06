@@ -11,7 +11,7 @@ import {
   THREADS_STORE,
   TIMESTAMP
 } from './constants'
-import debounce from 'lodash/debounce'
+import debounce from 'lodash-es/debounce'
 import { store } from '../_store/store'
 import { mark, stop } from '../_utils/marks'
 import { deleteAll } from './utils'

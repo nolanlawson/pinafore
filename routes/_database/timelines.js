@@ -1,5 +1,5 @@
-import difference from 'lodash/difference'
-import times from 'lodash/times'
+import difference from 'lodash-es/difference'
+import times from 'lodash-es/times'
 import { cloneForStorage } from './helpers'
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import {

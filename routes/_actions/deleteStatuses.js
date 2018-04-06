@@ -2,8 +2,8 @@ import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { database } from '../_database/database'
-import forEach from 'lodash/forEach'
-import isEqual from 'lodash/isEqual'
+import forEach from 'lodash-es/forEach'
+import isEqual from 'lodash-es/isEqual'
 
 function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
   let keys = ['timelineItemIds', 'itemIdsToAdd']

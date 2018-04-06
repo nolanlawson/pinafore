@@ -1,10 +1,10 @@
-import throttle from 'lodash/throttle'
+import throttle from 'lodash-es/throttle'
 import { database } from '../_database/database'
 import { mark, stop } from '../_utils/marks'
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import uniqBy from 'lodash/uniqBy'
-import uniq from 'lodash/uniq'
+import uniqBy from 'lodash-es/uniqBy'
+import uniq from 'lodash-es/uniq'
 import { isMobile } from '../_utils/isMobile'
 
 const STREAMING_THROTTLE_DELAY = 3000

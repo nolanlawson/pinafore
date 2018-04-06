@@ -5,7 +5,7 @@ import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
 import { mergeArrays } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'
-import isEqual from 'lodash/isEqual'
+import isEqual from 'lodash-es/isEqual'
 
 const FETCH_LIMIT = 20
 
