@@ -22,7 +22,12 @@
         this.set({shown: true})
       },
       onPostedStatus() {
-        this.set({closed: true})
+        try {
+          this.set({closed: true})
+        } catch (e) {
+          // TODO: this seems to error sometimes, not sure why
+          console.error(e)
+        }
       }
     }
   }
