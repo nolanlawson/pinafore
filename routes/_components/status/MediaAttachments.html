@@ -1,7 +1,7 @@
 <div class="status-media {{sensitive ? 'status-media-is-sensitive' : ''}}"
      style="grid-template-columns: repeat(auto-fit, minmax({{maxMediaWidth}}px, 1fr));" >
   {{#each mediaAttachments as media}}
-    <Media :media />
+    <Media :media :uuid />
   {{/each}}
 </div>
 <style>

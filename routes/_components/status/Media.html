@@ -134,7 +134,7 @@
       originalWidth: original => original && original.width,
       originalHeight: original => original && original.height,
       noNativeWidthHeight: (smallWidth, smallHeight) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number',
-      delegateKey: (media) => `media-${media.id}`
+      delegateKey: (media, uuid) => `media-${uuid}-${media.id}`
     },
     methods: {
       async onClickPlayVideoButton() {
