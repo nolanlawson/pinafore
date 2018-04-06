@@ -1,5 +1,5 @@
-<div class="compose-autosuggest {{shown ? 'shown' : ''}}"
-     aria-hidden="true" >
+<div class="compose-autosuggest {{shown ? 'shown' : ''}} {{realm === 'dialog' ? 'is-dialog' : ''}}"
+       aria-hidden="true" >
   <ComposeAutosuggestionList
     items="{{searchResults}}"
     on:click="onClick(event)"
@@ -9,21 +9,29 @@
 </div>
 <style>
   .compose-autosuggest {
-    opacity: 0;
+    position: absolute;
+    left: 5px;
+    top: 0;
     pointer-events: none;
+    opacity: 0;
     transition: opacity 0.1s linear;
     min-width: 400px;
     max-width: calc(100vw - 20px);
+    z-index: 7000;
+  }
+  .compose-autosuggest.is-dialog {
+    z-index: 11000;
   }
   .compose-autosuggest.shown {
     pointer-events: auto;
-    opacity: 1
+    opacity: 1;
   }
 
   @media (max-width: 479px) {
     .compose-autosuggest {
       /* hack: move this over to the left on mobile so it's easier to see */
       transform: translateX(-58px); /* avatar size 48px + 10px padding */
+      min-width: 0;
       width: calc(100vw - 20px);
     }
   }

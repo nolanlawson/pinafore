@@ -30,9 +30,7 @@
          style="display: none;"
          type="file"
          accept=".jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,image/jpeg,image/png,image/gif,video/webm,video/mp4">
-  <div class="compose-autosuggest-wrapper">
-    <ComposeAutosuggest :realm :text />
-  </div>
+  <ComposeAutosuggest :realm :text />
 </div>
 <style>
   .compose-box-toolbar {
@@ -43,12 +41,6 @@
   .compose-box-toolbar-items {
     display: flex;
     align-items: center;
-  }
-  .compose-autosuggest-wrapper {
-    position: absolute;
-    left: 5px;
-    top: 0;
-    z-index: 7000;
   }
 </style>
 <script>
