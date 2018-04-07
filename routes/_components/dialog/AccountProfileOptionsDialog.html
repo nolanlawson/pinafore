@@ -12,7 +12,7 @@
 import ModalDialog from './ModalDialog.html'
 import { store } from '../../_store/store'
 import GenericDialogList from './GenericDialogList.html'
-import { goto } from 'sapper/runtime.js'
+import { importDialogs } from '../../_utils/asyncModules'
 
 export default {
   computed: {
@@ -35,13 +35,14 @@ export default {
     async show() {
       this.set({shown: true})
     },
-    onClick() {
+    async onClick() {
       let account = this.get('account')
-      this.store.setComposeData('home', {
+      this.store.setComposeData('dialog', {
         text: `@${account.acct} `
       })
+      let dialogs = await importDialogs()
+      dialogs.showComposeDialog()
       this.set({closed: true})
-      goto('/')
     }
   }
 }
