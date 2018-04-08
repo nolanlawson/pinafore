@@ -1,10 +1,8 @@
 <ModalDialog
+  :id
   :label
-  :shown
-  :closed
   :title
   background="var(--main-bg)"
-  on:destroyDialog="destroy()"
 >
   <div class="custom-emoji-container">
     {{#if emojis.length}}
@@ -60,10 +58,14 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import { store } from '../../_store/store'
-  import { insertEmoji } from '../../_actions/emoji'
+  import { store } from '../../../_store/store'
+  import { insertEmoji } from '../../../_actions/emoji'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
 
   export default {
+    oncreate,
     components: {
       ModalDialog
     },
@@ -77,12 +79,11 @@
       }
     },
     methods: {
-      async show() {
-        this.set({shown: true})
-      },
+      show,
+      close,
       onClickEmoji(emoji) {
         insertEmoji(this.get('realm'), emoji)
-        this.set({closed: true})
+        this.close()
       }
     }
   }

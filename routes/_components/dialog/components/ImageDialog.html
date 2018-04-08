@@ -1,9 +1,9 @@
-<ModalDialog :label
-             :shown
-             background="var(--muted-modal-bg)"
-             muted="true"
-             className="image-modal-dialog"
-             on:destroyDialog="destroy()"
+<ModalDialog
+  :id
+  :label
+  background="var(--muted-modal-bg)"
+  muted="true"
+  className="image-modal-dialog"
 >
   {{#if type === 'gifv'}}
     <AutoplayVideo
@@ -32,17 +32,18 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import AutoplayVideo from '../AutoplayVideo.html'
+  import AutoplayVideo from '../../AutoplayVideo.html'
+  import { show } from '../helpers/showDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
 
   export default {
+    oncreate,
     components: {
       ModalDialog,
       AutoplayVideo
     },
     methods: {
-      async show() {
-        this.set({shown: true})
-      }
+      show
     }
   }
 </script>

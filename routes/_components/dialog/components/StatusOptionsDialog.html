@@ -1,21 +1,23 @@
 <ModalDialog
+  :id
   :label
-  :shown
-  :closed
   :title
   background="var(--main-bg)"
-  on:destroyDialog="destroy()"
 >
   <GenericDialogList :items on:click="onClick(event)"/>
 </ModalDialog>
 <script>
 import ModalDialog from './ModalDialog.html'
-import { store } from '../../_store/store'
+import { store } from '../../../_store/store'
 import GenericDialogList from './GenericDialogList.html'
-import { setAccountFollowed } from '../../_actions/follow'
-import { doDeleteStatus } from '../../_actions/delete'
+import { setAccountFollowed } from '../../../_actions/follow'
+import { doDeleteStatus } from '../../../_actions/delete'
+import { show } from '../helpers/showDialog'
+import { close } from '../helpers/closeDialog'
+import { oncreate } from '../helpers/onCreateDialog'
 
 export default {
+  oncreate,
   computed: {
     relationship: ($currentAccountRelationship) => $currentAccountRelationship,
     account: ($currentAccountProfile) => $currentAccountProfile,
@@ -55,19 +57,18 @@ export default {
   },
   store: () => store,
   methods: {
-    async show() {
-      this.set({shown: true})
-    },
+    show,
+    close,
     async onClick(item) {
       if (item.key === 'follow') {
         let accountId = this.get('accountId')
         let following = this.get('following')
         await setAccountFollowed(accountId, !following, true)
-        this.set({closed: true})
+        this.close()
       } else if (item.key === 'delete') {
         let statusId = this.get('statusId')
         await doDeleteStatus(statusId)
-        this.set({closed: true})
+        this.close()
       }
     }
   }

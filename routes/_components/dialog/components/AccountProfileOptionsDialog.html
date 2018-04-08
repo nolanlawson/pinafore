@@ -1,20 +1,27 @@
 <ModalDialog
+  :id
   :label
-  :shown
-  :closed
   :title
   background="var(--main-bg)"
-  on:destroyDialog="destroy()"
 >
   <GenericDialogList :items on:click="onClick(event)"/>
 </ModalDialog>
 <script>
 import ModalDialog from './ModalDialog.html'
-import { store } from '../../_store/store'
+import { store } from '../../../_store/store'
 import GenericDialogList from './GenericDialogList.html'
-import { importDialogs } from '../../_utils/asyncModules'
+import { importDialogs } from '../../../_utils/asyncModules'
+import { createDialogId } from '../helpers/createDialogId'
+import { show } from '../helpers/showDialog'
+import { close } from '../helpers/closeDialog'
+import { oncreate } from '../helpers/onCreateDialog'
 
 export default {
+  oncreate,
+  store: () => store,
+  data: () => ({
+    id: createDialogId()
+  }),
   computed: {
     items: (account) => (
       [
@@ -26,15 +33,9 @@ export default {
       ]
     )
   },
-  components: {
-    ModalDialog,
-    GenericDialogList
-  },
-  store: () => store,
   methods: {
-    async show() {
-      this.set({shown: true})
-    },
+    show,
+    close,
     async onClick() {
       let account = this.get('account')
       this.store.setComposeData('dialog', {
@@ -42,8 +43,12 @@ export default {
       })
       let dialogs = await importDialogs()
       dialogs.showComposeDialog()
-      this.set({closed: true})
+      this.close()
     }
-  }
+  },
+  components: {
+    ModalDialog,
+    GenericDialogList
+  },
 }
 </script>

@@ -1,15 +1,14 @@
 <ModalDialog
+  :id
   :label
-  :shown
   background="var(--muted-modal-bg)"
   muted="true"
   className="video-modal-dialog"
-  on:destroyDialog="destroy()"
 >
-  <video poster="{{poster}}"
-         src="{{src}}"
-         width="{{width}}"
-         height="{{height}}"
+  <video :poster
+         :src
+         :width
+         :height
          aria-label="Video: {{description || ''}}"
          controls
   />
@@ -24,15 +23,16 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
 
   export default {
+    oncreate,
     components: {
       ModalDialog
     },
     methods: {
-      async show() {
-        this.set({shown: true})
-      }
+      show
     }
   }
 </script>

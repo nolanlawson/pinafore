@@ -1,21 +1,23 @@
 <ModalDialog
+  :id
   :label
-  :shown
-  :closed
   :title
   background="var(--main-bg)"
-  on:destroyDialog="destroy()"
 >
   <GenericDialogList :items on:click="onClick(event)" />
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import { store } from '../../_store/store'
-  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
-  import { setPostPrivacy } from '../../_actions/postPrivacy'
+  import { store } from '../../../_store/store'
+  import { POST_PRIVACY_OPTIONS } from '../../../_static/statuses'
+  import { setPostPrivacy } from '../../../_actions/postPrivacy'
   import GenericDialogList from './GenericDialogList.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
 
   export default {
+    oncreate,
     components: {
       ModalDialog,
       GenericDialogList
@@ -25,12 +27,11 @@
       postPrivacyOptions: POST_PRIVACY_OPTIONS
     }),
     methods: {
-      async show() {
-        this.set({shown: true})
-      },
+      show,
+      close,
       onClick(item) {
         setPostPrivacy(this.get('realm'), item.key)
-        this.set({closed: true})
+        this.close()
       }
     },
     computed: {

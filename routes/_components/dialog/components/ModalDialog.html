@@ -116,10 +116,21 @@
 </style>
 <script>
   import A11yDialog from 'a11y-dialog'
-
-  import { classname } from '../../_utils/classname'
+  import { classname } from '../../../_utils/classname'
+  import { on, emit } from '../../../_utils/eventBus'
 
   export default {
+    oncreate() {
+      let dialogElement = this.refs.node.parentElement
+      this._a11yDialog = new A11yDialog(dialogElement)
+      this._a11yDialog.on('hide', () => {
+        this._a11yDialog.destroy()
+        emit('destroyDialog', this.get('id'))
+        requestAnimationFrame(() => document.body.removeChild(dialogElement))
+      })
+      on('showDialog', this, this.showDialog)
+      on('closeDialog', this, this.closeDialog)
+    },
     data: () => ({
       // don't animate if we're showing a modal dialog on top of another modal dialog. it looks ugly
       shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2
@@ -142,31 +153,24 @@
         )
       }
     },
-    oncreate() {
-      let dialogElement = this.refs.node.parentElement
-      let a11yDialog = new A11yDialog(dialogElement)
-      a11yDialog.on('hide', () => {
-        a11yDialog.destroy()
-        this.fire('close')
-        console.log('destroyDialog()')
-        this.fire('destroyDialog')
-        requestAnimationFrame(() => document.body.removeChild(dialogElement))
-      })
-      this.observe('shown', shown => {
-        if (shown) {
-          a11yDialog.show()
-          requestAnimationFrame(() => {
-            this.set({ fadedIn: true })
-          })
+    methods: {
+      showDialog(id) {
+        if (this.get('id') !== id) {
+          return
         }
-      })
-      this.observe('closed', closed => {
-        if (closed) {
-          setTimeout(() => { // use setTimeout to workaround svelte timing issue
-            a11yDialog.hide()
-          }, 0)
+        this._a11yDialog.show()
+        requestAnimationFrame(() => {
+          this.set({ fadedIn: true })
+        })
+      },
+      closeDialog(id) {
+        if (this.get('id') !== id) {
+          return
         }
-      })
+        setTimeout(() => { // use setTimeout to workaround svelte timing issue
+          this._a11yDialog.hide()
+        }, 0)
+      }
     }
   }
 </script>

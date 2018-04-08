@@ -1,9 +1,7 @@
 <ModalDialog
+  :id
   :label
-  :shown
-  :closed background="var(--main-bg)"
-  on:close="onClose()"
-  on:destroyDialog="destroy()"
+  background="var(--main-bg)"
 >
   <form class="confirmation-dialog-form">
     <p>
@@ -36,16 +34,23 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { on } from '../../../_utils/eventBus'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
 
   export default {
-    components: {
-      ModalDialog
+    oncreate() {
+      on('destroyDialog', this, this.onDestroyDialog)
+      onCreateDialog.call(this)
     },
     methods: {
-      show() {
-        this.set({shown: true})
-      },
-      onClose() {
+      show,
+      close,
+      onDestroyDialog(id) {
+        if (id !== this.get('id')) {
+          return
+        }
         if (this.get('positiveResult')) {
           if (this.get('onPositive')) {
             this.get('onPositive')()
@@ -58,11 +63,14 @@
       },
       onPositive() {
         this.set({positiveResult: true})
-        this.set({closed: true})
+        this.close()
       },
       onNegative() {
-        this.set({closed: true})
+        this.close()
       }
+    },
+    components: {
+      ModalDialog
     }
   }
 </script>

@@ -1,0 +1,37 @@
+<ModalDialog
+  :id
+  :label
+  :title
+  background="var(--main-bg)"
+>
+  <ComposeBox realm="dialog" size="slim" autoFocus="true" />
+</ModalDialog>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import ComposeBox from '../../compose/ComposeBox.html'
+  import { on } from '../../../_utils/eventBus'
+  import { show } from '../helpers/showDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { close } from '../helpers/closeDialog'
+
+  export default {
+    oncreate() {
+      on('postedStatus', this, this.onPostedStatus)
+      onCreateDialog.call(this)
+    },
+    methods: {
+      show,
+      close,
+      onPostedStatus(realm) {
+        if (realm !== 'dialog') {
+          return
+        }
+        this.close()
+      }
+    },
+    components: {
+      ModalDialog,
+      ComposeBox
+    }
+  }
+</script>

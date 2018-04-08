@@ -1,10 +1,12 @@
-import PostPrivacyDialog from './PostPrivacyDialog.html'
-import { createDialogElement } from './createDialogElement'
+import PostPrivacyDialog from '../components/PostPrivacyDialog.html'
+import { createDialogElement } from '../helpers/createDialogElement'
+import { createDialogId } from '../helpers/createDialogId'
 
 export function showPostPrivacyDialog (realm) {
   let dialog = new PostPrivacyDialog({
     target: createDialogElement(),
     data: {
+      id: createDialogId(),
       label: 'Post privacy dialog',
       title: 'Post privacy',
       realm: realm
