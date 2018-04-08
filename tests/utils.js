@@ -140,6 +140,22 @@ export function getNthReplyButton (n) {
   return getNthStatus(n).find('.status-toolbar button:nth-child(1)')
 }
 
+export function getNthReplyContentWarningInput (n) {
+  return getNthStatus(n).find('.content-warning-input')
+}
+
+export function getNthReplyContentWarningButton (n) {
+  return getNthStatus(n).find('.compose-box-toolbar button:nth-child(4)')
+}
+
+export function getNthReplyPostPrivacyButton (n) {
+  return getNthStatus(n).find('.compose-box-toolbar button:nth-child(3)')
+}
+
+export function getNthPostPrivacyOptionInDialog (n) {
+  return $(`.generic-dialog-list li:nth-child(${n}) button`)
+}
+
 export function getNthFavoriteButton (n) {
   return getNthStatus(n).find('.status-toolbar button:nth-child(3)')
 }

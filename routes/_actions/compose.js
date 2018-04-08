@@ -70,13 +70,13 @@ export async function clickSelectedAutosuggestionUsername (realm) {
 export function setReplySpoiler (realm, spoiler) {
   let contentWarning = store.getComposeData(realm, 'contentWarning')
   let contentWarningShown = store.getComposeData(realm, 'contentWarningShown')
-  if (typeof contentWarningShown === 'undefined' && !contentWarning) {
-    // user hasn't interacted with the CW yet
-    store.setComposeData(realm, {
-      contentWarning: spoiler,
-      contentWarningShown: true
-    })
+  if (typeof contentWarningShown !== 'undefined' || contentWarning) {
+    return // user has already interacted with the CW
   }
+  store.setComposeData(realm, {
+    contentWarning: spoiler,
+    contentWarningShown: true
+  })
 }
 
 const PRIVACY_LEVEL = {
@@ -89,6 +89,10 @@ const PRIVACY_LEVEL = {
 export function setReplyVisibility (realm, replyVisibility) {
   // return the most private between the user's preferred default privacy
   // and the privacy of the status they're replying to
+  let postPrivacy = store.getComposeData(realm, 'postPrivacy')
+  if (typeof postPrivacy !== 'undefined') {
+    return // user has already set the postPrivacy
+  }
   let verifyCredentials = store.get('currentVerifyCredentials')
   let defaultVisibility = verifyCredentials.source.privacy
   let visibility = PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]

@@ -1,7 +1,9 @@
 import {
   composeInput,
-  getNthComposeReplyInput, getNthPostPrivacyButton, getNthReplyButton,
-  getNthStatus, getUrl, homeNavButton, notificationsNavButton
+  getNthComposeReplyInput, getNthPostPrivacyButton, getNthPostPrivacyOptionInDialog, getNthReplyButton,
+  getNthReplyContentWarningButton,
+  getNthReplyContentWarningInput, getNthReplyPostPrivacyButton,
+  getNthStatus, getUrl, homeNavButton, notificationsNavButton, scrollToStatus
 } from '../utils'
 import { foobarRole } from '../roles'
 
@@ -57,4 +59,52 @@ test('replies have same privacy as replied-to status by default', async t => {
     .click(getNthReplyButton(7))
     .expect(getNthPostPrivacyButton(7).getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
     .click(getNthReplyButton(7))
+})
+
+test('replies have same CW as replied-to status', async t => {
+  await t.useRole(foobarRole)
+  await scrollToStatus(t, 7)
+  await t.click(getNthReplyButton(7))
+    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
+    .click(getNthStatus(7))
+    .click(getNthReplyButton(0))
+    .expect(getNthReplyContentWarningInput(0).value).eql('kitten CW')
+})
+
+test('replies save deletions of CW', async t => {
+  await t.useRole(foobarRole)
+  await scrollToStatus(t, 7)
+  await t.click(getNthReplyButton(7))
+    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
+    .click(getNthReplyContentWarningButton(7))
+    .expect(getNthReplyContentWarningInput(7).exists).notOk()
+    .click(getNthStatus(7))
+    .click(getNthReplyButton(0))
+    .expect(getNthReplyContentWarningInput(0).exists).notOk()
+})
+
+test('replies save changes to CW', async t => {
+  await t.useRole(foobarRole)
+  await scrollToStatus(t, 7)
+  await t.click(getNthReplyButton(7))
+    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
+    .typeText(getNthReplyContentWarningInput(7), ' yolo', {paste: true})
+    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW yolo')
+    .click(getNthStatus(7))
+    .click(getNthReplyButton(0))
+    .expect(getNthReplyContentWarningInput(0).value).eql('kitten CW yolo')
+})
+
+test('replies save changes to post privacy', async t => {
+  await t.useRole(foobarRole)
+    .hover(getNthStatus(0))
+    .hover(getNthStatus(1))
+    .click(getNthReplyButton(1))
+    .expect(getNthPostPrivacyButton(1).getAttribute('aria-label')).eql('Adjust privacy (currently Unlisted)')
+    .click(getNthReplyPostPrivacyButton(1))
+    .click(getNthPostPrivacyOptionInDialog(1))
+    .expect(getNthPostPrivacyButton(1).getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
+    .click(getNthStatus(1))
+    .click(getNthReplyButton(0))
+    .expect(getNthPostPrivacyButton(0).getAttribute('aria-label')).eql('Adjust privacy (currently Unlisted)')
 })
