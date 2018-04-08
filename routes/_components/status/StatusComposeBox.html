@@ -6,7 +6,6 @@
               isReply="true"
               replyVisibility="{{visibility}}"
               replySpoiler="{{spoilerText}}"
-              on:postedStatus="onPostedStatus()"
   />
 </div>
 <style>
@@ -19,37 +18,25 @@
   import { store } from '../../_store/store'
   import debounce from 'lodash-es/debounce'
   import throttle from 'lodash-es/throttle'
+  import { on } from '../../_utils/eventBus'
 
   const DEBOUNCE_DELAY = 400
   const THROTTLE_DELAY = 150
 
   export default {
     oncreate() {
-      const recalc = () => {
-        requestAnimationFrame(() => {
-          this.fire('recalculateHeight')
-        })
-      }
-      // debounce AND throttle due to 333ms content warning animation
-      const debounced = debounce(recalc, DEBOUNCE_DELAY)
-      const throttled = throttle(() => {
-        debounced()
-        recalc()
-      }, THROTTLE_DELAY, {
-        leading: true,
-        trailing: true
-      })
-      this.observe('composeData', throttled)
-    },
-    components: {
-      ComposeBox
+      on('postedStatus', this, this.onPostedStatus)
+      this.setupRecalculateHeightListener()
     },
     store: () => store,
     computed: {
       composeData: ($currentComposeData, originalStatusId) => $currentComposeData[originalStatusId] || {}
     },
     methods: {
-      onPostedStatus() {
+      onPostedStatus(realm) {
+        if (realm !== this.get('originalStatusId')) {
+          return
+        }
         requestAnimationFrame(() => {
           let uuid = this.get('uuid')
           let $repliesShown = this.store.get('repliesShown')
@@ -57,7 +44,23 @@
           this.store.set({'repliesShown': $repliesShown})
           this.fire('recalculateHeight')
         })
+      },
+      setupRecalculateHeightListener() {
+        const recalc = () => requestAnimationFrame(() => this.fire('recalculateHeight'))
+        // debounce AND throttle due to 333ms content warning animation
+        const debounced = debounce(recalc, DEBOUNCE_DELAY)
+        const throttled = throttle(() => {
+          debounced()
+          recalc()
+        }, THROTTLE_DELAY, {
+          leading: true,
+          trailing: true
+        })
+        this.observe('composeData', throttled)
       }
+    },
+    components: {
+      ComposeBox
     }
   }
 </script>

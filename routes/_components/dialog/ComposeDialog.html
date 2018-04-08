@@ -6,13 +6,17 @@
   background="var(--main-bg)"
   on:destroyDialog="destroy()"
 >
-  <ComposeBox realm="dialog" size="slim" autoFocus="true" on:postedStatus="onPostedStatus()" />
+  <ComposeBox realm="dialog" size="slim" autoFocus="true" />
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
   import ComposeBox from '../compose/ComposeBox.html'
+  import { on } from '../../_utils/eventBus'
 
   export default {
+    oncreate() {
+      on('postedStatus', this, this.onPostedStatus)
+    },
     components: {
       ModalDialog,
       ComposeBox
@@ -21,7 +25,10 @@
       async show() {
         this.set({shown: true})
       },
-      onPostedStatus() {
+      onPostedStatus(realm) {
+        if (realm !== 'dialog') {
+          return
+        }
         try {
           this.set({closed: true})
         } catch (e) {

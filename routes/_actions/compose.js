@@ -3,6 +3,7 @@ import { toast } from '../_utils/toast'
 import { postStatus as postStatusToServer } from '../_api/statuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
 import { database } from '../_database/database'
+import { emit } from '../_utils/eventBus'
 
 export async function insertHandleForReply (statusId) {
   let instanceName = store.get('currentInstance')
@@ -30,17 +31,14 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
   }
 
   store.set({
-    postingStatus: true,
-    postedStatusForRealm: null
+    postingStatus: true
   })
   try {
     let status = await postStatusToServer(instanceName, accessToken, text,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility)
     addStatusOrNotification(instanceName, 'home', status)
     store.clearComposeData(realm)
-    store.set({
-      postedStatusForRealm: realm
-    })
+    emit('postedStatus', realm)
   } catch (e) {
     console.error(e)
     toast.say('Unable to post status: ' + (e.message || ''))

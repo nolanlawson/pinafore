@@ -126,13 +126,6 @@
         // make sure the visibility is consistent with the replied-to status
         setReplyVisibility(realm, replyVisibility)
       }
-
-      this.observe('postedStatusForRealm', postedStatusForRealm => {
-        if (postedStatusForRealm !== realm) {
-          return
-        }
-        this.fire('postedStatus')
-      }, {init: false})
     },
     ondestroy() {
       this.teardownStickyObserver()
@@ -177,7 +170,6 @@
       overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
       contentWarning: (composeData) => composeData.contentWarning || '',
-      postedStatusForRealm: ($postedStatusForRealm) => $postedStatusForRealm,
       timelineInitialized: ($timelineInitialized) => $timelineInitialized
     },
     transitions: {
