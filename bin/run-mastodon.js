@@ -13,6 +13,9 @@ const stat = pify(fs.stat.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 const dir = __dirname
 
+const GIT_URL = 'https://github.com/nolanlawson/mastodon'
+const GIT_BRANCH = 'for-pinafore'
+
 const envFile = `
 PAPERCLIP_SECRET=foo
 SECRET_KEY_BASE=bar
@@ -28,8 +31,8 @@ async function cloneMastodon () {
     await stat(mastodonDir)
   } catch (e) {
     console.log('Cloning mastodon...')
-    await exec(`git clone https://github.com/tootsuite/mastodon "${mastodonDir}"`)
-    await exec(`git checkout v2.2.0`, {cwd: mastodonDir})
+    await exec(`git clone ${GIT_URL} "${mastodonDir}"`)
+    await exec(`git checkout ${GIT_BRANCH}`, {cwd: mastodonDir})
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
 }
