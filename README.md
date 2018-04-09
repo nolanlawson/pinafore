@@ -19,8 +19,6 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Goals and non-goals
 
-This section lays out some high-level goals for Pinafore, as well as the goals it _doesn't_ intend to tackle.
-
 ### Goals
 
 - Support the most common use cases
@@ -34,7 +32,7 @@ This section lays out some high-level goals for Pinafore, as well as the goals i
 ### Possible future goals
 
 - Works as an alternative frontend self-hosted by instances
-- Ship in the Android/iOS app stores as a Cordova app
+- Android/iOS apps (using Cordova or similar)
 - Support Pleroma/non-Mastodon backends
 - i18n
 - Offline search
