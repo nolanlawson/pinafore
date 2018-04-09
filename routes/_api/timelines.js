@@ -55,7 +55,7 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since) 
 
   if (timeline.startsWith('status/')) {
     // special case - this is a list of descendents and ancestors
-    let statusUrl = `${basename(instanceName)}/api/v1/statuses/${timeline.split('/').slice(-1)[0]}}`
+    let statusUrl = `${basename(instanceName)}/api/v1/statuses/${timeline.split('/').slice(-1)[0]}`
     return Promise.all([
       getWithTimeout(url, auth(accessToken)),
       getWithTimeout(statusUrl, auth(accessToken))
