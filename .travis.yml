@@ -13,12 +13,10 @@ addons:
     - postgresql-contrib-10
     # the following are mastodon dependencies
     - imagemagick
-    - ffmpeg
     - libpq-dev
     - libxml2-dev
     - libxslt1-dev
     - file
-    - git-core
     - g++
     - libprotobuf-dev
     - protobuf-compiler
