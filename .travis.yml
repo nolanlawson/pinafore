@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - "8"
+services:
+  - postgresql
+  - redis-server
+before_install:
+  - rvm install 2.5.0
+before_script:
+  - npm run lint
+script: travis_retry npm test
+branches:
+  only:
+  - master
+  - /^greenkeeper/.*$/
+cache:
+  directories:
+  - $HOME/.npm
