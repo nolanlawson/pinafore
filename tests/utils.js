@@ -96,6 +96,10 @@ export const uploadKittenImage = i => (exec(() => {
   }
 }))
 
+export function getNthMediaAltInput (n) {
+  return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt input`)
+}
+
 export function getNthComposeReplyInput (n) {
   return getNthStatus(n).find('.compose-box-input')
 }
@@ -126,6 +130,10 @@ export function getNthDeleteMediaButton (n) {
 
 export function getNthStatus (n) {
   return $(`div[aria-hidden="false"] > article[aria-posinset="${n}"]`)
+}
+
+export function getNthStatusAndImage (nStatus, nImage) {
+  return getNthStatus(nStatus).find(`.status-media .show-image-button:nth-child(${nImage + 1}) img`)
 }
 
 export function getLastVisibleStatus () {

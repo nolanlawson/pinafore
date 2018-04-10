@@ -10,7 +10,7 @@
   <ComposeLengthGauge :length :overLimit />
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
   <ComposeLengthIndicator :length :overLimit />
-  <ComposeMedia :realm :media />
+  <ComposeMedia :realm :media :mediaDescriptions />
 </div>
 <div class="compose-box-button-sentinel {{hideAndFadeIn}}" ref:sentinel></div>
 <div class="compose-box-button-wrapper {{realm === 'home' ? 'compose-button-sticky' : ''}} {{hideAndFadeIn}}" >
@@ -170,7 +170,8 @@
       overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
       contentWarning: (composeData) => composeData.contentWarning || '',
-      timelineInitialized: ($timelineInitialized) => $timelineInitialized
+      timelineInitialized: ($timelineInitialized) => $timelineInitialized,
+      mediaDescriptions: (composeData) => composeData.mediaDescriptions || []
     },
     transitions: {
       slide
@@ -193,6 +194,7 @@
           let mediaIds = media.map(_ => _.data.id)
           let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
           let overLimit = this.get('overLimit')
+          let mediaDescriptions = this.get('mediaDescriptions')
 
           if (!text || overLimit) {
             return // do nothing if invalid
@@ -200,7 +202,7 @@
 
           /* no await */
           postStatus(realm, text, inReplyTo, mediaIds,
-            sensitive, contentWarning, postPrivacyKey)
+            sensitive, contentWarning, postPrivacyKey, mediaDescriptions)
         }
       },
       setupStickyObserver() {
