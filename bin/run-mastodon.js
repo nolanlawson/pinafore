@@ -15,13 +15,14 @@ const dir = __dirname
 
 const GIT_URL = 'https://github.com/nolanlawson/mastodon'
 const GIT_BRANCH = 'for-pinafore'
+const DB_USER = 'nolan'
 
 const envFile = `
 PAPERCLIP_SECRET=foo
 SECRET_KEY_BASE=bar
 OTP_SECRET=foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar
 DB_PORT=${process.env.PGPORT || 5432}
-DB_USER=nolan
+DB_USER=${DB_USER}
 `
 
 const mastodonDir = path.join(dir, '../mastodon')
@@ -42,12 +43,12 @@ async function cloneMastodon () {
 async function setupMastodonDatabase () {
   console.log('Setting up mastodon database...')
   try {
-    await exec('dropdb mastodon_development', {cwd: mastodonDir})
+    await exec(`dropdb -U ${DB_USER} mastodon_development`, {cwd: mastodonDir})
   } catch (e) { /* ignore */ }
-  await exec('createdb mastodon_development', {cwd: mastodonDir})
+  await exec(`createdb -U ${DB_USER} mastodon_development`, {cwd: mastodonDir})
 
   let dumpFile = path.join(dir, '../fixtures/dump.sql')
-  await exec(`pg_restore -Fc -d mastodon_development "${dumpFile}"`, {cwd: mastodonDir})
+  await exec(`pg_restore -U ${DB_USER} -Fc -d mastodon_development "${dumpFile}"`, {cwd: mastodonDir})
 
   let tgzFile = path.join(dir, '../fixtures/system.tgz')
   let systemDir = path.join(mastodonDir, 'public/system')
