@@ -15,13 +15,13 @@ services:
 before_install:
   - rvm install 2.5.0
   - rvm use 2.5.0
-before_script:
-  - node --version
   - ruby --version
+  - node --version
   - postgres --version
   - redis-server --version
+  - psql -c "CREATE USER nolan CREATEDB;"
+before_script:
   - npm run lint
-  - psql -c "CREATE USER nolan CREATE_DB;"
 script: npm run test-browser
 env:
   global:
