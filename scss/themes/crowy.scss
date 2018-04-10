@@ -1,0 +1,17 @@
+$main-theme-color: #079935;
+$body-bg-color: #111;
+$anchor-color: $main-theme-color;
+$main-text-color: #ddd;
+$border-color: #5a5a5a;
+$main-bg-color: #202020;
+$secondary-text-color: white;
+$toast-border: #fafafa;
+$toast-bg: lighten($main-bg-color, 30%);
+$focus-outline: lighten($main-theme-color, 30%);
+$compose-background: lighten($main-theme-color, 32%);
+
+@import "_base.scss";
+
+body.theme-crowy {
+  @include baseTheme();
+}
