@@ -5,15 +5,26 @@ dist: trusty   # needed for chrome headless
 sudo: required # needed for chrome headless
 addons:
   chrome: stable
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
 services:
-  - postgresql
   - redis-server
 before_install:
   - rvm install 2.5.0
+  - rvm use 2.5.0
 before_script:
+  - node --version
+  - ruby --version
+  - postgres --version
+  - redis-server --version
   - npm run lint
 script: npm run test-browser
 env:
+  global:
+  - PGPORT=5433
   matrix:
   - BROWSER=chrome:headless
   - BROWSER=firefox:headless
