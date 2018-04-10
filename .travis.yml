@@ -21,6 +21,7 @@ before_script:
   - postgres --version
   - redis-server --version
   - npm run lint
+  - psql -c "CREATE USER nolan CREATE_DB;"
 script: npm run test-browser
 env:
   global:

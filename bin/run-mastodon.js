@@ -20,6 +20,8 @@ const envFile = `
 PAPERCLIP_SECRET=foo
 SECRET_KEY_BASE=bar
 OTP_SECRET=foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar
+DB_PORT=${process.env.PG_PORT || 5432}
+DB_USER=nolan
 `
 
 const mastodonDir = path.join(dir, '../mastodon')
