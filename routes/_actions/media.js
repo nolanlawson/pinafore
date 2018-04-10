@@ -36,9 +36,15 @@ export function deleteMedia (realm, i) {
   let composeText = store.getComposeData(realm, 'text') || ''
   composeText = composeText.replace(' ' + deletedMedia.data.text_url, '')
 
+  let mediaDescriptions = store.getComposeData(realm, 'mediaDescriptions') || []
+  if (mediaDescriptions[i]) {
+    mediaDescriptions[i] = null
+  }
+
   store.setComposeData(realm, {
     media: composeMedia,
-    text: composeText
+    text: composeText,
+    mediaDescriptions: mediaDescriptions
   })
   scheduleIdleTask(() => store.save())
 }

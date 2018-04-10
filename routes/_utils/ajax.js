@@ -41,6 +41,26 @@ async function _post (url, body, headers, timeout) {
   return throwErrorIfInvalidResponse(response)
 }
 
+async function _put (url, body, headers, timeout) {
+  let fetchFunc = timeout ? fetchWithTimeout : fetch
+  let opts = {
+    method: 'PUT'
+  }
+  if (body) {
+    opts.headers = Object.assign(headers, {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    })
+    opts.body = JSON.stringify(body)
+  } else {
+    opts.headers = Object.assign(headers, {
+      'Accept': 'application/json'
+    })
+  }
+  let response = await fetchFunc(url, opts)
+  return throwErrorIfInvalidResponse(response)
+}
+
 async function _get (url, headers, timeout) {
   let fetchFunc = timeout ? fetchWithTimeout : fetch
   let response = await fetchFunc(url, {
@@ -61,6 +81,14 @@ async function _delete (url, headers, timeout) {
     })
   })
   return throwErrorIfInvalidResponse(response)
+}
+
+export async function put (url, body, headers = {}) {
+  return _put(url, body, headers, false)
+}
+
+export async function putWithTimeout (url, body, headers = {}) {
+  return _put(url, body, headers, true)
 }
 
 export async function post (url, body, headers = {}) {

@@ -4,6 +4,7 @@ import { postStatus as postStatusToServer } from '../_api/statuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
 import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
+import { putMediaDescription } from '../_api/media'
 
 export async function insertHandleForReply (statusId) {
   let instanceName = store.get('currentInstance')
@@ -20,7 +21,8 @@ export async function insertHandleForReply (statusId) {
 }
 
 export async function postStatus (realm, text, inReplyToId, mediaIds,
-                                  sensitive, spoilerText, visibility) {
+                                  sensitive, spoilerText, visibility,
+                                  mediaDescriptions = []) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   let online = store.get('online')
@@ -34,6 +36,9 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     postingStatus: true
   })
   try {
+    await Promise.all(mediaDescriptions.map(async (description, i) => {
+      return description && putMediaDescription(instanceName, accessToken, mediaIds[i], description)
+    }))
     let status = await postStatusToServer(instanceName, accessToken, text,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility)
     addStatusOrNotification(instanceName, 'home', status)
