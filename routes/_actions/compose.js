@@ -36,8 +36,8 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     postingStatus: true
   })
   try {
-    await Promise.all(mediaDescriptions.filter(Boolean).map((description, i) => {
-      return putMediaDescription(instanceName, accessToken, mediaIds[i], description)
+    await Promise.all(mediaDescriptions.map(async (description, i) => {
+      return description && putMediaDescription(instanceName, accessToken, mediaIds[i], description)
     }))
     let status = await postStatusToServer(instanceName, accessToken, text,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility)

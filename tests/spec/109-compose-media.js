@@ -1,7 +1,7 @@
 import {
   composeButton, getNthDeleteMediaButton, getNthMedia, getNthMediaAltInput, getNthStatusAndImage, getUrl,
   homeNavButton,
-  mediaButton, notificationsNavButton, sleep,
+  mediaButton, notificationsNavButton,
   uploadKittenImage
 } from '../utils'
 import { foobarRole } from '../roles'
@@ -9,11 +9,18 @@ import { foobarRole } from '../roles'
 fixture`109-compose-media.js`
   .page`http://localhost:4002`
 
+async function uploadTwoKittens (t) {
+  await (uploadKittenImage(1)())
+  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+  await (uploadKittenImage(2)())
+  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+}
+
 test('uploads alts for media', async t => {
   await t.useRole(foobarRole)
     .expect(mediaButton.hasAttribute('disabled')).notOk()
-  await (uploadKittenImage(1)())
-  await (uploadKittenImage(2)())
+  await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(2), 'kitten 2')
     .typeText(getNthMediaAltInput(1), 'kitten 1')
     .click(composeButton)
@@ -36,14 +43,21 @@ test('uploads alts when deleting and re-uploading media', async t => {
     .expect(getNthStatusAndImage(0, 0).getAttribute('alt')).eql('this will not be deleted')
 })
 
+test('uploads alts mixed with no-alts', async t => {
+  await t.useRole(foobarRole)
+    .expect(mediaButton.hasAttribute('disabled')).notOk()
+  await uploadTwoKittens(t)
+  await t.typeText(getNthMediaAltInput(2), 'kitten numero dos')
+    .click(composeButton)
+    .expect(getNthStatusAndImage(0, 0).getAttribute('alt')).eql('')
+    .expect(getNthStatusAndImage(0, 1).getAttribute('alt')).eql('kitten numero dos')
+})
+
 test('saves alts to local storage', async t => {
   await t.useRole(foobarRole)
     .expect(mediaButton.hasAttribute('disabled')).notOk()
-  await (uploadKittenImage(1)())
-  await (uploadKittenImage(2)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
-    .typeText(getNthMediaAltInput(1), 'kitten numero uno')
+  await uploadTwoKittens(t)
+  await t.typeText(getNthMediaAltInput(1), 'kitten numero uno')
     .typeText(getNthMediaAltInput(2), 'kitten numero dos')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
