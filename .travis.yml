@@ -71,3 +71,4 @@ cache:
   - $HOME/.npm
   - $HOME/.rvm
   - $HOME/.bundle
+  - $HOME/.yarn-cache
