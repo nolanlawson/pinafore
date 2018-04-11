@@ -1,4 +1,4 @@
-# Pinafore
+# Pinafore [![Build Status](https://travis-ci.org/nolanlawson/pinafore.svg)](https://travis-ci.org/nolanlawson/pinafore)
 
 An alternative web client for [Mastodon](https://joinmastodon.org]), focused on speed and simplicity.
 
