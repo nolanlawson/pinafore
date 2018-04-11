@@ -1,5 +1,6 @@
 <a href="/accounts/{{verifyCredentials.id}}"
-   class="compose-box-avatar">
+   class="compose-box-avatar"
+   aria-label="Profile for {{verifyCredentials.display_name || verifyCredentials.acct}}">
   <Avatar account="{{verifyCredentials}}" size="small"/>
 </a>
 <a class="compose-box-display-name" href="/accounts/{{verifyCredentials.id}}">
