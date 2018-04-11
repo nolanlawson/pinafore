@@ -1,6 +1,6 @@
+<h1 class="sr-only">{{label}}</h1>
 <div class="timeline"
      role="feed"
-     aria-label="{{label}}"
      on:focusWithCapture="saveFocus(event)"
      on:blurWithCapture="clearFocus(event)"
 >
@@ -115,6 +115,8 @@
             return `Account #${timelineValue} on ${$currentInstance}`
           case 'list':
             return `List #${timelineValue} on ${$currentInstance}`
+          case 'notifications':
+            return `Notifications for ${$currentInstance}`
         }
       },
       timelineType: (timeline) => {
