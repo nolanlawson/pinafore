@@ -45,6 +45,7 @@ export async function restoreMastodonData () {
   let internalIdsToIds = {}
   for (let action of actions) {
     console.log(JSON.stringify(action))
+    await new Promise(resolve => setTimeout(resolve, 100)) // sleep because otherwise order may not be preserved
     let accessToken = users[action.user].accessToken
 
     if (action.post) {

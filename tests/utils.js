@@ -48,15 +48,15 @@ export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeo
 export const getUrl = exec(() => window.location.href)
 
 export const getActiveElementClass = exec(() =>
-  document.activeElement ? document.activeElement.getAttribute('class') : ''
+  (document.activeElement && document.activeElement.getAttribute('class')) || ''
 )
 
 export const getActiveElementInnerText = exec(() =>
-  document.activeElement && document.activeElement.innerText
+  (document.activeElement && document.activeElement.innerText) || ''
 )
 
 export const getActiveElementAriaLabel = exec(() =>
-  document.activeElement ? document.activeElement.getAttribute('aria-label') : ''
+  (document.activeElement && document.activeElement.getAttribute('aria-label')) || ''
 )
 
 export const getActiveElementInsideNthStatus = exec(() => {
@@ -67,6 +67,7 @@ export const getActiveElementInsideNthStatus = exec(() => {
     }
     element = element.parentElement
   }
+  return ''
 })
 
 export const goBack = exec(() => window.history.back())
