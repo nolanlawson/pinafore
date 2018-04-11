@@ -9,7 +9,7 @@ export async function waitForMastodonUiToStart () {
       }
     } catch (err) {
       console.log('Waiting for Mastodon UI to start up...')
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
     }
   }
   console.log('Mastodon UI started up')
@@ -24,7 +24,7 @@ export async function waitForMastodonApiToStart () {
       }
     } catch (err) {
       console.log('Waiting for Mastodon API to start up...')
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
     }
   }
   console.log('Mastodon API started up')
