@@ -44,12 +44,14 @@ async function cloneMastodon () {
 async function setupMastodonDatabase () {
   console.log('Setting up mastodon database...')
   try {
-    await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} mastodon_development`, {cwd: mastodonDir})
+    await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} --no-password mastodon_development`, {cwd: mastodonDir})
   } catch (e) { /* ignore */ }
-  await exec(`createdb -h 127.0.0.1 -U ${DB_USER} mastodon_development`, {cwd: mastodonDir})
+  await exec(`createdb -h 127.0.0.1 -U ${DB_USER} --no-password mastodon_development`, {cwd: mastodonDir})
 
   let dumpFile = path.join(dir, '../fixtures/dump.sql')
-  await exec(`pg_restore -h 127.0.0.1 -U ${DB_USER} -Fc -d mastodon_development "${dumpFile}"`, {cwd: mastodonDir})
+  await exec(`pg_restore -h 127.0.0.1 -U ${DB_USER} --no-password -Fc -d mastodon_development "${dumpFile}"`, {
+    cwd: mastodonDir
+  })
 
   let tgzFile = path.join(dir, '../fixtures/system.tgz')
   let systemDir = path.join(mastodonDir, 'public/system')
