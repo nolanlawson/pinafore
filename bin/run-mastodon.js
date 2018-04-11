@@ -86,7 +86,7 @@ async function runMastodon () {
     await exec(cmd, {cwd: mastodonDir})
   }
   const promise = spawn('foreman', ['start'], {cwd: mastodonDir})
-  const log = fs.createWriteStream('mastodon.log', {flags: 'a'})
+  const log = process.env.TRAVIS ? process.stdout : fs.createWriteStream('mastodon.log', {flags: 'a'})
   childProc = promise.childProcess
   childProc.stdout.pipe(log)
   childProc.stderr.pipe(log)
