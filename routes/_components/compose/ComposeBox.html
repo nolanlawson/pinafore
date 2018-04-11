@@ -9,7 +9,7 @@
       <ComposeContentWarning :realm :contentWarning />
     </div>
   {{/if}}
-  <ComposeInput :realm :text :autoFocus />
+  <ComposeInput :realm :text :autoFocus on:postAction="onPostAction()" />
   <ComposeLengthGauge :length :overLimit />
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
   <ComposeLengthIndicator :length :overLimit />
@@ -17,7 +17,7 @@
 </div>
 <div class="compose-box-button-sentinel {{hideAndFadeIn}}" ref:sentinel></div>
 <div class="compose-box-button-wrapper {{realm === 'home' ? 'compose-button-sticky' : ''}} {{hideAndFadeIn}}" >
- <ComposeButton :length :overLimit :sticky on:click="onClickPostButton()" />
+ <ComposeButton :length :overLimit :sticky on:click="onPostAction()" />
 </div>
 {{#if !hideBottomBorder}}
   <div class="compose-box-border-bottom {{hideAndFadeIn}}"></div>
@@ -180,7 +180,7 @@
       slide
     },
     methods: {
-      async onClickPostButton() {
+      async onPostAction() {
         if (this.get('sticky')) {
           // when the button is sticky, we're scrolled down the home timeline,
           // so we should launch a new compose dialog
