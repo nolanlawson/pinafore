@@ -45,8 +45,6 @@ Automatically fix most linting issues:
 
 ## Testing
 
-_**Note:** If you have a local `mastodon_development` Postgres database, this will erase it._ 
-
 Run integration tests, using headless Chrome by default:
 
     npm test
@@ -61,8 +59,6 @@ Run tests for a particular browser:
     BROWSER=edge npm run test-browser
 
 ## Testing in development mode
-
-_**Note:** If you have a local `mastodon_development` Postgres database, this will erase it._
 
 In separate terminals:
 

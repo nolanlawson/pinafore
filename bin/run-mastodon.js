@@ -15,7 +15,9 @@ const dir = __dirname
 
 const GIT_URL = 'https://github.com/nolanlawson/mastodon'
 const GIT_BRANCH = 'for-pinafore'
-const DB_USER = 'nolan'
+
+const DB_NAME = 'pinafore_development'
+const DB_USER = 'pinafore'
 
 const envFile = `
 PAPERCLIP_SECRET=foo
@@ -24,6 +26,7 @@ OTP_SECRET=foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoo
 DB_HOST=127.0.0.1
 DB_PORT=${process.env.PGPORT || 5432}
 DB_USER=${DB_USER}
+DB_NAME=${DB_NAME}
 `
 
 const mastodonDir = path.join(dir, '../mastodon')
@@ -35,8 +38,7 @@ async function cloneMastodon () {
     await stat(mastodonDir)
   } catch (e) {
     console.log('Cloning mastodon...')
-    await exec(`git clone ${GIT_URL} "${mastodonDir}"`)
-    await exec(`git checkout ${GIT_BRANCH}`, {cwd: mastodonDir})
+    await exec(`git clone ${GIT_URL} --branch ${GIT_BRANCH} --single-branch --depth 1 "${mastodonDir}"`)
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
 }
@@ -44,14 +46,15 @@ async function cloneMastodon () {
 async function setupMastodonDatabase () {
   console.log('Setting up mastodon database...')
   try {
-    await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} --no-password mastodon_development`, {cwd: mastodonDir})
+    await exec(`psql -d template1 -c "CREATE USER ${DB_USER} CREATEDB;"`, {cwd: mastodonDir})
   } catch (e) { /* ignore */ }
-  await exec(`createdb -h 127.0.0.1 -U ${DB_USER} --no-password mastodon_development`, {cwd: mastodonDir})
+  try {
+    await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {cwd: mastodonDir})
+  } catch (e) { /* ignore */ }
+  await exec(`createdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {cwd: mastodonDir})
 
   let dumpFile = path.join(dir, '../fixtures/dump.sql')
-  await exec(`pg_restore -h 127.0.0.1 -U ${DB_USER} --no-password -Fc -d mastodon_development "${dumpFile}"`, {
-    cwd: mastodonDir
-  })
+  await exec(`psql -h 127.0.0.1 -U ${DB_USER} -w -d ${DB_NAME} -f "${dumpFile}"`, {cwd: mastodonDir})
 
   let tgzFile = path.join(dir, '../fixtures/system.tgz')
   let systemDir = path.join(mastodonDir, 'public/system')

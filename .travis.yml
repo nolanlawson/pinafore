@@ -45,16 +45,18 @@ before_install:
   - node --version
   - postgres --version
   - redis-server --version
-  - psql -d template1 -c "CREATE USER nolan CREATEDB;"
 before_script:
   - npm run lint
 script: npm run test-browser
 env:
   global:
   - PGPORT=5433
-  matrix:
-  - BROWSER=chrome:headless
-  - BROWSER=firefox:headless
+matrix:
+  include:
+    - env: BROWSER=chrome:headless
+    - env: BROWSER=firefox:headless
+  allow_failures:
+    - env: BROWSER=firefox:headless
 branches:
   only:
   - master
