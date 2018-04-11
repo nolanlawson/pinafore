@@ -7,7 +7,8 @@
   >
     <PlayVideoIcon />
     <LazyImage
-      alt="{{media.description}}"
+      alt="{{media.description || ''}}"
+      title="{{media.description || ''}}"
       src="{{media.preview_url}}"
       fallback="{{oneTransparentPixel}}"
       width="{{inlineWidth}}"
@@ -46,7 +47,8 @@
     />
   {{else}}
     <LazyImage
-      alt="{{media.description}}"
+      alt="{{media.description || ''}}"
+      title="{{media.description || ''}}"
       src="{{media.preview_url}}"
       fallback="{{oneTransparentPixel}}"
       width="{{inlineWidth}}"
