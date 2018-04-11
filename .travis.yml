@@ -41,9 +41,9 @@ services:
 before_install:
   - rvm install 2.5.0
   - rvm use 2.5.0
-  - sudo add-apt-repository ppa:mc3man/trusty-media
-  - sudo apt-get update
-  - sudo apt-get install ffmpeg gstreamer0.10-ffmpeg
+  - sudo -E add-apt-repository -y ppa:mc3man/trusty-media
+  - sudo -E apt-get update
+  - sudo -E apt-get install -y ffmpeg gstreamer0.10-ffmpeg
   - ruby --version
   - node --version
   - postgres --version
