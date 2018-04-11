@@ -18,6 +18,7 @@ const GIT_BRANCH = 'for-pinafore'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'
+const DB_PASS = 'pinafore'
 
 const envFile = `
 PAPERCLIP_SECRET=foo
@@ -27,6 +28,7 @@ DB_HOST=127.0.0.1
 DB_PORT=${process.env.PGPORT || 5432}
 DB_USER=${DB_USER}
 DB_NAME=${DB_NAME}
+DB_PASS=${DB_PASS}
 `
 
 const mastodonDir = path.join(dir, '../mastodon')
@@ -46,15 +48,24 @@ async function cloneMastodon () {
 async function setupMastodonDatabase () {
   console.log('Setting up mastodon database...')
   try {
-    await exec(`psql -d template1 -c "CREATE USER ${DB_USER} CREATEDB;"`, {cwd: mastodonDir})
+    await exec(`psql -d template1 -c "CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASS}' CREATEDB;"`)
   } catch (e) { /* ignore */ }
   try {
-    await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {cwd: mastodonDir})
+    await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {
+      cwd: mastodonDir,
+      env: Object.assign({PGPASSWORD: DB_PASS}, process.env)
+    })
   } catch (e) { /* ignore */ }
-  await exec(`createdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {cwd: mastodonDir})
+  await exec(`createdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {
+    cwd: mastodonDir,
+    env: Object.assign({PGPASSWORD: DB_PASS}, process.env)
+  })
 
   let dumpFile = path.join(dir, '../fixtures/dump.sql')
-  await exec(`psql -h 127.0.0.1 -U ${DB_USER} -w -d ${DB_NAME} -f "${dumpFile}"`, {cwd: mastodonDir})
+  await exec(`psql -h 127.0.0.1 -U ${DB_USER} -w -d ${DB_NAME} -f "${dumpFile}"`, {
+    cwd: mastodonDir,
+    env: Object.assign({PGPASSWORD: DB_PASS}, process.env)
+  })
 
   let tgzFile = path.join(dir, '../fixtures/system.tgz')
   let systemDir = path.join(mastodonDir, 'public/system')
