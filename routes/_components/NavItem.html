@@ -1,6 +1,7 @@
-<a class='main-nav-link {{page === name ? "selected" : ""}}'
+<a class='main-nav-link {{selected ? "selected" : ""}}'
    aria-label='{{ariaLabel}}'
-   aria-current="{{page === name}}"
+   aria-current="{{selected}}"
+   on:click="onClick(event)"
    :href >
   {{#if name === 'notifications'}}
     <div class="nav-link-svg-wrapper">
@@ -116,19 +117,31 @@
 </style>
 <script>
   import { store } from '../_store/store'
+  import { smoothScrollToTop } from '../_utils/smoothScrollToTop'
 
   export default {
     store: () => store,
     computed: {
-      ariaLabel: (page, name, label, $numberOfNotifications) => {
+      selected: (page, name) => page === name,
+      ariaLabel: (selected, name, label, $numberOfNotifications) => {
         let res = label
-        if (page === name) {
+        if (selected) {
           res += ' (current page)'
         }
         if (name === 'notifications' && $numberOfNotifications) {
           res += ` (${$numberOfNotifications})`
         }
         return res
+      }
+    },
+    methods: {
+      onClick(e) {
+        if (!this.get('selected')) {
+          return
+        }
+        e.preventDefault()
+        e.stopPropagation()
+        smoothScrollToTop(document.getElementsByClassName('container')[0])
       }
     }
   }

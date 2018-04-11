@@ -1,3 +1,4 @@
+// via https://github.com/tootsuite/mastodon/blob/f59ed3a4fafab776b4eeb92f805dfe1fecc17ee3/app/javascript/mastodon/scroll.js
 const easingOutQuint = (x, t, b, c, d) =>
   c * ((t = t / d - 1) * t * t * t * t + 1) + b
 
@@ -27,4 +28,4 @@ const scroll = (node, key, target) => {
   }
 }
 
-export const scrollTop = node => scroll(node, 'scrollTop', 0)
+export const smoothScrollToTop = node => scroll(node, 'scrollTop', 0)

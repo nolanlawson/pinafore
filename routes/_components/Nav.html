@@ -1,25 +1,25 @@
 <nav class="main-nav">
 	<ul class="main-nav-ul">
-		<li class="main-nav-li" on:click="onClick(event, '/')">
+		<li class="main-nav-li">
       <NavItem :page name="home" href="/" svg="#pinafore-logo" label="Home" />
 		</li>
-		<li class="main-nav-li" on:click="onClick(event, '/notifications')">
+		<li class="main-nav-li">
       <NavItem :page name="notifications" href="/notifications" svg="#fa-bell" label="Notifications" />
 		</li>
     {{#if $pinnedPage === '/local'}}
-      <li class="main-nav-li" on:click="onClick(event, '/local')">
+      <li class="main-nav-li">
         <NavItem :page name="local" href="/local" svg="#fa-users" label="Local" />
       </li>
     {{elseif $pinnedPage === '/federated'}}
-      <li class="main-nav-li" on:click="onClick(event, '/federated')">
+      <li class="main-nav-li">
         <NavItem :page name="federated" href="/federated" svg="#fa-globe" label="Federated" />
       </li>
     {{elseif $pinnedPage === '/favorites'}}
-      <li class="main-nav-li" on:click="onClick(event, '/favorites')">
+      <li class="main-nav-li">
         <NavItem :page name="favorites" href="/favorites" svg="#fa-star" label="Favorites" />
       </li>
     {{elseif $pinnedPage.startsWith('/lists/')}}
-      <li class="main-nav-li" on:click="onClick(event, '/lists')">
+      <li class="main-nav-li">
         <NavItem :page name="lists" href="{{$pinnedPage}}" svg="#fa-bars" label="{{$pinnedListTitle}}" />
       </li>
     {{/if}}
@@ -68,20 +68,11 @@
 <script>
   import NavItem from './NavItem'
   import { store } from '../_store/store'
-  import { scrollTop } from '../_actions/scroll'
 
   export default {
     store: () => store,
     components: {
       NavItem
-    },
-    methods: {
-      onClick(event, path) {
-        if (window.location.pathname === path || (window.location.pathname.startsWith(path) && window.location.pathname === '/')) {
-          scrollTop(document.querySelector('.container'))
-          event.preventDefault()
-        }
-      }
     }
   }
 </script>
