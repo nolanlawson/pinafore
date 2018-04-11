@@ -1,6 +1,6 @@
 import {
-  composeButton, getNthStatus, scrollToStatus, scrollToTopOfTimeline, modalDialog, sleep, showMoreButton,
-  scrollContainerToTop
+  composeButton, getNthStatus, scrollToStatus, modalDialog, sleep,
+  notificationsNavButton, getUrl
 } from '../utils'
 import { foobarRole } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -19,14 +19,11 @@ test('can compose using a dialog', async t => {
     .typeText(modalDialog.find('.compose-box-input'), 'hello from the modal')
     .click(modalDialog.find('.compose-box-button-compose'))
     .expect(modalDialog.exists).notOk()
-  await sleep(5000)
-  await scrollToTopOfTimeline(t)
-  await t.hover(getNthStatus(0))
-  await scrollContainerToTop()
-  await t
-    .expect(showMoreButton.innerText).contains('Show 1 more', {timeout: 30000})
-    .click(showMoreButton)
-  await t.expect(getNthStatus(0).innerText).contains('hello from the modal', {timeout: 20000})
+    .click(notificationsNavButton)
+    .expect(getUrl()).contains('/notifications')
+    .navigateTo('/')
+    .hover(getNthStatus(0))
+    .expect(getNthStatus(0).innerText).contains('hello from the modal', {timeout: 20000})
 })
 
 test('can use emoji dialog within compose dialog', async t => {
@@ -40,12 +37,8 @@ test('can use emoji dialog within compose dialog', async t => {
     .expect(modalDialog.find('.compose-box-input').value).eql(':blobpats: ')
     .click(modalDialog.find('.compose-box-button-compose'))
     .expect(modalDialog.exists).notOk()
-  await sleep(5000)
-  await scrollToTopOfTimeline(t)
-  await t.hover(getNthStatus(0))
-  await scrollContainerToTop()
-  await t
-    .expect(showMoreButton.innerText).contains('Show 1 more')
-    .click(showMoreButton)
+    .click(notificationsNavButton)
+    .expect(getUrl()).contains('/notifications')
+    .navigateTo('/')
   await t.expect(getNthStatus(0).find('img[alt=":blobpats:"]').exists).ok({timeout: 20000})
 })
