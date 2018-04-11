@@ -1,13 +1,15 @@
 {{#if staticSrc === src}}
   <img class="{{className || ''}}"
        aria-hidden="{{ariaHidden}}"
-       alt="{{alt}}"
+       alt="{{alt || ''}}"
+       title="{{alt || ''}}"
        src="{{src}}"
        on:imgLoadError />
 {{else}}
   <img class="{{className || ''}} non-autoplay-zoom-in {{isLink ? 'is-link' : ''}}"
        aria-hidden="{{ariaHidden}}"
-       alt="{{alt}}"
+       alt="{{alt || ''}}"
+       title="{{alt || ''}}"
        src="{{staticSrc}}"
        on:imgLoadError
        on:mouseover="onMouseOver(event)"

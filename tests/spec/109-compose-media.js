@@ -25,7 +25,9 @@ test('uploads alts for media', async t => {
     .typeText(getNthMediaAltInput(1), 'kitten 1')
     .click(composeButton)
     .expect(getNthStatusAndImage(0, 0).getAttribute('alt')).eql('kitten 1')
+    .expect(getNthStatusAndImage(0, 0).getAttribute('title')).eql('kitten 1')
     .expect(getNthStatusAndImage(0, 1).getAttribute('alt')).eql('kitten 2')
+    .expect(getNthStatusAndImage(0, 1).getAttribute('title')).eql('kitten 2')
 })
 
 test('uploads alts when deleting and re-uploading media', async t => {

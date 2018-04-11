@@ -13,7 +13,8 @@
       />
   {{else}}
     <LazyImage
-      alt="{{label}}"
+      alt="{{label || ''}}"
+      title="{{label || ''}}"
       src="{{staticSrc}}"
       fallback="{{oneTransparentPixel}}"
       :width
