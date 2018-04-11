@@ -25,5 +25,11 @@ body.theme-cobalt {
   --action-button-fill-color-pressed-active: darken($anchor-color, 15%);
 
   --svg-fill: $secondary-text-color;
-}
 
+  --nav-svg-fill: $main-text-color;
+  --nav-text-color: $main-text-color;
+  --nav-svg-fill-hover: $main-text-color;
+  --nav-text-color-hover: $main-text-color;  
+  --nav-a-selected-border: $anchor-color;
+  --nav-a-selected-border-hover: $anchor-color;
+} 
