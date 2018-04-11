@@ -41,10 +41,14 @@ services:
 before_install:
   - rvm install 2.5.0
   - rvm use 2.5.0
+  - sudo add-apt-repository ppa:mc3man/trusty-media
+  - sudo apt-get update
+  - sudo apt-get install ffmpeg gstreamer0.10-ffmpeg
   - ruby --version
   - node --version
   - postgres --version
   - redis-server --version
+  - ffmpeg -version
 before_script:
   - npm run lint
 script: npm run test-browser
