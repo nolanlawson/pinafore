@@ -78,15 +78,17 @@ async function runMastodon () {
   let cmds = [
     'gem install bundler foreman',
     'bundle install',
-    'yarn --pure-lockfile',
-    'bundle exec rails webpacker:install'
+    'yarn --pure-lockfile'
   ]
 
   for (let cmd of cmds) {
     console.log(cmd)
     await exec(cmd, {cwd: mastodonDir})
   }
-  const promise = spawn('foreman', ['start'], {cwd: mastodonDir})
+  const promise = spawn('foreman', ['start'], {
+    cwd: mastodonDir,
+    env: Object.assign({}, process.env, {RAILS_ENV: 'development', NODE_ENV: 'development'})
+  })
   const log = process.env.TRAVIS ? process.stdout : fs.createWriteStream('mastodon.log', {flags: 'a'})
   childProc = promise.childProcess
   childProc.stdout.pipe(log)
