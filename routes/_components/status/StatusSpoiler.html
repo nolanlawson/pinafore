@@ -41,6 +41,7 @@
 <script>
   import { store } from '../../_store/store'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate() {
@@ -56,11 +57,13 @@
     methods: {
       onClickSpoilerButton() {
         requestAnimationFrame(() => {
+          mark('clickSpoilerButton')
           let uuid = this.get('uuid')
           let $spoilersShown = this.store.get('spoilersShown')
           $spoilersShown[uuid] = !$spoilersShown[uuid]
           this.store.set({'spoilersShown': $spoilersShown})
           this.fire('recalculateHeight')
+          stop('clickSpoilerButton')
         })
       }
     }
