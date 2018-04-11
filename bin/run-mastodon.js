@@ -89,10 +89,16 @@ async function runMastodon () {
     cwd: mastodonDir,
     env: Object.assign({}, process.env, {RAILS_ENV: 'development', NODE_ENV: 'development'})
   })
-  const log = process.env.TRAVIS ? process.stdout : fs.createWriteStream('mastodon.log', {flags: 'a'})
+  const log = fs.createWriteStream('mastodon.log', {flags: 'a'})
   childProc = promise.childProcess
   childProc.stdout.pipe(log)
   childProc.stderr.pipe(log)
+  promise.catch(err => {
+    console.error('foreman start failed, see mastodon.log for details')
+    console.error(err)
+    shutdownMastodon()
+    process.exit(1)
+  })
 }
 
 async function main () {
