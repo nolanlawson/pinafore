@@ -22,7 +22,7 @@ const themesScssDir = path.join(__dirname, '../scss/themes')
 const assetsDir = path.join(__dirname, '../assets')
 
 function doWatch () {
-  var start = now()
+  let start = now()
   chokidar.watch(scssDir).on('change', debounce(() => {
     console.log('Recompiling SCSS...')
     Promise.all([
@@ -54,7 +54,7 @@ async function compileGlobalSass () {
 async function compileThemesSass () {
   let files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
   await Promise.all(files.map(async file => {
-    let res = await render({file: path.join(themesScssDir, file)})
+    let res = await render({file: path.join(themesScssDir, file), outputStyle: 'compressed'})
     let outputFilename = 'theme-' + path.basename(file).replace(/\.scss$/, '.css')
     await writeFile(path.join(assetsDir, outputFilename), res.css, 'utf8')
   }))
