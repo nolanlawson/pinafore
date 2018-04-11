@@ -1,0 +1,28 @@
+@mixin darkTheme() {
+  $deemphasized-color: lighten($main-bg-color, 45%);
+
+  --action-button-deemphasized-fill-color: $deemphasized-color;
+  --action-button-deemphasized-fill-color-hover: lighten($deemphasized-color, 22%);
+  --action-button-deemphasized-fill-color-active: lighten($deemphasized-color, 5%);
+  --action-button-deemphasized-fill-color-pressed: darken($deemphasized-color, 7%);
+  --action-button-deemphasized-fill-color-pressed-hover: darken($deemphasized-color, 2%);
+  --action-button-deemphasized-fill-color-pressed-active: darken($deemphasized-color, 15%);
+
+  --loading-bg: #ededed;
+
+  --deemphasized-text-color:$deemphasized-color;
+
+  --very-deemphasized-link-color: rgba($anchor-color, 0.6);
+  --very-deemphasized-text-color: lighten($main-bg-color, 12%);
+
+  --status-direct-background: darken($body-bg-color, 5%);
+  --main-theme-color: $main-theme-color;
+  --warning-color: #c7423d;
+  --alt-input-bg: rgba($main-bg-color, 0.7);
+
+  --muted-modal-bg: transparent;
+  --muted-modal-focus: #999;
+  --muted-modal-hover: rgba(255, 255, 255, 0.2);
+
+  --compose-button-halo: rgba(255, 255, 255, 0.1);
+}
