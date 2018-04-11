@@ -10,7 +10,7 @@ fixture`108-compose-dialog.js`
 
 test('can compose using a dialog', async t => {
   await t.useRole(foobarRole)
-  await scrollToStatus(t, 20)
+  await scrollToStatus(t, 15)
   await t.expect(modalDialog.exists).notOk()
     .expect(composeButton.getAttribute('aria-label')).eql('Compose')
   await sleep(2000)
@@ -19,19 +19,19 @@ test('can compose using a dialog', async t => {
     .typeText(modalDialog.find('.compose-box-input'), 'hello from the modal')
     .click(modalDialog.find('.compose-box-button-compose'))
     .expect(modalDialog.exists).notOk()
-  await sleep(10000)
+  await sleep(5000)
   await scrollToTopOfTimeline(t)
   await t.hover(getNthStatus(0))
   await scrollContainerToTop()
   await t
-    .expect(showMoreButton.innerText).contains('Show 1 more')
+    .expect(showMoreButton.innerText).contains('Show 1 more', {timeout: 30000})
     .click(showMoreButton)
   await t.expect(getNthStatus(0).innerText).contains('hello from the modal', {timeout: 20000})
 })
 
 test('can use emoji dialog within compose dialog', async t => {
   await t.useRole(foobarRole)
-  await scrollToStatus(t, 20)
+  await scrollToStatus(t, 15)
   await t.expect(composeButton.getAttribute('aria-label')).eql('Compose')
   await sleep(2000)
   await t.click(composeButton)
@@ -40,7 +40,7 @@ test('can use emoji dialog within compose dialog', async t => {
     .expect(modalDialog.find('.compose-box-input').value).eql(':blobpats: ')
     .click(modalDialog.find('.compose-box-button-compose'))
     .expect(modalDialog.exists).notOk()
-  await sleep(10000)
+  await sleep(5000)
   await scrollToTopOfTimeline(t)
   await t.hover(getNthStatus(0))
   await scrollContainerToTop()
