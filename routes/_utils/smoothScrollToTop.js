@@ -13,7 +13,12 @@ const scroll = (node, key, target) => {
     const elapsed = Date.now() - startTime
     const percentage = elapsed / duration
 
-    if (percentage > 1 || interrupt) {
+    if (interrupt) {
+      return
+    }
+
+    if (percentage > 1) {
+      cleanup()
       return
     }
 
@@ -21,11 +26,22 @@ const scroll = (node, key, target) => {
     requestAnimationFrame(step)
   }
 
+  const cancel = () => {
+    interrupt = true
+    cleanup()
+  }
+
+  const cleanup = () => {
+    node.removeEventListener('wheel', cancel)
+    node.removeEventListener('touchstart', cancel)
+  }
+
+  node.addEventListener('wheel', cancel, {passive: true})
+  node.addEventListener('touchstart', cancel, {passive: true})
+
   step()
 
-  return () => {
-    interrupt = true
-  }
+  return cancel
 }
 
 export const smoothScrollToTop = node => scroll(node, 'scrollTop', 0)
