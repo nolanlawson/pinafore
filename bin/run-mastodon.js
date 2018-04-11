@@ -78,7 +78,8 @@ async function runMastodon () {
   let cmds = [
     'gem install bundler foreman',
     'bundle install',
-    'yarn --pure-lockfile'
+    'yarn --pure-lockfile',
+    'bundle exec rails webpacker:install'
   ]
 
   for (let cmd of cmds) {
