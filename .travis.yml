@@ -63,7 +63,7 @@ matrix:
     - env: BROWSER=firefox:headless COMMAND=test-browser
     - env: COMMAND=deploy-dev
   allow_failures:
-    - env: BROWSER=firefox:headless
+    - env: BROWSER=firefox:headless COMMAND=test-browser
 branches:
   only:
   - master
