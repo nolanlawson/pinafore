@@ -173,6 +173,10 @@ export function getNthFavorited (n) {
   return getNthFavoriteButton(n).getAttribute('aria-pressed')
 }
 
+export function getNthShowOrHideButton (n) {
+  return getNthStatus(n).find('.status-spoiler-button button')
+}
+
 export function getFavoritesCount () {
   return favoritesCountElement.innerCount
 }
