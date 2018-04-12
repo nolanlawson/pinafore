@@ -9,7 +9,7 @@
       <ComposeContentWarning :realm :contentWarning />
     </div>
   {{/if}}
-  <ComposeInput :realm :text :autoFocus on:postAction="onPostAction()" />
+  <ComposeInput :realm :text :autoFocus on:postAction="doPostStatus()" />
   <ComposeLengthGauge :length :overLimit />
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
   <ComposeLengthIndicator :length :overLimit />
@@ -188,10 +188,10 @@
           dialogs.showComposeDialog()
         } else {
           // else we're actually posting a new toot
-          this.onPostAction();
+          this.doPostStatus();
         }
       },
-      onPostAction() {
+      doPostStatus() {
         let text = this.get('text')
         let media = this.get('media')
         let postPrivacyKey = this.get('postPrivacyKey')

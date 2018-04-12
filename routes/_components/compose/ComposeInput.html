@@ -101,8 +101,8 @@
       },
       onKeydown(e) {
         let { keyCode } = e
-        const ctrlPressed =
-          e.getModifierState('Control') || e.getModifierState('Meta')
+        // ctrl or cmd (on macs) was pressed; ctrl-enter means post a toot
+        const ctrlPressed = e.getModifierState('Control') || e.getModifierState('Meta')
         switch (keyCode) {
           case 9: // tab
             this.clickSelectedAutosuggestion(e)
