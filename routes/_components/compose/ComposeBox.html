@@ -9,7 +9,7 @@
       <ComposeContentWarning :realm :contentWarning />
     </div>
   {{/if}}
-  <ComposeInput :realm :text :autoFocus />
+  <ComposeInput :realm :text :autoFocus on:postAction="onPostAction()" />
   <ComposeLengthGauge :length :overLimit />
   <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
   <ComposeLengthIndicator :length :overLimit />
@@ -188,25 +188,28 @@
           dialogs.showComposeDialog()
         } else {
           // else we're actually posting a new toot
-          let text = this.get('text')
-          let media = this.get('media')
-          let postPrivacyKey = this.get('postPrivacyKey')
-          let contentWarning = this.get('contentWarning')
-          let sensitive = media.length && !!contentWarning
-          let realm = this.get('realm')
-          let mediaIds = media.map(_ => _.data.id)
-          let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
-          let overLimit = this.get('overLimit')
-          let mediaDescriptions = this.get('mediaDescriptions')
-
-          if (!text || overLimit) {
-            return // do nothing if invalid
-          }
-
-          /* no await */
-          postStatus(realm, text, inReplyTo, mediaIds,
-            sensitive, contentWarning, postPrivacyKey, mediaDescriptions)
+          this.onPostAction();
         }
+      },
+      onPostAction() {
+        let text = this.get('text')
+        let media = this.get('media')
+        let postPrivacyKey = this.get('postPrivacyKey')
+        let contentWarning = this.get('contentWarning')
+        let sensitive = media.length && !!contentWarning
+        let realm = this.get('realm')
+        let mediaIds = media.map(_ => _.data.id)
+        let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
+        let overLimit = this.get('overLimit')
+        let mediaDescriptions = this.get('mediaDescriptions')
+
+        if (!text || overLimit) {
+          return // do nothing if invalid
+        }
+
+        /* no await */
+        postStatus(realm, text, inReplyTo, mediaIds,
+          sensitive, contentWarning, postPrivacyKey, mediaDescriptions)
       },
       setupStickyObserver() {
         this.__stickyObserver = new IntersectionObserver(entries => {

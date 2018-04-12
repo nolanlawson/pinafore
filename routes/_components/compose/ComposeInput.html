@@ -101,10 +101,17 @@
       },
       onKeydown(e) {
         let { keyCode } = e
+        const ctrlPressed =
+          e.getModifierState('Control') || e.getModifierState('Meta')
         switch (keyCode) {
           case 9: // tab
-          case 13: //enter
             this.clickSelectedAutosuggestion(e)
+            break
+          case 13: //enter
+            const autosuggestionClicked = this.clickSelectedAutosuggestion(e)
+            if (!autosuggestionClicked && ctrlPressed) {
+              this.fire('postAction')
+            }
             break
           case 38: // up
             this.incrementAutosuggestSelected(-1, e)
@@ -121,7 +128,7 @@
       clickSelectedAutosuggestion(event) {
         let autosuggestionShown = this.store.get('composeAutosuggestionShown')
         if (!autosuggestionShown) {
-          return
+          return false
         }
         let type = this.store.get('composeAutosuggestionType')
         if (type === 'account') {
@@ -131,6 +138,7 @@
         }
         event.preventDefault()
         event.stopPropagation()
+        return true
       },
       incrementAutosuggestSelected(increment, event) {
         let autosuggestionShown = this.store.get('composeAutosuggestionShown')
