@@ -14,8 +14,6 @@ export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
     } else {
       account = await unfollowAccount(instanceName, accessToken, accountId)
     }
-    // TODO: hack to let the animation fully play
-    await new Promise(resolve => setTimeout(resolve, 400))
     await updateProfileAndRelationship(accountId)
     let relationship = await database.getRelationship(instanceName, accountId)
     if (toastOnSuccess) {
