@@ -1,19 +1,17 @@
 <div class="pseudo-virtual-list" on:initialized ref:node>
-  {{#if wrappedItems}}
-    {{#each wrappedItems as wrappedItem, i @item}}
-      <PseudoVirtualListLazyItem
-        component="{{component}}"
-        index="{{i}}"
-        length="{{wrappedItems.length}}"
-        makeProps="{{makeProps}}"
-        key="{{wrappedItem.item}}"
-        intersectionObserver="{{intersectionObserver}}"
-        isIntersecting="{{isIntersecting(wrappedItem.item, $intersectionStates)}}"
-        isCached="{{isCached(wrappedItem.item, $intersectionStates)}}"
-        height="{{getHeight(wrappedItem.item, $intersectionStates)}}"
-      />
-    {{/each}}
-  {{/if}}
+  {{#each wrappedItems as wrappedItem, i @item}}
+    <PseudoVirtualListLazyItem
+      component="{{component}}"
+      index="{{i}}"
+      length="{{wrappedItems.length}}"
+      makeProps="{{makeProps}}"
+      key="{{wrappedItem.item}}"
+      intersectionObserver="{{intersectionObserver}}"
+      isIntersecting="{{isIntersecting(wrappedItem.item, $intersectionStates)}}"
+      isCached="{{isCached(wrappedItem.item, $intersectionStates)}}"
+      height="{{getHeight(wrappedItem.item, $intersectionStates)}}"
+    />
+  {{/each}}
 </div>
 <style>
   .pseudo-virtual-list {
@@ -107,7 +105,7 @@
       }
     },
     computed: {
-      wrappedItems: (items) => items && items.map(item => ({item: item})),
+      wrappedItems: (items) => items ? items.map(item => ({item})) : [],
       allItemsHaveHeight: (items, $intersectionStates) => {
         if (!items) {
           return false
