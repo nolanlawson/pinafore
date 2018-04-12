@@ -1,20 +1,22 @@
-<div class="account-profile-follow">
-  {{#if verifyCredentials && relationship && verifyCredentials.id !== relationship.id}}
-    <IconButton
-      label="{{followLabel}}"
-      href="{{followIcon}}"
-      pressable="true"
-      pressed="{{following}}"
-      big="true"
-      on:click="onFollowButtonClick(event)"
-      animation="{{animateFollowButton && followButtonAnimation}}"
-    />
-  {{/if}}
+<div class="account-profile-follow {{shown ? 'shown' : ''}}">
+  <IconButton
+    label="{{followLabel}}"
+    href="{{followIcon}}"
+    pressable="true"
+    pressed="{{following}}"
+    big="true"
+    on:click="onFollowButtonClick(event)"
+    animation="{{animateFollowButton && followButtonAnimation}}"
+  />
 </div>
 <style>
   .account-profile-follow {
     grid-area: follow;
     align-self: flex-start;
+    display: none;
+  }
+  .account-profile-follow.shown {
+    display: block;
   }
 </style>
 <script>
@@ -32,12 +34,13 @@
         let accountId = this.get('accountId')
         let following = this.get('following')
         let followRequested = this.get('followRequested')
-        this.set({animateFollowButton: true})
+        this.set({animateFollowButton: true}) // TODO: this should be an event, not toggling a boolean
         let newFollowingValue = !(following || followRequested)
-        await setAccountFollowed(accountId, newFollowingValue)
         if (!account.locked) { // be optimistic, show the user that it succeeded
           this.set({overrideFollowing: newFollowingValue})
         }
+        await setAccountFollowed(accountId, newFollowingValue)
+        this.set({animateFollowButton: false}) // let animation play next time
       }
     },
     store: () => store,
@@ -72,6 +75,9 @@
         } else {
           return '#fa-user-plus'
         }
+      },
+      shown: (verifyCredentials, relationship) => {
+        return verifyCredentials && relationship && verifyCredentials.id !== relationship.id
       }
     },
     components: {

@@ -39,11 +39,14 @@ async function updateRelationship (accountId, instanceName, accessToken) {
   }
 }
 
-export async function updateProfileAndRelationship (accountId) {
+export async function clearProfileAndRelationship () {
   store.set({
     currentAccountProfile: null,
     currentAccountRelationship: null
   })
+}
+
+export async function updateProfileAndRelationship (accountId) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
 

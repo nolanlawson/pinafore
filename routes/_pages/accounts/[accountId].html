@@ -24,13 +24,14 @@
   import { store } from '../../_store/store.js'
   import HiddenFromSSR from '../../_components/HiddenFromSSR'
   import DynamicPageBanner from '../../_components/DynamicPageBanner.html'
-  import { updateProfileAndRelationship } from '../../_actions/accounts'
+  import { updateProfileAndRelationship, clearProfileAndRelationship } from '../../_actions/accounts'
   import AccountProfile from '../../_components/profile/AccountProfile.html'
   import PinnedStatuses from '../../_components/timeline/PinnedStatuses.html'
 
   export default {
     oncreate() {
       let accountId = this.get('params').accountId
+      clearProfileAndRelationship()
       updateProfileAndRelationship(accountId)
     },
     store: () => store,
