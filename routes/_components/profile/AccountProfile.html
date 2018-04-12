@@ -39,13 +39,13 @@
     :global(.account-profile-grid-wrapper) {
       -webkit-backdrop-filter: blur(7px) saturate(110%);
       backdrop-filter: blur(7px) saturate(110%);
-      background-color: var(--account-profile-grid-wrapper-bg-webkit);
+      background-color: var(--account-profile-bg-backdrop-filter);
     }
   }
 
   @supports not ((-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%))) {
     :global(.account-profile-grid-wrapper) {
-      background-color: var(--account-profile-grid-wrapper-bg);
+      background-color: var(--account-profile-bg);
     }
   }
 
