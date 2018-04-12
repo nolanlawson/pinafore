@@ -61,7 +61,7 @@ matrix:
   include:
     - env: BROWSER=chrome:headless COMMAND=test-browser
     - env: BROWSER=firefox:headless COMMAND=test-browser
-    - env: COMMAND=deploy-dev
+    - env: COMMAND=deploy-dev-travis
   allow_failures:
     - env: BROWSER=firefox:headless COMMAND=test-browser
 branches:
