@@ -1,7 +1,7 @@
 {
   "name": "pinafore",
   "description": "Alternative web client for Mastodon",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "scripts": {
     "lint": "standard",
     "dev": "run-s build-svg serve-dev",
