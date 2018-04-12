@@ -1,0 +1,35 @@
+$main-theme-color: #08439b;
+$body-bg-color: #05285c;
+$anchor-color: #eeae00;
+$main-text-color: #e0e0e0;
+$main-bg-color: #08439b;
+$border-color: lighten($main-bg-color, 16%);
+$secondary-text-color: darken($main-text-color, 20%);
+$toast-border: #fafafa;
+$toast-bg: #333;
+$focus-outline: lighten($main-bg-color, 16%);
+$compose-background: lighten($main-theme-color, 32%);
+
+@import "_base.scss";
+@import "_dark.scss";
+
+body.theme-cobalt {
+  @include baseTheme();
+  @include darkTheme();
+
+  --settings-list-item-text: $main-text-color;
+  --settings-list-item-text-hover: $main-text-color;
+  
+  --action-button-fill-color-pressed: $anchor-color;
+  --action-button-fill-color-pressed-hover: darken($anchor-color, 2%);
+  --action-button-fill-color-pressed-active: darken($anchor-color, 15%);
+
+  --svg-fill: $secondary-text-color;
+
+  --nav-svg-fill: $main-text-color;
+  --nav-text-color: $main-text-color;
+  --nav-svg-fill-hover: $main-text-color;
+  --nav-text-color-hover: $main-text-color;  
+  --nav-a-selected-border: $anchor-color;
+  --nav-a-selected-border-hover: $anchor-color;
+} 

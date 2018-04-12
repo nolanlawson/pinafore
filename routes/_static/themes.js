@@ -30,6 +30,10 @@ const themes = [
   {
     name: 'ozark',
     label: 'Ozark'
+  },
+  {
+    name: 'cobalt',
+    label: 'Cobalt'
   }
 ]
 
