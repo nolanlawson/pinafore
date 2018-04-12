@@ -24,9 +24,10 @@
     "globalize-css": "node ./bin/globalize-css.js",
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
     "stage-dev": "printf 'User-agent: *\nDisallow: /' > assets/robots.txt",
-    "deploy-dev": "git-branch-is master && npm run stage-dev && now && sleep 60 && now alias dev.pinafore.social && now rm pinafore --safe --yes",
+    "deploy-dev": "npm run stage-dev && now && sleep 60 && now alias dev.pinafore.social && now rm pinafore --safe --yes",
     "stage-prod": "rm -f assets/robots.txt",
-    "deploy-prod": "git-branch-is master && npm run stage-prod && now && sleep 60 && now alias pinafore.social && now rm pinafore --safe --yes",
+    "deploy-prod": "npm run stage-prod && now && sleep 60 && now alias pinafore.social && now rm pinafore --safe --yes",
+    "deploy-dev-travis": "if [[ $TRAVIS_BRANCH == master ]]; then npm run stage-dev && now --token $NOW_TOKEN && sleep 60 && now alias dev.pinafore.social --token $NOW_TOKEN && now rm pinafore --safe --yes; fi",
     "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
@@ -79,7 +80,6 @@
     "yargs": "^10.1.1"
   },
   "devDependencies": {
-    "git-branch-is": "^0.1.0",
     "now": "^10.2.2",
     "standard": "^10.0.3",
     "testcafe": "^0.19.0"
@@ -126,6 +126,7 @@
     "cjs": "vars"
   },
   "now": {
+    "type": "npm",
     "env": {
       "NODE_ENV": "production"
     },
