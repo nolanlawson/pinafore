@@ -45,6 +45,8 @@ Automatically fix most linting issues:
 
 ## Testing
 
+Testing requires running Mastodon itself, meaning the [Mastodon development guide](https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Development-guide.md) is relevant here. In particular, you'll need a recent version of Ruby, Redis, and Postgres running.
+
 Run integration tests, using headless Chrome by default:
 
     npm test
