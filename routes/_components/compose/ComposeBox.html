@@ -60,7 +60,20 @@
   }
 
   .compose-box-button-wrapper {
-    width: 100%;
+    /*
+     * We want pointer-events only for the sticky button, so use fit-content so that
+     * the element doesn't take up the full width, and then set its left margin to
+     * auto so that it sticks to the right. fit-content doesn't work in Edge, but
+     * that just means that content that is level with the button is not clickable.
+     *
+     * Before this, I tried a wrapper element with pointer-events:none and then
+     * pointer-events:auto on the button itself, but in Chrome that made it so
+     * that occasionally hit detection failed and a click on the button would fall
+     * through and click something underneath, which is a worse bug.
+     */
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-left: auto;
     display: flex;
     justify-content: flex-end;
   }
