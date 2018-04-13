@@ -1,5 +1,4 @@
-<div class="virtual-list-header {{shown ? 'shown' : ''}}"
-     aria-hidden="{{!shown}}"
+<div class="virtual-list-header {{shown ? 'shown' : ''}} {{fadedIn ? 'faded-in' : ''}}"
      ref:node >
   <:Component {component} :virtualProps />
 </div>
@@ -9,28 +8,47 @@
     top: 0;
     width: 100%;
     opacity: 0;
-    pointer-events: none;
     z-index: 10;
     transition: none;
+    display: none;
   }
   .virtual-list-header.shown {
-    opacity: 1;
-    pointer-events: auto;
+    display: block;
     transition: opacity 0.333s linear;
+  }
+  .virtual-list-header.faded-in {
+    opacity: 1;
   }
 </style>
 <script>
   import { virtualListStore } from './virtualListStore'
   import { AsyncLayout } from '../../_utils/AsyncLayout'
+  import { doubleRAF } from '../../_utils/doubleRAF'
 
   export default {
     oncreate() {
-      const asyncLayout = new AsyncLayout(() => '__header__')
-      asyncLayout.observe('__header__', this.refs.node, (rect) => {
-        asyncLayout.disconnect()
-        this.store.setForRealm({headerHeight: rect.height})
-      })
+      this.observe('shown', shown => {
+        if (shown) {
+          this.doCalculateHeight()
+          doubleRAF(() => this.set({fadedIn: true})) //  animate in
+        } else {
+          this.set({fadedIn: false})
+        }
+      }, {init: false})
     },
     store: () => virtualListStore,
+    methods: {
+      doCalculateHeight() {
+        if (this.get('heightCalculated')) { // only need to calculate once, it never changes
+          return
+        }
+        this.set({heightCalculated: true})
+        const asyncLayout = new AsyncLayout(() => '__header__')
+        asyncLayout.observe('__header__', this.refs.node, (rect) => {
+          asyncLayout.disconnect()
+          this.store.setForRealm({headerHeight: rect.height})
+        })
+      }
+    }
   }
 </script>
