@@ -215,6 +215,7 @@
         let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
         let overLimit = this.get('overLimit')
         let mediaDescriptions = this.get('mediaDescriptions')
+        let inReplyToUuid = this.get('inReplyToUuid')
 
         if (!text || overLimit) {
           return // do nothing if invalid
@@ -222,7 +223,8 @@
 
         /* no await */
         postStatus(realm, text, inReplyTo, mediaIds,
-          sensitive, contentWarning, postPrivacyKey, mediaDescriptions)
+          sensitive, contentWarning, postPrivacyKey,
+          mediaDescriptions, inReplyToUuid)
       },
       setupStickyObserver() {
         this.__stickyObserver = new IntersectionObserver(entries => {

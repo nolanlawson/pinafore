@@ -22,7 +22,7 @@ export async function insertHandleForReply (statusId) {
 
 export async function postStatus (realm, text, inReplyToId, mediaIds,
                                   sensitive, spoilerText, visibility,
-                                  mediaDescriptions = []) {
+                                  mediaDescriptions = [], inReplyToUuid) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   let online = store.get('online')
@@ -43,7 +43,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility)
     addStatusOrNotification(instanceName, 'home', status)
     store.clearComposeData(realm)
-    emit('postedStatus', realm)
+    emit('postedStatus', realm, inReplyToUuid)
   } catch (e) {
     console.error(e)
     toast.say('Unable to post status: ' + (e.message || ''))
