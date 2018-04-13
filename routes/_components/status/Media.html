@@ -21,6 +21,7 @@
   <button type="button"
           class="show-image-button"
           aria-label="Show image: {{media.description || ''}}"
+          title="{{media.description || ''}}"
           delegate-key="{{delegateKey}}"
           on:mouseover="set({mouseover: event})"
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
