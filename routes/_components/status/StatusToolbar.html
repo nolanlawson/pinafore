@@ -1,5 +1,6 @@
-<div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
+<div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}" ref:node>
   <IconButton
+    className="status-toolbar-reply-button"
     label="{{replyLabel}}"
     pressable="true"
     pressed="{{replyShown}}"
@@ -49,6 +50,7 @@
   import { importDialogs } from '../../_utils/asyncModules'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
   import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
+  import { on } from '../../_utils/eventBus'
 
   export default {
     oncreate() {
@@ -56,6 +58,7 @@
       registerClickDelegate(this.get('reblogKey'), (e) => this.onReblogClick(e))
       registerClickDelegate(this.get('replyKey'), (e) => this.onReplyClick(e))
       registerClickDelegate(this.get('optionsKey'), (e) => this.onOptionsClick(e))
+      on('postedStatus', this, this.onPostedStatus)
     },
     ondestroy() {
       unregisterClickDelegate(this.get('favoriteKey'))
@@ -104,6 +107,16 @@
         let dialogs = await importDialogs()
         await updateRelationshipPromise
         dialogs.showStatusOptionsDialog(originalStatusId)
+      },
+      onPostedStatus(realm, inReplyToUuid) {
+        if (realm !== this.get('originalStatusId') ||
+            inReplyToUuid !== this.get('uuid')) {
+          return
+        }
+        try {
+          // return status to the reply button after posting a reply
+          this.refs.node.querySelector('.status-toolbar-reply-button').focus()
+        } catch (e) { /* ignore */ }
       }
     },
     data: () => ({
