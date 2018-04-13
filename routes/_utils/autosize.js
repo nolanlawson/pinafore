@@ -15,6 +15,8 @@ function assign (ta) {
     return
   }
 
+  // TODO: hack - grab our scroll container so we can maintain the scrollTop
+  let container = document.getElementsByClassName('container')[0]
   let heightOffset = null
   let cachedHeight = null
 
@@ -39,10 +41,11 @@ function assign (ta) {
 
   function _resize () {
     const originalHeight = ta.style.height
+    const scrollTop = container.scrollTop
 
-    ta.style.height = ''
+    ta.style.height = '' // this may change the scrollTop in Firefox
 
-    let endHeight = ta.scrollHeight + heightOffset
+    const endHeight = ta.scrollHeight + heightOffset
 
     if (ta.scrollHeight === 0) {
       // If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
@@ -51,6 +54,7 @@ function assign (ta) {
     }
 
     ta.style.height = endHeight + 'px'
+    container.scrollTop = scrollTop // Firefox jiggles if we don't reset the scrollTop of the container
     return endHeight
   }
 
@@ -76,7 +80,7 @@ function assign (ta) {
     }
   }
 
-  const pageResize = debounce(update, 1000)
+  const pageResize = debounce(() => requestAnimationFrame(update), 1000)
 
   const destroy = () => {
     window.removeEventListener('resize', pageResize, false)
