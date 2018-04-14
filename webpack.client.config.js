@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const config = require('sapper/webpack/config.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin')
 
 const isDev = config.dev
 
@@ -45,6 +46,21 @@ module.exports = {
   },
   node: {
     setImmediate: false
+  },
+  optimization: {
+    minimizer: isDev ? [] : [new UglifyWebpackPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: true,
+      uglifyOptions: {
+        ecma: 6,
+        mangle: true,
+        compress: true,
+        output: {
+          comments: false
+        }
+      }
+    })]
   },
   plugins: [
     new LodashModuleReplacementPlugin({
