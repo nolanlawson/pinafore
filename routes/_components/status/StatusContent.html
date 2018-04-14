@@ -1,7 +1,4 @@
-<div
-  class="status-content {{isStatusInOwnThread ? 'status-in-own-thread' : ''}} {{isStatusInNotification ? 'status-in-notification' : ''}}"
-  ref:node
->
+<div class="{{computedClass}}" ref:node>
     {{{massagedContent}}}
 </div>
 <style>
@@ -12,11 +9,16 @@
     overflow: hidden;
     white-space: pre-wrap;
     font-size: 0.9em;
+    display: none;
   }
 
   .status-content.status-in-own-thread {
     font-size: 1.3em;
     margin: 20px 10px 20px 5px;
+  }
+
+  .status-content.shown {
+    display: block;
   }
 
   :global(.status-content .status-emoji) {
@@ -59,6 +61,7 @@
   import { replaceAll } from '../../_utils/strings'
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
+  import { classname } from '../../_utils/classname'
 
   export default {
     oncreate() {
@@ -66,6 +69,14 @@
     },
     store: () => store,
     computed: {
+      computedClass: (isStatusInOwnThread, isStatusInNotification, shown) => {
+        return classname(
+          'status-content',
+          isStatusInOwnThread && 'status-in-own-thread',
+          isStatusInNotification && 'status-in-notification',
+          shown && 'shown'
+        )
+      },
       massagedContent: (originalStatus, $autoplayGifs) => {
         let content = originalStatus.content
         // emojify
