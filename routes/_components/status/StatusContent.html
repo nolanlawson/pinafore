@@ -58,10 +58,10 @@
 
 </style>
 <script>
-  import { replaceAll } from '../../_utils/strings'
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
+  import { emojifyText } from '../../_utils/emojifyText'
 
   export default {
     oncreate() {
@@ -79,20 +79,9 @@
       },
       massagedContent: (originalStatus, $autoplayGifs) => {
         let content = originalStatus.content
-        // emojify
-        if (originalStatus.emojis && originalStatus.emojis.length) {
-          for (let emoji of originalStatus.emojis) {
-            let { shortcode, url, static_url } = emoji
-            let urlToUse = $autoplayGifs ? url : static_url
-            let shortcodeWithColons = `:${shortcode}:`
-            content = replaceAll(
-              content,
-              shortcodeWithColons,
-              `<img class="status-emoji" draggable="false" src="${urlToUse}"
-                    alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
-            )
-          }
-        }
+
+        content = emojifyText(content, originalStatus.emojis, $autoplayGifs)
+
         // GNU Social and Pleroma don't add <p> tags
         if (!content.startsWith('<p>')) {
           content = `<p>${content}</p>`
