@@ -1,6 +1,6 @@
 <Nav :page />
 
-<div class="container">
+<div class="container" tabindex="0">
   <main>
     <slot></slot>
   </main>
@@ -17,7 +17,10 @@
 		components: {
 			Nav,
       InformationalFooter
-		},
+    },
+    oncreate () {
+      document.querySelector('.container').focus()
+    },
     store: () => store
 	}
 </script>
