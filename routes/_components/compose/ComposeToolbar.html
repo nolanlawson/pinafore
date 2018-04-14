@@ -6,7 +6,7 @@
       on:click="onEmojiClick()"
     />
     <IconButton
-      className="{{$uploadingMedia ? 'spin' : ''}}"
+      svgClassName="{{$uploadingMedia ? 'spin' : ''}}"
       label="Add media"
       href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
       on:click="onMediaClick()"
