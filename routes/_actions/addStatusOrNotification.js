@@ -5,6 +5,7 @@ import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import uniqBy from 'lodash-es/uniqBy'
 import uniq from 'lodash-es/uniq'
+import isEqual from 'lodash-es/isEqual'
 import { isMobile } from '../_utils/isMobile'
 
 const STREAMING_THROTTLE_DELAY = 3000
@@ -30,10 +31,12 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
   await database.insertTimelineItems(instanceName, timelineName, updates)
 
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-
-  itemIdsToAdd = uniq(itemIdsToAdd.concat(updates.map(_ => _.id)))
-  console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd on instance', instanceName, 'on timeline', timelineName)
-  store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
+  let newItemIdsToAdd = uniq([].concat(itemIdsToAdd).concat(updates.map(_ => _.id)))
+  if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
+    console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
+      'items to itemIdsToAdd for timeline', timelineName)
+    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: newItemIdsToAdd})
+  }
 }
 
 async function insertUpdatesIntoThreads (instanceName, updates) {
@@ -45,17 +48,19 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
 
   for (let timelineName of Object.keys(threads)) {
     let thread = threads[timelineName]
-    let updatesForThisThread = updates.filter(status => {
-      return thread.includes(status.in_reply_to_id) && !thread.includes(status.id)
-    })
-    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-    for (let update of updatesForThisThread) {
-      if (!itemIdsToAdd.includes(update.id)) {
-        itemIdsToAdd.push(update.id)
-      }
+    let updatesForThisThread = updates.filter(
+      status => thread.includes(status.in_reply_to_id) && !thread.includes(status.id)
+    )
+    if (!updatesForThisThread.length) {
+      continue
     }
-    console.log('adding ', itemIdsToAdd.length, 'items to itemIdsToAdd for thread', timelineName)
-    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: itemIdsToAdd})
+    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
+    let newItemIdsToAdd = uniq([].concat(itemIdsToAdd).concat(updatesForThisThread.map(_ => _.id)))
+    if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
+      console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
+        'items to itemIdsToAdd for thread', timelineName)
+      store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: newItemIdsToAdd})
+    }
   }
 }
 
@@ -66,8 +71,10 @@ async function processFreshUpdates (instanceName, timelineName) {
     let updates = freshUpdates.slice()
     store.setForTimeline(instanceName, timelineName, {freshUpdates: []})
 
-    await insertUpdatesIntoTimeline(instanceName, timelineName, updates)
-    await insertUpdatesIntoThreads(instanceName, updates.filter(status => status.in_reply_to_id))
+    await Promise.all([
+      insertUpdatesIntoTimeline(instanceName, timelineName, updates),
+      insertUpdatesIntoThreads(instanceName, updates.filter(status => status.in_reply_to_id))
+    ])
   }
   stop('processFreshUpdates')
 }
@@ -85,7 +92,7 @@ export function addStatusOrNotification (instanceName, timelineName, newStatusOr
 
 export function addStatusesOrNotifications (instanceName, timelineName, newStatusesOrNotifications) {
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
-  freshUpdates = freshUpdates.concat(newStatusesOrNotifications)
+  freshUpdates = [].concat(freshUpdates).concat(newStatusesOrNotifications)
   freshUpdates = uniqBy(freshUpdates, _ => _.id)
   store.setForTimeline(instanceName, timelineName, {freshUpdates: freshUpdates})
   lazilyProcessFreshUpdates(instanceName, timelineName)
