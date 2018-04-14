@@ -26,7 +26,7 @@
     "stage-dev": "printf 'User-agent: *\nDisallow: /' > assets/robots.txt",
     "deploy-dev": "npm run stage-dev && now && sleep 60 && now alias dev.pinafore.social && now rm pinafore --safe --yes",
     "stage-prod": "rm -f assets/robots.txt",
-    "deploy-prod": "npm run stage-prod && now && sleep 60 && now alias pinafore.social && now rm pinafore --safe --yes",
+    "deploy-prod": "npm run stage-prod && now -e REDIRECT_URL=https://pinafore.social/ && sleep 60 && now alias www.pinafore.social && now rm pinafore --safe --yes",
     "deploy-dev-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then npm run stage-dev && now --token $NOW_TOKEN --team nolanlawson && sleep 60 && now alias dev.pinafore.social --token $NOW_TOKEN --team nolanlawson && now rm pinafore --safe --yes --token $NOW_TOKEN --team nolanlawson; fi",
     "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
