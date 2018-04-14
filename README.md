@@ -1,5 +1,7 @@
 # Pinafore [![Build Status](https://travis-ci.org/nolanlawson/pinafore.svg)](https://travis-ci.org/nolanlawson/pinafore)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nolanlawson/pinafore.svg)](https://greenkeeper.io/)
+
 An alternative web client for [Mastodon](https://joinmastodon.org]), focused on speed and simplicity.
 
 Pinafore is available at [pinafore.social](https://pinafore.social). Bleeding-edge releases are at [dev.pinafore.social](https://dev.pinafore.social).
