@@ -68,7 +68,9 @@ module.exports = {
       caching: true
     })
   ].concat(isDev ? [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin({
+      requestTimeout: 120000
+    })
   ] : [
     new webpack.DefinePlugin({
       'process.browser': true,
