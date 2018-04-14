@@ -146,7 +146,8 @@
   },
   "greenkeeper": {
     "ignore": [
-      "sapper"
+      "sapper",
+      "standard"
     ]
   }
 }
