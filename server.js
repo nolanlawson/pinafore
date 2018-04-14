@@ -3,6 +3,9 @@ const compression = require('compression')
 const sapper = require('sapper')
 const serveStatic = require('serve-static')
 const app = express()
+const csp = require('helmet-csp')
+
+const headScriptChecksum = require('./inline-script-checksum').checksum
 
 const { PORT = 4002 } = process.env
 
@@ -14,6 +17,17 @@ global.fetch = (url, opts) => {
 }
 
 app.use(compression({ threshold: 0 }))
+
+app.use(csp({
+  directives: {
+    scriptSrc: [`'self'`, `'sha256-${headScriptChecksum}'`],
+    workerSrc: [`'self'`],
+    styleSrc: [`'self'`, `'unsafe-inline'`],
+    frameSrc: [`'none'`],
+    objectSrc: [`'none'`],
+    manifestSrc: [`'self'`]
+  }
+}))
 
 app.use(serveStatic('assets', {
   setHeaders: (res) => {
