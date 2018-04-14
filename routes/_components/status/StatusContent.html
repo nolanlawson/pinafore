@@ -94,44 +94,41 @@
         if (!this.refs.node) {
           return
         }
+        mark('hydrateContent')
         let node = this.refs.node
         let originalStatus = this.get('originalStatus')
         let uuid = this.get('uuid')
         let count = 0
-        mark('hydrateContent')
-        if (originalStatus.tags && originalStatus.tags.length) {
-          let anchorTags = node.querySelectorAll('a[class~=hashtag][href^=http]')
-          for (let tag of originalStatus.tags) {
-            for (let i = 0, len = anchorTags.length; i < len; i++) {
-              let anchorTag = anchorTags[i]
-              if (anchorTag.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
-                anchorTag.setAttribute('href', `/tags/${tag.name}`)
-                anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
-                anchorTag.removeAttribute('target')
-                anchorTag.removeAttribute('rel')
+        let anchors = node.getElementsByTagName('A')
+        let mentions = originalStatus.mentions
+        let tags = originalStatus.tags
+        for (let i = 0, len = anchors.length; i < len; i++) {
+          let anchor = anchors[i]
+          let href = anchor.getAttribute('href')
+          if (tags && anchor.classList.contains('hashtag')) {
+            for (let j = 0, jLen = tags.length; j < jLen; j++) {
+              let tag = tags[j]
+              if (href.endsWith(`/tags/${tag.name}`)) {
+                anchor.setAttribute('href', `/tags/${tag.name}`)
+                anchor.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
+                anchor.removeAttribute('target')
+                anchor.removeAttribute('rel')
               }
             }
-          }
-        }
-        if (originalStatus.mentions && originalStatus.mentions.length) {
-          let anchorTags = node.querySelectorAll('a[class~=mention][href^=http]')
-          for (let mention of originalStatus.mentions) {
-            for (let i = 0, len = anchorTags.length; i < len; i++) {
-              let anchorTag = anchorTags[i]
-              if (anchorTag.getAttribute('href') === mention.url) {
-                anchorTag.setAttribute('href', `/accounts/${mention.id}`)
-                anchorTag.setAttribute('title', `@${mention.acct}`)
-                anchorTag.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
-                anchorTag.removeAttribute('target')
-                anchorTag.removeAttribute('rel')
+          } else if (mentions && anchor.classList.contains('mention')) {
+            for (let j = 0, jLen = mentions.length; j < jLen; j++) {
+              let mention = mentions[j]
+              if (href === mention.url) {
+                anchor.setAttribute('href', `/accounts/${mention.id}`)
+                anchor.setAttribute('title', `@${mention.acct}`)
+                anchor.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
+                anchor.removeAttribute('target')
+                anchor.removeAttribute('rel')
               }
             }
+          } else if (anchor.getAttribute('rel') === 'nofollow noopener') {
+            anchor.setAttribute('title', href)
           }
-        }
-        let externalLinks = node.querySelectorAll('a[rel="nofollow noopener"]')
-        for (let i = 0, len = externalLinks.length; i < len; i++) {
-          let link = externalLinks[i]
-          link.setAttribute('title', link.getAttribute('href'))
         }
         stop('hydrateContent')
       }
