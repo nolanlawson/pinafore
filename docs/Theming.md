@@ -40,7 +40,7 @@ const themes = [
 export { themes }
 ```
 
-Add your theme in `templates/2xx.html`.
+Add your theme in `inline-script.js`.
 ```js
 window.__themeColors = {
       'default': "royalblue",
