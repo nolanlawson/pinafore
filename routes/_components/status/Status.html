@@ -27,7 +27,7 @@
     <StatusContent :isStatusInOwnThread :isStatusInNotification
                    :originalStatus :uuid shown="{{showContent}}"/>
   {{/if}}
-  {{#if originalStatus.media_attachments && originalStatus.media_attachments.length}}
+  {{#if showMedia }}
     <StatusMediaAttachments :originalStatus :uuid
                             on:recalculateHeight />
   {{/if}}
@@ -206,6 +206,11 @@
       },
       spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
       replyShown: ($repliesShown, uuid) => !!$repliesShown[uuid],
+      showMedia: (originalStatus, isStatusInNotification) => {
+        return !isStatusInNotification
+          && originalStatus.media_attachments
+          && originalStatus.media_attachments.length
+      },
       ariaLabel: (originalAccount, originalStatus, visibility) => {
         return (visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`
