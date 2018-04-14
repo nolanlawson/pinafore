@@ -1,5 +1,5 @@
 <div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
-  <p>{{originalStatus.spoiler_text}}</p>
+  <p>{{{massagedSpoilerText}}}</p>
 </div>
 <div class="status-spoiler-button {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
   <button type="button" delegate-key="{{delegateKey}}">
@@ -14,6 +14,12 @@
     white-space: pre-wrap;
     font-size: 0.9em;
     margin: 10px 5px;
+  }
+
+  :global(.status-spoiler .status-emoji) {
+    width: 20px;
+    height: 20px;
+    margin: -3px 0;
   }
 
   .status-spoiler.status-in-own-thread {
@@ -42,6 +48,8 @@
   import { store } from '../../_store/store'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
   import { mark, stop } from '../../_utils/marks'
+  import { emojifyText } from '../../_utils/emojifyText'
+  import escapeHtml from 'escape-html'
 
   export default {
     oncreate() {
@@ -52,6 +60,11 @@
     },
     store: () => store,
     computed: {
+      spoilerText: (originalStatus) => originalStatus.spoiler_text,
+      massagedSpoilerText: (spoilerText, originalStatus, $autoplayGifs) => {
+        spoilerText = escapeHtml(spoilerText)
+        return emojifyText(spoilerText, originalStatus.emojis, $autoplayGifs)
+      },
       delegateKey: (uuid) => `spoiler-${uuid}`
     },
     methods: {
