@@ -36,8 +36,8 @@ const themes = [
     label: 'Cobalt'
   },
   {
-    name: 'toot-cafe',
-    label: 'Toot Café'
+    name: 'sorcery',
+    label: 'Sorcery'
   }
 ]
 

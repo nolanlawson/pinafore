@@ -14,7 +14,7 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_base.scss";
 @import "_dark.scss";
 
-body.theme-toot-cafe {
+body.theme-sorcery {
   @include baseTheme();
   @include darkTheme();
 
