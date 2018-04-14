@@ -25,7 +25,3 @@ export const importWebSocketClient = () => import(
 export const importPseudoVirtualList = () => import(
   /* webpackChunkName: 'PseudoVirtualList' */ '../_components/pseudoVirtualList/PseudoVirtualList.html'
   ).then(mod => mod.default)
-
-export const importDialogs = () => import(
-  /* webpackChunkName: 'dialogs' */ '../_components/dialog/dialogs.js'
-  )

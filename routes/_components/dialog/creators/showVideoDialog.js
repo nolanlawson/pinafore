@@ -2,7 +2,7 @@ import VideoDialog from '../components/VideoDialog.html'
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export function showVideoDialog (poster, src, width, height, description) {
+export default function showVideoDialog (poster, src, width, height, description) {
   let videoDialog = new VideoDialog({
     target: createDialogElement(),
     data: {

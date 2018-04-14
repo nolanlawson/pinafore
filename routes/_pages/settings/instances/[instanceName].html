@@ -95,7 +95,6 @@
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import ExternalLink from '../../../_components/ExternalLink.html'
   import Avatar from '../../../_components/Avatar.html'
-  import { importDialogs } from '../../../_utils/asyncModules'
   import {
     changeTheme,
     switchToInstance,
@@ -103,6 +102,7 @@
     updateVerifyCredentialsForInstance
   } from '../../../_actions/instances'
   import { themes } from '../../../_static/themes'
+  import { importShowConfirmationDialog } from '../../../_components/dialog/dialogs'
 
   export default {
     components: {
@@ -138,8 +138,8 @@
         e.preventDefault()
         let instanceName = this.get('instanceName')
 
-        let dialogs = await importDialogs()
-        dialogs.showConfirmationDialog({
+        let showConfirmationDialog = await importShowConfirmationDialog()
+        showConfirmationDialog({
           text: `Log out of ${instanceName}?`,
           onPositive() {
             logOutOfInstance(instanceName)

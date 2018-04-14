@@ -103,7 +103,7 @@
 </style>
 <script>
   import IconButton from '../IconButton.html'
-  import { importDialogs } from '../../_utils/asyncModules'
+  import { importShowAccountProfileOptionsDialog } from '../dialog/dialogs'
 
   const numberFormat = new Intl.NumberFormat('en-US')
 
@@ -119,8 +119,8 @@
     methods: {
       async onMoreOptionsClick() {
         let account = this.get('account')
-        let dialogs = await importDialogs()
-        dialogs.showAccountProfileOptionsDialog(account)
+        let showAccountProfileOptionsDialog = await importShowAccountProfileOptionsDialog()
+        showAccountProfileOptionsDialog(account)
       }
     },
     components: {

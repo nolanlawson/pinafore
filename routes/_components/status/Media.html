@@ -99,7 +99,6 @@
 </style>
 <script>
   import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT } from '../../_static/media'
-  import { importDialogs } from '../../_utils/asyncModules'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
@@ -108,6 +107,7 @@
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { importShowImageDialog, importShowVideoDialog } from '../dialog/dialogs'
 
   export default {
     oncreate() {
@@ -144,15 +144,15 @@
         let media = this.get('media')
         let width = this.get('modalWidth')
         let height = this.get('modalHeight')
-        let dialogs = await importDialogs()
-        dialogs.showVideoDialog(media.preview_url, media.url, width, height, media.description)
+        let showVideoDialog = await importShowVideoDialog()
+        showVideoDialog(media.preview_url, media.url, width, height, media.description)
       },
       async onClickShowImageButton() {
         let media = this.get('media')
         let width = this.get('modalWidth')
         let height = this.get('modalHeight')
-        let dialogs = await importDialogs()
-        dialogs.showImageDialog(media.preview_url, media.url, media.type, width, height, media.description)
+        let showImageDialog = await importShowImageDialog()
+        showImageDialog(media.preview_url, media.url, media.type, width, height, media.description)
       }
     },
     data: () => ({

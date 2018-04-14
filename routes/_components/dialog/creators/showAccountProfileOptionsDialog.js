@@ -2,7 +2,7 @@ import AccountProfileOptionsDialog from '../components/AccountProfileOptionsDial
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export function showAccountProfileOptionsDialog (account) {
+export default function showAccountProfileOptionsDialog (account) {
   let dialog = new AccountProfileOptionsDialog({
     target: createDialogElement(),
     data: {

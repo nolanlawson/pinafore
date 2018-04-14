@@ -46,10 +46,10 @@
 <script>
   import IconButton from '../IconButton.html'
   import { store } from '../../_store/store'
-  import { importDialogs } from '../../_utils/asyncModules'
   import { doMediaUpload } from '../../_actions/media'
   import { toggleContentWarningShown } from '../../_actions/contentWarnings'
   import ComposeAutosuggest from './ComposeAutosuggest.html'
+  import { importShowPostPrivacyDialog, importShowEmojiDialog } from '../dialog/dialogs'
 
   export default {
     oncreate() {
@@ -70,8 +70,8 @@
     store: () => store,
     methods: {
       async onEmojiClick() {
-        let dialogs = await importDialogs()
-        dialogs.showEmojiDialog(this.get('realm'))
+        let showEmojiDialog = await importShowEmojiDialog()
+        showEmojiDialog(this.get('realm'))
       },
       onMediaClick() {
         this.refs.input.click()
@@ -82,8 +82,8 @@
         doMediaUpload(realm, file)
       },
       async onPostPrivacyClick() {
-        let dialogs = await importDialogs()
-        dialogs.showPostPrivacyDialog(this.get('realm'))
+        let showPostPrivacyDialog = await importShowPostPrivacyDialog()
+        showPostPrivacyDialog(this.get('realm'))
       },
       onContentWarningClick() {
         toggleContentWarningShown(this.get('realm'))
