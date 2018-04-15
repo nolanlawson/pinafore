@@ -1,10 +1,16 @@
 import debounce from 'lodash-es/debounce'
 import { toast } from '../../_utils/toast'
 
-const OFFLINE_DELAY = 1000
+const OFFLINE_DELAY = 5000
+const NOTIFY_OFFLINE_LIMIT = 1
 
+let notifyCount = 0
+
+// debounce to avoid notifying for a short connection issue
 const notifyOffline = debounce(() => {
-  toast.say('You seem to be offline. You can still read toots while offline.')
+  if (process.browser && !navigator.onLine && ++notifyCount <= NOTIFY_OFFLINE_LIMIT) {
+    toast.say('You seem to be offline. You can still read toots while offline.')
+  }
 }, OFFLINE_DELAY)
 
 export function onlineObservers (store) {
