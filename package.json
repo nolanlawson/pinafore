@@ -69,7 +69,7 @@
     "stringz": "^1.0.0",
     "style-loader": "^0.20.3",
     "svelte": "^1.57.4",
-    "svelte-extras": "^1.6.0",
+    "svelte-extras": "^2.0.0",
     "svelte-loader": "^2.3.3",
     "svelte-transitions": "^1.1.1",
     "svgo": "^1.0.3",
