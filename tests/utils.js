@@ -13,6 +13,7 @@ export const notificationsNavButton = $('nav a[href="/notifications"]')
 export const homeNavButton = $('nav a[href="/"]')
 export const localTimelineNavButton = $('nav a[href="/local"]')
 export const searchNavButton = $('nav a[href="/search"]')
+export const communityNavButton = $('nav a[href="/community"]')
 export const formError = $('.form-error-user-error')
 export const composeInput = $('.compose-box-input')
 export const composeContentWarning = $('.content-warning-input')
@@ -34,6 +35,7 @@ export const accountProfileUsername = $('.account-profile .account-profile-usern
 export const accountProfileFollowedBy = $('.account-profile .account-profile-followed-by')
 export const accountProfileFollowButton = $('.account-profile .account-profile-follow button')
 export const goBackButton = $('.dynamic-page-go-back')
+export const accountProfileMoreOptionsButton = $('.account-profile-more-options button')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -169,6 +171,10 @@ export function getNthFavoriteButton (n) {
   return getNthStatus(n).find('.status-toolbar button:nth-child(3)')
 }
 
+export function getNthStatusOptionsButton (n) {
+  return getNthStatus(n).find('.status-toolbar button:nth-child(4)')
+}
+
 export function getNthFavorited (n) {
   return getNthFavoriteButton(n).getAttribute('aria-pressed')
 }
@@ -187,6 +193,10 @@ export function getNthReblogButton (n) {
 
 export function getNthReblogged (n) {
   return getNthReblogButton(n).getAttribute('aria-pressed')
+}
+
+export function getNthDialogOptionsOption (n) {
+  return $(`.modal-dialog li:nth-child(${n}) button`)
 }
 
 export function getReblogsCount () {

@@ -10,7 +10,9 @@
   {{'@' + account.acct}}
 </div>
 <div class="account-profile-followed-by">
-  {{#if relationship && relationship.followed_by}}
+  {{#if relationship && relationship.blocking}}
+    <span class="account-profile-followed-by-span">Blocked</span>
+  {{elseif relationship && relationship.followed_by}}
     <span class="account-profile-followed-by-span">Follows you</span>
   {{/if}}
 </div>

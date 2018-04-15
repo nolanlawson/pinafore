@@ -119,8 +119,9 @@
     methods: {
       async onMoreOptionsClick() {
         let account = this.get('account')
+        let relationship = this.get('relationship')
         let dialogs = await importDialogs()
-        dialogs.showAccountProfileOptionsDialog(account)
+        dialogs.showAccountProfileOptionsDialog(account, relationship)
       }
     },
     components: {

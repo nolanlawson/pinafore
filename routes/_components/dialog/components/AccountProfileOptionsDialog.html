@@ -15,6 +15,7 @@ import { createDialogId } from '../helpers/createDialogId'
 import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
+import { setAccountBlocked } from '../../../_actions/block'
 
 export default {
   oncreate,
@@ -23,12 +24,18 @@ export default {
     id: createDialogId()
   }),
   computed: {
-    items: (account) => (
+    blocking: (relationship) => relationship && relationship.blocking,
+    items: (account, blocking) => (
       [
         {
           key: 'mention',
-          label: 'Mention @' + (account.acct),
+          label: `Mention @${account.acct}`,
           icon: '#fa-comments'
+        },
+        {
+          key: 'block',
+          label: blocking ? `Unblock @${account.acct}` : `Block @${account.acct}`,
+          icon: blocking ? '#fa-unlock' : '#fa-ban'
         }
       ]
     )
@@ -36,7 +43,15 @@ export default {
   methods: {
     show,
     close,
-    async onClick() {
+    onClick(item) {
+      switch (item.key) {
+        case 'mention':
+          return this.onMentionClicked()
+        case 'block':
+          return this.onBlockClicked()
+      }
+    },
+    async onMentionClicked() {
       let account = this.get('account')
       this.store.setComposeData('dialog', {
         text: `@${account.acct} `
@@ -44,6 +59,13 @@ export default {
       let dialogs = await importDialogs()
       dialogs.showComposeDialog()
       this.close()
+    },
+    async onBlockClicked() {
+      let account = this.get('account')
+      let blocking = this.get('blocking')
+      let accountId = account.id
+      this.close()
+      await setAccountBlocked(accountId, !blocking, true)
     }
   },
   components: {
