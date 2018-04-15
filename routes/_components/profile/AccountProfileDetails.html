@@ -120,8 +120,9 @@
       async onMoreOptionsClick() {
         let account = this.get('account')
         let relationship = this.get('relationship')
+        let verifyCredentials = this.get('verifyCredentials')
         let dialogs = await importDialogs()
-        dialogs.showAccountProfileOptionsDialog(account, relationship)
+        dialogs.showAccountProfileOptionsDialog(account, relationship, verifyCredentials)
       }
     },
     components: {
