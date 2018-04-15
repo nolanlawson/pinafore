@@ -28,14 +28,7 @@ module.exports = {
           }
         }
       },
-      isDev && {
-        test: /\.css$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' }
-        ]
-      },
-      !isDev && {
+      {
         test: /\.css$/,
         use: [
           { loader: 'style-loader' },
