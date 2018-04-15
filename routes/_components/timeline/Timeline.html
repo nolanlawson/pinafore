@@ -22,22 +22,17 @@
                  on:noNeedToScroll="onNoNeedToScroll()"
     />
   {{else}}
-    {{#await importPseudoVirtualList}}
-    {{then PseudoVirtualList}}
-      <!-- if this is a status thread, it's easier to just render the
-           whole thing rather than use a virtual list -->
-      <:Component {PseudoVirtualList}
-                 component="{{VirtualListComponent}}"
-                 realm="{{$currentInstance + '/' + timeline}}"
-                 containerQuery=".container"
-                 :makeProps
-                 items="{{$timelineItemIds}}"
-                 scrollToItem="{{scrollToItem}}"
-                 on:initialized="initialize()"
-      />
-    {{catch error}}
-      <div>Component failed to load. Try refreshing! {{error}}</div>
-    {{/await}}
+    <!-- if this is a status thread, it's easier to just render the
+         whole thing rather than use a virtual list -->
+    <PseudoVirtualList
+               component="{{VirtualListComponent}}"
+               realm="{{$currentInstance + '/' + timeline}}"
+               containerQuery=".container"
+               :makeProps
+               items="{{$timelineItemIds}}"
+               scrollToItem="{{scrollToItem}}"
+               on:initialized="initialize()"
+    />
   {{/if}}
 </div>
 <script>
@@ -48,6 +43,7 @@
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
   import VirtualList from '../virtualList/VirtualList.html'
+  import PseudoVirtualList from '../pseudoVirtualList/PseudoVirtualList.html'
   import { timelines } from '../../_static/timelines'
   import { database } from '../../_database/database'
   import {
@@ -60,7 +56,6 @@
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
-  import { importPseudoVirtualList } from '../../_utils/asyncModules'
   import isEqual from 'lodash-es/isEqual'
   import { doubleRAF } from '../../_utils/doubleRAF'
 
@@ -83,9 +78,6 @@
       scrollTop: 0
     }),
     computed: {
-      importPseudoVirtualList: (virtual) => {
-        return !virtual && importPseudoVirtualList()
-      },
       VirtualListComponent: (timelineType) => {
         return timelineType === 'notifications' ? NotificationVirtualListItem : StatusVirtualListItem
       },
@@ -146,7 +138,8 @@
     },
     store: () => store,
     components: {
-      VirtualList
+      VirtualList,
+      PseudoVirtualList
     },
     events: {
       focusWithCapture,
