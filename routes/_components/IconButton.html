@@ -1,5 +1,6 @@
 {{#if delegateKey}}
   <button type="button"
+          title="{{label}}"
           aria-label="{{label}}"
           aria-pressed="{{pressable ? !!pressed : ''}}"
           class="{{computedClass}}"
@@ -12,6 +13,7 @@
   </button>
 {{else}}
   <button type="button"
+          title="{{label}}"
           aria-label="{{label}}"
           aria-pressed="{{pressable ? !!pressed : ''}}"
           class="{{computedClass}}"

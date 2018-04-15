@@ -15,6 +15,7 @@ import { doDeleteStatus } from '../../../_actions/delete'
 import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
+import { setAccountBlocked } from '../../../_actions/block'
 
 export default {
   oncreate,
@@ -26,6 +27,7 @@ export default {
     following: (relationship) => relationship && relationship.following,
     followRequested: (relationship) => relationship && relationship.requested,
     accountId: (account) => account && account.id,
+    blocking: (relationship) => relationship.blocking,
     followLabel: (following, followRequested, account) => {
       if (typeof following === 'undefined' || !account) {
         return ''
@@ -34,19 +36,28 @@ export default {
         ? `Unfollow @${account.acct}`
         : `Follow @${account.acct}`
     },
-    items: (followLabel, following, followRequested, accountId, verifyCredentialsId) => (
+    blockLabel: (blocking, account) => {
+      return blocking ? `Unblock @${account.acct}` : `Block @${account.acct}`
+    },
+    items: (blockLabel, blocking, followLabel, following, followRequested, accountId, verifyCredentialsId) => (
       [
-        accountId !== verifyCredentialsId &&
-        {
-          key: 'follow',
-          label: followLabel,
-          icon: following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
-        },
         accountId === verifyCredentialsId &&
         {
           key: 'delete',
           label: 'Delete',
           icon: '#fa-trash'
+        },
+        accountId !== verifyCredentialsId && !blocking &&
+        {
+          key: 'follow',
+          label: followLabel,
+          icon: following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
+        },
+        accountId !== verifyCredentialsId &&
+        {
+          key: 'block',
+          label: blockLabel,
+          icon: blocking ? '#fa-unlock' : '#fa-ban'
         }
       ].filter(Boolean)
     )
@@ -59,17 +70,32 @@ export default {
   methods: {
     show,
     close,
-    async onClick(item) {
-      if (item.key === 'follow') {
-        let accountId = this.get('accountId')
-        let following = this.get('following')
-        await setAccountFollowed(accountId, !following, true)
-        this.close()
-      } else if (item.key === 'delete') {
-        let statusId = this.get('statusId')
-        await doDeleteStatus(statusId)
-        this.close()
+    onClick(item) {
+      switch (item.key) {
+        case 'delete':
+          return this.onDeleteClicked()
+        case 'follow':
+          return this.onFollowClicked()
+        case 'block':
+          return this.onBlockClicked()
       }
+    },
+    async onDeleteClicked() {
+      let statusId = this.get('statusId')
+      this.close()
+      await doDeleteStatus(statusId)
+    },
+    async onFollowClicked() {
+      let accountId = this.get('accountId')
+      let following = this.get('following')
+      this.close()
+      await setAccountFollowed(accountId, !following, true)
+    },
+    async onBlockClicked() {
+      let accountId = this.get('accountId')
+      let blocking = this.get('blocking')
+      this.close()
+      await setAccountBlocked(accountId, !blocking, true)
     }
   }
 }

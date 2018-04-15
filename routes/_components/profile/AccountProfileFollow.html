@@ -24,6 +24,7 @@
   import { FOLLOW_BUTTON_ANIMATION } from '../../_static/animations'
   import { store } from '../../_store/store'
   import { setAccountFollowed } from '../../_actions/follow'
+  import { setAccountBlocked } from '../../_actions/block'
 
   export default {
     methods: {
@@ -34,12 +35,18 @@
         let accountId = this.get('accountId')
         let following = this.get('following')
         let followRequested = this.get('followRequested')
+        let blocking = this.get('blocking')
         this.set({animateFollowButton: true}) // TODO: this should be an event, not toggling a boolean
-        let newFollowingValue = !(following || followRequested)
-        if (!account.locked) { // be optimistic, show the user that it succeeded
-          this.set({overrideFollowing: newFollowingValue})
+        if (blocking) { // unblock
+          await setAccountBlocked(accountId, false)
+        } else { // follow/unfollow
+          let newFollowingValue = !(following || followRequested)
+          if (!account.locked) { // be optimistic, show the user that it succeeded
+            this.set({overrideFollowing: newFollowingValue})
+          }
+          await setAccountFollowed(accountId, newFollowingValue)
         }
-        await setAccountFollowed(accountId, newFollowingValue)
+
         this.set({animateFollowButton: false}) // let animation play next time
       }
     },
@@ -55,11 +62,14 @@
         }
         return relationship && relationship.following
       },
+      blocking: (relationship) => relationship.blocking,
       followRequested: (relationship, account) => {
         return relationship && relationship.requested && account && account.locked
       },
-      followLabel: (following, followRequested) => {
-        if (following) {
+      followLabel: (blocking, following, followRequested) => {
+        if (blocking) {
+          return 'Unblock'
+        } else if (following) {
           return 'Unfollow'
         } else if (followRequested) {
           return 'Unfollow (follow requested)'
@@ -67,8 +77,10 @@
           return 'Follow'
         }
       },
-      followIcon: (following, followRequested) => {
-        if (following) {
+      followIcon: (blocking, following, followRequested) => {
+        if (blocking) {
+          return '#fa-unlock'
+        } else if (following) {
           return '#fa-user-times'
         } else if (followRequested) {
           return '#fa-hourglass'
