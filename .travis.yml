@@ -69,7 +69,7 @@ matrix:
     # disable firefox until it's passing
     # - env: BROWSER=firefox:headless COMMAND=test-browser
   allow_failures:
-    - env: BROWSER=firefox:headless COMMAND=test-browser
+    - env: COMMAND=deploy-dev-travis
 branches:
   only:
   - master
