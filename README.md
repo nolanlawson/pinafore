@@ -49,6 +49,19 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 - Admin/moderation panel
 - Works offline in read-write mode (would require sophisticated sync logic)
 
-## Building and contributing
+## Building
 
-See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md).
+To build Pinafore for production:
+
+    npm install
+    npm run build
+    PORT=4002 npm start
+
+Now Pinafore is running at `localhost:4002`.
+
+Pinafore requires [Node.js](https://nodejs.org/en/) v8+.
+
+## Developing and testing
+
+See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md) for 
+how to run Pinafore in dev mode and run tests.

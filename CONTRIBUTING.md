@@ -13,16 +13,6 @@ to start nurturing a community because of
 
 So I may not be very responsive to PRs or issues. Thanks for understanding.
 
-## Building
-
-To build Pinafore for production:
-
-    npm install
-    npm run build
-    PORT=4002 npm start
-
-Now Pinafore is running at `localhost:4002`.
-
 ## Development
 
 To run a dev server with hot reloading:
