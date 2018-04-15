@@ -2,7 +2,7 @@ import AccountProfileOptionsDialog from '../components/AccountProfileOptionsDial
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export function showAccountProfileOptionsDialog (account, relationship) {
+export function showAccountProfileOptionsDialog (account, relationship, verifyCredentials) {
   let dialog = new AccountProfileOptionsDialog({
     target: createDialogElement(),
     data: {
@@ -10,7 +10,8 @@ export function showAccountProfileOptionsDialog (account, relationship) {
       label: 'Profile options dialog',
       title: '',
       account: account,
-      relationship: relationship
+      relationship: relationship,
+      verifyCredentials: verifyCredentials
     }
   })
   dialog.show()

@@ -16,6 +16,7 @@ import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
+import { setAccountMuted } from '../../../_actions/mute'
 
 export default {
   oncreate,
@@ -23,44 +24,62 @@ export default {
     relationship: ($currentAccountRelationship) => $currentAccountRelationship,
     account: ($currentAccountProfile) => $currentAccountProfile,
     verifyCredentials: ($currentVerifyCredentials) => $currentVerifyCredentials,
+    // begin account data copypasta
     verifyCredentialsId: (verifyCredentials) => verifyCredentials.id,
     following: (relationship) => relationship && relationship.following,
     followRequested: (relationship) => relationship && relationship.requested,
     accountId: (account) => account && account.id,
+    acct: (account) => account.acct,
+    muting: (relationship) => relationship.muting,
     blocking: (relationship) => relationship.blocking,
-    followLabel: (following, followRequested, account) => {
+    followLabel: (following, followRequested, account, acct) => {
       if (typeof following === 'undefined' || !account) {
         return ''
       }
       return (following || followRequested)
-        ? `Unfollow @${account.acct}`
-        : `Follow @${account.acct}`
+        ? `Unfollow @${acct}`
+        : `Follow @${acct}`
     },
-    blockLabel: (blocking, account) => {
-      return blocking ? `Unblock @${account.acct}` : `Block @${account.acct}`
+    followIcon: (following, followRequested) => {
+      return following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
     },
-    items: (blockLabel, blocking, followLabel, following, followRequested, accountId, verifyCredentialsId) => (
-      [
-        accountId === verifyCredentialsId &&
-        {
+    blockLabel: (blocking, acct) => {
+      return blocking ? `Unblock @${acct}` : `Block @${acct}`
+    },
+    blockIcon: (blocking) => blocking ? '#fa-unlock' : '#fa-ban',
+    muteLabel: (muting, acct) => {
+      return muting ? `Unmute @${acct}` : `Mute @${acct}`
+    },
+    muteIcon: (muting) => muting ? '#fa-volume-up' : '#fa-volume-off',
+    // end account data copypasta
+    items: (blockLabel, blocking, blockIcon, muteLabel, muteIcon,
+            followLabel, followIcon, following, followRequested,
+            accountId, verifyCredentialsId) => {
+      let isUser = accountId === verifyCredentialsId
+      return [
+        isUser && {
           key: 'delete',
           label: 'Delete',
           icon: '#fa-trash'
         },
-        accountId !== verifyCredentialsId && !blocking &&
-        {
+        !isUser && !blocking && {
           key: 'follow',
           label: followLabel,
-          icon: following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
+          icon: followIcon
         },
-        accountId !== verifyCredentialsId &&
-        {
+        !isUser && {
           key: 'block',
           label: blockLabel,
-          icon: blocking ? '#fa-unlock' : '#fa-ban'
+          icon: blockIcon
+        },
+        !isUser && !blocking && {
+          key: 'mute',
+          label: muteLabel,
+          icon: muteIcon
         }
+
       ].filter(Boolean)
-    )
+    }
   },
   components: {
     ModalDialog,
@@ -78,6 +97,8 @@ export default {
           return this.onFollowClicked()
         case 'block':
           return this.onBlockClicked()
+        case 'mute':
+          return this.onMuteClicked()
       }
     },
     async onDeleteClicked() {
@@ -96,6 +117,12 @@ export default {
       let blocking = this.get('blocking')
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
+    },
+    async onMuteClicked() {
+      let accountId = this.get('accountId')
+      let muting = this.get('muting')
+      this.close()
+      await setAccountMuted(accountId, !muting, true)
     }
   }
 }

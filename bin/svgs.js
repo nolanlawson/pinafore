@@ -24,7 +24,6 @@ module.exports = [
   {id: 'fa-paperclip', src: 'node_modules/font-awesome-svg-png/white/svg/paperclip.svg', title: 'Paperclip'},
   {id: 'fa-thumb-tack', src: 'node_modules/font-awesome-svg-png/white/svg/thumb-tack.svg', title: 'Thumbtack'},
   {id: 'fa-bars', src: 'node_modules/font-awesome-svg-png/white/svg/bars.svg', title: 'List'},
-  {id: 'fa-volume-off', src: 'node_modules/font-awesome-svg-png/white/svg/volume-off.svg', title: 'Volume off'},
   {id: 'fa-ban', src: 'node_modules/font-awesome-svg-png/white/svg/ban.svg', title: 'Ban'},
   {id: 'fa-camera', src: 'node_modules/font-awesome-svg-png/white/svg/camera.svg', title: 'Add media'},
   {id: 'fa-smile', src: 'node_modules/font-awesome-svg-png/white/svg/smile-o.svg', title: 'Custom emoji'},
@@ -33,5 +32,7 @@ module.exports = [
   {id: 'fa-trash', src: 'node_modules/font-awesome-svg-png/white/svg/trash-o.svg', title: 'Delete'},
   {id: 'fa-hourglass', src: 'node_modules/font-awesome-svg-png/white/svg/hourglass.svg', title: 'Follow requested'},
   {id: 'fa-pencil', src: 'node_modules/font-awesome-svg-png/white/svg/pencil.svg', title: 'Compose'},
-  {id: 'fa-times', src: 'node_modules/font-awesome-svg-png/white/svg/times.svg', title: 'Close'}
+  {id: 'fa-times', src: 'node_modules/font-awesome-svg-png/white/svg/times.svg', title: 'Close'},
+  {id: 'fa-volume-off', src: 'node_modules/font-awesome-svg-png/white/svg/volume-off.svg', title: 'Mute'},
+  {id: 'fa-volume-up', src: 'node_modules/font-awesome-svg-png/white/svg/volume-up.svg', title: 'Unmute'}
 ]

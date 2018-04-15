@@ -31,6 +31,8 @@ test('Can block and unblock an account from a status', async t => {
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowedBy.innerText).contains('')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+    .click(accountProfileFollowButton)
+    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
 })
 
 test('Can block and unblock an account from the account profile page', async t => {
@@ -39,8 +41,9 @@ test('Can block and unblock an account from the account profile page', async t =
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileMoreOptionsButton)
     .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @baz')
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Block @baz')
-    .click(getNthDialogOptionsOption(2))
+    .expect(getNthDialogOptionsOption(2).innerText).contains('Follow @baz')
+    .expect(getNthDialogOptionsOption(3).innerText).contains('Block @baz')
+    .click(getNthDialogOptionsOption(3))
     .expect(accountProfileFollowedBy.innerText).match(/blocked/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unblock')
     .click(accountProfileFollowButton)
