@@ -1,6 +1,7 @@
 <a rel="nofollow noopener"
    target="_blank"
    href="{{href}}"
+   aria-label="{{ariaLabel || ''}}"
    class="{{className || ''}} {{showIcon ? 'external-link-with-icon' : ''}} {{normalIconColor ? 'normal-icon-color' : ''}}">
   <slot></slot>{{#if showIcon}}
     <svg class="external-link-svg">

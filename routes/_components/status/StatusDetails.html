@@ -1,5 +1,9 @@
 <div class="status-details">
-  <ExternalLink class="status-absolute-date" href="{{originalStatus.url}}" showIcon="true">
+  <ExternalLink class="status-absolute-date"
+                href="{{originalStatus.url}}"
+                showIcon="true"
+                ariaLabel="{{formattedDate}} (opens in new window)"
+  >
     <time datetime={{createdAtDate}} title="{{formattedDate}}">{{formattedDate}}</time>
   </ExternalLink>
   <a class="status-favs-reblogs"
