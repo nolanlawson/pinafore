@@ -62,7 +62,7 @@
         }
         return relationship && relationship.following
       },
-      blocking: (relationship) => relationship.blocking,
+      blocking: (relationship) => relationship && relationship.blocking,
       followRequested: (relationship, account) => {
         return relationship && relationship.requested && account && account.locked
       },
