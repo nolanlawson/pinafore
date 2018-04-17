@@ -1,11 +1,16 @@
 import { store } from '../_store/store'
-import { database } from '../_database/database'
 import { getTimeline } from '../_api/timelines'
 import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
 import { mergeArrays } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'
 import isEqual from 'lodash-es/isEqual'
+import {
+  insertTimelineItems as insertTimelineItemsInDatabase
+} from '../_database/timelines/insertion'
+import {
+  getTimeline as getTimelineFromDatabase
+} from '../_database/timelines/pagination'
 
 const FETCH_LIMIT = 20
 
@@ -14,16 +19,16 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
   let items
   let stale = false
   if (!online) {
-    items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+    items = await getTimelineFromDatabase(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
     stale = true
   } else {
     try {
       items = await getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, FETCH_LIMIT)
-      /* no await */ database.insertTimelineItems(instanceName, timelineName, items)
+      /* no await */ insertTimelineItemsInDatabase(instanceName, timelineName, items)
     } catch (e) {
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')
-      items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+      items = await getTimelineFromDatabase(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
       stale = true
     }
   }

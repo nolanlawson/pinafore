@@ -1,7 +1,12 @@
 import { store } from '../_store/store'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
-import { getPinnedStatuses } from '../_api/pinnedStatuses'
-import { database } from '../_database/database'
+import {
+  getPinnedStatuses as getPinnedStatusesFromDatabase,
+  insertPinnedStatuses as insertPinnedStatusesInDatabase
+} from '../_database/timelines/pinnedStatuses'
+import {
+  getPinnedStatuses
+} from '../_api/pinnedStatuses'
 
 export async function updatePinnedStatusesForAccount (accountId) {
   let instanceName = store.get('currentInstance')
@@ -9,8 +14,8 @@ export async function updatePinnedStatusesForAccount (accountId) {
 
   await cacheFirstUpdateAfter(
     () => getPinnedStatuses(instanceName, accessToken, accountId),
-    () => database.getPinnedStatuses(instanceName, accountId),
-    statuses => database.insertPinnedStatuses(instanceName, accountId, statuses),
+    () => getPinnedStatusesFromDatabase(instanceName, accountId),
+    statuses => insertPinnedStatusesInDatabase(instanceName, accountId, statuses),
     statuses => {
       let $pinnedStatuses = store.get('pinnedStatuses')
       $pinnedStatuses[instanceName] = $pinnedStatuses[instanceName] || {}

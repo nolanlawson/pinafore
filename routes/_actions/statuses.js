@@ -1,7 +1,13 @@
-import { database } from '../_database/database'
+import {
+  getNotificationIdsForStatuses as getNotificationIdsForStatusesFromDatabase,
+  getReblogsForStatus as getReblogsForStatusFromDatabase
+} from '../_database/timelines/lookup'
+import {
+  getStatus as getStatusFromDatabase
+} from '../_database/timelines/getStatusOrNotification'
 
 export async function getIdThatThisStatusReblogged (instanceName, statusId) {
-  let status = await database.getStatus(instanceName, statusId)
+  let status = await getStatusFromDatabase(instanceName, statusId)
   return status.reblog && status.reblog.id
 }
 
@@ -13,9 +19,9 @@ export async function getIdsThatTheseStatusesReblogged (instanceName, statusIds)
 }
 
 export async function getIdsThatRebloggedThisStatus (instanceName, statusId) {
-  return database.getReblogsForStatus(instanceName, statusId)
+  return getReblogsForStatusFromDatabase(instanceName, statusId)
 }
 
 export async function getNotificationIdsForStatuses (instanceName, statusIds) {
-  return database.getNotificationIdsForStatuses(instanceName, statusIds)
+  return getNotificationIdsForStatusesFromDatabase(instanceName, statusIds)
 }

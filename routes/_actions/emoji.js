@@ -1,5 +1,8 @@
 import { cacheFirstUpdateAfter } from '../_utils/sync'
-import { database } from '../_database/database'
+import {
+  getCustomEmoji as getCustomEmojiFromDatabase,
+  setCustomEmoji as setCustomEmojiInDatabase
+} from '../_database/meta'
 import { getCustomEmoji } from '../_api/emoji'
 import { store } from '../_store/store'
 import { substring } from 'stringz'
@@ -7,8 +10,8 @@ import { substring } from 'stringz'
 export async function updateCustomEmojiForInstance (instanceName) {
   await cacheFirstUpdateAfter(
     () => getCustomEmoji(instanceName),
-    () => database.getCustomEmoji(instanceName),
-    emoji => database.setCustomEmoji(instanceName, emoji),
+    () => getCustomEmojiFromDatabase(instanceName),
+    emoji => setCustomEmojiInDatabase(instanceName, emoji),
     emoji => {
       let customEmoji = store.get('customEmoji')
       customEmoji[instanceName] = emoji
