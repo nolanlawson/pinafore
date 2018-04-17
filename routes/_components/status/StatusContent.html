@@ -77,10 +77,10 @@
           shown && 'shown'
         )
       },
-      massagedContent: (originalStatus, $autoplayGifs) => {
-        let content = originalStatus.content
-
-        content = emojifyText(content, originalStatus.emojis, $autoplayGifs)
+      content: (originalStatus) => originalStatus.content,
+      emojis: (originalStatus) => originalStatus.emojis,
+      massagedContent: (content, emojis, $autoplayGifs) => {
+        content = emojifyText(content, emojis, $autoplayGifs)
 
         // GNU Social and Pleroma don't add <p> tags
         if (!content.startsWith('<p>')) {
