@@ -2,13 +2,13 @@ import { store } from '../_store/store'
 import { toast } from '../_utils/toast'
 import { postStatus as postStatusToServer } from '../_api/statuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
-import { database } from '../_database/database'
+import { getStatus as getStatusFromDatabase } from '../_database/timelines/getStatusOrNotification'
 import { emit } from '../_utils/eventBus'
 import { putMediaDescription } from '../_api/media'
 
 export async function insertHandleForReply (statusId) {
   let instanceName = store.get('currentInstance')
-  let status = await database.getStatus(instanceName, statusId)
+  let status = await getStatusFromDatabase(instanceName, statusId)
   let verifyCredentials = store.get('currentVerifyCredentials')
   let originalStatus = status.reblog || status
   let accounts = [originalStatus.account].concat(originalStatus.mentions || [])

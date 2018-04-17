@@ -1,5 +1,4 @@
 import throttle from 'lodash-es/throttle'
-import { database } from '../_database/database'
 import { mark, stop } from '../_utils/marks'
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
@@ -7,6 +6,9 @@ import uniqBy from 'lodash-es/uniqBy'
 import uniq from 'lodash-es/uniq'
 import isEqual from 'lodash-es/isEqual'
 import { isMobile } from '../_utils/isMobile'
+import {
+  insertTimelineItems as insertTimelineItemsInDatabase
+} from '../_database/timelines/insertion'
 
 const STREAMING_THROTTLE_DELAY = 3000
 
@@ -28,7 +30,7 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
     return
   }
 
-  await database.insertTimelineItems(instanceName, timelineName, updates)
+  await insertTimelineItemsInDatabase(instanceName, timelineName, updates)
 
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
   let newItemIdsToAdd = uniq([].concat(itemIdsToAdd).concat(updates.map(_ => _.id)))

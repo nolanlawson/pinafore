@@ -2,10 +2,10 @@ import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } fro
 import { getInstanceInfo } from '../_api/instance'
 import { goto } from 'sapper/runtime.js'
 import { switchToTheme } from '../_utils/themeEngine'
-import { database } from '../_database/database'
 import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
 import { updateCustomEmojiForInstance } from './emoji'
+import { setInstanceInfo as setInstanceInfoInDatabase } from '../_database/meta'
 
 const REDIRECT_URI = (typeof location !== 'undefined'
   ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -20,7 +20,7 @@ async function redirectToOauth () {
   }
   let registrationPromise = registerApplication(instanceName, REDIRECT_URI)
   let instanceInfo = await getInstanceInfo(instanceName)
-  await database.setInstanceInfo(instanceName, instanceInfo) // cache for later
+  await setInstanceInfoInDatabase(instanceName, instanceInfo) // cache for later
   let instanceData = await registrationPromise
   store.set({
     currentRegisteredInstanceName: instanceName,

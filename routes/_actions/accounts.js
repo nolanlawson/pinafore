@@ -1,11 +1,16 @@
 import { getAccount, getRelationship } from '../_api/user'
-import { database } from '../_database/database'
+import {
+  getAccount as getAccountFromDatabase,
+  setAccount as setAccountInDatabase,
+  getRelationship as getRelationshipFromDatabase,
+  setRelationship as setRelationshipInDatabase
+} from '../_database/accountsAndRelationships'
 import { store } from '../_store/store'
 
 async function updateAccount (accountId, instanceName, accessToken) {
-  let localPromise = database.getAccount(instanceName, accountId)
+  let localPromise = getAccountFromDatabase(instanceName, accountId)
   let remotePromise = getAccount(instanceName, accessToken, accountId).then(account => {
-    database.setAccount(instanceName, account)
+    /* no await */ setAccountInDatabase(instanceName, account)
     return account
   })
 
@@ -22,9 +27,9 @@ async function updateAccount (accountId, instanceName, accessToken) {
 }
 
 async function updateRelationship (accountId, instanceName, accessToken) {
-  let localPromise = database.getRelationship(instanceName, accountId)
+  let localPromise = getRelationshipFromDatabase(instanceName, accountId)
   let remotePromise = getRelationship(instanceName, accessToken, accountId).then(relationship => {
-    database.setRelationship(instanceName, relationship)
+    /* no await */ setRelationshipInDatabase(instanceName, relationship)
     return relationship
   })
   try {

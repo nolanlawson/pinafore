@@ -1,8 +1,10 @@
 import { store } from '../_store/store'
 import { followAccount, unfollowAccount } from '../_api/follow'
-import { database } from '../_database/database'
 import { toast } from '../_utils/toast'
 import { updateProfileAndRelationship } from './accounts'
+import {
+  getRelationship as getRelationshipFromDatabase
+} from '../_database/accountsAndRelationships'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   let instanceName = store.get('currentInstance')
@@ -15,7 +17,7 @@ export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
       account = await unfollowAccount(instanceName, accessToken, accountId)
     }
     await updateProfileAndRelationship(accountId)
-    let relationship = await database.getRelationship(instanceName, accountId)
+    let relationship = await getRelationshipFromDatabase(instanceName, accountId)
     if (toastOnSuccess) {
       if (follow) {
         if (account.locked && relationship.requested) {

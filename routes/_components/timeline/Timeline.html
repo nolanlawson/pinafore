@@ -45,7 +45,10 @@
   import VirtualList from '../virtualList/VirtualList.html'
   import PseudoVirtualList from '../pseudoVirtualList/PseudoVirtualList.html'
   import { timelines } from '../../_static/timelines'
-  import { database } from '../../_database/database'
+  import {
+    getStatus as getStatusFromDatabase,
+    getNotification as getNotificationFromDatabase
+  } from '../../_database/timelines/getStatusOrNotification'
   import {
     fetchTimelineItemsOnScrollToBottom,
     setupTimeline,
@@ -87,9 +90,9 @@
           timelineValue
         }
         if (timelineType === 'notifications') {
-          res.notification = await database.getNotification($currentInstance, itemId)
+          res.notification = await getNotificationFromDatabase($currentInstance, itemId)
         } else {
-          res.status = await database.getStatus($currentInstance, itemId)
+          res.status = await getStatusFromDatabase($currentInstance, itemId)
         }
         return res
       },

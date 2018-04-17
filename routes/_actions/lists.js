@@ -1,7 +1,10 @@
 import { store } from '../_store/store'
-import { database } from '../_database/database'
 import { getLists } from '../_api/lists'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
+import {
+  getLists as getListsFromDatabase,
+  setLists as setListsInDatabase
+} from '../_database/meta'
 
 export async function updateLists () {
   let instanceName = store.get('currentInstance')
@@ -9,8 +12,8 @@ export async function updateLists () {
 
   await cacheFirstUpdateAfter(
     () => getLists(instanceName, accessToken),
-    () => database.getLists(instanceName),
-    lists => database.setLists(instanceName, lists),
+    () => getListsFromDatabase(instanceName),
+    lists => setListsInDatabase(instanceName, lists),
     lists => {
       let instanceLists = store.get('instanceLists')
       instanceLists[instanceName] = lists

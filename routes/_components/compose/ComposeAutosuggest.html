@@ -39,12 +39,14 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { database } from '../../_database/database'
   import { insertUsername } from '../../_actions/compose'
   import { insertEmojiAtPosition } from '../../_actions/emoji'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { once } from '../../_utils/once'
   import ComposeAutosuggestionList from './ComposeAutosuggestionList.html'
+  import {
+    searchAccountsByUsername as searchAccountsByUsernameInDatabase
+  } from '../../_database/accountsAndRelationships'
 
   const SEARCH_RESULTS_LIMIT = 4
   const DATABASE_SEARCH_RESULTS_LIMIT = 30
@@ -116,7 +118,7 @@
       async searchAccounts(searchText) {
         searchText = searchText.substring(1)
         let currentInstance = this.store.get('currentInstance')
-        let results = await database.searchAccountsByUsername(
+        let results = await searchAccountsByUsernameInDatabase(
           currentInstance, searchText, DATABASE_SEARCH_RESULTS_LIMIT)
         return results.slice(0, SEARCH_RESULTS_LIMIT)
       },
