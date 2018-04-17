@@ -66,7 +66,7 @@
     "pify": "^3.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
-    "sapper": "github:nolanlawson/sapper#for-pinafore-2",
+    "sapper": "github:nolanlawson/sapper#for-pinafore-3",
     "serve-static": "^1.13.1",
     "stringz": "^1.0.0",
     "style-loader": "^0.20.3",
