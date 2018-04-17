@@ -26,6 +26,19 @@ export const importPseudoVirtualList = () => import(
   /* webpackChunkName: 'PseudoVirtualList' */ '../_components/pseudoVirtualList/PseudoVirtualList.html'
   ).then(mod => mod.default)
 
+export const importVirtualList = () => import(
+  /* webpackChunkName: 'VirtualList' */ '../_components/virtualList/VirtualList.html'
+  ).then(mod => mod.default)
+
+export const importNotificationVirtualListItem = () => import(
+  /* webpackChunkName: 'NotificationVirtualListItem' */ '../_components/timeline/NotificationVirtualListItem.html'
+  ).then(mod => mod.default)
+
+export const importStatusVirtualListItem = () => import(
+  /* webpackChunkName: 'StatusVirtualListItem' */ '../_components/timeline/StatusVirtualListItem.html'
+  ).then(mod => mod.default)
+
+
 export const importDialogs = () => import(
   /* webpackChunkName: 'dialogs' */ '../_components/dialog/dialogs.js'
   )
