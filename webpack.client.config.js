@@ -3,6 +3,8 @@ const config = require('sapper/webpack/config.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const isDev = config.dev
 
@@ -28,11 +30,18 @@ module.exports = {
           }
         }
       },
-      {
+      isDev && {
         test: /\.css$/,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' }
+          'style-loader',
+          'css-loader'
+        ]
+      },
+      !isDev && {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
         ]
       }
     ].filter(Boolean)
@@ -41,19 +50,22 @@ module.exports = {
     setImmediate: false
   },
   optimization: {
-    minimizer: isDev ? [] : [new UglifyWebpackPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: true,
-      uglifyOptions: {
-        ecma: 6,
-        mangle: true,
-        compress: true,
-        output: {
-          comments: false
+    minimizer: isDev ? [] : [
+      new UglifyWebpackPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+        uglifyOptions: {
+          ecma: 6,
+          mangle: true,
+          compress: true,
+          output: {
+            comments: false
+          }
         }
-      }
-    })]
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
   },
   plugins: [
     new LodashModuleReplacementPlugin({
@@ -65,6 +77,10 @@ module.exports = {
       requestTimeout: 120000
     })
   ] : [
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[name].[id].[hash].css'
+    }),
     new webpack.DefinePlugin({
       'process.browser': true,
       'process.env.NODE_ENV': '"production"'
