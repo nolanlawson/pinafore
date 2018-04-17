@@ -1,6 +1,7 @@
 import {
   getNthStatus, scrollToStatus, closeDialogButton, modalDialogContents, getActiveElementClass, goBack, getUrl,
-  goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementInsideNthStatus
+  goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementInsideNthStatus, focus,
+  getNthStatusSelector
 } from '../utils'
 import { foobarRole } from '../roles'
 
@@ -10,6 +11,9 @@ fixture`010-focus.js`
 test('modal preserves focus', async t => {
   await t.useRole(foobarRole)
   await scrollToStatus(t, 9)
+  // explicitly hover-focus-click
+  await t.hover(getNthStatus(9).find('.play-video-button'))
+  await focus(`${getNthStatusSelector(9)} .play-video-button`)()
   await t.click(getNthStatus(9).find('.play-video-button'))
     .click(closeDialogButton)
     .expect(modalDialogContents.exists).notOk()
@@ -19,7 +23,10 @@ test('modal preserves focus', async t => {
 
 test('timeline preserves focus', async t => {
   await t.useRole(foobarRole)
-    .click(getNthStatus(0))
+  // explicitly hover-focus-click
+  await t.hover(getNthStatus(0))
+  await focus(getNthStatusSelector(0))()
+  await t.click(getNthStatus(0))
     .expect(getUrl()).contains('/statuses/')
 
   await goBack()

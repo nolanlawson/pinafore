@@ -99,6 +99,14 @@ export const uploadKittenImage = i => (exec(() => {
   }
 }))
 
+export const focus = (selector) => (exec(() => {
+  document.querySelector(selector).focus()
+}, {
+  dependencies: {
+    selector
+  }
+}))
+
 export function getNthMediaAltInput (n) {
   return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt input`)
 }
@@ -132,7 +140,11 @@ export function getNthDeleteMediaButton (n) {
 }
 
 export function getNthStatus (n) {
-  return $(`div[aria-hidden="false"] > article[aria-posinset="${n}"]`)
+  return $(getNthStatusSelector(n))
+}
+
+export function getNthStatusSelector (n) {
+  return `div[aria-hidden="false"] > article[aria-posinset="${n}"]`
 }
 
 export function getNthStatusAndImage (nStatus, nImage) {
