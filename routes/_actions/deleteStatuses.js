@@ -1,7 +1,6 @@
 import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './statuses'
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import forEach from 'lodash-es/forEach'
 import isEqual from 'lodash-es/isEqual'
 import {
   deleteStatusesAndNotifications as deleteStatusesAndNotificationsFromDatabase
@@ -12,7 +11,8 @@ function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
 
   keys.forEach(key => {
     let timelineData = store.getAllTimelineData(instanceName, key)
-    forEach(timelineData, (ids, timelineName) => {
+    Object.keys(timelineData).forEach(timelineName => {
+      let ids = timelineData[timelineName]
       if (!timelineFilter(timelineName)) {
         return
       }

@@ -69,7 +69,6 @@ module.exports = {
   },
   plugins: [
     new LodashModuleReplacementPlugin({
-      collections: true,
       caching: true
     })
   ].concat(isDev ? [
