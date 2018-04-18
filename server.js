@@ -20,6 +20,10 @@ global.fetch = (url, opts) => {
 
 const debugPaths = ['/report.html', '/stats.json']
 
+const debugOnly = (fn) => (req, res, next) => (
+  !~debugPaths.indexOf(req.path) ? next() : fn(req, res, next)
+)
+
 const nonDebugOnly = (fn) => (req, res, next) => (
   ~debugPaths.indexOf(req.path) ? next() : fn(req, res, next)
 )
@@ -27,6 +31,7 @@ const nonDebugOnly = (fn) => (req, res, next) => (
 app.use(compression({ threshold: 0 }))
 
 // report.html needs to have CSP disable because it has inline scripts
+app.use(debugOnly(helmet()))
 app.use(nonDebugOnly(helmet({
   contentSecurityPolicy: {
     directives: {
