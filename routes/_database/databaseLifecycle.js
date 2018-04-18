@@ -14,8 +14,6 @@ import {
   USERNAME_LOWERCASE
 } from './constants'
 
-import forEach from 'lodash-es/forEach'
-
 const openReqs = {}
 const databaseCache = {}
 
@@ -47,8 +45,8 @@ export function getDatabase (instanceName) {
           ? db.createObjectStore(name, init)
           : db.createObjectStore(name)
         if (indexes) {
-          forEach(indexes, (indexValue, indexKey) => {
-            store.createIndex(indexKey, indexValue)
+          Object.keys(indexes).forEach(indexKey => {
+            store.createIndex(indexKey, indexes[indexKey])
           })
         }
       }
