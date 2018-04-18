@@ -111,7 +111,7 @@
   import StatusComposeBox from './StatusComposeBox.html'
   import { store } from '../../_store/store'
   import { goto } from 'sapper/runtime.js'
-  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
   import { checkDomAncestors } from '../../_utils/checkDomAncestors'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
@@ -126,7 +126,7 @@
       let delegateKey = this.get('delegateKey')
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
-        registerClickDelegate(delegateKey, (e) => this.onClickOrKeydown(e))
+        registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
       }
       if (!this.get('showContent')) {
         scheduleIdleTask(() => {
@@ -134,12 +134,6 @@
           // it's fast when they click the "show more" button
           this.set({contentPreloaded: true})
         })
-      }
-    },
-    ondestroy() {
-      let delegateKey = this.get('delegateKey')
-      if (!this.get('isStatusInOwnThread')) {
-        unregisterClickDelegate(delegateKey)
       }
     },
     components: {

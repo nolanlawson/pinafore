@@ -46,17 +46,14 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate } from '../../_utils/delegate'
   import { mark, stop } from '../../_utils/marks'
   import { emojifyText } from '../../_utils/emojifyText'
   import escapeHtml from 'escape-html'
 
   export default {
     oncreate() {
-      registerClickDelegate(this.get('delegateKey'), () => this.onClickSpoilerButton())
-    },
-    ondestroy() {
-      unregisterClickDelegate(this.get('delegateKey'))
+      registerClickDelegate(this, this.get('delegateKey'), () => this.onClickSpoilerButton())
     },
     store: () => store,
     computed: {

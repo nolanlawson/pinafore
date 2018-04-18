@@ -44,7 +44,7 @@
 <script>
   import IconButton from '../IconButton.html'
   import { store } from '../../_store/store'
-  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { registerClickDelegates } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
   import { setReblogged } from '../../_actions/reblog'
   import { importDialogs } from '../../_utils/asyncModules'
@@ -54,17 +54,13 @@
 
   export default {
     oncreate() {
-      registerClickDelegate(this.get('favoriteKey'), (e) => this.onFavoriteClick(e))
-      registerClickDelegate(this.get('reblogKey'), (e) => this.onReblogClick(e))
-      registerClickDelegate(this.get('replyKey'), (e) => this.onReplyClick(e))
-      registerClickDelegate(this.get('optionsKey'), (e) => this.onOptionsClick(e))
+      registerClickDelegates(this, {
+        [this.get('favoriteKey')]: (e) => this.onFavoriteClick(e),
+        [this.get('reblogKey')]: (e) => this.onReblogClick(e),
+        [this.get('replyKey')]: (e) => this.onReplyClick(e),
+        [this.get('optionsKey')]: (e) => this.onOptionsClick(e)
+      })
       on('postedStatus', this, this.onPostedStatus)
-    },
-    ondestroy() {
-      unregisterClickDelegate(this.get('favoriteKey'))
-      unregisterClickDelegate(this.get('reblogKey'))
-      unregisterClickDelegate(this.get('replyKey'))
-      unregisterClickDelegate(this.get('optionsKey'))
     },
     components: {
       IconButton
