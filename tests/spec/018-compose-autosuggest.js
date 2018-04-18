@@ -44,3 +44,39 @@ test('autosuggests custom emoji', async t => {
     .pressKey('tab')
     .expect(composeInput.value).eql(':blobnom: and :blobpeek: and also :blobpats: ')
 })
+
+test('autosuggest custom emoji works with regular emoji - keyboard', async t => {
+  await t.useRole(foobarRole)
+    .hover(composeInput)
+    .typeText(composeInput, '\ud83c\udf4d :blobno')
+    .expect(getNthAutosuggestionResult(1).innerText).contains(':blobnom:')
+    .pressKey('enter')
+    .expect(composeInput.value).eql('\ud83c\udf4d :blobnom: ')
+})
+
+test('autosuggest custom emoji works with regular emoji - clicking', async t => {
+  await t.useRole(foobarRole)
+    .hover(composeInput)
+    .typeText(composeInput, '\ud83c\udf4d :blobno')
+    .expect(getNthAutosuggestionResult(1).innerText).contains(':blobnom:')
+    .click(getNthAutosuggestionResult(1))
+    .expect(composeInput.value).eql('\ud83c\udf4d :blobnom: ')
+})
+
+test('autosuggest handles works with regular emoji - keyboard', async t => {
+  await t.useRole(foobarRole)
+    .hover(composeInput)
+    .typeText(composeInput, '\ud83c\udf4d @quu')
+    .expect(getNthAutosuggestionResult(1).innerText).contains('@quux')
+    .pressKey('enter')
+    .expect(composeInput.value).eql('\ud83c\udf4d @quux ')
+})
+
+test('autosuggest handles works with regular emoji - clicking', async t => {
+  await t.useRole(foobarRole)
+    .hover(composeInput)
+    .typeText(composeInput, '\ud83c\udf4d @quu')
+    .expect(getNthAutosuggestionResult(1).innerText).contains('@quux')
+    .click(getNthAutosuggestionResult(1))
+    .expect(composeInput.value).eql('\ud83c\udf4d @quux ')
+})
