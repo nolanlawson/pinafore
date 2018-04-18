@@ -12,13 +12,27 @@ const { PORT = 4002 } = process.env
 // this allows us to do e.g. `fetch('/_api/blog')` on the server
 const fetch = require('node-fetch')
 global.fetch = (url, opts) => {
-  if (url[0] === '/') url = `http://localhost:${PORT}${url}`
+  if (url[0] === '/') {
+    url = `http://localhost:${PORT}${url}`
+  }
   return fetch(url, opts)
 }
 
+const debugPaths = ['/report.html', '/stats.json']
+
+const debugOnly = (fn) => (req, res, next) => (
+  !~debugPaths.indexOf(req.path) ? next() : fn(req, res, next)
+)
+
+const nonDebugOnly = (fn) => (req, res, next) => (
+  ~debugPaths.indexOf(req.path) ? next() : fn(req, res, next)
+)
+
 app.use(compression({ threshold: 0 }))
 
-app.use(helmet({
+// report.html needs to have CSP disable because it has inline scripts
+app.use(debugOnly(helmet()))
+app.use(nonDebugOnly(helmet({
   contentSecurityPolicy: {
     directives: {
       scriptSrc: [`'self'`, `'sha256-${headScriptChecksum}'`],
@@ -29,7 +43,7 @@ app.use(helmet({
       manifestSrc: [`'self'`]
     }
   }
-}))
+})))
 
 app.use(serveStatic('assets', {
   setHeaders: (res) => {
@@ -37,8 +51,9 @@ app.use(serveStatic('assets', {
   }
 }))
 
-app.use('/report.html', express.static('.sapper/client/report.html'))
-app.use('/stats.json', express.static('.sapper/client/stats.json'))
+debugPaths.forEach(debugPath => {
+  app.use(debugPath, express.static(`.sapper/client${debugPath}`))
+})
 
 app.use(sapper())
 
