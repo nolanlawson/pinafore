@@ -5,7 +5,6 @@ import {
 } from '../_database/meta'
 import { getCustomEmoji } from '../_api/emoji'
 import { store } from '../_store/store'
-import { substring } from 'stringz'
 
 export async function updateCustomEmojiForInstance (instanceName) {
   await cacheFirstUpdateAfter(
@@ -22,17 +21,17 @@ export async function updateCustomEmojiForInstance (instanceName) {
 
 export function insertEmoji (realm, emoji) {
   let idx = store.get('composeSelectionStart') || 0
-  let oldText = store.getComposeData(realm, 'text')
-  let pre = oldText ? substring(oldText, 0, idx) : ''
-  let post = oldText ? substring(oldText, idx) : ''
+  let oldText = store.getComposeData(realm, 'text') || ''
+  let pre = oldText.substring(0, idx)
+  let post = oldText.substring(idx)
   let newText = `${pre}:${emoji.shortcode}: ${post}`
   store.setComposeData(realm, {text: newText})
 }
 
 export function insertEmojiAtPosition (realm, emoji, startIndex, endIndex) {
-  let oldText = store.getComposeData(realm, 'text')
-  let pre = oldText ? substring(oldText, 0, startIndex) : ''
-  let post = oldText ? substring(oldText, endIndex) : ''
+  let oldText = store.getComposeData(realm, 'text') || ''
+  let pre = oldText.substring(0, startIndex)
+  let post = oldText.substring(endIndex)
   let newText = `${pre}:${emoji.shortcode}: ${post}`
   store.setComposeData(realm, {text: newText})
 }
