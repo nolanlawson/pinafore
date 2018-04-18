@@ -126,14 +126,11 @@
 <script>
   import MediaAttachments from './MediaAttachments.html'
   import { store } from '../../_store/store'
-  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate } from '../../_utils/delegate'
 
   export default {
     oncreate() {
-      registerClickDelegate(this.get('delegateKey'), () => this.onClickSensitiveMediaButton())
-    },
-    ondestroy() {
-      unregisterClickDelegate(this.get('delegateKey'))
+      registerClickDelegate(this, this.get('delegateKey'), () => this.onClickSensitiveMediaButton())
     },
     components: {
       MediaAttachments

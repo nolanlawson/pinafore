@@ -107,20 +107,17 @@
   import { store } from '../../_store/store'
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
-  import { registerClickDelegate, unregisterClickDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate } from '../../_utils/delegate'
 
   export default {
     oncreate() {
-      registerClickDelegate(this.get('delegateKey'), () => {
+      registerClickDelegate(this, this.get('delegateKey'), () => {
         if (this.get('media').type === 'video') {
           this.onClickPlayVideoButton()
         } else {
           this.onClickShowImageButton()
         }
       })
-    },
-    ondestroy() {
-      unregisterClickDelegate(this.get('delegateKey'))
     },
     computed: {
       // width/height to show inline

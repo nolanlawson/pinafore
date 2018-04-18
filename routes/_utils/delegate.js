@@ -29,12 +29,18 @@ function onEvent (e) {
   stop('delegate onEvent')
 }
 
-export function registerClickDelegate (key, callback) {
-  callbacks[key] = callback
+export function registerClickDelegates (component, delegates) {
+  Object.assign(callbacks, delegates)
+
+  component.on('destroy', () => {
+    Object.keys(delegates).forEach(key => {
+      delete callbacks[key]
+    })
+  })
 }
 
-export function unregisterClickDelegate (key) {
-  delete callbacks[key]
+export function registerClickDelegate (component, key, callback) {
+  registerClickDelegates(component, {[key]: callback})
 }
 
 if (process.browser) {
