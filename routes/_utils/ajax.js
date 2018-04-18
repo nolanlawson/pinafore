@@ -9,7 +9,7 @@ function fetchWithTimeout (url, options) {
 
 function makeOpts (method, headers) {
   return {
-    method: 'GET',
+    method,
     headers: Object.assign(headers || {}, {
       'Accept': 'application/json'
     })
