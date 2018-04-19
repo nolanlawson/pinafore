@@ -2,95 +2,95 @@
 
   $deemphasized-color: #666;
 
-  --button-primary-bg: lighten($main-theme-color, 7%);
-  --button-primary-text: $secondary-text-color;
-  --button-primary-border: darken($main-theme-color, 30%);
-  --button-primary-bg-active: lighten($main-theme-color, 1%);
-  --button-primary-bg-hover: lighten($main-theme-color, 9%);
+  --button-primary-bg: #{lighten($main-theme-color, 7%)};
+  --button-primary-text: #{$secondary-text-color};
+  --button-primary-border: #{darken($main-theme-color, 30%)};
+  --button-primary-bg-active: #{lighten($main-theme-color, 1%)};
+  --button-primary-bg-hover: #{lighten($main-theme-color, 9%)};
 
-  --button-bg: darken($main-bg-color, 10%);
-  --button-text: $main-text-color;
-  --button-border: darken($border-color, 20%);
-  --button-bg-active: darken($main-bg-color, 25%);
-  --button-bg-hover: darken($main-bg-color, 5%);
+  --button-bg: #{darken($main-bg-color, 10%)};
+  --button-text: #{$main-text-color};
+  --button-border: #{darken($border-color, 20%)};
+  --button-bg-active: #{darken($main-bg-color, 25%)};
+  --button-bg-hover: #{darken($main-bg-color, 5%)};
 
-  --input-border: $border-color;
-  --anchor-text: $anchor-color;
-  --main-bg: $main-bg-color;
-  --body-bg: $body-bg-color;
-  --body-text-color: $main-text-color;
-  --main-border: $border-color;
-  --svg-fill: $main-theme-color;
+  --input-border: #{$border-color};
+  --anchor-text: #{$anchor-color};
+  --main-bg: #{$main-bg-color};
+  --body-bg: #{$body-bg-color};
+  --body-text-color: #{$main-text-color};
+  --main-border: #{$border-color};
+  --svg-fill: #{$main-theme-color};
 
-  --form-bg: darken($main-bg-color, 3%);
-  --form-border: darken($border-color, 10%);
+  --form-bg: #{darken($main-bg-color, 3%)};
+  --form-border: #{darken($border-color, 10%)};
 
-  --nav-bg: $main-theme-color;
-  --nav-border: darken($main-theme-color, 10%);
-  --nav-a-border: $main-theme-color;
-  --nav-a-selected-border: $secondary-text-color;
-  --nav-a-selected-bg: lighten($main-theme-color, 10%);
-  --nav-svg-fill: $secondary-text-color;
-  --nav-text-color: $secondary-text-color;
+  --nav-bg: #{$main-theme-color};
+  --nav-border: #{darken($main-theme-color, 10%)};
+  --nav-a-border: #{$main-theme-color};
+  --nav-a-selected-border: #{$secondary-text-color};
+  --nav-a-selected-bg: #{lighten($main-theme-color, 10%)};
+  --nav-svg-fill: #{$secondary-text-color};
+  --nav-text-color: #{$secondary-text-color};
 
-  --nav-a-selected-border-hover: $secondary-text-color;
-  --nav-a-selected-bg-hover: lighten($main-theme-color, 15%);
-  --nav-a-bg-hover: lighten($main-theme-color, 5%);
-  --nav-a-border-hover: $main-theme-color;
-  --nav-svg-fill-hover: $secondary-text-color;
-  --nav-text-color-hover: $secondary-text-color;
+  --nav-a-selected-border-hover: #{$secondary-text-color};
+  --nav-a-selected-bg-hover: #{lighten($main-theme-color, 15%)};
+  --nav-a-bg-hover: #{lighten($main-theme-color, 5%)};
+  --nav-a-border-hover: #{$main-theme-color};
+  --nav-svg-fill-hover: #{$secondary-text-color};
+  --nav-text-color-hover: #{$secondary-text-color};
 
-  --action-button-fill-color: lighten($main-theme-color, 18%);
-  --action-button-fill-color-hover: lighten($main-theme-color, 22%);
-  --action-button-fill-color-active: lighten($main-theme-color, 5%);
-  --action-button-fill-color-pressed: darken($main-theme-color, 7%);
-  --action-button-fill-color-pressed-hover: darken($main-theme-color, 2%);
-  --action-button-fill-color-pressed-active: darken($main-theme-color, 15%);
+  --action-button-fill-color: #{lighten($main-theme-color, 18%)};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 22%)};
+  --action-button-fill-color-active: #{lighten($main-theme-color, 5%)};
+  --action-button-fill-color-pressed: #{darken($main-theme-color, 7%)};
+  --action-button-fill-color-pressed-hover: #{darken($main-theme-color, 2%)};
+  --action-button-fill-color-pressed-active: #{darken($main-theme-color, 15%)};
 
-  --action-button-deemphasized-fill-color: $deemphasized-color;
-  --action-button-deemphasized-fill-color-hover: lighten($deemphasized-color, 22%);
-  --action-button-deemphasized-fill-color-active: lighten($deemphasized-color, 5%);
-  --action-button-deemphasized-fill-color-pressed: darken($deemphasized-color, 7%);
-  --action-button-deemphasized-fill-color-pressed-hover: darken($deemphasized-color, 2%);
-  --action-button-deemphasized-fill-color-pressed-active: darken($deemphasized-color, 15%);
+  --action-button-deemphasized-fill-color: #{$deemphasized-color};
+  --action-button-deemphasized-fill-color-hover: #{lighten($deemphasized-color, 22%)};
+  --action-button-deemphasized-fill-color-active: #{lighten($deemphasized-color, 5%)};
+  --action-button-deemphasized-fill-color-pressed: #{darken($deemphasized-color, 7%)};
+  --action-button-deemphasized-fill-color-pressed-hover: #{darken($deemphasized-color, 2%)};
+  --action-button-deemphasized-fill-color-pressed-active: #{darken($deemphasized-color, 15%)};
 
-  --settings-list-item-bg: $main-bg-color;
-  --settings-list-item-text: $main-theme-color;
-  --settings-list-item-text-hover: $main-theme-color;
-  --settings-list-item-border: $border-color;
-  --settings-list-item-bg-active: darken($main-bg-color, 10%);
-  --settings-list-item-bg-hover: darken($main-bg-color, 2%);
+  --settings-list-item-bg: #{$main-bg-color};
+  --settings-list-item-text: #{$main-theme-color};
+  --settings-list-item-text-hover: #{$main-theme-color};
+  --settings-list-item-border: #{$border-color};
+  --settings-list-item-bg-active: #{darken($main-bg-color, 10%)};
+  --settings-list-item-bg-hover: #{darken($main-bg-color, 2%)};
 
-  --toast-bg: $toast-bg;
-  --toast-border: $toast-border;
-  --toast-text: $secondary-text-color;
+  --toast-bg: #{$toast-bg};
+  --toast-border: #{$toast-border};
+  --toast-text: #{$secondary-text-color};
 
-  --mask-bg: $toast-bg;
-  --mask-svg-fill: $secondary-text-color;
-  --mask-opaque-bg: rgba($toast-bg, 0.8);
-  --loading-bg: #ededed;
+  --mask-bg: #{$toast-bg};
+  --mask-svg-fill: #{$secondary-text-color};
+  --mask-opaque-bg: #{rgba($toast-bg, 0.8)};
+  --loading-bg: #{#ededed};
 
-  --account-profile-bg-backdrop-filter: rgba($main-bg-color, 0.7);
-  --account-profile-bg: rgba($main-bg-color, 0.9);
+  --account-profile-bg-backdrop-filter: #{rgba($main-bg-color, 0.7)};
+  --account-profile-bg: #{rgba($main-bg-color, 0.9)};
 
-  --deemphasized-text-color:$deemphasized-color;
-  --focus-outline: $focus-outline;
+  --deemphasized-text-color: #{$deemphasized-color};
+  --focus-outline: #{$focus-outline};
 
-  --very-deemphasized-link-color: rgba($anchor-color, 0.6);
-  --very-deemphasized-text-color: rgba(#666, 0.6);
+  --very-deemphasized-link-color: #{rgba($anchor-color, 0.6)};
+  --very-deemphasized-text-color: #{rgba(#666, 0.6)};
 
-  --status-direct-background: darken($body-bg-color, 5%);
-  --main-theme-color: $main-theme-color;
-  --warning-color: #e01f19;
-  --alt-input-bg: rgba($main-bg-color, 0.7);
+  --status-direct-background: #{darken($body-bg-color, 5%)};
+  --main-theme-color: #{$main-theme-color};
+  --warning-color: #{#e01f19};
+  --alt-input-bg: #{rgba($main-bg-color, 0.7)};
 
-  --muted-modal-bg: transparent;
-  --muted-modal-focus: #999;
-  --muted-modal-hover: rgba(255, 255, 255, 0.2);
+  --muted-modal-bg: #{transparent};
+  --muted-modal-focus: #{#999};
+  --muted-modal-hover: #{rgba(255, 255, 255, 0.2)};
 
-  --compose-autosuggest-item-hover: $compose-background;
-  --compose-autosuggest-item-active: darken($compose-background, 5%);
-  --compose-autosuggest-outline: lighten($focus-outline, 5%);
+  --compose-autosuggest-item-hover: #{$compose-background};
+  --compose-autosuggest-item-active: #{darken($compose-background, 5%)};
+  --compose-autosuggest-outline: #{lighten($focus-outline, 5%)};
 
-  --compose-button-halo: rgba(255, 255, 255, 0.1);
+  --compose-button-halo: #{rgba(255, 255, 255, 0.1)};
 }
