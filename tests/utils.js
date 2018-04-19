@@ -290,3 +290,13 @@ export async function clickToNotificationsAndBackHome (t) {
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
 }
+
+// like lodash.times but I don't want to try to figure out esm
+// just to import lodash-es
+export function times (n, cb) {
+  let arr = []
+  for (let i = 0; i < n; i++) {
+    arr.push(cb(i))
+  }
+  return arr
+}

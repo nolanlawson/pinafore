@@ -21,7 +21,7 @@ function processMessage (instanceName, timelineName, message) {
 }
 
 export function createStream (streamingApi, instanceName, accessToken,
-                              timelineName, onOpenStream) {
+  timelineName, onOpenStream) {
   return new TimelineStream(streamingApi, accessToken, timelineName, {
     onMessage (msg) {
       if (msg.event !== 'update' && msg.event !== 'delete' && msg.event !== 'notification') {

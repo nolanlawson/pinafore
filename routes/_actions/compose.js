@@ -21,8 +21,8 @@ export async function insertHandleForReply (statusId) {
 }
 
 export async function postStatus (realm, text, inReplyToId, mediaIds,
-                                  sensitive, spoilerText, visibility,
-                                  mediaDescriptions = [], inReplyToUuid) {
+  sensitive, spoilerText, visibility,
+  mediaDescriptions = [], inReplyToUuid) {
   let instanceName = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   let online = store.get('online')
