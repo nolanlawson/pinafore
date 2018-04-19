@@ -8,10 +8,10 @@ export function notificationObservers (store) {
     if (!process.browser) {
       return
     }
-    if (currentFaviconHasNotifications === hasNotifications) {
-      return
-    }
     scheduleIdleTask(() => {
+      if (currentFaviconHasNotifications === hasNotifications) {
+        return
+      }
       setFavicon(hasNotifications ? '/favicon-alert.png' : '/favicon.png')
       currentFaviconHasNotifications = !currentFaviconHasNotifications
     })
