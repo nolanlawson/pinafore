@@ -7,17 +7,16 @@ import {
 } from '../_database/accountsAndRelationships'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
   try {
     let account
     if (follow) {
-      account = await followAccount(instanceName, accessToken, accountId)
+      account = await followAccount(currentInstance, accessToken, accountId)
     } else {
-      account = await unfollowAccount(instanceName, accessToken, accountId)
+      account = await unfollowAccount(currentInstance, accessToken, accountId)
     }
     await updateProfileAndRelationship(accountId)
-    let relationship = await getRelationshipFromDatabase(instanceName, accountId)
+    let relationship = await getRelationshipFromDatabase(currentInstance, accountId)
     if (toastOnSuccess) {
       if (follow) {
         if (account.locked && relationship.requested) {

@@ -82,7 +82,8 @@
       show,
       close,
       onClickEmoji(emoji) {
-        insertEmoji(this.get('realm'), emoji)
+        let { realm } = this.get()
+        insertEmoji(realm, emoji)
         this.close()
       }
     }

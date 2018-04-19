@@ -1,25 +1,22 @@
 export function instanceMixins (Store) {
   Store.prototype.setComposeData = function (realm, obj) {
-    let composeData = this.get('composeData')
-    let instanceName = this.get('currentInstance')
-    let instanceNameData = composeData[instanceName] = composeData[instanceName] || {}
+    let { composeData, currentInstance } = this.get()
+    let instanceNameData = composeData[currentInstance] = composeData[currentInstance] || {}
     instanceNameData[realm] = Object.assign(instanceNameData[realm] || {}, obj)
     this.set({composeData})
   }
 
   Store.prototype.getComposeData = function (realm, key) {
-    let composeData = this.get('composeData')
-    let instanceName = this.get('currentInstance')
-    return composeData[instanceName] &&
-      composeData[instanceName][realm] &&
-      composeData[instanceName][realm][key]
+    let { composeData, currentInstance } = this.get()
+    return composeData[currentInstance] &&
+      composeData[currentInstance][realm] &&
+      composeData[currentInstance][realm][key]
   }
 
   Store.prototype.clearComposeData = function (realm) {
-    let composeData = this.get('composeData')
-    let instanceName = this.get('currentInstance')
-    if (composeData && composeData[instanceName]) {
-      delete composeData[instanceName][realm]
+    let { composeData, currentInstance } = this.get()
+    if (composeData && composeData[currentInstance]) {
+      delete composeData[currentInstance][realm]
     }
     this.set({composeData})
   }

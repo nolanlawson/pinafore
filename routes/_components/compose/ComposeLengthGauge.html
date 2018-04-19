@@ -25,12 +25,14 @@
 
   export default {
     oncreate() {
-      this.set({lengthAsFractionDeferred: this.get('lengthAsFraction')})
+      let { lengthAsFraction } = this.get()
+      this.set({lengthAsFractionDeferred: lengthAsFraction})
       // perf improvement for keyboard input latency
       this.observe('lengthAsFraction', () => {
         scheduleIdleTask(() => {
           mark('set lengthAsFractionDeferred')
-          this.set({lengthAsFractionDeferred: this.get('lengthAsFraction')})
+          let { lengthAsFraction } = this.get() || {} // TODO: wtf svelte?
+          this.set({lengthAsFractionDeferred: lengthAsFraction})
           stop('set lengthAsFractionDeferred')
           requestAnimationFrame(() => this.set({shouldAnimate: true}))
         })

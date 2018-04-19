@@ -140,8 +140,8 @@ function doCleanup (instanceName) {
 
 function scheduledCleanup () {
   console.log('scheduledCleanup')
-  let instances = store.get('loggedInInstancesInOrder')
-  for (let instance of instances) {
+  let { loggedInInstancesInOrder } = store.get()
+  for (let instance of loggedInInstancesInOrder) {
     doCleanup(instance)
   }
 }

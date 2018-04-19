@@ -93,9 +93,9 @@
       setupSyncFromStore() {
         this.observe('mediaDescriptions', mediaDescriptions => {
           mediaDescriptions = mediaDescriptions || []
-          let index = this.get('index')
+          let { index, rawText } = this.get()
           let text = mediaDescriptions[index] || ''
-          if (this.get('rawText') !== text) {
+          if (rawText !== text) {
             this.set({rawText: text})
           }
         })
@@ -104,8 +104,8 @@
         const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
-          let realm = this.get('realm')
-          let index = this.get('index')
+          let { realm } = this.get()
+          let { index } = this.get()
           let mediaDescriptions = store.getComposeData(realm, 'mediaDescriptions') || []
           if (mediaDescriptions[index] === rawText) {
             return
@@ -119,7 +119,11 @@
         }, {init: false})
       },
       onDeleteMedia() {
-        deleteMedia(this.get('realm'), this.get('index'))
+        let {
+          realm,
+          index
+        } = this.get()
+        deleteMedia(realm, index)
       }
     }
   }

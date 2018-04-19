@@ -31,15 +31,16 @@ export function instanceObservers (store) {
     await updateInstanceInfo(currentInstance)
 
     let currentInstanceIsUnchanged = () => {
-      return store.get('currentInstance') === currentInstance
+      let { currentInstance: newCurrentInstance } = store.get()
+      return newCurrentInstance === currentInstance
     }
 
     if (!currentInstanceIsUnchanged()) {
       return
     }
 
-    let instanceInfo = store.get('currentInstanceInfo')
-    if (!instanceInfo) {
+    let { currentInstanceInfo } = store.get()
+    if (!currentInstanceInfo) {
       return
     }
 
@@ -74,8 +75,8 @@ export function instanceObservers (store) {
       ])
     }
 
-    let accessToken = store.get('accessToken')
-    let streamingApi = instanceInfo.urls.streaming_api
+    let { accessToken } = store.get()
+    let streamingApi = currentInstanceInfo.urls.streaming_api
     currentInstanceStream = createStream(streamingApi,
       currentInstance, accessToken, 'home', onOpenStream)
 

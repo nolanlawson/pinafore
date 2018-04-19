@@ -23,12 +23,14 @@
 
   export default {
     oncreate() {
-      this.set({lengthToDisplayDeferred: this.get('lengthToDisplay')})
+      let { lengthToDisplay } = this.get()
+      this.set({lengthToDisplayDeferred: lengthToDisplay})
       // perf improvement for keyboard input latency
       this.observe('lengthToDisplay', () => {
         scheduleIdleTask(() => {
           mark('set lengthToDisplayDeferred')
-          this.set({lengthToDisplayDeferred: this.get('lengthToDisplay')})
+          let { lengthToDisplay } = this.get() || {} // TODO: wtf svelte?
+          this.set({lengthToDisplayDeferred: lengthToDisplay})
           stop('set lengthToDisplayDeferred')
         })
       }, {init: false})

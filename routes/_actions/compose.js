@@ -7,12 +7,12 @@ import { emit } from '../_utils/eventBus'
 import { putMediaDescription } from '../_api/media'
 
 export async function insertHandleForReply (statusId) {
-  let instanceName = store.get('currentInstance')
-  let status = await getStatusFromDatabase(instanceName, statusId)
-  let verifyCredentials = store.get('currentVerifyCredentials')
+  let { currentInstance } = store.get()
+  let status = await getStatusFromDatabase(currentInstance, statusId)
+  let { currentVerifyCredentials } = store.get()
   let originalStatus = status.reblog || status
   let accounts = [originalStatus.account].concat(originalStatus.mentions || [])
-    .filter(account => account.id !== verifyCredentials.id)
+    .filter(account => account.id !== currentVerifyCredentials.id)
   if (!store.getComposeData(statusId, 'text') && accounts.length) {
     store.setComposeData(statusId, {
       text: accounts.map(account => `@${account.acct} `).join('')
@@ -23,9 +23,7 @@ export async function insertHandleForReply (statusId) {
 export async function postStatus (realm, text, inReplyToId, mediaIds,
   sensitive, spoilerText, visibility,
   mediaDescriptions = [], inReplyToUuid) {
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
-  let online = store.get('online')
+  let { currentInstance, accessToken, online } = store.get()
 
   if (!online) {
     toast.say('You cannot post while offline')
@@ -37,11 +35,11 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
   })
   try {
     await Promise.all(mediaDescriptions.map(async (description, i) => {
-      return description && putMediaDescription(instanceName, accessToken, mediaIds[i], description)
+      return description && putMediaDescription(currentInstance, accessToken, mediaIds[i], description)
     }))
-    let status = await postStatusToServer(instanceName, accessToken, text,
+    let status = await postStatusToServer(currentInstance, accessToken, text,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility)
-    addStatusOrNotification(instanceName, 'home', status)
+    addStatusOrNotification(currentInstance, 'home', status)
     store.clearComposeData(realm)
     emit('postedStatus', realm, inReplyToUuid)
   } catch (e) {
@@ -61,12 +59,16 @@ export async function insertUsername (realm, username, startIndex, endIndex) {
 }
 
 export async function clickSelectedAutosuggestionUsername (realm) {
-  let selectionStart = store.get('composeSelectionStart')
-  let searchText = store.get('composeAutosuggestionSearchText')
-  let selection = store.get('composeAutosuggestionSelected') || 0
-  let account = store.get('composeAutosuggestionSearchResults')[selection]
-  let startIndex = selectionStart - searchText.length
-  let endIndex = selectionStart
+  let {
+    composeSelectionStart,
+    composeAutosuggestionSearchText,
+    composeAutosuggestionSelected,
+    composeAutosuggestionSearchResults
+  } = store.get()
+  composeAutosuggestionSelected = composeAutosuggestionSelected || 0
+  let account = composeAutosuggestionSearchResults[composeAutosuggestionSelected]
+  let startIndex = composeSelectionStart - composeAutosuggestionSearchText.length
+  let endIndex = composeSelectionStart
   await insertUsername(realm, account.acct, startIndex, endIndex)
 }
 
@@ -96,8 +98,8 @@ export function setReplyVisibility (realm, replyVisibility) {
   if (typeof postPrivacy !== 'undefined') {
     return // user has already set the postPrivacy
   }
-  let verifyCredentials = store.get('currentVerifyCredentials')
-  let defaultVisibility = verifyCredentials.source.privacy
+  let { currentVerifyCredentials } = store.get()
+  let defaultVisibility = currentVerifyCredentials.source.privacy
   let visibility = PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]
     ? replyVisibility
     : defaultVisibility

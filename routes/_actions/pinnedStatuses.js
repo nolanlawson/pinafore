@@ -9,18 +9,17 @@ import {
 } from '../_api/pinnedStatuses'
 
 export async function updatePinnedStatusesForAccount (accountId) {
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
 
   await cacheFirstUpdateAfter(
-    () => getPinnedStatuses(instanceName, accessToken, accountId),
-    () => getPinnedStatusesFromDatabase(instanceName, accountId),
-    statuses => insertPinnedStatusesInDatabase(instanceName, accountId, statuses),
+    () => getPinnedStatuses(currentInstance, accessToken, accountId),
+    () => getPinnedStatusesFromDatabase(currentInstance, accountId),
+    statuses => insertPinnedStatusesInDatabase(currentInstance, accountId, statuses),
     statuses => {
-      let $pinnedStatuses = store.get('pinnedStatuses')
-      $pinnedStatuses[instanceName] = $pinnedStatuses[instanceName] || {}
-      $pinnedStatuses[instanceName][accountId] = statuses
-      store.set({pinnedStatuses: $pinnedStatuses})
+      let { pinnedStatuses } = store.get()
+      pinnedStatuses[currentInstance] = pinnedStatuses[currentInstance] || {}
+      pinnedStatuses[currentInstance][accountId] = statuses
+      store.set({pinnedStatuses: pinnedStatuses})
     }
   )
 }

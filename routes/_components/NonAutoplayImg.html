@@ -28,11 +28,8 @@
   export default {
     methods: {
       onMouseOver(mouseOver) {
-        if (mouseOver) {
-          this.refs.node.src = this.get('src')
-        } else {
-          this.refs.node.src = this.get('staticSrc')
-        }
+        let { src, staticSrc } = this.get()
+        this.refs.node.src = mouseOver ? src : staticSrc
       }
     },
     events: {

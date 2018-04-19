@@ -132,7 +132,8 @@
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
         this._a11yDialog.destroy()
-        emit('destroyDialog', this.get('id'))
+        let { id } = this.get()
+        emit('destroyDialog', id)
         requestAnimationFrame(() => document.body.removeChild(dialogElement))
       })
       on('showDialog', this, this.showDialog)
@@ -161,8 +162,9 @@
       }
     },
     methods: {
-      showDialog(id) {
-        if (this.get('id') !== id) {
+      showDialog(thisId) {
+        let { id } = this.get()
+        if (id !== thisId) {
           return
         }
         this._a11yDialog.show()
@@ -170,8 +172,9 @@
           this.set({ fadedIn: true })
         })
       },
-      closeDialog(id) {
-        if (this.get('id') !== id) {
+      closeDialog(thisId) {
+        let { id } = this.get()
+        if (id !== thisId) {
           return
         }
         setTimeout(() => { // use setTimeout to workaround svelte timing issue

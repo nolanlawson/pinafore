@@ -35,14 +35,15 @@
     },
     methods: {
       onPostedStatus(realm) {
-        if (realm !== this.get('originalStatusId')) {
+        let { originalStatusId } = this.get()
+        if (realm !== originalStatusId) {
           return
         }
         requestAnimationFrame(() => {
-          let uuid = this.get('uuid')
-          let $repliesShown = this.store.get('repliesShown')
-          $repliesShown[uuid] = false
-          this.store.set({'repliesShown': $repliesShown})
+          let { uuid } = this.get()
+          let { repliesShown } = this.store.get()
+          repliesShown[uuid] = false
+          this.store.set({repliesShown})
           this.fire('recalculateHeight')
         })
       },

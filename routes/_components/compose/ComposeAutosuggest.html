@@ -59,13 +59,15 @@
       // perf improves for input responsiveness
       this.observe('composeSelectionStart', () => {
         scheduleIdleTask(() => {
-          this.set({composeSelectionStartDeferred: this.get('composeSelectionStart')})
+          let { composeSelectionStart } = this.get() || {} // TODO: wtf svelte?
+          this.set({composeSelectionStartDeferred: composeSelectionStart})
         })
       })
       this.observe('composeFocused', (composeFocused) => {
         let updateFocusedState = () => {
           scheduleIdleTask(() => {
-            this.set({composeFocusedDeferred: this.get('composeFocused')})
+            let { composeFocused } = this.get() || {} // TODO: wtf svelte?
+            this.set({composeFocusedDeferred: composeFocused})
           })
         }
 
@@ -103,11 +105,10 @@
       once: once,
       onClick(item) {
         this.fire('autosuggestItemSelected')
-        let realm = this.get('realm')
-        let selectionStart = this.store.get('composeSelectionStart')
-        let searchText = this.store.get('composeAutosuggestionSearchText')
-        let startIndex = selectionStart - searchText.length
-        let endIndex = selectionStart
+        let { realm } = this.get()
+        let { composeSelectionStart, composeAutosuggestionSearchText } = this.store.get()
+        let startIndex = composeSelectionStart - composeAutosuggestionSearchText.length
+        let endIndex = composeSelectionStart
         if (item.acct) {
           /* no await */ insertUsername(realm, item.acct, startIndex, endIndex)
         } else {
@@ -117,15 +118,15 @@
       },
       async searchAccounts(searchText) {
         searchText = searchText.substring(1)
-        let currentInstance = this.store.get('currentInstance')
+        let { currentInstance } = this.store.get()
         let results = await searchAccountsByUsernameInDatabase(
           currentInstance, searchText, DATABASE_SEARCH_RESULTS_LIMIT)
         return results.slice(0, SEARCH_RESULTS_LIMIT)
       },
       searchEmoji(searchText) {
         searchText = searchText.toLowerCase().substring(1)
-        let customEmoji = this.store.get('currentCustomEmoji')
-        let results = customEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))
+        let { currentCustomEmoji } = this.store.get()
+        let results = currentCustomEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))
           .sort((a, b) => a.shortcode.toLowerCase() < b.shortcode.toLowerCase() ? -1 : 1)
           .slice(0, SEARCH_RESULTS_LIMIT)
         return results

@@ -123,12 +123,12 @@
 
   export default {
     oncreate() {
-      let delegateKey = this.get('delegateKey')
-      if (!this.get('isStatusInOwnThread')) {
+      let { delegateKey, isStatusInOwnThread, showContent } = this.get()
+      if (!isStatusInOwnThread) {
         // the whole <article> is clickable in this case
         registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
       }
-      if (!this.get('showContent')) {
+      if (!showContent) {
         scheduleIdleTask(() => {
           // Perf optimization: lazily load the StatusContent when the user is idle so that
           // it's fast when they click the "show more" button
@@ -171,7 +171,8 @@
 
         e.preventDefault()
         e.stopPropagation()
-        goto(`/statuses/${this.get('originalStatusId')}`)
+        let { originalStatusId } = this.get()
+        goto(`/statuses/${originalStatusId}`)
       }
     },
     computed: {

@@ -102,25 +102,22 @@ export default {
       }
     },
     async onDeleteClicked() {
-      let statusId = this.get('statusId')
+      let { statusId } = this.get()
       this.close()
       await doDeleteStatus(statusId)
     },
     async onFollowClicked() {
-      let accountId = this.get('accountId')
-      let following = this.get('following')
+      let { accountId, following } = this.get()
       this.close()
       await setAccountFollowed(accountId, !following, true)
     },
     async onBlockClicked() {
-      let accountId = this.get('accountId')
-      let blocking = this.get('blocking')
+      let { accountId, blocking } = this.get()
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
     async onMuteClicked() {
-      let accountId = this.get('accountId')
-      let muting = this.get('muting')
+      let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)
     }

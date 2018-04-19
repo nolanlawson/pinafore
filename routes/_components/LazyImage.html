@@ -28,8 +28,8 @@
     oncreate() {
       mark('LazyImage oncreate()')
       let img = new Image()
-      let src = this.get('src')
-      let fallback = this.get('fallback')
+      let { src } = this.get()
+      let { fallback } = this.get()
       img.onload = () => {
         requestAnimationFrame(() => {
           this.set({

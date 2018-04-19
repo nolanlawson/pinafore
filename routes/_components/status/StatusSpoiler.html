@@ -53,7 +53,8 @@
 
   export default {
     oncreate() {
-      registerClickDelegate(this, this.get('delegateKey'), () => this.onClickSpoilerButton())
+      let { delegateKey } = this.get()
+      registerClickDelegate(this, delegateKey, () => this.onClickSpoilerButton())
     },
     store: () => store,
     computed: {
@@ -69,10 +70,10 @@
       onClickSpoilerButton() {
         requestAnimationFrame(() => {
           mark('clickSpoilerButton')
-          let uuid = this.get('uuid')
-          let $spoilersShown = this.store.get('spoilersShown')
-          $spoilersShown[uuid] = !$spoilersShown[uuid]
-          this.store.set({'spoilersShown': $spoilersShown})
+          let { uuid } = this.get()
+          let { spoilersShown } = this.store.get()
+          spoilersShown[uuid] = !spoilersShown[uuid]
+          this.store.set({spoilersShown})
           this.fire('recalculateHeight')
           stop('clickSpoilerButton')
         })

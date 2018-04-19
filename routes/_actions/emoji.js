@@ -12,7 +12,7 @@ export async function updateCustomEmojiForInstance (instanceName) {
     () => getCustomEmojiFromDatabase(instanceName),
     emoji => setCustomEmojiInDatabase(instanceName, emoji),
     emoji => {
-      let customEmoji = store.get('customEmoji')
+      let { customEmoji } = store.get()
       customEmoji[instanceName] = emoji
       store.set({customEmoji: customEmoji})
     }
@@ -20,7 +20,8 @@ export async function updateCustomEmojiForInstance (instanceName) {
 }
 
 export function insertEmoji (realm, emoji) {
-  let idx = store.get('composeSelectionStart') || 0
+  let { composeSelectionStart } = store.get()
+  let idx = composeSelectionStart || 0
   let oldText = store.getComposeData(realm, 'text') || ''
   let pre = oldText.substring(0, idx)
   let post = oldText.substring(idx)
@@ -37,11 +38,15 @@ export function insertEmojiAtPosition (realm, emoji, startIndex, endIndex) {
 }
 
 export async function clickSelectedAutosuggestionEmoji (realm) {
-  let selectionStart = store.get('composeSelectionStart')
-  let searchText = store.get('composeAutosuggestionSearchText')
-  let selection = store.get('composeAutosuggestionSelected') || 0
-  let emoji = store.get('composeAutosuggestionSearchResults')[selection]
-  let startIndex = selectionStart - searchText.length
-  let endIndex = selectionStart
+  let {
+    composeSelectionStart,
+    composeAutosuggestionSearchText,
+    composeAutosuggestionSelected,
+    composeAutosuggestionSearchResults
+  } = store.get()
+  composeAutosuggestionSelected = composeAutosuggestionSelected || 0
+  let emoji = composeAutosuggestionSearchResults[composeAutosuggestionSelected]
+  let startIndex = composeSelectionStart - composeAutosuggestionSearchText.length
+  let endIndex = composeSelectionStart
   await insertEmojiAtPosition(realm, emoji, startIndex, endIndex)
 }

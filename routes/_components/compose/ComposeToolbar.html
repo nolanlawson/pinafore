@@ -71,22 +71,25 @@
     methods: {
       async onEmojiClick() {
         let dialogs = await importDialogs()
-        dialogs.showEmojiDialog(this.get('realm'))
+        let { realm } = this.get()
+        dialogs.showEmojiDialog(realm)
       },
       onMediaClick() {
         this.refs.input.click()
       },
       onFileChange(e) {
         let file = e.target.files[0]
-        let realm = this.get('realm')
+        let { realm } = this.get()
         doMediaUpload(realm, file)
       },
       async onPostPrivacyClick() {
         let dialogs = await importDialogs()
-        dialogs.showPostPrivacyDialog(this.get('realm'))
+        let { realm } = this.get()
+        dialogs.showPostPrivacyDialog(realm)
       },
       onContentWarningClick() {
-        toggleContentWarningShown(this.get('realm'))
+        let { realm } = this.get()
+        toggleContentWarningShown(realm)
       }
     }
   }

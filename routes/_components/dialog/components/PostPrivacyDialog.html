@@ -30,7 +30,8 @@
       show,
       close,
       onClick(item) {
-        setPostPrivacy(this.get('realm'), item.key)
+        let { realm } = this.get()
+        setPostPrivacy(realm, item.key)
         this.close()
       }
     },

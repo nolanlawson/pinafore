@@ -96,7 +96,8 @@
 
   export default {
     async oncreate() {
-      if (this.store.get('currentInstance')) {
+      let { currentInstance } = this.store.get()
+      if (currentInstance) {
         await updateLists()
       }
     },

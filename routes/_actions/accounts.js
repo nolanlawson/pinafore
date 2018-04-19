@@ -52,11 +52,10 @@ export async function clearProfileAndRelationship () {
 }
 
 export async function updateProfileAndRelationship (accountId) {
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
 
   await Promise.all([
-    updateAccount(accountId, instanceName, accessToken),
-    updateRelationship(accountId, instanceName, accessToken)
+    updateAccount(accountId, currentInstance, accessToken),
+    updateRelationship(accountId, currentInstance, accessToken)
   ])
 }

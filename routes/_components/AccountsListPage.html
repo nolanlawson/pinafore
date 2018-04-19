@@ -34,7 +34,7 @@
 
   export default {
     async oncreate() {
-      let accountsFetcher = this.get('accountsFetcher')
+      let { accountsFetcher } = this.get()
       try {
         // TODO: paginate
         let accounts = await accountsFetcher()
