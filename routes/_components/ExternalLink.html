@@ -23,10 +23,3 @@
     fill: var(--body-text-color);
   }
 </style>
-<script>
-  export default {
-    oncreate() {
-      this.set({className: this.get('class')}) // workaround for "class" property name bug in svelte
-    }
-  }
-</script>
