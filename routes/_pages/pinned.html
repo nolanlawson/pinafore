@@ -38,7 +38,7 @@
 
   export default {
     async oncreate() {
-      let accountsFetcher = this.get('accountsFetcher')
+      let { accountsFetcher } = this.get()
       try {
         let currentInstance = this.store.get('currentInstance')
         await updateVerifyCredentialsForInstance(currentInstance)

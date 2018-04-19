@@ -78,7 +78,7 @@
       },
       onFileChange(e) {
         let file = e.target.files[0]
-        let realm = this.get('realm')
+        let { realm } = this.get()
         doMediaUpload(realm, file)
       },
       async onPostPrivacyClick() {

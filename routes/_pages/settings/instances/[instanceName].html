@@ -115,7 +115,7 @@
       themes: themes,
     }),
     async oncreate() {
-      let instanceName = this.get('instanceName')
+      let { instanceName } = this.get()
       await updateVerifyCredentialsForInstance(instanceName)
     },
     computed: {
@@ -125,18 +125,17 @@
     },
     methods: {
       onThemeChange() {
-        let newTheme = this.get('selectedTheme')
-        let instanceName = this.get('instanceName')
+        let { newTheme, instanceName } = this.get()
         changeTheme(instanceName,  newTheme)
       },
       onSwitchToThisInstance(e) {
         e.preventDefault()
-        let instanceName = this.get('instanceName')
+        let { instanceName } = this.get()
         switchToInstance(instanceName)
       },
       async onLogOut(e) {
         e.preventDefault()
-        let instanceName = this.get('instanceName')
+        let { instanceName } = this.get()
 
         let dialogs = await importDialogs()
         dialogs.showConfirmationDialog({

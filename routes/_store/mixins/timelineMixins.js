@@ -21,9 +21,8 @@ export function timelineMixins (Store) {
   }
 
   Store.prototype.getForCurrentTimeline = function (key) {
-    let instanceName = this.get('currentInstance')
-    let timelineName = this.get('currentTimeline')
-    return this.getForTimeline(instanceName, timelineName, key)
+    let { currentInstance, currentTimeline } = this.get()
+    return this.getForTimeline(currentInstance, currentTimeline, key)
   }
 
   Store.prototype.getAllTimelineData = function (instanceName, key) {
@@ -32,9 +31,8 @@ export function timelineMixins (Store) {
   }
 
   Store.prototype.setForCurrentTimeline = function (obj) {
-    let instanceName = this.get('currentInstance')
-    let timelineName = this.get('currentTimeline')
-    this.setForTimeline(instanceName, timelineName, obj)
+    let { currentInstance, currentTimeline } = this.get()
+    this.setForTimeline(currentInstance, currentTimeline, obj)
   }
 
   Store.prototype.getThreads = function (instanceName) {

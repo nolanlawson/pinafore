@@ -136,7 +136,8 @@
     },
     methods: {
       onClick(e) {
-        if (!this.get('selected')) {
+        let { selected } = this.get('selected')
+        if (!selected) {
           return
         }
         e.preventDefault()

@@ -121,9 +121,7 @@
     },
     methods: {
       async onMoreOptionsClick() {
-        let account = this.get('account')
-        let relationship = this.get('relationship')
-        let verifyCredentials = this.get('verifyCredentials')
+        let { account, relationship, verifyCredentials } = this.get()
         let dialogs = await importDialogs()
         dialogs.showAccountProfileOptionsDialog(account, relationship, verifyCredentials)
       }

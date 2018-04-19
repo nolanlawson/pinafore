@@ -4,13 +4,13 @@ import { toast } from '../_utils/toast'
 import { updateProfileAndRelationship } from './accounts'
 
 export async function setAccountMuted (accountId, mute, toastOnSuccess) {
-  let instanceName = store.get('currentInstance')
+  let currentInstance = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   try {
     if (mute) {
-      await muteAccount(instanceName, accessToken, accountId)
+      await muteAccount(currentInstance, accessToken, accountId)
     } else {
-      await unmuteAccount(instanceName, accessToken, accountId)
+      await unmuteAccount(currentInstance, accessToken, accountId)
     }
     await updateProfileAndRelationship(accountId)
     if (toastOnSuccess) {

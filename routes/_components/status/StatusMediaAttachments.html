@@ -144,7 +144,7 @@
     },
     methods: {
       onClickSensitiveMediaButton() {
-        let uuid = this.get('uuid')
+        let { uuid } = this.get()
         let $sensitivesShown = this.store.get('sensitivesShown') || {}
         $sensitivesShown[uuid] = !$sensitivesShown[uuid]
         this.store.set({'sensitivesShown': $sensitivesShown})

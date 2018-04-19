@@ -55,7 +55,7 @@
       stop('PseudoVirtualList oncreate()')
     },
     ondestroy() {
-      let intersectionObserver = this.get('intersectionObserver')
+      let { intersectionObserver } = this.get()
       if (intersectionObserver) {
         intersectionObserver.disconnect()
       }
@@ -86,7 +86,7 @@
       onIntersection(entries) {
         mark('onIntersection')
         let newIntersectionStates = {}
-        let scrollToItem = this.get('scrollToItem')
+        let { scrollToItem } = this.get()
         let intersectionStates = this.store.get('intersectionStates')
         for (let entry of entries) {
           let key = entry.target.getAttribute('pseudo-virtual-list-key')

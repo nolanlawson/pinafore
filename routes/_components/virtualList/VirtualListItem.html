@@ -30,7 +30,7 @@
   export default {
     oncreate() {
       let asyncLayout = new AsyncLayout(node => node.getAttribute('virtual-list-key'))
-      let key = this.get('key')
+      let { key } = this.get()
       asyncLayout.observe(key, this.refs.node, (rect) => {
         asyncLayout.disconnect()
         // update all item heights in one batch for better perf
@@ -51,7 +51,7 @@
         // Recalculate immediately because this is done on-demand, e.g.
         // when clicking the "More" button on a spoiler.
         let rect = this.refs.node.getBoundingClientRect()
-        let key = this.get('key')
+        let { key } = this.get()
         let itemHeights = this.store.get('itemHeights')
         itemHeights[key] = rect.height
         this.store.setForRealm({itemHeights})

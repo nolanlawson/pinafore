@@ -39,7 +39,7 @@
           return
         }
         requestAnimationFrame(() => {
-          let uuid = this.get('uuid')
+          let { uuid } = this.get()
           let $repliesShown = this.store.get('repliesShown')
           $repliesShown[uuid] = false
           this.store.set({'repliesShown': $repliesShown})

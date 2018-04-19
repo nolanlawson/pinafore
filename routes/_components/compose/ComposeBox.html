@@ -118,7 +118,7 @@
 
   export default {
     oncreate() {
-      let realm = this.get('realm')
+      let { realm } = this.get()
       if (realm === 'home') {
         this.setupStickyObserver()
       } else if (realm !== 'dialog') {
@@ -126,13 +126,13 @@
         insertHandleForReply(realm)
       }
 
-      let replySpoiler = this.get('replySpoiler')
+      let { replySpoiler } = this.get()
       if (replySpoiler) {
         // default spoiler is same as the replied-to status
         setReplySpoiler(realm, replySpoiler)
       }
 
-      let replyVisibility = this.get('replyVisibility')
+      let { replyVisibility } = this.get()
       if (replyVisibility) {
         // make sure the visibility is consistent with the replied-to status
         setReplyVisibility(realm, replyVisibility)
@@ -200,17 +200,19 @@
         }
       },
       doPostStatus() {
-        let text = this.get('text')
-        let media = this.get('media')
-        let postPrivacyKey = this.get('postPrivacyKey')
-        let contentWarning = this.get('contentWarning')
+        let {
+          text,
+          media,
+          postPrivacyKey,
+          contentWarning,
+          realm,
+          overLimit,
+          mediaDescriptions,
+          inReplyToUuid
+        } = this.get()
         let sensitive = media.length && !!contentWarning
-        let realm = this.get('realm')
         let mediaIds = media.map(_ => _.data.id)
         let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
-        let overLimit = this.get('overLimit')
-        let mediaDescriptions = this.get('mediaDescriptions')
-        let inReplyToUuid = this.get('inReplyToUuid')
 
         if (!text || overLimit) {
           return // do nothing if invalid

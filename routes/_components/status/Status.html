@@ -123,7 +123,7 @@
 
   export default {
     oncreate() {
-      let delegateKey = this.get('delegateKey')
+      let { delegateKey } = this.get()
       if (!this.get('isStatusInOwnThread')) {
         // the whole <article> is clickable in this case
         registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))

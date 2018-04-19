@@ -184,27 +184,27 @@
         }
       },
       setupStreaming() {
-        let instanceName = this.store.get('currentInstance')
-        let timelineName = this.get('timeline')
+        let { currentInstance } = this.store.get()
+        let { timeline } = this.get()
         let handleItemIdsToAdd = () => {
-          let itemIdsToAdd = this.get('itemIdsToAdd')
+          let { itemIdsToAdd } = this.get()
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
             return
           }
           mark('handleItemIdsToAdd')
-          let scrollTop = this.get('scrollTop')
+          let { scrollTop } = this.get()
           let shouldShowHeader = this.store.get('shouldShowHeader')
           let showHeader = this.store.get('showHeader')
-          if (timelineName.startsWith('status/')) {
+          if (timeline.startsWith('status/')) {
             // this is a thread, just insert the statuses already
-            showMoreItemsForThread(instanceName, timelineName)
+            showMoreItemsForThread(currentInstance, timeline)
           } else if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
             // if the user is scrolled to the top and we're not showing the header, then
             // just insert the statuses. this is "chat room mode"
-            showMoreItemsForTimeline(instanceName, timelineName)
+            showMoreItemsForTimeline(currentInstance, timeline)
           } else {
             // user hasn't scrolled to the top, show a header instead
-            this.store.setForTimeline(instanceName, timelineName, {shouldShowHeader: true})
+            this.store.setForTimeline(currentInstance, timeline, {shouldShowHeader: true})
           }
           stop('handleItemIdsToAdd')
         }
@@ -232,8 +232,8 @@
       },
       saveFocus(e) {
         try {
-          let instanceName = this.store.get('currentInstance')
-          let timelineName = this.get('timeline')
+          let { currentInstance } = this.store.get()
+          let { timeline } = this.get()
           let lastFocusedElementSelector
           let activeElement = e.target
           if (activeElement) {
@@ -243,7 +243,7 @@
             }
           }
           console.log('saving focus to ', lastFocusedElementSelector)
-          this.store.setForTimeline(instanceName, timelineName, {
+          this.store.setForTimeline(currentInstance, timeline, {
             lastFocusedElementSelector
           })
         } catch (err) {
@@ -256,9 +256,9 @@
             return
           }
           console.log('clearing focus')
-          let instanceName = this.store.get('currentInstance')
-          let timelineName = this.get('timeline')
-          this.store.setForTimeline(instanceName, timelineName, {
+          let { currentInstance } = this.store.get()
+          let { timeline } = this.get()
+          this.store.setForTimeline(currentInstance, timeline, {
             lastFocusedElementSelector: null
           })
         } catch (err) {

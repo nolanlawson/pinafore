@@ -71,7 +71,7 @@
 
         this.observe('rawText', rawText => {
           mark('observe rawText')
-          let realm = this.get('realm')
+          let { realm } = this.get()
           this.store.setComposeData(realm, {text: rawText})
           saveStore()
           stop('observe rawText')

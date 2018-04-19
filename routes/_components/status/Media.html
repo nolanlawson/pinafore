@@ -138,16 +138,12 @@
     },
     methods: {
       async onClickPlayVideoButton() {
-        let media = this.get('media')
-        let width = this.get('modalWidth')
-        let height = this.get('modalHeight')
+        let { media, width, height } = this.get()
         let dialogs = await importDialogs()
         dialogs.showVideoDialog(media.preview_url, media.url, width, height, media.description)
       },
       async onClickShowImageButton() {
-        let media = this.get('media')
-        let width = this.get('modalWidth')
-        let height = this.get('modalHeight')
+        let { media, width, height } = this.get()
         let dialogs = await importDialogs()
         dialogs.showImageDialog(media.preview_url, media.url, media.type, width, height, media.description)
       }

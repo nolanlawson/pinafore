@@ -35,7 +35,7 @@
         }
       })
 
-      let intersectionObserver = this.get('intersectionObserver')
+      let { intersectionObserver } = this.get()
       intersectionObserver.observe(this.refs.node)
     },
     computed: {

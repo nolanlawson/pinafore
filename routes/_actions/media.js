@@ -4,11 +4,11 @@ import { toast } from '../_utils/toast'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 export async function doMediaUpload (realm, file) {
-  let instanceName = store.get('currentInstance')
+  let currentInstance = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   store.set({uploadingMedia: true})
   try {
-    let response = await uploadMedia(instanceName, accessToken, file)
+    let response = await uploadMedia(currentInstance, accessToken, file)
     let composeMedia = store.getComposeData(realm, 'media') || []
     composeMedia.push({
       data: response,

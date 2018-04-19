@@ -59,13 +59,15 @@
       // perf improves for input responsiveness
       this.observe('composeSelectionStart', () => {
         scheduleIdleTask(() => {
-          this.set({composeSelectionStartDeferred: this.get('composeSelectionStart')})
+          let { composeSelectionStart } = this.get()
+          this.set({composeSelectionStartDeferred: composeSelectionStart})
         })
       })
       this.observe('composeFocused', (composeFocused) => {
         let updateFocusedState = () => {
           scheduleIdleTask(() => {
-            this.set({composeFocusedDeferred: this.get('composeFocused')})
+            let { composeFocused } = this.get()
+            this.set({composeFocusedDeferred: composeFocused})
           })
         }
 
@@ -103,7 +105,7 @@
       once: once,
       onClick(item) {
         this.fire('autosuggestItemSelected')
-        let realm = this.get('realm')
+        let { realm } = this.get()
         let selectionStart = this.store.get('composeSelectionStart')
         let searchText = this.store.get('composeAutosuggestionSearchText')
         let startIndex = selectionStart - searchText.length

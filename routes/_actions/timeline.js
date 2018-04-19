@@ -60,14 +60,14 @@ export async function addTimelineItemIds (instanceName, timelineName, newIds, ne
 
 async function fetchTimelineItemsAndPossiblyFallBack () {
   mark('fetchTimelineItemsAndPossiblyFallBack')
-  let timelineName = store.get('currentTimeline')
-  let instanceName = store.get('currentInstance')
+  let currentTimeline = store.get('currentTimeline')
+  let currentInstance = store.get('currentInstance')
   let accessToken = store.get('accessToken')
   let lastTimelineItemId = store.get('lastTimelineItemId')
   let online = store.get('online')
 
-  let { items, stale } = await fetchTimelineItems(instanceName, accessToken, timelineName, lastTimelineItemId, online)
-  addTimelineItems(instanceName, timelineName, items, stale)
+  let { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, lastTimelineItemId, online)
+  addTimelineItems(currentInstance, currentTimeline, items, stale)
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
 

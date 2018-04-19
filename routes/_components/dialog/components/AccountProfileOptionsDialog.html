@@ -99,7 +99,7 @@ export default {
       }
     },
     async onMentionClicked() {
-      let acct = this.get('acct')
+      let { acct } = this.get()
       this.store.setComposeData('dialog', {
         text: `@${acct} `
       })
@@ -108,21 +108,18 @@ export default {
       this.close()
     },
     async onFollowClicked() {
-      let accountId = this.get('accountId')
-      let following = this.get('following')
+      let { accountId, following } = this.get()
       this.close()
       await setAccountFollowed(accountId, !following, true)
     },
     async onBlockClicked() {
-      let account = this.get('account')
-      let blocking = this.get('blocking')
+      let { account, blocking } = this.get()
       let accountId = account.id
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
     async onMuteClicked() {
-      let accountId = this.get('accountId')
-      let muting = this.get('muting')
+      let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)
     }

@@ -7,16 +7,16 @@ import {
 } from '../_database/meta'
 
 export async function updateLists () {
-  let instanceName = store.get('currentInstance')
+  let currentInstance = store.get('currentInstance')
   let accessToken = store.get('accessToken')
 
   await cacheFirstUpdateAfter(
-    () => getLists(instanceName, accessToken),
-    () => getListsFromDatabase(instanceName),
-    lists => setListsInDatabase(instanceName, lists),
+    () => getLists(currentInstance, accessToken),
+    () => getListsFromDatabase(currentInstance),
+    lists => setListsInDatabase(currentInstance, lists),
     lists => {
       let instanceLists = store.get('instanceLists')
-      instanceLists[instanceName] = lists
+      instanceLists[currentInstance] = lists
       store.set({instanceLists: instanceLists})
     }
   )

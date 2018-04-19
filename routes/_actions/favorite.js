@@ -6,22 +6,22 @@ import {
 } from '../_database/timelines/updateStatus'
 
 export async function setFavorited (statusId, favorited) {
-  if (!store.get('online')) {
+  let { online } = store.get()
+  if (!online) {
     toast.say(`You cannot ${favorited ? 'favorite' : 'unfavorite'} while offline.`)
     return
   }
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
   let networkPromise = favorited
-    ? favoriteStatus(instanceName, accessToken, statusId)
-    : unfavoriteStatus(instanceName, accessToken, statusId)
-  store.setStatusFavorited(instanceName, statusId, favorited) // optimistic update
+    ? favoriteStatus(currentInstance, accessToken, statusId)
+    : unfavoriteStatus(currentInstance, accessToken, statusId)
+  store.setStatusFavorited(currentInstance, statusId, favorited) // optimistic update
   try {
     await networkPromise
-    await setStatusFavoritedInDatabase(instanceName, statusId, favorited)
+    await setStatusFavoritedInDatabase(currentInstance, statusId, favorited)
   } catch (e) {
     console.error(e)
     toast.say(`Failed to ${favorited ? 'favorite' : 'unfavorite'}. ` + (e.message || ''))
-    store.setStatusFavorited(instanceName, statusId, !favorited) // undo optimistic update
+    store.setStatusFavorited(currentInstance, statusId, !favorited) // undo optimistic update
   }
 }

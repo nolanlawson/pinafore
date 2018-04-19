@@ -30,7 +30,7 @@
 
   export default {
     oncreate() {
-      let accountId = this.get('params').accountId
+      let { accountId } = this.get().accountId
       clearProfileAndRelationship()
       updateProfileAndRelationship(accountId)
     },

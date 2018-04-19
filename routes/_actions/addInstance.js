@@ -11,24 +11,23 @@ const REDIRECT_URI = (typeof location !== 'undefined'
   ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
 
 async function redirectToOauth () {
-  let instanceName = store.get('instanceNameInSearch')
-  let loggedInInstances = store.get('loggedInInstances')
-  instanceName = instanceName.replace(/^https?:\/\//, '').replace(/\/$/, '').replace('/$', '').toLowerCase()
-  if (Object.keys(loggedInInstances).includes(instanceName)) {
-    store.set({logInToInstanceError: `You've already logged in to ${instanceName}`})
+  let { instanceNameInSearch, loggedInInstances } = store.get()
+  instanceNameInSearch = instanceNameInSearch.replace(/^https?:\/\//, '').replace(/\/$/, '').replace('/$', '').toLowerCase()
+  if (Object.keys(loggedInInstances).includes(instanceNameInSearch)) {
+    store.set({logInToInstanceError: `You've already logged in to ${instanceNameInSearch}`})
     return
   }
-  let registrationPromise = registerApplication(instanceName, REDIRECT_URI)
-  let instanceInfo = await getInstanceInfo(instanceName)
-  await setInstanceInfoInDatabase(instanceName, instanceInfo) // cache for later
+  let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
+  let instanceInfo = await getInstanceInfo(instanceNameInSearch)
+  await setInstanceInfoInDatabase(instanceNameInSearch, instanceInfo) // cache for later
   let instanceData = await registrationPromise
   store.set({
-    currentRegisteredInstanceName: instanceName,
+    currentRegisteredInstanceName: instanceNameInSearch,
     currentRegisteredInstance: instanceData
   })
   store.save()
   let oauthUrl = generateAuthLink(
-    instanceName,
+    instanceNameInSearch,
     instanceData.client_id,
     REDIRECT_URI
   )
@@ -48,9 +47,10 @@ export async function logInToInstance () {
       (navigator.onLine
         ? `Is this a valid Mastodon instance? Is a browser extension blocking the request?`
         : `Are you offline?`)
+    let { instanceNameInSearch } = store.get()
     store.set({
       logInToInstanceError: error,
-      logInToInstanceErrorForText: store.get('instanceNameInSearch')
+      logInToInstanceErrorForText: instanceNameInSearch
     })
   } finally {
     store.set({logInToInstanceLoading: false})
@@ -58,8 +58,7 @@ export async function logInToInstance () {
 }
 
 async function registerNewInstance (code) {
-  let currentRegisteredInstanceName = store.get('currentRegisteredInstanceName')
-  let currentRegisteredInstance = store.get('currentRegisteredInstance')
+  let { currentRegisteredInstanceName, currentRegisteredInstance } = store.get()
   let instanceData = await getAccessTokenFromAuthCode(
     currentRegisteredInstanceName,
     currentRegisteredInstance.client_id,
@@ -67,9 +66,7 @@ async function registerNewInstance (code) {
     code,
     REDIRECT_URI
   )
-  let loggedInInstances = store.get('loggedInInstances')
-  let loggedInInstancesInOrder = store.get('loggedInInstancesInOrder')
-  let instanceThemes = store.get('instanceThemes')
+  let { loggedInInstances, loggedInInstancesInOrder, instanceThemes } = store.get()
   instanceThemes[currentRegisteredInstanceName] = 'default'
   loggedInInstances[currentRegisteredInstanceName] = instanceData
   if (!loggedInInstancesInOrder.includes(currentRegisteredInstanceName)) {

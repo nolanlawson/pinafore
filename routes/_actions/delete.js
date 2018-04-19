@@ -3,10 +3,9 @@ import { deleteStatus } from '../_api/delete'
 import { toast } from '../_utils/toast'
 
 export async function doDeleteStatus (statusId) {
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
   try {
-    await deleteStatus(instanceName, accessToken, statusId)
+    await deleteStatus(currentInstance, accessToken, statusId)
     toast.say('Status deleted.')
   } catch (e) {
     console.error(e)

@@ -96,8 +96,7 @@
         }
         mark('hydrateContent')
         let node = this.refs.node
-        let originalStatus = this.get('originalStatus')
-        let uuid = this.get('uuid')
+        let { originalStatus, uuid } = this.get()
         let count = 0
         let anchors = node.getElementsByTagName('A')
         let mentions = originalStatus.mentions

@@ -17,7 +17,7 @@
 
   export default {
     async oncreate() {
-      let accountId = this.get('accountId')
+      let { accountId } = this.get()
       await updatePinnedStatusesForAccount(accountId)
     },
     computed: {

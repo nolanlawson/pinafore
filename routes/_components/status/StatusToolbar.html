@@ -70,16 +70,14 @@
       onFavoriteClick(e) {
         e.preventDefault()
         e.stopPropagation()
-        let originalStatusId = this.get('originalStatusId')
-        let favorited = this.get('favorited')
+        let { originalStatusId, favorited } = this.get()
         /* no await */ setFavorited(originalStatusId, !favorited)
         this.set({animateFavorite: !favorited})
       },
       onReblogClick(e) {
         e.preventDefault()
         e.stopPropagation()
-        let originalStatusId = this.get('originalStatusId')
-        let reblogged = this.get('reblogged')
+        let { originalStatusId, reblogged } = this.get()
         /* no await */ setReblogged(originalStatusId, !reblogged)
         this.set({animateReblog: !reblogged})
       },
@@ -87,7 +85,7 @@
         e.preventDefault()
         e.stopPropagation()
         requestAnimationFrame(() => {
-          let uuid = this.get('uuid')
+          let { uuid } = this.get()
           let $repliesShown = this.store.get('repliesShown')
           $repliesShown[uuid] = !$repliesShown[uuid]
           this.store.set({'repliesShown': $repliesShown})
@@ -97,8 +95,7 @@
       async onOptionsClick(e) {
         e.preventDefault()
         e.stopPropagation()
-        let originalStatusId = this.get('originalStatusId')
-        let originalAccountId = this.get('originalAccountId')
+        let { originalStatusId, originalAccountId } = this.get()
         let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
         let dialogs = await importDialogs()
         await updateRelationshipPromise

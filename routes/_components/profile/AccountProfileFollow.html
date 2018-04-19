@@ -31,11 +31,13 @@
       async onFollowButtonClick(e) {
         e.preventDefault()
         e.stopPropagation()
-        let account = this.get('account')
-        let accountId = this.get('accountId')
-        let following = this.get('following')
-        let followRequested = this.get('followRequested')
-        let blocking = this.get('blocking')
+        let {
+          account,
+          accountId,
+          following,
+          followRequested,
+          blocking
+        } = this.get()
         this.set({animateFollowButton: true}) // TODO: this should be an event, not toggling a boolean
         if (blocking) { // unblock
           await setAccountBlocked(accountId, false)

@@ -77,7 +77,7 @@
         e.preventDefault()
         let currentInstance = this.store.get('currentInstance')
         let pinnedPages = this.store.get('pinnedPages')
-        let href = this.get('href')
+        let { href } = this.get()
         pinnedPages[currentInstance] = href
         this.store.set({pinnedPages: pinnedPages})
         this.store.save()

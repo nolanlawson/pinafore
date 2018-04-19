@@ -4,13 +4,12 @@ import { toast } from '../_utils/toast'
 import { updateProfileAndRelationship } from './accounts'
 
 export async function setAccountBlocked (accountId, block, toastOnSuccess) {
-  let instanceName = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
   try {
     if (block) {
-      await blockAccount(instanceName, accessToken, accountId)
+      await blockAccount(currentInstance, accessToken, accountId)
     } else {
-      await unblockAccount(instanceName, accessToken, accountId)
+      await unblockAccount(currentInstance, accessToken, accountId)
     }
     await updateProfileAndRelationship(accountId)
     if (toastOnSuccess) {
