@@ -25,11 +25,11 @@ export class RealmStore extends Store {
 
   computeForRealm (key, defaultValue) {
     this.compute(key,
-        ['realms', 'currentRealm'],
-        (realms, currentRealm) => {
-          let realmData = realms.get(currentRealm)
-          return (realmData && realmData[key]) || defaultValue
-        })
+      ['realms', 'currentRealm'],
+      (realms, currentRealm) => {
+        let realmData = realms.get(currentRealm)
+        return (realmData && realmData[key]) || defaultValue
+      })
   }
 
   /*

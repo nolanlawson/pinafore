@@ -2,10 +2,10 @@ import { Selector as $ } from 'testcafe'
 import {
   composeButton, composeInput, composeLengthIndicator, emojiButton, getComposeSelectionStart, getUrl,
   homeNavButton,
-  notificationsNavButton
+  notificationsNavButton,
+  times
 } from '../utils'
 import { foobarRole } from '../roles'
-import times from 'lodash/times'
 
 fixture`012-compose.js`
   .page`http://localhost:4002`

@@ -29,5 +29,5 @@ test('navigates to settings/instances', async t => {
     .click($('a').withText('Instances'))
     .expect(getUrl()).contains('/settings/instances')
     .expect($('.container').innerText)
-      .contains("You're not logged in to any instances")
+    .contains("You're not logged in to any instances")
 })

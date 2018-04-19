@@ -1,4 +1,4 @@
-import times from 'lodash/times'
+import { times } from './utils'
 
 export const homeTimeline = [
   {content: 'pinned toot 1'},

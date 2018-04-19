@@ -19,7 +19,7 @@ import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 
 const BATCH_SIZE = 20
 const TIME_AGO = 14 * 24 * 60 * 60 * 1000 // two weeks ago
-const DELAY = 5 * 60 * 1000               // five minutes
+const DELAY = 5 * 60 * 1000 // five minutes
 
 function batchedGetAll (callGetAll, callback) {
   function nextBatch () {
