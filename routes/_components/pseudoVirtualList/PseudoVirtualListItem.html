@@ -12,7 +12,6 @@
   {{/if}}
 </div>
 <script>
-
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
 
@@ -27,7 +26,7 @@
           // unrender lazily; it's not a critical UI task
           scheduleIdleTask(() => {
             mark('unrender')
-            let { isIntersecting } = this.get()
+            let { isIntersecting } = this.get() || {} // TODO: wtf svelte?
             if (!isIntersecting) {
               this.set({hide: true})
             }

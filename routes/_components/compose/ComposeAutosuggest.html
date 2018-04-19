@@ -59,14 +59,14 @@
       // perf improves for input responsiveness
       this.observe('composeSelectionStart', () => {
         scheduleIdleTask(() => {
-          let { composeSelectionStart } = this.get()
+          let { composeSelectionStart } = this.get() || {} // TODO: wtf svelte?
           this.set({composeSelectionStartDeferred: composeSelectionStart})
         })
       })
       this.observe('composeFocused', (composeFocused) => {
         let updateFocusedState = () => {
           scheduleIdleTask(() => {
-            let { composeFocused } = this.get()
+            let { composeFocused } = this.get() || {} // TODO: wtf svelte?
             this.set({composeFocusedDeferred: composeFocused})
           })
         }

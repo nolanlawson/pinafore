@@ -198,7 +198,7 @@
         let { currentInstance } = this.store.get()
         let { timeline } = this.get()
         let handleItemIdsToAdd = () => {
-          let { itemIdsToAdd } = this.get()
+          let { itemIdsToAdd } = this.get() || {} // TODO: wtf svelte?
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
             return
           }

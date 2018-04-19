@@ -113,8 +113,7 @@ export default {
       await setAccountFollowed(accountId, !following, true)
     },
     async onBlockClicked() {
-      let { account, blocking } = this.get()
-      let accountId = account.id
+      let { accountId, blocking } = this.get()
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
