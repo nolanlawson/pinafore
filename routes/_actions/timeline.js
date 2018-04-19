@@ -79,10 +79,11 @@ export async function setupTimeline () {
   // (i.e. via offline mode), then we need to re-fetch
   // Also do this if it's a thread, because threads change pretty frequently and
   // we don't have a good way to update them.
-
-  let { timelineItemIds } = store.get()
-  let { timelineItemIdsAreStale } = store.get()
-  let { currentTimeline } = store.get()
+  let {
+    timelineItemIds,
+    timelineItemIdsAreStale,
+    currentTimeline
+  } = store.get()
   if (!timelineItemIds ||
       timelineItemIdsAreStale ||
       currentTimeline.startsWith('status/')) {
