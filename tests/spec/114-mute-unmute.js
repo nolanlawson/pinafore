@@ -1,7 +1,7 @@
 import {
   accountProfileFollowButton,
   accountProfileMoreOptionsButton, communityNavButton, getNthSearchResult,
-  getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog
+  getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog, closeDialogButton
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { foobarRole } from '../roles'
@@ -38,6 +38,6 @@ test('Can mute and unmute an account', async t => {
     .expect(getNthDialogOptionsOption(2).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(4).innerText).contains('Mute @admin')
-    .click(getNthDialogOptionsOption(2))
+    .click(closeDialogButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
 })
