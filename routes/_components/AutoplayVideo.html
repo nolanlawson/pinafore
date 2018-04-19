@@ -1,7 +1,7 @@
 <video
-  class="{{className || ''}}"
+  class="autoplay-video {{className || ''}}"
   aria-label="{{ariaLabel || ''}}"
-  style="background: url({{poster}});"
+  style="background-image: url({{poster}});"
   :poster
   :width
   :height
@@ -12,3 +12,10 @@
   webkit-playsinline
   playsinline
 />
+<style>
+  .autoplay-video {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+</style>
