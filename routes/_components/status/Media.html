@@ -111,8 +111,10 @@
 
   export default {
     oncreate() {
-      registerClickDelegate(this, this.get('delegateKey'), () => {
-        if (this.get('media').type === 'video') {
+      let { delegateKey } = this.get()
+      registerClickDelegate(this, delegateKey, () => {
+        let { media } = this.get()
+        if (media.type === 'video') {
           this.onClickPlayVideoButton()
         } else {
           this.onClickShowImageButton()

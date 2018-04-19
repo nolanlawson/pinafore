@@ -54,11 +54,17 @@
 
   export default {
     oncreate() {
+      let {
+        favoriteKey,
+        reblogKey,
+        replyKey,
+        optionsKey
+      } = this.get()
       registerClickDelegates(this, {
-        [this.get('favoriteKey')]: (e) => this.onFavoriteClick(e),
-        [this.get('reblogKey')]: (e) => this.onReblogClick(e),
-        [this.get('replyKey')]: (e) => this.onReplyClick(e),
-        [this.get('optionsKey')]: (e) => this.onOptionsClick(e)
+        [favoriteKey]: (e) => this.onFavoriteClick(e),
+        [reblogKey]: (e) => this.onReblogClick(e),
+        [replyKey]: (e) => this.onReplyClick(e),
+        [optionsKey]: (e) => this.onOptionsClick(e)
       })
       on('postedStatus', this, this.onPostedStatus)
     },
@@ -86,9 +92,9 @@
         e.stopPropagation()
         requestAnimationFrame(() => {
           let { uuid } = this.get()
-          let $repliesShown = this.store.get('repliesShown')
-          $repliesShown[uuid] = !$repliesShown[uuid]
-          this.store.set({'repliesShown': $repliesShown})
+          let { repliesShown } = this.store.get()
+          repliesShown[uuid] = !repliesShown[uuid]
+          this.store.set({repliesShown})
           this.fire('recalculateHeight')
         })
       },
@@ -102,8 +108,12 @@
         dialogs.showStatusOptionsDialog(originalStatusId)
       },
       onPostedStatus(realm, inReplyToUuid) {
-        if (realm !== this.get('originalStatusId') ||
-            inReplyToUuid !== this.get('uuid')) {
+        let {
+          originalStatusId,
+          uuid
+        } = this.get()
+        if (realm !== originalStatusId ||
+            inReplyToUuid !== uuid) {
           return
         }
         try {

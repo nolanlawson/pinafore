@@ -13,15 +13,20 @@
   export default {
     oncreate() {
       mark('onCreate VirtualListContainer')
-      this.store.setCurrentRealm(this.get('realm'))
-      let node = document.querySelector(this.get('containerQuery'))
+      let {
+        realm,
+        containerQuery
+      } = this.get()
+      this.store.setCurrentRealm(realm)
+      let node = document.querySelector(containerQuery)
       this.setupScroll(node)
       this.setupFullscreen()
-      let scrollTop = this.store.get('scrollTop')
+      let { scrollTop } = this.store.get()
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
-          if (!this.get('initializedScrollTop') && allVisibleItemsHaveHeight && node) {
+          let { initializedScrollTop } = this.get()
+          if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
             this.set({'initializedScrollTop': true})
             mark('set scrollTop')
             console.log('forcing scroll top to ', scrollTop)
@@ -60,7 +65,8 @@
           return
         }
         this.scrollListener = throttle(event => {
-          if (this.get('fullscreen')) {
+          let { fullscreen } = this.get()
+          if (fullscreen) {
             return
           }
           this.onScroll(event)
@@ -71,7 +77,8 @@
         node.addEventListener('scroll', this.scrollListener)
       },
       teardownScroll() {
-        let node = document.querySelector(this.get('containerQuery'))
+        let { containerQuery } = this.get()
+        let node = document.querySelector(containerQuery)
         if (node) {
           node.removeEventListener('scroll', this.scrollListener)
         }

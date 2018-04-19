@@ -47,17 +47,23 @@
     methods: {
       show,
       close,
-      onDestroyDialog(id) {
-        if (id !== this.get('id')) {
+      onDestroyDialog(thisId) {
+        let {
+          id,
+          positiveResult,
+          onPositive,
+          onNegative
+        } = this.get()
+        if (thisId !== id) {
           return
         }
-        if (this.get('positiveResult')) {
-          if (this.get('onPositive')) {
-            this.get('onPositive')()
+        if (positiveResult) {
+          if (onPositive) {
+            onPositive()
           }
         } else {
-          if (this.get('onNegative')) {
-            this.get('onNegative')()
+          if (onNegative) {
+            onNegative()
           }
         }
       },

@@ -189,7 +189,8 @@
     },
     methods: {
       async onClickPostButton() {
-        if (this.get('sticky')) {
+        let { sticky } = this.get()
+        if (sticky) {
           // when the button is sticky, we're scrolled down the home timeline,
           // so we should launch a new compose dialog
           let dialogs = await importDialogs()

@@ -71,7 +71,8 @@
     methods: {
       async onEmojiClick() {
         let dialogs = await importDialogs()
-        dialogs.showEmojiDialog(this.get('realm'))
+        let { realm } = this.get()
+        dialogs.showEmojiDialog(realm)
       },
       onMediaClick() {
         this.refs.input.click()
@@ -83,10 +84,12 @@
       },
       async onPostPrivacyClick() {
         let dialogs = await importDialogs()
-        dialogs.showPostPrivacyDialog(this.get('realm'))
+        let { realm } = this.get()
+        dialogs.showPostPrivacyDialog(realm)
       },
       onContentWarningClick() {
-        toggleContentWarningShown(this.get('realm'))
+        let { realm } = this.get()
+        toggleContentWarningShown(realm)
       }
     }
   }

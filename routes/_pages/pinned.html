@@ -38,13 +38,11 @@
 
   export default {
     async oncreate() {
-      let { accountsFetcher } = this.get()
       try {
-        let currentInstance = this.store.get('currentInstance')
+        let { currentInstance } = this.store.get()
         await updateVerifyCredentialsForInstance(currentInstance)
-        let accessToken = this.store.get('accessToken')
-        let verifyCredentials = this.store.get('currentVerifyCredentials')
-        let statuses = await getPinnedStatuses(currentInstance, accessToken, verifyCredentials.id)
+        let { accessToken, currentVerifyCredentials } = this.store.get()
+        let statuses = await getPinnedStatuses(currentInstance, accessToken, currentVerifyCredentials.id)
         this.set({ statuses: statuses })
       } catch (e) {
         toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))

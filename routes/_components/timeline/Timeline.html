@@ -150,7 +150,8 @@
     },
     methods: {
       initialize() {
-        if (this.get('initializeStarted')) {
+        let { initializeStarted } = this.get()
+        if (initializeStarted) {
           return
         }
         this.set({initializeStarted: true})
@@ -165,18 +166,28 @@
         this.set({scrollTop: scrollTop})
       },
       onScrollToBottom() {
-        if (!this.store.get('timelineInitialized') ||
-            this.store.get('runningUpdate') ||
-            this.get('timelineType') === 'status') { // for status contexts, we've already fetched the whole thread
+        let {
+          timelineInitialized,
+          runningUpdate
+        } = this.store()
+        let {
+          timelineType
+        } = this.get()
+        if (!timelineInitialized ||
+            runningUpdate ||
+            timelineType === 'status') { // for status contexts, we've already fetched the whole thread
           return
         }
+        let { currentInstance } = this.store.get()
+        let { timeline } = this.get()
         fetchTimelineItemsOnScrollToBottom(
-          this.store.get('currentInstance'),
-          this.get('timeline')
+          currentInstance,
+          timeline
         )
       },
       onScrollToTop() {
-        if (this.store.get('shouldShowHeader')) {
+        let { shouldShowHeader } = this.store.get()
+        if (shouldShowHeader) {
           this.store.setForCurrentTimeline({
             showHeader: true,
             shouldShowHeader: false
@@ -193,8 +204,10 @@
           }
           mark('handleItemIdsToAdd')
           let { scrollTop } = this.get()
-          let shouldShowHeader = this.store.get('shouldShowHeader')
-          let showHeader = this.store.get('showHeader')
+          let {
+            shouldShowHeader,
+            showHeader
+          } = this.store.get()
           if (timeline.startsWith('status/')) {
             // this is a thread, just insert the statuses already
             showMoreItemsForThread(currentInstance, timeline)
@@ -252,7 +265,8 @@
       },
       clearFocus() {
         try {
-          if (this.store.get('ignoreBlurEvents')) {
+          let { ignoreBlurEvents } = this.store.get()
+          if (ignoreBlurEvents) {
             return
           }
           console.log('clearing focus')
@@ -266,7 +280,7 @@
         }
       },
       restoreFocus() {
-        let lastFocusedElementSelector = this.store.get('lastFocusedElementSelector')
+        let { lastFocusedElementSelector } = this.store.get()
         if (!lastFocusedElementSelector) {
           return
         }

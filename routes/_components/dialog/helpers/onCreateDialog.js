@@ -1,7 +1,8 @@
 import { on } from '../../../_utils/eventBus'
 
-function onDestroy (id) {
-  if (this.get('id') !== id) {
+function onDestroy (thisId) {
+  let { id } = this.get()
+  if (id !== thisId) {
     return
   }
   this.destroy()

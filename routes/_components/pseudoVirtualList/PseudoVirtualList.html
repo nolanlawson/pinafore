@@ -28,25 +28,28 @@
   export default {
     oncreate() {
       mark('PseudoVirtualList oncreate()')
-      this.store.setCurrentRealm(this.get('realm'))
+      let { realm } = this.get()
+      this.store.setCurrentRealm(realm)
 
       // When re-rendering, assume all items are non-intersecting until told otherwise.
       // We already have the heights cached.
-      let intersectionStates = this.store.get('intersectionStates')
+      let { intersectionStates } = this.store.get()
       let keys = Object.keys(intersectionStates)
       for (let key of keys) {
         intersectionStates[key].isCached = true
       }
       this.store.setForRealm({intersectionStates: intersectionStates})
 
+      let { containerQuery } = this.get()
       let intersectionObserver = new IntersectionObserver(this.onIntersection.bind(this), {
-        root: document.querySelector(this.get('containerQuery')),
+        root: document.querySelector(containerQuery),
         rootMargin: '300% 0px'
       })
       this.set({intersectionObserver})
       this.observe('allItemsHaveHeight', allItemsHaveHeight => {
         console.log('allItemsHaveHeight', allItemsHaveHeight)
-        if (allItemsHaveHeight && !this.get('initialized')) {
+        let { initialized } = this.get()
+        if (allItemsHaveHeight && !initialized) {
           this.set({initialized: true})
           console.log('initialized PseudoVirtualList')
           this.fire('initialized')
@@ -74,7 +77,8 @@
     },
     methods: {
       scrollToPosition(element) {
-        if (this.get('scrolledToPosition')) {
+        let { scrolledToPosition } = this.get()
+        if (scrolledToPosition) {
           return
         }
         this.set({scrolledToPosition: true})
@@ -87,7 +91,7 @@
         mark('onIntersection')
         let newIntersectionStates = {}
         let { scrollToItem } = this.get()
-        let intersectionStates = this.store.get('intersectionStates')
+        let { intersectionStates } = this.store.get()
         for (let entry of entries) {
           let key = entry.target.getAttribute('pseudo-virtual-list-key')
           let rect = getRectFromEntry(entry)

@@ -50,7 +50,8 @@
         let textarea = this.refs.textarea
         let firstTime = true
         this.observe('text', text => {
-          if (this.get('rawText') !== text) {
+          let { rawText } = this.get()
+          if (rawText !== text) {
             this.set({rawText: text})
             // this next autosize is required to resize after
             // the user clicks the "toot" button
@@ -60,7 +61,8 @@
           }
           if (firstTime) {
             firstTime = false
-            if (this.get('autoFocus')) {
+            let { autoFocus } = this.get()
+            if (autoFocus) {
               requestAnimationFrame(() => textarea.focus())
             }
           }
@@ -126,27 +128,34 @@
         }
       },
       clickSelectedAutosuggestion(event) {
-        let autosuggestionShown = this.store.get('composeAutosuggestionShown')
-        if (!autosuggestionShown) {
+        let {
+          composeAutosuggestionShown,
+          composeAutosuggestionType
+        } = this.store.get()
+        if (!composeAutosuggestionShown) {
           return false
         }
-        let type = this.store.get('composeAutosuggestionType')
-        if (type === 'account') {
-          /* no await */ clickSelectedAutosuggestionUsername(this.get('realm'))
+        let { realm } = this.get()
+        if (composeAutosuggestionType === 'account') {
+          /* no await */ clickSelectedAutosuggestionUsername(realm)
         } else { // emoji
-          /* no await */ clickSelectedAutosuggestionEmoji(this.get('realm'))
+          /* no await */ clickSelectedAutosuggestionEmoji(realm)
         }
         event.preventDefault()
         event.stopPropagation()
         return true
       },
       incrementAutosuggestSelected(increment, event) {
-        let autosuggestionShown = this.store.get('composeAutosuggestionShown')
-        if (!autosuggestionShown) {
+        let {
+          composeAutosuggestionShown,
+          composeAutosuggestionSelected,
+          composeAutosuggestionSearchResults
+        } = this.store.get()
+        if (!composeAutosuggestionShown) {
           return
         }
-        let selected = this.store.get('composeAutosuggestionSelected') || 0
-        let searchResults = this.store.get('composeAutosuggestionSearchResults') || []
+        let selected = composeAutosuggestionSelected || 0
+        let searchResults = composeAutosuggestionSearchResults || []
         selected += increment
         if (selected >= 0) {
           selected = selected % searchResults.length
@@ -158,8 +167,8 @@
         event.stopPropagation()
       },
       clearAutosuggestions(event) {
-        let autosuggestionShown = this.store.get('composeAutosuggestionShown')
-        if (!autosuggestionShown) {
+        let { composeAutosuggestionShown } = this.store.get()
+        if (!composeAutosuggestionShown) {
           return
         }
         this.store.set({

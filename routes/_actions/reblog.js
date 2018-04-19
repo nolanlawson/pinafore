@@ -4,12 +4,12 @@ import { reblogStatus, unreblogStatus } from '../_api/reblog'
 import { setStatusReblogged as setStatusRebloggedInDatabase } from '../_database/timelines/updateStatus'
 
 export async function setReblogged (statusId, reblogged) {
-  if (!store.get('online')) {
+  let online = store.get()
+  if (!online) {
     toast.say(`You cannot ${reblogged ? 'boost' : 'unboost'} while offline.`)
     return
   }
-  let currentInstance = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
+  let { currentInstance, accessToken } = store.get()
   let networkPromise = reblogged
     ? reblogStatus(currentInstance, accessToken, statusId)
     : unreblogStatus(currentInstance, accessToken, statusId)

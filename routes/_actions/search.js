@@ -3,14 +3,12 @@ import { toast } from '../_utils/toast'
 import { search } from '../_api/search'
 
 export async function doSearch () {
-  let currentInstance = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
-  let queryInSearch = store.get('queryInSearch')
+  let { currentInstance, accessToken, queryInSearch } = store.get()
   store.set({searchLoading: true})
   try {
     let results = await search(currentInstance, accessToken, queryInSearch)
-    let currentQueryInSearch = store.get('queryInSearch') // avoid race conditions
-    if (currentQueryInSearch === queryInSearch) {
+    let { queryInSearch: newQueryInSearch } = store.get() // avoid race conditions
+    if (newQueryInSearch === queryInSearch) {
       store.set({
         searchResultsForQuery: queryInSearch,
         searchResults: results

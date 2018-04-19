@@ -130,7 +130,8 @@
 
   export default {
     oncreate() {
-      registerClickDelegate(this, this.get('delegateKey'), () => this.onClickSensitiveMediaButton())
+      let { delegateKey } = this.get()
+      registerClickDelegate(this, delegateKey, () => this.onClickSensitiveMediaButton())
     },
     components: {
       MediaAttachments
@@ -145,9 +146,9 @@
     methods: {
       onClickSensitiveMediaButton() {
         let { uuid } = this.get()
-        let $sensitivesShown = this.store.get('sensitivesShown') || {}
-        $sensitivesShown[uuid] = !$sensitivesShown[uuid]
-        this.store.set({'sensitivesShown': $sensitivesShown})
+        let { sensitivesShown } = this.store.get()
+        sensitivesShown[uuid] = !sensitivesShown[uuid]
+        this.store.set({sensitivesShown})
         this.fire('recalculateHeight')
       }
     }

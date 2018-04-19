@@ -60,11 +60,13 @@ export async function addTimelineItemIds (instanceName, timelineName, newIds, ne
 
 async function fetchTimelineItemsAndPossiblyFallBack () {
   mark('fetchTimelineItemsAndPossiblyFallBack')
-  let currentTimeline = store.get('currentTimeline')
-  let currentInstance = store.get('currentInstance')
-  let accessToken = store.get('accessToken')
-  let lastTimelineItemId = store.get('lastTimelineItemId')
-  let online = store.get('online')
+  let {
+    currentTimeline,
+    currentInstance,
+    accessToken,
+    lastTimelineItemId,
+    online
+  } = store.get()
 
   let { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, lastTimelineItemId, online)
   addTimelineItems(currentInstance, currentTimeline, items, stale)
@@ -78,9 +80,9 @@ export async function setupTimeline () {
   // Also do this if it's a thread, because threads change pretty frequently and
   // we don't have a good way to update them.
 
-  let timelineItemIds = store.get('timelineItemIds')
-  let timelineItemIdsAreStale = store.get('timelineItemIdsAreStale')
-  let currentTimeline = store.get('currentTimeline')
+  let { timelineItemIds } = store.get()
+  let { timelineItemIdsAreStale } = store.get()
+  let { currentTimeline } = store.get()
   if (!timelineItemIds ||
       timelineItemIdsAreStale ||
       currentTimeline.startsWith('status/')) {
@@ -109,9 +111,10 @@ export async function showMoreItemsForTimeline (instanceName, timelineName) {
 }
 
 export async function showMoreItemsForCurrentTimeline () {
+  let { currentInstance, currentTimeline } = store.get()
   return showMoreItemsForTimeline(
-    store.get('currentInstance'),
-    store.get('currentTimeline')
+    currentInstance,
+    currentTimeline
   )
 }
 

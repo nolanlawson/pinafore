@@ -75,8 +75,7 @@
     methods: {
       onPinClick(e) {
         e.preventDefault()
-        let currentInstance = this.store.get('currentInstance')
-        let pinnedPages = this.store.get('pinnedPages')
+        let { currentInstance, pinnedPages } = this.store.get()
         let { href } = this.get()
         pinnedPages[currentInstance] = href
         this.store.set({pinnedPages: pinnedPages})

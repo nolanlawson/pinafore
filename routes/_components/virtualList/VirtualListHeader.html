@@ -39,7 +39,8 @@
     store: () => virtualListStore,
     methods: {
       doCalculateHeight() {
-        if (this.get('heightCalculated')) { // only need to calculate once, it never changes
+        let { heightCalculated } = this.get()
+        if (heightCalculated) { // only need to calculate once, it never changes
           return
         }
         this.set({heightCalculated: true})

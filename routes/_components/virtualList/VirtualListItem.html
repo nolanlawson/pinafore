@@ -52,7 +52,7 @@
         // when clicking the "More" button on a spoiler.
         let rect = this.refs.node.getBoundingClientRect()
         let { key } = this.get()
-        let itemHeights = this.store.get('itemHeights')
+        let { itemHeights } = this.store.get()
         itemHeights[key] = rect.height
         this.store.setForRealm({itemHeights})
       }

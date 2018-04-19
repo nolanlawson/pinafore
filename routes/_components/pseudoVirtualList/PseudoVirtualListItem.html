@@ -27,7 +27,8 @@
           // unrender lazily; it's not a critical UI task
           scheduleIdleTask(() => {
             mark('unrender')
-            if (!this.get('isIntersecting')) {
+            let { isIntersecting } = this.get()
+            if (!isIntersecting) {
               this.set({hide: true})
             }
             stop('unrender')

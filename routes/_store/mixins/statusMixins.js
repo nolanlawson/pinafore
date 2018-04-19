@@ -1,5 +1,5 @@
 function getStatusModifications (store, instanceName) {
-  let statusModifications = store.get('statusModifications')
+  let { statusModifications } = store.get()
   statusModifications[instanceName] = statusModifications[instanceName] || {
     favorites: {},
     reblogs: {}

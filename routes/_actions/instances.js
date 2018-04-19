@@ -14,17 +14,18 @@ import {
 } from '../_database/meta'
 
 export function changeTheme (instanceName, newTheme) {
-  let instanceThemes = store.get('instanceThemes')
+  let { instanceThemes } = store.get()
   instanceThemes[instanceName] = newTheme
   store.set({instanceThemes: instanceThemes})
   store.save()
-  if (instanceName === store.get('currentInstance')) {
+  let { currentInstance } = store.get()
+  if (instanceName === currentInstance) {
     switchToTheme(newTheme)
   }
 }
 
 export function switchToInstance (instanceName) {
-  let instanceThemes = store.get('instanceThemes')
+  let { instanceThemes } = store.get()
   store.set({
     currentInstance: instanceName,
     searchResults: null,
@@ -35,11 +36,13 @@ export function switchToInstance (instanceName) {
 }
 
 export async function logOutOfInstance (instanceName) {
-  let loggedInInstances = store.get('loggedInInstances')
-  let instanceThemes = store.get('instanceThemes')
-  let loggedInInstancesInOrder = store.get('loggedInInstancesInOrder')
-  let composeData = store.get('composeData')
-  let currentInstance = store.get('currentInstance')
+  let {
+    loggedInInstances,
+    instanceThemes,
+    loggedInInstancesInOrder,
+    composeData,
+    currentInstance
+  } = store.get()
   loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
   let newInstance = instanceName === currentInstance
     ? loggedInInstancesInOrder[0]
@@ -64,13 +67,13 @@ export async function logOutOfInstance (instanceName) {
 }
 
 function setStoreVerifyCredentials (instanceName, thisVerifyCredentials) {
-  let verifyCredentials = store.get('verifyCredentials')
+  let { verifyCredentials } = store.get()
   verifyCredentials[instanceName] = thisVerifyCredentials
   store.set({verifyCredentials: verifyCredentials})
 }
 
 export async function updateVerifyCredentialsForInstance (instanceName) {
-  let loggedInInstances = store.get('loggedInInstances')
+  let { loggedInInstances } = store.get()
   let accessToken = loggedInInstances[instanceName].access_token
   await cacheFirstUpdateAfter(
     () => getVerifyCredentials(instanceName, accessToken),
@@ -81,7 +84,8 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
 }
 
 export async function updateVerifyCredentialsForCurrentInstance () {
-  await updateVerifyCredentialsForInstance(store.get('currentInstance'))
+  let { currentInstance } = store.get()
+  await updateVerifyCredentialsForInstance(currentInstance)
 }
 
 export async function updateInstanceInfo (instanceName) {
@@ -90,7 +94,7 @@ export async function updateInstanceInfo (instanceName) {
     () => getInstanceInfoFromDatabase(instanceName),
     info => setInstanceInfoInDatabase(instanceName, info),
     info => {
-      let instanceInfos = store.get('instanceInfos')
+      let { instanceInfos } = store.get()
       instanceInfos[instanceName] = info
       store.set({instanceInfos: instanceInfos})
     }
