@@ -23,7 +23,7 @@ export class LocalStorageStore extends Store {
       }
     }
     this.set(newState)
-    this.onchange((state, changed) => {
+    this.on('state', ({changed}) => {
       Object.keys(changed).forEach(change => {
         if (this._keysToWatch.has(change)) {
           this._keysToSave[change] = true
