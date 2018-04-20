@@ -40,7 +40,7 @@ export class LocalStorageStore extends Store {
       return
     }
     Object.keys(this._keysToSave).forEach(key => {
-      LS.setItem(`store_${key}`, JSON.stringify(this.get(key)))
+      LS.setItem(`store_${key}`, JSON.stringify(this.get()[key]))
     })
     this._keysToSave = {}
   }

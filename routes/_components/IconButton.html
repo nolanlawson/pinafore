@@ -107,7 +107,7 @@
   export default {
     oncreate() {
       this.observe('animation', animation => {
-        let reduceMotion = this.store.get()
+        let { reduceMotion } = this.store.get()
         if (!animation || reduceMotion) {
           return
         }
