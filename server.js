@@ -42,6 +42,9 @@ app.use(nonDebugOnly(helmet({
       objectSrc: [`'none'`],
       manifestSrc: [`'self'`]
     }
+  },
+  referrerPolicy: {
+    policy: 'no-referrer'
   }
 })))
 
