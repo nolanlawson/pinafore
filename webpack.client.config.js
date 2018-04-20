@@ -65,7 +65,10 @@ module.exports = {
         }
       }),
       new OptimizeCSSAssetsPlugin({})
-    ]
+    ],
+    splitChunks: {
+      chunks: 'all'
+    }
   },
   plugins: [
     new LodashModuleReplacementPlugin({
