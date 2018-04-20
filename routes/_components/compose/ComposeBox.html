@@ -153,20 +153,16 @@
     },
     store: () => store,
     computed: {
-      computedClassName: (overLimit, realm, size, postPrivacyKey, isReply) => {
-        return classname(
-          'compose-box',
-          overLimit && 'over-char-limit',
-          size === 'slim' && 'slim-size',
-          isReply && postPrivacyKey === 'direct' && 'direct-reply'
-        )
-      },
-      hideAndFadeIn: (hidden) => {
-        return classname(
-          'compose-box-fade-in',
-          hidden && 'hidden'
-        )
-      },
+      computedClassName: (overLimit, realm, size, postPrivacyKey, isReply) => (classname(
+        'compose-box',
+        overLimit && 'over-char-limit',
+        size === 'slim' && 'slim-size',
+        isReply && postPrivacyKey === 'direct' && 'direct-reply'
+      )),
+      hideAndFadeIn: (hidden) => (classname(
+        'compose-box-fade-in',
+        hidden && 'hidden'
+      )),
       composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
       text: (composeData) => composeData.text || '',
       media: (composeData) => composeData.media || [],
@@ -175,9 +171,9 @@
       postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
       textLength: (text) => measureText(text),
       contentWarningLength: (contentWarning) => measureText(contentWarning),
-      length: (textLength, contentWarningLength, contentWarningShown) => {
-        return textLength + (contentWarningShown ? contentWarningLength : 0)
-      },
+      length: (textLength, contentWarningLength, contentWarningShown) => (
+        textLength + (contentWarningShown ? contentWarningLength : 0)
+      ),
       overLimit: (length) => length > CHAR_LIMIT,
       contentWarningShown: (composeData) => composeData.contentWarningShown,
       contentWarning: (composeData) => composeData.contentWarning || '',
