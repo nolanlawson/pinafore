@@ -93,10 +93,11 @@
         stop('autosize.destroy()')
       },
       onBlur () {
-        this.store.set({composeFocused: false})
+        this.store.set({composeFocused: null})
       },
       onFocus () {
-        this.store.set({composeFocused: true})
+        let { realm } = this.get()
+        this.store.set({composeFocused: realm})
       },
       onSelectionChange (selectionStart) {
         this.store.set({composeSelectionStart: selectionStart})
