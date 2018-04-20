@@ -1,15 +1,14 @@
-{{#if media.type === 'video'}}
+{{#if type === 'video'}}
   <button type="button"
           class="play-video-button"
-          aria-label="Play video: {{media.description || ''}}"
+          aria-label="Play video: {{description}}"
           delegate-key="{{delegateKey}}"
-          style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
-  >
+          style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;">
     <PlayVideoIcon />
     <LazyImage
-      alt="{{media.description || ''}}"
-      title="{{media.description || ''}}"
-      src="{{media.preview_url}}"
+      alt="{{description}}"
+      title="{{description}}"
+      src="{{previewUrl}}"
       fallback="{{oneTransparentPixel}}"
       width="{{inlineWidth}}"
       height="{{inlineHeight}}"
@@ -20,37 +19,37 @@
 {{else}}
   <button type="button"
           class="show-image-button"
-          aria-label="Show image: {{media.description || ''}}"
-          title="{{media.description || ''}}"
+          aria-label="Show image: {{description}}"
+          title="{{description}}"
           delegate-key="{{delegateKey}}"
           on:mouseover="set({mouseover: event})"
           style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
   >
-  {{#if media.type === 'gifv' && $autoplayGifs}}
+  {{#if type === 'gifv' && $autoplayGifs}}
     <AutoplayVideo
       className="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
-      ariaLabel="Animated GIF: {{media.description || ''}}"
-      poster="{{media.preview_url}}"
-      src="{{media.url}}"
+      ariaLabel="Animated GIF: {{description}}"
+      poster="{{previewUrl}}"
+      src="{{url}}"
       width="{{inlineWidth}}"
       height="{{inlineHeight}}"
     />
-  {{elseif media.type === 'gifv' && !$autoplayGifs}}
+  {{elseif type === 'gifv' && !$autoplayGifs}}
     <NonAutoplayGifv
       class="{{noNativeWidthHeight ? 'no-native-width-height' : ''}}"
-      label="Animated GIF: {{media.description || ''}}"
-      poster="{{media.preview_url}}"
-      src="{{media.url}}"
-      staticSrc="{{media.preview_url}}"
+      label="Animated GIF: {{description}}"
+      poster="{{previewUrl}}"
+      src="{{url}}"
+      staticSrc="{{previewUrl}}"
       width="{{inlineWidth}}"
       height="{{inlineHeight}}"
       playing="{{mouseover}}"
     />
   {{else}}
     <LazyImage
-      alt="{{media.description || ''}}"
-      title="{{media.description || ''}}"
-      src="{{media.preview_url}}"
+      alt="{{description}}"
+      title="{{description}}"
+      src="{{previewUrl}}"
       fallback="{{oneTransparentPixel}}"
       width="{{inlineWidth}}"
       height="{{inlineHeight}}"
@@ -112,8 +111,8 @@
     oncreate () {
       let { delegateKey } = this.get()
       registerClickDelegate(this, delegateKey, () => {
-        let { media } = this.get()
-        if (media.type === 'video') {
+        let { type } = this.get()
+        if (type === 'video') {
           this.onClickPlayVideoButton()
         } else {
           this.onClickShowImageButton()
@@ -135,20 +134,24 @@
       originalWidth: original => original && original.width,
       originalHeight: original => original && original.height,
       noNativeWidthHeight: (smallWidth, smallHeight) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number',
-      delegateKey: (media, uuid) => `media-${uuid}-${media.id}`
+      delegateKey: (media, uuid) => `media-${uuid}-${media.id}`,
+      description: (media) => media.description || '',
+      previewUrl: (media) => media.preview_url,
+      url: (media) => media.url,
+      type: (media) => media.type
     },
     methods: {
       async onClickPlayVideoButton () {
-        let { media, modalWidth, modalHeight } = this.get()
+        let { previewUrl, url, modalWidth, modalHeight, description } = this.get()
         let dialogs = await importDialogs()
-        dialogs.showVideoDialog(media.preview_url, media.url,
-          modalWidth, modalHeight, media.description)
+        dialogs.showVideoDialog(previewUrl, url,
+          modalWidth, modalHeight, description)
       },
       async onClickShowImageButton () {
-        let { media, modalWidth, modalHeight } = this.get()
+        let { previewUrl, url, modalWidth, modalHeight, description, type } = this.get()
         let dialogs = await importDialogs()
-        dialogs.showImageDialog(media.preview_url, media.url, media.type,
-          modalWidth, modalHeight, media.description)
+        dialogs.showImageDialog(previewUrl, url, type,
+          modalWidth, modalHeight, description)
       }
     },
     data: () => ({
