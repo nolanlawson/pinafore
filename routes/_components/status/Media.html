@@ -98,19 +98,18 @@
   }
 </style>
 <script>
-  import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT } from '../../_static/media'
+  import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media'
   import { importDialogs } from '../../_utils/asyncModules'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
-  import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
   import { store } from '../../_store/store'
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate } from '../../_utils/delegate'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { delegateKey } = this.get()
       registerClickDelegate(this, delegateKey, () => {
         let { media } = this.get()
@@ -139,13 +138,13 @@
       delegateKey: (media, uuid) => `media-${uuid}-${media.id}`
     },
     methods: {
-      async onClickPlayVideoButton() {
+      async onClickPlayVideoButton () {
         let { media, modalWidth, modalHeight } = this.get()
         let dialogs = await importDialogs()
         dialogs.showVideoDialog(media.preview_url, media.url,
           modalWidth, modalHeight, media.description)
       },
-      async onClickShowImageButton() {
+      async onClickShowImageButton () {
         let { media, modalWidth, modalHeight } = this.get()
         let dialogs = await importDialogs()
         dialogs.showImageDialog(media.preview_url, media.url, media.type,

@@ -105,10 +105,10 @@
       },
       scrollTop: ($scrollTop) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
-      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight,
+      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
     },
     methods: {
-      calculateListOffset() {
+      calculateListOffset () {
         // TODO: better way to get the offset top?
         let node = this.refs.node
         if (!node) {

@@ -55,8 +55,8 @@ export default {
     muteIcon: (muting) => muting ? '#fa-volume-up' : '#fa-volume-off',
     // end account data copypasta
     items: (blockLabel, blocking, blockIcon, muteLabel, muteIcon,
-            followLabel, followIcon, following, followRequested,
-            accountId, verifyCredentialsId, acct) => {
+      followLabel, followIcon, following, followRequested,
+      accountId, verifyCredentialsId, acct) => {
       let isUser = accountId === verifyCredentialsId
       return [
         !isUser && {
@@ -86,7 +86,7 @@ export default {
   methods: {
     show,
     close,
-    onClick(item) {
+    onClick (item) {
       switch (item.key) {
         case 'mention':
           return this.onMentionClicked()
@@ -98,7 +98,7 @@ export default {
           return this.onMuteClicked()
       }
     },
-    async onMentionClicked() {
+    async onMentionClicked () {
       let { acct } = this.get()
       this.store.setComposeData('dialog', {
         text: `@${acct} `
@@ -107,17 +107,17 @@ export default {
       dialogs.showComposeDialog()
       this.close()
     },
-    async onFollowClicked() {
+    async onFollowClicked () {
       let { accountId, following } = this.get()
       this.close()
       await setAccountFollowed(accountId, !following, true)
     },
-    async onBlockClicked() {
+    async onBlockClicked () {
       let { accountId, blocking } = this.get()
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
-    async onMuteClicked() {
+    async onMuteClicked () {
       let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)
@@ -126,6 +126,6 @@ export default {
   components: {
     ModalDialog,
     GenericDialogList
-  },
+  }
 }
 </script>

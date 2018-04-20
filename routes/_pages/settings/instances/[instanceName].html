@@ -112,9 +112,9 @@
     },
     store: () => store,
     data: () => ({
-      themes: themes,
+      themes: themes
     }),
-    async oncreate() {
+    async oncreate () {
       let { instanceName } = this.get()
       await updateVerifyCredentialsForInstance(instanceName)
     },
@@ -124,23 +124,23 @@
       verifyCredentials: ($verifyCredentials, instanceName) => $verifyCredentials && $verifyCredentials[instanceName]
     },
     methods: {
-      onThemeChange() {
+      onThemeChange () {
         let { newTheme, instanceName } = this.get()
-        changeTheme(instanceName,  newTheme)
+        changeTheme(instanceName, newTheme)
       },
-      onSwitchToThisInstance(e) {
+      onSwitchToThisInstance (e) {
         e.preventDefault()
         let { instanceName } = this.get()
         switchToInstance(instanceName)
       },
-      async onLogOut(e) {
+      async onLogOut (e) {
         e.preventDefault()
         let { instanceName } = this.get()
 
         let dialogs = await importDialogs()
         dialogs.showConfirmationDialog({
           text: `Log out of ${instanceName}?`,
-          onPositive() {
+          onPositive () {
             logOutOfInstance(instanceName)
           }
         })

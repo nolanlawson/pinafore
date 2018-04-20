@@ -19,14 +19,13 @@
   }
 </style>
 <script>
-
   import PseudoVirtualListLazyItem from './PseudoVirtualListLazyItem.html'
   import { getRectFromEntry } from '../../_utils/getRectFromEntry'
   import { mark, stop } from '../../_utils/marks'
   import { pseudoVirtualListStore } from './pseudoVirtualListStore'
 
   export default {
-    oncreate() {
+    oncreate () {
       mark('PseudoVirtualList oncreate()')
       let { realm } = this.get()
       this.store.setCurrentRealm(realm)
@@ -57,7 +56,7 @@
       })
       stop('PseudoVirtualList oncreate()')
     },
-    ondestroy() {
+    ondestroy () {
       let { intersectionObserver } = this.get()
       if (intersectionObserver) {
         intersectionObserver.disconnect()
@@ -65,18 +64,18 @@
       this.store.setCurrentRealm(null)
     },
     helpers: {
-      isIntersecting(key, $intersectionStates) {
+      isIntersecting (key, $intersectionStates) {
         return !!($intersectionStates[key] && $intersectionStates[key].isIntersecting)
       },
-      isCached(key, $intersectionStates) {
+      isCached (key, $intersectionStates) {
         return !!($intersectionStates[key] && $intersectionStates[key].isCached)
       },
-      getHeight(key, $intersectionStates) {
+      getHeight (key, $intersectionStates) {
         return $intersectionStates[key] && $intersectionStates[key].height
       }
     },
     methods: {
-      scrollToPosition(element) {
+      scrollToPosition (element) {
         let { scrolledToPosition } = this.get()
         if (scrolledToPosition) {
           return
@@ -87,7 +86,7 @@
           element.scrollIntoView(true)
         })
       },
-      onIntersection(entries) {
+      onIntersection (entries) {
         mark('onIntersection')
         let newIntersectionStates = {}
         let { scrollToItem } = this.get()

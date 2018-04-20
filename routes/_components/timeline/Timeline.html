@@ -63,14 +63,14 @@
   import { doubleRAF } from '../../_utils/doubleRAF'
 
   export default {
-    oncreate() {
+    oncreate () {
       console.log('timeline oncreate()')
       this.setupFocus()
       setupTimeline()
       this.restoreFocus()
       this.setupStreaming()
     },
-    ondestroy() {
+    ondestroy () {
       console.log('ondestroy')
       this.teardownFocus()
     },
@@ -122,15 +122,13 @@
       },
       // for threads, it's simpler to just render all items as a pseudo-virtual list
       // due to need to scroll to the right item and thus calculate all item heights up-front
-      virtual: (timelineType) => timelineType !=='status',
-      scrollToItem: (timelineType, timelineValue, $firstTimelineItemId) => {
-        // Scroll to the first item if this is a "status in own thread" timeline.
-        // Don't scroll to the first item because it obscures the "back" button.
-        return timelineType === 'status'
-          && $firstTimelineItemId
-          && timelineValue !== $firstTimelineItemId
-          && timelineValue
-      },
+      virtual: (timelineType) => timelineType !== 'status',
+      // Scroll to the first item if this is a "status in own thread" timeline.
+      // Don't scroll to the first item because it obscures the "back" button.
+      scrollToItem: (timelineType, timelineValue, $firstTimelineItemId) => (
+        timelineType === 'status' && $firstTimelineItemId &&
+        timelineValue !== $firstTimelineItemId && timelineValue
+      ),
       itemIdsToAdd: ($itemIdsToAdd) => $itemIdsToAdd,
       headerProps: (itemIdsToAdd) => {
         return {
@@ -149,7 +147,7 @@
       blurWithCapture
     },
     methods: {
-      initialize() {
+      initialize () {
         let { initializeStarted } = this.get()
         if (initializeStarted) {
           return
@@ -162,10 +160,10 @@
           stop('initializeTimeline')
         })
       },
-      onScrollTopChanged(scrollTop) {
+      onScrollTopChanged (scrollTop) {
         this.set({scrollTop: scrollTop})
       },
-      onScrollToBottom() {
+      onScrollToBottom () {
         let {
           timelineInitialized,
           runningUpdate
@@ -185,7 +183,7 @@
           timeline
         )
       },
-      onScrollToTop() {
+      onScrollToTop () {
         let { shouldShowHeader } = this.store.get()
         if (shouldShowHeader) {
           this.store.setForCurrentTimeline({
@@ -194,7 +192,7 @@
           })
         }
       },
-      setupStreaming() {
+      setupStreaming () {
         let { currentInstance } = this.store.get()
         let { timeline } = this.get()
         let handleItemIdsToAdd = () => {
@@ -230,20 +228,20 @@
           scheduleIdleTask(handleItemIdsToAdd)
         })
       },
-      setupFocus() {
+      setupFocus () {
         this.onPushState = this.onPushState.bind(this)
         this.store.setForCurrentTimeline({
           ignoreBlurEvents: false
         })
         window.addEventListener('pushState', this.onPushState)
       },
-      teardownFocus() {
+      teardownFocus () {
         window.removeEventListener('pushState', this.onPushState)
       },
-      onPushState() {
+      onPushState () {
         this.store.setForCurrentTimeline({ ignoreBlurEvents: true })
       },
-      saveFocus(e) {
+      saveFocus (e) {
         try {
           let { currentInstance } = this.store.get()
           let { timeline } = this.get()
@@ -263,7 +261,7 @@
           console.error('unable to save focus', err)
         }
       },
-      clearFocus() {
+      clearFocus () {
         try {
           let { ignoreBlurEvents } = this.store.get()
           if (ignoreBlurEvents) {
@@ -279,7 +277,7 @@
           console.error('unable to clear focus', err)
         }
       },
-      restoreFocus() {
+      restoreFocus () {
         let { lastFocusedElementSelector } = this.store.get()
         if (!lastFocusedElementSelector) {
           return
@@ -294,7 +292,7 @@
           })
         })
       },
-      onNoNeedToScroll() {
+      onNoNeedToScroll () {
         // If the timeline doesn't need to scroll, then we can safely "preinitialize,"
         // i.e. render anything above the fold of the timeline. This avoids the affect
         // where the scrollable content appears to jump around if we need to scroll it.

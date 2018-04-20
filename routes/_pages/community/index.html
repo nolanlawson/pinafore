@@ -95,7 +95,7 @@
   import { updateLists } from '../../_actions/lists'
 
   export default {
-    async oncreate() {
+    async oncreate () {
       let { currentInstance } = this.store.get()
       if (currentInstance) {
         await updateLists()
@@ -111,5 +111,5 @@
     computed: {
       isLockedAccount: ($currentVerifyCredentials) => $currentVerifyCredentials && $currentVerifyCredentials.locked
     }
-  };
+  }
 </script>

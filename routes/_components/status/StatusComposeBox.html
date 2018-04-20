@@ -25,7 +25,7 @@
   const THROTTLE_DELAY = 150
 
   export default {
-    oncreate() {
+    oncreate () {
       on('postedStatus', this, this.onPostedStatus)
       this.setupRecalculateHeightListener()
     },
@@ -34,7 +34,7 @@
       composeData: ($currentComposeData, originalStatusId) => $currentComposeData[originalStatusId] || {}
     },
     methods: {
-      onPostedStatus(realm) {
+      onPostedStatus (realm) {
         let { originalStatusId } = this.get()
         if (realm !== originalStatusId) {
           return
@@ -47,7 +47,7 @@
           this.fire('recalculateHeight')
         })
       },
-      setupRecalculateHeightListener() {
+      setupRecalculateHeightListener () {
         const recalc = () => requestAnimationFrame(() => this.fire('recalculateHeight'))
         // debounce AND throttle due to 333ms content warning animation
         const debounced = debounce(recalc, DEBOUNCE_DELAY)

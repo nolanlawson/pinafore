@@ -15,14 +15,14 @@
   import { close } from '../helpers/closeDialog'
 
   export default {
-    oncreate() {
+    oncreate () {
       on('postedStatus', this, this.onPostedStatus)
       onCreateDialog.call(this)
     },
     methods: {
       show,
       close,
-      onPostedStatus(realm) {
+      onPostedStatus (realm) {
         if (realm !== 'dialog') {
           return
         }

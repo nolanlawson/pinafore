@@ -55,7 +55,7 @@
   const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`)
 
   export default {
-    oncreate() {
+    oncreate () {
       // perf improves for input responsiveness
       this.observe('composeSelectionStart', () => {
         scheduleIdleTask(() => {
@@ -94,7 +94,7 @@
           composeAutosuggestionSelected: 0,
           composeAutosuggestionSearchText: searchText,
           composeAutosuggestionSearchResults: results,
-          composeAutosuggestionType: type,
+          composeAutosuggestionType: type
         })
       })
       this.observe('shown', shown => {
@@ -103,7 +103,7 @@
     },
     methods: {
       once: once,
-      onClick(item) {
+      onClick (item) {
         this.fire('autosuggestItemSelected')
         let { realm } = this.get()
         let { composeSelectionStart, composeAutosuggestionSearchText } = this.store.get()
@@ -114,16 +114,15 @@
         } else {
           /* no await */ insertEmojiAtPosition(realm, item, startIndex, endIndex)
         }
-
       },
-      async searchAccounts(searchText) {
+      async searchAccounts (searchText) {
         searchText = searchText.substring(1)
         let { currentInstance } = this.store.get()
         let results = await searchAccountsByUsernameInDatabase(
           currentInstance, searchText, DATABASE_SEARCH_RESULTS_LIMIT)
         return results.slice(0, SEARCH_RESULTS_LIMIT)
       },
-      searchEmoji(searchText) {
+      searchEmoji (searchText) {
         searchText = searchText.toLowerCase().substring(1)
         let { currentCustomEmoji } = this.store.get()
         let results = currentCustomEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))

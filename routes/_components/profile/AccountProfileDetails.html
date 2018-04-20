@@ -120,7 +120,7 @@
       numFollowersDisplay: numFollowers => numberFormat.format(numFollowers)
     },
     methods: {
-      async onMoreOptionsClick() {
+      async onMoreOptionsClick () {
         let { account, relationship, verifyCredentials } = this.get()
         let dialogs = await importDialogs()
         dialogs.showAccountProfileOptionsDialog(account, relationship, verifyCredentials)

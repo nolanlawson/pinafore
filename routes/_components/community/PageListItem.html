@@ -73,7 +73,7 @@
       IconButton
     },
     methods: {
-      onPinClick(e) {
+      onPinClick (e) {
         e.preventDefault()
         let { currentInstance, pinnedPages } = this.store.get()
         let { href } = this.get()

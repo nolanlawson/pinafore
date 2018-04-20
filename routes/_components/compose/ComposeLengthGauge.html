@@ -24,7 +24,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { lengthAsFraction } = this.get()
       this.set({lengthAsFractionDeferred: lengthAsFraction})
       // perf improvement for keyboard input latency

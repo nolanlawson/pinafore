@@ -37,7 +37,7 @@
   import { updateVerifyCredentialsForInstance } from '.././_actions/instances'
 
   export default {
-    async oncreate() {
+    async oncreate () {
       try {
         let { currentInstance } = this.store.get()
         await updateVerifyCredentialsForInstance(currentInstance)

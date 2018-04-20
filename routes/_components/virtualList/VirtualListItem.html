@@ -28,7 +28,7 @@
   import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
 
   export default {
-    oncreate() {
+    oncreate () {
       let asyncLayout = new AsyncLayout(node => node.getAttribute('virtual-list-key'))
       let { key } = this.get()
       asyncLayout.observe(key, this.refs.node, (rect) => {
@@ -39,7 +39,7 @@
       this.doRecalculateHeight = this.doRecalculateHeight.bind(this)
       registerResizeListener(this.doRecalculateHeight)
     },
-    ondestroy() {
+    ondestroy () {
       unregisterResizeListener(this.doRecalculateHeight)
     },
     store: () => virtualListStore,
@@ -47,7 +47,7 @@
       'shown': ($itemHeights, key) => $itemHeights[key] > 0
     },
     methods: {
-      doRecalculateHeight() {
+      doRecalculateHeight () {
         // Recalculate immediately because this is done on-demand, e.g.
         // when clicking the "More" button on a spoiler.
         let rect = this.refs.node.getBoundingClientRect()

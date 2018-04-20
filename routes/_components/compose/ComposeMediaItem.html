@@ -81,7 +81,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
-    oncreate() {
+    oncreate () {
       this.setupSyncFromStore()
       this.setupSyncToStore()
     },
@@ -90,7 +90,7 @@
     }),
     store: () => store,
     methods: {
-      setupSyncFromStore() {
+      setupSyncFromStore () {
         this.observe('mediaDescriptions', mediaDescriptions => {
           mediaDescriptions = mediaDescriptions || []
           let { index, rawText } = this.get()
@@ -100,7 +100,7 @@
           }
         })
       },
-      setupSyncToStore() {
+      setupSyncToStore () {
         const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
@@ -118,7 +118,7 @@
           saveStore()
         }, {init: false})
       },
-      onDeleteMedia() {
+      onDeleteMedia () {
         let {
           realm,
           index

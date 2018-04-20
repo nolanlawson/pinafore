@@ -67,10 +67,10 @@
     methods: {
       push,
       splice,
-      say(text) {
+      say (text) {
         this.push('messages', text)
       },
-      onNewToast(text) {
+      onNewToast (text) {
         this._queue = this._queue.then(() => {
           this.set({
             'text': text,
