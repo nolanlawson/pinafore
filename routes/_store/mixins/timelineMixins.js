@@ -5,7 +5,7 @@ export function timelineMixins (Store) {
     let valuesToSet = {}
     for (let key of Object.keys(obj)) {
       let rootKey = `timelineData_${key}`
-      let root = this.get(rootKey) || {}
+      let root = this.get()[rootKey] || {}
       let instanceData = root[instanceName] = root[instanceName] || {}
       instanceData[timelineName] = obj[key]
       valuesToSet[rootKey] = root
@@ -16,7 +16,7 @@ export function timelineMixins (Store) {
 
   Store.prototype.getForTimeline = function (instanceName, timelineName, key) {
     let rootKey = `timelineData_${key}`
-    let root = this.get(rootKey)
+    let root = this.get()[rootKey]
     return root && root[instanceName] && root[instanceName][timelineName]
   }
 
@@ -26,7 +26,7 @@ export function timelineMixins (Store) {
   }
 
   Store.prototype.getAllTimelineData = function (instanceName, key) {
-    let root = this.get(`timelineData_${key}`) || {}
+    let root = this.get()[`timelineData_${key}`] || {}
     return root[instanceName] || {}
   }
 

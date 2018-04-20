@@ -17,8 +17,7 @@ export class RealmStore extends Store {
   }
 
   setForRealm (obj) {
-    let { currentRealm } = this.get()
-    let { realms } = this.get()
+    let { currentRealm, realms } = this.get()
     realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, obj))
     this.set({realms: realms})
   }
@@ -58,7 +57,7 @@ export class RealmStore extends Store {
         return
       }
       mark('batchUpdate')
-      let obj = this.get(key)
+      let obj = this.get()[key]
       for (let otherKey of updatedKeys) {
         obj[otherKey] = batch[otherKey]
       }
