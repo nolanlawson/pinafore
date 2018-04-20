@@ -29,7 +29,7 @@
     methods: {
       show,
       close,
-      onClick(item) {
+      onClick (item) {
         let { realm } = this.get()
         setPostPrivacy(realm, item.key)
         this.close()

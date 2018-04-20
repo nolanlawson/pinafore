@@ -129,7 +129,7 @@
   import { registerClickDelegate } from '../../_utils/delegate'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { delegateKey } = this.get()
       registerClickDelegate(this, delegateKey, () => this.onClickSensitiveMediaButton())
     },
@@ -141,10 +141,10 @@
       mediaAttachments: (originalStatus) => originalStatus.media_attachments,
       sensitiveShown: ($sensitivesShown, uuid) => !!$sensitivesShown[uuid],
       sensitive: (originalStatus, $markMediaAsSensitive) => originalStatus.sensitive || $markMediaAsSensitive,
-      delegateKey: (uuid) => `sensitive-${uuid}`,
+      delegateKey: (uuid) => `sensitive-${uuid}`
     },
     methods: {
-      onClickSensitiveMediaButton() {
+      onClickSensitiveMediaButton () {
         let { uuid } = this.get()
         let { sensitivesShown } = this.store.get()
         sensitivesShown[uuid] = !sensitivesShown[uuid]

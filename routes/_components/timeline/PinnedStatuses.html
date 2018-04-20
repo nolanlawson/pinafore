@@ -16,7 +16,7 @@
   import { updatePinnedStatusesForAccount } from '../../_actions/pinnedStatuses'
 
   export default {
-    async oncreate() {
+    async oncreate () {
       let { accountId } = this.get()
       await updatePinnedStatusesForAccount(accountId)
     },

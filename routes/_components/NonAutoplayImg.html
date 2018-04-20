@@ -27,7 +27,7 @@
   import { imgLoadError, mouseover } from '../_utils/events'
   export default {
     methods: {
-      onMouseOver(mouseOver) {
+      onMouseOver (mouseOver) {
         let { src, staticSrc } = this.get()
         this.refs.node.src = mouseOver ? src : staticSrc
       }

@@ -40,14 +40,14 @@
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
 
   export default {
-    oncreate() {
+    oncreate () {
       on('destroyDialog', this, this.onDestroyDialog)
       onCreateDialog.call(this)
     },
     methods: {
       show,
       close,
-      onDestroyDialog(thisId) {
+      onDestroyDialog (thisId) {
         let {
           id,
           positiveResult,
@@ -67,11 +67,11 @@
           }
         }
       },
-      onPositive() {
+      onPositive () {
         this.set({positiveResult: true})
         this.close()
       },
-      onNegative() {
+      onNegative () {
         this.close()
       }
     },

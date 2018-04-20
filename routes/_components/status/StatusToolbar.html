@@ -53,7 +53,7 @@
   import { on } from '../../_utils/eventBus'
 
   export default {
-    oncreate() {
+    oncreate () {
       let {
         favoriteKey,
         reblogKey,
@@ -73,21 +73,21 @@
     },
     store: () => store,
     methods: {
-      onFavoriteClick(e) {
+      onFavoriteClick (e) {
         e.preventDefault()
         e.stopPropagation()
         let { originalStatusId, favorited } = this.get()
         /* no await */ setFavorited(originalStatusId, !favorited)
         this.set({animateFavorite: !favorited})
       },
-      onReblogClick(e) {
+      onReblogClick (e) {
         e.preventDefault()
         e.stopPropagation()
         let { originalStatusId, reblogged } = this.get()
         /* no await */ setReblogged(originalStatusId, !reblogged)
         this.set({animateReblog: !reblogged})
       },
-      onReplyClick(e) {
+      onReplyClick (e) {
         e.preventDefault()
         e.stopPropagation()
         requestAnimationFrame(() => {
@@ -98,7 +98,7 @@
           this.fire('recalculateHeight')
         })
       },
-      async onOptionsClick(e) {
+      async onOptionsClick (e) {
         e.preventDefault()
         e.stopPropagation()
         let { originalStatusId, originalAccountId } = this.get()
@@ -107,7 +107,7 @@
         await updateRelationshipPromise
         dialogs.showStatusOptionsDialog(originalStatusId)
       },
-      onPostedStatus(realm, inReplyToUuid) {
+      onPostedStatus (realm, inReplyToUuid) {
         let {
           originalStatusId,
           uuid
@@ -166,7 +166,7 @@
       favoriteKey: (uuid) => `fav-${uuid}`,
       reblogKey: (uuid) => `reblog-${uuid}`,
       replyKey: (uuid) => `reply-${uuid}`,
-      optionsKey: (uuid) => `options-${uuid}`,
+      optionsKey: (uuid) => `options-${uuid}`
     }
   }
 </script>

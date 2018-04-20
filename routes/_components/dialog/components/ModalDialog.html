@@ -127,7 +127,7 @@
   import { on, emit } from '../../../_utils/eventBus'
 
   export default {
-    oncreate() {
+    oncreate () {
       let dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
@@ -162,7 +162,7 @@
       }
     },
     methods: {
-      showDialog(thisId) {
+      showDialog (thisId) {
         let { id } = this.get()
         if (id !== thisId) {
           return
@@ -172,7 +172,7 @@
           this.set({ fadedIn: true })
         })
       },
-      closeDialog(thisId) {
+      closeDialog (thisId) {
         let { id } = this.get()
         if (id !== thisId) {
           return

@@ -11,7 +11,7 @@
   const SCROLL_EVENT_DELAY = 300
 
   export default {
-    oncreate() {
+    oncreate () {
       mark('onCreate VirtualListContainer')
       let {
         realm,
@@ -53,14 +53,14 @@
       }
       stop('onCreate VirtualListContainer')
     },
-    ondestroy() {
+    ondestroy () {
       this.teardownScroll()
       this.teardownFullscreen()
       this.store.setCurrentRealm(null)
     },
     store: () => virtualListStore,
     methods: {
-      setupScroll(node) {
+      setupScroll (node) {
         if (!node) {
           return
         }
@@ -76,21 +76,21 @@
         })
         node.addEventListener('scroll', this.scrollListener)
       },
-      teardownScroll() {
+      teardownScroll () {
         let { containerQuery } = this.get()
         let node = document.querySelector(containerQuery)
         if (node) {
           node.removeEventListener('scroll', this.scrollListener)
         }
       },
-      setupFullscreen() {
+      setupFullscreen () {
         this.onFullscreenChange = this.onFullscreenChange.bind(this)
         attachFullscreenListener(this.onFullscreenChange)
       },
-      teardownFullscreen() {
+      teardownFullscreen () {
         detachFullscreenListener(this.onFullscreenChange)
       },
-      onScroll(event) {
+      onScroll (event) {
         let { scrollTop, scrollHeight } = event.target
 
         // On mobile devices, this can make scrolling more responsive. On
@@ -104,7 +104,7 @@
           stop('onScroll -> setForRealm()')
         })
       },
-      onFullscreenChange() {
+      onFullscreenChange () {
         mark('onFullscreenChange')
         console.log('is fullscreen? ', isFullscreen())
         this.set({ fullscreen: isFullscreen() })
@@ -115,5 +115,5 @@
       // TODO: bug in svelte/store – the observer in oncreate() never get removed without this hack
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
     }
-  };
+  }
 </script>

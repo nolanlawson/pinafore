@@ -15,13 +15,13 @@
   import { AsyncLayout } from '../../_utils/AsyncLayout'
 
   export default {
-    oncreate() {
+    oncreate () {
       const asyncLayout = new AsyncLayout(() => '__footer__')
       asyncLayout.observe('__footer__', this.refs.node, (rect) => {
         asyncLayout.disconnect()
         this.store.setForRealm({footerHeight: rect.height})
       })
     },
-    store: () => virtualListStore,
+    store: () => virtualListStore
   }
 </script>

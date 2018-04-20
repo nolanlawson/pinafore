@@ -52,7 +52,7 @@
   import ComposeAutosuggest from './ComposeAutosuggest.html'
 
   export default {
-    oncreate() {
+    oncreate () {
       if (process.env.NODE_ENV !== 'production') {
         window.__fakeFileInput = (file) => {
           this.onFileChange({
@@ -69,25 +69,25 @@
     },
     store: () => store,
     methods: {
-      async onEmojiClick() {
+      async onEmojiClick () {
         let dialogs = await importDialogs()
         let { realm } = this.get()
         dialogs.showEmojiDialog(realm)
       },
-      onMediaClick() {
+      onMediaClick () {
         this.refs.input.click()
       },
-      onFileChange(e) {
+      onFileChange (e) {
         let file = e.target.files[0]
         let { realm } = this.get()
         doMediaUpload(realm, file)
       },
-      async onPostPrivacyClick() {
+      async onPostPrivacyClick () {
         let dialogs = await importDialogs()
         let { realm } = this.get()
         dialogs.showPostPrivacyDialog(realm)
       },
-      onContentWarningClick() {
+      onContentWarningClick () {
         let { realm } = this.get()
         toggleContentWarningShown(realm)
       }

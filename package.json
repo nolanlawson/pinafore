@@ -3,7 +3,7 @@
   "description": "Alternative web client for Mastodon",
   "version": "0.2.2",
   "scripts": {
-    "lint": "standard",
+    "lint": "standard && standard --plugin html 'routes/**/*.html'",
     "dev": "run-s build-svg build-inline-script serve-dev",
     "serve-dev": "run-p --race build-sass-watch serve",
     "serve": "node server.js",
@@ -83,6 +83,7 @@
     "yargs": "11.0.0"
   },
   "devDependencies": {
+    "eslint-plugin-html": "4.0.3",
     "now": "11.1.7",
     "standard": "11.0.1",
     "testcafe": "0.19.1"
@@ -117,7 +118,8 @@
       "atob",
       "btoa",
       "Blob",
-      "Element"
+      "Element",
+      "Image"
     ],
     "ignore": [
       "dist",

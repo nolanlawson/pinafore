@@ -117,7 +117,7 @@
   import { classname } from '../../_utils/classname'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { realm } = this.get()
       if (realm === 'home') {
         this.setupStickyObserver()
@@ -138,7 +138,7 @@
         setReplyVisibility(realm, replyVisibility)
       }
     },
-    ondestroy() {
+    ondestroy () {
       this.teardownStickyObserver()
     },
     components: {
@@ -188,7 +188,7 @@
       slide
     },
     methods: {
-      async onClickPostButton() {
+      async onClickPostButton () {
         let { sticky } = this.get()
         if (sticky) {
           // when the button is sticky, we're scrolled down the home timeline,
@@ -197,10 +197,10 @@
           dialogs.showComposeDialog()
         } else {
           // else we're actually posting a new toot
-          this.doPostStatus();
+          this.doPostStatus()
         }
       },
-      doPostStatus() {
+      doPostStatus () {
         let {
           text,
           media,
@@ -224,7 +224,7 @@
           sensitive, contentWarning, postPrivacyKey,
           mediaDescriptions, inReplyToUuid)
       },
-      setupStickyObserver() {
+      setupStickyObserver () {
         this.__stickyObserver = new IntersectionObserver(entries => {
           this.set({sticky: !entries[0].isIntersecting})
         })
@@ -243,7 +243,7 @@
           }
         }, {init: false})
       },
-      teardownStickyObserver() {
+      teardownStickyObserver () {
         if (this.__stickyObserver) {
           this.__stickyObserver.disconnect()
         }

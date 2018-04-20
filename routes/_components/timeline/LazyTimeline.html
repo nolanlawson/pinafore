@@ -16,7 +16,7 @@
   import { store } from '../../_store/store'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { currentInstance } = this.store.get()
       let { timeline } = this.get()
       this.store.set({currentTimeline: timeline})

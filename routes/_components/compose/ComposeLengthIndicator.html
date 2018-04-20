@@ -22,7 +22,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { lengthToDisplay } = this.get()
       this.set({lengthToDisplayDeferred: lengthToDisplay})
       // perf improvement for keyboard input latency

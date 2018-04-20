@@ -37,16 +37,16 @@
   import { clickSelectedAutosuggestionEmoji } from '../../_actions/emoji'
 
   export default {
-    oncreate() {
+    oncreate () {
       this.setupSyncFromStore()
       this.setupSyncToStore()
       this.setupAutosize()
     },
-    ondestroy() {
+    ondestroy () {
       this.teardownAutosize()
     },
     methods: {
-      setupSyncFromStore() {
+      setupSyncFromStore () {
         let textarea = this.refs.textarea
         let firstTime = true
         this.observe('text', text => {
@@ -68,7 +68,7 @@
           }
         })
       },
-      setupSyncToStore() {
+      setupSyncToStore () {
         const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
@@ -79,7 +79,7 @@
           stop('observe rawText')
         }, {init: false})
       },
-      setupAutosize() {
+      setupAutosize () {
         let textarea = this.refs.textarea
         requestAnimationFrame(() => {
           mark('autosize()')
@@ -87,21 +87,21 @@
           stop('autosize()')
         })
       },
-      teardownAutosize() {
+      teardownAutosize () {
         mark('autosize.destroy()')
         autosize.destroy(this.refs.textarea)
         stop('autosize.destroy()')
       },
-      onBlur() {
+      onBlur () {
         this.store.set({composeFocused: false})
       },
-      onFocus() {
+      onFocus () {
         this.store.set({composeFocused: true})
       },
-      onSelectionChange(selectionStart) {
+      onSelectionChange (selectionStart) {
         this.store.set({composeSelectionStart: selectionStart})
       },
-      onKeydown(e) {
+      onKeydown (e) {
         let { keyCode } = e
         // ctrl or cmd (on macs) was pressed; ctrl-enter means post a toot
         const ctrlPressed = e.getModifierState('Control') || e.getModifierState('Meta')
@@ -109,7 +109,7 @@
           case 9: // tab
             this.clickSelectedAutosuggestion(e)
             break
-          case 13: //enter
+          case 13: // enter
             const autosuggestionClicked = this.clickSelectedAutosuggestion(e)
             if (!autosuggestionClicked && ctrlPressed) {
               this.fire('postAction')
@@ -127,7 +127,7 @@
           default:
         }
       },
-      clickSelectedAutosuggestion(event) {
+      clickSelectedAutosuggestion (event) {
         let {
           composeAutosuggestionShown,
           composeAutosuggestionType
@@ -145,7 +145,7 @@
         event.stopPropagation()
         return true
       },
-      incrementAutosuggestSelected(increment, event) {
+      incrementAutosuggestSelected (increment, event) {
         let {
           composeAutosuggestionShown,
           composeAutosuggestionSelected,
@@ -166,7 +166,7 @@
         event.preventDefault()
         event.stopPropagation()
       },
-      clearAutosuggestions(event) {
+      clearAutosuggestions (event) {
         let { composeAutosuggestionShown } = this.store.get()
         if (!composeAutosuggestionShown) {
           return

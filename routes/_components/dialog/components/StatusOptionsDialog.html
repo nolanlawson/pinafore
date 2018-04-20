@@ -53,8 +53,8 @@ export default {
     muteIcon: (muting) => muting ? '#fa-volume-up' : '#fa-volume-off',
     // end account data copypasta
     items: (blockLabel, blocking, blockIcon, muteLabel, muteIcon,
-            followLabel, followIcon, following, followRequested,
-            accountId, verifyCredentialsId) => {
+      followLabel, followIcon, following, followRequested,
+      accountId, verifyCredentialsId) => {
       let isUser = accountId === verifyCredentialsId
       return [
         isUser && {
@@ -89,7 +89,7 @@ export default {
   methods: {
     show,
     close,
-    onClick(item) {
+    onClick (item) {
       switch (item.key) {
         case 'delete':
           return this.onDeleteClicked()
@@ -101,22 +101,22 @@ export default {
           return this.onMuteClicked()
       }
     },
-    async onDeleteClicked() {
+    async onDeleteClicked () {
       let { statusId } = this.get()
       this.close()
       await doDeleteStatus(statusId)
     },
-    async onFollowClicked() {
+    async onFollowClicked () {
       let { accountId, following } = this.get()
       this.close()
       await setAccountFollowed(accountId, !following, true)
     },
-    async onBlockClicked() {
+    async onBlockClicked () {
       let { accountId, blocking } = this.get()
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
-    async onMuteClicked() {
+    async onMuteClicked () {
       let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)

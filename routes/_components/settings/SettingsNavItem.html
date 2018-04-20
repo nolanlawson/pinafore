@@ -13,10 +13,10 @@
 <script>
   export default {
     helpers: {
-      getCurrentClass(page, name) {
-        return page === name  ? "selected" : ""
+      getCurrentClass (page, name) {
+        return page === name ? 'selected' : ''
       },
-      getAriaLabel(page, name, label) {
+      getAriaLabel (page, name, label) {
         return page === name ? `${label} (current page)` : label
       }
     }

@@ -16,7 +16,7 @@
   import { mark, stop } from '../../_utils/marks'
 
   export default {
-    async oncreate() {
+    async oncreate () {
       // TODO: there appears to be a bug in {{#await}} that means we have to do this manually.
       // Some items may appear on top of other items because their offset is 0 and never updated.
       let { makeProps, key } = this.get()

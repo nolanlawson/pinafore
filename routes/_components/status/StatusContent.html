@@ -64,7 +64,7 @@
   import { emojifyText } from '../../_utils/emojifyText'
 
   export default {
-    oncreate() {
+    oncreate () {
       this.hydrateContent()
     },
     store: () => store,
@@ -90,7 +90,7 @@
       }
     },
     methods: {
-      hydrateContent() {
+      hydrateContent () {
         if (!this.refs.node) {
           return
         }

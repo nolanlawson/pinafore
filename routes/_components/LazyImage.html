@@ -21,11 +21,10 @@
   }
 </style>
 <script>
-
   import { mark, stop } from '../_utils/marks'
 
   export default {
-    oncreate() {
+    oncreate () {
       mark('LazyImage oncreate()')
       let img = new Image()
       let { src } = this.get()

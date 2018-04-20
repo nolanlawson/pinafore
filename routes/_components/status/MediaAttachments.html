@@ -38,7 +38,7 @@
     computed: {
       maxMediaWidth: (mediaAttachments) => {
         return Math.max.apply(Math, mediaAttachments.map(media => {
-          return media.meta && media.meta.small && typeof media.meta.small.width === 'number' ?  media.meta.small.width : DEFAULT_MEDIA_WIDTH
+          return media.meta && media.meta.small && typeof media.meta.small.width === 'number' ? media.meta.small.width : DEFAULT_MEDIA_WIDTH
         }))
       }
     },

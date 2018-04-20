@@ -52,7 +52,7 @@
   import escapeHtml from 'escape-html'
 
   export default {
-    oncreate() {
+    oncreate () {
       let { delegateKey } = this.get()
       registerClickDelegate(this, delegateKey, () => this.onClickSpoilerButton())
     },
@@ -67,7 +67,7 @@
       delegateKey: (uuid) => `spoiler-${uuid}`
     },
     methods: {
-      onClickSpoilerButton() {
+      onClickSpoilerButton () {
         requestAnimationFrame(() => {
           mark('clickSpoilerButton')
           let { uuid } = this.get()

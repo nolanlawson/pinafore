@@ -32,6 +32,7 @@ Lint:
 Automatically fix most linting issues:
 
     npx standard --fix
+    npx standard --fix --plugin html 'routes/**/*.html'
 
 ## Testing
 

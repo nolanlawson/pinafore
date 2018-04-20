@@ -46,7 +46,7 @@
       statusId: (status) => status && status.id,
       uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId}/${statusId || ''}`
-      },
+      }
     }
   }
 </script>

@@ -9,19 +9,19 @@
   {{/if}}
 </div>
 <script>
-	import Nav from './Nav.html';
+  import Nav from './Nav.html'
   import { store } from '../_store/store'
   import InformationalFooter from './InformationalFooter.html'
 
-  // Only focus the `.container` div on first load so it does not intefere 
+  // Only focus the `.container` div on first load so it does not intefere
   // with other desired behaviours (e.g. you click a toot, you navigate from
   // a timeline view to a thread view, you press the back button, and now
   // you're still focused on the toot).
   let firstTime = true
 
-	export default {
-		components: {
-			Nav,
+  export default {
+    components: {
+      Nav,
       InformationalFooter
     },
     oncreate () {
@@ -31,5 +31,5 @@
       }
     },
     store: () => store
-	}
+  }
 </script>

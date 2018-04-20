@@ -16,7 +16,7 @@
   import { mark, stop } from '../../_utils/marks'
 
   export default {
-    oncreate() {
+    oncreate () {
       this.observe('isIntersecting', isIntersecting => {
         if (isIntersecting) {
           mark('render')

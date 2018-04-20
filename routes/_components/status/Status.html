@@ -122,7 +122,7 @@
   const isStatusArticle = node => node.classList.contains('status-article')
 
   export default {
-    oncreate() {
+    oncreate () {
       let { delegateKey, isStatusInOwnThread, showContent } = this.get()
       if (!isStatusInOwnThread) {
         // the whole <article> is clickable in this case
@@ -151,7 +151,7 @@
     },
     store: () => store,
     methods: {
-      onClickOrKeydown(e) {
+      onClickOrKeydown (e) {
         let { type, keyCode, target } = e
 
         let isClick = type === 'click'
@@ -202,18 +202,18 @@
       spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
       replyShown: ($repliesShown, uuid) => !!$repliesShown[uuid],
       showMedia: (originalStatus, isStatusInNotification) => {
-        return !isStatusInNotification
-          && originalStatus.media_attachments
-          && originalStatus.media_attachments.length
+        return !isStatusInNotification &&
+        originalStatus.media_attachments &&
+        originalStatus.media_attachments.length
       },
       ariaLabel: (originalAccount, originalStatus, visibility) => {
         return (visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`
       },
       showHeader: (notification, status, timelineType) => {
-        return (notification && (notification.type === 'reblog' || notification.type === 'favourite'))
-          || status.reblog
-          || timelineType === 'pinned'
+        return (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
+        status.reblog ||
+        timelineType === 'pinned'
       },
       className: (visibility, timelineType, isStatusInOwnThread) => {
         return classname(
