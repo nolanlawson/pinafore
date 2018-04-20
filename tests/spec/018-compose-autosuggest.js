@@ -1,6 +1,7 @@
 import {
-  composeInput, getNthAutosuggestionResult
+  composeInput, getNthAutosuggestionResult, getNthComposeReplyInput, getNthReplyButton, getNthStatus
 } from '../utils'
+import { Selector as $ } from 'testcafe'
 import { foobarRole } from '../roles'
 
 fixture`018-compose-autosuggest.js`
@@ -79,4 +80,16 @@ test('autosuggest handles works with regular emoji - clicking', async t => {
     .expect(getNthAutosuggestionResult(1).innerText).contains('@quux')
     .click(getNthAutosuggestionResult(1))
     .expect(composeInput.value).eql('\ud83c\udf4d @quux ')
+})
+
+test('autosuggest only shows for one input', async t => {
+  await t.useRole(foobarRole)
+    .hover(composeInput)
+    .typeText(composeInput, '@quu')
+    .hover(getNthStatus(0))
+    .click(getNthReplyButton(0))
+    .selectText(getNthComposeReplyInput(0))
+    .pressKey('delete')
+    .typeText(getNthComposeReplyInput(0), 'uu')
+    .expect($('.compose-autosuggest.shown').exists).notOk()
 })

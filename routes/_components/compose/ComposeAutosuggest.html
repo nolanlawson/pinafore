@@ -134,6 +134,7 @@
     computed: {
       composeSelectionStart: ($composeSelectionStart) => $composeSelectionStart,
       composeFocused: ($composeFocused) => $composeFocused,
+      thisComposeFocused: (composeFocused, realm) => composeFocused === realm,
       searchResults: ($composeAutosuggestionSearchResults) => $composeAutosuggestionSearchResults || [],
       type: ($composeAutosuggestionType) => $composeAutosuggestionType || 'account',
       selected: ($composeAutosuggestionSelected) => $composeAutosuggestionSelected || 0,
@@ -147,8 +148,9 @@
         let match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
         return match && match[1]
       },
-      shown: (composeFocusedDeferred, searchText, searchResults) => {
-        return !!(composeFocusedDeferred &&
+      shown: (thisComposeFocused, composeFocusedDeferred, searchText, searchResults) => {
+        return !!(thisComposeFocused &&
+          composeFocusedDeferred &&
           searchText &&
           searchResults.length)
       }
