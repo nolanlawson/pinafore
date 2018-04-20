@@ -104,7 +104,6 @@
     methods: {
       once: once,
       onClick (item) {
-        console.log('click!')
         this.fire('autosuggestItemSelected')
         let { realm } = this.get()
         let { composeSelectionStart, composeAutosuggestionSearchText } = this.store.get()
