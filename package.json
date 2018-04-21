@@ -41,7 +41,7 @@
     "cross-env": "5.1.4",
     "css-loader": "0.28.11",
     "escape-html": "1.0.3",
-    "esm": "3.0.20",
+    "esm": "3.0.21",
     "events": "2.0.0",
     "express": "4.16.3",
     "fg-loadcss": "2.0.1",
