@@ -31,7 +31,7 @@
       this.observe('lengthAsFraction', () => {
         scheduleIdleTask(() => {
           mark('set lengthAsFractionDeferred')
-          let { lengthAsFraction } = this.get() || {} // TODO: wtf svelte?
+          let { lengthAsFraction } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
           this.set({lengthAsFractionDeferred: lengthAsFraction})
           stop('set lengthAsFractionDeferred')
           requestAnimationFrame(() => this.set({shouldAnimate: true}))

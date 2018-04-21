@@ -164,13 +164,12 @@
         this.set({scrollTop: scrollTop})
       },
       onScrollToBottom () {
-        let {
-          timelineInitialized,
-          runningUpdate
-        } = this.store.get()
-        let {
-          timelineType
-        } = this.get()
+        let state = this.store.get()
+        if (!state) {
+          return // https://github.com/sveltejs/svelte/issues/1354
+        }
+        let { timelineType } = state
+        let { timelineInitialized, runningUpdate } = this.store.get()
         if (!timelineInitialized ||
             runningUpdate ||
             timelineType === 'status') { // for status contexts, we've already fetched the whole thread
@@ -196,7 +195,7 @@
         let { currentInstance } = this.store.get()
         let { timeline } = this.get()
         let handleItemIdsToAdd = () => {
-          let { itemIdsToAdd } = this.get() || {} // TODO: wtf svelte?
+          let { itemIdsToAdd } = this.get() || {} // // https://github.com/sveltejs/svelte/issues/1354
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
             return
           }
