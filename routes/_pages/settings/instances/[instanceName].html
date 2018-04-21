@@ -120,13 +120,13 @@
     },
     computed: {
       instanceName: (params) => params.instanceName,
-      selectedTheme: ($instanceThemes, instanceName) => $instanceThemes[instanceName],
+      selectedTheme: ($instanceThemes, instanceName) => $instanceThemes[instanceName] || 'default',
       verifyCredentials: ($verifyCredentials, instanceName) => $verifyCredentials && $verifyCredentials[instanceName]
     },
     methods: {
       onThemeChange () {
-        let { newTheme, instanceName } = this.get()
-        changeTheme(instanceName, newTheme)
+        let { selectedTheme, instanceName } = this.get()
+        changeTheme(instanceName, selectedTheme)
       },
       onSwitchToThisInstance (e) {
         e.preventDefault()

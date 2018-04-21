@@ -60,7 +60,7 @@ window.__themeColors = {
 if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
   let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
-  if (theme !== 'default') {
+  if (theme && theme !== 'default') {
     document.body.classList.add(`theme-${theme}`)
     let link = document.createElement('link')
     link.rel = 'stylesheet'
