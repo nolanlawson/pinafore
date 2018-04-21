@@ -83,7 +83,8 @@
         }
       })
       this.observe('searchText', async searchText => {
-        if (!searchText) {
+        let { thisComposeFocused } = this.get()
+        if (!thisComposeFocused || !searchText) {
           return
         }
         let type = searchText.startsWith('@') ? 'account' : 'emoji'
@@ -98,6 +99,10 @@
         })
       })
       this.observe('shown', shown => {
+        let { thisComposeFocused } = this.get()
+        if (!thisComposeFocused) {
+          return
+        }
         this.store.set({composeAutosuggestionShown: shown})
       })
     },
@@ -138,7 +143,10 @@
       searchResults: ($composeAutosuggestionSearchResults) => $composeAutosuggestionSearchResults || [],
       type: ($composeAutosuggestionType) => $composeAutosuggestionType || 'account',
       selected: ($composeAutosuggestionSelected) => $composeAutosuggestionSelected || 0,
-      searchText: (text, composeSelectionStartDeferred) => {
+      searchText: (text, composeSelectionStartDeferred, thisComposeFocused) => {
+        if (!thisComposeFocused) {
+          return
+        }
         let selectionStart = composeSelectionStartDeferred || 0
         if (!text || selectionStart < MIN_PREFIX_LENGTH) {
           return

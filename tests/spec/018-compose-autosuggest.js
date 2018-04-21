@@ -1,5 +1,5 @@
 import {
-  composeInput, getNthAutosuggestionResult, getNthComposeReplyInput, getNthReplyButton, getNthStatus
+  composeInput, getNthAutosuggestionResult, getNthComposeReplyInput, getNthReplyButton, getNthStatus, sleep
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { foobarRole } from '../roles'
@@ -91,5 +91,21 @@ test('autosuggest only shows for one input', async t => {
     .selectText(getNthComposeReplyInput(0))
     .pressKey('delete')
     .typeText(getNthComposeReplyInput(0), 'uu')
+    .expect($('.compose-autosuggest.shown').exists).notOk()
+})
+
+test('autosuggest only shows for one input part 2', async t => {
+  await t.useRole(foobarRole)
+    .hover(composeInput)
+    .typeText(composeInput, '@adm')
+    .expect($('.compose-autosuggest.shown').exists).ok()
+    .expect(getNthAutosuggestionResult(1).innerText).contains('@admin')
+    .hover(getNthStatus(0))
+    .click(getNthReplyButton(0))
+    .selectText(getNthComposeReplyInput(0))
+    .pressKey('delete')
+    .typeText(getNthComposeReplyInput(0), '@dd')
+  await sleep(1000)
+  await t.pressKey('backspace')
     .expect($('.compose-autosuggest.shown').exists).notOk()
 })
