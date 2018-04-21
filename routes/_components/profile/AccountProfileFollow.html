@@ -6,7 +6,7 @@
     pressed="{{following}}"
     big="true"
     on:click="onFollowButtonClick(event)"
-    animation="{{animateFollowButton && followButtonAnimation}}"
+    ref:icon
   />
 </div>
 <style>
@@ -38,7 +38,6 @@
           followRequested,
           blocking
         } = this.get()
-        this.set({animateFollowButton: true}) // TODO: this should be an event, not toggling a boolean
         if (blocking) { // unblock
           await setAccountBlocked(accountId, false)
         } else { // follow/unfollow
@@ -46,16 +45,14 @@
           if (!account.locked) { // be optimistic, show the user that it succeeded
             this.set({overrideFollowing: newFollowingValue})
           }
+          if (newFollowingValue) {
+            this.refs.icon.animate(FOLLOW_BUTTON_ANIMATION)
+          }
           await setAccountFollowed(accountId, newFollowingValue)
         }
-
-        this.set({animateFollowButton: false}) // let animation play next time
       }
     },
     store: () => store,
-    data: () => ({
-      followButtonAnimation: FOLLOW_BUTTON_ANIMATION
-    }),
     computed: {
       accountId: (account) => account.id,
       following: (relationship, overrideFollowing) => {

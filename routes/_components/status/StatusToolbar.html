@@ -15,7 +15,7 @@
     disabled="{{reblogDisabled}}"
     href="{{reblogIcon}}"
     delegateKey="{{reblogKey}}"
-    animation="{{animateReblog && reblogAnimation}}"
+    ref:reblogIcon
   />
   <IconButton
     label="Favorite"
@@ -23,7 +23,7 @@
     pressed="{{favorited}}"
     href="#fa-star"
     delegateKey="{{favoriteKey}}"
-    animation="{{animateFavorite && favoriteAnimation}}"
+    ref:favoriteIcon
   />
   <IconButton
     label="Show more options"
@@ -77,15 +77,21 @@
         e.preventDefault()
         e.stopPropagation()
         let { originalStatusId, favorited } = this.get()
-        /* no await */ setFavorited(originalStatusId, !favorited)
-        this.set({animateFavorite: !favorited})
+        let newFavoritedValue = !favorited
+        /* no await */ setFavorited(originalStatusId, newFavoritedValue)
+        if (newFavoritedValue) {
+          this.refs.favoriteIcon.animate(FAVORITE_ANIMATION)
+        }
       },
       onReblogClick (e) {
         e.preventDefault()
         e.stopPropagation()
         let { originalStatusId, reblogged } = this.get()
-        /* no await */ setReblogged(originalStatusId, !reblogged)
-        this.set({animateReblog: !reblogged})
+        let newRebloggedValue = !reblogged
+        /* no await */ setReblogged(originalStatusId, newRebloggedValue)
+        if (newRebloggedValue) {
+          this.refs.reblogIcon.animate(REBLOG_ANIMATION)
+        }
       },
       onReplyClick (e) {
         e.preventDefault()

@@ -105,17 +105,6 @@
   import { store } from '../_store/store'
 
   export default {
-    oncreate () {
-      this.observe('animation', animation => {
-        let { reduceMotion } = this.store.get()
-        if (!animation || reduceMotion) {
-          return
-        }
-        let svg = this.refs.svg
-        let animations = animation.map(({properties, options}) => svg.animate(properties, options))
-        animations.forEach(anim => anim.play())
-      })
-    },
     store: () => store,
     computed: {
       computedClass: (pressable, pressed, big, muted, className) => {
@@ -127,6 +116,17 @@
           muted && 'muted-style',
           className
         )
+      }
+    },
+    methods: {
+      animate (animation) {
+        let { reduceMotion } = this.store.get()
+        if (!animation || reduceMotion) {
+          return
+        }
+        let svg = this.refs.svg
+        let animations = animation.map(({properties, options}) => svg.animate(properties, options))
+        animations.forEach(anim => anim.play())
       }
     }
   }
