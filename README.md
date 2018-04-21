@@ -6,6 +6,8 @@ Pinafore is available at [pinafore.social](https://pinafore.social). Bleeding-ed
 
 See the [user guide](https://github.com/nolanlawson/pinafore/blob/master/docs/User-Guide.md) for basic usage.
 
+For updates and support, follow us at [@pinafore@mastodon.technology](https://mastodon.technology/@pinafore).
+
 ## Browser support
 
 Pinafore supports the latest versions of the following browsers:
