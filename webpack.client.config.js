@@ -67,13 +67,14 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ],
     splitChunks: {
-      chunks: 'all'
+      chunks: 'async',
+      minSize: 5000,
+      maxAsyncRequests: Infinity,
+      maxInitialRequests: Infinity
     }
   },
   plugins: [
-    new LodashModuleReplacementPlugin({
-      caching: true
-    })
+    new LodashModuleReplacementPlugin()
   ].concat(isDev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
