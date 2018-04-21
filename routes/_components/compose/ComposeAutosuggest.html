@@ -59,14 +59,14 @@
       // perf improves for input responsiveness
       this.observe('composeSelectionStart', () => {
         scheduleIdleTask(() => {
-          let { composeSelectionStart } = this.get() || {} // TODO: wtf svelte?
+          let { composeSelectionStart } = this.get() || {} // // https://github.com/sveltejs/svelte/issues/1354
           this.set({composeSelectionStartDeferred: composeSelectionStart})
         })
       })
       this.observe('composeFocused', (composeFocused) => {
         let updateFocusedState = () => {
           scheduleIdleTask(() => {
-            let { composeFocused } = this.get() || {} // TODO: wtf svelte?
+            let { composeFocused } = this.get() || {} // // https://github.com/sveltejs/svelte/issues/1354
             this.set({composeFocusedDeferred: composeFocused})
           })
         }
