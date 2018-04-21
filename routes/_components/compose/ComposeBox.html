@@ -113,7 +113,7 @@
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
-  import { importDialogs } from '../../_utils/asyncModules'
+  import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { classname } from '../../_utils/classname'
 
   export default {
@@ -189,8 +189,8 @@
         if (sticky) {
           // when the button is sticky, we're scrolled down the home timeline,
           // so we should launch a new compose dialog
-          let dialogs = await importDialogs()
-          dialogs.showComposeDialog()
+          let showComposeDialog = await importShowComposeDialog()
+          showComposeDialog()
         } else {
           // else we're actually posting a new toot
           this.doPostStatus()
