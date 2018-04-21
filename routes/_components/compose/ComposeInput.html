@@ -93,12 +93,7 @@
         stop('autosize.destroy()')
       },
       onBlur () {
-        this.store.set({
-          composeFocused: null,
-          composeSelectionStart: null,
-          composeAutosuggestionSearchText: null,
-          composeAutosuggestionSearchResults: null
-        })
+        this.store.set({composeFocused: null})
       },
       onFocus () {
         let { realm } = this.get()
