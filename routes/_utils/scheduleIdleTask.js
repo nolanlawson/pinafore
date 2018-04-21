@@ -8,15 +8,22 @@ import { mark, stop } from './marks'
 const taskQueue = new Queue()
 let runningRequestIdleCallback = false
 
+const liteRIC = cb => setTimeout(() => cb({timeRemaining: () => Infinity})) // eslint-disable-line
+
 function getRIC () {
   // we load polyfills asynchronously, so there's a tiny chance this is not defined
-  return typeof requestIdleCallback !== 'undefined' ? requestIdleCallback : setTimeout
+  return typeof requestIdleCallback !== 'undefined' ? requestIdleCallback : liteRIC
 }
 
 function runTasks (deadline) {
   mark('scheduleIdleTask:runTasks()')
   while (taskQueue.length && deadline.timeRemaining() > 0) {
-    taskQueue.shift()()
+    let task = taskQueue.shift()
+    try {
+      task()
+    } catch (e) {
+      console.error(e)
+    }
   }
   if (taskQueue.length) {
     let rIC = getRIC()
