@@ -1,6 +1,8 @@
 import { Selector as $ } from 'testcafe'
 import {
+  addInstanceButton,
   authorizeInput, emailInput, formError, getFirstVisibleStatus, getUrl, instanceInput, logInToInstanceLink,
+  mastodonLogInButton,
   passwordInput,
   settingsButton
 } from '../utils'
@@ -12,11 +14,11 @@ function manualLogin (t, username, password) {
   return t.click(logInToInstanceLink)
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'localhost:3000')
-    .pressKey('enter')
+    .click(addInstanceButton)
     .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')
     .typeText(emailInput, username, {paste: true})
     .typeText(passwordInput, password, {paste: true})
-    .pressKey('enter')
+    .click(mastodonLogInButton)
     .expect(getUrl()).contains('/oauth/authorize')
     .click(authorizeInput)
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -26,7 +28,7 @@ test('Cannot log in to a fake instance', async t => {
   await t.click(logInToInstanceLink)
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'fake.nolanlawson.com', {paste: true})
-    .pressKey('enter')
+    .click(addInstanceButton)
     .expect(formError.exists).ok()
     .expect(formError.innerText).contains('Is this a valid Mastodon instance?')
     .typeText(instanceInput, '.biz', {paste: true})

@@ -1,13 +1,17 @@
 import { Role } from 'testcafe'
-import { authorizeInput, emailInput, getUrl, instanceInput, passwordInput } from './utils'
+import {
+  addInstanceButton,
+  authorizeInput, emailInput, getUrl, instanceInput, mastodonLogInButton,
+  passwordInput
+} from './utils'
 
 function login (t, username, password) {
   return t.typeText(instanceInput, 'localhost:3000', {paste: true})
-    .pressKey('enter')
+    .click(addInstanceButton)
     .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')
     .typeText(emailInput, username, {paste: true})
     .typeText(passwordInput, password, {paste: true})
-    .pressKey('enter')
+    .click(mastodonLogInButton)
     .expect(getUrl()).contains('/oauth/authorize')
     .click(authorizeInput)
     .expect(getUrl()).eql('http://localhost:4002/', {timeout: 20000})
