@@ -100,11 +100,7 @@
         this.store.set({composeFocused: realm})
       },
       onSelectionChange (selectionStart) {
-        let { realm } = this.get()
-        let { composeFocused } = this.store.get()
-        if (realm === composeFocused) {
-          this.store.set({composeSelectionStart: selectionStart})
-        }
+        this.store.set({composeSelectionStart: selectionStart})
       },
       onKeydown (e) {
         let { keyCode } = e

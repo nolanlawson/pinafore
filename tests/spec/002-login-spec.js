@@ -15,7 +15,7 @@ function manualLogin (t, username, password) {
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'localhost:3000')
     .click(addInstanceButton)
-    .expect(getUrl()).eql('http://localhost:3000/auth/sign_in')
+    .expect(getUrl()).eql('http://localhost:3000/auth/sign_in', {timeout: 30000})
     .typeText(emailInput, username, {paste: true})
     .typeText(passwordInput, password, {paste: true})
     .click(mastodonLogInButton)
