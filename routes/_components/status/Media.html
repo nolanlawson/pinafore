@@ -98,7 +98,7 @@
 </style>
 <script>
   import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media'
-  import { importDialogs } from '../../_utils/asyncModules'
+  import { importShowVideoDialog, importShowImageDialog } from '../dialog/asyncDialogs'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
@@ -143,14 +143,14 @@
     methods: {
       async onClickPlayVideoButton () {
         let { previewUrl, url, modalWidth, modalHeight, description } = this.get()
-        let dialogs = await importDialogs()
-        dialogs.showVideoDialog(previewUrl, url,
+        let showVideoDialog = await importShowVideoDialog()
+        showVideoDialog(previewUrl, url,
           modalWidth, modalHeight, description)
       },
       async onClickShowImageButton () {
         let { previewUrl, url, modalWidth, modalHeight, description, type } = this.get()
-        let dialogs = await importDialogs()
-        dialogs.showImageDialog(previewUrl, url, type,
+        let showImageDialog = await importShowImageDialog()
+        showImageDialog(previewUrl, url, type,
           modalWidth, modalHeight, description)
       }
     },

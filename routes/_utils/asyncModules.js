@@ -21,7 +21,3 @@ export const importWebAnimationPolyfill = () => import(
 export const importWebSocketClient = () => import(
   /* webpackChunkName: '@gamestdio/websocket' */ '@gamestdio/websocket'
   ).then(mod => mod.default)
-
-export const importDialogs = () => import(
-  /* webpackChunkName: 'dialogs' */ '../_components/dialog/dialogs.js'
-  )

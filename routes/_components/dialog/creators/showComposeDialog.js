@@ -2,7 +2,7 @@ import ComposeDialog from '../components/ComposeDialog.html'
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export function showComposeDialog () {
+export default function showComposeDialog () {
   let dialog = new ComposeDialog({
     target: createDialogElement(),
     data: {

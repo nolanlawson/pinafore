@@ -2,7 +2,7 @@ import PostPrivacyDialog from '../components/PostPrivacyDialog.html'
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export function showPostPrivacyDialog (realm) {
+export default function showPostPrivacyDialog (realm) {
   let dialog = new PostPrivacyDialog({
     target: createDialogElement(),
     data: {

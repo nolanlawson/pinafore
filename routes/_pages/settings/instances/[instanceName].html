@@ -95,7 +95,7 @@
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import ExternalLink from '../../../_components/ExternalLink.html'
   import Avatar from '../../../_components/Avatar.html'
-  import { importDialogs } from '../../../_utils/asyncModules'
+  import { importShowConfirmationDialog } from '../../../_components/dialog/asyncDialogs'
   import {
     changeTheme,
     switchToInstance,
@@ -137,8 +137,8 @@
         e.preventDefault()
         let { instanceName } = this.get()
 
-        let dialogs = await importDialogs()
-        dialogs.showConfirmationDialog({
+        let showConfirmationDialog = await importShowConfirmationDialog()
+        showConfirmationDialog({
           text: `Log out of ${instanceName}?`,
           onPositive () {
             logOutOfInstance(instanceName)

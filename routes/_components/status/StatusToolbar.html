@@ -47,7 +47,7 @@
   import { registerClickDelegates } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
   import { setReblogged } from '../../_actions/reblog'
-  import { importDialogs } from '../../_utils/asyncModules'
+  import { importShowStatusOptionsDialog } from '../dialog/asyncDialogs'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
   import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
   import { on } from '../../_utils/eventBus'
@@ -103,9 +103,9 @@
         e.stopPropagation()
         let { originalStatusId, originalAccountId } = this.get()
         let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
-        let dialogs = await importDialogs()
+        let showStatusOptionsDialog = await importShowStatusOptionsDialog()
         await updateRelationshipPromise
-        dialogs.showStatusOptionsDialog(originalStatusId)
+        showStatusOptionsDialog(originalStatusId)
       },
       onPostedStatus (realm, inReplyToUuid) {
         let {
