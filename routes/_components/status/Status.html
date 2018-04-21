@@ -211,9 +211,10 @@
         isStatusInOwnThread && 'status-in-own-thread'
       )),
       showContent: (spoilerText, spoilerShown) => !spoilerText || spoilerShown,
-      params: (notification, notificationId, status, statusId, timelineType, account, accountId, uuid,
-        isStatusInNotification, isStatusInOwnThread, originalAccount, originalAccountId,
-        spoilerShown, visibility, replyShown, replyVisibility, spoilerText) => ({
+      params: (notification, notificationId, status, statusId, timelineType,
+        account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
+        originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
+        replyVisibility, spoilerText, originalStatus, originalStatusId) => ({
         notification,
         notificationId,
         status,
@@ -230,7 +231,9 @@
         visibility,
         replyShown,
         replyVisibility,
-        spoilerText
+        spoilerText,
+        originalStatus,
+        originalStatusId
       })
     }
   }
