@@ -64,7 +64,7 @@
     "pify": "3.0.0",
     "quick-lru": "1.1.0",
     "requestidlecallback": "0.3.0",
-    "sapper": "github:nolanlawson/sapper#for-pinafore-4",
+    "sapper": "github:nolanlawson/sapper#for-pinafore-5",
     "serve-static": "1.13.2",
     "shrink-ray-current": "2.1.0",
     "stringz": "1.0.0",
