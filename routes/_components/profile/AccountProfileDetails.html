@@ -8,20 +8,24 @@
     </span>
   </div>
   <div class="account-profile-details-item">
-    <span class="account-profile-details-item-title">
-      Follows
-    </span>
-    <span class="account-profile-details-item-datum">
-      {{numFollowingDisplay}}
-    </span>
+    <a href='/accounts/{{account.id}}/follows'>
+      <span class="account-profile-details-item-title">
+        Follows
+      </span>
+      <span class="account-profile-details-item-datum">
+        {{numFollowingDisplay}}
+      </span>
+    </a>
   </div>
   <div class="account-profile-details-item">
-    <span class="account-profile-details-item-title">
-      Followers
-    </span>
-    <span class="account-profile-details-item-datum">
-      {{numFollowersDisplay}}
-    </span>
+    <a href='/accounts/{{account.id}}/followers'>
+      <span class="account-profile-details-item-title">
+        Followers
+      </span>
+      <span class="account-profile-details-item-datum">
+        {{numFollowersDisplay}}
+      </span>
+    </a>
   </div>
   <!-- TODO: re-enable this when we support profile editing -->
   {{#if account && verifyCredentials && account.id !== verifyCredentials.id}}
