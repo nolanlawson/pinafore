@@ -8,8 +8,7 @@
 
   export default {
     computed: {
-      statusId: params => params.statusId,
-      accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getBlockedAccounts($currentInstance, $accessToken, statusId)
+      accountsFetcher: ($currentInstance, $accessToken) => () => getBlockedAccounts($currentInstance, $accessToken)
     },
     store: () => store,
     components: {

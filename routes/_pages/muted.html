@@ -8,8 +8,7 @@
 
   export default {
     computed: {
-      statusId: params => params.statusId,
-      accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getMutedAccounts($currentInstance, $accessToken, statusId)
+      accountsFetcher: ($currentInstance, $accessToken) => () => getMutedAccounts($currentInstance, $accessToken)
     },
     store: () => store,
     components: {
