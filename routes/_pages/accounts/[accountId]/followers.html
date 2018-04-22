@@ -1,0 +1,20 @@
+<DynamicPageBanner title="Followers" />
+<AccountsListPage :accountsFetcher />
+<script>
+  import { getFollowers } from '../../../_api/followsAndFollowers'
+  import AccountsListPage from '../../../_components/AccountsListPage.html'
+  import { store } from '../../../_store/store'
+  import DynamicPageBanner from '../../../_components/DynamicPageBanner.html'
+
+  export default {
+    computed: {
+      accountId: params => params.accountId,
+      accountsFetcher: ($currentInstance, $accessToken, accountId) => () => getFollowers($currentInstance, $accessToken, accountId)
+    },
+    store: () => store,
+    components: {
+      AccountsListPage,
+      DynamicPageBanner
+    }
+  }
+</script>
