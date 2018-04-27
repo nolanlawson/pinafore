@@ -12,13 +12,14 @@
 </style>
 <script>
   import { virtualListStore } from './virtualListStore'
-  import { AsyncLayout } from '../../_utils/AsyncLayout'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate () {
-      const asyncLayout = new AsyncLayout(() => '__footer__')
-      asyncLayout.observe('__footer__', this.refs.node, (rect) => {
-        asyncLayout.disconnect()
+      requestAnimationFrame(() => {
+        mark('VirtualListFooter gBCR')
+        let rect = this.refs.node.getBoundingClientRect()
+        stop('VirtualListFooter gBCR')
         this.store.setForRealm({footerHeight: rect.height})
       })
     },
