@@ -45,11 +45,13 @@ before_install:
   - sudo -E add-apt-repository -y ppa:mc3man/trusty-media
   - sudo -E apt-get update
   - sudo -E apt-get install -y ffmpeg gstreamer0.10-ffmpeg
+  - npm i -g npm
   - ruby --version
   - node --version
   - postgres --version
   - redis-server --version
   - ffmpeg -version
+  - npm --version
   - npm install -g greenkeeper-lockfile@1
 before_script:
   - npm run lint
