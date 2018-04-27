@@ -24,15 +24,16 @@
 </style>
 <script>
   import { virtualListStore } from './virtualListStore'
-  import { AsyncLayout } from '../../_utils/AsyncLayout'
   import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate () {
-      let asyncLayout = new AsyncLayout(node => node.getAttribute('virtual-list-key'))
       let { key } = this.get()
-      asyncLayout.observe(key, this.refs.node, (rect) => {
-        asyncLayout.disconnect()
+      requestAnimationFrame(() => {
+        mark('VirtualListItem gBCR')
+        let rect = this.refs.node.getBoundingClientRect()
+        stop('VirtualListItem gBCR')
         // update all item heights in one batch for better perf
         this.store.batchUpdateForRealm('itemHeights', key, rect.height)
       })

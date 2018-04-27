@@ -22,8 +22,8 @@
 </style>
 <script>
   import { virtualListStore } from './virtualListStore'
-  import { AsyncLayout } from '../../_utils/AsyncLayout'
   import { doubleRAF } from '../../_utils/doubleRAF'
+  import { mark, stop } from '../../_utils/marks'
 
   export default {
     oncreate () {
@@ -44,9 +44,10 @@
           return
         }
         this.set({heightCalculated: true})
-        const asyncLayout = new AsyncLayout(() => '__header__')
-        asyncLayout.observe('__header__', this.refs.node, (rect) => {
-          asyncLayout.disconnect()
+        requestAnimationFrame(() => {
+          mark('VirtualListHeader gBCR')
+          let rect = this.refs.node.getBoundingClientRect()
+          stop('VirtualListHeader gBCR')
           this.store.setForRealm({headerHeight: rect.height})
         })
       }
