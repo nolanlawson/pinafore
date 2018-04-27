@@ -39,6 +39,8 @@ export const goBackButton = $('.dynamic-page-go-back')
 export const accountProfileMoreOptionsButton = $('.account-profile-more-options button')
 export const addInstanceButton = $('#submitButton')
 export const mastodonLogInButton = $('button[type="submit"]')
+export const followsButton = $('.account-profile-details > *:nth-child(2)')
+export const followersButton = $('.account-profile-details > *:nth-child(3)')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
