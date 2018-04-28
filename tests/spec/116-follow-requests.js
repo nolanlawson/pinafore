@@ -1,7 +1,7 @@
 import { lockedAccountRole } from '../roles'
-import { followAs } from '../serverActions'
+import { followAs, unfollowAs } from '../serverActions'
 import {
-  communityNavButton, followersButton, getNthSearchResult, getSearchResultByHref, getUrl,
+  communityNavButton, followersButton, getNthSearchResult, getSearchResultByHref, getUrl, goBack,
   homeNavButton, sleep
 } from '../utils'
 import { users } from '../users'
@@ -15,6 +15,13 @@ const timeout = 30000
 test('Can approve and reject follow requests', async t => {
   await t.useRole(lockedAccountRole)
 
+  // necessary for re-running this test in local testing
+  await Promise.all([
+    unfollowAs('admin', 'LockedAccount'),
+    unfollowAs('baz', 'LockedAccount'),
+    unfollowAs('quux', 'LockedAccount')
+  ])
+
   await Promise.all([
     followAs('admin', 'LockedAccount'),
     followAs('baz', 'LockedAccount'),
@@ -23,6 +30,10 @@ test('Can approve and reject follow requests', async t => {
 
   await sleep(2000)
 
+  const approveAdminButton = () => getSearchResultByHref(`/accounts/${users.admin.id}`).find('button:nth-child(1)')
+  const rejectBazButton = () => getSearchResultByHref(`/accounts/${users.baz.id}`).find('button:nth-child(2)')
+  const approveQuuxButton = () => getSearchResultByHref(`/accounts/${users.quux.id}`).find('button:nth-child(1)')
+
   await t.click(communityNavButton)
     .click($('a[href="/requests"]'))
     // no guaranteed order on these
@@ -30,26 +41,30 @@ test('Can approve and reject follow requests', async t => {
     .expect(getNthSearchResult(2).innerText).match(/(@admin|@baz|@quux)/)
     .expect(getNthSearchResult(3).innerText).match(/(@admin|@baz|@quux)/)
     .expect(getNthSearchResult(4).exists).notOk()
-
-  await sleep(1000)
-  // approve admin
-  await t
-    .click(getSearchResultByHref(`/accounts/${users.admin.id}`).find('.search-result-account-buttons button:nth-child(1)'))
+    // approve admin
+    .expect(approveAdminButton().getAttribute('aria-label')).eql('Approve')
+    .hover(approveAdminButton())
+    .click(approveAdminButton())
     .expect(getNthSearchResult(1).innerText).match(/(@baz|@quux)/, {timeout})
     .expect(getNthSearchResult(2).innerText).match(/(@baz|@quux)/)
     .expect(getNthSearchResult(3).exists).notOk()
-  await sleep(1000)
-  // reject baz
+  await goBack()
   await t
-    .click(getSearchResultByHref(`/accounts/${users.baz.id}`).find('.search-result-account-buttons button:nth-child(2)'))
+    .click($('a[href="/requests"]'))
+    // reject baz
+    .expect(rejectBazButton().getAttribute('aria-label')).eql('Reject')
+    .hover(rejectBazButton())
+    .click(rejectBazButton())
     .expect(getNthSearchResult(1).innerText).contains('@quux', {timeout})
     .expect(getNthSearchResult(2).exists).notOk()
-  await sleep(1000)
-  // approve quux
+  await goBack()
   await t
-    .click(getNthSearchResult(1).find('.search-result-account-buttons button:nth-child(1)'))
+    .click($('a[href="/requests"]'))
+    // approve quux
+    .expect(approveQuuxButton().getAttribute('aria-label')).eql('Approve')
+    .hover(approveQuuxButton())
+    .click(approveQuuxButton())
     .expect(getNthSearchResult(1).exists).notOk({timeout})
-
     // check our follow list to make sure they follow us
     .click(homeNavButton)
     .click($('.compose-box-avatar'))
