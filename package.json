@@ -4,6 +4,7 @@
   "version": "0.2.3",
   "scripts": {
     "lint": "standard && standard --plugin html 'routes/**/*.html'",
+    "lint-fix": "standard --fix && standard --fix --plugin html 'routes/**/*.html'",
     "dev": "run-s build-svg build-inline-script serve-dev",
     "serve-dev": "run-p --race build-sass-watch serve",
     "serve": "node server.js",

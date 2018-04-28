@@ -4,6 +4,7 @@ import {
   authorizeInput, emailInput, getUrl, instanceInput, mastodonLogInButton,
   passwordInput
 } from './utils'
+import { users } from './users'
 
 function login (t, username, password) {
   return t.typeText(instanceInput, 'localhost:3000', {paste: true})
@@ -18,5 +19,9 @@ function login (t, username, password) {
 }
 
 export const foobarRole = Role('http://localhost:4002/settings/instances/add', async t => {
-  await login(t, 'foobar@localhost:3000', 'foobarfoobar')
+  await login(t, users.foobar.email, users.foobar.password)
+})
+
+export const lockedAccountRole = Role('http://localhost:4002/settings/instances/add', async t => {
+  await login(t, users.LockedAccount.email, users.LockedAccount.password)
 })

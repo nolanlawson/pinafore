@@ -4,7 +4,11 @@
   {{elseif accounts && accounts.length}}
     <ul class="accounts-results">
       {{#each accounts as account}}
-        <AccountSearchResult :account />
+        <AccountSearchResult
+          :account
+          actions={{accountActions}}
+          on:click="onClickAction(event)"
+        />
       {{/each}}
     </ul>
   {{/if}}
@@ -31,19 +35,19 @@
   import LoadingPage from '../_components/LoadingPage.html'
   import AccountSearchResult from '../_components/search/AccountSearchResult.html'
   import { toast } from '../_utils/toast'
+  import { on } from '../_utils/eventBus'
 
+  // TODO: paginate
   export default {
     async oncreate () {
-      let { accountsFetcher } = this.get()
       try {
-        // TODO: paginate
-        let accounts = await accountsFetcher()
-        this.set({ accounts: accounts })
+        await this.refreshAccounts()
       } catch (e) {
         toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
       } finally {
         this.set({loading: false})
       }
+      on('refreshAccountsList', this, () => this.refreshAccounts())
     },
     data: () => ({
       loading: true,
@@ -53,6 +57,17 @@
     components: {
       LoadingPage,
       AccountSearchResult
+    },
+    methods: {
+      onClickAction (event) {
+        let { action, accountId } = event
+        action.onclick(accountId)
+      },
+      async refreshAccounts () {
+        let { accountsFetcher } = this.get()
+        let accounts = await accountsFetcher()
+        this.set({ accounts: accounts })
+      }
     }
   }
 </script>

@@ -2,6 +2,7 @@ import { store } from '../_store/store'
 import { blockAccount, unblockAccount } from '../_api/block'
 import { toast } from '../_utils/toast'
 import { updateProfileAndRelationship } from './accounts'
+import { emit } from '../_utils/eventBus'
 
 export async function setAccountBlocked (accountId, block, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()
@@ -19,6 +20,7 @@ export async function setAccountBlocked (accountId, block, toastOnSuccess) {
         toast.say('Unblocked account')
       }
     }
+    emit('refreshAccountsList')
   } catch (e) {
     console.error(e)
     toast.say(`Unable to ${block ? 'block' : 'unblock'} account: ` + (e.message || ''))
