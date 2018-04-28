@@ -26,7 +26,8 @@ module.exports = {
             hydratable: true,
             emitCss: !isDev,
             cascade: false,
-            store: true
+            store: true,
+            hot: isDev
           }
         }
       },
@@ -49,8 +50,8 @@ module.exports = {
   node: {
     setImmediate: false
   },
-  optimization: {
-    minimizer: isDev ? [] : [
+  optimization: isDev ? {} : {
+    minimizer: [
       new UglifyWebpackPlugin({
         cache: true,
         parallel: true,
