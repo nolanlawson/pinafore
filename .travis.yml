@@ -45,8 +45,10 @@ before_install:
   - sudo -E add-apt-repository -y ppa:mc3man/trusty-media
   - sudo -E apt-get update
   - sudo -E apt-get install -y ffmpeg gstreamer0.10-ffmpeg
+  - npm i -g npm@5
   - ruby --version
   - node --version
+  - npm --version
   - postgres --version
   - redis-server --version
   - ffmpeg -version
