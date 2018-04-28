@@ -7,16 +7,28 @@
     <div class="search-result-account-username">
       {{'@' + account.acct}}
     </div>
+    {{#if actions && actions.length}}
+      <div class="search-result-account-buttons">
+        {{#each actions as action}}
+          <IconButton
+            label="{{action.label}}"
+            on:click="onButtonClick(event, action, account.id)"
+            href="{{action.icon}}"
+            big="true"
+          />
+        {{/each}}
+      </div>
+    {{/if}}
   </div>
 </SearchResult>
 <style>
   .search-result-account {
     display: grid;
     grid-template-areas:
-      "avatar    name"
-      "avatar    username";
+      "avatar    name     buttons"
+      "avatar    username buttons";
     grid-column-gap: 20px;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: max-content 1fr max-content;
     align-items: center;
   }
   :global(.search-result-account-avatar) {
@@ -36,19 +48,45 @@
     text-overflow: ellipsis;
     color: var(--deemphasized-text-color);
   }
+  .search-result-account-buttons {
+    grid-area: buttons;
+    display: flex;
+  }
+  :global(.search-result-account-buttons .icon-button) {
+    margin-right: 20px;
+  }
+  :global(.search-result-account-buttons .icon-button:last-child) {
+    margin-right: 0;
+  }
   @media (max-width: 767px) {
     .search-result-account {
       grid-column-gap: 10px;
+    }
+    :global(.search-result-account-buttons .icon-button) {
+      margin-right: 10px;
     }
   }
 </style>
 <script>
   import Avatar from '../Avatar.html'
   import SearchResult from './SearchResult.html'
+  import IconButton from '../IconButton.html'
+
   export default {
     components: {
       Avatar,
-      SearchResult
+      SearchResult,
+      IconButton
+    },
+    methods: {
+      onButtonClick (event, action, accountId) {
+        event.preventDefault()
+        event.stopPropagation()
+        this.fire('click', {
+          action,
+          accountId
+        })
+      }
     }
   }
 </script>

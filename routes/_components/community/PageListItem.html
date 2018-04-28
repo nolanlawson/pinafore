@@ -9,7 +9,7 @@
     {{#if pinnable}}
       <IconButton pressable="true"
                   pressed="{{$pinnedPage === href}}"
-                  label="Pin page"
+                  label="{{$pinnedPage === href ? 'Unpin timeline' : 'Pin timeline'}}"
                   href="#fa-thumb-tack"
                   on:click="onPinClick(event)" />
     {{/if}}

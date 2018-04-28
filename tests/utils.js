@@ -132,6 +132,10 @@ export function getNthAutosuggestionResult (n) {
   return $(`.compose-autosuggest-list-item:nth-child(${n}) button`)
 }
 
+export function getSearchResultByHref (href) {
+  return $(`.search-result a[href="${href}"]`)
+}
+
 export function getNthSearchResult (n) {
   return $(`.search-result:nth-child(${n}) a`)
 }
