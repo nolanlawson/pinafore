@@ -229,6 +229,10 @@ export function getNthPinnedStatus (n) {
   return $(`.pinned-statuses article[aria-posinset="${n}"]`)
 }
 
+export function getNthPinnedStatusFavoriteButton (n) {
+  return getNthPinnedStatus(n).find('.status-toolbar button:nth-child(3)')
+}
+
 export async function validateTimeline (t, timeline) {
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]

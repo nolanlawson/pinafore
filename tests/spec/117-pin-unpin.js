@@ -1,7 +1,7 @@
 import { foobarRole } from '../roles'
 import { postAs } from '../serverActions'
 import {
-  avatarInComposeBox, getNthDialogOptionsOption, getNthPinnedStatus, getNthStatus,
+  avatarInComposeBox, getNthDialogOptionsOption, getNthPinnedStatus, getNthPinnedStatusFavoriteButton, getNthStatus,
   getNthStatusOptionsButton, getUrl, sleep
 } from '../utils'
 import { users } from '../users'
@@ -37,4 +37,15 @@ test('Can pin statuses', async t => {
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
     .expect(getNthPinnedStatus(0).innerText).contains('this is unlisted')
     .expect(getNthStatus(0).innerText).contains('I am going to pin this')
+})
+
+test('Can favorite a pinned status', async t => {
+  await t.useRole(foobarRole)
+    .click(avatarInComposeBox)
+    .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
+    .expect(getNthPinnedStatusFavoriteButton(0).getAttribute('aria-pressed')).eql('false')
+    .click(getNthPinnedStatusFavoriteButton(0))
+    .expect(getNthPinnedStatusFavoriteButton(0).getAttribute('aria-pressed')).eql('true')
+    .click(getNthPinnedStatusFavoriteButton(0))
+    .expect(getNthPinnedStatusFavoriteButton(0).getAttribute('aria-pressed')).eql('false')
 })
