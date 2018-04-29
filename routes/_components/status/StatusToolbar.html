@@ -107,11 +107,11 @@
       async onOptionsClick (e) {
         e.preventDefault()
         e.stopPropagation()
-        let { originalStatusId, originalAccountId } = this.get()
+        let { originalStatus, originalAccountId } = this.get()
         let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
         let showStatusOptionsDialog = await importShowStatusOptionsDialog()
         await updateRelationshipPromise
-        showStatusOptionsDialog(originalStatusId)
+        showStatusOptionsDialog(originalStatus)
       },
       onPostedStatus (realm, inReplyToUuid) {
         let {

@@ -17,6 +17,7 @@ import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
 import { setAccountMuted } from '../../../_actions/mute'
+import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
 
 export default {
   oncreate,
@@ -24,6 +25,8 @@ export default {
     relationship: ($currentAccountRelationship) => $currentAccountRelationship,
     account: ($currentAccountProfile) => $currentAccountProfile,
     verifyCredentials: ($currentVerifyCredentials) => $currentVerifyCredentials,
+    statusId: (status) => status.id,
+    pinned: (status) => status.pinned,
     // begin account data copypasta
     verifyCredentialsId: (verifyCredentials) => verifyCredentials.id,
     following: (relationship) => relationship && relationship.following,
@@ -52,15 +55,20 @@ export default {
     },
     muteIcon: (muting) => muting ? '#fa-volume-up' : '#fa-volume-off',
     // end account data copypasta
-    items: (blockLabel, blocking, blockIcon, muteLabel, muteIcon,
-      followLabel, followIcon, following, followRequested,
-      accountId, verifyCredentialsId) => {
-      let isUser = accountId === verifyCredentialsId
+    isUser: (accountId, verifyCredentialsId) => accountId === verifyCredentialsId,
+    pinLabel: (pinned, isUser) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
+    items: (blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
+      following, followRequested, pinLabel, isUser) => {
       return [
         isUser && {
           key: 'delete',
           label: 'Delete',
           icon: '#fa-trash'
+        },
+        isUser && {
+          key: 'pin',
+          label: pinLabel,
+          icon: '#fa-thumb-tack'
         },
         !isUser && !blocking && {
           key: 'follow',
@@ -93,6 +101,8 @@ export default {
       switch (item.key) {
         case 'delete':
           return this.onDeleteClicked()
+        case 'pin':
+          return this.onPinClicked()
         case 'follow':
           return this.onFollowClicked()
         case 'block':
@@ -105,6 +115,11 @@ export default {
       let { statusId } = this.get()
       this.close()
       await doDeleteStatus(statusId)
+    },
+    async onPinClicked () {
+      let { statusId, pinned } = this.get()
+      this.close()
+      await setStatusPinnedOrUnpinned(statusId, !pinned, true)
     },
     async onFollowClicked () {
       let { accountId, following } = this.get()

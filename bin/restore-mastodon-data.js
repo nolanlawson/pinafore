@@ -1,6 +1,6 @@
 import { actions } from './mastodon-data'
 import { users } from '../tests/users'
-import { pinStatus, postStatus } from '../routes/_api/statuses'
+import { postStatus } from '../routes/_api/statuses'
 import { followAccount } from '../routes/_api/follow'
 import { favoriteStatus } from '../routes/_api/favorite'
 import { reblogStatus } from '../routes/_api/reblog'
@@ -10,6 +10,7 @@ import path from 'path'
 import fs from 'fs'
 import FormData from 'form-data'
 import { auth } from '../routes/_api/utils'
+import { pinStatus } from '../routes/_api/pin'
 
 global.File = FileApi.File
 global.FormData = FileApi.FormData

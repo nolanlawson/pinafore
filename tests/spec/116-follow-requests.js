@@ -1,6 +1,7 @@
 import { lockedAccountRole } from '../roles'
 import { followAs, unfollowAs } from '../serverActions'
 import {
+  avatarInComposeBox,
   communityNavButton, followersButton, getNthSearchResult, getSearchResultByHref, getUrl, goBack,
   homeNavButton, sleep
 } from '../utils'
@@ -67,7 +68,7 @@ test('Can approve and reject follow requests', async t => {
     .expect(getNthSearchResult(1).exists).notOk({timeout})
     // check our follow list to make sure they follow us
     .click(homeNavButton)
-    .click($('.compose-box-avatar'))
+    .click(avatarInComposeBox)
     .expect(getUrl()).contains(`/accounts/${users.LockedAccount.id}`)
     .click(followersButton)
     .expect(getNthSearchResult(1).innerText).match(/(@admin|@quux)/)
