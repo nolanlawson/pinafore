@@ -13,10 +13,19 @@ export async function insertPinnedStatuses (instanceName, accountId, statuses) {
   let storeNames = [PINNED_STATUSES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
     let [ pinnedStatusesStore, statusesStore, accountsStore ] = stores
-    statuses.forEach((status, i) => {
-      storeStatus(statusesStore, accountsStore, status)
-      pinnedStatusesStore.put(status.id, createPinnedStatusId(accountId, i))
-    })
+
+    let keyRange = createPinnedStatusKeyRange(accountId)
+    pinnedStatusesStore.getAll(keyRange).onsuccess = e => {
+      // if there was e.g. 1 pinned status before and 2 now, then we need to delete the old one
+      let existingPinnedStatuses = e.target.result
+      for (let i = statuses.length; i < existingPinnedStatuses.length; i++) {
+        pinnedStatusesStore.delete(createPinnedStatusKeyRange(accountId, i))
+      }
+      statuses.forEach((status, i) => {
+        storeStatus(statusesStore, accountsStore, status)
+        pinnedStatusesStore.put(status.id, createPinnedStatusId(accountId, i))
+      })
+    }
   })
 }
 

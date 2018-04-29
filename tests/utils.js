@@ -41,6 +41,7 @@ export const addInstanceButton = $('#submitButton')
 export const mastodonLogInButton = $('button[type="submit"]')
 export const followsButton = $('.account-profile-details > *:nth-child(2)')
 export const followersButton = $('.account-profile-details > *:nth-child(3)')
+export const avatarInComposeBox = $('.compose-box-avatar')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -222,6 +223,14 @@ export function getNthDialogOptionsOption (n) {
 
 export function getReblogsCount () {
   return reblogsCountElement.innerCount
+}
+
+export function getNthPinnedStatus (n) {
+  return $(`.pinned-statuses article[aria-posinset="${n}"]`)
+}
+
+export function getNthPinnedStatusFavoriteButton (n) {
+  return getNthPinnedStatus(n).find('.status-toolbar button:nth-child(3)')
 }
 
 export async function validateTimeline (t, timeline) {

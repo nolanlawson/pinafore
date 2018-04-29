@@ -39,3 +39,9 @@ export async function setStatusReblogged (instanceName, statusId, reblogged) {
     status.reblogs_count = (status.reblogs_count || 0) + delta
   })
 }
+
+export async function setStatusPinned (instanceName, statusId, pinned) {
+  return updateStatus(instanceName, statusId, status => {
+    status.pinned = pinned
+  })
+}

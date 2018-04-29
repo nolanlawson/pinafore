@@ -1,33 +1,38 @@
 <div role="feed" aria-label="Pinned toots" class="pinned-statuses">
-  {{#if pinnedStatuses}}
-    {{#each pinnedStatuses as status, index}}
-      <Status :status
-              timelineType="pinned"
-              timelineValue="{{accountId}}"
-              :index
-              length="{{pinnedStatuses.length}}"
-      />
-    {{/each}}
-  {{/if}}
+  {{#each pinnedStatuses as status, index @id}}
+    <Status :status
+            timelineType="pinned"
+            timelineValue="{{accountId}}"
+            :index
+            length="{{pinnedStatuses.length}}"
+    />
+  {{/each}}
 </div>
 <script>
   import { store } from '../../_store/store'
   import Status from '../status/Status.html'
   import { updatePinnedStatusesForAccount } from '../../_actions/pinnedStatuses'
+  import { on } from '../../_utils/eventBus'
 
   export default {
     async oncreate () {
-      let { accountId } = this.get()
-      await updatePinnedStatusesForAccount(accountId)
+      on('updatePinnedStatuses', this, () => this.updatePinnedStatuses())
+      await this.updatePinnedStatuses()
     },
     computed: {
       pinnedStatuses: ($pinnedStatuses, $currentInstance, accountId) => {
-        return $pinnedStatuses[$currentInstance] && $pinnedStatuses[$currentInstance][accountId]
+        return ($pinnedStatuses[$currentInstance] && $pinnedStatuses[$currentInstance][accountId]) || []
       }
     },
     store: () => store,
     components: {
       Status
+    },
+    methods: {
+      async updatePinnedStatuses () {
+        let { accountId } = this.get()
+        await updatePinnedStatusesForAccount(accountId)
+      }
     }
   }
 </script>
