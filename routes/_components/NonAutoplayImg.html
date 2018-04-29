@@ -4,6 +4,7 @@
        alt="{{alt || ''}}"
        title="{{alt || ''}}"
        src="{{src}}"
+       on:imgLoad
        on:imgLoadError />
 {{else}}
   <img class="{{className || ''}} non-autoplay-zoom-in {{isLink ? 'is-link' : ''}}"
@@ -11,6 +12,7 @@
        alt="{{alt || ''}}"
        title="{{alt || ''}}"
        src="{{staticSrc}}"
+       on:imgLoad
        on:imgLoadError
        on:mouseover="onMouseOver(event)"
        ref:node />
@@ -24,7 +26,7 @@
   }
 </style>
 <script>
-  import { imgLoadError, mouseover } from '../_utils/events'
+  import { imgLoad, imgLoadError, mouseover } from '../_utils/events'
   export default {
     methods: {
       onMouseOver (mouseOver) {
@@ -33,6 +35,7 @@
       }
     },
     events: {
+      imgLoad,
       imgLoadError,
       mouseover
     }
