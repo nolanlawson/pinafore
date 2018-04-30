@@ -6,7 +6,7 @@
     <AccountSearchResult :account />
   {{/each}}
   {{#each $searchResults.statuses as status, index}}
-  <StatusSearchResult :status :index length="{{$searchResults.statuses.length}}"/>
+  <StatusSearchResult :status :index length={{$searchResults.statuses.length}}/>
   {{/each}}
 </ul>
 <style>

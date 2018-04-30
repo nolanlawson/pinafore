@@ -1,4 +1,7 @@
-<a class='settings-nav-item {{getCurrentClass(page, name)}}' aria-label='{{getAriaLabel(page, name, label)}}' href='{{href}}'>
+<a class="settings-nav-item {{getCurrentClass(page, name)}}"
+   aria-label={{getAriaLabel(page, name, label)}}
+   :href
+>
   {{label}}
 </a>
 <style>

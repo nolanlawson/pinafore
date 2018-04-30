@@ -1,7 +1,7 @@
 <a class="status-author-name {{isStatusInNotification ? 'status-in-notification' : '' }} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}"
    href="/accounts/{{originalAccountId}}"
    title="{{'@' + originalAccount.acct}}"
-   focus-key="{{focusKey}}"
+   focus-key={{focusKey}}
 >
   {{originalAccount.display_name || originalAccount.username}}
 </a>

@@ -1,13 +1,13 @@
 <div class="pseudo-virtual-list-item"
-     aria-hidden="{{hide}}"
-     pseudo-virtual-list-key="{{key}}"
+     aria-hidden={{hide}}
+     pseudo-virtual-list-key={{key}}
      style="height: {{shouldHide ? `${height}px` : ''}};"
      ref:node>
   {{#if !shouldHide}}
     <:Component {component}
-                virtualProps="{{props}}"
-                virtualIndex="{{index}}"
-                virtualLength="{{length}}"
+                virtualProps={{props}}
+                virtualIndex={{index}}
+                virtualLength={{length}}
     />
   {{/if}}
 </div>

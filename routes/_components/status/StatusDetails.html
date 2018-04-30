@@ -1,14 +1,14 @@
 <div class="status-details">
   <ExternalLink className="status-absolute-date"
-                href="{{originalStatus.url}}"
+                href={{originalStatus.url}}
                 showIcon="true"
                 ariaLabel="{{formattedDate}} (opens in new window)"
   >
-    <time datetime={{createdAtDate}} title="{{formattedDate}}">{{formattedDate}}</time>
+    <time datetime={{createdAtDate}} title={{formattedDate}}>{{formattedDate}}</time>
   </ExternalLink>
   <a class="status-favs-reblogs"
      href="/statuses/{{originalStatusId}}/reblogs"
-     aria-label="{{reblogsLabel}}">
+     aria-label={{reblogsLabel}}>
     <svg class="status-favs-reblogs-svg">
       <use xlink:href="#fa-retweet"/>
     </svg>
@@ -16,7 +16,7 @@
   </a>
   <a class="status-favs-reblogs"
      href="/statuses/{{originalStatusId}}/favorites"
-     aria-label="{{favoritesLabel}}">
+     aria-label={{favoritesLabel}}>
     <svg class="status-favs-reblogs-svg">
       <use xlink:href="#fa-star" />
     </svg>

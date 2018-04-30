@@ -2,11 +2,11 @@
   <ul>
     {{#each navItems as navItem}}
     <li>
-      <SettingsNavItem :page name="{{navItem.name}}" href="{{navItem.href}}" label="{{navItem.label}}" />
+      <SettingsNavItem :page name={{navItem.name}} href={{navItem.href}} label={{navItem.label}} />
     </li>
     {{/each}}
     <li>
-      <SettingsNavItem :page name="{{page}}" href="/{{page}}" :label />
+      <SettingsNavItem :page name={{page}} href="/{{page}}" :label />
     </li>
   </ul>
 </nav>

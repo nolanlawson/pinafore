@@ -1,7 +1,7 @@
 <div class="dynamic-page-banner {{icon ? 'dynamic-page-with-icon' : ''}}">
   {{#if icon}}
   <svg class="dynamic-page-banner-svg">
-    <use xlink:href="{{icon}}" />
+    <use xlink:href={{icon}} />
   </svg>
   {{/if}}
   <h1 class="dynamic-page-title">{{title}}</h1>

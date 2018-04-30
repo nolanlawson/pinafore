@@ -2,9 +2,9 @@
   {{#each pinnedStatuses as status, index @id}}
     <Status :status
             timelineType="pinned"
-            timelineValue="{{accountId}}"
+            timelineValue={{accountId}}
             :index
-            length="{{pinnedStatuses.length}}"
+            length={{pinnedStatuses.length}}
     />
   {{/each}}
 </div>

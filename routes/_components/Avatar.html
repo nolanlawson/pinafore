@@ -1,22 +1,22 @@
 {{#if error}}
-<svg class="{{computedClass}}" aria-hidden="true">
+<svg class={{computedClass}} aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
 {{elseif $autoplayGifs}}
   <img
-    class="{{computedClass}}"
+    class={{computedClass}}
     aria-hidden="true"
     alt=""
-    src="{{account.avatar}}"
+    src={{account.avatar}}
     on:imgLoad="set({loaded: true})"
     on:imgLoadError="set({error: true})" />
 {{else}}
   <NonAutoplayImg
-    className="{{computedClass}}"
+    className={{computedClass}}
     ariaHidden="true"
     alt=""
-    src="{{account.avatar}}"
-    staticSrc="{{account.avatar_static}}"
+    src={{account.avatar}}
+    staticSrc={{account.avatar_static}}
     :isLink
     on:imgLoad="set({loaded: true})"
     on:imgLoadError="set({error: true})"

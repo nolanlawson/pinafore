@@ -1,7 +1,7 @@
 <div class="compose-autosuggest {{shown ? 'shown' : ''}} {{realm === 'dialog' ? 'is-dialog' : ''}}"
        aria-hidden="true" >
   <ComposeAutosuggestionList
-    items="{{searchResults}}"
+    items={{searchResults}}
     on:click="onClick(event)"
     :type
     :selected

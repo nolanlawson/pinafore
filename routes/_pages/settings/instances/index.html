@@ -5,10 +5,10 @@
   <p>Instances you've logged in to:</p>
   <SettingsList label="Instances">
     {{#each $loggedInInstancesAsList as instance}}
-      <SettingsListItem offsetForIcon="{{instance.name !== $currentInstance}}"
-                        icon="{{instance.name === $currentInstance ? '#fa-star' : ''}}"
+      <SettingsListItem offsetForIcon={{instance.name !== $currentInstance}}
+                        icon={{instance.name === $currentInstance ? '#fa-star' : ''}}
                         href="/settings/instances/{{instance.name}}"
-                        label="{{instance.name}}"
+                        label={{instance.name}}
                         ariaLabel="{{instance.name}} {{instance.name === $currentInstance ? '(current instance)' : ''}}" />
     {{/each}}
   </SettingsList>
