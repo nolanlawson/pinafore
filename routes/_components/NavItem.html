@@ -1,25 +1,25 @@
-<a class='main-nav-link {{selected ? "selected" : ""}}'
-   aria-label={{ariaLabel}}
-   aria-current={{selected}}
+<a class='main-nav-link {selected ? "selected" : ""}'
+   aria-label={ariaLabel}
+   aria-current={selected}
    on:click="onClick(event)"
-   :href >
-  {{#if name === 'notifications'}}
+   {href} >
+  {#if name === 'notifications'}
     <div class="nav-link-svg-wrapper">
       <svg class="nav-link-svg">
-        <use xlink:href={{svg}} />
+        <use xlink:href={svg} />
       </svg>
-      {{#if $hasNotifications}}
+      {#if $hasNotifications}
         <span class="nav-link-notifications" aria-hidden="true">
-          {{$numberOfNotifications}}
+          {$numberOfNotifications}
         </span>
-      {{/if}}
+      {/if}
     </div>
-  {{else}}
+  {:else}
     <svg class="nav-link-svg">
-      <use xlink:href={{svg}} />
+      <use xlink:href={svg} />
     </svg>
-  {{/if}}
-  <span class="nav-link-label">{{label}}</span>
+  {/if}
+  <span class="nav-link-label">{label}</span>
 </a>
 <style>
   .main-nav-link {
@@ -122,8 +122,8 @@
   export default {
     store: () => store,
     computed: {
-      selected: (page, name) => page === name,
-      ariaLabel: (selected, name, label, $numberOfNotifications) => {
+      selected: ({ page, name }) => page === name,
+      ariaLabel: ({ selected, name, label, $numberOfNotifications }) => {
         let res = label
         if (selected) {
           res += ' (current page)'

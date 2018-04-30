@@ -1,35 +1,35 @@
 <ul class="compose-autosuggest-list">
-  {{#each items as item, i}}
+  {#each items as item, i}
   <li class="compose-autosuggest-list-item">
-    <button class="compose-autosuggest-list-button {{i === selected ? 'selected' : ''}}"
+    <button class="compose-autosuggest-list-button {i === selected ? 'selected' : ''}"
             tabindex="0"
             on:click="fire('click', item)">
       <div class="compose-autosuggest-list-grid">
-        {{#if type === 'account'}}
+        {#if type === 'account'}
         <Avatar
           className="compose-autosuggest-list-item-avatar"
           size="small"
-          account={{item}}
+          account={item}
         />
         <span class="compose-autosuggest-list-display-name">
-            {{item.display_name || item.acct}}
+            {item.display_name || item.acct}
         </span>
         <span class="compose-autosuggest-list-username">
-            {{'@' + item.acct}}
+            {'@' + item.acct}
         </span>
-        {{else}}
-          <img src={{$autoplayGifs ? item.url : item.static_url}}
+        {:else}
+          <img src={$autoplayGifs ? item.url : item.static_url}
                class="compose-autosuggest-list-item-icon"
-               alt="{{':' + item.shortcode + ':'}}"
+               alt="{':' + item.shortcode + ':'}"
           />
           <span class="compose-autosuggest-list-display-name">
-              {{':' + item.shortcode + ':'}}
+              {':' + item.shortcode + ':'}
           </span>
-        {{/if}}
+        {/if}
       </div>
     </button>
   </li>
-  {{/each}}
+  {/each}
 </ul>
 <style>
   .compose-autosuggest-list {

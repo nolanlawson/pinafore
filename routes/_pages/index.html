@@ -1,8 +1,8 @@
-{{#if $isUserLoggedIn}}
+{#if $isUserLoggedIn}
   <TimelineHomePage/>
-{{else}}
+{:else}
   <NotLoggedInHome/>
-{{/if}}
+{/if}
 <script>
   import NotLoggedInHome from '.././_components/NotLoggedInHome.html'
   import { store } from '.././_store/store.js'

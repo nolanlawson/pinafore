@@ -1,8 +1,8 @@
-{{#if $isUserLoggedIn}}
-  <TimelinePage timeline="status/{{params.statusId}}">
+{#if $isUserLoggedIn}
+  <TimelinePage timeline="status/{params.statusId}">
     <DynamicPageBanner title=""/>
   </TimelinePage>
-{{else}}
+{:else}
   <HiddenFromSSR>
     <FreeTextLayout>
       <h1>Status</h1>
@@ -10,7 +10,7 @@
       <p>A status thread will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import FreeTextLayout from '../../../_components/FreeTextLayout.html'
   import { store } from '../../../_store/store.js'

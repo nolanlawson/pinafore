@@ -1,11 +1,11 @@
-{{#if props}}
-  <VirtualListItem :component
-                   :offset
-                   :props
-                   :key
-                   :index
+{#if props}
+  <VirtualListItem {component}
+                   {offset}
+                   {props}
+                   {key}
+                   {index}
   />
-{{/if}}
+{/if}
 <script>
   import VirtualListItem from './VirtualListItem'
   import { mark, stop } from '../../_utils/marks'

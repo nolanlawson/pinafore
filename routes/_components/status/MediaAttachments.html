@@ -1,8 +1,8 @@
-<div class="status-media {{sensitive ? 'status-media-is-sensitive' : ''}}"
-     style="grid-template-columns: repeat(auto-fit, minmax({{maxMediaWidth}}px, 1fr));" >
-  {{#each mediaAttachments as media}}
-    <Media :media :uuid />
-  {{/each}}
+<div class="status-media {sensitive ? 'status-media-is-sensitive' : ''}"
+     style="grid-template-columns: repeat(auto-fit, minmax({maxMediaWidth}px, 1fr));" >
+  {#each mediaAttachments as media}
+    <Media {media} {uuid} />
+  {/each}
 </div>
 <style>
   .status-media {
@@ -36,7 +36,7 @@
 
   export default {
     computed: {
-      maxMediaWidth: (mediaAttachments) => {
+      maxMediaWidth: ({ mediaAttachments }) => {
         return Math.max.apply(Math, mediaAttachments.map(media => {
           return media.meta && media.meta.small && typeof media.meta.small.width === 'number' ? media.meta.small.width : DEFAULT_MEDIA_WIDTH
         }))

@@ -23,11 +23,11 @@ module.exports = {
         use: {
           loader: 'svelte-loader',
           options: {
+            dev: isDev,
             hydratable: true,
             emitCss: !isDev,
-            cascade: false,
-            store: true,
-            hot: isDev
+            hot: isDev,
+            hotReload: isDev
           }
         }
       },

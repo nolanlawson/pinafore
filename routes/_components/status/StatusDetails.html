@@ -1,26 +1,26 @@
 <div class="status-details">
   <ExternalLink className="status-absolute-date"
-                href={{originalStatus.url}}
+                href={originalStatus.url}
                 showIcon="true"
-                ariaLabel="{{formattedDate}} (opens in new window)"
+                ariaLabel="{formattedDate} (opens in new window)"
   >
-    <time datetime={{createdAtDate}} title={{formattedDate}}>{{formattedDate}}</time>
+    <time datetime={createdAtDate} title={formattedDate}>{formattedDate}</time>
   </ExternalLink>
   <a class="status-favs-reblogs"
-     href="/statuses/{{originalStatusId}}/reblogs"
-     aria-label={{reblogsLabel}}>
+     href="/statuses/{originalStatusId}/reblogs"
+     aria-label={reblogsLabel}>
     <svg class="status-favs-reblogs-svg">
       <use xlink:href="#fa-retweet"/>
     </svg>
-    <span>{{numReblogs}}</span>
+    <span>{numReblogs}</span>
   </a>
   <a class="status-favs-reblogs"
-     href="/statuses/{{originalStatusId}}/favorites"
-     aria-label={{favoritesLabel}}>
+     href="/statuses/{originalStatusId}/favorites"
+     aria-label={favoritesLabel}>
     <svg class="status-favs-reblogs-svg">
       <use xlink:href="#fa-star" />
     </svg>
-    <span>{{numFavs}}</span>
+    <span>{numFavs}</span>
   </a>
 </div>
 <style>
@@ -99,17 +99,17 @@
 
   export default {
     computed: {
-      createdAtDate: (originalStatus) => originalStatus.created_at,
-      numReblogs: (originalStatus) => originalStatus.reblogs_count || 0,
-      numFavs: (originalStatus) => originalStatus.favourites_count || 0,
-      formattedDate: (createdAtDate) => formatter.format(new Date(createdAtDate)),
-      reblogsLabel: (numReblogs) => {
+      createdAtDate: ({ originalStatus }) => originalStatus.created_at,
+      numReblogs: ({ originalStatus }) => originalStatus.reblogs_count || 0,
+      numFavs: ({ originalStatus }) => originalStatus.favourites_count || 0,
+      formattedDate: ({ createdAtDate }) => formatter.format(new Date(createdAtDate)),
+      reblogsLabel: ({ numReblogs }) => {
         // TODO: intl
         return numReblogs === 1
           ? `Boosted ${numReblogs} time`
           : `Boosted ${numReblogs} times`
       },
-      favoritesLabel: (numFavs) => {
+      favoritesLabel: ({ numFavs }) => {
         // TODO: intl
         return numFavs === 1
           ? `Favorited ${numFavs} time`

@@ -1,12 +1,12 @@
-<div class="virtual-list-item {{shown ? 'shown' : ''}}"
-     aria-hidden={{!shown}}
-     virtual-list-key={{key}}
+<div class="virtual-list-item {shown ? 'shown' : ''}"
+     aria-hidden={!shown}
+     virtual-list-key={key}
      ref:node
-     style="transform: translateY({{offset}}px);" >
-  <:Component {component}
-              virtualProps={{props}}
-              virtualIndex={{index}}
-              virtualLength={{$length}}
+     style="transform: translateY({offset}px);" >
+  <svelte:component this={component}
+              virtualProps={props}
+              virtualIndex={index}
+              virtualLength={$length}
               on:recalculateHeight="doRecalculateHeight()"/>
 </div>
 <style>
@@ -45,7 +45,7 @@
     },
     store: () => virtualListStore,
     computed: {
-      'shown': ($itemHeights, key) => $itemHeights[key] > 0
+      'shown': ({ $itemHeights, key }) => $itemHeights[key] > 0
     },
     methods: {
       doRecalculateHeight () {

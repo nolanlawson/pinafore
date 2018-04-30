@@ -1,5 +1,5 @@
-<div class={{computedClass}} ref:node>
-    {{{massagedContent}}}
+<div class={computedClass} ref:node>
+    {@html massagedContent}
 </div>
 <style>
   .status-content {
@@ -71,7 +71,7 @@
     },
     store: () => store,
     computed: {
-      computedClass: (isStatusInOwnThread, isStatusInNotification, shown) => {
+      computedClass: ({ isStatusInOwnThread, isStatusInNotification, shown }) => {
         return classname(
           'status-content',
           isStatusInOwnThread && 'status-in-own-thread',
@@ -79,9 +79,9 @@
           shown && 'shown'
         )
       },
-      content: (originalStatus) => originalStatus.content,
-      emojis: (originalStatus) => originalStatus.emojis,
-      massagedContent: (content, emojis, $autoplayGifs) => {
+      content: ({ originalStatus }) => originalStatus.content,
+      emojis: ({ originalStatus }) => originalStatus.emojis,
+      massagedContent: ({ content, emojis, $autoplayGifs }) => {
         content = emojifyText(content, emojis, $autoplayGifs)
 
         // GNU Social and Pleroma don't add <p> tags

@@ -1,8 +1,8 @@
-<:Head>
+<svelte:head>
   <title>Pinafore – Search</title>
-</:Head>
+</svelte:head>
 <Layout page='search'>
-  <LazyPage :pageComponent :params />
+  <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
   import Layout from './_components/Layout.html'

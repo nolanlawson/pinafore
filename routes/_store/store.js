@@ -2,6 +2,7 @@ import { observers } from './observers/observers'
 import { computations } from './computations/computations'
 import { mixins } from './mixins/mixins'
 import { LocalStorageStore } from './LocalStorageStore'
+import { observe } from 'svelte-extras'
 
 const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'currentInstance',
@@ -23,6 +24,8 @@ class PinaforeStore extends LocalStorageStore {
     super(state, KEYS_TO_STORE_IN_LOCAL_STORAGE)
   }
 }
+
+PinaforeStore.prototype.observe = observe
 
 export const store = new PinaforeStore({
   instanceNameInSearch: '',

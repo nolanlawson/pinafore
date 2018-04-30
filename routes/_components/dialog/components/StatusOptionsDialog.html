@@ -1,10 +1,10 @@
 <ModalDialog
-  :id
-  :label
-  :title
+  {id}
+  {label}
+  {title}
   background="var(--main-bg)"
 >
-  <GenericDialogList :items on:click="onClick(event)"/>
+  <GenericDialogList {items} on:click="onClick(event)"/>
 </ModalDialog>
 <script>
 import ModalDialog from './ModalDialog.html'
@@ -22,20 +22,20 @@ import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
 export default {
   oncreate,
   computed: {
-    relationship: ($currentAccountRelationship) => $currentAccountRelationship,
-    account: ($currentAccountProfile) => $currentAccountProfile,
-    verifyCredentials: ($currentVerifyCredentials) => $currentVerifyCredentials,
-    statusId: (status) => status.id,
-    pinned: (status) => status.pinned,
+    relationship: ({ $currentAccountRelationship }) => $currentAccountRelationship,
+    account: ({ $currentAccountProfile }) => $currentAccountProfile,
+    verifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials,
+    statusId: ({ status }) => status.id,
+    pinned: ({ status }) => status.pinned,
     // begin account data copypasta
-    verifyCredentialsId: (verifyCredentials) => verifyCredentials.id,
-    following: (relationship) => relationship && relationship.following,
-    followRequested: (relationship) => relationship && relationship.requested,
-    accountId: (account) => account && account.id,
-    acct: (account) => account.acct,
-    muting: (relationship) => relationship.muting,
-    blocking: (relationship) => relationship.blocking,
-    followLabel: (following, followRequested, account, acct) => {
+    verifyCredentialsId: ({ verifyCredentials }) => verifyCredentials.id,
+    following: ({ relationship }) => relationship && relationship.following,
+    followRequested: ({ relationship }) => relationship && relationship.requested,
+    accountId: ({ account }) => account && account.id,
+    acct: ({ account }) => account.acct,
+    muting: ({ relationship }) => relationship.muting,
+    blocking: ({ relationship }) => relationship.blocking,
+    followLabel: ({ following, followRequested, account, acct }) => {
       if (typeof following === 'undefined' || !account) {
         return ''
       }
@@ -43,22 +43,22 @@ export default {
         ? `Unfollow @${acct}`
         : `Follow @${acct}`
     },
-    followIcon: (following, followRequested) => {
+    followIcon: ({ following, followRequested }) => {
       return following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
     },
-    blockLabel: (blocking, acct) => {
+    blockLabel: ({ blocking, acct }) => {
       return blocking ? `Unblock @${acct}` : `Block @${acct}`
     },
-    blockIcon: (blocking) => blocking ? '#fa-unlock' : '#fa-ban',
-    muteLabel: (muting, acct) => {
+    blockIcon: ({ blocking }) => blocking ? '#fa-unlock' : '#fa-ban',
+    muteLabel: ({ muting, acct }) => {
       return muting ? `Unmute @${acct}` : `Mute @${acct}`
     },
-    muteIcon: (muting) => muting ? '#fa-volume-up' : '#fa-volume-off',
+    muteIcon: ({ muting }) => muting ? '#fa-volume-up' : '#fa-volume-off',
     // end account data copypasta
-    isUser: (accountId, verifyCredentialsId) => accountId === verifyCredentialsId,
-    pinLabel: (pinned, isUser) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
-    items: (blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
-      following, followRequested, pinLabel, isUser) => {
+    isUser: ({ accountId, verifyCredentialsId }) => accountId === verifyCredentialsId,
+    pinLabel: ({ pinned, isUser }) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
+    items: ({ blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
+      following, followRequested, pinLabel, isUser }) => {
       return [
         isUser && {
           key: 'delete',

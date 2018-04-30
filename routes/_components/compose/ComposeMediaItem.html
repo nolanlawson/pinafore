@@ -1,8 +1,8 @@
 <div class="compose-media">
-  <img src={{mediaItem.data.preview_url}} alt={{mediaItem.file.name}}/>
+  <img src={mediaItem.data.preview_url} alt={mediaItem.file.name}/>
   <div class="compose-media-delete">
     <button class="compose-media-delete-button"
-            aria-label="Delete {{mediaItem.file.name}}"
+            aria-label="Delete {mediaItem.file.name}"
             on:click="onDeleteMedia()" >
       <svg class="compose-media-delete-button-svg">
         <use xlink:href="#fa-times" />
@@ -12,7 +12,7 @@
   <div class="compose-media-alt">
     <input type="text"
            placeholder="Description"
-           aria-label="Describe {{mediaItem.file.name}} for the visually impaired"
+           aria-label="Describe {mediaItem.file.name} for the visually impaired"
            bind:value=rawText
     >
   </div>
@@ -79,6 +79,7 @@
   import { deleteMedia } from '../../_actions/media'
   import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -90,6 +91,7 @@
     }),
     store: () => store,
     methods: {
+      observe,
       setupSyncFromStore () {
         this.observe('mediaDescriptions', mediaDescriptions => {
           mediaDescriptions = mediaDescriptions || []

@@ -1,10 +1,10 @@
-<div class="dynamic-page-banner {{icon ? 'dynamic-page-with-icon' : ''}}">
-  {{#if icon}}
+<div class="dynamic-page-banner {icon ? 'dynamic-page-with-icon' : ''}">
+  {#if icon}
   <svg class="dynamic-page-banner-svg">
-    <use xlink:href={{icon}} />
+    <use xlink:href={icon} />
   </svg>
-  {{/if}}
-  <h1 class="dynamic-page-title">{{title}}</h1>
+  {/if}
+  <h1 class="dynamic-page-title">{title}</h1>
   <button type="button"
           class="dynamic-page-go-back"
           on:click="onGoBack(event)">Back</button>

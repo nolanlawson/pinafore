@@ -1,5 +1,5 @@
 <DynamicPageBanner title="Muted users" icon="#fa-volume-off" />
-<AccountsListPage :accountsFetcher :accountActions />
+<AccountsListPage {accountsFetcher} {accountActions} />
 <script>
   import AccountsListPage from '.././_components/AccountsListPage.html'
   import { store } from '.././_store/store'
@@ -18,7 +18,7 @@
       ]
     }),
     computed: {
-      accountsFetcher: ($currentInstance, $accessToken) => () => getMutedAccounts($currentInstance, $accessToken)
+      accountsFetcher: ({ $currentInstance, $accessToken }) => () => getMutedAccounts($currentInstance, $accessToken)
     },
     store: () => store,
     components: {

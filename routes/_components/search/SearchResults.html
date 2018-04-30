@@ -1,13 +1,13 @@
 <ul class="search-results">
-  {{#each $searchResults.hashtags as hashtag}}
-    <HashtagSearchResult :hashtag />
-  {{/each}}
-  {{#each $searchResults.accounts as account}}
-    <AccountSearchResult :account />
-  {{/each}}
-  {{#each $searchResults.statuses as status, index}}
-  <StatusSearchResult :status :index length={{$searchResults.statuses.length}}/>
-  {{/each}}
+  {#each $searchResults.hashtags as hashtag}
+    <HashtagSearchResult {hashtag} />
+  {/each}
+  {#each $searchResults.accounts as account}
+    <AccountSearchResult {account} />
+  {/each}
+  {#each $searchResults.statuses as status, index}
+  <StatusSearchResult {status} {index} length={$searchResults.statuses.length}/>
+  {/each}
 </ul>
 <style>
   .search-results {

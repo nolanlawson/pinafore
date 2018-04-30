@@ -3,11 +3,11 @@
 
   <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
-    {{#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}}
+    {#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}
     <div class="form-error form-error-user-error" role="alert">
-      Error: {{$logInToInstanceError}}
+      Error: {$logInToInstanceError}
     </div>
-    {{/if}}
+    {/if}
 
     <noscript>
       <div class="form-error" role="alert">
@@ -20,14 +20,14 @@
            bind:value='$instanceNameInSearch' placeholder='' required
     >
     <button class="primary" type="submit" id="submitButton"
-            disabled={{!$instanceNameInSearch || $logInToInstanceLoading}}>
+            disabled={!$instanceNameInSearch || $logInToInstanceLoading}>
       Add instance
     </button>
   </form>
 
-  {{#if !$isUserLoggedIn}}
+  {#if !$isUserLoggedIn}
   <p>Don't have an instance? <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink></p>
-  {{/if}}
+  {/if}
 </SettingsLayout>
 <style>
   .form-error {
