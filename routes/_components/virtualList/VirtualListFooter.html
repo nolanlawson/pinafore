@@ -1,7 +1,7 @@
 <div class="virtual-list-footer"
   ref:node
-  style="transform: translateY({{$heightWithoutFooter}}px);" >
-  <:Component {component} />
+  style="transform: translateY({$heightWithoutFooter}px);" >
+  <svelte:component this={component} />
 </div>
 <style>
   .virtual-list-footer {

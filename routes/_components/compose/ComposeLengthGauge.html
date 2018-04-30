@@ -1,5 +1,5 @@
-<div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{overLimit ? 'over-char-limit' : ''}}"
-     style="transform: scaleX({{lengthAsFractionDeferred || 0}});"
+<div class="compose-box-length-gauge {shouldAnimate ? 'should-animate' : ''}  {overLimit ? 'over-char-limit' : ''}"
+     style="transform: scaleX({lengthAsFractionDeferred || 0});"
      aria-hidden="true"
 ></div>
 <style>
@@ -22,6 +22,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -40,11 +41,14 @@
     },
     store: () => store,
     computed: {
-      lengthAsFraction: (length) => {
+      lengthAsFraction: ({ length }) => {
         // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
         let int = Math.round(Math.min(CHAR_LIMIT, length) / CHAR_LIMIT * 100)
         return (int - (int % 2)) / 100
       }
+    },
+    methods: {
+      observe
     }
 }
 </script>

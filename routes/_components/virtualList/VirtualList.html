@@ -1,21 +1,21 @@
-<VirtualListContainer :realm :containerQuery on:initialized on:noNeedToScroll >
+<VirtualListContainer {realm} {containerQuery} on:initialized on:noNeedToScroll >
   <div class="virtual-list"
-       style="height: {{$height}}px;"
+       style="height: {$height}px;"
        ref:node >
-    <VirtualListHeader component={{headerComponent}} virtualProps={{headerProps}} shown={{$showHeader}}/>
-    {{#if $visibleItems}}
-      {{#each $visibleItems as visibleItem @key}}
-        <VirtualListLazyItem :component
-                             offset={{visibleItem.offset}}
-                             :makeProps
-                             key={{visibleItem.key}}
-                             index={{visibleItem.index}}
+    <VirtualListHeader component={headerComponent} virtualProps={headerProps} shown={$showHeader}/>
+    {#if $visibleItems}
+      {#each $visibleItems as visibleItem (visibleItem.key)}
+        <VirtualListLazyItem {component}
+                             offset={visibleItem.offset}
+                             {makeProps}
+                             key={visibleItem.key}
+                             index={visibleItem.index}
         />
-      {{/each}}
-    {{/if}}
-    {{#if $showFooter}}
-      <VirtualListFooter component={{footerComponent}} />
-    {{/if}}
+      {/each}
+    {/if}
+    {#if $showFooter}
+      <VirtualListFooter component={footerComponent} />
+    {/if}
   </div>
 </VirtualListContainer>
 <style>
@@ -32,6 +32,7 @@
   import throttle from 'lodash-es/throttle'
   import { mark, stop } from '../../_utils/marks'
   import isEqual from 'lodash-es/isEqual'
+  import { observe } from 'svelte-extras'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 800
   const SCROLL_EVENT_THROTTLE = 1000
@@ -100,14 +101,15 @@
       VirtualListHeader
     },
     computed: {
-      distanceFromBottom: ($scrollHeight, $scrollTop, $offsetHeight) => {
+      distanceFromBottom: ({ $scrollHeight, $scrollTop, $offsetHeight }) => {
         return $scrollHeight - $scrollTop - $offsetHeight
       },
-      scrollTop: ($scrollTop) => $scrollTop,
+      scrollTop: ({ $scrollTop }) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
-      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
+      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight
     },
     methods: {
+      observe,
       calculateListOffset () {
         // TODO: better way to get the offset top?
         let node = this.refs.node

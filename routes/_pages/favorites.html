@@ -1,10 +1,10 @@
-{{#if $isUserLoggedIn}}
+{#if $isUserLoggedIn}
   <TimelinePage timeline="favorites">
-    {{#if $pinnedPage !== '/favorites'}}
+    {#if $pinnedPage !== '/favorites'}
       <DynamicPageBanner title="Favorites" icon="#fa-star"/>
-    {{/if}}
+    {/if}
   </TimelinePage>
-{{else}}
+{:else}
   <HiddenFromSSR>
     <FreeTextLayout>
       <h1>Favorites</h1>
@@ -12,7 +12,7 @@
       <p>Your favorites will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import TimelinePage from '.././_components/TimelinePage.html'
   import FreeTextLayout from '.././_components/FreeTextLayout.html'

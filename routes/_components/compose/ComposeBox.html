@@ -1,27 +1,27 @@
-{{#if realm === 'home'}}
+{#if realm === 'home'}
   <h1 class="sr-only">Compose toot</h1>
-{{/if}}
-<div class="{{computedClassName}} {{hideAndFadeIn}}">
+{/if}
+<div class="{computedClassName} {hideAndFadeIn}">
   <ComposeAuthor />
-  {{#if contentWarningShown}}
+  {#if contentWarningShown}
     <div class="compose-content-warning-wrapper"
          transition:slide="{duration: 333}">
-      <ComposeContentWarning :realm :contentWarning />
+      <ComposeContentWarning {realm} {contentWarning} />
     </div>
-  {{/if}}
-  <ComposeInput :realm :text :autoFocus on:postAction="doPostStatus()" />
-  <ComposeLengthGauge :length :overLimit />
-  <ComposeToolbar :realm :postPrivacy :media :contentWarningShown :text />
-  <ComposeLengthIndicator :length :overLimit />
-  <ComposeMedia :realm :media :mediaDescriptions />
+  {/if}
+  <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
+  <ComposeLengthGauge {length} {overLimit} />
+  <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
+  <ComposeLengthIndicator {length} {overLimit} />
+  <ComposeMedia {realm} {media} {mediaDescriptions} />
 </div>
-<div class="compose-box-button-sentinel {{hideAndFadeIn}}" ref:sentinel></div>
-<div class="compose-box-button-wrapper {{realm === 'home' ? 'compose-button-sticky' : ''}} {{hideAndFadeIn}}" >
- <ComposeButton :length :overLimit :sticky on:click="onClickPostButton()" />
+<div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
+<div class="compose-box-button-wrapper {realm === 'home' ? 'compose-button-sticky' : ''} {hideAndFadeIn}" >
+ <ComposeButton {length} {overLimit} {sticky} on:click="onClickPostButton()" />
 </div>
-{{#if !hideBottomBorder}}
-  <div class="compose-box-border-bottom {{hideAndFadeIn}}"></div>
-{{/if}}
+{#if !hideBottomBorder}
+  <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
+{/if}
 <style>
   .compose-box {
     border-radius: 4px;
@@ -115,6 +115,7 @@
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
   import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { classname } from '../../_utils/classname'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -153,37 +154,38 @@
     },
     store: () => store,
     computed: {
-      computedClassName: (overLimit, realm, size, postPrivacyKey, isReply) => (classname(
+      computedClassName: ({ overLimit, realm, size, postPrivacyKey, isReply }) => (classname(
         'compose-box',
         overLimit && 'over-char-limit',
         size === 'slim' && 'slim-size',
         isReply && postPrivacyKey === 'direct' && 'direct-reply'
       )),
-      hideAndFadeIn: (hidden) => (classname(
+      hideAndFadeIn: ({ hidden }) => (classname(
         'compose-box-fade-in',
         hidden && 'hidden'
       )),
-      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
-      text: (composeData) => composeData.text || '',
-      media: (composeData) => composeData.media || [],
-      postPrivacy: (postPrivacyKey) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
-      defaultPostPrivacyKey: ($currentVerifyCredentials) => $currentVerifyCredentials.source.privacy,
-      postPrivacyKey: (composeData, defaultPostPrivacyKey) => composeData.postPrivacy || defaultPostPrivacyKey,
-      textLength: (text) => measureText(text),
-      contentWarningLength: (contentWarning) => measureText(contentWarning),
-      length: (textLength, contentWarningLength, contentWarningShown) => (
+      composeData: ({ $currentComposeData, realm }) => $currentComposeData[realm] || {},
+      text: ({ composeData }) => composeData.text || '',
+      media: ({ composeData }) => composeData.media || [],
+      postPrivacy: ({ postPrivacyKey }) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
+      defaultPostPrivacyKey: ({ $currentVerifyCredentials }) => $currentVerifyCredentials.source.privacy,
+      postPrivacyKey: ({ composeData, defaultPostPrivacyKey }) => composeData.postPrivacy || defaultPostPrivacyKey,
+      textLength: ({ text }) => measureText(text),
+      contentWarningLength: ({ contentWarning }) => measureText(contentWarning),
+      length: ({ textLength, contentWarningLength, contentWarningShown }) => (
         textLength + (contentWarningShown ? contentWarningLength : 0)
       ),
-      overLimit: (length) => length > CHAR_LIMIT,
-      contentWarningShown: (composeData) => composeData.contentWarningShown,
-      contentWarning: (composeData) => composeData.contentWarning || '',
-      timelineInitialized: ($timelineInitialized) => $timelineInitialized,
-      mediaDescriptions: (composeData) => composeData.mediaDescriptions || []
+      overLimit: ({ length }) => length > CHAR_LIMIT,
+      contentWarningShown: ({ composeData }) => composeData.contentWarningShown,
+      contentWarning: ({ composeData }) => composeData.contentWarning || '',
+      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized,
+      mediaDescriptions: ({ composeData }) => composeData.mediaDescriptions || []
     },
     transitions: {
       slide
     },
     methods: {
+      observe,
       async onClickPostButton () {
         let { sticky } = this.get()
         if (sticky) {

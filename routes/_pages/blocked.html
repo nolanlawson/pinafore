@@ -1,5 +1,5 @@
 <DynamicPageBanner title="Blocked users" icon="#fa-ban" />
-<AccountsListPage :accountsFetcher :accountActions />
+<AccountsListPage {accountsFetcher} {accountActions} />
 <script>
   import AccountsListPage from '.././_components/AccountsListPage.html'
   import { store } from '.././_store/store'
@@ -18,7 +18,7 @@
       ]
     }),
     computed: {
-      accountsFetcher: ($currentInstance, $accessToken) => () => getBlockedAccounts($currentInstance, $accessToken)
+      accountsFetcher: ({ $currentInstance, $accessToken }) => () => getBlockedAccounts($currentInstance, $accessToken)
     },
     store: () => store,
     components: {

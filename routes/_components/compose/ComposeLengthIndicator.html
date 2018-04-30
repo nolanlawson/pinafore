@@ -1,6 +1,6 @@
-<span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
-      aria-label={{lengthLabel}}>
-      {{lengthToDisplayDeferred || '0'}}
+<span class="compose-box-length {overLimit ? 'over-char-limit' : ''}"
+      aria-label={lengthLabel}>
+      {lengthToDisplayDeferred || '0'}
     </span>
 <style>
   .compose-box-length {
@@ -20,6 +20,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -37,14 +38,17 @@
     },
     store: () => store,
     computed: {
-      lengthToDisplay: (length) => CHAR_LIMIT - length,
-      lengthLabel: (overLimit, lengthToDisplayDeferred) => {
+      lengthToDisplay: ({ length }) => CHAR_LIMIT - length,
+      lengthLabel: ({ overLimit, lengthToDisplayDeferred }) => {
         if (overLimit) {
           return `${lengthToDisplayDeferred} characters over limit`
         } else {
           return `${lengthToDisplayDeferred} characters remaining`
         }
       }
+    },
+    methods: {
+      observe
     }
   }
 </script>

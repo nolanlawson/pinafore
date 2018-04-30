@@ -1,17 +1,17 @@
-<div class={{backdropClass}}
+<div class={backdropClass}
      tabindex="-1"
      data-a11y-dialog-hide
 ></div>
-<div class={{contentsClass}}
+<div class={contentsClass}
      role="dialog"
-     aria-label={{label || ''}}
+     aria-label={label || ''}
      ref:node
 >
-  <div class="modal-dialog-document" role="document" style="background: {{background || '#000'}};">
+  <div class="modal-dialog-document" role="document" style="background: {background || '#000'};">
     <div class="modal-dialog-header">
-      {{#if title}}
-        <h1 class="modal-dialog-title">{{title}}</h1>
-      {{/if}}
+      {#if title}
+        <h1 class="modal-dialog-title">{title}</h1>
+      {/if}
       <div class="close-dialog-button-wrapper">
         <button class="close-dialog-button"
                 data-a11y-dialog-hide aria-label="Close dialog">
@@ -144,14 +144,14 @@
       shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2
     }),
     computed: {
-      backdropClass: (fadedIn, shouldAnimate) => {
+      backdropClass: ({ fadedIn, shouldAnimate }) => {
         return classname(
           'modal-dialog-backdrop',
           !fadedIn && 'hidden',
           shouldAnimate && 'should-animate'
         )
       },
-      contentsClass: (fadedIn, muted, shouldAnimate, className) => {
+      contentsClass: ({ fadedIn, muted, shouldAnimate, className }) => {
         return classname(
           'modal-dialog-contents',
           !fadedIn && 'hidden',

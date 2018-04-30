@@ -1,10 +1,10 @@
-<div class="compose-autosuggest {{shown ? 'shown' : ''}} {{realm === 'dialog' ? 'is-dialog' : ''}}"
+<div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}"
        aria-hidden="true" >
   <ComposeAutosuggestionList
-    items={{searchResults}}
+    items={searchResults}
     on:click="onClick(event)"
-    :type
-    :selected
+    {type}
+    {selected}
   />
 </div>
 <style>
@@ -47,6 +47,7 @@
   import {
     searchAccountsByUsername as searchAccountsByUsernameInDatabase
   } from '../../_database/accountsAndRelationships'
+  import { observe } from 'svelte-extras'
 
   const SEARCH_RESULTS_LIMIT = 4
   const DATABASE_SEARCH_RESULTS_LIMIT = 30
@@ -107,7 +108,8 @@
       })
     },
     methods: {
-      once: once,
+      observe,
+      once,
       onClick (item) {
         this.fire('autosuggestItemSelected')
         let { realm } = this.get()
@@ -137,13 +139,13 @@
       }
     },
     computed: {
-      composeSelectionStart: ($composeSelectionStart) => $composeSelectionStart,
-      composeFocused: ($composeFocused) => $composeFocused,
-      thisComposeFocused: (composeFocusedDeferred, realm) => composeFocusedDeferred === realm,
-      searchResults: ($composeAutosuggestionSearchResults) => $composeAutosuggestionSearchResults || [],
-      type: ($composeAutosuggestionType) => $composeAutosuggestionType || 'account',
-      selected: ($composeAutosuggestionSelected) => $composeAutosuggestionSelected || 0,
-      searchText: (text, composeSelectionStartDeferred, thisComposeFocused) => {
+      composeSelectionStart: ({ $composeSelectionStart }) => $composeSelectionStart,
+      composeFocused: ({ $composeFocused }) => $composeFocused,
+      thisComposeFocused: ({ composeFocusedDeferred, realm }) => composeFocusedDeferred === realm,
+      searchResults: ({ $composeAutosuggestionSearchResults }) => $composeAutosuggestionSearchResults || [],
+      type: ({ $composeAutosuggestionType }) => $composeAutosuggestionType || 'account',
+      selected: ({ $composeAutosuggestionSelected }) => $composeAutosuggestionSelected || 0,
+      searchText: ({ text, composeSelectionStartDeferred, thisComposeFocused }) => {
         if (!thisComposeFocused) {
           return
         }
@@ -156,7 +158,7 @@
         let match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
         return match && match[1]
       },
-      shown: (thisComposeFocused, searchText, searchResults) => {
+      shown: ({ thisComposeFocused, searchText, searchResults }) => {
         return !!(thisComposeFocused &&
           searchText &&
           searchResults.length)

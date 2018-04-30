@@ -1,18 +1,18 @@
 <ModalDialog
-  :id
-  :label
+  {id}
+  {label}
   background="var(--main-bg)"
 >
   <form class="confirmation-dialog-form">
     <p>
-      {{text}}
+      {text}
     </p>
     <div class="confirmation-dialog-form-flex">
       <button type="button" on:click="onPositive()">
-        {{positiveText || 'OK'}}
+        {positiveText || 'OK'}
       </button>
       <button type="button" on:click="onNegative()">
-        {{negativeText || 'Cancel'}}
+        {negativeText || 'Cancel'}
       </button>
     </div>
   </form>

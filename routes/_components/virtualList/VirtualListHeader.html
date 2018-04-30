@@ -1,6 +1,6 @@
-<div class="virtual-list-header {{shown ? 'shown' : ''}} {{fadedIn ? 'faded-in' : ''}}"
+<div class="virtual-list-header {shown ? 'shown' : ''} {fadedIn ? 'faded-in' : ''}"
      ref:node >
-  <:Component {component} :virtualProps />
+  <svelte:component this={component} {virtualProps} />
 </div>
 <style>
   .virtual-list-header {
@@ -24,6 +24,7 @@
   import { virtualListStore } from './virtualListStore'
   import { doubleRAF } from '../../_utils/doubleRAF'
   import { mark, stop } from '../../_utils/marks'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -38,6 +39,7 @@
     },
     store: () => virtualListStore,
     methods: {
+      observe,
       doCalculateHeight () {
         let { heightCalculated } = this.get()
         if (heightCalculated) { // only need to calculate once, it never changes

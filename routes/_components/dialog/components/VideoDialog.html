@@ -1,15 +1,15 @@
 <ModalDialog
-  :id
-  :label
+  {id}
+  {label}
   background="var(--muted-modal-bg)"
   muted="true"
   className="video-modal-dialog"
 >
-  <video :poster
-         :src
-         :width
-         :height
-         aria-label="Video: {{description || ''}}"
+  <video {poster}
+         {src}
+         {width}
+         {height}
+         aria-label="Video: {description || ''}"
          controls
   />
 </ModalDialog>

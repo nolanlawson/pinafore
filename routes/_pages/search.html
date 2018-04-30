@@ -1,8 +1,8 @@
-{{#if $isUserLoggedIn}}
+{#if $isUserLoggedIn}
 <div class="search-page">
   <Search></Search>
 </div>
-{{else}}
+{:else}
 <HiddenFromSSR>
   <FreeTextLayout>
     <h1>Search</h1>
@@ -10,7 +10,7 @@
     <p>You can search once logged in to an instance.</p>
   </FreeTextLayout>
 </HiddenFromSSR>
-{{/if}}
+{/if}
 <style>
   .search-page {
     padding: 20px 20px;

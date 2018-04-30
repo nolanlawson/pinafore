@@ -1,9 +1,9 @@
-<div class="account-profile-follow {{shown ? 'shown' : ''}}">
+<div class="account-profile-follow {shown ? 'shown' : ''}">
   <IconButton
-    label={{followLabel}}
-    href={{followIcon}}
+    label={followLabel}
+    href={followIcon}
     pressable="true"
-    pressed={{following}}
+    pressed={following}
     big="true"
     on:click="onFollowButtonClick(event)"
     ref:icon
@@ -54,18 +54,18 @@
     },
     store: () => store,
     computed: {
-      accountId: (account) => account.id,
-      following: (relationship, overrideFollowing) => {
+      accountId: ({ account }) => account.id,
+      following: ({ relationship, overrideFollowing }) => {
         if (typeof overrideFollowing === 'boolean') {
           return overrideFollowing
         }
         return relationship && relationship.following
       },
-      blocking: (relationship) => relationship && relationship.blocking,
-      followRequested: (relationship, account) => {
+      blocking: ({ relationship }) => relationship && relationship.blocking,
+      followRequested: ({ relationship, account }) => {
         return relationship && relationship.requested && account && account.locked
       },
-      followLabel: (blocking, following, followRequested) => {
+      followLabel: ({ blocking, following, followRequested }) => {
         if (blocking) {
           return 'Unblock'
         } else if (following) {
@@ -76,7 +76,7 @@
           return 'Follow'
         }
       },
-      followIcon: (blocking, following, followRequested) => {
+      followIcon: ({ blocking, following, followRequested }) => {
         if (blocking) {
           return '#fa-unlock'
         } else if (following) {
@@ -87,7 +87,7 @@
           return '#fa-user-plus'
         }
       },
-      shown: (verifyCredentials, relationship) => {
+      shown: ({ verifyCredentials, relationship }) => {
         return verifyCredentials && relationship && verifyCredentials.id !== relationship.id
       }
     },

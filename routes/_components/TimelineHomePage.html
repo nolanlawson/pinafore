@@ -3,18 +3,18 @@
      without a div wrapper due to sticky-positioned compose button.
      TODO: this is a bit hacky due to code duplication
  -->
-<div class="timeline-home-page" aria-busy={{hideTimeline}}>
-  {{#if hidePage}}
+<div class="timeline-home-page" aria-busy={hideTimeline}>
+  {#if hidePage}
     <LoadingPage />
-  {{/if}}
-  {{#if $currentVerifyCredentials }}
-    <ComposeBox realm="home" hidden={{hidePage}}/>
-  {{/if}}
+  {/if}
+  {#if $currentVerifyCredentials }
+    <ComposeBox realm="home" hidden={hidePage}/>
+  {/if}
   <div class="timeline-home-anchor-container">
-    {{#if !hidePage && hideTimeline}}
+    {#if !hidePage && hideTimeline}
       <LoadingPage />
-    {{/if}}
-    <div class="timeline-home-reveal-container {{hideTimeline ? 'hidden' : ''}}">
+    {/if}
+    <div class="timeline-home-reveal-container {hideTimeline ? 'hidden' : ''}">
       <LazyTimeline timeline="home" />
     </div>
   </div>
@@ -41,8 +41,8 @@
       })
     },
     computed: {
-      hidePage: ($timelineInitialized, $timelinePreinitialized) => !$timelineInitialized && !$timelinePreinitialized,
-      hideTimeline: ($timelineInitialized) => !$timelineInitialized
+      hidePage: ({ $timelineInitialized, $timelinePreinitialized }) => !$timelineInitialized && !$timelinePreinitialized,
+      hideTimeline: ({ $timelineInitialized }) => !$timelineInitialized
     },
     store: () => store,
     components: {

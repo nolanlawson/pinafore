@@ -1,12 +1,12 @@
 <nav class="settings-nav">
   <ul>
-    {{#each navItems as navItem}}
+    {#each navItems as navItem}
     <li>
-      <SettingsNavItem :page name={{navItem.name}} href={{navItem.href}} label={{navItem.label}} />
+      <SettingsNavItem {page} name={navItem.name} href={navItem.href} label={navItem.label} />
     </li>
-    {{/each}}
+    {/each}
     <li>
-      <SettingsNavItem :page name={{page}} href="/{{page}}" :label />
+      <SettingsNavItem {page} name={page} href="/{page}" {label} />
     </li>
   </ul>
 </nav>
@@ -53,7 +53,7 @@
       SettingsNavItem
     },
     computed: {
-      navItems: page => {
+      navItems: ({ page }) => {
         let res = []
         let breadcrumbs = page.split('/')
         let path = ''

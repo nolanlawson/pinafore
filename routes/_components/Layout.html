@@ -1,12 +1,12 @@
-<Nav :page />
+<Nav {page} />
 
 <div class="container" tabindex="0" ref:container>
   <main>
     <slot></slot>
   </main>
-  {{#if !$isUserLoggedIn && page === 'home'}}
+  {#if !$isUserLoggedIn && page === 'home'}
     <InformationalFooter />
-  {{/if}}
+  {/if}
 </div>
 <script>
   import Nav from './Nav.html'

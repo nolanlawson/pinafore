@@ -1,13 +1,13 @@
 <div class="settings-list-wrapper">
-  {{#if label}}
-  <ul class="settings-list" aria-label={{label}}>
+  {#if label}
+  <ul class="settings-list" aria-label={label}>
     <slot></slot>
   </ul>
-  {{else}}
+  {:else}
   <ul class="settings-list">
     <slot></slot>
   </ul>
-  {{/if}}
+  {/if}
 </div>
 <style>
   .settings-list-wrapper {

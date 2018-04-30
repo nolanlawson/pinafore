@@ -1,10 +1,10 @@
 <ModalDialog
-  :id
-  :label
-  :title
+  {id}
+  {label}
+  {title}
   background="var(--main-bg)"
 >
-  <GenericDialogList :items on:click="onClick(event)" />
+  <GenericDialogList {items} on:click="onClick(event)" />
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
@@ -36,14 +36,14 @@
       }
     },
     computed: {
-      composeData: ($currentComposeData, realm) => $currentComposeData[realm] || {},
-      postPrivacy: (postPrivacyKey) => {
+      composeData: ({ $currentComposeData, realm }) => $currentComposeData[realm] || {},
+      postPrivacy: ({ postPrivacyKey }) => {
         return POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey)
       },
-      postPrivacyKey: (composeData, $currentVerifyCredentials) => {
+      postPrivacyKey: ({ composeData, $currentVerifyCredentials }) => {
         return composeData.postPrivacy || $currentVerifyCredentials.source.privacy
       },
-      items: (postPrivacy, postPrivacyOptions) => {
+      items: ({ postPrivacy, postPrivacyOptions }) => {
         return postPrivacyOptions.map(option => ({
           key: option.key,
           label: option.label,

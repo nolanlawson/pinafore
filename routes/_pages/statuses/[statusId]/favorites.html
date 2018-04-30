@@ -1,5 +1,5 @@
 <DynamicPageBanner title="Favorites" icon="#fa-star" />
-<AccountsListPage :accountsFetcher />
+<AccountsListPage {accountsFetcher} />
 <script>
   import { getFavorites } from '../../../_api/reblogsAndFavs'
   import AccountsListPage from '../../../_components/AccountsListPage.html'
@@ -8,8 +8,8 @@
 
   export default {
     computed: {
-      statusId: params => params.statusId,
-      accountsFetcher: ($currentInstance, $accessToken, statusId) => () => getFavorites($currentInstance, $accessToken, statusId)
+      statusId: ({ params }) => params.statusId,
+      accountsFetcher: ({ $currentInstance, $accessToken, statusId }) => () => getFavorites($currentInstance, $accessToken, statusId)
     },
     store: () => store,
     components: {
