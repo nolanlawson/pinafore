@@ -1,5 +1,5 @@
 <div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{overLimit ? 'over-char-limit' : ''}}"
-     style="transform: scaleX({{lengthAsFractionDeferred || 0}});"
+     style="transform: scaleX({{lengthAsFractionDeferred}});"
      aria-hidden="true"
 ></div>
 <style>
@@ -38,6 +38,10 @@
         })
       }, {init: false})
     },
+    data: () => ({
+      shouldAnimate: false,
+      lengthAsFractionDeferred: 0
+    }),
     store: () => store,
     computed: {
       lengthAsFraction: (length) => {
@@ -46,5 +50,5 @@
         return (int - (int % 2)) / 100
       }
     }
-}
+  }
 </script>

@@ -45,6 +45,11 @@
       }
       img.src = src
       stop('LazyImage oncreate()')
-    }
+    },
+    data: () => ({
+      displaySrc: void 0,
+      hidden: false,
+      ariaHidden: false
+    })
   }
 </script>

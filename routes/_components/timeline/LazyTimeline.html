@@ -1,5 +1,6 @@
 <div class="lazy-timeline">
   {{#await importTimeline}}
+    <!-- awaiting promise -->
   {{then constructor}}
     <:Component {constructor} :timeline />
   {{catch error}}

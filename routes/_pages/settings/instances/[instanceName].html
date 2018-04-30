@@ -105,22 +105,21 @@
   import { themes } from '../../../_static/themes'
 
   export default {
-    components: {
-      SettingsLayout,
-      ExternalLink,
-      Avatar
+    async oncreate () {
+      let { instanceName } = this.get()
+      let { instanceThemes } = this.store.get()
+      this.set({
+        selectedTheme: instanceThemes[instanceName] || 'default'
+      })
+      await updateVerifyCredentialsForInstance(instanceName)
     },
     store: () => store,
     data: () => ({
-      themes: themes
+      themes: themes,
+      selectedTheme: 'default'
     }),
-    async oncreate () {
-      let { instanceName } = this.get()
-      await updateVerifyCredentialsForInstance(instanceName)
-    },
     computed: {
       instanceName: (params) => params.instanceName,
-      selectedTheme: ($instanceThemes, instanceName) => $instanceThemes[instanceName] || 'default',
       verifyCredentials: ($verifyCredentials, instanceName) => $verifyCredentials && $verifyCredentials[instanceName]
     },
     methods: {
@@ -145,6 +144,11 @@
           }
         })
       }
+    },
+    components: {
+      SettingsLayout,
+      ExternalLink,
+      Avatar
     }
   }
 </script>

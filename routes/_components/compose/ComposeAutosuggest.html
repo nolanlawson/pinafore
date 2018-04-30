@@ -107,7 +107,7 @@
       })
     },
     methods: {
-      once: once,
+      once,
       onClick (item) {
         this.fire('autosuggestItemSelected')
         let { realm } = this.get()
@@ -147,7 +147,7 @@
         if (!thisComposeFocused) {
           return
         }
-        let selectionStart = composeSelectionStartDeferred || 0
+        let selectionStart = composeSelectionStartDeferred
         if (!text || selectionStart < MIN_PREFIX_LENGTH) {
           return
         }
@@ -162,6 +162,10 @@
           searchResults.length)
       }
     },
+    data: () => ({
+      composeFocusedDeferred: void 0,
+      composeSelectionStartDeferred: 0
+    }),
     store: () => store,
     components: {
       ComposeAutosuggestionList

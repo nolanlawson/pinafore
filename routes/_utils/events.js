@@ -2,7 +2,7 @@ export function imgLoadError (node, callback) {
   node.addEventListener('error', callback)
 
   return {
-    teardown () {
+    destroy () {
       node.removeEventListener('error', callback)
     }
   }
@@ -12,7 +12,7 @@ export function imgLoad (node, callback) {
   node.addEventListener('load', callback)
 
   return {
-    teardown () {
+    destroy () {
       node.removeEventListener('load', callback)
     }
   }
@@ -28,7 +28,7 @@ export function mouseover (node, callback) {
   node.addEventListener('mouseenter', onMouseEnter)
   node.addEventListener('mouseleave', onMouseLeave)
   return {
-    teardown () {
+    destroy () {
       node.removeEventListener('mouseenter', onMouseEnter)
       node.removeEventListener('mouseleave', onMouseLeave)
     }
@@ -38,7 +38,7 @@ export function mouseover (node, callback) {
 export function focusWithCapture (node, callback) {
   node.addEventListener('focus', callback, true)
   return {
-    teardown () {
+    destroy () {
       node.removeEventListener('focus', callback, true)
     }
   }
@@ -47,7 +47,7 @@ export function focusWithCapture (node, callback) {
 export function blurWithCapture (node, callback) {
   node.addEventListener('blur', callback, true)
   return {
-    teardown () {
+    destroy () {
       node.removeEventListener('blur', callback, true)
     }
   }
@@ -62,7 +62,7 @@ export function selectionChange (node, callback) {
     node.addEventListener(event, listener)
   }
   return {
-    teardown () {
+    destroy () {
       for (let event of events) {
         node.removeEventListener(event, listener)
       }
