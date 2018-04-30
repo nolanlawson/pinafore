@@ -32,6 +32,7 @@
   import throttle from 'lodash-es/throttle'
   import { mark, stop } from '../../_utils/marks'
   import isEqual from 'lodash-es/isEqual'
+  import { observe } from 'svelte-extras'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 800
   const SCROLL_EVENT_THROTTLE = 1000
@@ -108,6 +109,7 @@
       allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
     },
     methods: {
+      observe,
       calculateListOffset () {
         // TODO: better way to get the offset top?
         let node = this.refs.node

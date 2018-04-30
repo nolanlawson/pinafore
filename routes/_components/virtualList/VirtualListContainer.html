@@ -7,6 +7,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { isMobile } from '../../_utils/isMobile'
   import { doubleRAF } from '../../_utils/doubleRAF'
+  import { observe } from 'svelte-extras'
 
   const SCROLL_EVENT_DELAY = 300
 
@@ -60,6 +61,7 @@
     },
     store: () => virtualListStore,
     methods: {
+      observe,
       setupScroll (node) {
         if (!node) {
           return

@@ -14,6 +14,7 @@
 <script>
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -48,6 +49,9 @@
         }
         return !isIntersecting && hide
       }
+    },
+    methods: {
+      observe
     }
   }
 </script>

@@ -20,6 +20,7 @@
   import debounce from 'lodash-es/debounce'
   import throttle from 'lodash-es/throttle'
   import { on } from '../../_utils/eventBus'
+  import { observe } from 'svelte-extras'
 
   const DEBOUNCE_DELAY = 400
   const THROTTLE_DELAY = 150
@@ -34,6 +35,7 @@
       composeData: ($currentComposeData, originalStatusId) => $currentComposeData[originalStatusId] || {}
     },
     methods: {
+      observe,
       onPostedStatus (realm) {
         let { originalStatusId } = this.get()
         if (realm !== originalStatusId) {

@@ -44,7 +44,7 @@
   }
 </style>
 <script>
-  import { splice, push } from 'svelte-extras'
+  import { splice, push, observe } from 'svelte-extras'
 
   const TIME_TO_SHOW_TOAST = 5000
   const DELAY_BETWEEN_TOASTS = 1000
@@ -65,6 +65,7 @@
       messages: []
     }),
     methods: {
+      observe,
       push,
       splice,
       say (text) {
