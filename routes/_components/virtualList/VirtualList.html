@@ -7,7 +7,7 @@
       {{#each $visibleItems as visibleItem @key}}
         <VirtualListLazyItem :component
                              offset={{visibleItem.offset}}
-                             makeProps={{makeProps}}
+                             :makeProps
                              key={{visibleItem.key}}
                              index={{visibleItem.index}}
         />
