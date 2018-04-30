@@ -1,7 +1,7 @@
 <a rel="nofollow noopener"
    target="_blank"
    :href
-   aria-label={{ariaLabel || ''}}
+   aria-label={{ariaLabel}}
    class="{{className || ''}} {{showIcon ? 'external-link-with-icon' : ''}} {{normalIconColor ? 'normal-icon-color' : ''}}">
   <slot></slot>{{#if showIcon}}
     <svg class="external-link-svg">
@@ -26,7 +26,10 @@
 <script>
   export default {
     data: () => ({
-      normalIconColor: false
+      className: void 0,
+      normalIconColor: false,
+      ariaLabel: '',
+      showIcon: false
     })
   }
 </script>

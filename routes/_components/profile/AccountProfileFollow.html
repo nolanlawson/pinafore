@@ -53,6 +53,9 @@
       }
     },
     store: () => store,
+    data: () => ({
+      overrideFollowing: void 0
+    }),
     computed: {
       accountId: (account) => account.id,
       following: (relationship, overrideFollowing) => {

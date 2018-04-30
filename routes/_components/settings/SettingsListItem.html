@@ -5,15 +5,9 @@
       <use xlink:href={{icon}} />
     </svg>
     {{/if}}
-    {{#if ariaLabel}}
-    <span aria-label={{ariaLabel}} class={{offsetForIcon ? 'offset-for-icon' : ''}}>
+    <span aria-label={{ariaLabel || label}} class={{offsetForIcon ? 'offset-for-icon' : ''}}>
       {{label}}
     </span>
-    {{else}}
-    <span class={{offsetForIcon ? 'offset-for-icon' : ''}}>
-      {{label}}
-    </span>
-    {{/if}}
   </a>
 </li>
 <style>
@@ -68,3 +62,12 @@
   }
 
 </style>
+<script>
+  export default {
+    data: () => ({
+      icon: void 0,
+      ariaLabel: void 0,
+      offsetForIcon: void 0
+    })
+  }
+</script>

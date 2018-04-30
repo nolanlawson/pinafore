@@ -73,11 +73,9 @@
   import IconButton from '../IconButton.html'
 
   export default {
-    components: {
-      Avatar,
-      SearchResult,
-      IconButton
-    },
+    data: () => ({
+      actions: void 0
+    }),
     methods: {
       onButtonClick (event, action, accountId) {
         event.preventDefault()
@@ -87,6 +85,11 @@
           accountId
         })
       }
+    },
+    components: {
+      Avatar,
+      SearchResult,
+      IconButton
     }
   }
 </script>
