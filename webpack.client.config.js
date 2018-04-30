@@ -26,7 +26,6 @@ module.exports = {
             dev: isDev,
             hydratable: true,
             emitCss: !isDev,
-            hot: isDev,
             hotReload: isDev
           }
         }

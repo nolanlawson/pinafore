@@ -5,6 +5,7 @@
      on:blurWithCapture="clearFocus(event)"
 >
   {#await componentsPromise}
+  <!-- importing... -->
   {:then result}
     <svelte:component this={result.listComponent}
                 component={result.listItemComponent}

@@ -1,5 +1,6 @@
 <div class="lazy-timeline">
   {#await importTimeline}
+  <!-- importing... -->
   {:then constructor}
     <svelte:component this={constructor} {timeline} />
   {:catch error}
