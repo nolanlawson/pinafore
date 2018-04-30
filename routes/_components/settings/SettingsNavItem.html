@@ -1,4 +1,6 @@
-<a class='settings-nav-item {{getCurrentClass(page, name)}}' aria-label='{{getAriaLabel(page, name, label)}}' href='{{href}}'>
+<a class="settings-nav-item {{className}}"
+   aria-label={{ariaLabel}}
+   :href >
   {{label}}
 </a>
 <style>
@@ -12,13 +14,9 @@
 </style>
 <script>
   export default {
-    helpers: {
-      getCurrentClass (page, name) {
-        return page === name ? 'selected' : ''
-      },
-      getAriaLabel (page, name, label) {
-        return page === name ? `${label} (current page)` : label
-      }
+    computed: {
+      className: (page, name) => page === name ? 'selected' : '',
+      ariaLabel: (page, name, label) => page === name ? `${label} (current page)` : label
     }
   }
 </script>
