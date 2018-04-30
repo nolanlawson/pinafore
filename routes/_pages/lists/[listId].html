@@ -1,7 +1,7 @@
 {{#if $isUserLoggedIn}}
   <TimelinePage timeline="list/{{params.listId}}">
     {{#if $pinnedPage !== `/lists/${params.listId}`}}
-      <DynamicPageBanner title="{{listTitle}}" icon="#fa-bars"/>
+      <DynamicPageBanner title={{listTitle}} icon="#fa-bars"/>
     {{/if}}
   </TimelinePage>
 {{else}}

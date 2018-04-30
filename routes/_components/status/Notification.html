@@ -5,8 +5,8 @@
 {{else}}
   <article class="notification-article"
            tabindex="0"
-           aria-posinset="{{index}}"
-           aria-setsize="{{length}}" >
+           aria-posinset={{index}}
+           aria-setsize={{length}} >
     <StatusHeader :notification :notificationId :status :statusId :timelineType
                   :account :accountId :uuid isStatusInNotification="true" />
   </article>

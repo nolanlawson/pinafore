@@ -5,7 +5,7 @@
   {{elseif statuses && statuses.length}}
   <ul class="pinned-toots-results">
     {{#each statuses as status, index}}
-    <StatusSearchResult :status :index length="{{statuses.length}}" />
+    <StatusSearchResult :status :index length={{statuses.length}} />
     {{/each}}
   </ul>
   {{/if}}

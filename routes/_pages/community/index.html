@@ -32,7 +32,7 @@
     <PageList label="Lists">
       {{#each $lists as list}}
       <PageListItem href="/lists/{{list.id}}"
-                    label="{{list.title}}"
+                    label={{list.title}}
                     icon="#fa-bars"
                     pinnable="true"
       />

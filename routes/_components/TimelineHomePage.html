@@ -3,12 +3,12 @@
      without a div wrapper due to sticky-positioned compose button.
      TODO: this is a bit hacky due to code duplication
  -->
-<div class="timeline-home-page" aria-busy="{{hideTimeline}}">
+<div class="timeline-home-page" aria-busy={{hideTimeline}}>
   {{#if hidePage}}
     <LoadingPage />
   {{/if}}
   {{#if $currentVerifyCredentials }}
-    <ComposeBox realm="home" hidden="{{hidePage}}"/>
+    <ComposeBox realm="home" hidden={{hidePage}}/>
   {{/if}}
   <div class="timeline-home-anchor-container">
     {{#if !hidePage && hideTimeline}}

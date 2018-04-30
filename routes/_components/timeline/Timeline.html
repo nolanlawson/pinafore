@@ -7,15 +7,15 @@
   {{#await componentsPromise}}
   {{then result}}
     <:Component {result.listComponent}
-                component="{{result.listItemComponent}}"
+                component={{result.listItemComponent}}
                 realm="{{$currentInstance + '/' + timeline}}"
                 containerQuery=".container"
                 :makeProps
-                items="{{$timelineItemIds}}"
-                showFooter="{{$timelineInitialized && $runningUpdate}}"
-                footerComponent="{{LoadingFooter}}"
-                showHeader="{{$showHeader}}"
-                headerComponent="{{MoreHeaderVirtualWrapper}}"
+                items={{$timelineItemIds}}
+                showFooter={{$timelineInitialized && $runningUpdate}}
+                footerComponent={{LoadingFooter}}
+                showHeader={{$showHeader}}
+                headerComponent={{MoreHeaderVirtualWrapper}}
                 :headerProps
                 :scrollToItem
                 on:scrollToBottom="onScrollToBottom()"
@@ -197,7 +197,7 @@
         let { currentInstance } = this.store.get()
         let { timeline } = this.get()
         let handleItemIdsToAdd = () => {
-          let { itemIdsToAdd } = this.get() || {} // // https://github.com/sveltejs/svelte/issues/1354
+          let { itemIdsToAdd } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
             return
           }

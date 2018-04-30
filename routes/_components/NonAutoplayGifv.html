@@ -4,8 +4,8 @@
 >
   {{#if playing}}
     <AutoplayVideo
-      className="{{class}}"
-      ariaLabel="{{label}}"
+      className={{class}}
+      ariaLabel={{label}}
       :poster
       :src
       :width
@@ -13,17 +13,17 @@
       />
   {{else}}
     <LazyImage
-      alt="{{label || ''}}"
-      title="{{label || ''}}"
-      src="{{staticSrc}}"
-      fallback="{{oneTransparentPixel}}"
+      alt={{label || ''}}
+      title={{label || ''}}
+      src={{staticSrc}}
+      fallback={{oneTransparentPixel}}
       :width
       :height
       background="var(--loading-bg)"
-      className="{{class}}"
+      className={{class}}
     />
   {{/if}}
-  <PlayVideoIcon className="{{playing ? 'hidden' : ''}}"/>
+  <PlayVideoIcon className={{playing ? 'hidden' : ''}}/>
 </div>
 <style>
   .non-autoplay-gifv {

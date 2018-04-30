@@ -20,7 +20,7 @@
       </li>
     {{elseif $pinnedPage.startsWith('/lists/')}}
       <li class="main-nav-li">
-        <NavItem :page name="lists" href="{{$pinnedPage}}" svg="#fa-bars" label="{{$pinnedListTitle}}" />
+        <NavItem :page name="lists" href={{$pinnedPage}} svg="#fa-bars" label={{$pinnedListTitle}} />
       </li>
     {{/if}}
 		<li class="main-nav-li">

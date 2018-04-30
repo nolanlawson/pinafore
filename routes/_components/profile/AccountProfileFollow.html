@@ -1,9 +1,9 @@
 <div class="account-profile-follow {{shown ? 'shown' : ''}}">
   <IconButton
-    label="{{followLabel}}"
-    href="{{followIcon}}"
+    label={{followLabel}}
+    href={{followIcon}}
     pressable="true"
-    pressed="{{following}}"
+    pressed={{following}}
     big="true"
     on:click="onFollowButtonClick(event)"
     ref:icon

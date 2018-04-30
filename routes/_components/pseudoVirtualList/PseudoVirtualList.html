@@ -1,15 +1,15 @@
 <div class="pseudo-virtual-list" on:initialized ref:node>
   {{#each wrappedItems as wrappedItem, i @item}}
     <PseudoVirtualListLazyItem
-      component="{{component}}"
-      index="{{i}}"
-      length="{{wrappedItems.length}}"
-      makeProps="{{makeProps}}"
-      key="{{wrappedItem.item}}"
-      intersectionObserver="{{intersectionObserver}}"
-      isIntersecting="{{isIntersecting(wrappedItem.item, $intersectionStates)}}"
-      isCached="{{isCached(wrappedItem.item, $intersectionStates)}}"
-      height="{{getHeight(wrappedItem.item, $intersectionStates)}}"
+      component={{component}}
+      index={{i}}
+      length={{wrappedItems.length}}
+      makeProps={{makeProps}}
+      key={{wrappedItem.item}}
+      intersectionObserver={{intersectionObserver}}
+      isIntersecting={{isIntersecting(wrappedItem.item, $intersectionStates)}}
+      isCached={{isCached(wrappedItem.item, $intersectionStates)}}
+      height={{getHeight(wrappedItem.item, $intersectionStates)}}
     />
   {{/each}}
 </div>

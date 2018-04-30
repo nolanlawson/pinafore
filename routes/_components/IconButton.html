@@ -1,27 +1,27 @@
 {{#if delegateKey}}
   <button type="button"
-          title="{{label}}"
-          aria-label="{{label}}"
-          aria-pressed="{{pressable ? !!pressed : ''}}"
-          class="{{computedClass}}"
+          title={{label}}
+          aria-label={{label}}
+          aria-pressed={{pressable ? !!pressed : ''}}
+          class={{computedClass}}
           :disabled
-          delegate-key="{{delegateKey}}"
-          focus-key="{{focusKey || ''}}" >
+          delegate-key={{delegateKey}}
+          focus-key={{focusKey || ''}} >
     <svg class="icon-button-svg {{svgClassName || ''}}" ref:svg>
-      <use xlink:href="{{href}}" />
+      <use xlink:href={{href}} />
     </svg>
   </button>
 {{else}}
   <button type="button"
-          title="{{label}}"
-          aria-label="{{label}}"
-          aria-pressed="{{pressable ? !!pressed : ''}}"
-          class="{{computedClass}}"
-          focus-key="{{focusKey || ''}}"
+          title={{label}}
+          aria-label={{label}}
+          aria-pressed={{pressable ? !!pressed : ''}}
+          class={{computedClass}}
+          focus-key={{focusKey || ''}}
           :disabled
           on:click >
     <svg class="icon-button-svg {{svgClassName || ''}}" ref:svg>
-      <use xlink:href="{{href}}" />
+      <use xlink:href={{href}} />
     </svg>
   </button>
 {{/if}}
