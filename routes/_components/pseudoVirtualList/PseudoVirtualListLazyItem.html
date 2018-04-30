@@ -17,9 +17,7 @@
 
   export default {
     async oncreate () {
-      // TODO: there appears to be a bug in {{#await}} that means we have to do this manually.
-      // Some items may appear on top of other items because their offset is 0 and never updated.
-      let { makeProps, key } = this.get()
+      let { makeProps, key } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
       if (makeProps) {
         let props = await makeProps(key)
         mark('PseudoVirtualListLazyItem set props')

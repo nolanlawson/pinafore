@@ -1,10 +1,10 @@
-<article class="{{className}}"
+<article class={{className}}
          tabindex="0"
-         delegate-key="{{delegateKey}}"
-         focus-key="{{delegateKey}}"
-         aria-posinset="{{index}}"
-         aria-setsize="{{length}}"
-         aria-label="{{ariaLabel}}"
+         delegate-key={{delegateKey}}
+         focus-key={{delegateKey}}
+         aria-posinset={{index}}
+         aria-setsize={{length}}
+         aria-label={{ariaLabel}}
          on:recalculateHeight>
   {{#if showHeader}}
     <StatusHeader {{...params}} />
@@ -19,7 +19,7 @@
     <StatusSpoiler {{...params}} on:recalculateHeight />
   {{/if}}
   {{#if showContent || contentPreloaded}}
-    <StatusContent {{...params}} shown="{{showContent}}"/>
+    <StatusContent {{...params}} shown={{showContent}}/>
   {{/if}}
   {{#if showMedia }}
     <StatusMediaAttachments {{...params}} on:recalculateHeight />

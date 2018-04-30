@@ -1,13 +1,13 @@
 {{#if notification.type === 'mention' || notification.type === 'reblog' || notification.type === 'favourite'}}
   <Status :index :length :timelineType :timelineValue :focusSelector
-          status="{{notification.status}}"
+          status={{notification.status}}
           :notification
           on:recalculateHeight
   />
 {{else}}
   <article class="notification-article"
            tabindex="0"
-           aria-posinset="{{index}}" aria-setsize="{{length}}" >
+           aria-posinset={{index}} aria-setsize={{length}} >
     <StatusHeader :notification :notificationId :status :statusId :timelineType
                   :account :accountId :uuid isStatusInNotification="true" />
   </article>

@@ -3,7 +3,7 @@
     <Avatar :account size="extra-small"/>
   </div>
   <svg class="status-header-svg">
-    <use xlink:href="{{icon}}"/>
+    <use xlink:href={{icon}}/>
   </svg>
   <span class="status-header-span">
     {{#if timelineType === 'pinned'}}
@@ -12,7 +12,7 @@
       <a href="/accounts/{{accountId}}"
          class="status-header-a"
          title="{{'@' + account.acct}}"
-         focus-key="{{focusKey}}" >
+         focus-key={{focusKey}} >
         {{account.display_name || account.username}}
       </a>
       {{#if notification && notification.type === 'reblog'}}

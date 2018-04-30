@@ -1,5 +1,5 @@
 <span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
-      aria-label="{{lengthLabel}}">
+      aria-label={{lengthLabel}}>
       {{lengthToDisplayDeferred || '0'}}
     </span>
 <style>
@@ -29,7 +29,7 @@
       this.observe('lengthToDisplay', () => {
         scheduleIdleTask(() => {
           mark('set lengthToDisplayDeferred')
-          let { lengthToDisplay } = this.get() || {} // // https://github.com/sveltejs/svelte/issues/1354
+          let { lengthToDisplay } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
           this.set({lengthToDisplayDeferred: lengthToDisplay})
           stop('set lengthToDisplayDeferred')
         })

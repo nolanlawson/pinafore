@@ -1,34 +1,34 @@
 <div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}" ref:node>
   <IconButton
     className="status-toolbar-reply-button"
-    label="{{replyLabel}}"
+    label={{replyLabel}}
     pressable="true"
-    pressed="{{replyShown}}"
+    pressed={{replyShown}}
     href="#fa-reply"
-    delegateKey="{{replyKey}}"
-    focusKey="{{replyKey}}"
+    delegateKey={{replyKey}}
+    focusKey={{replyKey}}
     />
   <IconButton
-    label="{{reblogLabel}}"
-    pressable="{{!reblogDisabled}}"
-    pressed="{{reblogged}}"
-    disabled="{{reblogDisabled}}"
-    href="{{reblogIcon}}"
-    delegateKey="{{reblogKey}}"
+    label={{reblogLabel}}
+    pressable={{!reblogDisabled}}
+    pressed={{reblogged}}
+    disabled={{reblogDisabled}}
+    href={{reblogIcon}}
+    delegateKey={{reblogKey}}
     ref:reblogIcon
   />
   <IconButton
     label="Favorite"
     pressable="true"
-    pressed="{{favorited}}"
+    pressed={{favorited}}
     href="#fa-star"
-    delegateKey="{{favoriteKey}}"
+    delegateKey={{favoriteKey}}
     ref:favoriteIcon
   />
   <IconButton
     label="Show more options"
     href="#fa-ellipsis-h"
-    delegateKey="{{optionsKey}}"
+    delegateKey={{optionsKey}}
   />
 </div>
 <style>

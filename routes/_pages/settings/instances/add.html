@@ -20,7 +20,7 @@
            bind:value='$instanceNameInSearch' placeholder='' required
     >
     <button class="primary" type="submit" id="submitButton"
-            disabled="{{!$instanceNameInSearch || $logInToInstanceLoading}}">
+            disabled={{!$instanceNameInSearch || $logInToInstanceLoading}}>
       Add instance
     </button>
   </form>
