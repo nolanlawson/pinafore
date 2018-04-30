@@ -138,6 +138,11 @@
       StatusSpoiler,
       StatusComposeBox
     },
+    data: () => ({
+      notification: void 0,
+      replyVisibility: void 0,
+      contentPreloaded: false
+    }),
     store: () => store,
     methods: {
       onClickOrKeydown (e) {

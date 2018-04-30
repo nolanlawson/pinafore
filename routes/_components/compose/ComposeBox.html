@@ -151,6 +151,13 @@
       ComposeMedia,
       ComposeContentWarning
     },
+    data: () => ({
+      size: void 0,
+      isReply: false,
+      autoFocus: false,
+      sticky: false,
+      hideBottomBorder: false
+    }),
     store: () => store,
     computed: {
       computedClassName: (overLimit, realm, size, postPrivacyKey, isReply) => (classname(

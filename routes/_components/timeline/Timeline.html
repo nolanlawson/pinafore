@@ -5,6 +5,7 @@
      on:blurWithCapture="clearFocus(event)"
 >
   {{#await componentsPromise}}
+    <!-- awaiting promise -->
   {{then result}}
     <:Component {result.listComponent}
                 component={{result.listItemComponent}}

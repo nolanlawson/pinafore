@@ -105,6 +105,17 @@
   import { store } from '../_store/store'
 
   export default {
+    data: () => ({
+      big: false,
+      muted: false,
+      disabled: false,
+      svgClassName: void 0,
+      focusKey: void 0,
+      pressable: false,
+      pressed: false,
+      className: void 0,
+      delegateKey: void 0
+    }),
     store: () => store,
     computed: {
       computedClass: (pressable, pressed, big, muted, className) => {

@@ -38,6 +38,9 @@
       let { intersectionObserver } = this.get()
       intersectionObserver.observe(this.refs.node)
     },
+    data: () => ({
+      hide: false
+    }),
     computed: {
       shouldHide: (isIntersecting, isCached, hide) => {
         if (isCached) {

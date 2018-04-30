@@ -36,6 +36,9 @@
         }
       }, {init: false})
     },
+    data: () => ({
+      fadedIn: false
+    }),
     store: () => virtualListStore,
     methods: {
       doCalculateHeight () {

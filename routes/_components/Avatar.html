@@ -74,6 +74,12 @@
       imgLoad,
       imgLoadError
     },
+    data: () => ({
+      className: void 0,
+      loaded: false,
+      error: void 0,
+      isLink: false
+    }),
     store: () => store,
     computed: {
       computedClass: (className, loaded, size) => (classname(
