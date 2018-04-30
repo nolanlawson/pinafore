@@ -35,6 +35,7 @@
   import { selectionChange } from '../../_utils/events'
   import { clickSelectedAutosuggestionUsername } from '../../_actions/compose'
   import { clickSelectedAutosuggestionEmoji } from '../../_actions/emoji'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -46,6 +47,7 @@
       this.teardownAutosize()
     },
     methods: {
+      observe,
       setupSyncFromStore () {
         let textarea = this.refs.textarea
         let firstTime = true

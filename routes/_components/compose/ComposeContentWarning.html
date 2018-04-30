@@ -17,6 +17,7 @@
   import { store } from '../../_store/store'
   import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -28,6 +29,7 @@
       rawText: ''
     }),
     methods: {
+      observe,
       setupSyncFromStore () {
         this.observe('contentWarning', contentWarning => {
           this.set({rawText: contentWarning})

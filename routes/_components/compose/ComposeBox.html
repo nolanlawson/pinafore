@@ -115,6 +115,7 @@
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
   import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { classname } from '../../_utils/classname'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -191,6 +192,7 @@
       slide
     },
     methods: {
+      observe,
       async onClickPostButton () {
         let { sticky } = this.get()
         if (sticky) {

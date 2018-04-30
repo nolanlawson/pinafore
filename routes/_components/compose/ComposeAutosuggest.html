@@ -47,6 +47,7 @@
   import {
     searchAccountsByUsername as searchAccountsByUsernameInDatabase
   } from '../../_database/accountsAndRelationships'
+  import { observe } from 'svelte-extras'
 
   const SEARCH_RESULTS_LIMIT = 4
   const DATABASE_SEARCH_RESULTS_LIMIT = 30
@@ -107,6 +108,7 @@
       })
     },
     methods: {
+      observe,
       once,
       onClick (item) {
         this.fire('autosuggestItemSelected')

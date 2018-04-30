@@ -57,6 +57,7 @@
   import { mark, stop } from '../../_utils/marks'
   import isEqual from 'lodash-es/isEqual'
   import { doubleRAF } from '../../_utils/doubleRAF'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -150,6 +151,7 @@
       blurWithCapture
     },
     methods: {
+      observe,
       initialize () {
         let { initializeStarted } = this.get()
         if (initializeStarted) {

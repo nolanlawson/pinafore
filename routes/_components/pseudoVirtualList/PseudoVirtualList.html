@@ -23,6 +23,7 @@
   import { getRectFromEntry } from '../../_utils/getRectFromEntry'
   import { mark, stop } from '../../_utils/marks'
   import { pseudoVirtualListStore } from './pseudoVirtualListStore'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
@@ -75,6 +76,7 @@
       }
     },
     methods: {
+      observe,
       scrollToPosition (element) {
         let { scrolledToPosition } = this.get()
         if (scrolledToPosition) {
