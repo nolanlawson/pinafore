@@ -6,23 +6,23 @@
       on:click="onEmojiClick()"
     />
     <IconButton
-      svgClassName="{{$uploadingMedia ? 'spin' : ''}}"
+      svgClassName={{$uploadingMedia ? 'spin' : ''}}
       label="Add media"
-      href="{{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}"
+      href={{$uploadingMedia ? '#fa-spinner' : '#fa-camera'}}
       on:click="onMediaClick()"
-      disabled="{{$uploadingMedia || (media.length === 4)}}"
+      disabled={{$uploadingMedia || (media.length === 4)}}
     />
     <IconButton
       label="Adjust privacy (currently {{postPrivacy.label}})"
-      href="{{postPrivacy.icon}}"
+      href={{postPrivacy.icon}}
       on:click="onPostPrivacyClick()"
     />
     <IconButton
-      label="{{contentWarningShown ? 'Remove content warning' : 'Add content warning'}}"
+      label={{contentWarningShown ? 'Remove content warning' : 'Add content warning'}}
       href="#fa-exclamation-triangle"
       on:click="onContentWarningClick()"
       pressable="true"
-      pressed="{{contentWarningShown}}"
+      pressed={{contentWarningShown}}
     />
   </div>
   <input ref:input

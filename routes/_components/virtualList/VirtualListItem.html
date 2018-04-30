@@ -1,12 +1,12 @@
 <div class="virtual-list-item {{shown ? 'shown' : ''}}"
-     aria-hidden="{{!shown}}"
-     virtual-list-key="{{key}}"
+     aria-hidden={{!shown}}
+     virtual-list-key={{key}}
      ref:node
      style="transform: translateY({{offset}}px);" >
   <:Component {component}
-              virtualProps="{{props}}"
-              virtualIndex="{{index}}"
-              virtualLength="{{$length}}"
+              virtualProps={{props}}
+              virtualIndex={{index}}
+              virtualLength={{$length}}
               on:recalculateHeight="doRecalculateHeight()"/>
 </div>
 <style>

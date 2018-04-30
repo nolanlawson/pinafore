@@ -1,8 +1,8 @@
 <a class="status-relative-date {{isStatusInNotification ? 'status-in-notification' : '' }}"
    href="/statuses/{{originalStatusId}}"
-   focus-key="{{focusKey}}"
+   focus-key={{focusKey}}
 >
-  <time datetime={{createdAtDate}} title="{{relativeDate}}"
+  <time datetime={{createdAtDate}} title={{relativeDate}}
         aria-label="{{relativeDate}} – click to show thread">
     {{relativeDate}}
   </time>

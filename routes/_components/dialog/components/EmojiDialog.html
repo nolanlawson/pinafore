@@ -10,7 +10,7 @@
         {{#each emojis as emoji}}
           <li class="custom-emoji">
             <button type="button" on:click="onClickEmoji(emoji)">
-              <img src="{{$autoplayGifs ? emoji.url : emoji.static_url}}"
+              <img src={{$autoplayGifs ? emoji.url : emoji.static_url}}
                    alt=":{{emoji.shortcode}}:"
                    title=":{{emoji.shortcode}}:"
               />

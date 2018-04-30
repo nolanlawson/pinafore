@@ -1,12 +1,12 @@
-<SettingsLayout page='settings/instances/{{params.instanceName}}' label="{{params.instanceName}}">
+<SettingsLayout page='settings/instances/{{params.instanceName}}' label={{params.instanceName}}>
   <h1 class="instance-name-h1">{{params.instanceName}}</h1>
 
   {{#if verifyCredentials}}
     <h2>Logged in as:</h2>
     <div class="acct-current-user">
-      <Avatar account="{{verifyCredentials}}" className="acct-avatar" size="big"/>
+      <Avatar account={{verifyCredentials}} className="acct-avatar" size="big"/>
       <ExternalLink className="acct-handle"
-                    href="{{verifyCredentials.url}}">
+                    href={{verifyCredentials.url}}>
         {{'@' + verifyCredentials.acct}}
       </ExternalLink>
       <span class="acct-display-name">{{verifyCredentials.display_name || verifyCredentials.acct}}</span>
@@ -16,7 +16,7 @@
       {{#each themes as theme}}
         <div class="theme-group">
           <input type="radio" id="choice-theme-{{theme.name}}"
-                 value="{{theme.name}}" checked="$currentTheme === theme.name"
+                 value={{theme.name}} checked="$currentTheme === theme.name"
                  bind:group="selectedTheme" on:change="onThemeChange()">
           <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
         </div>

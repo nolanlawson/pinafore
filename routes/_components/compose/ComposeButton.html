@@ -1,9 +1,9 @@
 <div class="compose-box-button-halo">
   <button class="primary compose-box-button"
           :disabled
-          aria-label="{{sticky ? 'Compose' : 'Toot!'}}"
+          aria-label={{sticky ? 'Compose' : 'Toot!'}}
           on:click>
-    <span class="{{$postingStatus || sticky ? 'hidden' : ''}}">
+    <span class={{$postingStatus || sticky ? 'hidden' : ''}}>
       Toot!
     </span>
     <div class="compose-box-button-spinner"

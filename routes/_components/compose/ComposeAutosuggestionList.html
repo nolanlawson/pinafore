@@ -9,7 +9,7 @@
         <Avatar
           className="compose-autosuggest-list-item-avatar"
           size="small"
-          account="{{item}}"
+          account={{item}}
         />
         <span class="compose-autosuggest-list-display-name">
             {{item.display_name || item.acct}}
@@ -18,7 +18,7 @@
             {{'@' + item.acct}}
         </span>
         {{else}}
-          <img src="{{$autoplayGifs ? item.url : item.static_url}}"
+          <img src={{$autoplayGifs ? item.url : item.static_url}}
                class="compose-autosuggest-list-item-icon"
                alt="{{':' + item.shortcode + ':'}}"
           />

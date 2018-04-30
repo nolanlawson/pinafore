@@ -2,7 +2,7 @@
   <Avatar :account size="big" />
 </div>
 <div class="account-profile-name">
-  <ExternalLink href="{{account.url}}"
+  <ExternalLink href={{account.url}}
                 showIcon="true"
                 normalIconColor="true"
                 ariaLabel="{{account.display_name || account.acct}} (opens in new window)"

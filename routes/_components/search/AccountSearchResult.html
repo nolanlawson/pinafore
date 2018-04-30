@@ -11,9 +11,9 @@
       <div class="search-result-account-buttons">
         {{#each actions as action}}
           <IconButton
-            label="{{action.label}}"
+            label={{action.label}}
             on:click="onButtonClick(event, action, account.id)"
-            href="{{action.icon}}"
+            href={{action.icon}}
             big="true"
           />
         {{/each}}

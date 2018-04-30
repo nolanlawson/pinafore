@@ -2,12 +2,12 @@
   <TimelinePage timeline="account/{{params.accountId}}">
     <DynamicPageBanner title="" />
     {{#if $currentAccountProfile && $currentVerifyCredentials}}
-    <AccountProfile account="{{$currentAccountProfile}}"
-                    relationship="{{$currentAccountRelationship}}"
-                    verifyCredentials="{{$currentVerifyCredentials}}"
+    <AccountProfile account={{$currentAccountProfile}}
+                    relationship={{$currentAccountRelationship}}
+                    verifyCredentials={{$currentVerifyCredentials}}
     />
     {{/if}}
-    <PinnedStatuses accountId="{{params.accountId}}" />
+    <PinnedStatuses accountId={{params.accountId}} />
   </TimelinePage>
 {{else}}
   <HiddenFromSSR>
