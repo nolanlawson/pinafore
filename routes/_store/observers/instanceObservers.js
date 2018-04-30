@@ -6,13 +6,17 @@ import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotificati
 import { getTimeline } from '../../_api/timelines'
 
 export function instanceObservers (store) {
+  if (!process.browser) {
+    return
+  }
   // stream to watch for home timeline updates and notifications
   let currentInstanceStream
 
-  store.observe('currentInstance', async (currentInstance) => {
-    if (!process.browser) {
+  store.on('state', async ({changed, current}) => {
+    if (!changed.currentInstance) {
       return
     }
+    let currentInstance = current.currentInstance
     if (currentInstanceStream) {
       currentInstanceStream.close()
       currentInstanceStream = null

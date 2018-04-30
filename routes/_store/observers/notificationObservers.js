@@ -4,10 +4,14 @@ import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 let currentFaviconHasNotifications = false
 
 export function notificationObservers (store) {
-  store.observe('hasNotifications', hasNotifications => {
-    if (!process.browser) {
+  if (!process.browser) {
+    return
+  }
+  store.on('state', ({changed, current}) => {
+    if (!changed.hasNotifications) {
       return
     }
+    let hasNotifications = current.hasNotifications
     scheduleIdleTask(() => {
       if (currentFaviconHasNotifications === hasNotifications) {
         return
