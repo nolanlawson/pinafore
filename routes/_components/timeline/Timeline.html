@@ -197,7 +197,7 @@
         let { currentInstance } = this.store.get()
         let { timeline } = this.get()
         let handleItemIdsToAdd = () => {
-          let { itemIdsToAdd } = this.get() || {} // // https://github.com/sveltejs/svelte/issues/1354
+          let { itemIdsToAdd } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
             return
           }
