@@ -4,6 +4,10 @@ import { getTimeline } from '../../_api/timelines'
 import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
 
 export function timelineObservers (store) {
+  if (!process.browser) {
+    return
+  }
+
   // stream to watch for local/federated/etc. updates. home and notification
   // updates are handled in timelineObservers.js
   let currentTimelineStream
@@ -28,11 +32,11 @@ export function timelineObservers (store) {
     )
   }
 
-  store.observe('currentTimeline', async (currentTimeline) => {
-    if (!process.browser) {
+  store.on('state', async ({changed, current}) => {
+    if (!changed.currentTimeline) {
       return
     }
-
+    let currentTimeline = current.currentTimeline
     shutdownPreviousStream()
 
     if (!shouldObserveTimeline(currentTimeline)) {

@@ -20,7 +20,11 @@ export function onlineObservers (store) {
   let meta = document.getElementById('theThemeColor')
   let oldTheme = meta.content
 
-  store.observe('online', online => {
+  store.on('state', ({changed, current}) => {
+    if (!changed.online) {
+      return
+    }
+    let online = current.online
     document.body.classList.toggle('offline', !online)
     if (online) {
       meta.content = oldTheme
