@@ -7,21 +7,21 @@
            required
            bind:value="$queryInSearch">
   </div>
-  <button type="submit" class="primary search-button" aria-label="Search" disabled={{$searchLoading}}>
+  <button type="submit" class="primary search-button" aria-label="Search" disabled={$searchLoading}>
     <svg class="search-button-svg">
       <use xlink:href="#fa-search" />
     </svg>
   </button>
 </form>
-{{#if $searchLoading}}
+{#if $searchLoading}
   <div class="search-results-container">
     <LoadingPage />
   </div>
-{{elseif $searchResults && $searchResultsForQuery === $queryInSearch}}
+{:elseif $searchResults && $searchResultsForQuery === $queryInSearch}
   <div class="search-results-container">
     <SearchResults />
   </div>
-{{/if}}
+{/if}
 <style>
   .search-input-form {
     display: grid;

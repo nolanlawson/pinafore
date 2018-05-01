@@ -1,14 +1,14 @@
 <DynamicPageBanner title="Pinned toots" icon="#fa-thumb-tack" />
 <div class="pinned-toots-page">
-  {{#if loading}}
+  {#if loading}
   <LoadingPage />
-  {{elseif statuses && statuses.length}}
+  {:elseif statuses && statuses.length}
   <ul class="pinned-toots-results">
-    {{#each statuses as status, index}}
-    <StatusSearchResult :status :index length={{statuses.length}} />
-    {{/each}}
+    {#each statuses as status, index}
+    <StatusSearchResult {status} {index} length={statuses.length} />
+    {/each}
   </ul>
-  {{/if}}
+  {/if}
 </div>
 <style>
   .pinned-toots-page {

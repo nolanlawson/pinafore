@@ -1,19 +1,19 @@
 <div class="compose-box-button-halo">
   <button class="primary compose-box-button"
-          :disabled
-          aria-label={{sticky ? 'Compose' : 'Toot!'}}
+          {disabled}
+          aria-label={sticky ? 'Compose' : 'Toot!'}
           on:click>
-    <span class={{$postingStatus || sticky ? 'hidden' : ''}}>
+    <span class={$postingStatus || sticky ? 'hidden' : ''}>
       Toot!
     </span>
     <div class="compose-box-button-spinner"
          aria-hidden="true">
-      <svg class="compose-box-button-svg {{$postingStatus ? 'spin' : 'hidden'}}">
+      <svg class="compose-box-button-svg {$postingStatus ? 'spin' : 'hidden'}">
         <use xlink:href="#fa-spinner" />
       </svg>
     </div>
 
-    <div class="compose-box-button-compose {{sticky ? '' : 'hidden'}}"
+    <div class="compose-box-button-compose {sticky ? '' : 'hidden'}"
          aria-hidden="true">
       <svg class="compose-box-button-svg">
         <use xlink:href="#fa-pencil" />
@@ -68,7 +68,7 @@
   export default {
     store: () => store,
     computed: {
-      disabled: ($postingStatus, overLimit) => $postingStatus || overLimit
+      disabled: ({ $postingStatus, overLimit }) => $postingStatus || overLimit
     }
   }
 </script>

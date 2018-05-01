@@ -1,5 +1,5 @@
 <div class="account-profile-note">
-  {{{massagedNote}}}
+  {@html massagedNote}
 </div>
 <style>
   .account-profile-note {
@@ -32,8 +32,8 @@
 <script>
   export default {
     computed: {
-      note: (account) => account.note,
-      massagedNote: (note) => {
+      note: ({ account }) => account.note,
+      massagedNote: ({ note }) => {
         // GNU Social / Pleroma don't add <p> tags
         if (!note.startsWith('<p>')) {
           note = `<p>${note}</p>`

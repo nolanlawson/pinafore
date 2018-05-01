@@ -1,30 +1,30 @@
-<div class="status-header {{isStatusInNotification ? 'status-in-notification' : ''}} {{notification && notification.type === 'follow' ? 'header-is-follow' : ''}}">
-  <div class="status-header-avatar {{timelineType === 'pinned' ? 'hidden' : ''}}">
-    <Avatar :account size="extra-small"/>
+<div class="status-header {isStatusInNotification ? 'status-in-notification' : ''} {notification && notification.type === 'follow' ? 'header-is-follow' : ''}">
+  <div class="status-header-avatar {timelineType === 'pinned' ? 'hidden' : ''}">
+    <Avatar {account} size="extra-small"/>
   </div>
   <svg class="status-header-svg">
-    <use xlink:href={{icon}}/>
+    <use xlink:href={icon}/>
   </svg>
   <span class="status-header-span">
-    {{#if timelineType === 'pinned'}}
+    {#if timelineType === 'pinned'}
       Pinned toot
-    {{else}}
-      <a href="/accounts/{{accountId}}"
+    {:else}
+      <a href="/accounts/{accountId}"
          class="status-header-a"
-         title="{{'@' + account.acct}}"
-         focus-key={{focusKey}} >
-        {{account.display_name || account.username}}
+         title="{'@' + account.acct}"
+         focus-key={focusKey} >
+        {account.display_name || account.username}
       </a>
-      {{#if notification && notification.type === 'reblog'}}
+      {#if notification && notification.type === 'reblog'}
         boosted your status
-      {{elseif notification && notification.type === 'favourite'}}
+      {:elseif notification && notification.type === 'favourite'}
         favorited your status
-      {{elseif notification && notification.type === 'follow'}}
+      {:elseif notification && notification.type === 'follow'}
         followed you
-      {{elseif status && status.reblog}}
+      {:elseif status && status.reblog}
         boosted
-      {{/if}}
-    {{/if}}
+      {/if}
+    {/if}
   </span>
 </div>
 <style>
@@ -88,8 +88,8 @@
       Avatar
     },
     computed: {
-      focusKey: (uuid) => `status-header-${uuid}`,
-      icon: (notification, status, timelineType) => {
+      focusKey: ({ uuid }) => `status-header-${uuid}`,
+      icon: ({ notification, status, timelineType }) => {
         if (timelineType === 'pinned') {
           return '#fa-thumb-tack'
         } else if ((notification && notification.type === 'reblog') || (status && status.reblog)) {

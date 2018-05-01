@@ -1,18 +1,18 @@
 <li class="page-list-item">
-  <a :href>
+  <a {href}>
     <svg class="page-list-item-svg">
-      <use xlink:href={{icon}} />
+      <use xlink:href={icon} />
     </svg>
-    <span aria-label="{{label}} {{$pinnedPage === href ? 'Pinned page' : 'Unpinned page'}}">
-      {{label}}
+    <span aria-label="{label} {$pinnedPage === href ? 'Pinned page' : 'Unpinned page'}">
+      {label}
     </span>
-    {{#if pinnable}}
+    {#if pinnable}
       <IconButton pressable="true"
-                  pressed={{$pinnedPage === href}}
-                  label={{$pinnedPage === href ? 'Unpin timeline' : 'Pin timeline'}}
+                  pressed={$pinnedPage === href}
+                  label={$pinnedPage === href ? 'Unpin timeline' : 'Pin timeline'}
                   href="#fa-thumb-tack"
                   on:click="onPinClick(event)" />
-    {{/if}}
+    {/if}
   </a>
 </li>
 <style>

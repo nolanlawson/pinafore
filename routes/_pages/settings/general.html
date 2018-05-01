@@ -5,17 +5,17 @@
   <form class="ui-settings" aria-label="UI settings">
     <div class="setting-group">
       <input type="checkbox" id="choice-autoplay-gif"
-             bind:checked="$autoplayGifs" on:change="store.save()">
+             bind:checked="$autoplayGifs" on:change="$save()">
       <label for="choice-autoplay-gif">Autoplay GIFs</label>
     </div>
     <div class="setting-group">
       <input type="checkbox" id="choice-mark-media-sensitive"
-             bind:checked="$markMediaAsSensitive" on:change="store.save()">
+             bind:checked="$markMediaAsSensitive" on:change="$save()">
       <label for="choice-mark-media-sensitive">Always mark media as sensitive</label>
     </div>
     <div class="setting-group">
       <input type="checkbox" id="choice-reduce-motion"
-             bind:checked="$reduceMotion" on:change="store.save()">
+             bind:checked="$reduceMotion" on:change="$save()">
       <label for="choice-reduce-motion">Reduce motion in UI animations</label>
     </div>
   </form>

@@ -1,27 +1,27 @@
-{{#if error}}
-<svg class={{computedClass}} aria-hidden="true">
+{#if error}
+<svg class={computedClass} aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
-{{elseif $autoplayGifs}}
+{:elseif $autoplayGifs}
   <img
-    class={{computedClass}}
+    class={computedClass}
     aria-hidden="true"
     alt=""
-    src={{account.avatar}}
+    src={account.avatar}
     on:imgLoad="set({loaded: true})"
     on:imgLoadError="set({error: true})" />
-{{else}}
+{:else}
   <NonAutoplayImg
-    className={{computedClass}}
+    className={computedClass}
     ariaHidden="true"
     alt=""
-    src={{account.avatar}}
-    staticSrc={{account.avatar_static}}
-    :isLink
+    src={account.avatar}
+    staticSrc={account.avatar_static}
+    {isLink}
     on:imgLoad="set({loaded: true})"
     on:imgLoadError="set({error: true})"
   />
-{{/if}}
+{/if}
 <style>
   :global(.avatar) {
     border-radius: 4px;
@@ -82,7 +82,7 @@
     }),
     store: () => store,
     computed: {
-      computedClass: (className, loaded, size) => (classname(
+      computedClass: ({ className, loaded, size }) => (classname(
         'avatar',
         className,
         loaded && 'loaded',

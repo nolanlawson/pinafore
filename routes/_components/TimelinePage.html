@@ -1,16 +1,16 @@
-<div class="timeline-page" aria-busy={{hideTimeline}}>
-  {{#if hidePage}}
+<div class="timeline-page" aria-busy={hideTimeline}>
+  {#if hidePage}
     <LoadingPage />
-  {{/if}}
-  <div class="timeline-slot-reveal-container {{hidePage ? 'hidden' : ''}}">
+  {/if}
+  <div class="timeline-slot-reveal-container {hidePage ? 'hidden' : ''}">
     <slot></slot>
   </div>
   <div class="timeline-anchor-container">
-    {{#if !hidePage && hideTimeline}}
+    {#if !hidePage && hideTimeline}
       <LoadingPage />
-    {{/if}}
-    <div class="timeline-reveal-container {{hideTimeline ? 'hidden' : ''}}">
-      <LazyTimeline :timeline />
+    {/if}
+    <div class="timeline-reveal-container {hideTimeline ? 'hidden' : ''}">
+      <LazyTimeline {timeline} />
     </div>
   </div>
 </div>
@@ -35,8 +35,8 @@
       })
     },
     computed: {
-      hidePage: ($timelineInitialized, $timelinePreinitialized) => !$timelineInitialized && !$timelinePreinitialized,
-      hideTimeline: ($timelineInitialized) => !$timelineInitialized
+      hidePage: ({ $timelineInitialized, $timelinePreinitialized }) => !$timelineInitialized && !$timelinePreinitialized,
+      hideTimeline: ({ $timelineInitialized }) => !$timelineInitialized
     },
     store: () => store,
     components: {

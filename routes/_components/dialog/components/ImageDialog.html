@@ -1,27 +1,27 @@
 <ModalDialog
-  :id
-  :label
+  {id}
+  {label}
   background="var(--muted-modal-bg)"
   muted="true"
   className="image-modal-dialog"
 >
-  {{#if type === 'gifv'}}
+  {#if type === 'gifv'}
     <AutoplayVideo
-      ariaLabel="Animated GIF: {{description || ''}}"
-      :poster
-      :src
-      :width
-      :height
+      ariaLabel="Animated GIF: {description || ''}"
+      {poster}
+      {src}
+      {width}
+      {height}
     />
-  {{else}}
+  {:else}
     <img
-      :src
-      :width
-      :height
-      alt={{description || ''}}
-      title={{description || ''}}
+      {src}
+      {width}
+      {height}
+      alt={description || ''}
+      title={description || ''}
     />
-  {{/if}}
+  {/if}
 </ModalDialog>
 <style>
   :global(.image-modal-dialog img, .image-modal-dialog video) {

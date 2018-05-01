@@ -1,24 +1,24 @@
 <div class="account-profile-avatar">
-  <Avatar :account size="big" />
+  <Avatar {account} size="big" />
 </div>
 <div class="account-profile-name">
-  <ExternalLink href={{account.url}}
+  <ExternalLink href={account.url}
                 showIcon="true"
                 normalIconColor="true"
-                ariaLabel="{{account.display_name || account.acct}} (opens in new window)"
+                ariaLabel="{account.display_name || account.acct} (opens in new window)"
   >
-    {{account.display_name || account.acct}}
+    {account.display_name || account.acct}
   </ExternalLink>
 </div>
 <div class="account-profile-username">
-  {{'@' + account.acct}}
+  {'@' + account.acct}
 </div>
 <div class="account-profile-followed-by">
-  {{#if relationship && relationship.blocking}}
+  {#if relationship && relationship.blocking}
     <span class="account-profile-followed-by-span">Blocked</span>
-  {{elseif relationship && relationship.followed_by}}
+  {:elseif relationship && relationship.followed_by}
     <span class="account-profile-followed-by-span">Follows you</span>
-  {{/if}}
+  {/if}
 </div>
 <style>
   .account-profile-followed-by {

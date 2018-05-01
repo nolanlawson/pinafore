@@ -1,13 +1,13 @@
-<a href="/accounts/{{verifyCredentials.id}}"
+<a href="/accounts/{verifyCredentials.id}"
    class="compose-box-avatar"
-   aria-label="Profile for {{verifyCredentials.display_name || verifyCredentials.acct}}">
-  <Avatar account={{verifyCredentials}} size="small"/>
+   aria-label="Profile for {verifyCredentials.display_name || verifyCredentials.acct}">
+  <Avatar account={verifyCredentials} size="small"/>
 </a>
-<a class="compose-box-display-name" href="/accounts/{{verifyCredentials.id}}">
-  {{verifyCredentials.display_name || verifyCredentials.acct}}
+<a class="compose-box-display-name" href="/accounts/{verifyCredentials.id}">
+  {verifyCredentials.display_name || verifyCredentials.acct}
 </a>
 <span class="compose-box-handle">
-  {{'@' + verifyCredentials.acct}}
+  {'@' + verifyCredentials.acct}
 </span>
 <style>
   .compose-box-avatar {
@@ -57,7 +57,7 @@
     },
     store: () => store,
     computed: {
-      verifyCredentials: ($currentVerifyCredentials) => $currentVerifyCredentials
+      verifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials
     }
   }
 </script>

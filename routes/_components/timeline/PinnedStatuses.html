@@ -1,12 +1,12 @@
 <div role="feed" aria-label="Pinned toots" class="pinned-statuses">
-  {{#each pinnedStatuses as status, index @id}}
-    <Status :status
+  {#each pinnedStatuses as status, index (status.id)}
+    <Status {status}
             timelineType="pinned"
-            timelineValue={{accountId}}
-            :index
-            length={{pinnedStatuses.length}}
+            timelineValue={accountId}
+            {index}
+            length={pinnedStatuses.length}
     />
-  {{/each}}
+  {/each}
 </div>
 <script>
   import { store } from '../../_store/store'
@@ -20,7 +20,7 @@
       await this.updatePinnedStatuses()
     },
     computed: {
-      pinnedStatuses: ($pinnedStatuses, $currentInstance, accountId) => {
+      pinnedStatuses: ({ $pinnedStatuses, $currentInstance, accountId }) => {
         return ($pinnedStatuses[$currentInstance] && $pinnedStatuses[$currentInstance][accountId]) || []
       }
     },

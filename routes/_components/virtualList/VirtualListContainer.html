@@ -115,7 +115,7 @@
     },
     computed: {
       // TODO: bug in svelte/store – the observer in oncreate() never get removed without this hack
-      allVisibleItemsHaveHeight: ($allVisibleItemsHaveHeight) => $allVisibleItemsHaveHeight
+      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight
     }
   }
 </script>

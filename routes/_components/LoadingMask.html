@@ -1,9 +1,9 @@
-<div class="loading-mask-container {{shown ? 'loading-mask-container-shown' : ''}}">
-  {{#if shown}}
+<div class="loading-mask-container {shown ? 'loading-mask-container-shown' : ''}">
+  {#if shown}
     <div class="loading-mask">
       <LoadingSpinner maskStyle="true"/>
     </div>
-  {{/if}}
+  {/if}
 </div>
 <style>
   .loading-mask-container {
@@ -37,7 +37,7 @@
   export default {
     store: () => store,
     computed: {
-      shown: ($logInToInstanceLoading) => $logInToInstanceLoading
+      shown: ({ $logInToInstanceLoading }) => $logInToInstanceLoading
     },
     components: {
       LoadingSpinner

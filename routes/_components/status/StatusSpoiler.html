@@ -1,9 +1,9 @@
-<div class="status-spoiler {{isStatusInNotification ? 'status-in-notification' : ''}} {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
-  <p>{{{massagedSpoilerText}}}</p>
+<div class="status-spoiler {isStatusInNotification ? 'status-in-notification' : ''} {isStatusInOwnThread ? 'status-in-own-thread' : ''}">
+  <p>{@html massagedSpoilerText}</p>
 </div>
-<div class="status-spoiler-button {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}">
-  <button type="button" delegate-key={{delegateKey}}>
-    {{spoilerShown ? 'Show less' : 'Show more'}}
+<div class="status-spoiler-button {isStatusInOwnThread ? 'status-in-own-thread' : ''}">
+  <button type="button" delegate-key={delegateKey}>
+    {spoilerShown ? 'Show less' : 'Show more'}
   </button>
 </div>
 <style>
@@ -60,13 +60,13 @@
     },
     store: () => store,
     computed: {
-      spoilerText: (originalStatus) => originalStatus.spoiler_text,
-      emojis: (originalStatus) => originalStatus.emojis,
-      massagedSpoilerText: (spoilerText, emojis, $autoplayGifs) => {
+      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
+      emojis: ({ originalStatus }) => originalStatus.emojis,
+      massagedSpoilerText: ({ spoilerText, emojis, $autoplayGifs }) => {
         spoilerText = escapeHtml(spoilerText)
         return emojifyText(spoilerText, emojis, $autoplayGifs)
       },
-      delegateKey: (uuid) => `spoiler-${uuid}`
+      delegateKey: ({ uuid }) => `spoiler-${uuid}`
     },
     methods: {
       onClickSpoilerButton () {

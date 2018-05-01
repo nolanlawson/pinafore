@@ -1,16 +1,16 @@
-{{#if $isUserLoggedIn}}
-  <TimelinePage timeline="tag/{{params.tagName}}">
-    <DynamicPageBanner title="{{'#' + params.tagName}}"/>
+{#if $isUserLoggedIn}
+  <TimelinePage timeline="tag/{params.tagName}">
+    <DynamicPageBanner title="{'#' + params.tagName}"/>
   </TimelinePage>
-{{else}}
+{:else}
   <HiddenFromSSR>
     <FreeTextLayout>
-      <h1>#{{params.tagName}}</h1>
+      <h1>#{params.tagName}</h1>
 
       <p>A hashtag timeline will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import TimelinePage from '../../_components/TimelinePage.html'
   import FreeTextLayout from '../../_components/FreeTextLayout.html'

@@ -1,8 +1,8 @@
-<:Head>
+<svelte:head>
   <title>Pinafore – Settings</title>
-</:Head>
+</svelte:head>
 <Layout page='settings'>
-  <LazyPage :pageComponent :params />
+  <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
   import Layout from '../_components/Layout.html'

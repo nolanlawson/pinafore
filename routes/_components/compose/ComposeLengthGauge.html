@@ -1,5 +1,5 @@
-<div class="compose-box-length-gauge {{shouldAnimate ? 'should-animate' : ''}}  {{overLimit ? 'over-char-limit' : ''}}"
-     style="transform: scaleX({{lengthAsFractionDeferred}});"
+<div class="compose-box-length-gauge {shouldAnimate ? 'should-animate' : ''}  {overLimit ? 'over-char-limit' : ''}"
+     style="transform: scaleX({lengthAsFractionDeferred});"
      aria-hidden="true"
 ></div>
 <style>
@@ -45,7 +45,7 @@
     }),
     store: () => store,
     computed: {
-      lengthAsFraction: (length) => {
+      lengthAsFraction: ({ length }) => {
         // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
         let int = Math.round(Math.min(CHAR_LIMIT, length) / CHAR_LIMIT * 100)
         return (int - (int % 2)) / 100

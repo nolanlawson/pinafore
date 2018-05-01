@@ -1,10 +1,10 @@
-{{#if $isUserLoggedIn}}
-  <TimelinePage timeline="list/{{params.listId}}">
-    {{#if $pinnedPage !== `/lists/${params.listId}`}}
-      <DynamicPageBanner title={{listTitle}} icon="#fa-bars"/>
-    {{/if}}
+{#if $isUserLoggedIn}
+  <TimelinePage timeline="list/{params.listId}">
+    {#if $pinnedPage !== `/lists/${params.listId}`}
+      <DynamicPageBanner title={listTitle} icon="#fa-bars"/>
+    {/if}
   </TimelinePage>
-{{else}}
+{:else}
   <HiddenFromSSR>
     <FreeTextLayout>
       <h1>List</h1>
@@ -12,7 +12,7 @@
       <p>A list will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import TimelinePage from '../../_components/TimelinePage.html'
   import FreeTextLayout from '../../_components/FreeTextLayout.html'
@@ -22,8 +22,8 @@
 
   export default {
     computed: {
-      list: (params, $lists) => $lists && $lists.find(_ => _.id === params['listId']),
-      listTitle: (list) => list ? list.title : ''
+      list: ({ params, $lists }) => $lists && $lists.find(_ => _.id === params['listId']),
+      listTitle: ({ list }) => list ? list.title : ''
     },
     store: () => store,
     components: {

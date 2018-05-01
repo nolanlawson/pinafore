@@ -1,17 +1,17 @@
 <div class="pseudo-virtual-list" on:initialized ref:node>
-  {{#each wrappedItems as wrappedItem, i @item}}
+  {#each wrappedItems as wrappedItem, i (wrappedItem.item)}
     <PseudoVirtualListLazyItem
-      :component
-      index={{i}}
-      length={{wrappedItems.length}}
-      :makeProps
-      key={{wrappedItem.item}}
-      :intersectionObserver
-      isIntersecting={{isIntersecting(wrappedItem.item, $intersectionStates)}}
-      isCached={{isCached(wrappedItem.item, $intersectionStates)}}
-      height={{getHeight(wrappedItem.item, $intersectionStates)}}
+      {component}
+      index={i}
+      length={wrappedItems.length}
+      {makeProps}
+      key={wrappedItem.item}
+      {intersectionObserver}
+      isIntersecting={isIntersecting(wrappedItem.item, $intersectionStates)}
+      isCached={isCached(wrappedItem.item, $intersectionStates)}
+      height={getHeight(wrappedItem.item, $intersectionStates)}
     />
-  {{/each}}
+  {/each}
 </div>
 <style>
   .pseudo-virtual-list {
@@ -110,8 +110,8 @@
       }
     },
     computed: {
-      wrappedItems: (items) => items ? items.map(item => ({item})) : [],
-      allItemsHaveHeight: (items, $intersectionStates) => {
+      wrappedItems: ({ items }) => items ? items.map(item => ({item})) : [],
+      allItemsHaveHeight: ({ items, $intersectionStates }) => {
         if (!items) {
           return false
         }

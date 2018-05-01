@@ -1,12 +1,12 @@
 <li class="settings-list-item">
-  <a :href>
-    {{#if icon}}
+  <a {href}>
+    {#if icon}
     <svg class="settings-list-item-svg">
-      <use xlink:href={{icon}} />
+      <use xlink:href={icon} />
     </svg>
-    {{/if}}
-    <span aria-label={{ariaLabel || label}} class={{offsetForIcon ? 'offset-for-icon' : ''}}>
-      {{label}}
+    {/if}
+    <span aria-label={ariaLabel || label} class={offsetForIcon ? 'offset-for-icon' : ''}>
+      {label}
     </span>
   </a>
 </li>

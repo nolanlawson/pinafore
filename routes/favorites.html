@@ -1,8 +1,8 @@
-<:Head>
+<svelte:head>
   <title>Pinafore – Favorites</title>
-</:Head>
+</svelte:head>
 <Layout page='favorites'>
-  <LazyPage :pageComponent :params />
+  <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
   import Layout from './_components/Layout.html'

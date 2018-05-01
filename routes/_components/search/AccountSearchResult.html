@@ -1,24 +1,24 @@
-<SearchResult href="/accounts/{{account.id}}">
+<SearchResult href="/accounts/{account.id}">
   <div class="search-result-account">
-    <Avatar :account size="small" className="search-result-account-avatar"/>
+    <Avatar {account} size="small" className="search-result-account-avatar"/>
     <div class="search-result-account-name">
-      {{account.display_name || account.acct}}
+      {account.display_name || account.acct}
     </div>
     <div class="search-result-account-username">
-      {{'@' + account.acct}}
+      {'@' + account.acct}
     </div>
-    {{#if actions && actions.length}}
+    {#if actions && actions.length}
       <div class="search-result-account-buttons">
-        {{#each actions as action}}
+        {#each actions as action}
           <IconButton
-            label={{action.label}}
+            label={action.label}
             on:click="onButtonClick(event, action, account.id)"
-            href={{action.icon}}
+            href={action.icon}
             big="true"
           />
-        {{/each}}
+        {/each}
       </div>
-    {{/if}}
+    {/if}
   </div>
 </SearchResult>
 <style>

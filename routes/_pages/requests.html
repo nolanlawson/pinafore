@@ -1,5 +1,5 @@
 <DynamicPageBanner title="Follow requests" icon="#fa-user-plus" />
-<AccountsListPage :accountsFetcher :accountActions />
+<AccountsListPage {accountsFetcher} {accountActions} />
 <script>
   import AccountsListPage from '.././_components/AccountsListPage.html'
   import { store } from '.././_store/store'
@@ -23,7 +23,7 @@
       ]
     }),
     computed: {
-      accountsFetcher: ($currentInstance, $accessToken) => () => getFollowRequests($currentInstance, $accessToken)
+      accountsFetcher: ({ $currentInstance, $accessToken }) => () => getFollowRequests($currentInstance, $accessToken)
     },
     store: () => store,
     components: {

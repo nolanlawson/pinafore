@@ -1,26 +1,26 @@
 <ModalDialog
-  :id
-  :label
-  :title
+  {id}
+  {label}
+  {title}
   background="var(--main-bg)"
 >
   <div class="custom-emoji-container">
-    {{#if emojis.length}}
+    {#if emojis.length}
       <ul class="custom-emoji-list">
-        {{#each emojis as emoji}}
+        {#each emojis as emoji}
           <li class="custom-emoji">
             <button type="button" on:click="onClickEmoji(emoji)">
-              <img src={{$autoplayGifs ? emoji.url : emoji.static_url}}
-                   alt=":{{emoji.shortcode}}:"
-                   title=":{{emoji.shortcode}}:"
+              <img src={$autoplayGifs ? emoji.url : emoji.static_url}
+                   alt=":{emoji.shortcode}:"
+                   title=":{emoji.shortcode}:"
               />
             </button>
           </li>
-        {{/each}}
+        {/each}
       </ul>
-    {{else}}
+    {:else}
       <div class="custom-emoji-no-emoji">No custom emoji found for this instance.</div>
-    {{/if}}
+    {/if}
   </div>
 </ModalDialog>
 <style>
@@ -71,7 +71,7 @@
     },
     store: () => store,
     computed: {
-      emojis: ($currentCustomEmoji) => {
+      emojis: ({ $currentCustomEmoji }) => {
         if (!$currentCustomEmoji) {
           return []
         }

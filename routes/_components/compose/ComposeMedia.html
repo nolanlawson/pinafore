@@ -1,10 +1,10 @@
-{{#if media.length}}
-  <div class="compose-media-container" style="grid-template-columns: repeat({{media.length}}, 1fr);">
-    {{#each media as mediaItem, index}}
-      <ComposeMediaItem :realm :mediaItem :index :mediaDescriptions />
-    {{/each}}
+{#if media.length}
+  <div class="compose-media-container" style="grid-template-columns: repeat({media.length}, 1fr);">
+    {#each media as mediaItem, index}
+      <ComposeMediaItem {realm} {mediaItem} {index} {mediaDescriptions} />
+    {/each}
   </div>
-{{/if}}
+{/if}
 <style>
   .compose-media-container {
     grid-area: media;

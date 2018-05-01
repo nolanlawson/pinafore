@@ -1,6 +1,6 @@
-<div class="virtual-list-header {{shown ? 'shown' : ''}} {{fadedIn ? 'faded-in' : ''}}"
+<div class="virtual-list-header {shown ? 'shown' : ''} {fadedIn ? 'faded-in' : ''}"
      ref:node >
-  <:Component {component} :virtualProps />
+  <svelte:component this={component} {virtualProps} />
 </div>
 <style>
   .virtual-list-header {

@@ -1,5 +1,5 @@
 <DynamicPageBanner title="Followers" />
-<AccountsListPage :accountsFetcher />
+<AccountsListPage {accountsFetcher} />
 <script>
   import { getFollowers } from '../../../_api/followsAndFollowers'
   import AccountsListPage from '../../../_components/AccountsListPage.html'
@@ -8,8 +8,8 @@
 
   export default {
     computed: {
-      accountId: params => params.accountId,
-      accountsFetcher: ($currentInstance, $accessToken, accountId) => () => getFollowers($currentInstance, $accessToken, accountId)
+      accountId: ({ params }) => params.accountId,
+      accountsFetcher: ({ $currentInstance, $accessToken, accountId }) => () => getFollowers($currentInstance, $accessToken, accountId)
     },
     store: () => store,
     components: {

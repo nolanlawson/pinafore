@@ -1,33 +1,33 @@
-<h1 class="sr-only">{{label}}</h1>
+<h1 class="sr-only">{label}</h1>
 <div class="timeline"
      role="feed"
      on:focusWithCapture="saveFocus(event)"
      on:blurWithCapture="clearFocus(event)"
 >
-  {{#await componentsPromise}}
+  {#await componentsPromise}
     <!-- awaiting promise -->
-  {{then result}}
-    <:Component {result.listComponent}
-                component={{result.listItemComponent}}
-                realm="{{$currentInstance + '/' + timeline}}"
+  {:then result}
+    <svelte:component this={result.listComponent}
+                component={result.listItemComponent}
+                realm="{$currentInstance + '/' + timeline}"
                 containerQuery=".container"
-                :makeProps
-                items={{$timelineItemIds}}
-                showFooter={{$timelineInitialized && $runningUpdate}}
-                footerComponent={{LoadingFooter}}
-                showHeader={{$showHeader}}
-                headerComponent={{MoreHeaderVirtualWrapper}}
-                :headerProps
-                :scrollToItem
+                {makeProps}
+                items={$timelineItemIds}
+                showFooter={$timelineInitialized && $runningUpdate}
+                footerComponent={LoadingFooter}
+                showHeader={$showHeader}
+                headerComponent={MoreHeaderVirtualWrapper}
+                {headerProps}
+                {scrollToItem}
                 on:scrollToBottom="onScrollToBottom()"
                 on:scrollToTop="onScrollToTop()"
                 on:scrollTopChanged="onScrollTopChanged(event)"
                 on:initialized="initialize()"
                 on:noNeedToScroll="onNoNeedToScroll()"
     />
-  {{catch error}}
-    <div>Error: component failed to load! Try reloading. {{error}}</div>
-  {{/await}}
+  {:catch error}
+    <div>Error: component failed to load! Try reloading. {error}</div>
+  {/await}
 </div>
 <script>
   import { store } from '../../_store/store'
@@ -82,7 +82,7 @@
       // due to need to scroll to the right item and thus calculate all item heights up-front.
       // Here we lazy-load both the virtual list component itself as well as the component
       // it renders.
-      componentsPromise: (timelineType) => {
+      componentsPromise: ({ timelineType }) => {
         return Promise.all([
           timelineType === 'status'
             ? importPseudoVirtualList()
@@ -95,7 +95,7 @@
           listItemComponent: results[1]
         }))
       },
-      makeProps: ($currentInstance, timelineType, timelineValue) => async (itemId) => {
+      makeProps: ({ $currentInstance, timelineType, timelineValue }) => async (itemId) => {
         let res = {
           timelineType,
           timelineValue
@@ -107,7 +107,7 @@
         }
         return res
       },
-      label: (timeline, $currentInstance, timelineType, timelineValue) => {
+      label: ({ timeline, $currentInstance, timelineType, timelineValue }) => {
         if (timelines[timeline]) {
           return `${timelines[timeline].label} timeline for ${$currentInstance}`
         }
@@ -125,20 +125,20 @@
             return `Notifications for ${$currentInstance}`
         }
       },
-      timelineType: (timeline) => {
+      timelineType: ({ timeline }) => {
         return timeline.split('/')[0]
       },
-      timelineValue: (timeline) => {
+      timelineValue: ({ timeline }) => {
         return timeline.split('/').slice(-1)[0]
       },
       // Scroll to the first item if this is a "status in own thread" timeline.
       // Don't scroll to the first item because it obscures the "back" button.
-      scrollToItem: (timelineType, timelineValue, $firstTimelineItemId) => (
+      scrollToItem: ({ timelineType, timelineValue, $firstTimelineItemId }) => (
         timelineType === 'status' && $firstTimelineItemId &&
         timelineValue !== $firstTimelineItemId && timelineValue
       ),
-      itemIdsToAdd: ($itemIdsToAdd) => $itemIdsToAdd,
-      headerProps: (itemIdsToAdd) => {
+      itemIdsToAdd: ({ $itemIdsToAdd }) => $itemIdsToAdd,
+      headerProps: ({ itemIdsToAdd }) => {
         return {
           count: itemIdsToAdd ? itemIdsToAdd.length : 0,
           onClick: showMoreItemsForCurrentTimeline

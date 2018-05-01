@@ -1,8 +1,8 @@
-<:Head>
+<svelte:head>
   <title>Pinafore – Community</title>
-</:Head>
+</svelte:head>
 <Layout page='community'>
-  <LazyPage :pageComponent :params />
+  <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
   import Layout from '../_components/Layout.html'
