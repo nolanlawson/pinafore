@@ -104,12 +104,13 @@ virtualListStore.compute('allVisibleItemsHaveHeight',
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.virtualListStore = virtualListStore
 
-  virtualListStore.observe('visibleItems', () => {
-    window.visibleItemsChangedCount = (window.visibleItemsChangedCount || 0) + 1
-  })
-
-  virtualListStore.observe('rawVisibleItems', () => {
-    window.rawVisibleItemsChangedCount = (window.rawVisibleItemsChangedCount || 0) + 1
+  virtualListStore.on('state', ({changed}) => {
+    if (changed.visibleItems) {
+      window.visibleItemsChangedCount = (window.visibleItemsChangedCount || 0) + 1
+    }
+    if (changed.rawVisibleItems) {
+      window.rawVisibleItemsChangedCount = (window.rawVisibleItemsChangedCount || 0) + 1
+    }
   })
 }
 
