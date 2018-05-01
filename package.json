@@ -79,7 +79,7 @@
     "style-loader": "0.21.0",
     "svelte": "1.64.1",
     "svelte-extras": "2.0.2",
-    "svelte-loader": "2.8.1",
+    "svelte-loader": "2.9.0",
     "svelte-transitions": "1.1.1",
     "svgo": "1.0.5",
     "timeago.js": "3.0.2",
