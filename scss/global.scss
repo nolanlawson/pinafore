@@ -139,6 +139,12 @@ ul, li, p {
   outline: 2px solid var(--focus-outline);
 }
 
+.container:focus {
+  // the outline causes choppy rendering on Edge and isn't visible or necessary anyway
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/17343598/
+  outline: none;
+}
+
 button::-moz-focus-inner {
   border: 0;
 }
