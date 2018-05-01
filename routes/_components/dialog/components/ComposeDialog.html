@@ -19,6 +19,9 @@
       on('postedStatus', this, this.onPostedStatus)
       onCreateDialog.call(this)
     },
+    data: () => ({
+      title: void 0
+    }),
     methods: {
       show,
       close,
