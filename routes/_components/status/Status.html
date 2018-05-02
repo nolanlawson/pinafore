@@ -7,29 +7,29 @@
          aria-label={ariaLabel}
          on:recalculateHeight>
   {#if showHeader}
-    <StatusHeader {...params} />
+    <StatusHeader {...props} />
   {/if}
-  <StatusAuthorName {...params} />
-  <StatusAuthorHandle {...params} />
+  <StatusAuthorName {...props} />
+  <StatusAuthorHandle {...props} />
   {#if !isStatusInOwnThread}
-    <StatusRelativeDate {...params} />
+    <StatusRelativeDate {...props} />
   {/if}
-  <StatusSidebar {...params} />
+  <StatusSidebar {...props} />
   {#if spoilerText}
-    <StatusSpoiler {...params} on:recalculateHeight />
+    <StatusSpoiler {...props} on:recalculateHeight />
   {/if}
   {#if showContent || contentPreloaded}
-    <StatusContent {...params} shown={showContent}/>
+    <StatusContent {...props} shown={showContent}/>
   {/if}
   {#if showMedia }
-    <StatusMediaAttachments {...params} on:recalculateHeight />
+    <StatusMediaAttachments {...props} on:recalculateHeight />
   {/if}
   {#if isStatusInOwnThread}
-    <StatusDetails {...params} />
+    <StatusDetails {...props} />
   {/if}
-  <StatusToolbar {...params} on:recalculateHeight />
+  <StatusToolbar {...props} on:recalculateHeight />
   {#if replyShown}
-    <StatusComposeBox {...params} on:recalculateHeight />
+    <StatusComposeBox {...props} on:recalculateHeight />
   {/if}
 </article>
 
@@ -216,30 +216,7 @@
         isStatusInOwnThread && 'status-in-own-thread'
       )),
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
-      params: ({ notification, notificationId, status, statusId, timelineType,
-        account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
-        originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
-        replyVisibility, spoilerText, originalStatus, originalStatusId }) => ({
-        notification,
-        notificationId,
-        status,
-        statusId,
-        timelineType,
-        account,
-        accountId,
-        uuid,
-        isStatusInNotification,
-        isStatusInOwnThread,
-        originalAccount,
-        originalAccountId,
-        spoilerShown,
-        visibility,
-        replyShown,
-        replyVisibility,
-        spoilerText,
-        originalStatus,
-        originalStatusId
-      })
+      props: state => state
     }
   }
 </script>
