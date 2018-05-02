@@ -80,3 +80,12 @@ Tests use [TestCafé](https://devexpress.github.io/testcafe/). The tests have a 
 
 In principle the `0-` tests don't have to worry about
 clobbering each other, whereas the `1-` ones do.
+
+## Debugging Webpack
+
+The Webpack Bundle Analyzer `report.html` and `stats.json` are available publicly via e.g.:
+
+- [dev.pinafore.social/report.html](https://dev.pinafore.social/report.html)
+- [dev.pinafore.social/stats.json](https://dev.pinafore.social/stats.json)
+
+This is also available locally after `npm run build` at `.sapper/client/report.html`.
