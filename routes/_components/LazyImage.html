@@ -1,16 +1,16 @@
 <div class="lazy-image"
-     style="width: {{width}}px; height: {{height}}px; background: {{background}};">
-  {{#if displaySrc}}
+     style="width: {width}px; height: {height}px; background: {background};">
+  {#if displaySrc}
     <img
-      class="{{hidden ? 'hidden' : ''}} {{className || ''}}"
-      aria-hidden={{ariaHidden || ''}}
-      alt={{alt || ''}}
-      title={{alt || ''}}
-      src={{displaySrc}}
-      :width
-      :height
+      class="{hidden ? 'hidden' : ''} {className || ''}"
+      aria-hidden={ariaHidden || ''}
+      alt={alt || ''}
+      title={alt || ''}
+      src={displaySrc}
+      {width}
+      {height}
     />
-  {{/if}}
+  {/if}
 </div>
 <style>
   .lazy-image {

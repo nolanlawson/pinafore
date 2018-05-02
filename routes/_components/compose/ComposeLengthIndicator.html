@@ -1,6 +1,6 @@
-<span class="compose-box-length {{overLimit ? 'over-char-limit' : ''}}"
-      aria-label={{lengthLabel}}>
-      {{lengthToDisplayDeferred}}
+<span class="compose-box-length {overLimit ? 'over-char-limit' : ''}"
+      aria-label={lengthLabel}>
+      {lengthToDisplayDeferred}
     </span>
 <style>
   .compose-box-length {
@@ -41,8 +41,8 @@
     }),
     store: () => store,
     computed: {
-      lengthToDisplay: (length) => CHAR_LIMIT - length,
-      lengthLabel: (overLimit, lengthToDisplayDeferred) => {
+      lengthToDisplay: ({ length }) => CHAR_LIMIT - length,
+      lengthLabel: ({ overLimit, lengthToDisplayDeferred }) => {
         if (overLimit) {
           return `${lengthToDisplayDeferred} characters over limit`
         } else {

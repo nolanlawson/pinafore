@@ -1,8 +1,8 @@
-<:Head>
+<svelte:head>
   <title>Pinafore – List</title>
-</:Head>
+</svelte:head>
 <Layout page='lists'>
-  <LazyPage :pageComponent :params />
+  <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
   import Layout from '../_components/Layout.html'

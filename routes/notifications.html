@@ -1,8 +1,8 @@
-<:Head>
+<svelte:head>
 	<title>Pinafore – Notifications</title>
-</:Head>
+</svelte:head>
 <Layout page='notifications'>
-  <LazyPage :pageComponent :params />
+  <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
   import Layout from './_components/Layout.html'

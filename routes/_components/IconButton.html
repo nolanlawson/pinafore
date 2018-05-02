@@ -1,30 +1,30 @@
-{{#if delegateKey}}
+{#if delegateKey}
   <button type="button"
-          title={{label}}
-          aria-label={{label}}
-          aria-pressed={{pressable ? !!pressed : ''}}
-          class={{computedClass}}
-          :disabled
-          delegate-key={{delegateKey}}
-          focus-key={{focusKey || ''}} >
-    <svg class="icon-button-svg {{svgClassName || ''}}" ref:svg>
-      <use xlink:href={{href}} />
+          title={label}
+          aria-label={label}
+          aria-pressed={pressable ? !!pressed : ''}
+          class={computedClass}
+          {disabled}
+          delegate-key={delegateKey}
+          focus-key={focusKey || ''} >
+    <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
+      <use xlink:href={href} />
     </svg>
   </button>
-{{else}}
+{:else}
   <button type="button"
-          title={{label}}
-          aria-label={{label}}
-          aria-pressed={{pressable ? !!pressed : ''}}
-          class={{computedClass}}
-          focus-key={{focusKey || ''}}
-          :disabled
+          title={label}
+          aria-label={label}
+          aria-pressed={pressable ? !!pressed : ''}
+          class={computedClass}
+          focus-key={focusKey || ''}
+          {disabled}
           on:click >
-    <svg class="icon-button-svg {{svgClassName || ''}}" ref:svg>
-      <use xlink:href={{href}} />
+    <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
+      <use xlink:href={href} />
     </svg>
   </button>
-{{/if}}
+{/if}
 <style>
   .icon-button {
     padding: 6px 10px;
@@ -118,7 +118,7 @@
     }),
     store: () => store,
     computed: {
-      computedClass: (pressable, pressed, big, muted, className) => {
+      computedClass: ({ pressable, pressed, big, muted, className }) => {
         return classname(
           'icon-button',
           !pressable && 'not-pressable',

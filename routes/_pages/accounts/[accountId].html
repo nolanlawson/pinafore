@@ -1,15 +1,15 @@
-{{#if $isUserLoggedIn}}
-  <TimelinePage timeline="account/{{params.accountId}}">
+{#if $isUserLoggedIn}
+  <TimelinePage timeline="account/{params.accountId}">
     <DynamicPageBanner title="" />
-    {{#if $currentAccountProfile && $currentVerifyCredentials}}
-    <AccountProfile account={{$currentAccountProfile}}
-                    relationship={{$currentAccountRelationship}}
-                    verifyCredentials={{$currentVerifyCredentials}}
+    {#if $currentAccountProfile && $currentVerifyCredentials}
+    <AccountProfile account={$currentAccountProfile}
+                    relationship={$currentAccountRelationship}
+                    verifyCredentials={$currentVerifyCredentials}
     />
-    {{/if}}
-    <PinnedStatuses accountId={{params.accountId}} />
+    {/if}
+    <PinnedStatuses accountId={params.accountId} />
   </TimelinePage>
-{{else}}
+{:else}
   <HiddenFromSSR>
     <FreeTextLayout>
       <h1>Profile</h1>
@@ -17,7 +17,7 @@
       <p>A user timeline will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import TimelinePage from '../../_components/TimelinePage.html'
   import FreeTextLayout from '../../_components/FreeTextLayout.html'
@@ -37,10 +37,10 @@
     },
     store: () => store,
     computed: {
-      profileName: ($currentAccountProfile) => {
+      profileName: ({ $currentAccountProfile }) => {
         return ($currentAccountProfile && ('@' + $currentAccountProfile.acct)) || ''
       },
-      shortProfileName: ($currentAccountProfile) => {
+      shortProfileName: ({ $currentAccountProfile }) => {
         return ($currentAccountProfile && ('@' + $currentAccountProfile.username)) || ''
       }
     },

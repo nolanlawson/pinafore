@@ -1,19 +1,19 @@
 <ul class="generic-dialog-list">
-  {{#each items as item @key}}
+  {#each items as item (item.key)}
   <li class="generic-dialog-list-item">
     <button class="generic-dialog-list-button" on:click="fire('click', item)">
       <svg class="generic-dialog-list-item-svg">
-        <use xlink:href={{item.icon}} />
+        <use xlink:href={item.icon} />
       </svg>
       <span>
-            {{item.label}}
+            {item.label}
           </span>
-      <svg class="generic-dialog-list-item-svg {{item.selected ? '' : 'hidden'}}" aria-hidden={{!item.selected}}>
+      <svg class="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}" aria-hidden={!item.selected}>
         <use xlink:href="#fa-check" />
       </svg>
     </button>
   </li>
-  {{/each}}
+  {/each}
 </ul>
 <style>
   .generic-dialog-list {

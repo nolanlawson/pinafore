@@ -1,11 +1,11 @@
-<div class="account-profile {{headerImageIsMissing ? 'header-image-is-missing' : ''}}"
-     style="background-image: url({{headerImage}});">
+<div class="account-profile {headerImageIsMissing ? 'header-image-is-missing' : ''}"
+     style="background-image: url({headerImage});">
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-grid">
-      <AccountProfileHeader :account :relationship :verifyCredentials />
-      <AccountProfileFollow :account :relationship :verifyCredentials />
-      <AccountProfileNote :account />
-      <AccountProfileDetails :account :relationship :verifyCredentials />
+      <AccountProfileHeader {account} {relationship} {verifyCredentials} />
+      <AccountProfileFollow {account} {relationship} {verifyCredentials} />
+      <AccountProfileNote {account} />
+      <AccountProfileDetails {account} {relationship} {verifyCredentials} />
     </div>
   </div>
 </div>
@@ -73,8 +73,8 @@
   export default {
     store: () => store,
     computed: {
-      headerImageIsMissing: (account) => account.header.endsWith('missing.png'),
-      headerImage: ($autoplayGifs, account) => $autoplayGifs ? account.header : account.header_static
+      headerImageIsMissing: ({ account }) => account.header.endsWith('missing.png'),
+      headerImage: ({ $autoplayGifs, account }) => $autoplayGifs ? account.header : account.header_static
     },
     components: {
       AccountProfileHeader,

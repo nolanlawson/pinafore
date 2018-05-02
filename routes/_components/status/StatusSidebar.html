@@ -1,11 +1,11 @@
-<a class="status-sidebar size-{{size}}"
-   href="/accounts/{{originalAccountId}}"
-   focus-key={{focusKey}}
+<a class="status-sidebar size-{size}"
+   href="/accounts/{originalAccountId}"
+   focus-key={focusKey}
    aria-hidden="true"
 >
-  <Avatar account={{originalAccount}}
+  <Avatar account={originalAccount}
           isLink="true"
-          :size />
+          {size} />
 </a>
 <style>
   .status-sidebar {
@@ -36,8 +36,8 @@
       Avatar
     },
     computed: {
-      focusKey: (uuid) => `status-author-avatar-${uuid}`,
-      size: (isStatusInOwnThread) => isStatusInOwnThread ? 'medium' : 'small'
+      focusKey: ({ uuid }) => `status-author-avatar-${uuid}`,
+      size: ({ isStatusInOwnThread }) => isStatusInOwnThread ? 'medium' : 'small'
     }
   }
 </script>

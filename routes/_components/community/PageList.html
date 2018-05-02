@@ -1,13 +1,13 @@
 <div class="page-list-wrapper">
-  {{#if label}}
-  <ul class="page-list" aria-label={{label}}>
+  {#if label}
+  <ul class="page-list" aria-label={label}>
     <slot></slot>
   </ul>
-  {{else}}
+  {:else}
   <ul class="page-list">
     <slot></slot>
   </ul>
-  {{/if}}
+  {/if}
 </div>
 <style>
   .page-list-wrapper {

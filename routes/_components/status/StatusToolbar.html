@@ -1,34 +1,34 @@
-<div class="status-toolbar {{isStatusInOwnThread ? 'status-in-own-thread' : ''}}" ref:node>
+<div class="status-toolbar {isStatusInOwnThread ? 'status-in-own-thread' : ''}" ref:node>
   <IconButton
     className="status-toolbar-reply-button"
-    label={{replyLabel}}
+    label={replyLabel}
     pressable="true"
-    pressed={{replyShown}}
+    pressed={replyShown}
     href="#fa-reply"
-    delegateKey={{replyKey}}
-    focusKey={{replyKey}}
+    delegateKey={replyKey}
+    focusKey={replyKey}
     />
   <IconButton
-    label={{reblogLabel}}
-    pressable={{!reblogDisabled}}
-    pressed={{reblogged}}
-    disabled={{reblogDisabled}}
-    href={{reblogIcon}}
-    delegateKey={{reblogKey}}
+    label={reblogLabel}
+    pressable={!reblogDisabled}
+    pressed={reblogged}
+    disabled={reblogDisabled}
+    href={reblogIcon}
+    delegateKey={reblogKey}
     ref:reblogIcon
   />
   <IconButton
     label="Favorite"
     pressable="true"
-    pressed={{favorited}}
+    pressed={favorited}
     href="#fa-star"
-    delegateKey={{favoriteKey}}
+    delegateKey={favoriteKey}
     ref:favoriteIcon
   />
   <IconButton
     label="Show more options"
     href="#fa-ellipsis-h"
-    delegateKey={{optionsKey}}
+    delegateKey={optionsKey}
   />
 </div>
 <style>
@@ -133,8 +133,8 @@
       reblogAnimation: REBLOG_ANIMATION
     }),
     computed: {
-      replyLabel: (replyShown) => replyShown ? 'Close reply' : 'Reply',
-      reblogLabel: (visibility) => {
+      replyLabel: ({ replyShown }) => replyShown ? 'Close reply' : 'Reply',
+      reblogLabel: ({ visibility }) => {
         switch (visibility) {
           case 'private':
             return 'Cannot be boosted because this is followers-only'
@@ -144,7 +144,7 @@
             return 'Boost'
         }
       },
-      reblogIcon: (visibility) => {
+      reblogIcon: ({ visibility }) => {
         switch (visibility) {
           case 'private':
             return '#fa-lock'
@@ -154,25 +154,25 @@
             return '#fa-retweet'
         }
       },
-      reblogDisabled: (visibility) => {
+      reblogDisabled: ({ visibility }) => {
         return visibility === 'private' || visibility === 'direct'
       },
-      reblogged: (originalStatusId, $currentStatusModifications, originalStatus) => {
+      reblogged: ({ originalStatusId, $currentStatusModifications, originalStatus }) => {
         if ($currentStatusModifications && originalStatusId in $currentStatusModifications.reblogs) {
           return $currentStatusModifications.reblogs[originalStatusId]
         }
         return originalStatus.reblogged
       },
-      favorited: (originalStatusId, $currentStatusModifications, originalStatus) => {
+      favorited: ({ originalStatusId, $currentStatusModifications, originalStatus }) => {
         if ($currentStatusModifications && originalStatusId in $currentStatusModifications.favorites) {
           return $currentStatusModifications.favorites[originalStatusId]
         }
         return originalStatus.favourited
       },
-      favoriteKey: (uuid) => `fav-${uuid}`,
-      reblogKey: (uuid) => `reblog-${uuid}`,
-      replyKey: (uuid) => `reply-${uuid}`,
-      optionsKey: (uuid) => `options-${uuid}`
+      favoriteKey: ({ uuid }) => `fav-${uuid}`,
+      reblogKey: ({ uuid }) => `reblog-${uuid}`,
+      replyKey: ({ uuid }) => `reply-${uuid}`,
+      optionsKey: ({ uuid }) => `options-${uuid}`
     }
   }
 </script>

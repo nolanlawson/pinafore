@@ -1,4 +1,4 @@
-{{#if $isUserLoggedIn}}
+{#if $isUserLoggedIn}
 <div class="community-page">
 
   <h2 class="community-header">
@@ -23,35 +23,35 @@
     />
   </PageList>
 
-  {{#if $lists.length}}
+  {#if $lists.length}
 
     <h2 class="community-header">
       Lists
     </h2>
 
     <PageList label="Lists">
-      {{#each $lists as list}}
-      <PageListItem href="/lists/{{list.id}}"
-                    label={{list.title}}
+      {#each $lists as list}
+      <PageListItem href="/lists/{list.id}"
+                    label={list.title}
                     icon="#fa-bars"
                     pinnable="true"
       />
-      {{/each}}
+      {/each}
     </PageList>
 
-  {{/if}}
+  {/if}
 
   <h2 class="community-header">
     Instance settings
   </h2>
 
   <PageList label="Instance settings">
-    {{#if isLockedAccount}}
+    {#if isLockedAccount}
     <PageListItem href="/requests"
                   label="Follow requests"
                   icon="#fa-user-plus"
      />
-    {{/if}}
+    {/if}
     <PageListItem href="/muted"
                   label="Muted users"
                   icon="#fa-volume-off"
@@ -67,7 +67,7 @@
   </PageList>
 
 </div>
-{{else}}
+{:else}
 <HiddenFromSSR>
   <FreeTextLayout>
     <h1>Community</h1>
@@ -75,7 +75,7 @@
     <p>Community options appear here when logged in.</p>
   </FreeTextLayout>
 </HiddenFromSSR>
-{{/if}}
+{/if}
 <style>
   .community-page {
     margin: 20px;
@@ -109,7 +109,7 @@
       PageListItem
     },
     computed: {
-      isLockedAccount: ($currentVerifyCredentials) => $currentVerifyCredentials && $currentVerifyCredentials.locked
+      isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked
     }
   }
 </script>

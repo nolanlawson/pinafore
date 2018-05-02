@@ -1,15 +1,15 @@
 <div class="pseudo-virtual-list-item"
-     aria-hidden={{hide}}
-     pseudo-virtual-list-key={{key}}
-     style="height: {{shouldHide ? `${height}px` : ''}};"
+     aria-hidden={hide}
+     pseudo-virtual-list-key={key}
+     style="height: {shouldHide ? `${height}px` : ''};"
      ref:node>
-  {{#if !shouldHide}}
-    <:Component {component}
-                virtualProps={{props}}
-                virtualIndex={{index}}
-                virtualLength={{length}}
+  {#if !shouldHide}
+    <svelte:component this={component}
+                virtualProps={props}
+                virtualIndex={index}
+                virtualLength={length}
     />
-  {{/if}}
+  {/if}
 </div>
 <script>
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
@@ -43,7 +43,7 @@
       hide: false
     }),
     computed: {
-      shouldHide: (isIntersecting, isCached, hide) => {
+      shouldHide: ({ isIntersecting, isCached, hide }) => {
         if (isCached) {
           return true // if it's cached, always unrender immediately until proven it's intersecting
         }

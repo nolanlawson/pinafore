@@ -1,38 +1,38 @@
-<SettingsLayout page='settings/instances/{{params.instanceName}}' label={{params.instanceName}}>
-  <h1 class="instance-name-h1">{{params.instanceName}}</h1>
+<SettingsLayout page='settings/instances/{params.instanceName}' label={params.instanceName}>
+  <h1 class="instance-name-h1">{params.instanceName}</h1>
 
-  {{#if verifyCredentials}}
+  {#if verifyCredentials}
     <h2>Logged in as:</h2>
     <div class="acct-current-user">
-      <Avatar account={{verifyCredentials}} className="acct-avatar" size="big"/>
+      <Avatar account={verifyCredentials} className="acct-avatar" size="big"/>
       <ExternalLink className="acct-handle"
-                    href={{verifyCredentials.url}}>
-        {{'@' + verifyCredentials.acct}}
+                    href={verifyCredentials.url}>
+        {'@' + verifyCredentials.acct}
       </ExternalLink>
-      <span class="acct-display-name">{{verifyCredentials.display_name || verifyCredentials.acct}}</span>
+      <span class="acct-display-name">{verifyCredentials.display_name || verifyCredentials.acct}</span>
     </div>
     <h2>Theme:</h2>
     <form class="theme-chooser" aria-label="Choose a theme">
-      {{#each themes as theme}}
+      {#each themes as theme}
         <div class="theme-group">
-          <input type="radio" id="choice-theme-{{theme.name}}"
-                 value={{theme.name}} checked="$currentTheme === theme.name"
+          <input type="radio" id="choice-theme-{theme.name}"
+                 value={theme.name} checked="$currentTheme === theme.name"
                  bind:group="selectedTheme" on:change="onThemeChange()">
-          <label for="choice-theme-{{theme.name}}">{{theme.label}}</label>
+          <label for="choice-theme-{theme.name}">{theme.label}</label>
         </div>
-      {{/each}}
+      {/each}
     </form>
 
     <form class="instance-actions" aria-label="Switch to or log out of this instance">
-      {{#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== params.instanceName}}
+      {#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== params.instanceName}
         <button class="primary"
           on:click="onSwitchToThisInstance(event)">
           Switch to this instance
         </button>
-      {{/if}}
+      {/if}
       <button on:click="onLogOut(event)">Log out</button>
     </form>
-  {{/if}}
+  {/if}
 </SettingsLayout>
 <style>
   .acct-current-user {
@@ -119,8 +119,8 @@
       selectedTheme: 'default'
     }),
     computed: {
-      instanceName: (params) => params.instanceName,
-      verifyCredentials: ($verifyCredentials, instanceName) => $verifyCredentials && $verifyCredentials[instanceName]
+      instanceName: ({ params }) => params.instanceName,
+      verifyCredentials: ({ $verifyCredentials, instanceName }) => $verifyCredentials && $verifyCredentials[instanceName]
     },
     methods: {
       onThemeChange () {

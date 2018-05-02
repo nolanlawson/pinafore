@@ -1,36 +1,36 @@
-<article class={{className}}
+<article class={className}
          tabindex="0"
-         delegate-key={{delegateKey}}
-         focus-key={{delegateKey}}
-         aria-posinset={{index}}
-         aria-setsize={{length}}
-         aria-label={{ariaLabel}}
+         delegate-key={delegateKey}
+         focus-key={delegateKey}
+         aria-posinset={index}
+         aria-setsize={length}
+         aria-label={ariaLabel}
          on:recalculateHeight>
-  {{#if showHeader}}
-    <StatusHeader {{...params}} />
-  {{/if}}
-  <StatusAuthorName {{...params}} />
-  <StatusAuthorHandle {{...params}} />
-  {{#if !isStatusInOwnThread}}
-    <StatusRelativeDate {{...params}} />
-  {{/if}}
-  <StatusSidebar {{...params}} />
-  {{#if spoilerText}}
-    <StatusSpoiler {{...params}} on:recalculateHeight />
-  {{/if}}
-  {{#if showContent || contentPreloaded}}
-    <StatusContent {{...params}} shown={{showContent}}/>
-  {{/if}}
-  {{#if showMedia }}
-    <StatusMediaAttachments {{...params}} on:recalculateHeight />
-  {{/if}}
-  {{#if isStatusInOwnThread}}
-    <StatusDetails {{...params}} />
-  {{/if}}
-  <StatusToolbar {{...params}} on:recalculateHeight />
-  {{#if replyShown}}
-    <StatusComposeBox {{...params}} on:recalculateHeight />
-  {{/if}}
+  {#if showHeader}
+    <StatusHeader {...params} />
+  {/if}
+  <StatusAuthorName {...params} />
+  <StatusAuthorHandle {...params} />
+  {#if !isStatusInOwnThread}
+    <StatusRelativeDate {...params} />
+  {/if}
+  <StatusSidebar {...params} />
+  {#if spoilerText}
+    <StatusSpoiler {...params} on:recalculateHeight />
+  {/if}
+  {#if showContent || contentPreloaded}
+    <StatusContent {...params} shown={showContent}/>
+  {/if}
+  {#if showMedia }
+    <StatusMediaAttachments {...params} on:recalculateHeight />
+  {/if}
+  {#if isStatusInOwnThread}
+    <StatusDetails {...params} />
+  {/if}
+  <StatusToolbar {...params} on:recalculateHeight />
+  {#if replyShown}
+    <StatusComposeBox {...params} on:recalculateHeight />
+  {/if}
 </article>
 
 <style>
@@ -170,56 +170,56 @@
       }
     },
     computed: {
-      originalStatus: (status) => status.reblog ? status.reblog : status,
-      originalStatusId: (originalStatus) => originalStatus.id,
-      statusId: (status) => status.id,
-      notificationId: (notification) => notification && notification.id,
-      account: (notification, status) => (
+      originalStatus: ({ status }) => status.reblog ? status.reblog : status,
+      originalStatusId: ({ originalStatus }) => originalStatus.id,
+      statusId: ({ status }) => status.id,
+      notificationId: ({ notification }) => notification && notification.id,
+      account: ({ notification, status }) => (
         (notification && notification.account) || status.account
       ),
-      accountId: (account) => account.id,
-      originalAccount: (originalStatus) => originalStatus.account,
-      originalAccountId: (originalAccount) => originalAccount.id,
-      visibility: (originalStatus) => originalStatus.visibility,
-      spoilerText: (originalStatus) => originalStatus.spoiler_text,
-      uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => (
+      accountId: ({ account }) => account.id,
+      originalAccount: ({ originalStatus }) => originalStatus.account,
+      originalAccountId: ({ originalAccount }) => originalAccount.id,
+      visibility: ({ originalStatus }) => originalStatus.visibility,
+      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
+      uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       ),
-      delegateKey: (uuid) => `status-${uuid}`,
-      isStatusInOwnThread: (timelineType, timelineValue, originalStatusId) => (
+      delegateKey: ({ uuid }) => `status-${uuid}`,
+      isStatusInOwnThread: ({ timelineType, timelineValue, originalStatusId }) => (
         (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
       ),
-      isStatusInNotification: (originalStatusId, notification) => (
+      isStatusInNotification: ({ originalStatusId, notification }) => (
         notification && notification.status &&
           notification.type !== 'mention' && notification.status.id === originalStatusId
       ),
-      spoilerShown: ($spoilersShown, uuid) => !!$spoilersShown[uuid],
-      replyShown: ($repliesShown, uuid) => !!$repliesShown[uuid],
-      showMedia: (originalStatus, isStatusInNotification) => (
+      spoilerShown: ({ $spoilersShown, uuid }) => !!$spoilersShown[uuid],
+      replyShown: ({ $repliesShown, uuid }) => !!$repliesShown[uuid],
+      showMedia: ({ originalStatus, isStatusInNotification }) => (
         !isStatusInNotification &&
         originalStatus.media_attachments &&
         originalStatus.media_attachments.length
       ),
-      ariaLabel: (originalAccount, originalStatus, visibility) => (
+      ariaLabel: ({ originalAccount, originalStatus, visibility }) => (
         (visibility === 'direct' ? 'Direct message' : 'Status') +
           ` by ${originalAccount.display_name || originalAccount.username}`
       ),
-      showHeader: (notification, status, timelineType) => (
+      showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
         status.reblog ||
         timelineType === 'pinned'
       ),
-      className: (visibility, timelineType, isStatusInOwnThread) => (classname(
+      className: ({ visibility, timelineType, isStatusInOwnThread }) => (classname(
         'status-article',
         visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread'
       )),
-      showContent: (spoilerText, spoilerShown) => !spoilerText || spoilerShown,
-      params: (notification, notificationId, status, statusId, timelineType,
+      showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
+      params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
-        replyVisibility, spoilerText, originalStatus, originalStatusId) => ({
+        replyVisibility, spoilerText, originalStatus, originalStatusId }) => ({
         notification,
         notificationId,
         status,

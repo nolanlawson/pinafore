@@ -1,10 +1,10 @@
-{{#if $isUserLoggedIn}}
+{#if $isUserLoggedIn}
   <TimelinePage timeline="local">
-    {{#if $pinnedPage !== '/local'}}
+    {#if $pinnedPage !== '/local'}
       <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
-    {{/if}}
+    {/if}
   </TimelinePage>
-{{else}}
+{:else}
   <HiddenFromSSR>
     <FreeTextLayout>
       <h1>Local</h1>
@@ -12,7 +12,7 @@
       <p>Your local timeline will appear here when logged in.</p>
     </FreeTextLayout>
   </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import TimelinePage from '.././_components/TimelinePage.html'
   import FreeTextLayout from '.././_components/FreeTextLayout.html'

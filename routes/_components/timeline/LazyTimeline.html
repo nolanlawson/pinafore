@@ -1,11 +1,11 @@
 <div class="lazy-timeline">
-  {{#await importTimeline}}
+  {#await importTimeline}
     <!-- awaiting promise -->
-  {{then constructor}}
-    <:Component {constructor} :timeline />
-  {{catch error}}
-    <div>Component failed to load. Try refreshing! {{error}}</div>
-  {{/await}}
+  {:then constructor}
+    <svelte:component this={constructor} {timeline} />
+  {:catch error}
+    <div>Component failed to load. Try refreshing! {error}</div>
+  {/await}
 </div>
 <style>
   .lazy-timeline {

@@ -1,16 +1,16 @@
-{{#if status}}
-  <Status :index :length :timelineType :timelineValue :focusSelector
-          :status :notification on:recalculateHeight
+{#if status}
+  <Status {index} {length} {timelineType} {timelineValue} {focusSelector}
+          {status} {notification} on:recalculateHeight
   />
-{{else}}
+{:else}
   <article class="notification-article"
            tabindex="0"
-           aria-posinset={{index}}
-           aria-setsize={{length}} >
-    <StatusHeader :notification :notificationId :status :statusId :timelineType
-                  :account :accountId :uuid isStatusInNotification="true" />
+           aria-posinset={index}
+           aria-setsize={length} >
+    <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
+                  {account} {accountId} {uuid} isStatusInNotification="true" />
   </article>
-{{/if}}
+{/if}
 <style>
   .notification-article {
     width: 560px;
@@ -38,12 +38,12 @@
     },
     store: () => store,
     computed: {
-      account: (notification) => notification.account,
-      accountId: (account) => account.id,
-      notificationId: (notification) => notification.id,
-      status: (notification) => notification.status,
-      statusId: (status) => status && status.id,
-      uuid: ($currentInstance, timelineType, timelineValue, notificationId, statusId) => {
+      account: ({ notification }) => notification.account,
+      accountId: ({ account }) => account.id,
+      notificationId: ({ notification }) => notification.id,
+      status: ({ notification }) => notification.status,
+      statusId: ({ status }) => status && status.id,
+      uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId}/${statusId || ''}`
       }
     }

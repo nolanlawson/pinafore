@@ -1,6 +1,6 @@
-{{#if $isUserLoggedIn}}
+{#if $isUserLoggedIn}
   <TimelinePage timeline="notifications" />
-{{else}}
+{:else}
 <HiddenFromSSR>
   <FreeTextLayout>
     <h1>Notifications</h1>
@@ -8,7 +8,7 @@
     <p>Your notifications will appear here when logged in.</p>
   </FreeTextLayout>
 </HiddenFromSSR>
-{{/if}}
+{/if}
 <script>
   import FreeTextLayout from '.././_components/FreeTextLayout.html'
   import { store } from '.././_store/store.js'

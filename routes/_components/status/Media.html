@@ -1,64 +1,64 @@
-{{#if type === 'video'}}
+{#if type === 'video'}
   <button type="button"
           class="play-video-button"
-          aria-label="Play video: {{description}}"
-          delegate-key={{delegateKey}}
-          style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;">
+          aria-label="Play video: {description}"
+          delegate-key={delegateKey}
+          style="width: {inlineWidth}px; height: {inlineHeight}px;">
     <PlayVideoIcon />
     <LazyImage
-      alt={{description}}
-      title={{description}}
-      src={{previewUrl}}
-      fallback={{oneTransparentPixel}}
-      width={{inlineWidth}}
-      height={{inlineHeight}}
+      alt={description}
+      title={description}
+      src={previewUrl}
+      fallback={oneTransparentPixel}
+      width={inlineWidth}
+      height={inlineHeight}
       background="var(--loading-bg)"
-      className={{noNativeWidthHeight ? 'no-native-width-height' : ''}}
+      className={noNativeWidthHeight ? 'no-native-width-height' : ''}
     />
   </button>
-{{else}}
+{:else}
   <button type="button"
           class="show-image-button"
-          aria-label="Show image: {{description}}"
-          title={{description}}
-          delegate-key={{delegateKey}}
+          aria-label="Show image: {description}"
+          title={description}
+          delegate-key={delegateKey}
           on:mouseover="set({mouseover: event})"
-          style="width: {{inlineWidth}}px; height: {{inlineHeight}}px;"
+          style="width: {inlineWidth}px; height: {inlineHeight}px;"
   >
-  {{#if type === 'gifv' && $autoplayGifs}}
+  {#if type === 'gifv' && $autoplayGifs}
     <AutoplayVideo
-      className={{noNativeWidthHeight ? 'no-native-width-height' : ''}}
-      ariaLabel="Animated GIF: {{description}}"
-      poster={{previewUrl}}
-      src={{url}}
-      width={{inlineWidth}}
-      height={{inlineHeight}}
+      className={noNativeWidthHeight ? 'no-native-width-height' : ''}
+      ariaLabel="Animated GIF: {description}"
+      poster={previewUrl}
+      src={url}
+      width={inlineWidth}
+      height={inlineHeight}
     />
-  {{elseif type === 'gifv' && !$autoplayGifs}}
+  {:elseif type === 'gifv' && !$autoplayGifs}
     <NonAutoplayGifv
-      class={{noNativeWidthHeight ? 'no-native-width-height' : ''}}
-      label="Animated GIF: {{description}}"
-      poster={{previewUrl}}
-      src={{url}}
-      staticSrc={{previewUrl}}
-      width={{inlineWidth}}
-      height={{inlineHeight}}
-      playing={{mouseover}}
+      class={noNativeWidthHeight ? 'no-native-width-height' : ''}
+      label="Animated GIF: {description}"
+      poster={previewUrl}
+      src={url}
+      staticSrc={previewUrl}
+      width={inlineWidth}
+      height={inlineHeight}
+      playing={mouseover}
     />
-  {{else}}
+  {:else}
     <LazyImage
-      alt={{description}}
-      title={{description}}
-      src={{previewUrl}}
-      fallback={{oneTransparentPixel}}
-      width={{inlineWidth}}
-      height={{inlineHeight}}
+      alt={description}
+      title={description}
+      src={previewUrl}
+      fallback={oneTransparentPixel}
+      width={inlineWidth}
+      height={inlineHeight}
       background="var(--loading-bg)"
-      className={{noNativeWidthHeight ? 'no-native-width-height' : ''}}
+      className={noNativeWidthHeight ? 'no-native-width-height' : ''}
     />
-  {{/if}}
+  {/if}
 </button>
-{{/if}}
+{/if}
 <style>
   :global(.status-media video, .status-media img) {
     object-fit: cover;
@@ -121,24 +121,24 @@
     },
     computed: {
       // width/height to show inline
-      inlineWidth: smallWidth => smallWidth || DEFAULT_MEDIA_WIDTH,
-      inlineHeight: smallHeight => smallHeight || DEFAULT_MEDIA_HEIGHT,
+      inlineWidth: ({ smallWidth }) => smallWidth || DEFAULT_MEDIA_WIDTH,
+      inlineHeight: ({ smallHeight }) => smallHeight || DEFAULT_MEDIA_HEIGHT,
       // width/height to show in a modal
-      modalWidth: (originalWidth, inlineWidth) => originalWidth || inlineWidth,
-      modalHeight: (originalHeight, inlineHeight) => originalHeight || inlineHeight,
-      meta: media => media.meta,
-      small: meta => meta && meta.small,
-      original: meta => meta && meta.original,
-      smallWidth: small => small && small.width,
-      smallHeight: small => small && small.height,
-      originalWidth: original => original && original.width,
-      originalHeight: original => original && original.height,
-      noNativeWidthHeight: (smallWidth, smallHeight) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number',
-      delegateKey: (media, uuid) => `media-${uuid}-${media.id}`,
-      description: (media) => media.description || '',
-      previewUrl: (media) => media.preview_url,
-      url: (media) => media.url,
-      type: (media) => media.type
+      modalWidth: ({ originalWidth, inlineWidth }) => originalWidth || inlineWidth,
+      modalHeight: ({ originalHeight, inlineHeight }) => originalHeight || inlineHeight,
+      meta: ({ media }) => media.meta,
+      small: ({ meta }) => meta && meta.small,
+      original: ({ meta }) => meta && meta.original,
+      smallWidth: ({ small }) => small && small.width,
+      smallHeight: ({ small }) => small && small.height,
+      originalWidth: ({ original }) => original && original.width,
+      originalHeight: ({ original }) => original && original.height,
+      noNativeWidthHeight: ({ smallWidth, smallHeight }) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number',
+      delegateKey: ({ media, uuid }) => `media-${uuid}-${media.id}`,
+      description: ({ media }) => media.description || '',
+      previewUrl: ({ media }) => media.preview_url,
+      url: ({ media }) => media.url,
+      type: ({ media }) => media.type
     },
     methods: {
       async onClickPlayVideoButton () {

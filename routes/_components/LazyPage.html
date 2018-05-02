@@ -1,6 +1,6 @@
-{{#if revealed}}
-  <:Component {pageComponent} :params />
-{{/if}}
+{#if revealed}
+  <svelte:component this={pageComponent} {params} />
+{/if}
 <script>
   // On the very first page load, avoid doing a "reveal" because
   // it leads to a flash between when the SSR is shown, the two frame we hide it,

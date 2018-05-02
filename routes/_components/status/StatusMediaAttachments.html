@@ -1,23 +1,23 @@
-{{#if sensitive }}
-<div class="status-sensitive-media-container {{sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}}"
+{#if sensitive }
+<div class="status-sensitive-media-container {sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}"
 >
-  {{#if sensitiveShown}}
+  {#if sensitiveShown}
   <button type="button"
           class="status-sensitive-media-button"
           aria-label="Hide sensitive media"
-          delegate-key={{delegateKey}} >
+          delegate-key={delegateKey} >
     <div class="svg-wrapper">
       <svg class="status-sensitive-media-svg">
         <use xlink:href="#fa-eye-slash" />
       </svg>
     </div>
   </button>
-  <MediaAttachments :mediaAttachments :sensitive :uuid />
-  {{else}}
+  <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
+  {:else}
     <button type="button"
             class="status-sensitive-media-button"
             aria-label="Show sensitive media"
-            delegate-key={{delegateKey}} >
+            delegate-key={delegateKey} >
 
       <div class="status-sensitive-media-warning">
         <span>Sensitive content. Click to show.</span>
@@ -28,11 +28,11 @@
         </svg>
       </div>
     </button>
-  {{/if}}
+  {/if}
 </div>
-{{else}}
-  <MediaAttachments :mediaAttachments :sensitive :uuid />
-{{/if}}
+{:else}
+  <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
+{/if}
 <style>
   .status-sensitive-media-container {
     grid-area: media;
@@ -138,10 +138,10 @@
     },
     store: () => store,
     computed: {
-      mediaAttachments: (originalStatus) => originalStatus.media_attachments,
-      sensitiveShown: ($sensitivesShown, uuid) => !!$sensitivesShown[uuid],
-      sensitive: (originalStatus, $markMediaAsSensitive) => originalStatus.sensitive || $markMediaAsSensitive,
-      delegateKey: (uuid) => `sensitive-${uuid}`
+      mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
+      sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
+      sensitive: ({ originalStatus, $markMediaAsSensitive }) => originalStatus.sensitive || $markMediaAsSensitive,
+      delegateKey: ({ uuid }) => `sensitive-${uuid}`
     },
     methods: {
       onClickSensitiveMediaButton () {

@@ -1,16 +1,16 @@
-{{#if props}}
-  <PseudoVirtualListItem :component
-                         :props
-                         :key
-                         :index
-                         :length
-                         :intersectionObserver
-                         :isIntersecting
-                         :isCached
-                         :height
+{#if props}
+  <PseudoVirtualListItem {component}
+                         {props}
+                         {key}
+                         {index}
+                         {length}
+                         {intersectionObserver}
+                         {isIntersecting}
+                         {isCached}
+                         {height}
                          on:scrollToPosition
   />
-{{/if}}
+{/if}
 <script>
   import PseudoVirtualListItem from './PseudoVirtualListItem.html'
   import { mark, stop } from '../../_utils/marks'
