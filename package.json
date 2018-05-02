@@ -161,7 +161,8 @@
   },
   "greenkeeper": {
     "ignore": [
-      "sapper"
+      "sapper",
+      "a11y-dialog"
     ]
   }
 }
