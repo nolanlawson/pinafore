@@ -47,17 +47,4 @@ export function instanceComputations (store) {
     ['currentInstanceData'],
     (currentInstanceData) => currentInstanceData && currentInstanceData.access_token
   )
-
-  store.compute(
-    'pinnedListTitle',
-    ['lists', 'pinnedPage'],
-    (lists, pinnedPage) => {
-      if (!pinnedPage.startsWith('/lists')) {
-        return
-      }
-      let listId = pinnedPage.split('/').slice(-1)[0]
-      let list = lists.find(_ => _.id === listId)
-      return list ? list.title : ''
-    }
-  )
 }

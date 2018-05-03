@@ -1,37 +1,16 @@
 <nav class="main-nav">
 	<ul class="main-nav-ul">
-		<li class="main-nav-li">
-      <NavItem {page} name="home" href="/" svg="#pinafore-logo" label="Home" />
-		</li>
-		<li class="main-nav-li">
-      <NavItem {page} name="notifications" href="/notifications" svg="#fa-bell" label="Notifications" />
-		</li>
-    {#if $pinnedPage === '/local'}
+    {#each $navPages as navPage (navPage.name)}
       <li class="main-nav-li">
-        <NavItem {page} name="local" href="/local" svg="#fa-users" label="Local" />
+        <NavItem
+          {page}
+          name={navPage.name}
+          href={navPage.href}
+          svg={navPage.svg}
+          label={navPage.label}
+        />
       </li>
-    {:elseif $pinnedPage === '/federated'}
-      <li class="main-nav-li">
-        <NavItem {page} name="federated" href="/federated" svg="#fa-globe" label="Federated" />
-      </li>
-    {:elseif $pinnedPage === '/favorites'}
-      <li class="main-nav-li">
-        <NavItem {page} name="favorites" href="/favorites" svg="#fa-star" label="Favorites" />
-      </li>
-    {:elseif $pinnedPage.startsWith('/lists/')}
-      <li class="main-nav-li">
-        <NavItem {page} name="lists" href={$pinnedPage} svg="#fa-bars" label={$pinnedListTitle} />
-      </li>
-    {/if}
-		<li class="main-nav-li">
-      <NavItem {page} name="community" href="/community" svg="#fa-comments" label="Community" />
-		</li>
-    <li class="main-nav-li">
-      <NavItem {page} name="search" href="/search" svg="#fa-search" label="Search" />
-    </li>
-	  <li class="main-nav-li">
-      <NavItem {page} name="settings" href="/settings" svg="#fa-gear" label="Settings" />
-		</li>
+    {/each}
 	</ul>
 </nav>
 
