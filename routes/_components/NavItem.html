@@ -3,28 +3,41 @@
    aria-current={selected}
    on:click="onClick(event)"
    {href} >
-  {#if name === 'notifications'}
+  <div class="nav-icon-and-label">
+    {#if name === 'notifications'}
     <div class="nav-link-svg-wrapper">
       <svg class="nav-link-svg">
         <use xlink:href={svg} />
       </svg>
       {#if $hasNotifications}
-        <span class="nav-link-notifications" aria-hidden="true">
+      <span class="nav-link-notifications" aria-hidden="true">
           {$numberOfNotifications}
         </span>
       {/if}
     </div>
-  {:else}
+    {:else}
     <svg class="nav-link-svg">
       <use xlink:href={svg} />
     </svg>
-  {/if}
-  <span class="nav-link-label">{label}</span>
+    {/if}
+    <span class="nav-link-label">{label}</span>
+  </div>
+  <div class="nav-indicator"
+       nav-indicator-key={name}
+       ref:indicator
+  ></div>
 </a>
 <style>
   .main-nav-link {
-    border-bottom: 1px solid var(--nav-a-border);
     text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .nav-icon-and-label {
     padding: 15px 20px;
     display: flex;
     justify-content: center;
@@ -62,18 +75,38 @@
   }
 
   .main-nav-link.selected {
-    border-bottom: 1px solid var(--nav-a-selected-border);
     background: var(--nav-a-selected-bg);
   }
 
   .main-nav-link.selected:hover {
-    border-bottom: 1px solid var(--nav-a-selected-border-hover);
     background: var(--nav-a-selected-bg-hover);
+  }
+
+  .nav-indicator {
+    width: 100%;
+    height: 1px;
+    background: var(--nav-a-border);
+    transform-origin: left;
+  }
+
+  .nav-indicator.animate {
+    transition: transform 333ms ease-in-out;
+  }
+
+  .main-nav-link:hover .nav-indicator {
+    background: var(--nav-a-border-hover);
+  }
+
+  .main-nav-link.selected .nav-indicator {
+    background: var(--nav-a-selected-border);
+  }
+
+  .main-nav-link.selected:hover .nav-indicator {
+    background: var(--nav-a-selected-border-hover);
   }
 
   .main-nav-link:hover {
     background-color: var(--nav-a-bg-hover);
-    border-bottom: 1px solid var(--nav-a-border-hover);
     text-decoration: none;
   }
 
@@ -106,7 +139,7 @@
       width: 25px;
       height: 25px;
     }
-    .main-nav-link {
+    .nav-icon-and-label {
       padding: 20px 0;
     }
     .nav-link-notifications {
@@ -118,8 +151,44 @@
 <script>
   import { store } from '../_store/store'
   import { smoothScrollToTop } from '../_utils/smoothScrollToTop'
+  import { on, emit } from '../_utils/eventBus'
+  import { mark, stop } from '../_utils/marks'
+  import { doubleRAF } from '../_utils/doubleRAF'
 
   export default {
+    oncreate () {
+      let { name } = this.get()
+      let indicator = this.refs.indicator
+      on('animateNavPart1', this, ({fromPage, toPage}) => {
+        if (fromPage !== name) {
+          return
+        }
+        mark('animateNavPart1 gBCR')
+        let fromRect = indicator.getBoundingClientRect()
+        stop('animateNavPart1 gBCR')
+        emit('animateNavPart2', {fromRect, fromPage, toPage})
+      })
+      on('animateNavPart2', this, ({fromPage, fromRect, toPage}) => {
+        if (toPage !== name) {
+          return
+        }
+        mark('animateNavPart2 gBCR')
+        let toRect = indicator.getBoundingClientRect()
+        stop('animateNavPart2 gBCR')
+        let translateX = fromRect.left - toRect.left
+        let scaleX = fromRect.width / toRect.width
+        indicator.style.transform = `translateX(${translateX}px) scaleX(${scaleX})`
+        let onTransitionEnd = () => {
+          indicator.removeEventListener('transitionend', onTransitionEnd)
+          indicator.classList.remove('animate')
+        }
+        indicator.addEventListener('transitionend', onTransitionEnd)
+        doubleRAF(() => {
+          indicator.classList.add('animate')
+          indicator.style.transform = ''
+        })
+      })
+    },
     store: () => store,
     computed: {
       selected: ({ page, name }) => page === name,
