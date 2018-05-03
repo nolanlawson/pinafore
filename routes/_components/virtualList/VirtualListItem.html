@@ -30,9 +30,13 @@
   export default {
     oncreate () {
       let { key } = this.get()
+      let node = this.refs.node
       requestAnimationFrame(() => {
+        if (!node || !key) {
+          return
+        }
         mark('VirtualListItem gBCR')
-        let rect = this.refs.node.getBoundingClientRect()
+        let rect = node.getBoundingClientRect()
         stop('VirtualListItem gBCR')
         // update all item heights in one batch for better perf
         this.store.batchUpdateForRealm('itemHeights', key, rect.height)
