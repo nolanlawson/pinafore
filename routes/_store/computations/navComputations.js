@@ -33,7 +33,7 @@ export function navComputations (store) {
         }
       } else if (pinnedPage.startsWith('/lists/')) {
         pinnedPageObject = {
-          name: 'lists',
+          name: `lists/${pinnedPage.split('/').slice(-1)[0]}`,
           href: pinnedPage,
           svg: '#fa-bars',
           label: pinnedListTitle

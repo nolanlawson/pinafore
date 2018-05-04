@@ -1,7 +1,7 @@
 <svelte:head>
   <title>Pinafore – List</title>
 </svelte:head>
-<Layout page='lists'>
+<Layout page='lists/{params.listId}'>
   <LazyPage {pageComponent} {params} />
 </Layout>
 <script>
