@@ -67,3 +67,7 @@ Pinafore requires [Node.js](https://nodejs.org/en/) v8+.
 
 See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md) for 
 how to run Pinafore in dev mode and run tests.
+
+## Changelog
+
+For a changelog, see the [GitHub releases](http://github.com/nolanlawson/pinafore/releases/).
