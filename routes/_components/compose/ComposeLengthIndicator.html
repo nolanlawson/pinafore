@@ -30,7 +30,7 @@
       this.observe('lengthToDisplay', () => {
         scheduleIdleTask(() => {
           mark('set lengthToDisplayDeferred')
-          let { lengthToDisplay } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
+          let { lengthToDisplay } = this.get()
           this.set({lengthToDisplayDeferred: lengthToDisplay})
           stop('set lengthToDisplayDeferred')
         })
