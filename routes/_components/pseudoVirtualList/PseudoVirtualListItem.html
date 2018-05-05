@@ -27,7 +27,7 @@
           // unrender lazily; it's not a critical UI task
           scheduleIdleTask(() => {
             mark('unrender')
-            let { isIntersecting } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
+            let { isIntersecting } = this.get()
             if (!isIntersecting) {
               this.set({hide: true})
             }

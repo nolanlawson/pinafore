@@ -17,7 +17,7 @@
 
   export default {
     async oncreate () {
-      let { makeProps, key } = this.get() || {} // https://github.com/sveltejs/svelte/issues/1354
+      let { makeProps, key } = this.get()
       if (makeProps) {
         let props = await makeProps(key)
         mark('PseudoVirtualListLazyItem set props')
