@@ -36,7 +36,11 @@
     "cleanup-travis": "now rm pinafore --safe --yes --team nolanlawson --token $NOW_TOKEN",
     "deploy-prod": "run-s stage-prod launch alias-prod cleanup",
     "deploy-dev": "run-s stage-dev launch alias-dev cleanup",
-    "deploy-dev-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then run-s stage-dev launch-travis alias-dev-travis cleanup-travis; fi",
+    "deploy-travis": "run-s check-deploy-dev-travis check-deploy-prod-travis",
+    "check-deploy-dev-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then run-s deploy-dev-travis; fi",
+    "check-deploy-prod-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false -a $(echo $TRAVIS_COMMIT_MESSAGE | grep --quiet -e '^v\\d\\+\\.\\d\\+\\.\\d\\+$')]; then run-s deploy-prod-travis; fi",
+    "deploy-dev-travis": "run-s stage-dev launch-travis alias-dev-travis cleanup-travis",
+    "deploy-prod-travis": "run-s stage-dev launch-travis alias-prod-travis cleanup-travis",
     "backup-mastodon-data": "pg_dump -Fc mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
