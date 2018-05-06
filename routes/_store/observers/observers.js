@@ -3,6 +3,7 @@ import { timelineObservers } from './timelineObservers'
 import { notificationObservers } from './notificationObservers'
 import { onlineObservers } from './onlineObservers'
 import { navObservers } from './navObservers'
+import { autosuggestObservers } from './autosuggestObservers'
 
 export function observers (store) {
   instanceObservers(store)
@@ -10,4 +11,5 @@ export function observers (store) {
   notificationObservers(store)
   onlineObservers(store)
   navObservers(store)
+  autosuggestObservers(store)
 }

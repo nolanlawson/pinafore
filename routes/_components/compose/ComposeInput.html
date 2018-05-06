@@ -33,8 +33,10 @@
   import debounce from 'lodash-es/debounce'
   import { mark, stop } from '../../_utils/marks'
   import { selectionChange } from '../../_utils/events'
-  import { clickSelectedAutosuggestionUsername } from '../../_actions/compose'
-  import { clickSelectedAutosuggestionEmoji } from '../../_actions/emoji'
+  import {
+    clickSelectedAutosuggestionUsername,
+    clickSelectedAutosuggestionEmoji
+  } from '../../_actions/autosuggest'
   import { observe } from 'svelte-extras'
 
   export default {
@@ -95,14 +97,21 @@
         stop('autosize.destroy()')
       },
       onBlur () {
-        this.store.set({composeFocused: null})
+        scheduleIdleTask(() => {
+          this.store.setForCurrentAutosuggest({composeFocused: false})
+        })
       },
       onFocus () {
-        let { realm } = this.get()
-        this.store.set({composeFocused: realm})
+        scheduleIdleTask(() => {
+          let {realm} = this.get()
+          this.store.set({currentComposeRealm: realm})
+          this.store.setForCurrentAutosuggest({composeFocused: true})
+        })
       },
       onSelectionChange (selectionStart) {
-        this.store.set({composeSelectionStart: selectionStart})
+        scheduleIdleTask(() => {
+          this.store.setForCurrentAutosuggest({composeSelectionStart: selectionStart})
+        })
       },
       onKeydown (e) {
         let { keyCode } = e
@@ -132,14 +141,14 @@
       },
       clickSelectedAutosuggestion (event) {
         let {
-          composeAutosuggestionShown,
-          composeAutosuggestionType
+          autosuggestShown,
+          autosuggestType
         } = this.store.get()
-        if (!composeAutosuggestionShown) {
+        if (!autosuggestShown) {
           return false
         }
         let { realm } = this.get()
-        if (composeAutosuggestionType === 'account') {
+        if (autosuggestType === 'account') {
           /* no await */ clickSelectedAutosuggestionUsername(realm)
         } else { // emoji
           /* no await */ clickSelectedAutosuggestionEmoji(realm)
@@ -150,33 +159,31 @@
       },
       incrementAutosuggestSelected (increment, event) {
         let {
-          composeAutosuggestionShown,
-          composeAutosuggestionSelected,
-          composeAutosuggestionSearchResults
+          autosuggestShown,
+          autosuggestSelected,
+          autosuggestSearchResults
         } = this.store.get()
-        if (!composeAutosuggestionShown) {
+        if (!autosuggestShown) {
           return
         }
-        let selected = composeAutosuggestionSelected || 0
-        let searchResults = composeAutosuggestionSearchResults || []
-        selected += increment
-        if (selected >= 0) {
-          selected = selected % searchResults.length
+        autosuggestSelected += increment
+        if (autosuggestSelected >= 0) {
+          autosuggestSelected = autosuggestSelected % autosuggestSearchResults.length
         } else {
-          selected = searchResults.length + selected
+          autosuggestSelected = autosuggestSearchResults.length + autosuggestSelected
         }
-        this.store.set({composeAutosuggestionSelected: selected})
+        this.store.setForCurrentAutosuggest({autosuggestSelected})
         event.preventDefault()
         event.stopPropagation()
       },
       clearAutosuggestions (event) {
-        let { composeAutosuggestionShown } = this.store.get()
-        if (!composeAutosuggestionShown) {
+        let { autosuggestShown } = this.store.get()
+        if (!autosuggestShown) {
           return
         }
-        this.store.set({
-          composeAutosuggestionSearchResults: [],
-          composeAutosuggestionSelected: 0
+        this.store.setForCurrentAutosuggest({
+          autosuggestSearchResults: [],
+          autosuggestSelected: 0
         })
         event.preventDefault()
         event.stopPropagation()
