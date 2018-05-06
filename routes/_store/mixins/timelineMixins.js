@@ -1,4 +1,5 @@
 import pickBy from 'lodash-es/pickBy'
+import get from 'lodash-es/get'
 
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {
@@ -17,7 +18,7 @@ export function timelineMixins (Store) {
   Store.prototype.getForTimeline = function (instanceName, timelineName, key) {
     let rootKey = `timelineData_${key}`
     let root = this.get()[rootKey]
-    return root && root[instanceName] && root[instanceName][timelineName]
+    return get(root, [instanceName, timelineName])
   }
 
   Store.prototype.getForCurrentTimeline = function (key) {

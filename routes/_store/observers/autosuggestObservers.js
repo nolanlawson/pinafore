@@ -28,15 +28,14 @@ export function autosuggestObservers (store) {
     if (!composeFocused || !autosuggestSearchText) {
       return
     }
-    let type = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
-    let results = (type === 'account')
+    let autosuggestType = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
+    let results = (autosuggestType === 'account')
       ? await searchAccounts(store, autosuggestSearchText)
       : await searchEmoji(store, autosuggestSearchText)
     store.setForCurrentAutosuggest({
+      autosuggestType,
       autosuggestSelected: 0,
-      autosuggestSearchText: autosuggestSearchText,
-      autosuggestSearchResults: results,
-      autosuggestType: type
+      autosuggestSearchResults: results
     })
   })
 }
