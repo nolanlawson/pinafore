@@ -50,28 +50,6 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
   }
 }
 
-export async function insertUsername (realm, username, startIndex, endIndex) {
-  let oldText = store.getComposeData(realm, 'text')
-  let pre = oldText.substring(0, startIndex)
-  let post = oldText.substring(endIndex)
-  let newText = `${pre}@${username} ${post}`
-  store.setComposeData(realm, {text: newText})
-}
-
-export async function clickSelectedAutosuggestionUsername (realm) {
-  let {
-    composeSelectionStart,
-    composeAutosuggestionSearchText,
-    composeAutosuggestionSelected,
-    composeAutosuggestionSearchResults
-  } = store.get()
-  composeAutosuggestionSelected = composeAutosuggestionSelected || 0
-  let account = composeAutosuggestionSearchResults[composeAutosuggestionSelected]
-  let startIndex = composeSelectionStart - composeAutosuggestionSearchText.length
-  let endIndex = composeSelectionStart
-  await insertUsername(realm, account.acct, startIndex, endIndex)
-}
-
 export function setReplySpoiler (realm, spoiler) {
   let contentWarning = store.getComposeData(realm, 'contentWarning')
   let contentWarningShown = store.getComposeData(realm, 'contentWarningShown')

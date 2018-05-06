@@ -76,7 +76,9 @@ module.exports = {
     }
   },
   plugins: [
-    new LodashModuleReplacementPlugin()
+    new LodashModuleReplacementPlugin({
+      paths: true
+    })
   ].concat(isDev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000

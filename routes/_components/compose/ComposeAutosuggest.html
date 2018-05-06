@@ -1,10 +1,10 @@
 <div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}"
        aria-hidden="true" >
   <ComposeAutosuggestionList
-    items={searchResults}
+    items={autosuggestSearchResults}
     on:click="onClick(event)"
-    {type}
-    {selected}
+    type={autosuggestType}
+    selected={autosuggestSelected}
   />
 </div>
 <style>
@@ -39,72 +39,28 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { insertUsername } from '../../_actions/compose'
-  import { insertEmojiAtPosition } from '../../_actions/emoji'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { once } from '../../_utils/once'
   import ComposeAutosuggestionList from './ComposeAutosuggestionList.html'
-  import {
-    searchAccountsByUsername as searchAccountsByUsernameInDatabase
-  } from '../../_database/accountsAndRelationships'
+  import get from 'lodash-es/get'
+  import { selectAutosuggestItem } from '../../_actions/autosuggest'
   import { observe } from 'svelte-extras'
-
-  const SEARCH_RESULTS_LIMIT = 4
-  const DATABASE_SEARCH_RESULTS_LIMIT = 30
-  const MIN_PREFIX_LENGTH = 1
-  const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
-  const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`)
+  import { once } from '../../_utils/once'
 
   export default {
     oncreate () {
-      // perf improves for input responsiveness
-      this.observe('composeSelectionStart', () => {
-        scheduleIdleTask(() => {
-          let { composeSelectionStart } = this.get()
-          this.set({composeSelectionStartDeferred: composeSelectionStart})
-        })
-      })
-      this.observe('composeFocused', (composeFocused) => {
-        let updateFocusedState = () => {
-          scheduleIdleTask(() => {
-            let { composeFocused } = this.get()
-            this.set({composeFocusedDeferred: composeFocused})
-          })
-        }
-
+      this._promiseChain = Promise.resolve()
+      this.observe('shouldBeShown', (shouldBeShown) => {
         // TODO: hack so that when the user clicks the button, and the textarea blurs,
         // we don't immediately hide the dropdown which would cause the click to get lost
-        if (composeFocused) {
-          updateFocusedState()
-        } else {
-          Promise.race([
-            new Promise(resolve => setTimeout(resolve, 200)),
-            new Promise(resolve => this.once('autosuggestItemSelected', resolve))
-          ]).then(updateFocusedState)
-        }
-      })
-      this.observe('searchText', async searchText => {
-        let { thisComposeFocused } = this.get()
-        if (!thisComposeFocused || !searchText) {
-          return
-        }
-        let type = searchText.startsWith('@') ? 'account' : 'emoji'
-        let results = (type === 'account')
-          ? await this.searchAccounts(searchText)
-          : await this.searchEmoji(searchText)
-        this.store.set({
-          composeAutosuggestionSelected: 0,
-          composeAutosuggestionSearchText: searchText,
-          composeAutosuggestionSearchResults: results,
-          composeAutosuggestionType: type
+        this._promiseChain = this._promiseChain.then(() => {
+          if (!shouldBeShown) {
+            return Promise.race([
+              new Promise(resolve => setTimeout(resolve, 200)),
+              new Promise(resolve => this.once('autosuggestItemSelected', resolve))
+            ])
+          }
+        }).then(() => {
+          this.set({shown: shouldBeShown})
         })
-      })
-      this.observe('shown', shown => {
-        let { thisComposeFocused } = this.get()
-        if (!thisComposeFocused) {
-          return
-        }
-        this.store.set({composeAutosuggestionShown: shown})
       })
     },
     methods: {
@@ -112,61 +68,36 @@
       once,
       onClick (item) {
         this.fire('autosuggestItemSelected')
-        let { realm } = this.get()
-        let { composeSelectionStart, composeAutosuggestionSearchText } = this.store.get()
-        let startIndex = composeSelectionStart - composeAutosuggestionSearchText.length
-        let endIndex = composeSelectionStart
-        if (item.acct) {
-          /* no await */ insertUsername(realm, item.acct, startIndex, endIndex)
-        } else {
-          /* no await */ insertEmojiAtPosition(realm, item, startIndex, endIndex)
-        }
-      },
-      async searchAccounts (searchText) {
-        searchText = searchText.substring(1)
-        let { currentInstance } = this.store.get()
-        let results = await searchAccountsByUsernameInDatabase(
-          currentInstance, searchText, DATABASE_SEARCH_RESULTS_LIMIT)
-        return results.slice(0, SEARCH_RESULTS_LIMIT)
-      },
-      searchEmoji (searchText) {
-        searchText = searchText.toLowerCase().substring(1)
-        let { currentCustomEmoji } = this.store.get()
-        let results = currentCustomEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))
-          .sort((a, b) => a.shortcode.toLowerCase() < b.shortcode.toLowerCase() ? -1 : 1)
-          .slice(0, SEARCH_RESULTS_LIMIT)
-        return results
+        selectAutosuggestItem(item)
       }
     },
     computed: {
-      composeSelectionStart: ({ $composeSelectionStart }) => $composeSelectionStart,
-      composeFocused: ({ $composeFocused }) => $composeFocused,
-      thisComposeFocused: ({ composeFocusedDeferred, realm }) => composeFocusedDeferred === realm,
-      searchResults: ({ $composeAutosuggestionSearchResults }) => $composeAutosuggestionSearchResults || [],
-      type: ({ $composeAutosuggestionType }) => $composeAutosuggestionType || 'account',
-      selected: ({ $composeAutosuggestionSelected }) => $composeAutosuggestionSelected || 0,
-      searchText: ({ text, composeSelectionStartDeferred, thisComposeFocused }) => {
-        if (!thisComposeFocused) {
-          return
-        }
-        let selectionStart = composeSelectionStartDeferred
-        if (!text || selectionStart < MIN_PREFIX_LENGTH) {
-          return
-        }
-
-        let textUpToCursor = text.substring(0, selectionStart)
-        let match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
-        return match && match[1]
-      },
-      shown: ({ thisComposeFocused, searchText, searchResults }) => {
-        return !!(thisComposeFocused &&
-          searchText &&
-          searchResults.length)
-      }
+      /* eslint-disable camelcase */
+      composeSelectionStart: ({ $autosuggestData_composeSelectionStart, $currentInstance, realm }) => (
+        get($autosuggestData_composeSelectionStart, [$currentInstance, realm], 0)
+      ),
+      composeFocused: ({ $autosuggestData_composeFocused, $currentInstance, realm }) => (
+        get($autosuggestData_composeFocused, [$currentInstance, realm], false)
+      ),
+      autosuggestSearchResults: ({ $autosuggestData_autosuggestSearchResults, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestSearchResults, [$currentInstance, realm], [])
+      ),
+      autosuggestType: ({ $autosuggestData_autosuggestType, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestType, [$currentInstance, realm])
+      ),
+      autosuggestSelected: ({ $autosuggestData_autosuggestSelected, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestSelected, [$currentInstance, realm], 0)
+      ),
+      autosuggestSearchText: ({ $autosuggestData_autosuggestSelected, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestSelected, [$currentInstance, realm])
+      ),
+      /* eslint-enable camelcase */
+      shouldBeShown: ({ realm, $autosuggestShown, composeFocused }) => (
+        !!($autosuggestShown && composeFocused)
+      )
     },
     data: () => ({
-      composeFocusedDeferred: void 0,
-      composeSelectionStartDeferred: 0
+      shown: false
     }),
     store: () => store,
     components: {

@@ -3,7 +3,7 @@
   <li class="compose-autosuggest-list-item">
     <button class="compose-autosuggest-list-button {i === selected ? 'selected' : ''}"
             tabindex="0"
-            on:click="fire('click', item)">
+            on:click="onClick(event, item)">
       <div class="compose-autosuggest-list-grid">
         {#if type === 'account'}
         <Avatar
@@ -102,6 +102,13 @@
 
   export default {
     store: () => store,
+    methods: {
+      onClick (event, item) {
+        event.preventDefault()
+        event.stopPropagation()
+        this.fire('click', item)
+      }
+    },
     components: {
       Avatar
     }

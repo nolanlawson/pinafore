@@ -28,25 +28,3 @@ export function insertEmoji (realm, emoji) {
   let newText = `${pre}:${emoji.shortcode}: ${post}`
   store.setComposeData(realm, {text: newText})
 }
-
-export function insertEmojiAtPosition (realm, emoji, startIndex, endIndex) {
-  let oldText = store.getComposeData(realm, 'text') || ''
-  let pre = oldText.substring(0, startIndex)
-  let post = oldText.substring(endIndex)
-  let newText = `${pre}:${emoji.shortcode}: ${post}`
-  store.setComposeData(realm, {text: newText})
-}
-
-export async function clickSelectedAutosuggestionEmoji (realm) {
-  let {
-    composeSelectionStart,
-    composeAutosuggestionSearchText,
-    composeAutosuggestionSelected,
-    composeAutosuggestionSearchResults
-  } = store.get()
-  composeAutosuggestionSelected = composeAutosuggestionSelected || 0
-  let emoji = composeAutosuggestionSearchResults[composeAutosuggestionSelected]
-  let startIndex = composeSelectionStart - composeAutosuggestionSearchText.length
-  let endIndex = composeSelectionStart
-  await insertEmojiAtPosition(realm, emoji, startIndex, endIndex)
-}
