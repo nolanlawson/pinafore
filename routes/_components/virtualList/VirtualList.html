@@ -2,17 +2,21 @@
   <div class="virtual-list"
        style="height: {$height}px;"
        ref:node >
-    <VirtualListHeader component={headerComponent} virtualProps={headerProps} shown={$showHeader}/>
-    {#if $visibleItems}
-      {#each $visibleItems as visibleItem (visibleItem.key)}
-        <VirtualListLazyItem {component}
-                             offset={visibleItem.offset}
-                             {makeProps}
-                             key={visibleItem.key}
-                             index={visibleItem.index}
+    <VirtualListHeader component={headerComponent} virtualProps={headerProps} shown={$showHeader} />
+    <div
+      class="virtual-list-items"
+      style="transform: translateY({firstOffset}px)"
+    >
+      {#each safeVisibleItems as visibleItem (visibleItem.key)}
+        <VirtualListLazyItem
+          {component}
+          offset={visibleItem.offset}
+          {makeProps}
+          key={visibleItem.key}
+          index={visibleItem.index}
         />
       {/each}
-    {/if}
+    </div>
     {#if $showFooter}
       <VirtualListFooter component={footerComponent} />
     {/if}
@@ -21,6 +25,10 @@
 <style>
   .virtual-list {
     position: relative;
+  }
+  .virtual-list-items {
+    position: absolute;
+    top: 0;
   }
 </style>
 <script>
@@ -106,7 +114,11 @@
       },
       scrollTop: ({ $scrollTop }) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
-      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight
+      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight,
+      safeVisibleItems: ({ $visibleItems }) => $visibleItems || [],
+      firstOffset: ({ safeVisibleItems }) => (
+        (safeVisibleItems[0] && safeVisibleItems[0].offset) || 0
+      )
     },
     methods: {
       observe,

@@ -2,7 +2,7 @@
      aria-hidden={!shown}
      virtual-list-key={key}
      ref:node
-     style="transform: translateY({offset}px);" >
+>
   <svelte:component this={component}
               virtualProps={props}
               virtualIndex={index}
@@ -11,8 +11,6 @@
 </div>
 <style>
   .virtual-list-item {
-    position: absolute;
-    top: 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.333s linear;
