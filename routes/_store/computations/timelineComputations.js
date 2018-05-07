@@ -1,11 +1,12 @@
+import get from 'lodash-es/get'
 
 function computeForTimeline (store, key, defaultValue) {
   store.compute(key,
     ['currentInstance', 'currentTimeline', `timelineData_${key}`],
-    (currentInstance, currentTimeline, root) => {
-      let instanceData = root && root[currentInstance]
-      return (currentTimeline && instanceData && currentTimeline in instanceData) ? instanceData[currentTimeline] : defaultValue
-    })
+    (currentInstance, currentTimeline, root) => (
+      get(root, [currentInstance, currentTimeline], defaultValue)
+    )
+  )
 }
 
 export function timelineComputations (store) {

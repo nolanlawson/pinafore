@@ -1,3 +1,5 @@
+import get from 'lodash-es/get'
+
 const MIN_PREFIX_LENGTH = 1
 const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
 const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`)
@@ -5,10 +7,10 @@ const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`
 function computeForAutosuggest (store, key, defaultValue) {
   store.compute(key,
     ['currentInstance', 'currentComposeRealm', `autosuggestData_${key}`],
-    (currentInstance, currentComposeRealm, root) => {
-      let instanceData = root && root[currentInstance]
-      return (currentComposeRealm && instanceData && currentComposeRealm in instanceData) ? instanceData[currentComposeRealm] : defaultValue
-    })
+    (currentInstance, currentComposeRealm, root) => (
+      get(root, [currentInstance, currentComposeRealm], defaultValue)
+    )
+  )
 }
 
 export function autosuggestComputations (store) {
@@ -22,7 +24,8 @@ export function autosuggestComputations (store) {
     'currentComposeText',
     ['currentComposeData', 'currentComposeRealm'],
     (currentComposeData, currentComposeRealm) => (
-      currentComposeData[currentComposeRealm] && currentComposeData[currentComposeRealm].text) || ''
+      get(currentComposeData, [currentComposeRealm, 'text'], '')
+    )
   )
 
   store.compute(
