@@ -29,3 +29,7 @@ export const importShowStatusOptionsDialog = () => import(
 export const importShowVideoDialog = () => import(
   /* webpackChunkName: 'showVideoDialog' */ './creators/showVideoDialog'
   ).then(mod => mod.default)
+
+export const importShowCopyDialog = () => import(
+  /* webpackChunkName: 'showCopyDialog' */ './creators/showCopyDialog'
+  ).then(mod => mod.default)
