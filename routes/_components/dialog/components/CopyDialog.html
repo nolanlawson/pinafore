@@ -1,0 +1,64 @@
+<ModalDialog
+  {id}
+  {label}
+  {title}
+  background="var(--main-bg)"
+>
+  <form class="copy-dialog-form">
+    <input value={text}
+           ref:input
+    >
+    <button type="button" on:click="onClick()">
+      Copy
+    </button>
+  </form>
+</ModalDialog>
+<style>
+  .copy-dialog-form {
+    display: grid;
+    grid-template-rows: min-content min-content;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    padding: 10px 20px;
+    width: 400px;
+    max-width: calc(100vw - 40px);
+  }
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { toast } from '../../../_utils/toast'
+  import { doubleRAF } from '../../../_utils/doubleRAF'
+
+  export default {
+    oncreate () {
+      onCreateDialog.call(this)
+      let { text } = this.get()
+      let { input } = this.refs
+      // double raf is to work around a11y-dialog trying to set the input
+      doubleRAF(() => {
+        input.focus()
+        input.setSelectionRange(0, text.length)
+      })
+    },
+    methods: {
+      show,
+      close,
+      onClick () {
+        let { input } = this.refs
+        input.select()
+        document.execCommand('copy')
+        toast.say('Copied to clipboard')
+        this.close()
+      }
+    },
+    data: () => ({
+      text: ''
+    }),
+    components: {
+      ModalDialog
+    }
+  }
+</script>

@@ -10,7 +10,7 @@
 import ModalDialog from './ModalDialog.html'
 import { store } from '../../../_store/store'
 import GenericDialogList from './GenericDialogList.html'
-import { importShowComposeDialog } from '../asyncDialogs'
+import { importShowComposeDialog, importShowCopyDialog } from '../asyncDialogs'
 import { createDialogId } from '../helpers/createDialogId'
 import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
@@ -26,7 +26,9 @@ export default {
     id: createDialogId()
   }),
   computed: {
-    // begin account data copypasta
+    //
+    // begin copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
+    //
     verifyCredentialsId: ({ verifyCredentials }) => verifyCredentials.id,
     following: ({ relationship }) => relationship && relationship.following,
     followRequested: ({ relationship }) => relationship && relationship.requested,
@@ -42,46 +44,52 @@ export default {
         ? `Unfollow @${acct}`
         : `Follow @${acct}`
     },
-    followIcon: ({ following, followRequested }) => {
-      return following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
-    },
-    blockLabel: ({ blocking, acct }) => {
-      return blocking ? `Unblock @${acct}` : `Block @${acct}`
-    },
+    followIcon: ({ following, followRequested }) => (
+      following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
+    ),
+    blockLabel: ({ blocking, acct }) => (
+      blocking ? `Unblock @${acct}` : `Block @${acct}`
+    ),
     blockIcon: ({ blocking }) => blocking ? '#fa-unlock' : '#fa-ban',
-    muteLabel: ({ muting, acct }) => {
-      return muting ? `Unmute @${acct}` : `Mute @${acct}`
-    },
+    muteLabel: ({ muting, acct }) => (
+      muting ? `Unmute @${acct}` : `Mute @${acct}`
+    ),
     muteIcon: ({ muting }) => muting ? '#fa-volume-up' : '#fa-volume-off',
-    // end account data copypasta
-    items: ({ blockLabel, blocking, blockIcon, muteLabel, muteIcon,
+    isUser: ({ accountId, verifyCredentialsId }) => accountId === verifyCredentialsId,
+    //
+    // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
+    //
+    items: ({
+      blockLabel, blocking, blockIcon, muteLabel, muteIcon,
       followLabel, followIcon, following, followRequested,
-      accountId, verifyCredentialsId, acct }) => {
-      let isUser = accountId === verifyCredentialsId
-      return [
-        !isUser && {
-          key: 'mention',
-          label: `Mention @${acct}`,
-          icon: '#fa-comments'
-        },
-        !isUser && !blocking && {
-          key: 'follow',
-          label: followLabel,
-          icon: followIcon
-        },
-        !isUser && {
-          key: 'block',
-          label: blockLabel,
-          icon: blockIcon
-        },
-        !isUser && !blocking && {
-          key: 'mute',
-          label: muteLabel,
-          icon: muteIcon
-        }
-
-      ].filter(Boolean)
-    }
+      accountId, verifyCredentialsId, acct, isUser
+    }) => ([
+      !isUser && {
+        key: 'mention',
+        label: `Mention @${acct}`,
+        icon: '#fa-comments'
+      },
+      !isUser && !blocking && {
+        key: 'follow',
+        label: followLabel,
+        icon: followIcon
+      },
+      !isUser && {
+        key: 'block',
+        label: blockLabel,
+        icon: blockIcon
+      },
+      !isUser && !blocking && {
+        key: 'mute',
+        label: muteLabel,
+        icon: muteIcon
+      },
+      {
+        key: 'copy',
+        label: 'Copy link to account',
+        icon: '#fa-copy'
+      }
+    ].filter(Boolean))
   },
   methods: {
     show,
@@ -96,6 +104,8 @@ export default {
           return this.onBlockClicked()
         case 'mute':
           return this.onMuteClicked()
+        case 'copy':
+          return this.onCopyClicked()
       }
     },
     async onMentionClicked () {
@@ -121,6 +131,12 @@ export default {
       let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)
+    },
+    async onCopyClicked () {
+      let { account } = this.get()
+      let { url } = account
+      let showCopyDialog = await importShowCopyDialog()
+      showCopyDialog(url)
     }
   },
   components: {

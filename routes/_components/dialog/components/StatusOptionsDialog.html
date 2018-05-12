@@ -18,24 +18,27 @@ import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
 import { setAccountMuted } from '../../../_actions/mute'
 import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
+import { importShowCopyDialog } from '../asyncDialogs'
 
 export default {
   oncreate,
   computed: {
-    relationship: ({ $currentAccountRelationship }) => $currentAccountRelationship,
-    account: ({ $currentAccountProfile }) => $currentAccountProfile,
-    verifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials,
-    statusId: ({ status }) => status.id,
-    pinned: ({ status }) => status.pinned,
-    // begin account data copypasta
-    verifyCredentialsId: ({ verifyCredentials }) => verifyCredentials.id,
-    following: ({ relationship }) => relationship && relationship.following,
-    followRequested: ({ relationship }) => relationship && relationship.requested,
-    accountId: ({ account }) => account && account.id,
-    acct: ({ account }) => account.acct,
-    muting: ({ relationship }) => relationship.muting,
-    blocking: ({ relationship }) => relationship.blocking,
-    followLabel: ({ following, followRequested, account, acct }) => {
+    relationship: ({$currentAccountRelationship}) => $currentAccountRelationship,
+    account: ({$currentAccountProfile}) => $currentAccountProfile,
+    verifyCredentials: ({$currentVerifyCredentials}) => $currentVerifyCredentials,
+    statusId: ({status}) => status.id,
+    pinned: ({status}) => status.pinned,
+    //
+    // begin copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
+    //
+    verifyCredentialsId: ({verifyCredentials}) => verifyCredentials.id,
+    following: ({relationship}) => relationship && relationship.following,
+    followRequested: ({relationship}) => relationship && relationship.requested,
+    accountId: ({account}) => account && account.id,
+    acct: ({account}) => account.acct,
+    muting: ({relationship}) => relationship.muting,
+    blocking: ({relationship}) => relationship.blocking,
+    followLabel: ({following, followRequested, account, acct}) => {
       if (typeof following === 'undefined' || !account) {
         return ''
       }
@@ -43,51 +46,57 @@ export default {
         ? `Unfollow @${acct}`
         : `Follow @${acct}`
     },
-    followIcon: ({ following, followRequested }) => {
-      return following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
-    },
-    blockLabel: ({ blocking, acct }) => {
-      return blocking ? `Unblock @${acct}` : `Block @${acct}`
-    },
-    blockIcon: ({ blocking }) => blocking ? '#fa-unlock' : '#fa-ban',
-    muteLabel: ({ muting, acct }) => {
-      return muting ? `Unmute @${acct}` : `Mute @${acct}`
-    },
-    muteIcon: ({ muting }) => muting ? '#fa-volume-up' : '#fa-volume-off',
-    // end account data copypasta
-    isUser: ({ accountId, verifyCredentialsId }) => accountId === verifyCredentialsId,
-    pinLabel: ({ pinned, isUser }) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
-    items: ({ blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
-      following, followRequested, pinLabel, isUser }) => {
-      return [
-        isUser && {
-          key: 'delete',
-          label: 'Delete',
-          icon: '#fa-trash'
-        },
-        isUser && {
-          key: 'pin',
-          label: pinLabel,
-          icon: '#fa-thumb-tack'
-        },
-        !isUser && !blocking && {
-          key: 'follow',
-          label: followLabel,
-          icon: followIcon
-        },
-        !isUser && {
-          key: 'block',
-          label: blockLabel,
-          icon: blockIcon
-        },
-        !isUser && !blocking && {
-          key: 'mute',
-          label: muteLabel,
-          icon: muteIcon
-        }
-
-      ].filter(Boolean)
-    }
+    followIcon: ({following, followRequested}) => (
+      following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
+    ),
+    blockLabel: ({blocking, acct}) => (
+      blocking ? `Unblock @${acct}` : `Block @${acct}`
+    ),
+    blockIcon: ({blocking}) => blocking ? '#fa-unlock' : '#fa-ban',
+    muteLabel: ({muting, acct}) => (
+      muting ? `Unmute @${acct}` : `Mute @${acct}`
+    ),
+    muteIcon: ({muting}) => muting ? '#fa-volume-up' : '#fa-volume-off',
+    isUser: ({accountId, verifyCredentialsId}) => accountId === verifyCredentialsId,
+    //
+    // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
+    //
+    pinLabel: ({pinned, isUser}) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
+    items: ({
+      blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
+      following, followRequested, pinLabel, isUser
+    }) => ([
+      isUser && {
+        key: 'delete',
+        label: 'Delete',
+        icon: '#fa-trash'
+      },
+      isUser && {
+        key: 'pin',
+        label: pinLabel,
+        icon: '#fa-thumb-tack'
+      },
+      !isUser && !blocking && {
+        key: 'follow',
+        label: followLabel,
+        icon: followIcon
+      },
+      !isUser && {
+        key: 'block',
+        label: blockLabel,
+        icon: blockIcon
+      },
+      !isUser && !blocking && {
+        key: 'mute',
+        label: muteLabel,
+        icon: muteIcon
+      },
+      {
+        key: 'copy',
+        label: 'Copy link to toot',
+        icon: '#fa-copy'
+      }
+    ].filter(Boolean))
   },
   components: {
     ModalDialog,
@@ -109,6 +118,8 @@ export default {
           return this.onBlockClicked()
         case 'mute':
           return this.onMuteClicked()
+        case 'copy':
+          return this.onCopyClicked()
       }
     },
     async onDeleteClicked () {
@@ -135,6 +146,12 @@ export default {
       let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)
+    },
+    async onCopyClicked () {
+      let { status } = this.get()
+      let { url } = status
+      let showCopyDialog = await importShowCopyDialog()
+      showCopyDialog(url)
     }
   }
 }
