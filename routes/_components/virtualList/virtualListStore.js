@@ -26,7 +26,9 @@ virtualListStore.computeForRealm('itemHeights', {})
 virtualListStore.compute('rawVisibleItems',
   ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'showHeader', 'headerHeight', 'listOffset'],
   (items, scrollTop, itemHeights, offsetHeight, showHeader, headerHeight, listOffset) => {
-    window.rawVisibleItemsComputed = (window.rawVisibleItemsComputed || 0) + 1
+    if (process.browser && process.env.NODE_ENV !== 'production') {
+      window.rawVisibleItemsComputed = (window.rawVisibleItemsComputed || 0) + 1
+    }
     mark('compute visibleItems')
     if (!items) {
       return null
