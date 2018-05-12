@@ -62,16 +62,17 @@ export default {
     // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
     pinLabel: ({pinned, isUser}) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
+    visibility: ({status}) => status.visibility,
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
-      following, followRequested, pinLabel, isUser
+      following, followRequested, pinLabel, isUser, visibility
     }) => ([
       isUser && {
         key: 'delete',
         label: 'Delete',
         icon: '#fa-trash'
       },
-      isUser && {
+      visibility !== 'private' && visibility !== 'direct' && isUser && {
         key: 'pin',
         label: pinLabel,
         icon: '#fa-thumb-tack'
