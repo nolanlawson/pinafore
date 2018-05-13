@@ -166,6 +166,7 @@ export default {
       let { status } = this.get()
       let { url } = status
       let showCopyDialog = await importShowCopyDialog()
+      this.close()
       showCopyDialog(url)
     },
     async onMuteConversationClicked () {
