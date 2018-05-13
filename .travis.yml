@@ -1,10 +1,9 @@
 language: node_js
 node_js:
   - "9"
-dist: trusty   # needed for chrome headless
-sudo: required # needed for chrome headless
+dist: precise
+sudo: required
 addons:
-  firefox: latest
   chrome: stable
   postgresql: "10"
   apt:
@@ -37,14 +36,12 @@ addons:
     - redis-tools
     - libidn11-dev
     - libicu-dev
+    - ffmpeg
 services:
   - redis-server
 before_install:
   - rvm install 2.5.0
   - rvm use 2.5.0
-  - sudo -E add-apt-repository -y ppa:mc3man/trusty-media
-  - sudo -E apt-get update
-  - sudo -E apt-get install -y ffmpeg gstreamer0.10-ffmpeg
   - ruby --version
   - node --version
   - postgres --version
@@ -66,8 +63,6 @@ matrix:
   include:
     - env: BROWSER=chrome:headless COMMAND=test-browser
     - env: COMMAND=deploy-dev-travis
-    # disable firefox until it's passing
-    # - env: BROWSER=firefox:headless COMMAND=test-browser
   allow_failures:
     - env: COMMAND=deploy-dev-travis
 branches:
