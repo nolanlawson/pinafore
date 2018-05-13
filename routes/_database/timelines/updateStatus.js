@@ -45,3 +45,9 @@ export async function setStatusPinned (instanceName, statusId, pinned) {
     status.pinned = pinned
   })
 }
+
+export async function setStatusMuted (instanceName, statusId, muted) {
+  return updateStatus(instanceName, statusId, status => {
+    status.muted = muted
+  })
+}
