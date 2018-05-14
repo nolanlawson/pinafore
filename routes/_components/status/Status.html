@@ -9,22 +9,42 @@
   {#if showHeader}
     <StatusHeader {...params} />
   {/if}
-  <StatusAuthorName {...params} />
-  <StatusAuthorHandle {...params} />
-  {#if !isStatusInOwnThread}
-    <StatusRelativeDate {...params} />
-  {/if}
-  <StatusSidebar {...params} />
-  {#if spoilerText}
-    <StatusSpoiler {...params} on:recalculateHeight />
-  {/if}
-  {#if showContent || contentPreloaded}
-    <StatusContent {...params} shown={showContent}/>
-  {/if}
-  {#if showMedia }
-    <StatusMediaAttachments {...params} on:recalculateHeight />
-  {/if}
+  <div class="status-flex-horizontal status-flex-1">
+    <StatusAvatar {...params} />
+    {#if isStatusInOwnThread}
+      <div class="status-flex-vertical status-flex-none">
+        <StatusAuthorName {...params} />
+        <StatusAuthorHandle {...params} />
+      </div>
+    {:else}
+      <div class="status-flex-vertical status-flex-1">
+        <div class="status-flex-horizontal status-flex-1">
+          <StatusAuthorName {...params} />
+          <StatusAuthorHandle {...params} />
+          <StatusRelativeDate {...params} />
+        </div>
+        {#if spoilerText}
+          <StatusSpoiler {...params} on:recalculateHeight />
+        {/if}
+        {#if showContent || contentPreloaded}
+          <StatusContent {...params} shown={showContent} />
+        {/if}
+        {#if showMedia }
+          <StatusMediaAttachments {...params} on:recalculateHeight />
+        {/if}
+      </div>
+    {/if}
+  </div>
   {#if isStatusInOwnThread}
+    {#if spoilerText}
+      <StatusSpoiler {...params} on:recalculateHeight />
+    {/if}
+    {#if showContent || contentPreloaded}
+      <StatusContent {...params} shown={showContent} />
+    {/if}
+    {#if showMedia }
+      <StatusMediaAttachments {...params} on:recalculateHeight />
+    {/if}
     <StatusDetails {...params} />
   {/if}
   <StatusToolbar {...params} on:recalculateHeight />
@@ -38,18 +58,6 @@
     cursor: pointer;
     max-width: calc(100vw - 40px);
     padding: 10px 20px;
-    display: grid;
-    grid-template-areas:
-        "header  header       header        header"
-        "sidebar author-name  author-handle relative-date"
-        "sidebar spoiler      spoiler       spoiler"
-        "sidebar spoiler-btn  spoiler-btn   spoiler-btn"
-        "sidebar content      content       content"
-        "media   media        media         media"
-        "....... toolbar      toolbar       toolbar"
-        "compose compose      compose       compose";
-    grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
-    grid-template-rows: repeat(8, max-content);
   }
 
   .status-article.status-in-timeline {
@@ -61,19 +69,22 @@
     background-color: var(--status-direct-background);
   }
 
-  .status-article.status-in-own-thread {
-    grid-template-areas:
-      "sidebar     author-name"
-      "sidebar     author-handle"
-      "spoiler     spoiler"
-      "spoiler-btn spoiler-btn"
-      "content     content"
-      "media       media"
-      "details     details"
-      "toolbar     toolbar"
-      "compose     compose";
-    grid-template-columns: min-content 1fr;
-    grid-template-rows: repeat(7, max-content);
+  .status-flex-horizontal {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .status-flex-vertical {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .status-flex-1 {
+    flex: 1;
+  }
+
+  .status-flex-none {
+    flex: none;
   }
 
   @media (max-width: 767px) {
@@ -87,7 +98,7 @@
   }
 </style>
 <script>
-  import StatusSidebar from './StatusSidebar.html'
+  import StatusAvatar from './StatusAvatar.html'
   import StatusHeader from './StatusHeader.html'
   import StatusAuthorName from './StatusAuthorName.html'
   import StatusAuthorHandle from './StatusAuthorHandle.html'
@@ -126,7 +137,7 @@
       }
     },
     components: {
-      StatusSidebar,
+      StatusAvatar,
       StatusHeader,
       StatusAuthorName,
       StatusAuthorHandle,
@@ -170,6 +181,13 @@
       }
     },
     computed: {
+      className: ({ visibility, timelineType, isStatusInOwnThread }) => (classname(
+        'status-article',
+        'status-flex-vertical',
+        visibility === 'direct' && 'status-direct',
+        timelineType !== 'search' && 'status-in-timeline',
+        isStatusInOwnThread && 'status-in-own-thread'
+      )),
       originalStatus: ({ status }) => status.reblog ? status.reblog : status,
       originalStatusId: ({ originalStatus }) => originalStatus.id,
       statusId: ({ status }) => status.id,
@@ -209,12 +227,6 @@
         status.reblog ||
         timelineType === 'pinned'
       ),
-      className: ({ visibility, timelineType, isStatusInOwnThread }) => (classname(
-        'status-article',
-        visibility === 'direct' && 'status-direct',
-        timelineType !== 'search' && 'status-in-timeline',
-        isStatusInOwnThread && 'status-in-own-thread'
-      )),
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,

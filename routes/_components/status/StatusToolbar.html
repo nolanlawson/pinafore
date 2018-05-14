@@ -33,16 +33,13 @@
 </div>
 <style>
   .status-toolbar {
-    grid-area: toolbar;
     display: flex;
     justify-content: space-between;
-  }
-  .status-toolbar.status-in-own-thread {
     margin-left: 63px; /* offset to align all toolbar items: 48px avatar + 15px margin-right */
   }
 
   @media (max-width: 767px) {
-    .status-toolbar.status-in-own-thread {
+    .status-toolbar {
       margin-left: 53px; /* offset to align all toolbar items: 48px avatar + 5px margin-right */
     }
   }
