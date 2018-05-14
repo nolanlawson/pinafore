@@ -4,7 +4,6 @@ node_js:
 dist: trusty   # needed for chrome headless
 sudo: required # needed for chrome headless
 addons:
-  firefox: latest
   chrome: stable
   postgresql: "10"
   apt:
@@ -66,8 +65,6 @@ matrix:
   include:
     - env: BROWSER=chrome:headless COMMAND=test-browser
     - env: COMMAND=deploy-dev-travis
-    # disable firefox until it's passing
-    # - env: BROWSER=firefox:headless COMMAND=test-browser
   allow_failures:
     - env: COMMAND=deploy-dev-travis
 branches:
