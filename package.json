@@ -94,7 +94,7 @@
     "eslint-plugin-html": "4.0.3",
     "now": "11.1.7",
     "standard": "11.0.1",
-    "testcafe": "0.19.1"
+    "testcafe": "0.20.0"
   },
   "engines": {
     "node": ">= 8"
