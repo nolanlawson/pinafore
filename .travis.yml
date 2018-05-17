@@ -39,6 +39,7 @@ addons:
 services:
   - redis-server
 before_install:
+  - npm install -g npm@5
   - rvm install 2.5.0
   - rvm use 2.5.0
   - sudo -E add-apt-repository -y ppa:mc3man/trusty-media
