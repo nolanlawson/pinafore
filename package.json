@@ -80,7 +80,7 @@
     "svelte": "2.5.1",
     "svelte-extras": "2.0.2",
     "svelte-loader": "2.9.0",
-    "svelte-transitions": "1.1.1",
+    "svelte-transitions": "1.2.0",
     "svgo": "1.0.5",
     "timeago.js": "3.0.2",
     "tiny-queue": "0.2.1",
