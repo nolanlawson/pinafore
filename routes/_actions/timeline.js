@@ -2,9 +2,10 @@ import { store } from '../_store/store'
 import { getTimeline } from '../_api/timelines'
 import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
-import { mergeArrays } from '../_utils/arrays'
+import { mergeArrays, concat } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'
 import isEqual from 'lodash-es/isEqual'
+import uniq from 'lodash-es/uniq'
 import {
   insertTimelineItems as insertTimelineItemsInDatabase
 } from '../_database/timelines/insertion'
@@ -48,10 +49,32 @@ export async function addTimelineItemIds (instanceName, timelineName, newIds, ne
   let oldIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
   let oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemIdsAreStale')
 
-  let mergedIds = mergeArrays(oldIds || [], newIds)
+  let mergedIds
+
+  if (timelineName.startsWith('status/')) {
+    if (oldIds && oldIds.length && newIds && newIds.length && oldIds[0] && byItemIds(oldIds[0], newIds[0]) < 0) {
+      mergedIds = uniq(concat(oldIds, newIds))
+    } else {
+      mergedIds = uniq(concat(newIds, oldIds))
+    }
+  } else {
+    mergedIds = mergeArrays(oldIds || [], newIds)
+  }
 
   if (!isEqual(oldIds, mergedIds)) {
-    store.setForTimeline(instanceName, timelineName, {timelineItemIds: mergedIds})
+    if (!oldIds && timelineName.startsWith('status/')) {
+      // setting up a "status" timeline for the first time
+      let statusId = timelineName.split('/').slice(-1)[0]
+      let idx = mergedIds.indexOf(statusId)
+      store.setForTimeline(instanceName, timelineName, {
+        timelineItemIds: mergedIds.slice(idx),
+        itemIdsToAdd: mergedIds.slice(0, idx),
+        showHeader: idx > 0,
+        shouldShowHeader: idx > 0
+      })
+    } else {
+      store.setForTimeline(instanceName, timelineName, {timelineItemIds: mergedIds})
+    }
   }
   if (oldStale !== newStale) {
     store.setForTimeline(instanceName, timelineName, {timelineItemIdsAreStale: newStale})
@@ -101,7 +124,9 @@ export async function fetchTimelineItemsOnScrollToBottom (instanceName, timeline
 export async function showMoreItemsForTimeline (instanceName, timelineName) {
   mark('showMoreItemsForTimeline')
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
-  itemIdsToAdd = itemIdsToAdd.sort(byItemIds).reverse()
+  if (!timelineName.startsWith('status/')) {
+    itemIdsToAdd = itemIdsToAdd.sort(byItemIds).reverse()
+  }
   addTimelineItemIds(instanceName, timelineName, itemIdsToAdd, false)
   store.setForTimeline(instanceName, timelineName, {
     itemIdsToAdd: [],

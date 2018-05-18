@@ -4,43 +4,34 @@
      on:focusWithCapture="saveFocus(event)"
      on:blurWithCapture="clearFocus(event)"
 >
-  {#await componentsPromise}
-    <!-- awaiting promise -->
-  {:then result}
-    <svelte:component this={result.listComponent}
-                component={result.listItemComponent}
-                realm="{$currentInstance + '/' + timeline}"
-                containerQuery=".container"
-                {makeProps}
-                items={$timelineItemIds}
-                showFooter={$timelineInitialized && $runningUpdate}
-                footerComponent={LoadingFooter}
-                showHeader={$showHeader}
-                headerComponent={MoreHeaderVirtualWrapper}
-                {headerProps}
-                {scrollToItem}
-                on:scrollToBottom="onScrollToBottom()"
-                on:scrollToTop="onScrollToTop()"
-                on:scrollTopChanged="onScrollTopChanged(event)"
-                on:initialized="initialize()"
-                on:noNeedToScroll="onNoNeedToScroll()"
-    />
-  {:catch error}
-    <div>Error: component failed to load! Try reloading. {error}</div>
-  {/await}
+  <VirtualList
+    component={listItemComponent}
+    realm="{$currentInstance + '/' + timeline}"
+    containerQuery=".container"
+    {makeProps}
+    items={$timelineItemIds}
+    showFooter={$timelineInitialized && $runningUpdate}
+    footerComponent={LoadingFooter}
+    showHeader={$showHeader}
+    headerComponent={MoreHeaderVirtualWrapper}
+    {headerProps}
+    {scrollToItem}
+    on:scrollToBottom="onScrollToBottom()"
+    on:scrollToTop="onScrollToTop()"
+    on:scrollTopChanged="onScrollTopChanged(event)"
+    on:initialized="initialize()"
+    on:noNeedToScroll="onNoNeedToScroll()"
+  />
 </div>
 <script>
   import { store } from '../../_store/store'
+  import { timelines } from '../../_static/timelines'
   import Status from '../status/Status.html'
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
-  import {
-    importVirtualList,
-    importPseudoVirtualList,
-    importStatusVirtualListItem,
-    importNotificationVirtualListItem
-  } from '../../_utils/asyncModules'
-  import { timelines } from '../../_static/timelines'
+  import VirtualList from '../virtualList/VirtualList.html'
+  import StatusVirtualListItem from './StatusVirtualListItem.html'
+  import NotificationVirtualListItem from './NotificationVirtualListItem.html'
   import {
     getStatus as getStatusFromDatabase,
     getNotification as getNotificationFromDatabase
@@ -78,23 +69,9 @@
       scrollTop: 0
     }),
     computed: {
-      // For threads, it's simpler to just render all items as a pseudo-virtual list
-      // due to need to scroll to the right item and thus calculate all item heights up-front.
-      // Here we lazy-load both the virtual list component itself as well as the component
-      // it renders.
-      componentsPromise: ({ timelineType }) => {
-        return Promise.all([
-          timelineType === 'status'
-            ? importPseudoVirtualList()
-            : importVirtualList(),
-          timelineType === 'notifications'
-            ? importNotificationVirtualListItem()
-            : importStatusVirtualListItem()
-        ]).then(results => ({
-          listComponent: results[0],
-          listItemComponent: results[1]
-        }))
-      },
+      listItemComponent: ({ timelineType }) => (
+        timelineType === 'notifications' ? NotificationVirtualListItem : StatusVirtualListItem
+      ),
       makeProps: ({ $currentInstance, timelineType, timelineValue }) => async (itemId) => {
         let res = {
           timelineType,
@@ -169,7 +146,7 @@
         this.set({scrollTop: scrollTop})
       },
       onScrollToBottom () {
-        let { timelineType } = this.store.get()
+        let { timelineType } = this.get()
         let { timelineInitialized, runningUpdate } = this.store.get()
         if (!timelineInitialized ||
             runningUpdate ||
@@ -206,7 +183,7 @@
             shouldShowHeader,
             showHeader
           } = this.store.get()
-          if (timeline.startsWith('status/')) {
+          if (timeline.startsWith('status/') && !shouldShowHeader && !showHeader) {
             // this is a thread, just insert the statuses already
             showMoreItemsForThread(currentInstance, timeline)
           } else if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
@@ -299,6 +276,9 @@
         console.log('timeline preinitialized')
         this.store.set({timelinePreinitialized: true})
       }
+    },
+    components: {
+      VirtualList
     }
   }
 </script>

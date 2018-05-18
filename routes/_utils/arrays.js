@@ -31,3 +31,7 @@ export function mergeArrays (leftArray, rightArray) {
   }
   return merged
 }
+
+export function concat (leftArr, rightArr) {
+  return [].concat(leftArr || []).concat(rightArr || [])
+}

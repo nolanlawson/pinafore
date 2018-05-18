@@ -21,19 +21,3 @@ export const importWebAnimationPolyfill = () => import(
 export const importWebSocketClient = () => import(
   /* webpackChunkName: '@gamestdio/websocket' */ '@gamestdio/websocket'
   ).then(mod => mod.default)
-
-export const importVirtualList = () => import(
-  /* webpackChunkName: 'VirtualList.html' */ '../_components/virtualList/VirtualList.html'
-  ).then(mod => mod.default)
-
-export const importPseudoVirtualList = () => import(
-  /* webpackChunkName: 'PseudoVirtualList.html' */ '../_components/pseudoVirtualList/PseudoVirtualList.html'
-  ).then(mod => mod.default)
-
-export const importStatusVirtualListItem = () => import(
-  /* webpackChunkName: 'StatusVirtualListItem.html' */ '../_components/timeline/StatusVirtualListItem.html'
-  ).then(mod => mod.default)
-
-export const importNotificationVirtualListItem = () => import(
-  /* webpackChunkName: 'NotificationVirtualListItem.html' */ '../_components/timeline/NotificationVirtualListItem.html'
-  ).then(mod => mod.default)
