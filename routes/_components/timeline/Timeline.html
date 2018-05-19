@@ -169,7 +169,7 @@
         this.set({scrollTop: scrollTop})
       },
       onScrollToBottom () {
-        let { timelineType } = this.store.get()
+        let { timelineType } = this.get()
         let { timelineInitialized, runningUpdate } = this.store.get()
         if (!timelineInitialized ||
             runningUpdate ||
@@ -194,7 +194,7 @@
       },
       setupStreaming () {
         let { currentInstance } = this.store.get()
-        let { timeline } = this.get()
+        let { timeline, timelineType } = this.get()
         let handleItemIdsToAdd = () => {
           let { itemIdsToAdd } = this.get()
           if (!itemIdsToAdd || !itemIdsToAdd.length) {
@@ -206,7 +206,7 @@
             shouldShowHeader,
             showHeader
           } = this.store.get()
-          if (timeline.startsWith('status/')) {
+          if (timelineType === 'status') {
             // this is a thread, just insert the statuses already
             showMoreItemsForThread(currentInstance, timeline)
           } else if (scrollTop === 0 && !shouldShowHeader && !showHeader) {
