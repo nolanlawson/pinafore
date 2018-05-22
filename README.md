@@ -59,6 +59,13 @@ To build Pinafore for production:
     npm run build
     PORT=4002 npm start
 
+### Docker
+
+To build a docker image for production:
+
+    docker build .
+    docker run -d -p 4002:4002 [your-image]
+
 Now Pinafore is running at `localhost:4002`.
 
 Pinafore requires [Node.js](https://nodejs.org/en/) v8+.
