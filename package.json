@@ -45,7 +45,7 @@
     "cheerio": "1.0.0-rc.2",
     "child-process-promise": "2.2.1",
     "chokidar": "2.0.3",
-    "cross-env": "5.1.5",
+    "cross-env": "5.1.6",
     "css-loader": "0.28.11",
     "escape-html": "1.0.3",
     "esm": "3.0.34",
