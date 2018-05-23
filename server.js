@@ -66,5 +66,5 @@ app.listen(PORT, () => {
 
 // Handle SIGINT (source: https://git.io/vhJgF)
 process.on('SIGINT', function () {
-  process.exit(0);
+  process.exit(0)
 });
