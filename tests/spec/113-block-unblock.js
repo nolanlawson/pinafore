@@ -11,11 +11,10 @@ fixture`113-block-unblock.js`
   .page`http://localhost:4002`
 
 test('Can block and unblock an account from a status', async t => {
-  await t.useRole(foobarRole)
   let post = 'a very silly statement that should probably get me blocked'
   await postAs('admin', post)
-
-  await t.expect(getNthStatus(0).innerText).contains(post, {timeout: 20000})
+  await t.useRole(foobarRole)
+    .expect(getNthStatus(0).innerText).contains(post, {timeout: 30000})
     .click(getNthStatusOptionsButton(0))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')

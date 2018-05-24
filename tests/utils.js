@@ -234,27 +234,28 @@ export function getNthPinnedStatusFavoriteButton (n) {
 }
 
 export async function validateTimeline (t, timeline) {
+  const timeout = 20000
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]
     if (status.content) {
       await t.expect(getNthStatus(i).find('.status-content p').innerText)
-        .contains(status.content)
+        .contains(status.content, { timeout })
     }
     if (status.spoiler) {
       await t.expect(getNthStatus(i).find('.status-spoiler p').innerText)
-        .contains(status.spoiler)
+        .contains(status.spoiler, { timeout })
     }
     if (status.followedBy) {
       await t.expect(getNthStatus(i).find('.status-header span').innerText)
-        .contains(status.followedBy + ' followed you')
+        .contains(status.followedBy + ' followed you', { timeout })
     }
     if (status.rebloggedBy) {
       await t.expect(getNthStatus(i).find('.status-header span').innerText)
-        .contains(status.rebloggedBy + ' boosted your status')
+        .contains(status.rebloggedBy + ' boosted your status', { timeout })
     }
     if (status.favoritedBy) {
       await t.expect(getNthStatus(i).find('.status-header span').innerText)
-        .contains(status.favoritedBy + ' favorited your status')
+        .contains(status.favoritedBy + ' favorited your status', { timeout })
     }
 
     // hovering forces TestCafé to scroll to that element: https://git.io/vABV2
