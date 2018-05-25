@@ -1,14 +1,17 @@
 import { Role } from 'testcafe'
 import {
-  addInstanceButton,
   authorizeInput, emailInput, getUrl, instanceInput, mastodonLogInButton,
-  passwordInput
+  passwordInput,
+  sleep
 } from './utils'
 import { users } from './users'
 
-function login (t, username, password) {
-  return t.typeText(instanceInput, 'localhost:3000', {paste: true})
-    .click(addInstanceButton)
+async function login (t, username, password) {
+  await sleep(500)
+  await t.typeText(instanceInput, 'localhost:3000', {paste: true})
+  await sleep(500)
+  return t
+    .pressKey('enter')
     .expect(getUrl()).eql('http://localhost:3000/auth/sign_in', {timeout: 30000})
     .typeText(emailInput, username, {paste: true})
     .typeText(passwordInput, password, {paste: true})

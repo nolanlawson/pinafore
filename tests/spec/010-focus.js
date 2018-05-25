@@ -37,6 +37,7 @@ test('timeline preserves focus', async t => {
 
 test('timeline link preserves focus', async t => {
   await t.useRole(foobarRole)
+    .expect(getNthStatus(0).exists).ok({timeout: 20000})
     .click(getNthStatus(0).find('.status-header a'))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
@@ -87,6 +88,7 @@ test('thread preserves focus', async t => {
 
 test('reply preserves focus and moves focus to the text input', async t => {
   await t.useRole(foobarRole)
+    .expect(getNthStatus(1).exists).ok({timeout: 20000})
     .click(getNthReplyButton(1))
     .expect(getActiveElementClass()).contains('compose-box-input')
 })

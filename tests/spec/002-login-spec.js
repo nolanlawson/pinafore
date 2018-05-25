@@ -4,7 +4,8 @@ import {
   authorizeInput, emailInput, formError, getFirstVisibleStatus, getUrl, instanceInput, logInToInstanceLink,
   mastodonLogInButton,
   passwordInput,
-  settingsButton
+  settingsButton,
+  sleep
 } from '../utils'
 
 fixture`002-login-spec.js`
@@ -25,6 +26,7 @@ function manualLogin (t, username, password) {
 }
 
 test('Cannot log in to a fake instance', async t => {
+  await sleep(500)
   await t.click(logInToInstanceLink)
     .expect(getUrl()).contains('/settings/instances/add')
     .typeText(instanceInput, 'fake.nolanlawson.com', {paste: true})
@@ -39,6 +41,7 @@ test('Cannot log in to a fake instance', async t => {
 })
 
 test('Logs in and logs out of localhost:3000', async t => {
+  await sleep(500)
   await manualLogin(t, 'foobar@localhost:3000', 'foobarfoobar')
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getFirstVisibleStatus())

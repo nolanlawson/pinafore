@@ -14,6 +14,7 @@ test('fills in a status posted while away from timeline', async t => {
 
   await t.useRole(foobarRole)
     .click(localTimelineNavButton)
+    .expect(getNthStatus(0).exists).ok({timeout})
     .hover(getNthStatus(0))
   await postAs('admin', 'heyo')
   await t.expect(getNthStatus(0).innerText).contains('heyo', {timeout})
