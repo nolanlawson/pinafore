@@ -16,7 +16,7 @@
     "build-inline-script": "node ./bin/build-inline-script.js",
     "build-sass": "node ./bin/build-sass.js",
     "build-sass-watch": "node ./bin/build-sass.js --watch",
-    "run-mastodon": "node -r esm ./bin/run-mastodon",
+    "run-mastodon": "node -r esm ./bin/run-mastodon.js",
     "run-testcafe": "cross-env-shell testcafe --hostname localhost --skip-js-errors $BROWSER tests/spec",
     "test": "cross-env BROWSER=chrome:headless npm run test-browser",
     "test-browser": "run-p --race run-mastodon dev test-mastodon",
