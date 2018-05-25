@@ -237,6 +237,7 @@ export async function validateTimeline (t, timeline) {
   const timeout = 20000
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]
+    await t.expect(getNthStatus(i).exists).ok({ timeout })
     if (status.content) {
       await t.expect(getNthStatus(i).find('.status-content p').innerText)
         .contains(status.content, { timeout })
