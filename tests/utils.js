@@ -2,7 +2,7 @@ import { ClientFunction as exec, Selector as $ } from 'testcafe'
 import * as images from './images'
 import * as blobUtils from './blobUtils'
 
-const SCROLL_INTERVAL = 3
+const SCROLL_INTERVAL = 1
 
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
@@ -293,8 +293,10 @@ export async function scrollToBottomOfTimeline (t) {
 }
 
 export async function scrollToStatus (t, n) {
+  let timeout = 20000
   for (let i = 0; i <= n; i += SCROLL_INTERVAL) {
-    await t.hover(getNthStatus(i))
+    await t.expect(getNthStatus(i).exists).ok({timeout})
+      .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
     if (i < n) {
       await t.hover(getNthStatus(i).find('.status-toolbar'))
