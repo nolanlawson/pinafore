@@ -2,7 +2,7 @@ import { ClientFunction as exec, Selector as $ } from 'testcafe'
 import * as images from './images'
 import * as blobUtils from './blobUtils'
 
-const SCROLL_INTERVAL = 3
+const SCROLL_INTERVAL = 1
 
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
@@ -234,27 +234,29 @@ export function getNthPinnedStatusFavoriteButton (n) {
 }
 
 export async function validateTimeline (t, timeline) {
+  const timeout = 20000
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]
+    await t.expect(getNthStatus(i).exists).ok({ timeout })
     if (status.content) {
       await t.expect(getNthStatus(i).find('.status-content p').innerText)
-        .contains(status.content)
+        .contains(status.content, { timeout })
     }
     if (status.spoiler) {
       await t.expect(getNthStatus(i).find('.status-spoiler p').innerText)
-        .contains(status.spoiler)
+        .contains(status.spoiler, { timeout })
     }
     if (status.followedBy) {
       await t.expect(getNthStatus(i).find('.status-header span').innerText)
-        .contains(status.followedBy + ' followed you')
+        .contains(status.followedBy + ' followed you', { timeout })
     }
     if (status.rebloggedBy) {
       await t.expect(getNthStatus(i).find('.status-header span').innerText)
-        .contains(status.rebloggedBy + ' boosted your status')
+        .contains(status.rebloggedBy + ' boosted your status', { timeout })
     }
     if (status.favoritedBy) {
       await t.expect(getNthStatus(i).find('.status-header span').innerText)
-        .contains(status.favoritedBy + ' favorited your status')
+        .contains(status.favoritedBy + ' favorited your status', { timeout })
     }
 
     // hovering forces TestCafé to scroll to that element: https://git.io/vABV2
@@ -291,8 +293,10 @@ export async function scrollToBottomOfTimeline (t) {
 }
 
 export async function scrollToStatus (t, n) {
+  let timeout = 20000
   for (let i = 0; i <= n; i += SCROLL_INTERVAL) {
-    await t.hover(getNthStatus(i))
+    await t.expect(getNthStatus(i).exists).ok({timeout})
+      .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
     if (i < n) {
       await t.hover(getNthStatus(i).find('.status-toolbar'))
