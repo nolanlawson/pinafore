@@ -2,14 +2,14 @@ import {
   composeButton, getNthStatus, scrollToStatus, modalDialog, sleep,
   notificationsNavButton, getUrl
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`108-compose-dialog.js`
   .page`http://localhost:4002`
 
 test('can compose using a dialog', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   await scrollToStatus(t, 15)
   await t.expect(modalDialog.exists).notOk()
     .expect(composeButton.getAttribute('aria-label')).eql('Compose')
@@ -27,7 +27,7 @@ test('can compose using a dialog', async t => {
 })
 
 test('can use emoji dialog within compose dialog', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   await scrollToStatus(t, 15)
   await t.expect(composeButton.getAttribute('aria-label')).eql('Compose')
   await sleep(2000)
