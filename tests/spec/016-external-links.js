@@ -1,5 +1,5 @@
 import { getNthStatus, getUrl } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`016-external-links.js`
@@ -14,7 +14,7 @@ function getAnchorInProfile (n) {
 }
 
 test('converts external links in statuses', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(0))
     .navigateTo('/accounts/4')
     .expect(getUrl()).contains('/accounts/4')
@@ -31,7 +31,7 @@ test('converts external links in statuses', async t => {
 })
 
 test('converts external links in profiles', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(0))
     .navigateTo('/accounts/4')
     .expect(getUrl()).contains('/accounts/4')

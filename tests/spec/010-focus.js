@@ -3,13 +3,13 @@ import {
   goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementInsideNthStatus, focus,
   getNthStatusSelector
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`010-focus.js`
   .page`http://localhost:4002`
 
 test('modal preserves focus', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   await scrollToStatus(t, 9)
   // explicitly hover-focus-click
   await t.hover(getNthStatus(9).find('.play-video-button'))
@@ -22,7 +22,7 @@ test('modal preserves focus', async t => {
 })
 
 test('timeline preserves focus', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   // explicitly hover-focus-click
   await t.hover(getNthStatus(0))
   await focus(getNthStatusSelector(0))()
@@ -36,7 +36,7 @@ test('timeline preserves focus', async t => {
 })
 
 test('timeline link preserves focus', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .expect(getNthStatus(0).exists).ok({timeout: 20000})
     .click(getNthStatus(0).find('.status-header a'))
     .expect(getUrl()).contains('/accounts/')
@@ -53,7 +53,7 @@ test('timeline link preserves focus', async t => {
 })
 
 test('notification timeline preserves focus', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .navigateTo('/notifications')
   await scrollToStatus(t, 5)
   await t.click(getNthStatus(5).find('.status-header a'))
@@ -66,7 +66,7 @@ test('notification timeline preserves focus', async t => {
 })
 
 test('thread preserves focus', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .navigateTo('/accounts/3')
   await scrollToStatus(t, 2)
   await t.click(getNthStatus(2))
@@ -87,7 +87,7 @@ test('thread preserves focus', async t => {
 })
 
 test('reply preserves focus and moves focus to the text input', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .expect(getNthStatus(1).exists).ok({timeout: 20000})
     .click(getNthReplyButton(1))
     .expect(getActiveElementClass()).contains('compose-box-input')

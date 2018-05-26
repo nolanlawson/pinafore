@@ -4,7 +4,7 @@ import {
   getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog
 } from '../utils'
 import { Selector as $ } from 'testcafe'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import { postAs } from '../serverActions'
 
 fixture`113-block-unblock.js`
@@ -13,7 +13,7 @@ fixture`113-block-unblock.js`
 test('Can block and unblock an account from a status', async t => {
   let post = 'a very silly statement that should probably get me blocked'
   await postAs('admin', post)
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .expect(getNthStatus(0).innerText).contains(post, {timeout: 30000})
     .click(getNthStatusOptionsButton(0))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
@@ -35,7 +35,7 @@ test('Can block and unblock an account from a status', async t => {
 })
 
 test('Can block and unblock an account from the account profile page', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .navigateTo('/accounts/5')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileMoreOptionsButton)

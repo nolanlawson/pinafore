@@ -5,13 +5,13 @@ import {
   getNthReplyContentWarningInput, getNthReplyPostPrivacyButton,
   getNthStatus, getUrl, homeNavButton, notificationsNavButton, scrollToStatus
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`017-compose-reply.js`
   .page`http://localhost:4002`
 
 test('account handle populated correctly for replies', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .click(getNthReplyButton(0))
     .expect(getNthComposeReplyInput(0).value).eql('@quux ')
     .typeText(getNthComposeReplyInput(0), 'hello quux', {paste: true})
@@ -29,7 +29,7 @@ test('account handle populated correctly for replies', async t => {
 })
 
 test('replying to posts with mentions', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .click(getNthReplyButton(1))
     .expect(getNthComposeReplyInput(1).value).eql('@admin ')
     .navigateTo('/accounts/4')
@@ -38,7 +38,7 @@ test('replying to posts with mentions', async t => {
 })
 
 test('replies have same privacy as replied-to status by default', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(0))
     .hover(getNthStatus(1))
     .click(getNthReplyButton(1))
@@ -62,7 +62,7 @@ test('replies have same privacy as replied-to status by default', async t => {
 })
 
 test('replies have same CW as replied-to status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   await scrollToStatus(t, 7)
   await t.click(getNthReplyButton(7))
     .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
@@ -72,7 +72,7 @@ test('replies have same CW as replied-to status', async t => {
 })
 
 test('replies save deletions of CW', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   await scrollToStatus(t, 7)
   await t.click(getNthReplyButton(7))
     .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
@@ -84,7 +84,7 @@ test('replies save deletions of CW', async t => {
 })
 
 test('replies save changes to CW', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   await scrollToStatus(t, 7)
   await t.click(getNthReplyButton(7))
     .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
@@ -96,7 +96,7 @@ test('replies save changes to CW', async t => {
 })
 
 test('replies save changes to post privacy', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(0))
     .hover(getNthStatus(1))
     .click(getNthReplyButton(1))

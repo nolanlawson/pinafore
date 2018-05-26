@@ -1,4 +1,4 @@
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import {
   accountProfileFollowButton,
   getNthStatus,
@@ -12,7 +12,7 @@ fixture`106-follow-requests.js`
   .page`http://localhost:4002`
 
 test('can request to follow an account', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .navigateTo('/accounts/6')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileFollowButton)

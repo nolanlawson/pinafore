@@ -1,4 +1,4 @@
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import { postAs } from '../serverActions'
 import {
   avatarInComposeBox, getNthDialogOptionsOption, getNthPinnedStatus, getNthPinnedStatusFavoriteButton, getNthStatus,
@@ -10,7 +10,7 @@ fixture`117-pin-unpin.js`
   .page`http://localhost:4002`
 
 test('Can pin statuses', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
 
   await postAs('foobar', 'I am going to pin this')
 
@@ -40,7 +40,7 @@ test('Can pin statuses', async t => {
 })
 
 test('Can favorite a pinned status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .click(avatarInComposeBox)
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
     .expect(getNthPinnedStatusFavoriteButton(0).getAttribute('aria-pressed')).eql('false')

@@ -1,4 +1,4 @@
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import { getNthStatus, getUrl, homeNavButton, notificationsNavButton, validateTimeline } from '../utils'
 import { favoriteStatusAs } from '../serverActions'
 import { notifications } from '../fixtures'
@@ -7,7 +7,7 @@ fixture`102-notifications.js`
   .page`http://localhost:4002`
 
 test('shows unread notifications', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(0))
     .hover(getNthStatus(2))
     .hover(getNthStatus(4))

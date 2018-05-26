@@ -3,7 +3,7 @@ import {
   composeInput,
   getNthStatus
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`112-status-links.js`
   .page`http://localhost:4002`
@@ -16,7 +16,7 @@ test('External links, hashtags, and mentions have correct attributes', async t =
 
   const nthAnchor = n => getNthStatus(0).find('.status-content a').nth(n)
 
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .typeText(composeInput, text, {paste: true})
     .click(composeButton)
     .expect(getNthStatus(0).innerText).contains('Why hello there', {timeout: 20000})

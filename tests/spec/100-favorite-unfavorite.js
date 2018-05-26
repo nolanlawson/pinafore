@@ -3,13 +3,13 @@ import {
   getNthFavoriteButton, getNthFavorited, getNthStatus, getUrl, homeNavButton, notificationsNavButton,
   scrollToBottomOfTimeline, scrollToTopOfTimeline
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`100-favorite-unfavorite.js`
   .page`http://localhost:4002`
 
 test('favorites a status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(4))
     .expect(getNthFavorited(4)).eql('false')
     .click(getNthFavoriteButton(4))
@@ -35,7 +35,7 @@ test('favorites a status', async t => {
 })
 
 test('unfavorites a status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .expect(getNthFavorited(1)).eql('true')
     .click(getNthFavoriteButton(1))
     .expect(getNthFavorited(1)).eql('false')
@@ -56,7 +56,7 @@ test('unfavorites a status', async t => {
 })
 
 test('Keeps the correct favorites count', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(4))
     .click(getNthFavoriteButton(4))
     .expect(getNthFavorited(4)).eql('true')

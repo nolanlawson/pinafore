@@ -1,4 +1,3 @@
-import { Role } from 'testcafe'
 import {
   authorizeInput, emailInput, getUrl, instanceInput, mastodonLogInButton,
   passwordInput,
@@ -21,15 +20,23 @@ async function login (t, username, password) {
     .expect(getUrl()).eql('http://localhost:4002/', {timeout: 30000})
 }
 
-export const foobarRole = Role('http://localhost:4002/settings/instances/add', async t => {
-  await login(t, users.foobar.email, users.foobar.password)
-})
-
-export const lockedAccountRole = Role('http://localhost:4002/settings/instances/add', async t => {
-  await login(t, users.LockedAccount.email, users.LockedAccount.password)
-})
+// roles appear not to be working anymore :(
+// export const foobarRole = Role('http://localhost:4002/settings/instances/add', async t => {
+//   await login(t, users.foobar.email, users.foobar.password)
+// })
+//
+// export const lockedAccountRole = Role('http://localhost:4002/settings/instances/add', async t => {
+//   await login(t, users.LockedAccount.email, users.LockedAccount.password)
+// })
 
 export async function loginAsFoobar (t) {
   await t.navigateTo('/settings/instances/add')
   await login(t, users.foobar.email, users.foobar.password)
+  return t
+}
+
+export async function loginAsLockedAccount (t) {
+  await t.navigateTo('/settings/instances/add')
+  await login(t, users.LockedAccount.email, users.LockedAccount.password)
+  return t
 }

@@ -1,4 +1,4 @@
-import { lockedAccountRole } from '../roles'
+import { loginAsLockedAccount } from '../roles'
 import { followAs, unfollowAs } from '../serverActions'
 import {
   avatarInComposeBox,
@@ -14,7 +14,7 @@ fixture`116-follow-requests.js`
 const timeout = 30000
 
 test('Can approve and reject follow requests', async t => {
-  await t.useRole(lockedAccountRole)
+  await loginAsLockedAccount(t)
 
   // necessary for re-running this test in local testing
   await Promise.all([

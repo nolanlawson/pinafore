@@ -3,13 +3,13 @@ import {
   notificationsNavButton,
   scrollToBottomOfTimeline, scrollToTopOfTimeline
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`101-reblog-unreblog.js`
   .page`http://localhost:4002`
 
 test('reblogs a status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(0))
     .expect(getNthReblogged(0)).eql('false')
     .click(getNthReblogButton(0))
@@ -34,7 +34,7 @@ test('reblogs a status', async t => {
 })
 
 test('unreblogs a status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(4))
     .expect(getNthReblogged(4)).eql('false')
     .click(getNthReblogButton(4))
@@ -59,7 +59,7 @@ test('unreblogs a status', async t => {
 })
 
 test('Keeps the correct reblogs count', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
     .hover(getNthStatus(4))
     .expect(getNthReblogged(4)).eql('true')
     .click(getNthStatus(4))
