@@ -57,6 +57,8 @@ before_script:
   - greenkeeper-lockfile-update
 after_script:
   - greenkeeper-lockfile-upload
+install:
+  - npm ci
 script: travis_retry npm run $COMMAND
 env:
   global:
