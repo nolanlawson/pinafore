@@ -1,8 +1,8 @@
 import { loginAsFoobar } from '../roles'
-import { postAs } from '../serverActions'
 import {
-  avatarInComposeBox, getNthDialogOptionsOption, getNthPinnedStatus, getNthPinnedStatusFavoriteButton, getNthStatus,
-  getNthStatusOptionsButton, getUrl, sleep
+  avatarInComposeBox, composeInput, getNthDialogOptionsOption, getNthPinnedStatus, getNthPinnedStatusFavoriteButton,
+  getNthStatus,
+  getNthStatusOptionsButton, getUrl, postStatusButton
 } from '../utils'
 import { users } from '../users'
 
@@ -11,12 +11,11 @@ fixture`117-pin-unpin.js`
 
 test('Can pin statuses', async t => {
   await loginAsFoobar(t)
-
-  await postAs('foobar', 'I am going to pin this')
-
-  await sleep(2000)
-
-  await t.click(avatarInComposeBox)
+  await t
+    .typeText(composeInput, 'I am going to pin this', {paste: true})
+    .click(postStatusButton)
+    .expect(getNthStatus(0).innerText).contains('I am going to pin this')
+    .click(avatarInComposeBox)
     .expect(getUrl()).contains(`/accounts/${users.foobar.id}`)
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
     .expect(getNthPinnedStatus(0).innerText).contains('this is unlisted')
