@@ -1,4 +1,4 @@
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import {
   clickToNotificationsAndBackHome, forceOffline, forceOnline, getNthStatus, getUrl, homeNavButton,
   notificationsNavButton
@@ -10,7 +10,8 @@ fixture`105-deletes.js`
 
 test('deleted statuses are removed from the timeline', async t => {
   let timeout = 20000
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
   let status = await postAs('admin', "I'm gonna delete this")
   await t.expect(getNthStatus(0).innerText).contains("I'm gonna delete this", {timeout})
@@ -30,7 +31,8 @@ test('deleted statuses are removed from the timeline', async t => {
 
 test('deleted statuses are removed from threads', async t => {
   let timeout = 20000
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
   let status = await postAs('admin', "I won't delete this")
   let reply = await postReplyAs('admin', 'But I will delete this', status.id)
@@ -54,7 +56,8 @@ test('deleted statuses are removed from threads', async t => {
 
 test('deleted statuses result in deleted notifications', async t => {
   let timeout = 20000
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
   let status = await postAs('admin', "@foobar yo yo foobar what's up")

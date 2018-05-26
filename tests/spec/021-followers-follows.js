@@ -3,13 +3,14 @@ import {
   followsButton, getNthSearchResult,
   getNthStatus, getUrl, goBack
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`021-followers-follows.js`
   .page`http://localhost:4002`
 
 test('shows followers and follows', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .click(getNthStatus(0).find('.status-author-name'))
     .expect(getUrl()).match(/\/accounts\/3$/)
     .expect(followsButton.getAttribute('aria-label')).eql('Follows 2')

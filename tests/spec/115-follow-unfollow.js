@@ -3,13 +3,14 @@ import {
   accountProfileMoreOptionsButton, closeDialogButton,
   getNthDialogOptionsOption
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`115-follow-unfollow.js`
   .page`http://localhost:4002`
 
 test('Can follow and unfollow an account from the profile page', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/5')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileMoreOptionsButton)
