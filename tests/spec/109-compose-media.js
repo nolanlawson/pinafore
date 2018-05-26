@@ -4,7 +4,7 @@ import {
   mediaButton, notificationsNavButton,
   uploadKittenImage
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`109-compose-media.js`
   .page`http://localhost:4002`
@@ -18,7 +18,8 @@ async function uploadTwoKittens (t) {
 }
 
 test('uploads alts for media', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(2), 'kitten 2')
@@ -31,7 +32,8 @@ test('uploads alts for media', async t => {
 })
 
 test('uploads alts when deleting and re-uploading media', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await (uploadKittenImage(1)())
   await t.typeText(getNthMediaAltInput(1), 'this will be deleted')
@@ -46,7 +48,8 @@ test('uploads alts when deleting and re-uploading media', async t => {
 })
 
 test('uploads alts mixed with no-alts', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(2), 'kitten numero dos')
@@ -56,7 +59,8 @@ test('uploads alts mixed with no-alts', async t => {
 })
 
 test('saves alts to local storage', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(1), 'kitten numero uno')
