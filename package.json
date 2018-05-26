@@ -19,7 +19,7 @@
     "build-sass-watch": "node ./bin/build-sass.js --watch",
     "run-mastodon": "node -r esm ./bin/run-mastodon.js",
     "testcafe": "run-s testcafe-p testcafe-s",
-    "testcafe-p": "cross-env-shell testcafe --hostname localhost --skip-js-errors -c 2 $BROWSER tests/spec/0*",
+    "testcafe-p": "cross-env-shell testcafe --hostname localhost --skip-js-errors -c 4 $BROWSER tests/spec/0*",
     "testcafe-s": "cross-env-shell testcafe --hostname localhost --skip-js-errors $BROWSER tests/spec/1*",
     "test": "cross-env BROWSER=chrome:headless npm run test-browser",
     "test-browser": "run-p --race run-mastodon build-and-start test-mastodon",
