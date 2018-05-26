@@ -17,6 +17,7 @@ test('External links, hashtags, and mentions have correct attributes', async t =
   const nthAnchor = n => getNthStatus(0).find('.status-content a').nth(n)
 
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, text, {paste: true})
     .click(composeButton)
     .expect(getNthStatus(0).innerText).contains('Why hello there', {timeout: 20000})

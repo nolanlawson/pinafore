@@ -9,6 +9,7 @@ fixture`020-themes.js`
 
 test('can set a theme', async t => {
   await loginAsFoobar(t)
+  await t
     .click(settingsNavButton)
     .click($('a[href="/settings/instances"]'))
     .click($('a[href="/settings/instances/localhost:3000"]'))

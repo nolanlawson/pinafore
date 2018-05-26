@@ -6,6 +6,7 @@ fixture`014-compose-post-privacy.js`
 
 test('Changes post privacy', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(postPrivacyButton.getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
     .click(postPrivacyButton)
     .click(getNthPostPrivacyOptionInDialog(2))

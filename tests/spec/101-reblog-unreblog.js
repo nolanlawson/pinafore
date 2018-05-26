@@ -10,6 +10,7 @@ fixture`101-reblog-unreblog.js`
 
 test('reblogs a status', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
     .expect(getNthReblogged(0)).eql('false')
     .click(getNthReblogButton(0))
@@ -35,6 +36,7 @@ test('reblogs a status', async t => {
 
 test('unreblogs a status', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(4))
     .expect(getNthReblogged(4)).eql('false')
     .click(getNthReblogButton(4))
@@ -60,6 +62,7 @@ test('unreblogs a status', async t => {
 
 test('Keeps the correct reblogs count', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(4))
     .expect(getNthReblogged(4)).eql('true')
     .click(getNthStatus(4))

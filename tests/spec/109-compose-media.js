@@ -19,6 +19,7 @@ async function uploadTwoKittens (t) {
 
 test('uploads alts for media', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(2), 'kitten 2')
@@ -32,6 +33,7 @@ test('uploads alts for media', async t => {
 
 test('uploads alts when deleting and re-uploading media', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await (uploadKittenImage(1)())
   await t.typeText(getNthMediaAltInput(1), 'this will be deleted')
@@ -47,6 +49,7 @@ test('uploads alts when deleting and re-uploading media', async t => {
 
 test('uploads alts mixed with no-alts', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(2), 'kitten numero dos')
@@ -57,6 +60,7 @@ test('uploads alts mixed with no-alts', async t => {
 
 test('saves alts to local storage', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await uploadTwoKittens(t)
   await t.typeText(getNthMediaAltInput(1), 'kitten numero uno')

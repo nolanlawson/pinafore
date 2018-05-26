@@ -10,6 +10,7 @@ fixture`103-compose.js`
 
 test('statuses show up in home timeline', async t => {
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'hello world', {paste: true})
     .click(postStatusButton)
     .expect(getNthStatus(0).innerText).contains('hello world')
@@ -24,6 +25,7 @@ test('statuses show up in home timeline', async t => {
 
 test('statuses in threads show up in right order', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/5')
     .click(getNthStatus(2))
     .expect(getUrl()).contains('/statuses')

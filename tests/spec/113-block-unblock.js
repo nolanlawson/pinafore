@@ -14,6 +14,7 @@ test('Can block and unblock an account from a status', async t => {
   let post = 'a very silly statement that should probably get me blocked'
   await postAs('admin', post)
   await loginAsFoobar(t)
+  await t
     .expect(getNthStatus(0).innerText).contains(post, {timeout: 30000})
     .click(getNthStatusOptionsButton(0))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
@@ -36,6 +37,7 @@ test('Can block and unblock an account from a status', async t => {
 
 test('Can block and unblock an account from the account profile page', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/5')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileMoreOptionsButton)

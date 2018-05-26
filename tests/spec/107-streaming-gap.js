@@ -13,6 +13,7 @@ test('fills in a status posted while away from timeline', async t => {
   let timeout = 30000
 
   await loginAsFoobar(t)
+  await t
     .click(localTimelineNavButton)
     .expect(getNthStatus(0).exists).ok({timeout})
     .hover(getNthStatus(0))

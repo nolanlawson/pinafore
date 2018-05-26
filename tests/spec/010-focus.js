@@ -37,6 +37,7 @@ test('timeline preserves focus', async t => {
 
 test('timeline link preserves focus', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(getNthStatus(0).exists).ok({timeout: 20000})
     .click(getNthStatus(0).find('.status-header a'))
     .expect(getUrl()).contains('/accounts/')
@@ -54,6 +55,7 @@ test('timeline link preserves focus', async t => {
 
 test('notification timeline preserves focus', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/notifications')
   await scrollToStatus(t, 5)
   await t.click(getNthStatus(5).find('.status-header a'))
@@ -67,6 +69,7 @@ test('notification timeline preserves focus', async t => {
 
 test('thread preserves focus', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/3')
   await scrollToStatus(t, 2)
   await t.click(getNthStatus(2))
@@ -88,6 +91,7 @@ test('thread preserves focus', async t => {
 
 test('reply preserves focus and moves focus to the text input', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(getNthStatus(1).exists).ok({timeout: 20000})
     .click(getNthReplyButton(1))
     .expect(getActiveElementClass()).contains('compose-box-input')

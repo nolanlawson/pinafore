@@ -9,6 +9,7 @@ fixture`015-compose-content-warnings.js`
 
 test('Changes content warnings', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(composeContentWarning.exists).notOk()
     .expect(contentWarningButton.getAttribute('aria-label')).eql('Add content warning')
     .expect(contentWarningButton.getAttribute('aria-pressed')).eql('false')
@@ -38,6 +39,7 @@ test('Changes content warnings', async t => {
 
 test('Considers content warnings for length limits', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(composeLengthIndicator.innerText).eql('500')
     .click(contentWarningButton)
     .typeText(composeContentWarning, 'my content warning', {paste: true})
@@ -54,6 +56,7 @@ test('Considers content warnings for length limits', async t => {
 
 test('Content warning goes away if you hide it', async t => {
   await loginAsFoobar(t)
+  await t
     .click(contentWarningButton)
     .expect(composeContentWarning.value).eql('')
     .typeText(composeContentWarning, 'yo', {paste: true})

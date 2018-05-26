@@ -12,6 +12,7 @@ fixture`007-account-profile.js`
 
 test('shows account profile', async t => {
   await loginAsFoobar(t)
+  await t
     .click($('.status-author-name').withText(('quux')))
     .expect(getUrl()).contains('/accounts/3')
     .expect(accountProfileName.innerText).contains('quux')
@@ -23,6 +24,7 @@ test('shows account profile', async t => {
 
 test('shows account profile 2', async t => {
   await loginAsFoobar(t)
+  await t
     .click($('.status-author-name').withText(('admin')))
     .expect(getUrl()).contains('/accounts/1')
     .expect(accountProfileName.innerText).contains('admin')
@@ -34,6 +36,7 @@ test('shows account profile 2', async t => {
 
 test('shows account profile 3', async t => {
   await loginAsFoobar(t)
+  await t
     .click($('.mention').withText(('foobar')))
     .expect(getUrl()).contains('/accounts/2')
     .expect(accountProfileName.innerText).contains('foobar')
@@ -45,6 +48,7 @@ test('shows account profile 3', async t => {
 
 test('shows account profile statuses', async t => {
   await loginAsFoobar(t)
+  await t
     .click($('.status-author-name').withText(('quux')))
     .expect(getUrl()).contains('/accounts/3')
     .expect($('.pinned-statuses .status-article').getAttribute('aria-setsize')).eql('2')

@@ -7,6 +7,7 @@ fixture`004-pinned-statuses.js`
 
 test("shows a user's pinned statuses", async t => {
   await loginAsFoobar(t)
+  await t
     .click(communityNavButton)
     .expect(getUrl()).contains('/community')
     .click($('a[href="/pinned"]'))
@@ -18,6 +19,7 @@ test("shows a user's pinned statuses", async t => {
 
 test("shows pinned statuses on a user's account page", async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/2')
     .expect(getNthPinnedStatus(0).getAttribute('aria-posinset')).eql('0')
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
@@ -26,6 +28,7 @@ test("shows pinned statuses on a user's account page", async t => {
 
 test("shows pinned statuses on a user's account page 2", async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/3')
     .expect(getNthPinnedStatus(0).getAttribute('aria-posinset')).eql('0')
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('2')

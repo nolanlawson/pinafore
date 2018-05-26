@@ -32,11 +32,9 @@ async function login (t, username, password) {
 export async function loginAsFoobar (t) {
   await t.navigateTo('/settings/instances/add')
   await login(t, users.foobar.email, users.foobar.password)
-  return t
 }
 
 export async function loginAsLockedAccount (t) {
   await t.navigateTo('/settings/instances/add')
   await login(t, users.LockedAccount.email, users.LockedAccount.password)
-  return t
 }

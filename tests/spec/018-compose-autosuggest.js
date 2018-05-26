@@ -11,6 +11,7 @@ const timeout = 30000
 
 test('autosuggests user handles', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
   await sleep(1000)
   await t
@@ -32,6 +33,7 @@ test('autosuggests user handles', async t => {
 
 test('autosuggests custom emoji', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, ':blob')
     .click(getNthAutosuggestionResult(1))
@@ -52,6 +54,7 @@ test('autosuggests custom emoji', async t => {
 
 test('autosuggest custom emoji works with regular emoji - keyboard', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d :blobno')
     .expect(getNthAutosuggestionResult(1).innerText).contains(':blobnom:', {timeout})
@@ -61,6 +64,7 @@ test('autosuggest custom emoji works with regular emoji - keyboard', async t => 
 
 test('autosuggest custom emoji works with regular emoji - clicking', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d :blobno')
     .expect(getNthAutosuggestionResult(1).innerText).contains(':blobnom:', {timeout})
@@ -70,6 +74,7 @@ test('autosuggest custom emoji works with regular emoji - clicking', async t => 
 
 test('autosuggest handles works with regular emoji - keyboard', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d @quu')
     .expect(getNthAutosuggestionResult(1).innerText).contains('@quux', {timeout})
@@ -79,6 +84,7 @@ test('autosuggest handles works with regular emoji - keyboard', async t => {
 
 test('autosuggest handles works with regular emoji - clicking', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d @quu')
     .expect(getNthAutosuggestionResult(1).innerText).contains('@quux', {timeout})
@@ -88,6 +94,7 @@ test('autosuggest handles works with regular emoji - clicking', async t => {
 
 test('autosuggest only shows for one input', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, '@quu')
     .hover(getNthStatus(0))
@@ -100,6 +107,7 @@ test('autosuggest only shows for one input', async t => {
 
 test('autosuggest only shows for one input part 2', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .typeText(composeInput, '@adm')
     .expect($('.compose-autosuggest.shown').exists).ok({timeout})

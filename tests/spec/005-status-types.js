@@ -6,6 +6,7 @@ fixture`005-status-types.js`
 
 test('shows direct vs followers-only vs regular', async t => {
   await loginAsFoobar(t)
+  await t
     .expect(getNthStatus(1).getAttribute('aria-label')).eql('Status by admin')
     .expect(getNthStatus(1).find('.status-content').innerText).contains('notification of unlisted message')
     .expect(getNthStatus(1).find('.status-toolbar button:nth-child(2)').getAttribute('aria-label'))
@@ -25,6 +26,7 @@ test('shows direct vs followers-only vs regular', async t => {
 
 test('shows direct vs followers-only vs regular in notifications', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/notifications')
     .expect(getNthStatus(2).getAttribute('aria-label')).eql('Status by admin')
     .expect(getNthStatus(2).find('.status-content').innerText).contains('notification of unlisted message')

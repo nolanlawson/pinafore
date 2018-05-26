@@ -9,6 +9,7 @@ fixture`110-compose-content-warnings.js`
 
 test('content warnings are posted', async t => {
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'hello this is a toot', {paste: true})
     .click(contentWarningButton)
     .typeText(composeContentWarning, 'CW', {paste: true})
@@ -22,6 +23,7 @@ test('content warnings are posted', async t => {
 
 test('content warnings are not posted if removed', async t => {
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'hi this is another toot', {paste: true})
     .click(contentWarningButton)
     .typeText(composeContentWarning, 'content warning!', {paste: true})
@@ -35,6 +37,7 @@ test('content warnings are not posted if removed', async t => {
 
 test('content warnings can have emoji', async t => {
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'I can: :blobnom:')
     .click(contentWarningButton)
     .typeText(composeContentWarning, 'can you feel the :blobpats: tonight')
@@ -49,6 +52,7 @@ test('no XSS in content warnings or text', async t => {
   let pwned1 = `<script>alert("pwned!")</script>`
   let pwned2 = `<script>alert("pwned from CW!")</script>`
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, pwned1)
     .click(contentWarningButton)
     .typeText(composeContentWarning, pwned2)

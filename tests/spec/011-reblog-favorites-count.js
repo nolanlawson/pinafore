@@ -10,6 +10,7 @@ fixture`011-reblog-favorites-count.js`
 
 test('shows favorites', async t => {
   await loginAsFoobar(t)
+  await t
     .click(getNthStatus(0))
     .expect(getUrl()).contains('/statuses/')
     .expect(getFavoritesCount()).eql(2)
@@ -25,6 +26,7 @@ test('shows favorites', async t => {
 
 test('shows boosts', async t => {
   await loginAsFoobar(t)
+  await t
     .click(getNthStatus(0))
     .expect(getUrl()).contains('/statuses/')
     .expect(getReblogsCount()).eql(1)

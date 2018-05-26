@@ -41,6 +41,7 @@ test('Can pin statuses', async t => {
 
 test('Can favorite a pinned status', async t => {
   await loginAsFoobar(t)
+  await t
     .click(avatarInComposeBox)
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
     .expect(getNthPinnedStatusFavoriteButton(0).getAttribute('aria-pressed')).eql('false')

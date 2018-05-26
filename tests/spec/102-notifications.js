@@ -8,6 +8,7 @@ fixture`102-notifications.js`
 
 test('shows unread notifications', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
     .hover(getNthStatus(2))
     .hover(getNthStatus(4))

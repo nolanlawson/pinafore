@@ -11,6 +11,7 @@ fixture`009-threads.js`
 
 test('Shows a thread', async t => {
   await loginAsFoobar(t)
+  await t
     .click($('a').withText('quux'))
 
   await scrollToBottomOfTimeline(t)
@@ -25,6 +26,7 @@ test('Shows a thread', async t => {
 
 test('Scrolls to proper point in thread', async t => {
   await loginAsFoobar(t)
+  await t
     .click($('a').withText('quux'))
     .hover(getNthStatus(0))
     .hover(getNthStatus(2))
@@ -70,6 +72,7 @@ async function validateForkedThread (t) {
 
 test('Forked threads look correct online and offline', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getFirstVisibleStatus())
   await navigateToBazAccount(t)
   await validateForkedThread(t)

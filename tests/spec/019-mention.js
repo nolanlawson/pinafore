@@ -9,6 +9,7 @@ fixture`019-mention.js`
 
 test('can mention from account profile', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/5')
     .click(accountProfileMoreOptionsButton)
     .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @baz')

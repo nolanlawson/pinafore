@@ -11,6 +11,7 @@ fixture`111-focus.js`
 
 test('replying to a toot returns focus to reply button', async t => {
   await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'I would like, if I may, to take you on a strange journey', {paste: true})
     .pressKey('ctrl+enter')
     .expect(getNthStatus(0).find('.status-content').innerText).contains('I would like, if I may, to take you on a strange journey')

@@ -60,7 +60,7 @@ In separate terminals:
 
 2\. Run a Pinafore dev server:
 
-    npm run serve-test
+    npm run dev
 
 3\. Run a debuggable TestCafé instance:
 

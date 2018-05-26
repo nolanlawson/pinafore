@@ -9,6 +9,7 @@ fixture`104-streaming.js`
 
 test('new incoming statuses show up immediately', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
   await postAs('admin', 'hello my baby hello my honey')
   await t.expect(getNthStatus(0).innerText).contains('hello my baby hello my honey')
@@ -16,6 +17,7 @@ test('new incoming statuses show up immediately', async t => {
 
 test('new incoming toots show a button if scrolled down', async t => {
   await loginAsFoobar(t)
+  await t
     .hover(getNthStatus(0))
     .hover(getNthStatus(2))
     .hover(getNthStatus(4))

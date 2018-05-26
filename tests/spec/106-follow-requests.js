@@ -13,6 +13,7 @@ fixture`106-follow-requests.js`
 
 test('can request to follow an account', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/6')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileFollowButton)

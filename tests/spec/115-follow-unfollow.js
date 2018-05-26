@@ -10,6 +10,7 @@ fixture`115-follow-unfollow.js`
 
 test('Can follow and unfollow an account from the profile page', async t => {
   await loginAsFoobar(t)
+  await t
     .navigateTo('/accounts/5')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .click(accountProfileMoreOptionsButton)
