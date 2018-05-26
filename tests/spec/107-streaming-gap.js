@@ -1,4 +1,4 @@
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import {
   getNthStatus, homeNavButton, localTimelineNavButton, sleep
 } from '../utils'
@@ -12,7 +12,8 @@ fixture`107-streaming-gap.js`
 test('fills in a status posted while away from timeline', async t => {
   let timeout = 30000
 
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .click(localTimelineNavButton)
     .expect(getNthStatus(0).exists).ok({timeout})
     .hover(getNthStatus(0))

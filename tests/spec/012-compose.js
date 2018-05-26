@@ -5,13 +5,14 @@ import {
   notificationsNavButton,
   times
 } from '../utils'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 
 fixture`012-compose.js`
   .page`http://localhost:4002`
 
 test('shows compose limits', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .hover(composeInput)
     .expect(composeLengthIndicator.innerText).eql('500')
     .expect(composeButton.hasAttribute('disabled')).notOk()
@@ -37,7 +38,8 @@ test('shows compose limits', async t => {
 })
 
 test('shows compose limits for URLs/handles', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .expect(composeLengthIndicator.innerText).eql('500')
     .expect(composeButton.hasAttribute('disabled')).notOk()
     .typeText(composeInput, 'hello world ' +
@@ -48,14 +50,16 @@ test('shows compose limits for URLs/handles', async t => {
 })
 
 test('shows compose limits for emoji', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'hello world \ud83c\ude01 \ud83d\udc6a')
     .expect(composeLengthIndicator.innerText).eql('485')
     .expect(composeButton.hasAttribute('disabled')).notOk()
 })
 
 test('shows compose limits for custom emoji', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'hello world ')
     .click(emojiButton)
     .click($('button img[title=":blobnom:"]'))
@@ -64,7 +68,8 @@ test('shows compose limits for custom emoji', async t => {
 })
 
 test('inserts custom emoji correctly', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .typeText(composeInput, 'hello world')
     .selectText(composeInput, 6, 6)
     .expect(getComposeSelectionStart()).eql(6)
@@ -83,7 +88,8 @@ test('inserts custom emoji correctly', async t => {
 })
 
 test('inserts emoji without typing anything', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .click(emojiButton)
     .click($('button img[title=":blobpats:"]'))
     .expect(composeInput.value).eql(':blobpats: ')
