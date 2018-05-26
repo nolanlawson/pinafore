@@ -53,14 +53,13 @@
 
   export default {
     oncreate () {
-      if (process.env.NODE_ENV !== 'production') {
-        window.__fakeFileInput = (file) => {
-          this.onFileChange({
-            target: {
-              files: [file]
-            }
-          })
-        }
+      // for testing
+      window.__fakeFileInput = (file) => {
+        this.onFileChange({
+          target: {
+            files: [file]
+          }
+        })
       }
     },
     components: {

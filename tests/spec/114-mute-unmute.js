@@ -4,14 +4,14 @@ import {
   getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog, closeDialogButton
 } from '../utils'
 import { Selector as $ } from 'testcafe'
-import { foobarRole } from '../roles'
+import { loginAsFoobar } from '../roles'
 import { postAs } from '../serverActions'
 
 fixture`114-mute-unmute.js`
   .page`http://localhost:4002`
 
 test('Can mute and unmute an account', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
   let post = 'blah blah blah'
   await postAs('admin', post)
 

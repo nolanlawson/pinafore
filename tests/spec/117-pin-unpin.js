@@ -1,8 +1,8 @@
-import { foobarRole } from '../roles'
-import { postAs } from '../serverActions'
+import { loginAsFoobar } from '../roles'
 import {
-  avatarInComposeBox, getNthDialogOptionsOption, getNthPinnedStatus, getNthPinnedStatusFavoriteButton, getNthStatus,
-  getNthStatusOptionsButton, getUrl, sleep
+  avatarInComposeBox, composeInput, getNthDialogOptionsOption, getNthPinnedStatus, getNthPinnedStatusFavoriteButton,
+  getNthStatus,
+  getNthStatusOptionsButton, getUrl, postStatusButton
 } from '../utils'
 import { users } from '../users'
 
@@ -10,13 +10,12 @@ fixture`117-pin-unpin.js`
   .page`http://localhost:4002`
 
 test('Can pin statuses', async t => {
-  await t.useRole(foobarRole)
-
-  await postAs('foobar', 'I am going to pin this')
-
-  await sleep(2000)
-
-  await t.click(avatarInComposeBox)
+  await loginAsFoobar(t)
+  await t
+    .typeText(composeInput, 'I am going to pin this', {paste: true})
+    .click(postStatusButton)
+    .expect(getNthStatus(0).innerText).contains('I am going to pin this')
+    .click(avatarInComposeBox)
     .expect(getUrl()).contains(`/accounts/${users.foobar.id}`)
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
     .expect(getNthPinnedStatus(0).innerText).contains('this is unlisted')
@@ -40,7 +39,8 @@ test('Can pin statuses', async t => {
 })
 
 test('Can favorite a pinned status', async t => {
-  await t.useRole(foobarRole)
+  await loginAsFoobar(t)
+  await t
     .click(avatarInComposeBox)
     .expect(getNthPinnedStatus(0).getAttribute('aria-setsize')).eql('1')
     .expect(getNthPinnedStatusFavoriteButton(0).getAttribute('aria-pressed')).eql('false')
