@@ -78,9 +78,9 @@ export const getActiveElementInsideNthStatus = exec(() => {
 
 export const goBack = exec(() => window.history.back())
 
-export const forceOffline = exec(() => window.store.set({online: false}))
+export const forceOffline = exec(() => window.__forceOnline(false))
 
-export const forceOnline = exec(() => window.store.set({online: true}))
+export const forceOnline = exec(() => window.__forceOnline(true))
 
 export const getComposeSelectionStart = exec(() => composeInput().selectionStart, {
   dependencies: { composeInput }
