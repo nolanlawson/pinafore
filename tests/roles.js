@@ -28,3 +28,8 @@ export const foobarRole = Role('http://localhost:4002/settings/instances/add', a
 export const lockedAccountRole = Role('http://localhost:4002/settings/instances/add', async t => {
   await login(t, users.LockedAccount.email, users.LockedAccount.password)
 })
+
+export async function loginAsFoobar (t) {
+  await t.navigateTo('/settings/instances/add')
+  await login(t, users.foobar.email, users.foobar.password)
+}

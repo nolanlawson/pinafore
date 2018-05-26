@@ -2,8 +2,6 @@ import { ClientFunction as exec, Selector as $ } from 'testcafe'
 import * as images from './images'
 import * as blobUtils from './blobUtils'
 
-const SCROLL_INTERVAL = 1
-
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
 export const modalDialog = $('.modal-dialog')
@@ -157,6 +155,18 @@ export function getNthStatusSelector (n) {
   return `div[aria-hidden="false"] > article[aria-posinset="${n}"]`
 }
 
+export function getNthStatusContent (n) {
+  return $(`${getNthStatusSelector(n)} .status-content`)
+}
+
+export function getNthStatusSpoiler (n) {
+  return $(`${getNthStatusSelector(n)} .status-spoiler`)
+}
+
+export function getNthStatusHeader (n) {
+  return $(`${getNthStatusSelector(n)} .status-header`)
+}
+
 export function getNthStatusAndImage (nStatus, nImage) {
   return getNthStatus(nStatus).find(`.status-media .show-image-button:nth-child(${nImage + 1}) img`)
 }
@@ -234,35 +244,30 @@ export function getNthPinnedStatusFavoriteButton (n) {
 }
 
 export async function validateTimeline (t, timeline) {
-  const timeout = 20000
+  const timeout = 30000
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]
-    await t.expect(getNthStatus(i).exists).ok({ timeout })
+    // hovering forces TestCafé to scroll to that element: https://git.io/vABV2
+    await t.hover(getNthStatus(i))
     if (status.content) {
-      await t.expect(getNthStatus(i).find('.status-content p').innerText)
+      await t.expect(getNthStatusContent(i).innerText)
         .contains(status.content, { timeout })
     }
     if (status.spoiler) {
-      await t.expect(getNthStatus(i).find('.status-spoiler p').innerText)
+      await t.expect(getNthStatusSpoiler(i).innerText)
         .contains(status.spoiler, { timeout })
     }
     if (status.followedBy) {
-      await t.expect(getNthStatus(i).find('.status-header span').innerText)
+      await t.expect(getNthStatusHeader(i).innerText)
         .contains(status.followedBy + ' followed you', { timeout })
     }
     if (status.rebloggedBy) {
-      await t.expect(getNthStatus(i).find('.status-header span').innerText)
+      await t.expect(getNthStatusHeader(i).innerText)
         .contains(status.rebloggedBy + ' boosted your status', { timeout })
     }
     if (status.favoritedBy) {
-      await t.expect(getNthStatus(i).find('.status-header span').innerText)
+      await t.expect(getNthStatusHeader(i).innerText)
         .contains(status.favoritedBy + ' favorited your status', { timeout })
-    }
-
-    // hovering forces TestCafé to scroll to that element: https://git.io/vABV2
-    if (i % SCROLL_INTERVAL === (SCROLL_INTERVAL - 1)) { // only scroll every nth element
-      await t.hover(getNthStatus(i))
-        .expect($('.loading-footer').exist).notOk()
     }
   }
 }
@@ -272,8 +277,7 @@ export async function scrollToTopOfTimeline (t) {
   while (true) {
     await t.hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
-    i -= SCROLL_INTERVAL
-    if (i <= 0) {
+    if (--i <= 0) {
       break
     }
   }
@@ -285,8 +289,7 @@ export async function scrollToBottomOfTimeline (t) {
     await t.hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
     let size = await getNthStatus(i).getAttribute('aria-setsize')
-    i += SCROLL_INTERVAL
-    if (i >= size - 1) {
+    if (++i >= size - 1) {
       break
     }
   }
@@ -294,7 +297,7 @@ export async function scrollToBottomOfTimeline (t) {
 
 export async function scrollToStatus (t, n) {
   let timeout = 20000
-  for (let i = 0; i <= n; i += SCROLL_INTERVAL) {
+  for (let i = 0; i <= n; i++) {
     await t.expect(getNthStatus(i).exists).ok({timeout})
       .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
