@@ -13,7 +13,7 @@ sudo -E apt-get install -y autoconf bison build-essential ffmpeg file \
   g++ gcc imagemagick libffi-dev libgdbm-dev libgdbm3 libicu-dev \
   libidn11-dev libncurses5-dev libpq-dev libprotobuf-dev libreadline6-dev \
   libssl-dev libxml2-dev libxslt1-dev libyaml-dev nodejs \
-  postgresql-client-9 postgresql-contrib-9 pkg-config \
+  postgresql-10 postgresql-client-10 postgresql-contrib-10 pkg-config \
   protobuf-compiler redis-tools zlib1g-dev
 
 ruby --version

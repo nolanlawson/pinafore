@@ -5,6 +5,7 @@ dist: trusty   # needed for chrome headless
 sudo: required # needed for chrome headless
 addons:
   chrome: stable
+  postgresql: "10"
 services:
   - redis-server
   - postgresql
