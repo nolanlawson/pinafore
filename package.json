@@ -166,7 +166,7 @@
       "webpack.server.config.js"
     ],
     "engines": {
-      "node": ">=10"
+      "node": "^8.0.0"
     }
   },
   "greenkeeper": {
