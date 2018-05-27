@@ -35,5 +35,5 @@ module.exports = [
   {id: 'fa-times', src: 'node_modules/font-awesome-svg-png/white/svg/times.svg', title: 'Close'},
   {id: 'fa-volume-off', src: 'node_modules/font-awesome-svg-png/white/svg/volume-off.svg', title: 'Mute'},
   {id: 'fa-volume-up', src: 'node_modules/font-awesome-svg-png/white/svg/volume-up.svg', title: 'Unmute'},
-  {id: 'fa-copy', src: 'node_modules/font-awesome-svg-png/white/svg/copy.svg', title: 'Copy'}
+  {id: 'fa-link', src: 'node_modules/font-awesome-svg-png/white/svg/link.svg', title: 'Link'}
 ]
