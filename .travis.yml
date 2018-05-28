@@ -57,9 +57,16 @@ env:
   - secure: "E9t4zTDdPX9I4XgeC5zJEy+mIM2s0MFPpNfJ/mc5q/JX+gQkHSNkE/32NKgfSce85v33kWWxiPK4qorgX4B+v/MkK6kVQ2HSC7p4XttlQucvSICh/hYSM21WnH7g7DRNj3mDWHWEAwQuquaxVLfGWL60M/svnKG9MOoewos9iDj9AvANm6J09DjRmLuqmDV+VL+cV6ZL/SvUZ5Ervkgs/s3nXHEMse9rKMH/6/KncTGGPRolqyx86XSU6/XtRKX2+bEdiOaIxUYYvjcHJZTKxpSelPpEHjoUfWCM2CG3WyjtYkLF/1Romh8Ft4pnz+iiTzN3eWaT2ralOFvW30oB3cKbDcFb6LDGfXYw7v+XIORc79Ehcb2XlweEymf7fPhbx+7bkCfudRCMLw6OUWXoh66BBjOh2gcQYQ2+3U8KV7YKl/ZQHYb722wE6rN0YvJ6zGriWomDuV1smdyu4teo4lY2oVUUUGflyz2HWxnjVbqWizw4k69TNIcEEQ8j8YgdXMUxNMUOJoCu0c3Lnd8J1BeU/7LX87c54/oCMjEivnsENGIC/EUgAoXDi3L0y7HzHgaDs112p5zjspJsSSON/T4E2uyyb2RpjBY4Ghl43a/RDAlv1gUFtvbanphg3PEGMfG7B2gxk9Z/v5J9pUP/NtsspmT2MvTHZXtH/44XPEU="
 matrix:
   include:
-    - env: BROWSER=chrome:headless COMMAND=test-browser-suite0
-    - env: BROWSER=chrome:headless COMMAND=test-browser-suite1
-    - env: COMMAND=deploy-dev-travis
+    - env: RUN=0 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=1 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=2 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=3 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=4 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=5 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=6 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=7 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=8 BROWSER=chrome:headless COMMAND=test-browser-suite0
+    - env: RUN=9 BROWSER=chrome:headless COMMAND=test-browser-suite0
   allow_failures:
     - env: COMMAND=deploy-dev-travis
 branches:
