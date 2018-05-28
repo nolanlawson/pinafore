@@ -164,7 +164,10 @@
       "inline-script.js",
       "webpack.client.config.js",
       "webpack.server.config.js"
-    ]
+    ],
+    "engines": {
+      "node": "^8.0.0"
+    }
   },
   "greenkeeper": {
     "ignore": [
