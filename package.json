@@ -99,7 +99,7 @@
   },
   "devDependencies": {
     "eslint-plugin-html": "4.0.3",
-    "now": "11.1.14",
+    "now": "11.1.15",
     "standard": "11.0.1",
     "testcafe": "0.19.1"
   },
