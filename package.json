@@ -56,7 +56,7 @@
     "css-loader": "0.28.11",
     "escape-html": "1.0.3",
     "esm": "3.0.38",
-    "events": "2.1.0",
+    "events": "3.0.0",
     "express": "4.16.3",
     "fg-loadcss": "2.0.1",
     "file-api": "0.10.4",
