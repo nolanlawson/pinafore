@@ -13,19 +13,21 @@ const stat = pify(fs.stat.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 const dir = __dirname
 
-const GIT_URL = 'https://github.com/nolanlawson/mastodon'
-const GIT_BRANCH = 'for-pinafore'
+const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
+const GIT_TAG = 'v2.4.0'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'
 const DB_PASS = 'pinafore'
+const DB_PORT = process.env.PGPORT || 5432
+const DB_HOST = '127.0.0.1'
 
 const envFile = `
 PAPERCLIP_SECRET=foo
 SECRET_KEY_BASE=bar
 OTP_SECRET=foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar
-DB_HOST=127.0.0.1
-DB_PORT=${process.env.PGPORT || 5432}
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT}
 DB_USER=${DB_USER}
 DB_NAME=${DB_NAME}
 DB_PASS=${DB_PASS}
@@ -40,7 +42,8 @@ async function cloneMastodon () {
     await stat(mastodonDir)
   } catch (e) {
     console.log('Cloning mastodon...')
-    await exec(`git clone ${GIT_URL} --branch ${GIT_BRANCH} --single-branch --depth 1 "${mastodonDir}"`)
+    await exec(`git clone ${GIT_URL} "${mastodonDir}"`)
+    await exec(`git checkout ${GIT_TAG}`, { cwd: mastodonDir })
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
 }
@@ -75,20 +78,28 @@ async function setupMastodonDatabase () {
 
 async function runMastodon () {
   console.log('Running mastodon...')
+  let env = Object.assign({}, process.env, {
+    RAILS_ENV: 'development',
+    NODE_ENV: 'development',
+    DB_NAME,
+    DB_USER,
+    DB_PASS,
+    DB_HOST,
+    DB_PORT
+  })
+  let cwd = mastodonDir
   let cmds = [
     'gem install bundler foreman',
     'bundle install',
-    'yarn --pure-lockfile'
+    'bundle exec rails db:migrate',
+    'yarn --pure-lockfile',
   ]
 
   for (let cmd of cmds) {
     console.log(cmd)
-    await exec(cmd, {cwd: mastodonDir})
+    await exec(cmd, {cwd, env})
   }
-  const promise = spawn('foreman', ['start'], {
-    cwd: mastodonDir,
-    env: Object.assign({}, process.env, {RAILS_ENV: 'development', NODE_ENV: 'development'})
-  })
+  const promise = spawn('foreman', ['start'], {cwd, env})
   const log = fs.createWriteStream('mastodon.log', {flags: 'a'})
   childProc = promise.childProcess
   childProc.stdout.pipe(log)

@@ -8,8 +8,8 @@ if [[ "$COMMAND" = deploy-dev-travis ]]; then
 fi
 
 source "$HOME/.rvm/scripts/rvm"
-rvm install 2.5.0
-rvm use 2.5.0
+rvm install 2.5.1
+rvm use 2.5.1
 
 sudo -E add-apt-repository -y ppa:mc3man/trusty-media
 sudo -E apt-get update
