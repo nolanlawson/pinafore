@@ -89,3 +89,16 @@ The Webpack Bundle Analyzer `report.html` and `stats.json` are available publicl
 - [dev.pinafore.social/stats.json](https://dev.pinafore.social/stats.json)
 
 This is also available locally after `npm run build` at `.sapper/client/report.html`.
+
+## Updating Mastodon used for testing
+
+1. Run `rm -fr mastodon` to clear out all Mastodon data
+1. Comment out `await restoreMastodonData()` in `run-mastodon.js` to avoid actually populating the database with statuses/favorites/etc.
+2. Update the `GIT_TAG` in `run-mastodon.js` to whatever you want
+3. Run `npm run run-mastodon`
+4. Run `npm run backup-mastodon-data` to overwrite the data in `fixtures/`
+5. Uncomment `await restoreMastodonData()` in `run-mastodon.js`
+6. Commit all changed files
+7. Run `rm -fr mastodon/` and `npm run run-mastodon` to confirm everything's working
+
+Check `mastodon.log` if you have any issues.
