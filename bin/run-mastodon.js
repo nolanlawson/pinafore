@@ -92,7 +92,7 @@ async function runMastodon () {
     'gem install bundler foreman',
     'bundle install',
     'bundle exec rails db:migrate',
-    'yarn --pure-lockfile',
+    'yarn --pure-lockfile'
   ]
 
   for (let cmd of cmds) {
