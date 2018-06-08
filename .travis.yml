@@ -6,36 +6,6 @@ sudo: required # needed for chrome headless
 addons:
   chrome: stable
   postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
-    - postgresql-contrib-10
-    # the following are mastodon dependencies
-    - imagemagick
-    - libpq-dev
-    - libxml2-dev
-    - libxslt1-dev
-    - file
-    - g++
-    - libprotobuf-dev
-    - protobuf-compiler
-    - pkg-config nodejs
-    - gcc
-    - autoconf
-    - bison
-    - build-essential
-    - libssl-dev
-    - libyaml-dev
-    - libreadline6-dev
-    - zlib1g-dev
-    - libncurses5-dev
-    - libffi-dev
-    - libgdbm3
-    - libgdbm-dev
-    - redis-tools
-    - libidn11-dev
-    - libicu-dev
 services:
   - redis-server
 before_install:
