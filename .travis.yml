@@ -6,6 +6,11 @@ sudo: required # needed for chrome headless
 addons:
   chrome: stable
   postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+    - postgresql-contrib-10
 services:
   - redis-server
 before_install:

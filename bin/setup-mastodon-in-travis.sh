@@ -18,9 +18,8 @@ sudo -E apt-get install -y \
   libgdbm3 libicu-dev libidn11-dev libncurses5-dev \
   libpq-dev libprotobuf-dev libreadline6-dev libssl-dev \
   libxml2-dev libxslt1-dev libyaml-dev nodejs \
-  pkg-config postgresql-10 postgresql-client-10 \
-  postgresql-contrib-10 protobuf-compiler redis-tools \
-  zlib1g-dev
+  pkg-config protobuf-compiler redis-tools zlib1g-dev
+
 ruby --version
 node --version
 npm --version
