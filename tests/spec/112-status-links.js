@@ -1,9 +1,10 @@
 import {
   composeButton,
   composeInput,
-  getNthStatus
+  getNthStatus, getNthStatusSelector
 } from '../utils'
 import { loginAsFoobar } from '../roles'
+import { Selector as $ } from 'testcafe'
 
 fixture`112-status-links.js`
   .page`http://localhost:4002`
@@ -14,7 +15,7 @@ test('External links, hashtags, and mentions have correct attributes', async t =
     'and also http://example.com and https://joinmastodon.org and ' +
     'https://mastodon.social.'
 
-  const nthAnchor = n => getNthStatus(0).find('.status-content a').nth(n)
+  const nthAnchor = n => $(`${getNthStatusSelector(0)} .status-content a`).nth(n)
 
   await loginAsFoobar(t)
   await t
