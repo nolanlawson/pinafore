@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 if [[ "$COMMAND" = deploy-dev-travis ]]; then
   exit 0 # no need to setup mastodon in this case
