@@ -118,15 +118,15 @@ export function getNthMediaAltInput (n) {
 }
 
 export function getNthComposeReplyInput (n) {
-  return getNthStatus(n).find('.compose-box-input')
+  return $(`${getNthStatusSelector(n)} .compose-box-input`)
 }
 
 export function getNthComposeReplyButton (n) {
-  return getNthStatus(n).find('.compose-box-button')
+  return $(`${getNthStatusSelector(n)} .compose-box-button`)
 }
 
 export function getNthPostPrivacyButton (n) {
-  return getNthStatus(n).find('.compose-box-toolbar button:nth-child(3)')
+  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(3)`)
 }
 
 export function getNthAutosuggestionResult (n) {
@@ -170,7 +170,7 @@ export function getNthStatusHeader (n) {
 }
 
 export function getNthStatusAndImage (nStatus, nImage) {
-  return getNthStatus(nStatus).find(`.status-media .show-image-button:nth-child(${nImage + 1}) img`)
+  return $(`${getNthStatusSelector(nStatus)} .status-media .show-image-button:nth-child(${nImage + 1}) img`)
 }
 
 export function getLastVisibleStatus () {
@@ -182,19 +182,19 @@ export function getFirstVisibleStatus () {
 }
 
 export function getNthReplyButton (n) {
-  return getNthStatus(n).find('.status-toolbar button:nth-child(1)')
+  return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(1)`)
 }
 
 export function getNthReplyContentWarningInput (n) {
-  return getNthStatus(n).find('.content-warning-input')
+  return $(`${getNthStatusSelector(n)} .content-warning-input`)
 }
 
 export function getNthReplyContentWarningButton (n) {
-  return getNthStatus(n).find('.compose-box-toolbar button:nth-child(4)')
+  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(4)`)
 }
 
 export function getNthReplyPostPrivacyButton (n) {
-  return getNthStatus(n).find('.compose-box-toolbar button:nth-child(3)')
+  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(3)`)
 }
 
 export function getNthPostPrivacyOptionInDialog (n) {
@@ -202,11 +202,11 @@ export function getNthPostPrivacyOptionInDialog (n) {
 }
 
 export function getNthFavoriteButton (n) {
-  return getNthStatus(n).find('.status-toolbar button:nth-child(3)')
+  return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(3)`)
 }
 
 export function getNthStatusOptionsButton (n) {
-  return getNthStatus(n).find('.status-toolbar button:nth-child(4)')
+  return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(4)`)
 }
 
 export function getNthFavorited (n) {
@@ -214,7 +214,7 @@ export function getNthFavorited (n) {
 }
 
 export function getNthShowOrHideButton (n) {
-  return getNthStatus(n).find('.status-spoiler-button button')
+  return $(`${getNthStatusSelector(n)} .status-spoiler-button button`)
 }
 
 export function getFavoritesCount () {
@@ -222,7 +222,7 @@ export function getFavoritesCount () {
 }
 
 export function getNthReblogButton (n) {
-  return getNthStatus(n).find('.status-toolbar button:nth-child(2)')
+  return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(2)`)
 }
 
 export function getNthReblogged (n) {
@@ -237,12 +237,16 @@ export function getReblogsCount () {
   return reblogsCountElement.innerCount
 }
 
+function getNthPinnedStatusSelector (n) {
+  return `.pinned-statuses article[aria-posinset="${n}"]`
+}
+
 export function getNthPinnedStatus (n) {
-  return $(`.pinned-statuses article[aria-posinset="${n}"]`)
+  return $(getNthPinnedStatusSelector(n))
 }
 
 export function getNthPinnedStatusFavoriteButton (n) {
-  return getNthPinnedStatus(n).find('.status-toolbar button:nth-child(3)')
+  return $(`${getNthPinnedStatusSelector(n)} .status-toolbar button:nth-child(3)`)
 }
 
 export async function validateTimeline (t, timeline) {
@@ -304,7 +308,7 @@ export async function scrollToStatus (t, n) {
       .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
     if (i < n) {
-      await t.hover(getNthStatus(i).find('.status-toolbar'))
+      await t.hover($(`${getNthStatusSelector(i)} .status-toolbar`))
         .expect($('.loading-footer').exist).notOk()
     }
   }
