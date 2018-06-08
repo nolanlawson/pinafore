@@ -42,7 +42,7 @@ async function cloneMastodon () {
     await stat(mastodonDir)
   } catch (e) {
     console.log('Cloning mastodon...')
-    await exec(`git clone ${GIT_URL} "${mastodonDir}"`)
+    await exec(`git clone --single-branch --branch master ${GIT_URL} "${mastodonDir}"`)
     await exec(`git checkout ${GIT_TAG}`, { cwd: mastodonDir })
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
