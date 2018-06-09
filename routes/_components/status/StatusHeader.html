@@ -5,27 +5,33 @@
   <svg class="status-header-svg">
     <use xlink:href={icon}/>
   </svg>
-  <span class="status-header-span">
+
+  <div class="status-header-content">
     {#if timelineType === 'pinned'}
-      Pinned toot
+      <span class="status-header-author">
+        Pinned toot
+      </span>
     {:else}
       <a href="/accounts/{accountId}"
-         class="status-header-a"
+         class="status-header-author"
          title="{'@' + account.acct}"
          focus-key={focusKey} >
         {account.display_name || account.username}
       </a>
-      {#if notification && notification.type === 'reblog'}
-        boosted your status
-      {:elseif notification && notification.type === 'favourite'}
-        favorited your status
-      {:elseif notification && notification.type === 'follow'}
-        followed you
-      {:elseif status && status.reblog}
-        boosted
-      {/if}
     {/if}
-  </span>
+
+    <span class="status-header-action">
+        {#if notification && notification.type === 'reblog'}
+          boosted your status
+        {:elseif notification && notification.type === 'favourite'}
+          favorited your status
+        {:elseif notification && notification.type === 'follow'}
+          followed you
+        {:elseif status && status.reblog}
+          boosted
+        {/if}
+    </span>
+  </div>
 </div>
 <style>
   .status-header {
@@ -43,41 +49,56 @@
   }
 
   .status-header-svg {
+    min-width: 18px;
     margin-left: 20px;
     width: 18px;
     height: 18px;
     fill: var(--deemphasized-text-color);
   }
 
-  @media (max-width: 767px) {
-    .status-header-svg {
-      margin-left: 10px;
-    }
-  }
-
   .status-header.status-in-notification .status-header-svg {
     fill: var(--body-text-color);
   }
 
-  .status-header-span {
+  .status-header-content {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    width: 0;
+  }
+
+  .status-header-author {
     margin-left: 5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
   }
 
-  .status-header-span,
-  .status-header-a,
-  .status-header-a:visited,
-  .status-header-a:hover {
+  .status-header-action {
+    margin-left: 0.5ch;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .status-header-action,
+  .status-header-author,
+  .status-header-author:visited,
+  .status-header-author:hover {
     color: var(--deemphasized-text-color);
   }
 
-  .status-in-notification .status-header-span,
-  .status-in-notification .status-header-a,
-  .status-in-notification .status-header-a:visited,
-  .status-in-notification .status-header-a:hover {
+  .status-in-notification .status-header-action,
+  .status-in-notification .status-header-author,
+  .status-in-notification .status-header-author:visited,
+  .status-in-notification .status-header-author:hover {
     color: var(--body-text-color);
+  }
+
+  @media (max-width: 767px) {
+    .status-header-svg {
+      margin-left: 10px;
+    }
   }
 </style>
 <script>
