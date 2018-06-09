@@ -4,6 +4,7 @@ import {
   getNthStatusSelector
 } from '../utils'
 import { loginAsFoobar } from '../roles'
+import { Selector as $ } from 'testcafe'
 
 fixture`010-focus.js`
   .page`http://localhost:4002`
@@ -12,9 +13,9 @@ test('modal preserves focus', async t => {
   await loginAsFoobar(t)
   await scrollToStatus(t, 9)
   // explicitly hover-focus-click
-  await t.hover(getNthStatus(9).find('.play-video-button'))
+  await t.hover($(`${getNthStatusSelector(9)} .play-video-button`))
   await focus(`${getNthStatusSelector(9)} .play-video-button`)()
-  await t.click(getNthStatus(9).find('.play-video-button'))
+  await t.click($(`${getNthStatusSelector(9)} .play-video-button`))
     .click(closeDialogButton)
     .expect(modalDialogContents.exists).notOk()
     .expect(getActiveElementClass()).contains('play-video-button')
@@ -39,13 +40,13 @@ test('timeline link preserves focus', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getNthStatus(0).exists).ok({timeout: 20000})
-    .click(getNthStatus(0).find('.status-header a'))
+    .click($(`${getNthStatusSelector(0)} .status-header a`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(0).exists).ok()
     .expect(getActiveElementInnerText()).eql('admin')
-    .click(getNthStatus(0).find('.status-sidebar'))
+    .click($(`${getNthStatusSelector(0)} .status-sidebar`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -58,7 +59,7 @@ test('notification timeline preserves focus', async t => {
   await t
     .navigateTo('/notifications')
   await scrollToStatus(t, 5)
-  await t.click(getNthStatus(5).find('.status-header a'))
+  await t.click($(`${getNthStatusSelector(5)} .status-header a`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/notifications')
@@ -74,7 +75,7 @@ test('thread preserves focus', async t => {
   await scrollToStatus(t, 2)
   await t.click(getNthStatus(2))
     .expect(getUrl()).contains('/statuses/')
-    .click(getNthStatus(24).find('.status-sidebar'))
+    .click($(`${getNthStatusSelector(24)} .status-sidebar`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).contains('/statuses/')
@@ -82,9 +83,9 @@ test('thread preserves focus', async t => {
     .expect(getActiveElementClass()).contains('status-sidebar')
     .expect(getActiveElementInsideNthStatus()).eql('24')
     .click(getNthStatus(23))
-    .expect(getNthStatus(23).find('.status-absolute-date').exists).ok()
+    .expect($(`${getNthStatusSelector(23)} .status-absolute-date`).exists).ok()
   await goBack()
-  await t.expect(getNthStatus(24).find('.status-absolute-date').exists).ok()
+  await t.expect($(`${getNthStatusSelector(24)} .status-absolute-date`).exists).ok()
     .expect(getActiveElementClass()).contains('status-article status-in-timeline')
     .expect(getActiveElementInsideNthStatus()).eql('23')
 })

@@ -1,9 +1,10 @@
 import {
   followersButton,
   followsButton, getNthSearchResult,
-  getNthStatus, getUrl, goBack
+  getNthStatusSelector, getUrl, goBack
 } from '../utils'
 import { loginAsFoobar } from '../roles'
+import { Selector as $ } from 'testcafe'
 
 fixture`021-followers-follows.js`
   .page`http://localhost:4002`
@@ -11,7 +12,7 @@ fixture`021-followers-follows.js`
 test('shows followers and follows', async t => {
   await loginAsFoobar(t)
   await t
-    .click(getNthStatus(0).find('.status-author-name'))
+    .click($(`${getNthStatusSelector(0)} .status-author-name`))
     .expect(getUrl()).match(/\/accounts\/3$/)
     .expect(followsButton.getAttribute('aria-label')).eql('Follows 2')
     .click(followsButton)

@@ -1,6 +1,6 @@
 import {
   composeButton, getNthStatus, scrollToStatus, modalDialog, sleep,
-  notificationsNavButton, getUrl
+  notificationsNavButton, getUrl, getNthStatusSelector
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -40,5 +40,5 @@ test('can use emoji dialog within compose dialog', async t => {
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .navigateTo('/')
-  await t.expect(getNthStatus(0).find('img[alt=":blobpats:"]').exists).ok({timeout: 20000})
+  await t.expect($(`${getNthStatusSelector(0)} img[alt=":blobpats:"]`).exists).ok({timeout: 20000})
 })
