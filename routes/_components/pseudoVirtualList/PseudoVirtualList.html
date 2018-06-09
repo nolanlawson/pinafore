@@ -3,13 +3,10 @@
     <PseudoVirtualListLazyItem
       {component}
       index={i}
-      length={safeItems.length}
+      {length}
       {makeProps}
       key={item}
-      {intersectionObserver}
-      isIntersecting={isIntersecting(item, $intersectionStates)}
-      isCached={isCached(item, $intersectionStates)}
-      height={getHeight(item, $intersectionStates)}
+      on:initialized="itemInitialized()"
     />
   {/each}
 </div>
@@ -20,115 +17,52 @@
 </style>
 <script>
   import PseudoVirtualListLazyItem from './PseudoVirtualListLazyItem.html'
-  import { getRectFromEntry } from '../../_utils/getRectFromEntry'
-  import { mark, stop } from '../../_utils/marks'
   import { pseudoVirtualListStore } from './pseudoVirtualListStore'
-  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      mark('PseudoVirtualList oncreate()')
       let { realm } = this.get()
       this.store.setCurrentRealm(realm)
-
-      // When re-rendering, assume all items are non-intersecting until told otherwise.
-      // We already have the heights cached.
-      let { intersectionStates } = this.store.get()
-      let keys = Object.keys(intersectionStates)
-      for (let key of keys) {
-        intersectionStates[key].isCached = true
-      }
-      this.store.setForRealm({intersectionStates: intersectionStates})
-
-      let { containerQuery } = this.get()
-      let intersectionObserver = new IntersectionObserver(this.onIntersection.bind(this), {
-        root: document.querySelector(containerQuery),
-        rootMargin: '300% 0px'
-      })
-      this.set({intersectionObserver})
-      this.observe('allItemsHaveHeight', allItemsHaveHeight => {
-        console.log('allItemsHaveHeight', allItemsHaveHeight)
-        let { initialized } = this.get()
-        if (allItemsHaveHeight && !initialized) {
-          this.set({initialized: true})
-          console.log('initialized PseudoVirtualList')
-          this.fire('initialized')
-        }
-      })
-      stop('PseudoVirtualList oncreate()')
     },
     ondestroy () {
-      let { intersectionObserver } = this.get()
-      if (intersectionObserver) {
-        intersectionObserver.disconnect()
-      }
       this.store.setCurrentRealm(null)
     },
-    helpers: {
-      isIntersecting (key, $intersectionStates) {
-        return !!($intersectionStates[key] && $intersectionStates[key].isIntersecting)
-      },
-      isCached (key, $intersectionStates) {
-        return !!($intersectionStates[key] && $intersectionStates[key].isCached)
-      },
-      getHeight (key, $intersectionStates) {
-        return $intersectionStates[key] && $intersectionStates[key].height
-      }
-    },
     methods: {
-      observe,
-      scrollToPosition (element) {
-        let { scrolledToPosition } = this.get()
-        if (scrolledToPosition) {
-          return
+      itemInitialized () {
+        let { initializedCount, length } = this.get()
+        initializedCount++
+        this.set({initializedCount})
+        if (initializedCount === length) {
+          this.initialize()
         }
-        this.set({scrolledToPosition: true})
+      },
+      initialize () {
+        let { scrollToItem } = this.get()
+        let { node } = this.refs
+        if (scrollToItem && node) {
+          this.scrollToPosition(node.querySelector(`[pseudo-virtual-list-key="${scrollToItem}"]`))
+        } else {
+          this.fire('initialized')
+        }
+      },
+      scrollToPosition (element) {
         requestAnimationFrame(() => {
           console.log('scrolling element into view')
           element.scrollIntoView(true)
+          this.fire('initialized')
         })
-      },
-      onIntersection (entries) {
-        mark('onIntersection')
-        let newIntersectionStates = {}
-        let { scrollToItem } = this.get()
-        let { intersectionStates } = this.store.get()
-        for (let entry of entries) {
-          let key = entry.target.getAttribute('pseudo-virtual-list-key')
-          let rect = getRectFromEntry(entry)
-          newIntersectionStates[key] = {
-            isIntersecting: entry.isIntersecting,
-            height: rect.height
-          }
-          if (scrollToItem === key) {
-            this.scrollToPosition(entry.target)
-          }
-        }
-        intersectionStates = Object.assign(intersectionStates, newIntersectionStates)
-        this.store.setForRealm({intersectionStates: intersectionStates})
-        stop('onIntersection')
       }
     },
+    data: () => ({
+      initializedCount: 0
+    }),
     computed: {
       safeItems: ({ items }) => items || [],
-      allItemsHaveHeight: ({ items, $intersectionStates }) => {
-        if (!items) {
-          return false
-        }
-        for (let item of items) {
-          if (!$intersectionStates[item]) {
-            return false
-          }
-        }
-        return true
-      }
+      length: ({ safeItems }) => safeItems.length
     },
     components: {
       PseudoVirtualListLazyItem
     },
-    data: () => ({
-      intersectionObserver: void 0
-    }),
     store: () => pseudoVirtualListStore
   }
 </script>

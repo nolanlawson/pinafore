@@ -4,11 +4,8 @@
                          {key}
                          {index}
                          {length}
-                         {intersectionObserver}
-                         {isIntersecting}
-                         {isCached}
-                         {height}
                          on:scrollToPosition
+                         on:initialized
   />
 {/if}
 <script>
@@ -22,6 +19,7 @@
         let props = await makeProps(key)
         mark('PseudoVirtualListLazyItem set props')
         this.set({props: props})
+        this.fire('initialized')
         stop('PseudoVirtualListLazyItem set props')
       }
     },
