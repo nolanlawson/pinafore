@@ -265,15 +265,15 @@ export async function validateTimeline (t, timeline) {
     }
     if (status.followedBy) {
       await t.expect(getNthStatusHeader(i).innerText)
-        .contains(status.followedBy + ' followed you', { timeout })
+        .match(new RegExp(status.followedBy + '\\s+followed you'), { timeout })
     }
     if (status.rebloggedBy) {
       await t.expect(getNthStatusHeader(i).innerText)
-        .contains(status.rebloggedBy + ' boosted your status', { timeout })
+        .match(new RegExp(status.rebloggedBy + '\\s+boosted your status'), { timeout })
     }
     if (status.favoritedBy) {
       await t.expect(getNthStatusHeader(i).innerText)
-        .contains(status.favoritedBy + ' favorited your status', { timeout })
+        .match(new RegExp(status.favoritedBy + '\\s+favorited your status'), { timeout })
     }
   }
 }
