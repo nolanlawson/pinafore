@@ -1,0 +1,33 @@
+{#if props}
+  <ListItem
+    {component}
+    {props}
+    {key}
+    {index}
+    {length}
+    on:initialized
+  />
+{/if}
+<script>
+  import ListItem from './ListItem.html'
+  import { mark, stop } from '../../_utils/marks'
+
+  export default {
+    async oncreate () {
+      let { makeProps, key } = this.get()
+      if (makeProps) {
+        let props = await makeProps(key)
+        mark('ListLazyItem set props')
+        this.set({props: props})
+        this.fire('initialized')
+        stop('ListLazyItem set props')
+      }
+    },
+    data: () => ({
+      props: void 0
+    }),
+    components: {
+      ListItem
+    }
+  }
+</script>

@@ -1,6 +1,6 @@
-<div class="pseudo-virtual-list" on:initialized ref:node>
+<div class="the-list" on:initialized>
   {#each safeItems as item, i (item)}
-    <PseudoVirtualListLazyItem
+    <ListLazyItem
       {component}
       index={i}
       {length}
@@ -11,13 +11,13 @@
   {/each}
 </div>
 <style>
-  .pseudo-virtual-list {
+  .the-list {
     position: relative;
   }
 </style>
 <script>
-  import PseudoVirtualListLazyItem from './PseudoVirtualListLazyItem.html'
-  import { pseudoVirtualListStore } from './pseudoVirtualListStore'
+  import ListLazyItem from './ListLazyItem.html'
+  import { listStore } from './listStore'
 
   export default {
     oncreate () {
@@ -38,19 +38,16 @@
       },
       initialize () {
         let { scrollToItem } = this.get()
-        let { node } = this.refs
-        if (scrollToItem && node) {
-          this.scrollToPosition(node.querySelector(`[pseudo-virtual-list-key="${scrollToItem}"]`))
+        if (scrollToItem) {
+          let element = document.getElementById(`list-item-${scrollToItem}`)
+          requestAnimationFrame(() => {
+            console.log('scrolling element into view')
+            element.scrollIntoView(true)
+            this.fire('initialized')
+          })
         } else {
           this.fire('initialized')
         }
-      },
-      scrollToPosition (element) {
-        requestAnimationFrame(() => {
-          console.log('scrolling element into view')
-          element.scrollIntoView(true)
-          this.fire('initialized')
-        })
       }
     },
     data: () => ({
@@ -61,8 +58,8 @@
       length: ({ safeItems }) => safeItems.length
     },
     components: {
-      PseudoVirtualListLazyItem
+      ListLazyItem
     },
-    store: () => pseudoVirtualListStore
+    store: () => listStore
   }
 </script>
