@@ -26,8 +26,8 @@ export const importVirtualList = () => import(
   /* webpackChunkName: 'VirtualList.html' */ '../_components/virtualList/VirtualList.html'
   ).then(mod => mod.default)
 
-export const importPseudoVirtualList = () => import(
-  /* webpackChunkName: 'PseudoVirtualList.html' */ '../_components/pseudoVirtualList/PseudoVirtualList.html'
+export const importList = () => import(
+  /* webpackChunkName: 'List.html' */ '../_components/list/List.html'
   ).then(mod => mod.default)
 
 export const importStatusVirtualListItem = () => import(

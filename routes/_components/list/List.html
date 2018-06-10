@@ -1,0 +1,65 @@
+<div class="the-list" on:initialized>
+  {#each safeItems as item, i (item)}
+    <ListLazyItem
+      {component}
+      index={i}
+      {length}
+      {makeProps}
+      key={item}
+      on:initialized="itemInitialized()"
+    />
+  {/each}
+</div>
+<style>
+  .the-list {
+    position: relative;
+  }
+</style>
+<script>
+  import ListLazyItem from './ListLazyItem.html'
+  import { listStore } from './listStore'
+
+  export default {
+    oncreate () {
+      let { realm } = this.get()
+      this.store.setCurrentRealm(realm)
+    },
+    ondestroy () {
+      this.store.setCurrentRealm(null)
+    },
+    methods: {
+      itemInitialized () {
+        let { initializedCount, length } = this.get()
+        initializedCount++
+        this.set({initializedCount})
+        if (initializedCount === length) {
+          this.initialize()
+        }
+      },
+      initialize () {
+        let { scrollToItem } = this.get()
+        if (scrollToItem) {
+          let element = document.getElementById(`list-item-${scrollToItem}`)
+          requestAnimationFrame(() => {
+            console.log('scrolling element into view')
+            element.scrollIntoView(true)
+            this.fire('initialized')
+          })
+        } else {
+          this.fire('initialized')
+        }
+      }
+    },
+    data: () => ({
+      initializedCount: 0
+    }),
+    computed: {
+      safeItems: ({ items }) => items || [],
+      length: ({ safeItems }) => safeItems.length
+    },
+    components: {
+      ListLazyItem
+    },
+    store: () => listStore
+  }
+</script>
