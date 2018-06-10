@@ -154,7 +154,7 @@ export function getNthStatus (n) {
 }
 
 export function getNthStatusSelector (n) {
-  return `.status-article[aria-posinset="${n}"]`
+  return `article[aria-posinset="${n}"]`
 }
 
 export function getNthStatusContent (n) {
@@ -173,12 +173,8 @@ export function getNthStatusAndImage (nStatus, nImage) {
   return $(`${getNthStatusSelector(nStatus)} .status-media .show-image-button:nth-child(${nImage + 1}) img`)
 }
 
-export function getLastVisibleStatus () {
-  return $(`.status-article`).nth(-1)
-}
-
 export function getFirstVisibleStatus () {
-  return $(`.status-article`).nth(0)
+  return $(`article`).nth(0)
 }
 
 export function getNthReplyButton (n) {
@@ -238,7 +234,7 @@ export function getReblogsCount () {
 }
 
 function getNthPinnedStatusSelector (n) {
-  return `.pinned-statuses .status-article[aria-posinset="${n}"]`
+  return `.pinned-statuses article[aria-posinset="${n}"]`
 }
 
 export function getNthPinnedStatus (n) {
