@@ -1,5 +1,5 @@
 import { auth, basename } from './utils'
-import { postWithTimeout } from '../_utils/ajax'
+import { post, WRITE_TIMEOUT } from '../_utils/ajax'
 
 export async function postStatus (instanceName, accessToken, text, inReplyToId, mediaIds,
   sensitive, spoilerText, visibility) {
@@ -21,5 +21,5 @@ export async function postStatus (instanceName, accessToken, text, inReplyToId, 
     }
   }
 
-  return postWithTimeout(url, body, auth(accessToken))
+  return post(url, body, auth(accessToken), {timeout: WRITE_TIMEOUT})
 }
