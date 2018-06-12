@@ -1,4 +1,4 @@
-export const DEFAULT_TIMEOUT = 15000
+export const DEFAULT_TIMEOUT = 20000
 export const MEDIA_WRITE_TIMEOUT = 90000 // media uploads can take awhile
 export const WRITE_TIMEOUT = 45000 // allow more time if the user did a write action
 
