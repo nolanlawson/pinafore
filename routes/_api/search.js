@@ -1,4 +1,4 @@
-import { getWithTimeout, paramsString } from '../_utils/ajax'
+import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
 import { auth, basename } from './utils'
 
 export function search (instanceName, accessToken, query) {
@@ -6,5 +6,5 @@ export function search (instanceName, accessToken, query) {
     q: query,
     resolve: true
   })
-  return getWithTimeout(url, auth(accessToken))
+  return get(url, auth(accessToken), {timeout: DEFAULT_TIMEOUT})
 }
