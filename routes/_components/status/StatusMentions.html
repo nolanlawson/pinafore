@@ -1,0 +1,30 @@
+{#if mentions.length}
+  <div class="status-mentions">
+    <p>
+      {#each mentions as mention, i}
+        {#if i > 0}
+          &nbsp;
+        {/if}
+        <a href="/accounts/{mention.id}"
+           title="@{mention.acct}"
+           focus-key="status-mention-link-{uuid}-{mention.id}">
+          @{mention.acct}
+        </a>
+      {/each}
+    </p>
+  </div>
+{/if}
+<style>
+  .status-mentions {
+    grid-area: mentions;
+    margin: 10px 0 10px 5px;
+    font-size: 0.9em;
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      mentions: ({ originalStatus }) => originalStatus.mentions || []
+    }
+  }
+</script>

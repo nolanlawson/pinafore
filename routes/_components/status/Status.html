@@ -18,6 +18,9 @@
   {#if spoilerText}
     <StatusSpoiler {...params} on:recalculateHeight />
   {/if}
+  {#if !showContent}
+    <StatusMentions {...params} />
+  {/if}
   {#if showContent || contentPreloaded}
     <StatusContent {...params} shown={showContent}/>
   {/if}
@@ -44,6 +47,7 @@
         "sidebar author-name  author-handle relative-date"
         "sidebar spoiler      spoiler       spoiler"
         "sidebar spoiler-btn  spoiler-btn   spoiler-btn"
+        "sidebar mentions     mentions      mentions"
         "sidebar content      content       content"
         "media   media        media         media"
         "....... toolbar      toolbar       toolbar"
@@ -67,6 +71,7 @@
       "sidebar     author-handle"
       "spoiler     spoiler"
       "spoiler-btn spoiler-btn"
+      "mentions    mentions"
       "content     content"
       "media       media"
       "details     details"
@@ -98,6 +103,7 @@
   import StatusContent from './StatusContent.html'
   import StatusSpoiler from './StatusSpoiler.html'
   import StatusComposeBox from './StatusComposeBox.html'
+  import StatusMentions from './StatusMentions.html'
   import { store } from '../../_store/store'
   import { goto } from 'sapper/runtime.js'
   import { registerClickDelegate } from '../../_utils/delegate'
@@ -136,7 +142,8 @@
       StatusMediaAttachments,
       StatusContent,
       StatusSpoiler,
-      StatusComposeBox
+      StatusComposeBox,
+      StatusMentions
     },
     data: () => ({
       notification: void 0,
