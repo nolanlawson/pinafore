@@ -182,6 +182,7 @@
       originalAccountId: ({ originalAccount }) => originalAccount.id,
       visibility: ({ originalStatus }) => originalStatus.visibility,
       spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
+      inReplyToId: ({ originalStatus }) => originalStatus.in_reply_to_id,
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       ),
@@ -219,7 +220,7 @@
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
-        replyVisibility, spoilerText, originalStatus, originalStatusId }) => ({
+        replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId }) => ({
         notification,
         notificationId,
         status,
@@ -238,7 +239,8 @@
         replyVisibility,
         spoilerText,
         originalStatus,
-        originalStatusId
+        originalStatusId,
+        inReplyToId
       })
     }
   }

@@ -4,7 +4,7 @@
     label={replyLabel}
     pressable="true"
     pressed={replyShown}
-    href="#fa-reply"
+    href={replyIcon}
     delegateKey={replyKey}
     focusKey={replyKey}
     />
@@ -140,7 +140,10 @@
       reblogAnimation: REBLOG_ANIMATION
     }),
     computed: {
-      replyLabel: ({ replyShown }) => replyShown ? 'Close reply' : 'Reply',
+      replyLabel: ({ replyShown, inReplyToId }) => (
+        replyShown ? 'Close reply' : inReplyToId ? 'Reply to thread' : 'Reply'
+      ),
+      replyIcon: ({ inReplyToId }) => inReplyToId ? '#fa-reply-all' : '#fa-reply',
       reblogLabel: ({ visibility }) => {
         switch (visibility) {
           case 'private':
