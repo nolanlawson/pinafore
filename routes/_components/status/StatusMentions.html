@@ -3,7 +3,9 @@
     <p>
       {#each mentions as mention, i}
         {#if i > 0}
+          <!-- empty space -->
           &nbsp;
+          <!-- empty space -->
         {/if}
         <a href="/accounts/{mention.id}"
            title="@{mention.acct}"
