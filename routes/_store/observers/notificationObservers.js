@@ -1,5 +1,5 @@
 import { setFavicon } from '../../_utils/setFavicon'
-import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+import { runMediumPriorityTask } from '../../_utils/runMediumPriorityTask'
 
 let currentFaviconHasNotifications = false
 
@@ -8,7 +8,7 @@ export function notificationObservers (store) {
     if (!process.browser) {
       return
     }
-    scheduleIdleTask(() => {
+    runMediumPriorityTask(() => {
       if (currentFaviconHasNotifications === hasNotifications) {
         return
       }
