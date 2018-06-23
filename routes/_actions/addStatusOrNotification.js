@@ -1,14 +1,13 @@
 import throttle from 'lodash-es/throttle'
 import { mark, stop } from '../_utils/marks'
 import { store } from '../_store/store'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import uniqBy from 'lodash-es/uniqBy'
 import uniq from 'lodash-es/uniq'
 import isEqual from 'lodash-es/isEqual'
-import { isMobile } from '../_utils/isMobile'
 import {
   insertTimelineItems as insertTimelineItemsInDatabase
 } from '../_database/timelines/insertion'
+import { runMediumPriorityTask } from '../_utils/runMediumPriorityTask'
 
 const STREAMING_THROTTLE_DELAY = 3000
 
@@ -82,8 +81,7 @@ async function processFreshUpdates (instanceName, timelineName) {
 }
 
 const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
-  const runTask = isMobile() ? scheduleIdleTask : requestAnimationFrame
-  runTask(() => {
+  runMediumPriorityTask(() => {
     /* no await */ processFreshUpdates(instanceName, timelineName)
   })
 }, STREAMING_THROTTLE_DELAY)
@@ -93,6 +91,7 @@ export function addStatusOrNotification (instanceName, timelineName, newStatusOr
 }
 
 export function addStatusesOrNotifications (instanceName, timelineName, newStatusesOrNotifications) {
+  console.log('addStatusesOrNotifications', Date.now())
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
   freshUpdates = [].concat(freshUpdates).concat(newStatusesOrNotifications)
   freshUpdates = uniqBy(freshUpdates, _ => _.id)
