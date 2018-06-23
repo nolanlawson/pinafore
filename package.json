@@ -47,15 +47,15 @@
     "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
-    "@gamestdio/websocket": "^0.2.5",
+    "@gamestdio/websocket": "^0.2.7",
     "a11y-dialog": "^4.0.1",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
-    "chokidar": "^2.0.3",
-    "cross-env": "^5.1.6",
+    "chokidar": "^2.0.4",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "escape-html": "^1.0.3",
-    "esm": "^3.0.48",
+    "esm": "^3.0.52",
     "events": "^3.0.0",
     "express": "^4.16.3",
     "fg-loadcss": "^2.0.1",
@@ -81,27 +81,27 @@
     "requestidlecallback": "^0.3.0",
     "sapper": "github:nolanlawson/sapper#for-pinafore-7",
     "serve-static": "^1.13.2",
-    "shrink-ray-current": "^2.1.0",
+    "shrink-ray-current": "^2.1.1",
     "stringz": "^1.0.0",
     "style-loader": "^0.21.0",
-    "svelte": "^2.7.2",
+    "svelte": "^2.8.1",
     "svelte-extras": "^2.0.2",
     "svelte-loader": "^2.9.1",
     "svelte-transitions": "^1.2.0",
     "svgo": "^1.0.5",
     "timeago.js": "^3.0.2",
     "tiny-queue": "^0.2.1",
-    "uglifyjs-webpack-plugin": "^1.2.5",
+    "uglifyjs-webpack-plugin": "^1.2.6",
     "web-animations-js": "^2.3.1",
     "webpack": "^4.12.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "eslint-plugin-html": "^4.0.3",
-    "now": "^11.2.2",
+    "eslint-plugin-html": "^4.0.5",
+    "now": "^11.2.4",
     "standard": "^11.0.1",
-    "testcafe": "0.20.3"
+    "testcafe": "^0.20.3"
   },
   "engines": {
     "node": ">= 8"
