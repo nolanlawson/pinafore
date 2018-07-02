@@ -95,7 +95,7 @@
     "web-animations-js": "^2.3.1",
     "webpack": "^4.12.0",
     "webpack-bundle-analyzer": "^2.13.1",
-    "yargs": "^11.0.0"
+    "yargs": "^12.0.1"
   },
   "devDependencies": {
     "eslint-plugin-html": "^4.0.5",
