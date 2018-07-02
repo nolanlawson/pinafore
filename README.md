@@ -4,7 +4,7 @@ An alternative web client for [Mastodon](https://joinmastodon.org), focused on s
 
 Pinafore is available at [pinafore.social](https://pinafore.social). Bleeding-edge releases are at [dev.pinafore.social](https://dev.pinafore.social).
 
-See the [user guide](https://github.com/nolanlawson/pinafore/blob/master/docs/User-Guide.md) for basic usage.
+See the [user guide](https://github.com/nolanlawson/pinafore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/nolanlawson/pinafore/blob/master/docs/Admin-Guide.md) to troubleshoot instance compatibility issues.
 
 For updates and support, follow us at [@pinafore@mastodon.technology](https://mastodon.technology/@pinafore).
 
