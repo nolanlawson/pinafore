@@ -53,7 +53,7 @@
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.4",
     "cross-env": "^5.2.0",
-    "css-loader": "^0.28.11",
+    "css-loader": "^1.0.0",
     "escape-html": "^1.0.3",
     "esm": "^3.0.77",
     "events": "^3.0.0",
