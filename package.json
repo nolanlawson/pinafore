@@ -76,7 +76,7 @@
     "optimize-css-assets-webpack-plugin": "^4.0.2",
     "p-any": "^1.1.0",
     "performance-now": "^2.1.0",
-    "pify": "^3.0.0",
+    "pify": "^4.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
     "sapper": "github:nolanlawson/sapper#for-pinafore-7",
