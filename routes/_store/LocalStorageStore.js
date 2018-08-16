@@ -1,4 +1,8 @@
 import { Store } from 'svelte/store'
+let lifecycle
+if (process.browser) {
+  lifecycle = require('page-lifecycle/dist/lifecycle.mjs').default
+}
 
 const LS = process.browser && localStorage
 
@@ -31,7 +35,12 @@ export class LocalStorageStore extends Store {
       })
     })
     if (process.browser) {
-      window.addEventListener('beforeunload', () => this.save())
+      lifecycle.addEventListener('statechange', e => {
+        if (e.newState === 'passive') {
+          console.log('saving LocalStorageStore...')
+          this.save()
+        }
+      })
     }
   }
 
