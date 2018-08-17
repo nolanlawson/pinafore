@@ -38,6 +38,10 @@ const themes = [
   {
     name: 'sorcery',
     label: 'Sorcery'
+  },
+  {
+    name: 'jms',
+    label: 'jms'
   }
 ]
 
