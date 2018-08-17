@@ -15,13 +15,13 @@
       </div>
     </noscript>
 
-    <label for="instanceInput">Instance:</label>
-    <input class="new-instance-input" type="text" id="instanceInput"
-           bind:value='$instanceNameInSearch' placeholder='' required
+    <label class="add-new-instance-label" for="instanceInput">Instance:</label>
+    <input class="add-new-instance-input" type="text" id="instanceInput"
+           bind:value='$instanceNameInSearch' placeholder="Enter instance name" required
     >
-    <button class="primary" type="submit" id="submitButton"
+    <button class="primary add-new-instance-button" type="submit" id="submitButton"
             disabled={!$instanceNameInSearch || $logInToInstanceLoading}>
-      Add instance
+      Log in
     </button>
   </form>
 
@@ -38,12 +38,12 @@
     margin: 5px;
     background-color: var(--main-bg);
   }
-  input.new-instance-input {
-    min-width: 60%;
+  .add-new-instance-input {
+    min-width: 70%;
     max-width: 100%;
   }
 
-  form.add-new-instance {
+  .add-new-instance {
     background: var(--form-bg);
     padding: 5px 10px 15px;
     margin: 20px auto;
@@ -51,10 +51,17 @@
     border-radius: 4px;
   }
 
-  form.add-new-instance label, form.add-new-instance input, form.add-new-instance button {
+  .add-new-instance-label, .add-new-instance-input, .add-new-instance-button {
     display: block;
     margin: 20px 5px;
   }
+
+  @media (max-width: 767px) {
+    .add-new-instance-input {
+      min-width: 95%;
+    }
+  }
+
 </style>
 <script>
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
