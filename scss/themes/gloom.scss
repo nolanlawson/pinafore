@@ -1,0 +1,19 @@
+$main-theme-color: #fa0000;
+$body-bg-color: #000000;
+$main-bg-color: #050505;
+$anchor-color: lighten($main-theme-color, 5%);
+$main-text-color: #aaaaaa;
+$border-color: lighten($main-bg-color, 10%);
+$secondary-text-color: #1b1b1b;
+$toast-border: $main-theme-color;
+$toast-bg: lighten($body-bg-color, 25%);
+$focus-outline: lighten($main-theme-color, 10%);
+$compose-background: lighten($main-theme-color, 1%);
+
+@import "_base.scss";
+@import "_dark.scss";
+
+body.theme-gloom {
+  @include baseTheme();
+  @include darkTheme();
+}
