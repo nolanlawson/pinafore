@@ -11,6 +11,7 @@
   </div>
   <div class="compose-media-alt">
     <input type="text"
+           class="compose-media-alt-input"
            placeholder="Description"
            aria-label="Describe {mediaItem.file.name} for the visually impaired"
            bind:value=rawText
@@ -42,12 +43,13 @@
     display: flex;
     justify-content: center;
   }
-  .compose-media-alt input {
+  .compose-media-alt-input {
     width: 100%;
     font-size: 1.2em;
     background: var(--alt-input-bg);
+    color: var(--body-text-color);
   }
-  .compose-media-alt input:focus {
+  .compose-media-alt-input:focus {
     background: var(--main-bg);
   }
   .compose-media-delete {
