@@ -4,7 +4,7 @@
   {title}
   background="var(--main-bg)"
 >
-  <GenericDialogList {items} on:click="onClick(event)" />
+  <GenericDialogList selectable={true} {items} on:click="onClick(event)" />
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
