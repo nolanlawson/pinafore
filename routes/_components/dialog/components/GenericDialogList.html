@@ -5,12 +5,14 @@
       <svg class="generic-dialog-list-item-svg">
         <use xlink:href={item.icon} />
       </svg>
-      <span>
-            {item.label}
-          </span>
-      <svg class="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}" aria-hidden={!item.selected}>
-        <use xlink:href="#fa-check" />
-      </svg>
+      <span class="generic-dialog-list-button-span">
+        {item.label}
+      </span>
+      {#if selectable}
+        <svg class="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}" aria-hidden={!item.selected}>
+          <use xlink:href="#fa-check" />
+        </svg>
+      {/if}
     </button>
   </li>
   {/each}
@@ -21,7 +23,7 @@
     width: 100%;
     border: 1px solid var(--settings-list-item-border);
     box-sizing: border-box;
-    min-width: 300px;
+    min-width: 350px;
     max-width: calc(100vw - 20px);
   }
   .generic-dialog-list-item {
@@ -43,15 +45,31 @@
     display: flex;
     flex-direction: row;
   }
-  .generic-dialog-list-button span {
+  .generic-dialog-list-button-span {
     flex: 1;
-    text-align: left;
     margin-left: 20px;
+    text-align: left;
+    width: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .generic-dialog-list-button:hover {
     background: var(--settings-list-item-bg-hover);
   }
   .generic-dialog-list-button:active {
     background: var(--settings-list-item-bg-active);
+  }
+
+  @media (max-width: 767px) {
+    .generic-dialog-list {
+      min-width: calc(100vw - 20px);
+    }
+    .generic-dialog-list-button {
+      padding: 20px 10px;
+    }
+    .generic-dialog-list-button-span {
+      margin-left: 10px;
+    }
   }
 </style>
