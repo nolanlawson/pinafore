@@ -1,5 +1,5 @@
 {#if mentions.length}
-  <div class="status-mentions">
+  <div class="status-mentions {isStatusInOwnThread ? 'status-in-own-thread' : ''}">
     <p>
       {#each mentions as mention, i}
         {#if i > 0}
@@ -22,6 +22,12 @@
     margin: 10px 0 10px 5px;
     font-size: 0.9em;
   }
+
+  .status-mentions.status-in-own-thread {
+    font-size: 1.3em;
+    margin: 20px 10px 20px 5px;
+  }
+
 </style>
 <script>
   export default {
