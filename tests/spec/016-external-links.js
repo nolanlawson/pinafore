@@ -37,7 +37,7 @@ test('converts external links in profiles', async t => {
     .hover(getNthStatus(0))
     .navigateTo('/accounts/4')
     .expect(getUrl()).contains('/accounts/4')
-    .expect($('.account-profile-name').innerText).eql('External Lonk')
+    .expect($('.account-profile-name').innerText).contains('External Lonk')
     .expect($('.account-profile-name a').getAttribute('href')).eql('http://localhost:3000/@ExternalLinks')
     .expect($('.account-profile-name a').getAttribute('rel')).eql('nofollow noopener')
     .expect(getAnchorInProfile(0).getAttribute('href')).eql('https://joinmastodon.org')
