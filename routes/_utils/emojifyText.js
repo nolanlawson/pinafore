@@ -1,7 +1,7 @@
 import { replaceAll } from './strings'
 
 export function emojifyText (text, emojis, autoplayGifs) {
-  if (emojis && emojis.length) {
+  if (emojis) {
     for (let emoji of emojis) {
       let urlToUse = autoplayGifs ? emoji.url : emoji.static_url
       let shortcodeWithColons = `:${emoji.shortcode}:`
@@ -11,6 +11,16 @@ export function emojifyText (text, emojis, autoplayGifs) {
         `<img class="inline-custom-emoji" draggable="false" src="${urlToUse}"
                     alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
       )
+    }
+  }
+  return text
+}
+
+export function removeEmoji (text, emojis) {
+  if (emojis) {
+    for (let emoji of emojis) {
+      let shortcodeWithColons = `:${emoji.shortcode}:`
+      text = replaceAll(text, shortcodeWithColons, '')
     }
   }
   return text
