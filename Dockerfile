@@ -7,7 +7,7 @@ ADD . /app
 
 # Install updates and NodeJS+Dependencies
 RUN apk update && apk upgrade
-RUN apk add nodejs git python build-base clang
+RUN apk add nodejs npm git python build-base clang
 
 # Upgrading NPM
 RUN npm i npm@latest -g
