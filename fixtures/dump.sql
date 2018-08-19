@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.2
+-- Dumped from database version 10.3
 -- Dumped by pg_dump version 10.3
 
 SET statement_timeout = 0;
@@ -199,7 +199,10 @@ CREATE TABLE public.accounts (
     followers_url character varying DEFAULT ''::character varying NOT NULL,
     protocol integer DEFAULT 0 NOT NULL,
     memorial boolean DEFAULT false NOT NULL,
-    moved_to_account_id bigint
+    moved_to_account_id bigint,
+    featured_collection_url character varying,
+    fields jsonb,
+    actor_type character varying
 );
 
 
@@ -280,6 +283,46 @@ CREATE TABLE public.ar_internal_metadata (
 ALTER TABLE public.ar_internal_metadata OWNER TO pinafore;
 
 --
+-- Name: backups; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.backups (
+    id bigint NOT NULL,
+    user_id bigint,
+    dump_file_name character varying,
+    dump_content_type character varying,
+    dump_file_size integer,
+    dump_updated_at timestamp without time zone,
+    processed boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.backups OWNER TO pinafore;
+
+--
+-- Name: backups_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.backups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.backups_id_seq OWNER TO pinafore;
+
+--
+-- Name: backups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.backups_id_seq OWNED BY public.backups.id;
+
+
+--
 -- Name: blocks; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -288,7 +331,8 @@ CREATE TABLE public.blocks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
-    target_account_id bigint NOT NULL
+    target_account_id bigint NOT NULL,
+    uri character varying
 );
 
 
@@ -429,6 +473,46 @@ ALTER SEQUENCE public.custom_emojis_id_seq OWNED BY public.custom_emojis.id;
 
 
 --
+-- Name: custom_filters; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.custom_filters (
+    id bigint NOT NULL,
+    account_id bigint,
+    expires_at timestamp without time zone,
+    phrase text DEFAULT ''::text NOT NULL,
+    context character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    irreversible boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    whole_word boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.custom_filters OWNER TO pinafore;
+
+--
+-- Name: custom_filters_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.custom_filters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.custom_filters_id_seq OWNER TO pinafore;
+
+--
+-- Name: custom_filters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.custom_filters_id_seq OWNED BY public.custom_filters.id;
+
+
+--
 -- Name: domain_blocks; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -546,7 +630,8 @@ CREATE TABLE public.follow_requests (
     updated_at timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
     target_account_id bigint NOT NULL,
-    show_reblogs boolean DEFAULT true NOT NULL
+    show_reblogs boolean DEFAULT true NOT NULL,
+    uri character varying
 );
 
 
@@ -583,7 +668,8 @@ CREATE TABLE public.follows (
     updated_at timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
     target_account_id bigint NOT NULL,
-    show_reblogs boolean DEFAULT true NOT NULL
+    show_reblogs boolean DEFAULT true NOT NULL,
+    uri character varying
 );
 
 
@@ -608,6 +694,44 @@ ALTER TABLE public.follows_id_seq OWNER TO pinafore;
 --
 
 ALTER SEQUENCE public.follows_id_seq OWNED BY public.follows.id;
+
+
+--
+-- Name: identities; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.identities (
+    id integer NOT NULL,
+    user_id integer,
+    provider character varying DEFAULT ''::character varying NOT NULL,
+    uid character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.identities OWNER TO pinafore;
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.identities_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.identities_id_seq OWNER TO pinafore;
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
 
 
 --
@@ -657,13 +781,14 @@ ALTER SEQUENCE public.imports_id_seq OWNED BY public.imports.id;
 
 CREATE TABLE public.invites (
     id bigint NOT NULL,
-    user_id bigint,
+    user_id bigint NOT NULL,
     code character varying DEFAULT ''::character varying NOT NULL,
     expires_at timestamp without time zone,
     max_uses integer,
     uses integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    autofollow boolean DEFAULT false NOT NULL
 );
 
 
@@ -885,12 +1010,12 @@ ALTER SEQUENCE public.mutes_id_seq OWNED BY public.mutes.id;
 
 CREATE TABLE public.notifications (
     id bigint NOT NULL,
-    activity_id bigint,
-    activity_type character varying,
+    activity_id bigint NOT NULL,
+    activity_type character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    account_id bigint,
-    from_account_id bigint
+    account_id bigint NOT NULL,
+    from_account_id bigint NOT NULL
 );
 
 
@@ -1103,6 +1228,43 @@ CREATE TABLE public.preview_cards_statuses (
 ALTER TABLE public.preview_cards_statuses OWNER TO pinafore;
 
 --
+-- Name: report_notes; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.report_notes (
+    id bigint NOT NULL,
+    content text NOT NULL,
+    report_id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.report_notes OWNER TO pinafore;
+
+--
+-- Name: report_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.report_notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.report_notes_id_seq OWNER TO pinafore;
+
+--
+-- Name: report_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.report_notes_id_seq OWNED BY public.report_notes.id;
+
+
+--
 -- Name: reports; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -1115,7 +1277,8 @@ CREATE TABLE public.reports (
     updated_at timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
     action_taken_by_account_id bigint,
-    target_account_id bigint NOT NULL
+    target_account_id bigint NOT NULL,
+    assigned_account_id bigint
 );
 
 
@@ -1512,7 +1675,9 @@ CREATE TABLE public.users (
     account_id bigint NOT NULL,
     disabled boolean DEFAULT false NOT NULL,
     moderator boolean DEFAULT false NOT NULL,
-    invite_id bigint
+    invite_id bigint,
+    remember_token character varying,
+    chosen_languages character varying[]
 );
 
 
@@ -1550,7 +1715,9 @@ CREATE TABLE public.web_push_subscriptions (
     key_auth character varying NOT NULL,
     data json,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    access_token_id bigint,
+    user_id bigint
 );
 
 
@@ -1586,7 +1753,7 @@ CREATE TABLE public.web_settings (
     data json,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id bigint
+    user_id bigint NOT NULL
 );
 
 
@@ -1642,6 +1809,13 @@ ALTER TABLE ONLY public.admin_action_logs ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: backups id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.backups ALTER COLUMN id SET DEFAULT nextval('public.backups_id_seq'::regclass);
+
+
+--
 -- Name: blocks id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -1667,6 +1841,13 @@ ALTER TABLE ONLY public.conversations ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.custom_emojis ALTER COLUMN id SET DEFAULT nextval('public.custom_emojis_id_seq'::regclass);
+
+
+--
+-- Name: custom_filters id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.custom_filters ALTER COLUMN id SET DEFAULT nextval('public.custom_filters_id_seq'::regclass);
 
 
 --
@@ -1702,6 +1883,13 @@ ALTER TABLE ONLY public.follow_requests ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.follows ALTER COLUMN id SET DEFAULT nextval('public.follows_id_seq'::regclass);
+
+
+--
+-- Name: identities id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
 
 
 --
@@ -1786,6 +1974,13 @@ ALTER TABLE ONLY public.oauth_applications ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.preview_cards ALTER COLUMN id SET DEFAULT nextval('public.preview_cards_id_seq'::regclass);
+
+
+--
+-- Name: report_notes id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.report_notes ALTER COLUMN id SET DEFAULT nextval('public.report_notes_id_seq'::regclass);
 
 
 --
@@ -1885,13 +2080,13 @@ COPY public.account_moderation_notes (id, content, account_id, target_account_id
 -- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.accounts (id, username, domain, secret, private_key, public_key, remote_url, salmon_url, hub_url, created_at, updated_at, note, display_name, uri, url, avatar_file_name, avatar_content_type, avatar_file_size, avatar_updated_at, header_file_name, header_content_type, header_file_size, header_updated_at, avatar_remote_url, subscription_expires_at, silenced, suspended, locked, header_remote_url, statuses_count, followers_count, following_count, last_webfingered_at, inbox_url, outbox_url, shared_inbox_url, followers_url, protocol, memorial, moved_to_account_id) FROM stdin;
-2	foobar	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAoMmpjeV32Muoe7G9jtM1juQgFIWb+LVYb3Q+wDvcGui2u8ow\nlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOEcDxz32N9syfd+6I03PUfshtb5xPP\n7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCwRTgWX3FEVogOTYNXGBBL95vZn4U4\nksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besvi2HzP2839Va4ce4SF5gaVLNH3Lxz\nnQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6B2H3IJaKdVacnX9BZix1Uv9z0lib\nrJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2RwIDAQABAoIBAEzMZe8/xoHHrP8A\nA6GfonpQ3j3PH5Oo0sfRh1N8hAJaW0XRKmoqp98FhX1FVbJ3M92L330lTy7mZomr\nyOEJuI1/Yn014UlcZnwVmxhbALuqs7foz61mV2Zhs/dVfrhY/qZuFk+Bmbk7mUjk\n1H4GfpthUdZenJyUOfiuHkCBMDfg+ColWRPKohopvEPYpj3AT0KdeZt8y+ElYBgF\nkPlEr/NwzxoqPyyt007x2/mouqsDu23M11/WLJbYUKd8m8NXZMLrSqjcUjxkIkjV\nOCXbXJM7MULCAgX85H6ymf/xBnevwMtdXkP3pUjvVEBdROUPHpVh4bEjikAN4hvP\nZL2HwbECgYEA0MDcvkvIjVlRmHSappw1i6QF+3bBdiE9yRQLl3+g3a69VkAYPuOc\nF/tWBc/W+ZvdNY53cJms4EbiVO5zmJE87c1DlfG7d911DiI6lgTdlLdpbpdR49uH\n/yiZc1WbX4f+gBdyqFMrHJwC+ymk4CL7Ma5yoWELY4OxaC74Qr/HRBkCgYEAxS2t\n35ZBXco/X6zXhKw4hYeFXVMqCkbAwPdQsarTJXIG1hsC/SrHU9o38oobIjZoex7X\npwMBXfN8Aj5VipV8ttB/GI68fdKwRpL9wzOu+QAfGO3++ZN+h+cFzvW51VoHe4K2\nkcxDQjVQ2hvVE0AqTsz3m+wTyoHuJvfRYHvv2V8CgYA7fCmq5Edy19fjfJ6xCWRM\ntWGrBW0db11+1gJzmj/Jy8hSMpN2ID/TqaAaqd4VZK/FWiJ46KGViz1lfEleWUym\nas5uhOKpxmZbr69IHnzRqu4VQHNqXZ1EPVp0vhk3QLZp48SdaI2pal+DGJvN7snr\nn0005UVshxNfn7rIsoNiyQKBgECaFr2KnR/9g4X1Oydcxaf6HtfUx5FWXRDb9rQ/\nI67BDTxY3UHVIjl25Z2xYfJzoQe1szIk6e2+OIMDqUMedx3ucbW6DkerH9X/kuTB\nqjIquAWS9FcQ3APqzRxhpeEg/hKZYPej1OV8UmEjfUwxWas3vGh5kIJoz34084SJ\nFqxBAoGADPTjFA6dqZBxY8tO63/blR0+CgE+Z/BbsPxmtGKgAyQbnM2TQ7IqCzQw\nJxDF6p3bQqyZYVLfrQ0BLna2I0AFPVGn7fUNAAOT67HVtm3U58Cbdt457O51EQuW\nFSiCX7BuMU5uJT2S70fWSMFf3iwczxJiQwwOwBLIDjpkSanm9eM=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoMmpjeV32Muoe7G9jtM1\njuQgFIWb+LVYb3Q+wDvcGui2u8owlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOE\ncDxz32N9syfd+6I03PUfshtb5xPP7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCw\nRTgWX3FEVogOTYNXGBBL95vZn4U4ksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besv\ni2HzP2839Va4ce4SF5gaVLNH3LxznQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6\nB2H3IJaKdVacnX9BZix1Uv9z0librJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2\nRwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:20.992567	2018-03-06 03:52:20.992567				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N
-3	quux	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAuXdx5P91Cn1Sx+C4ihnk2r2L+q6Lalr/r9h9hQVRQaR5ZiHF\nj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBwTqqLhYcImjeiCTt2J69o+imI9x8p\n3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF9YAbKwGu/3H+DLOckauI7AeOcgrt\nfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCadxR4h58m2J+KZnOcCDK0x0tVhq1m\n6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEURCcr4jQa77ZWiNxjR6JmFWl5YKfZ\n8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26/wIDAQABAoIBAQCTI0DXdRdMqBo5\nen3NCjf2lbPsv/bY/LKmtjD2jD5nvm2VaiuLDfakUzqY/wgYEhO6ADuUIyOB1l77\nqXaVEx4mOsUPvQ5FEufZPTRCzbWR6cvAiheyfXBbuJXXG4bFBfrTGWnLFiLIHOjV\n6dZHvoYt+2ESYHaOL8hmGUSYiKbK4OYB8KzVLikm4DG2+Ck6JxaCNbkI3VxOBGD9\nypRWLIBefVPwntxCU8Kb8k5JJAJOMUkucZ7Mjj7TRzyq133kupq7oaOE0V4/o63U\nQVomtGfw1Q7HVuVsXm9dClIG8tRhDGfAO8QgqmHv4GfNt7IpaKHiBkp0e1R02LMK\nc4WeElgBAoGBAN5EaDXDmcyQ+4CBbNNGDG8h970W1ElvS9G6xTZkQ4KrnWZmKNw7\nzfA4TjvX88cUYbw1h0/YBO4bUe08N5bJihmLAxPBPpwkxhkzgisjBIIw5IEIM7Vo\nVmz+u8iCuEH2Uh89X354nxE5UWPm+jS7zN5Z3QGI7PFeksisNlGPbXQBAoGBANWd\nP55kDswWZ77UUbn4A1kiaD48/b0SkuvxA3HaZFbZJlHCrRfgn5yiO8IGoQCV2YQg\nZRfVIyDQWeCjGjmdYMX661OXsJDoxmGTPamgl5KB4dB92bZB09kTwJsoJz47jnGO\nkYHt+/zMeXiRrTCi+07vMPlZGnyW4WFqPZATTy7/AoGAUr7IxOsywJNg7fBA4U58\nporQvdZX5ZbHdSbA8ITXFThqeoqhv4uMGVf82A6HNKAD2pta6oCTJUmKcHUwhLQ2\n81drJ9mTQ3H1RcCFPyXkMcud5eN1zJ0xP5Z9tiHkErpuzC5+9IhXP4RFJpoAn80i\nccymmEGvZBQ/NPHXrvlkWAECgYEAy1ZUKMG2FC9/sfcJlKyxAzftYtFL956mnFFf\nphDtUn6CK3HUstXvGXqUx6zntVbvJwZvNLB+L84kv+CCJjXY2JxxRbEvMcFilZ9D\nIyTrI1rfSUeC5irjLc/Pl+Iw+NxYS2AawkN3irxZJJwG8DU0Y37sb26R9+bnw4MN\n9wdqaKECgYEAnLWO4wrhg7keBAVF6HFgRyjT5S6DHFM2BsEpjbqrxLN7M0pVimJa\nYxVJj70Clm3OdkZ8k8f9AaxNK4l38cTRNct+IhKlQB4Ryz+Gpc+T0HOAv9kk6qJ4\niJofJ1scmvubau+vOmtI6mfuyIsiSVZdW9jOEihkyzlLa2K5K5m1yww=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuXdx5P91Cn1Sx+C4ihnk\n2r2L+q6Lalr/r9h9hQVRQaR5ZiHFj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBw\nTqqLhYcImjeiCTt2J69o+imI9x8p3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF\n9YAbKwGu/3H+DLOckauI7AeOcgrtfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCa\ndxR4h58m2J+KZnOcCDK0x0tVhq1m6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEU\nRCcr4jQa77ZWiNxjR6JmFWl5YKfZ8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26\n/wIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:52.495982	2018-03-06 03:52:52.495982				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N
-4	ExternalLinks	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEArvTBpSQFmhlygPYMF0YTi5/Cd5mmKYlfu/nqR1bGUixefGWR\nV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52PpcKAm7L3RxHNXG2KuOgW0UkG2wqQY\nV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL13lYloKGNC5FGN6W0kwd25EE1oq9p\nhO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR50cPfSGXMAeyYg93njC1kfSdnaNuq\n/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3SC7Xnf0r1e+N2zFdzo1iuePv6tqkQ\nzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcYQwIDAQABAoIBAQCCZe5GdViviDPt\npnVQi2xZ7pL0rVJJNxhhdF2HGkfqSyOJN/JiLitbk+RKttEglxeaVKWHo7wR9o7O\nmQEdSzxcMyGP5dKIxyavRJdyq3nArTXYUJHMTwK3JqQQaopJO/pxaOJteMikwXN2\nWp0X1A2ozzBwTrhfXMGnDBxQUYntiOi/Hi+E4ZCBEoAhWFZSq4YH4hB5HOKUHUIZ\niKfKsFV8H5TqR0li6FbIZtR+fBY83FcRPsOA423wswrgTXPPZ3Mnv0rMtg3BijpB\nl88B5uLMprpckwLzRLRZO6KCACxjoKrrFIXy4apRG1jcIjd4Nr4j3Lus+pPNQRI3\nKsWxRpvRAoGBAOA05cfazBFhUQaRRxCmxc+mM30gAmd5IL4fGS+4DKtZz6DBr0ke\nfOS3wZ6ANo5Ovg9Js3fN9U09sRO5f4+QLeaE2f/EzdlkocnKqJGgWpNLsPAv/BrK\ngCBS3b7vXPTkiXQcuct+0dgP5tlCU+BRmH1yMTjKjaB+25mpOFZhsHJHAoGBAMfD\n+cAsAI/OwNyNAgF8gLJWdCMuYvoYlYGBAbhpFk3Xrg1FvAQbyeFDleGlaqBszq8P\nmk1hXLhX7aUZLc5g3wcmfGdFbJIjbBHxfmJqgy7iA8a60FxlD3wCtx7txD33tKSU\nt7NeMhR44YdwZ8XmPI/4vK/34bFJb1KLAvg4CswlAoGARjiLFzMx4uel5vatWUvC\nfKzDR5c06Y+Ib8Nxsf5lCW3Rl7nR2obP+xqKa8ggTiXfZQ5iRU2eXJjL0y+wAhjY\nJ3DIjlDnYAUinv74GNQuSh/UxQViYkm2I2mQxfJWHOVPH6y3jEKmGpOwa69YcdNc\nfT28qNrXzMKuqMvVN0jVaJUCgYBWpjgP1kZMGodnYzaKhIGiWYO4uuctyjoXWWjw\nn4yQKUyS7zuVoKQZtOIvZTvx6CBiqObqR6AbSfCH23sV+Mjk5hmyBdgJL5ox0kla\n0Q6j6F9w9Rlp6mAkD1106fdkVayicuuXvvUEEkbpI6WvnqWIYYEe5uubpdnGuQuJ\ntW1hjQKBgQC2CjJ35lntsCHoWud8uWnlMjtXAbEWSLkcTUXvY6TaMtHCMVvpUvCI\niacqlUVkVTS7uHNN9jre/z0+iEWM+jpByC303/NCWtvnmjHT7uJHrFNqmdfeuKGs\n4WTB0rMNvaLv7ikHyi9WGCpeD+q2pmxIdFNKCepeuuiBuygCOoFG0A==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvTBpSQFmhlygPYMF0YT\ni5/Cd5mmKYlfu/nqR1bGUixefGWRV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52Pp\ncKAm7L3RxHNXG2KuOgW0UkG2wqQYV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL1\n3lYloKGNC5FGN6W0kwd25EE1oq9phO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR5\n0cPfSGXMAeyYg93njC1kfSdnaNuq/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3S\nC7Xnf0r1e+N2zFdzo1iuePv6tqkQzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcY\nQwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:53:52.5107	2018-03-06 03:54:25.492347	Check out https://joinmastodon.org and #cat and #mastocats and also @quux is my friend	External Lonk		\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N
-5	baz	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA6MoozQ6aD0mGLXjepbLjRVITMiV/V6+Gv3hWBshGckO41bTn\nGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX+ficX5KM/cmwhxzH0nnwzxPr/Upl\nbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvTJmBIcaUr50aqfvdV2TGD+NGW+rYS\noK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm1u310KIWaIRhetAtSCkIkdUa3/8U\n6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF1tfEGD5Wchybb3ZNK3742HpR0E8m\n7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnXFQIDAQABAoIBAQDQDL1iZwZxWzi8\nMyZp2PMd5TiavMCO0aUQQrA/54ZuYPA0rzVK8VXqaIcuOcrhEQxhFcThGoUDy5cg\nkwI8pOac1gCLuiKgPz2xw5sjFTCPIjLrcS4sPksSEKpJVDe6PDMMjtS3L+z6visg\n7j8Txm50AeE9EG2oiZOfXdYwAvz7xkFLV8sUHI+Au37x61ulm0MMYrafCVkwIYIm\n3m8OPGLAFtN9nOJUdq7mExHu+A27s/3ypIae6GDu7zNyJW2TyiGpnw4UUgJQJhgy\nOP8keFcMyaMiPKyALKtjmHdFlebDyfH8btfpXiXErzRvH326JixJtg4M1xRWBra1\nl1NOUIaRAoGBAPgZUG9fWdPGTcUKsa1CJjSK0gwVldqeuxxh2Vkcai18XEXzTZ/z\ndVM/XDymUqOtIegjt52SNR2iF1ViomF5ur+74/xo1tXNf8vjMzeXJ7R0Nz5kd+ZN\nCWtVexeXvxtQO7lbJJwecjI+aLUv+9yWeZHIvSS+tHvC7zMa1DjKJIu3AoGBAPA0\nCIOTral3q9MOwDOBjCtvv72RjLx5cU93J2dca0xxYI/wa2IDl18WMEOhovB1knId\nzf2PhwakbWQ9axoq303L5muPMiVT9rkxBf90r/bUEdQPfZNRAQZ01v1uWUZnZCz7\nFJmRuk9YNbnYzp4ljU1iz7dL5YvA8gYSnma1yUuTAoGATNkqfRT/8gUe2cXyO0Se\nKPBHF88n18wLEUON23hduzEmM9SlWsJCuUKLA45RUrmyIwHNQlWjdkZbC+u9eIwI\nOJOujuS6hwdcan85wiJj/hVxdzYPnZqHLGQR+MDcRU2Y8lU1Bda4cK+8J0NxtGY3\nydxwGg2oQh2jkiThT6XtpAkCgYEAu5u4ZqRKiEla387umYv+YdK3TKXI6VBlCu8C\nzL0nZR5MkD/0bypk6TSYX8p4TB1YU18qC3g1ux9j/V3nMBn6LXYrMyk1vmf1FTHQ\nAHUwFrYOcrXim9Qx28wYOvscKVwJpwQ4U7W5cc1wsQZAYs7rrVyW5hAWanA52Dpk\nk846OZcCgYB4G8BOm7apwEfkjVzmPMazxZsV2COB2r32Wdbiuulu0hbtTVO0rZgw\nRJGCow3wEWHoO1hzVO0aFVsLB176NaRDKnEP/L2xn2y71cS3mo+FRIEHOwL9sBOL\n958bpX5AWw7KOMCPOcesFEffomMl8raaMcYkUabEABMjgNJHzL4ICA==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6MoozQ6aD0mGLXjepbLj\nRVITMiV/V6+Gv3hWBshGckO41bTnGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX\n+ficX5KM/cmwhxzH0nnwzxPr/UplbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvT\nJmBIcaUr50aqfvdV2TGD+NGW+rYSoK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm\n1u310KIWaIRhetAtSCkIkdUa3/8U6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF\n1tfEGD5Wchybb3ZNK3742HpR0E8m7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnX\nFQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-08 17:13:19.723561	2018-03-08 17:13:19.723561				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N
-1	admin	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAqhTaq3zCpRnFoQzHheYBfwcdjjczJ4pSKwsq1qJmydctdZM6\ngScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh/wJm8mqxx473L+noX8X49jhFuv5O\nsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8GKmX9Cg8W1G52dZlNq/HbEygg0W7\nvq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcrJyXli9+cLl9p4msiLgbP3x9mZ46s\njtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM/lax9x5CRcmDJLBwqZPFi1TnPJOr\nAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/pwIDAQABAoIBAQCIa/fFq2mY8iYR\n+uUjIo06raNoSiBu68Tin695v4PBDCZ7c19u7sTEzfH0CZlvmXg+BjJQEUSvYzLg\nNVJ15ZtWJ0AZ27jDf4oH1Y+9GleKbzKHPaoz/Ji5jAR0WgdRxYBeByOo4AZ62ShS\n9mXa4yiTw5yNi6R1/wSalRxUFARaeYBbRSZTawU24C4hyZZFEKO3QlxbhBaAfsJP\nDVGftkL9mdCHJLvA4/7IXZsmpErkhaXP98B1FaY3zE+qefGcLFRLYbAxjbCOAX6z\nAD3yjk3e66DKxHF1Wxva4u30aPZfODPCkCgPwxuZq8Tz+VNh4j5cS5C13etukBV4\nB31Brb8pAoGBAOFzZ8IMcz1GZxeIgarb5AQHbi0rZiPZwJF4/pLa9U4Bg0maj97t\nemWRomuVEtM/bI5Dva+YzQnei49pDPnTMAqPLRbfOeruFBlGxJlPbaKguR5qAQar\n2imkhvjOq3/bV7PonP6JE6hxqfwAoMtxpPYKuKymSDdZ+imFFNiu/fiNAoGBAMEg\nwjGyukiXppjKYPyXnjJOuzajvq1+o2h6l216tYMSlvRlbM8EINYbg6yKLia0yHDl\n9wVD4vEU6BYZ5OmXDT0hSF00+wx1lQi4YM2u+va00dthpgUDxXi/FUctlJZuRpOW\nzK1JKpFl/znIMxME6d+DN+yNqGMM2hMatQAVee4DAoGAKWeMcrLepy462LOVPM/N\nfH/w2BLUW1kuaIkUF9xmmMDmX6onKgXrKKQqdB+YqXtIcIg4WftyDJH2h4v/ehIz\nDH1nBoBQnrjCsDGzAYT42Zky5kcJkTQWiPdSYndyP7UE0mGyE30RQyo80a872KEy\nbo1hhTO0p5W6v81VGsZoljECgYBwzjmf3c2BaVMeG9faspTsvaAMokhV/opkFHcu\ns2YiUVFrH3MW2Ep1xUx8E5oxcZdCmpBWuvhr6NJHVoinCFvrQO2Lw85/0I5ksY2Z\nloNwZt3NTpQyialmhfZfxPfthiwjOQoEjaAXnYQetBlhGpWgwHyB55xbfr5COm9O\nxTybEQKBgALIfybfST7EfUZszLen+/PyXPfCHKybTwEHHYfwwwFHmiVuMLCbsXIR\nPjOPl29jHcSiSutMQZbnKDZ3UgNnx9O31lSzS7ygC50pK1QpzPBXKZMGGnS4UGSd\nTBa+FKJuFAeVeRnoDKnTRFSRIGwvu4vDKLmXBv1728XWKG3GHDot\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhTaq3zCpRnFoQzHheYB\nfwcdjjczJ4pSKwsq1qJmydctdZM6gScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh\n/wJm8mqxx473L+noX8X49jhFuv5OsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8\nGKmX9Cg8W1G52dZlNq/HbEygg0W7vq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcr\nJyXli9+cLl9p4msiLgbP3x9mZ46sjtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM\n/lax9x5CRcmDJLBwqZPFi1TnPJOrAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/\npwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:50:49.164137	2018-03-06 03:50:49.164137				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	5	0	\N					0	f	\N
-6	LockedAccount	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpgIBAAKCAQEA6HayWvdAVUdIeabZBP8fpdvaBUWyFflzdHXU3lQ7ZtQpfWm0\nYTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWYxv4X6QP79CH4RVXJtJK9eGzVtNib\nzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8BeRORubkxU37kSphFiYNOi4/gkkD\n9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9qUlmeMXRrHeEdIHuIQrHCkqASZjMz\nA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+2WDcDU3bR/uQulIPddnjoNhMDXOd\n8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pOSQIDAQABAoIBAQC0EtaAjs2AAfML\ngYrVSwfqBE90DBQy34RnL6vQ+fD1692j79EyB5p/vgYKkP2iAaz2W0rqZrybDYxC\nIUK/Ou0ZINXGxDZVXEck9pqETbOF6ND3AWBWznF8OLj9wea9uC8aU89Fb28iteBg\nJUlfmXOw4LUeSVfn20vHnMuOS7WtXZGlbHt6KA29vLKOXCSSdlBkq+NJr+GwGy8Q\n6l1ZM7bOkMral2FHFd3LK2d94+F1lbKsNnA/IPgUk9EY0P8wjOMJ0ThRQu28s9G4\nX0GxXQ/+utO98yzdJ6vsKPLotsrW7DQizuo/h66USvHHrgiDmBo6vXOPASAUWWho\nvm1VKykxAoGBAP/vju1pSOySHqQU/b3QcLzHSVm7U47BVt7/eZzvydmAMFpCFX5I\n0woKBLQAXibwOaJu2avGbvmpckmWC/BjlQEDpGKWmZpgCORVYY8vjp/k0tLMgZfd\nJprjAwVFg03YObLsxDxNnLxlJar2gVbzFn82XfC4L+GIiHkP++D0bUSVAoGBAOiF\noWjsWFpAH5Zxx1lFggx6LESDmOWlo5WzXChP2l8iZEb/wNBJ3LKU14szIuJXCsQM\nOH3Yz8XwiU2bUz5pWpQNoitP349BNqzjuUXJ91by2KUOjvX5ycZ8hYfAnWgAv75A\nZy+CH+XUiS1wjV9MNdap7/GqvlrxqtSud697ceHlAoGBAO2B0G99bxErIIhAeqD1\nmEl33xgIgShPP2C+UItU80qGbVi1TuDckAwW8/pfBQC5maKloBaKlV3W45pqRjYV\nE6fXS2u6Ol1KlbXfjiOkjITRgtvgsLrPng3KcXko4wsQh6sFka4skDE85FHdZHXe\nLJhtSYwkQTrYy10dei9uZSBpAoGBAOeTHvwWVrAbqNn2mymHlkvC6Y+a2I3ud4tC\nRIhJbxzMbb5gPLG0vj6FCl4yIY32TlyOJzz+z389XiGSjkdcOb+2DErCk85ijoeF\njSG6UcGgvq80XqEPkytBHOPkq1/HTy+1iI7CM+57y9sbe1Dr37rZKIUxHcAJa6/B\nyqVUdkkZAoGBAIRLMM2TmPHH33tjYTR1WHtGR1/7D3cose5zOqGCu4zx2I0e9m+p\nMmaYl0gtr0CfFesQVtLTRuoTPXfDwaTECEuKpGrQTjUUHjC7MgEP0T6odmx2rlfQ\nmdNa6lJrZA8jscz5kcYoHjlr9KamkmtnaOSwPp+sQDWNB/kSoEMZxXyC\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6HayWvdAVUdIeabZBP8f\npdvaBUWyFflzdHXU3lQ7ZtQpfWm0YTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWY\nxv4X6QP79CH4RVXJtJK9eGzVtNibzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8\nBeRORubkxU37kSphFiYNOi4/gkkD9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9q\nUlmeMXRrHeEdIHuIQrHCkqASZjMzA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+\n2WDcDU3bR/uQulIPddnjoNhMDXOd8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pO\nSQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-15 04:07:23.996029	2018-03-15 04:33:45.479283				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	t		0	0	1	\N					0	f	\N
+COPY public.accounts (id, username, domain, secret, private_key, public_key, remote_url, salmon_url, hub_url, created_at, updated_at, note, display_name, uri, url, avatar_file_name, avatar_content_type, avatar_file_size, avatar_updated_at, header_file_name, header_content_type, header_file_size, header_updated_at, avatar_remote_url, subscription_expires_at, silenced, suspended, locked, header_remote_url, statuses_count, followers_count, following_count, last_webfingered_at, inbox_url, outbox_url, shared_inbox_url, followers_url, protocol, memorial, moved_to_account_id, featured_collection_url, fields, actor_type) FROM stdin;
+2	foobar	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAoMmpjeV32Muoe7G9jtM1juQgFIWb+LVYb3Q+wDvcGui2u8ow\nlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOEcDxz32N9syfd+6I03PUfshtb5xPP\n7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCwRTgWX3FEVogOTYNXGBBL95vZn4U4\nksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besvi2HzP2839Va4ce4SF5gaVLNH3Lxz\nnQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6B2H3IJaKdVacnX9BZix1Uv9z0lib\nrJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2RwIDAQABAoIBAEzMZe8/xoHHrP8A\nA6GfonpQ3j3PH5Oo0sfRh1N8hAJaW0XRKmoqp98FhX1FVbJ3M92L330lTy7mZomr\nyOEJuI1/Yn014UlcZnwVmxhbALuqs7foz61mV2Zhs/dVfrhY/qZuFk+Bmbk7mUjk\n1H4GfpthUdZenJyUOfiuHkCBMDfg+ColWRPKohopvEPYpj3AT0KdeZt8y+ElYBgF\nkPlEr/NwzxoqPyyt007x2/mouqsDu23M11/WLJbYUKd8m8NXZMLrSqjcUjxkIkjV\nOCXbXJM7MULCAgX85H6ymf/xBnevwMtdXkP3pUjvVEBdROUPHpVh4bEjikAN4hvP\nZL2HwbECgYEA0MDcvkvIjVlRmHSappw1i6QF+3bBdiE9yRQLl3+g3a69VkAYPuOc\nF/tWBc/W+ZvdNY53cJms4EbiVO5zmJE87c1DlfG7d911DiI6lgTdlLdpbpdR49uH\n/yiZc1WbX4f+gBdyqFMrHJwC+ymk4CL7Ma5yoWELY4OxaC74Qr/HRBkCgYEAxS2t\n35ZBXco/X6zXhKw4hYeFXVMqCkbAwPdQsarTJXIG1hsC/SrHU9o38oobIjZoex7X\npwMBXfN8Aj5VipV8ttB/GI68fdKwRpL9wzOu+QAfGO3++ZN+h+cFzvW51VoHe4K2\nkcxDQjVQ2hvVE0AqTsz3m+wTyoHuJvfRYHvv2V8CgYA7fCmq5Edy19fjfJ6xCWRM\ntWGrBW0db11+1gJzmj/Jy8hSMpN2ID/TqaAaqd4VZK/FWiJ46KGViz1lfEleWUym\nas5uhOKpxmZbr69IHnzRqu4VQHNqXZ1EPVp0vhk3QLZp48SdaI2pal+DGJvN7snr\nn0005UVshxNfn7rIsoNiyQKBgECaFr2KnR/9g4X1Oydcxaf6HtfUx5FWXRDb9rQ/\nI67BDTxY3UHVIjl25Z2xYfJzoQe1szIk6e2+OIMDqUMedx3ucbW6DkerH9X/kuTB\nqjIquAWS9FcQ3APqzRxhpeEg/hKZYPej1OV8UmEjfUwxWas3vGh5kIJoz34084SJ\nFqxBAoGADPTjFA6dqZBxY8tO63/blR0+CgE+Z/BbsPxmtGKgAyQbnM2TQ7IqCzQw\nJxDF6p3bQqyZYVLfrQ0BLna2I0AFPVGn7fUNAAOT67HVtm3U58Cbdt457O51EQuW\nFSiCX7BuMU5uJT2S70fWSMFf3iwczxJiQwwOwBLIDjpkSanm9eM=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoMmpjeV32Muoe7G9jtM1\njuQgFIWb+LVYb3Q+wDvcGui2u8owlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOE\ncDxz32N9syfd+6I03PUfshtb5xPP7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCw\nRTgWX3FEVogOTYNXGBBL95vZn4U4ksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besv\ni2HzP2839Va4ce4SF5gaVLNH3LxznQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6\nB2H3IJaKdVacnX9BZix1Uv9z0librJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2\nRwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:20.992567	2018-03-06 03:52:20.992567				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N	\N	\N	\N
+3	quux	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAuXdx5P91Cn1Sx+C4ihnk2r2L+q6Lalr/r9h9hQVRQaR5ZiHF\nj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBwTqqLhYcImjeiCTt2J69o+imI9x8p\n3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF9YAbKwGu/3H+DLOckauI7AeOcgrt\nfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCadxR4h58m2J+KZnOcCDK0x0tVhq1m\n6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEURCcr4jQa77ZWiNxjR6JmFWl5YKfZ\n8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26/wIDAQABAoIBAQCTI0DXdRdMqBo5\nen3NCjf2lbPsv/bY/LKmtjD2jD5nvm2VaiuLDfakUzqY/wgYEhO6ADuUIyOB1l77\nqXaVEx4mOsUPvQ5FEufZPTRCzbWR6cvAiheyfXBbuJXXG4bFBfrTGWnLFiLIHOjV\n6dZHvoYt+2ESYHaOL8hmGUSYiKbK4OYB8KzVLikm4DG2+Ck6JxaCNbkI3VxOBGD9\nypRWLIBefVPwntxCU8Kb8k5JJAJOMUkucZ7Mjj7TRzyq133kupq7oaOE0V4/o63U\nQVomtGfw1Q7HVuVsXm9dClIG8tRhDGfAO8QgqmHv4GfNt7IpaKHiBkp0e1R02LMK\nc4WeElgBAoGBAN5EaDXDmcyQ+4CBbNNGDG8h970W1ElvS9G6xTZkQ4KrnWZmKNw7\nzfA4TjvX88cUYbw1h0/YBO4bUe08N5bJihmLAxPBPpwkxhkzgisjBIIw5IEIM7Vo\nVmz+u8iCuEH2Uh89X354nxE5UWPm+jS7zN5Z3QGI7PFeksisNlGPbXQBAoGBANWd\nP55kDswWZ77UUbn4A1kiaD48/b0SkuvxA3HaZFbZJlHCrRfgn5yiO8IGoQCV2YQg\nZRfVIyDQWeCjGjmdYMX661OXsJDoxmGTPamgl5KB4dB92bZB09kTwJsoJz47jnGO\nkYHt+/zMeXiRrTCi+07vMPlZGnyW4WFqPZATTy7/AoGAUr7IxOsywJNg7fBA4U58\nporQvdZX5ZbHdSbA8ITXFThqeoqhv4uMGVf82A6HNKAD2pta6oCTJUmKcHUwhLQ2\n81drJ9mTQ3H1RcCFPyXkMcud5eN1zJ0xP5Z9tiHkErpuzC5+9IhXP4RFJpoAn80i\nccymmEGvZBQ/NPHXrvlkWAECgYEAy1ZUKMG2FC9/sfcJlKyxAzftYtFL956mnFFf\nphDtUn6CK3HUstXvGXqUx6zntVbvJwZvNLB+L84kv+CCJjXY2JxxRbEvMcFilZ9D\nIyTrI1rfSUeC5irjLc/Pl+Iw+NxYS2AawkN3irxZJJwG8DU0Y37sb26R9+bnw4MN\n9wdqaKECgYEAnLWO4wrhg7keBAVF6HFgRyjT5S6DHFM2BsEpjbqrxLN7M0pVimJa\nYxVJj70Clm3OdkZ8k8f9AaxNK4l38cTRNct+IhKlQB4Ryz+Gpc+T0HOAv9kk6qJ4\niJofJ1scmvubau+vOmtI6mfuyIsiSVZdW9jOEihkyzlLa2K5K5m1yww=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuXdx5P91Cn1Sx+C4ihnk\n2r2L+q6Lalr/r9h9hQVRQaR5ZiHFj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBw\nTqqLhYcImjeiCTt2J69o+imI9x8p3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF\n9YAbKwGu/3H+DLOckauI7AeOcgrtfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCa\ndxR4h58m2J+KZnOcCDK0x0tVhq1m6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEU\nRCcr4jQa77ZWiNxjR6JmFWl5YKfZ8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26\n/wIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:52.495982	2018-03-06 03:52:52.495982				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N	\N	\N	\N
+4	ExternalLinks	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEArvTBpSQFmhlygPYMF0YTi5/Cd5mmKYlfu/nqR1bGUixefGWR\nV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52PpcKAm7L3RxHNXG2KuOgW0UkG2wqQY\nV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL13lYloKGNC5FGN6W0kwd25EE1oq9p\nhO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR50cPfSGXMAeyYg93njC1kfSdnaNuq\n/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3SC7Xnf0r1e+N2zFdzo1iuePv6tqkQ\nzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcYQwIDAQABAoIBAQCCZe5GdViviDPt\npnVQi2xZ7pL0rVJJNxhhdF2HGkfqSyOJN/JiLitbk+RKttEglxeaVKWHo7wR9o7O\nmQEdSzxcMyGP5dKIxyavRJdyq3nArTXYUJHMTwK3JqQQaopJO/pxaOJteMikwXN2\nWp0X1A2ozzBwTrhfXMGnDBxQUYntiOi/Hi+E4ZCBEoAhWFZSq4YH4hB5HOKUHUIZ\niKfKsFV8H5TqR0li6FbIZtR+fBY83FcRPsOA423wswrgTXPPZ3Mnv0rMtg3BijpB\nl88B5uLMprpckwLzRLRZO6KCACxjoKrrFIXy4apRG1jcIjd4Nr4j3Lus+pPNQRI3\nKsWxRpvRAoGBAOA05cfazBFhUQaRRxCmxc+mM30gAmd5IL4fGS+4DKtZz6DBr0ke\nfOS3wZ6ANo5Ovg9Js3fN9U09sRO5f4+QLeaE2f/EzdlkocnKqJGgWpNLsPAv/BrK\ngCBS3b7vXPTkiXQcuct+0dgP5tlCU+BRmH1yMTjKjaB+25mpOFZhsHJHAoGBAMfD\n+cAsAI/OwNyNAgF8gLJWdCMuYvoYlYGBAbhpFk3Xrg1FvAQbyeFDleGlaqBszq8P\nmk1hXLhX7aUZLc5g3wcmfGdFbJIjbBHxfmJqgy7iA8a60FxlD3wCtx7txD33tKSU\nt7NeMhR44YdwZ8XmPI/4vK/34bFJb1KLAvg4CswlAoGARjiLFzMx4uel5vatWUvC\nfKzDR5c06Y+Ib8Nxsf5lCW3Rl7nR2obP+xqKa8ggTiXfZQ5iRU2eXJjL0y+wAhjY\nJ3DIjlDnYAUinv74GNQuSh/UxQViYkm2I2mQxfJWHOVPH6y3jEKmGpOwa69YcdNc\nfT28qNrXzMKuqMvVN0jVaJUCgYBWpjgP1kZMGodnYzaKhIGiWYO4uuctyjoXWWjw\nn4yQKUyS7zuVoKQZtOIvZTvx6CBiqObqR6AbSfCH23sV+Mjk5hmyBdgJL5ox0kla\n0Q6j6F9w9Rlp6mAkD1106fdkVayicuuXvvUEEkbpI6WvnqWIYYEe5uubpdnGuQuJ\ntW1hjQKBgQC2CjJ35lntsCHoWud8uWnlMjtXAbEWSLkcTUXvY6TaMtHCMVvpUvCI\niacqlUVkVTS7uHNN9jre/z0+iEWM+jpByC303/NCWtvnmjHT7uJHrFNqmdfeuKGs\n4WTB0rMNvaLv7ikHyi9WGCpeD+q2pmxIdFNKCepeuuiBuygCOoFG0A==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvTBpSQFmhlygPYMF0YT\ni5/Cd5mmKYlfu/nqR1bGUixefGWRV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52Pp\ncKAm7L3RxHNXG2KuOgW0UkG2wqQYV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL1\n3lYloKGNC5FGN6W0kwd25EE1oq9phO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR5\n0cPfSGXMAeyYg93njC1kfSdnaNuq/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3S\nC7Xnf0r1e+N2zFdzo1iuePv6tqkQzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcY\nQwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:53:52.5107	2018-03-06 03:54:25.492347	Check out https://joinmastodon.org and #cat and #mastocats and also @quux is my friend	External Lonk		\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N	\N	\N	\N
+5	baz	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA6MoozQ6aD0mGLXjepbLjRVITMiV/V6+Gv3hWBshGckO41bTn\nGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX+ficX5KM/cmwhxzH0nnwzxPr/Upl\nbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvTJmBIcaUr50aqfvdV2TGD+NGW+rYS\noK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm1u310KIWaIRhetAtSCkIkdUa3/8U\n6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF1tfEGD5Wchybb3ZNK3742HpR0E8m\n7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnXFQIDAQABAoIBAQDQDL1iZwZxWzi8\nMyZp2PMd5TiavMCO0aUQQrA/54ZuYPA0rzVK8VXqaIcuOcrhEQxhFcThGoUDy5cg\nkwI8pOac1gCLuiKgPz2xw5sjFTCPIjLrcS4sPksSEKpJVDe6PDMMjtS3L+z6visg\n7j8Txm50AeE9EG2oiZOfXdYwAvz7xkFLV8sUHI+Au37x61ulm0MMYrafCVkwIYIm\n3m8OPGLAFtN9nOJUdq7mExHu+A27s/3ypIae6GDu7zNyJW2TyiGpnw4UUgJQJhgy\nOP8keFcMyaMiPKyALKtjmHdFlebDyfH8btfpXiXErzRvH326JixJtg4M1xRWBra1\nl1NOUIaRAoGBAPgZUG9fWdPGTcUKsa1CJjSK0gwVldqeuxxh2Vkcai18XEXzTZ/z\ndVM/XDymUqOtIegjt52SNR2iF1ViomF5ur+74/xo1tXNf8vjMzeXJ7R0Nz5kd+ZN\nCWtVexeXvxtQO7lbJJwecjI+aLUv+9yWeZHIvSS+tHvC7zMa1DjKJIu3AoGBAPA0\nCIOTral3q9MOwDOBjCtvv72RjLx5cU93J2dca0xxYI/wa2IDl18WMEOhovB1knId\nzf2PhwakbWQ9axoq303L5muPMiVT9rkxBf90r/bUEdQPfZNRAQZ01v1uWUZnZCz7\nFJmRuk9YNbnYzp4ljU1iz7dL5YvA8gYSnma1yUuTAoGATNkqfRT/8gUe2cXyO0Se\nKPBHF88n18wLEUON23hduzEmM9SlWsJCuUKLA45RUrmyIwHNQlWjdkZbC+u9eIwI\nOJOujuS6hwdcan85wiJj/hVxdzYPnZqHLGQR+MDcRU2Y8lU1Bda4cK+8J0NxtGY3\nydxwGg2oQh2jkiThT6XtpAkCgYEAu5u4ZqRKiEla387umYv+YdK3TKXI6VBlCu8C\nzL0nZR5MkD/0bypk6TSYX8p4TB1YU18qC3g1ux9j/V3nMBn6LXYrMyk1vmf1FTHQ\nAHUwFrYOcrXim9Qx28wYOvscKVwJpwQ4U7W5cc1wsQZAYs7rrVyW5hAWanA52Dpk\nk846OZcCgYB4G8BOm7apwEfkjVzmPMazxZsV2COB2r32Wdbiuulu0hbtTVO0rZgw\nRJGCow3wEWHoO1hzVO0aFVsLB176NaRDKnEP/L2xn2y71cS3mo+FRIEHOwL9sBOL\n958bpX5AWw7KOMCPOcesFEffomMl8raaMcYkUabEABMjgNJHzL4ICA==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6MoozQ6aD0mGLXjepbLj\nRVITMiV/V6+Gv3hWBshGckO41bTnGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX\n+ficX5KM/cmwhxzH0nnwzxPr/UplbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvT\nJmBIcaUr50aqfvdV2TGD+NGW+rYSoK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm\n1u310KIWaIRhetAtSCkIkdUa3/8U6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF\n1tfEGD5Wchybb3ZNK3742HpR0E8m7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnX\nFQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-08 17:13:19.723561	2018-03-08 17:13:19.723561				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	0	1	\N					0	f	\N	\N	\N	\N
+1	admin	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAqhTaq3zCpRnFoQzHheYBfwcdjjczJ4pSKwsq1qJmydctdZM6\ngScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh/wJm8mqxx473L+noX8X49jhFuv5O\nsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8GKmX9Cg8W1G52dZlNq/HbEygg0W7\nvq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcrJyXli9+cLl9p4msiLgbP3x9mZ46s\njtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM/lax9x5CRcmDJLBwqZPFi1TnPJOr\nAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/pwIDAQABAoIBAQCIa/fFq2mY8iYR\n+uUjIo06raNoSiBu68Tin695v4PBDCZ7c19u7sTEzfH0CZlvmXg+BjJQEUSvYzLg\nNVJ15ZtWJ0AZ27jDf4oH1Y+9GleKbzKHPaoz/Ji5jAR0WgdRxYBeByOo4AZ62ShS\n9mXa4yiTw5yNi6R1/wSalRxUFARaeYBbRSZTawU24C4hyZZFEKO3QlxbhBaAfsJP\nDVGftkL9mdCHJLvA4/7IXZsmpErkhaXP98B1FaY3zE+qefGcLFRLYbAxjbCOAX6z\nAD3yjk3e66DKxHF1Wxva4u30aPZfODPCkCgPwxuZq8Tz+VNh4j5cS5C13etukBV4\nB31Brb8pAoGBAOFzZ8IMcz1GZxeIgarb5AQHbi0rZiPZwJF4/pLa9U4Bg0maj97t\nemWRomuVEtM/bI5Dva+YzQnei49pDPnTMAqPLRbfOeruFBlGxJlPbaKguR5qAQar\n2imkhvjOq3/bV7PonP6JE6hxqfwAoMtxpPYKuKymSDdZ+imFFNiu/fiNAoGBAMEg\nwjGyukiXppjKYPyXnjJOuzajvq1+o2h6l216tYMSlvRlbM8EINYbg6yKLia0yHDl\n9wVD4vEU6BYZ5OmXDT0hSF00+wx1lQi4YM2u+va00dthpgUDxXi/FUctlJZuRpOW\nzK1JKpFl/znIMxME6d+DN+yNqGMM2hMatQAVee4DAoGAKWeMcrLepy462LOVPM/N\nfH/w2BLUW1kuaIkUF9xmmMDmX6onKgXrKKQqdB+YqXtIcIg4WftyDJH2h4v/ehIz\nDH1nBoBQnrjCsDGzAYT42Zky5kcJkTQWiPdSYndyP7UE0mGyE30RQyo80a872KEy\nbo1hhTO0p5W6v81VGsZoljECgYBwzjmf3c2BaVMeG9faspTsvaAMokhV/opkFHcu\ns2YiUVFrH3MW2Ep1xUx8E5oxcZdCmpBWuvhr6NJHVoinCFvrQO2Lw85/0I5ksY2Z\nloNwZt3NTpQyialmhfZfxPfthiwjOQoEjaAXnYQetBlhGpWgwHyB55xbfr5COm9O\nxTybEQKBgALIfybfST7EfUZszLen+/PyXPfCHKybTwEHHYfwwwFHmiVuMLCbsXIR\nPjOPl29jHcSiSutMQZbnKDZ3UgNnx9O31lSzS7ygC50pK1QpzPBXKZMGGnS4UGSd\nTBa+FKJuFAeVeRnoDKnTRFSRIGwvu4vDKLmXBv1728XWKG3GHDot\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhTaq3zCpRnFoQzHheYB\nfwcdjjczJ4pSKwsq1qJmydctdZM6gScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh\n/wJm8mqxx473L+noX8X49jhFuv5OsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8\nGKmX9Cg8W1G52dZlNq/HbEygg0W7vq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcr\nJyXli9+cLl9p4msiLgbP3x9mZ46sjtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM\n/lax9x5CRcmDJLBwqZPFi1TnPJOrAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/\npwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:50:49.164137	2018-03-06 03:50:49.164137				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	f		0	5	0	\N					0	f	\N	\N	\N	\N
+6	LockedAccount	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpgIBAAKCAQEA6HayWvdAVUdIeabZBP8fpdvaBUWyFflzdHXU3lQ7ZtQpfWm0\nYTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWYxv4X6QP79CH4RVXJtJK9eGzVtNib\nzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8BeRORubkxU37kSphFiYNOi4/gkkD\n9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9qUlmeMXRrHeEdIHuIQrHCkqASZjMz\nA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+2WDcDU3bR/uQulIPddnjoNhMDXOd\n8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pOSQIDAQABAoIBAQC0EtaAjs2AAfML\ngYrVSwfqBE90DBQy34RnL6vQ+fD1692j79EyB5p/vgYKkP2iAaz2W0rqZrybDYxC\nIUK/Ou0ZINXGxDZVXEck9pqETbOF6ND3AWBWznF8OLj9wea9uC8aU89Fb28iteBg\nJUlfmXOw4LUeSVfn20vHnMuOS7WtXZGlbHt6KA29vLKOXCSSdlBkq+NJr+GwGy8Q\n6l1ZM7bOkMral2FHFd3LK2d94+F1lbKsNnA/IPgUk9EY0P8wjOMJ0ThRQu28s9G4\nX0GxXQ/+utO98yzdJ6vsKPLotsrW7DQizuo/h66USvHHrgiDmBo6vXOPASAUWWho\nvm1VKykxAoGBAP/vju1pSOySHqQU/b3QcLzHSVm7U47BVt7/eZzvydmAMFpCFX5I\n0woKBLQAXibwOaJu2avGbvmpckmWC/BjlQEDpGKWmZpgCORVYY8vjp/k0tLMgZfd\nJprjAwVFg03YObLsxDxNnLxlJar2gVbzFn82XfC4L+GIiHkP++D0bUSVAoGBAOiF\noWjsWFpAH5Zxx1lFggx6LESDmOWlo5WzXChP2l8iZEb/wNBJ3LKU14szIuJXCsQM\nOH3Yz8XwiU2bUz5pWpQNoitP349BNqzjuUXJ91by2KUOjvX5ycZ8hYfAnWgAv75A\nZy+CH+XUiS1wjV9MNdap7/GqvlrxqtSud697ceHlAoGBAO2B0G99bxErIIhAeqD1\nmEl33xgIgShPP2C+UItU80qGbVi1TuDckAwW8/pfBQC5maKloBaKlV3W45pqRjYV\nE6fXS2u6Ol1KlbXfjiOkjITRgtvgsLrPng3KcXko4wsQh6sFka4skDE85FHdZHXe\nLJhtSYwkQTrYy10dei9uZSBpAoGBAOeTHvwWVrAbqNn2mymHlkvC6Y+a2I3ud4tC\nRIhJbxzMbb5gPLG0vj6FCl4yIY32TlyOJzz+z389XiGSjkdcOb+2DErCk85ijoeF\njSG6UcGgvq80XqEPkytBHOPkq1/HTy+1iI7CM+57y9sbe1Dr37rZKIUxHcAJa6/B\nyqVUdkkZAoGBAIRLMM2TmPHH33tjYTR1WHtGR1/7D3cose5zOqGCu4zx2I0e9m+p\nMmaYl0gtr0CfFesQVtLTRuoTPXfDwaTECEuKpGrQTjUUHjC7MgEP0T6odmx2rlfQ\nmdNa6lJrZA8jscz5kcYoHjlr9KamkmtnaOSwPp+sQDWNB/kSoEMZxXyC\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6HayWvdAVUdIeabZBP8f\npdvaBUWyFflzdHXU3lQ7ZtQpfWm0YTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWY\nxv4X6QP79CH4RVXJtJK9eGzVtNibzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8\nBeRORubkxU37kSphFiYNOi4/gkkD9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9q\nUlmeMXRrHeEdIHuIQrHCkqASZjMzA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+\n2WDcDU3bR/uQulIPddnjoNhMDXOd8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pO\nSQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-15 04:07:23.996029	2018-03-15 04:33:45.479283				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	f	t		0	0	1	\N					0	f	\N	\N	\N	\N
 \.
 
 
@@ -1916,10 +2111,18 @@ environment	development	2018-03-06 03:50:47.67559	2018-03-06 03:50:47.67559
 
 
 --
+-- Data for Name: backups; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.backups (id, user_id, dump_file_name, dump_content_type, dump_file_size, dump_updated_at, processed, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: blocks; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.blocks (id, created_at, updated_at, account_id, target_account_id) FROM stdin;
+COPY public.blocks (id, created_at, updated_at, account_id, target_account_id, uri) FROM stdin;
 \.
 
 
@@ -1951,6 +2154,14 @@ COPY public.custom_emojis (id, shortcode, domain, image_file_name, image_content
 
 
 --
+-- Data for Name: custom_filters; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.custom_filters (id, account_id, expires_at, phrase, context, irreversible, created_at, updated_at, whole_word) FROM stdin;
+\.
+
+
+--
 -- Data for Name: domain_blocks; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
@@ -1978,7 +2189,7 @@ COPY public.favourites (id, created_at, updated_at, account_id, status_id) FROM 
 -- Data for Name: follow_requests; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.follow_requests (id, created_at, updated_at, account_id, target_account_id, show_reblogs) FROM stdin;
+COPY public.follow_requests (id, created_at, updated_at, account_id, target_account_id, show_reblogs, uri) FROM stdin;
 \.
 
 
@@ -1986,12 +2197,20 @@ COPY public.follow_requests (id, created_at, updated_at, account_id, target_acco
 -- Data for Name: follows; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.follows (id, created_at, updated_at, account_id, target_account_id, show_reblogs) FROM stdin;
-1	2018-03-06 03:52:28.049515	2018-03-06 03:52:28.049515	2	1	t
-2	2018-03-06 03:52:56.891683	2018-03-06 03:52:56.891683	3	1	t
-3	2018-03-06 03:53:56.148659	2018-03-06 03:53:56.148659	4	1	t
-4	2018-03-08 17:13:30.3398	2018-03-08 17:13:30.3398	5	1	t
-5	2018-03-15 04:07:36.361956	2018-03-15 04:07:36.361956	6	1	t
+COPY public.follows (id, created_at, updated_at, account_id, target_account_id, show_reblogs, uri) FROM stdin;
+1	2018-03-06 03:52:28.049515	2018-03-06 03:52:28.049515	2	1	t	\N
+2	2018-03-06 03:52:56.891683	2018-03-06 03:52:56.891683	3	1	t	\N
+3	2018-03-06 03:53:56.148659	2018-03-06 03:53:56.148659	4	1	t	\N
+4	2018-03-08 17:13:30.3398	2018-03-08 17:13:30.3398	5	1	t	\N
+5	2018-03-15 04:07:36.361956	2018-03-15 04:07:36.361956	6	1	t	\N
+\.
+
+
+--
+-- Data for Name: identities; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.identities (id, user_id, provider, uid, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -2007,7 +2226,7 @@ COPY public.imports (id, type, approved, created_at, updated_at, data_file_name,
 -- Data for Name: invites; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.invites (id, user_id, code, expires_at, max_uses, uses, created_at, updated_at) FROM stdin;
+COPY public.invites (id, user_id, code, expires_at, max_uses, uses, created_at, updated_at, autofollow) FROM stdin;
 \.
 
 
@@ -2114,10 +2333,18 @@ COPY public.preview_cards_statuses (preview_card_id, status_id) FROM stdin;
 
 
 --
+-- Data for Name: report_notes; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.report_notes (id, content, report_id, account_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: reports; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.reports (id, status_ids, comment, action_taken, created_at, updated_at, account_id, action_taken_by_account_id, target_account_id) FROM stdin;
+COPY public.reports (id, status_ids, comment, action_taken, created_at, updated_at, account_id, action_taken_by_account_id, target_account_id, assigned_account_id) FROM stdin;
 \.
 
 
@@ -2273,6 +2500,29 @@ COPY public.schema_migrations (version) FROM stdin;
 20171201000000
 20171212195226
 20171226094803
+20180109143959
+20180204034416
+20180206000000
+20180211015820
+20180304013859
+20180310000000
+20180402031200
+20180402040909
+20180410204633
+20180416210259
+20180506221944
+20180510214435
+20180510230049
+20180514130000
+20180514140000
+20180528141303
+20180608213548
+20180609104432
+20180615122121
+20180616192031
+20180617162849
+20180628181026
+20180707154237
 \.
 
 
@@ -2362,13 +2612,13 @@ COPY public.tags (id, name, created_at, updated_at) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, admin, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, locale, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, consumed_timestep, otp_required_for_login, last_emailed_at, otp_backup_codes, filtered_languages, account_id, disabled, moderator, invite_id) FROM stdin;
-4	externallinks@localhost:3000	2018-03-06 03:53:52.59743	2018-03-06 03:54:07.597338	$2a$10$j6UVhj3pm2ZivOrm9sGbcuPtw49kqvpggbyt.IcCX/sm9Mqr2W2lW	\N	\N	2018-03-06 03:54:07.592013	1	2018-03-06 03:54:07.569021	2018-03-06 03:54:07.569021	127.0.0.1	127.0.0.1	f	1wHx7PBsMfgkwz36yVSq	2018-03-06 03:53:56.002257	2018-03-06 03:53:52.597832	\N	en	\N	\N	\N	\N	f	\N	\N	{}	4	f	f	\N
-2	foobar@localhost:3000	2018-03-06 03:52:21.15566	2018-03-06 04:57:40.899388	$2a$10$uOJGEfYP4JcR6cdKASsuAe3EYc44ClEjY3IsL9cwupgAsKXNvsMB6	\N	\N	2018-03-06 04:57:40.898036	1	2018-03-06 04:57:40.87839	2018-03-06 04:57:40.87839	127.0.0.1	127.0.0.1	f	9tZRP_PZyyQ6hQmx88hX	2018-03-06 03:52:26.359	2018-03-06 03:52:21.156096	\N	en	\N	\N	\N	\N	f	\N	\N	{}	2	f	f	\N
-3	quux@localhost:3000	2018-03-06 03:52:52.825436	2018-03-06 04:58:05.758893	$2a$10$nSVOaz2ACr7hizj57HbbCOnBgaj20teuuSBHYFQdKboPAE8o8AWtu	\N	\N	2018-03-06 04:58:05.757671	1	2018-03-06 04:58:05.7443	2018-03-06 04:58:05.7443	127.0.0.1	127.0.0.1	f	LZkd9hZPQby-DJR7q2xK	2018-03-06 03:52:56.722007	2018-03-06 03:52:52.825895	\N	en	\N	\N	\N	\N	f	\N	\N	{}	3	f	f	\N
-1	admin@localhost:3000	2018-03-06 03:50:49.649613	2018-03-06 17:03:26.537681	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	\N	2	2018-03-06 16:53:21.708118	2018-03-06 04:56:52.178652	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N
-5	baz@localhost:3000	2018-03-08 17:13:19.88529	2018-03-08 17:13:40.093697	$2a$10$eqGdrqmSUEfA4q.7qxjp1eFdMxSUGlNJMpnOG.zxE6ogyDUj9t8GO	\N	\N	2018-03-08 17:13:40.092268	1	2018-03-08 17:13:40.06976	2018-03-08 17:13:40.06976	127.0.0.1	127.0.0.1	f	K5TLBFADUUD-51oaCMfL	2018-03-08 17:13:29.253941	2018-03-08 17:13:19.885632	\N	en	\N	\N	\N	\N	f	\N	\N	{}	5	f	f	\N
-6	lockedaccount@localhost:3000	2018-03-15 04:07:24.10397	2018-03-15 04:58:42.615377	$2a$10$PGDn6VtjTR0BSbK4MY/aR.T0qJZ/wtziTXH0ySJr7x3.3XsZ/1qwm	\N	\N	2018-03-15 04:07:55.142233	3	2018-03-15 04:58:42.60349	2018-03-15 04:33:25.042573	127.0.0.1	127.0.0.1	f	spRH4F8MUisS5i_uzTiS	2018-03-15 04:07:34.297881	2018-03-15 04:07:24.105731	\N	en	\N	\N	\N	\N	f	\N	\N	{}	6	f	f	\N
+COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, admin, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, locale, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, consumed_timestep, otp_required_for_login, last_emailed_at, otp_backup_codes, filtered_languages, account_id, disabled, moderator, invite_id, remember_token, chosen_languages) FROM stdin;
+4	externallinks@localhost:3000	2018-03-06 03:53:52.59743	2018-03-06 03:54:07.597338	$2a$10$j6UVhj3pm2ZivOrm9sGbcuPtw49kqvpggbyt.IcCX/sm9Mqr2W2lW	\N	\N	2018-03-06 03:54:07.592013	1	2018-03-06 03:54:07.569021	2018-03-06 03:54:07.569021	127.0.0.1	127.0.0.1	f	1wHx7PBsMfgkwz36yVSq	2018-03-06 03:53:56.002257	2018-03-06 03:53:52.597832	\N	en	\N	\N	\N	\N	f	\N	\N	{}	4	f	f	\N	\N	\N
+2	foobar@localhost:3000	2018-03-06 03:52:21.15566	2018-03-06 04:57:40.899388	$2a$10$uOJGEfYP4JcR6cdKASsuAe3EYc44ClEjY3IsL9cwupgAsKXNvsMB6	\N	\N	2018-03-06 04:57:40.898036	1	2018-03-06 04:57:40.87839	2018-03-06 04:57:40.87839	127.0.0.1	127.0.0.1	f	9tZRP_PZyyQ6hQmx88hX	2018-03-06 03:52:26.359	2018-03-06 03:52:21.156096	\N	en	\N	\N	\N	\N	f	\N	\N	{}	2	f	f	\N	\N	\N
+3	quux@localhost:3000	2018-03-06 03:52:52.825436	2018-03-06 04:58:05.758893	$2a$10$nSVOaz2ACr7hizj57HbbCOnBgaj20teuuSBHYFQdKboPAE8o8AWtu	\N	\N	2018-03-06 04:58:05.757671	1	2018-03-06 04:58:05.7443	2018-03-06 04:58:05.7443	127.0.0.1	127.0.0.1	f	LZkd9hZPQby-DJR7q2xK	2018-03-06 03:52:56.722007	2018-03-06 03:52:52.825895	\N	en	\N	\N	\N	\N	f	\N	\N	{}	3	f	f	\N	\N	\N
+1	admin@localhost:3000	2018-03-06 03:50:49.649613	2018-03-06 17:03:26.537681	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	\N	2	2018-03-06 16:53:21.708118	2018-03-06 04:56:52.178652	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	\N	\N
+5	baz@localhost:3000	2018-03-08 17:13:19.88529	2018-03-08 17:13:40.093697	$2a$10$eqGdrqmSUEfA4q.7qxjp1eFdMxSUGlNJMpnOG.zxE6ogyDUj9t8GO	\N	\N	2018-03-08 17:13:40.092268	1	2018-03-08 17:13:40.06976	2018-03-08 17:13:40.06976	127.0.0.1	127.0.0.1	f	K5TLBFADUUD-51oaCMfL	2018-03-08 17:13:29.253941	2018-03-08 17:13:19.885632	\N	en	\N	\N	\N	\N	f	\N	\N	{}	5	f	f	\N	\N	\N
+6	lockedaccount@localhost:3000	2018-03-15 04:07:24.10397	2018-03-15 04:58:42.615377	$2a$10$PGDn6VtjTR0BSbK4MY/aR.T0qJZ/wtziTXH0ySJr7x3.3XsZ/1qwm	\N	\N	2018-03-15 04:07:55.142233	3	2018-03-15 04:58:42.60349	2018-03-15 04:33:25.042573	127.0.0.1	127.0.0.1	f	spRH4F8MUisS5i_uzTiS	2018-03-15 04:07:34.297881	2018-03-15 04:07:24.105731	\N	en	\N	\N	\N	\N	f	\N	\N	{}	6	f	f	\N	\N	\N
 \.
 
 
@@ -2376,7 +2626,7 @@ COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_
 -- Data for Name: web_push_subscriptions; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.web_push_subscriptions (id, endpoint, key_p256dh, key_auth, data, created_at, updated_at) FROM stdin;
+COPY public.web_push_subscriptions (id, endpoint, key_p256dh, key_auth, data, created_at, updated_at, access_token_id, user_id) FROM stdin;
 \.
 
 
@@ -2421,6 +2671,13 @@ SELECT pg_catalog.setval('public.admin_action_logs_id_seq', 3, true);
 
 
 --
+-- Name: backups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.backups_id_seq', 1, false);
+
+
+--
 -- Name: blocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -2446,6 +2703,13 @@ SELECT pg_catalog.setval('public.conversations_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.custom_emojis_id_seq', 3, true);
+
+
+--
+-- Name: custom_filters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.custom_filters_id_seq', 1, false);
 
 
 --
@@ -2481,6 +2745,13 @@ SELECT pg_catalog.setval('public.follow_requests_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.follows_id_seq', 5, true);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.identities_id_seq', 1, false);
 
 
 --
@@ -2565,6 +2836,13 @@ SELECT pg_catalog.setval('public.oauth_applications_id_seq', 1, true);
 --
 
 SELECT pg_catalog.setval('public.preview_cards_id_seq', 1, false);
+
+
+--
+-- Name: report_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.report_notes_id_seq', 1, false);
 
 
 --
@@ -2692,6 +2970,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: backups backups_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.backups
+    ADD CONSTRAINT backups_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: blocks blocks_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -2721,6 +3007,14 @@ ALTER TABLE ONLY public.conversations
 
 ALTER TABLE ONLY public.custom_emojis
     ADD CONSTRAINT custom_emojis_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: custom_filters custom_filters_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.custom_filters
+    ADD CONSTRAINT custom_filters_pkey PRIMARY KEY (id);
 
 
 --
@@ -2761,6 +3055,14 @@ ALTER TABLE ONLY public.follow_requests
 
 ALTER TABLE ONLY public.follows
     ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -2857,6 +3159,14 @@ ALTER TABLE ONLY public.oauth_applications
 
 ALTER TABLE ONLY public.preview_cards
     ADD CONSTRAINT preview_cards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: report_notes report_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.report_notes
+    ADD CONSTRAINT report_notes_pkey PRIMARY KEY (id);
 
 
 --
@@ -3013,17 +3323,10 @@ CREATE INDEX index_accounts_on_url ON public.accounts USING btree (url);
 
 
 --
--- Name: index_accounts_on_username_and_domain; Type: INDEX; Schema: public; Owner: pinafore
---
-
-CREATE UNIQUE INDEX index_accounts_on_username_and_domain ON public.accounts USING btree (username, domain);
-
-
---
 -- Name: index_accounts_on_username_and_domain_lower; Type: INDEX; Schema: public; Owner: pinafore
 --
 
-CREATE INDEX index_accounts_on_username_and_domain_lower ON public.accounts USING btree (lower((username)::text), lower((domain)::text));
+CREATE UNIQUE INDEX index_accounts_on_username_and_domain_lower ON public.accounts USING btree (lower((username)::text), lower((domain)::text));
 
 
 --
@@ -3066,6 +3369,13 @@ CREATE UNIQUE INDEX index_conversations_on_uri ON public.conversations USING btr
 --
 
 CREATE UNIQUE INDEX index_custom_emojis_on_shortcode_and_domain ON public.custom_emojis USING btree (shortcode, domain);
+
+
+--
+-- Name: index_custom_filters_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_custom_filters_on_account_id ON public.custom_filters USING btree (account_id);
 
 
 --
@@ -3115,6 +3425,13 @@ CREATE UNIQUE INDEX index_follow_requests_on_account_id_and_target_account_id ON
 --
 
 CREATE UNIQUE INDEX index_follows_on_account_id_and_target_account_id ON public.follows USING btree (account_id, target_account_id);
+
+
+--
+-- Name: index_identities_on_user_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_id);
 
 
 --
@@ -3272,6 +3589,20 @@ CREATE INDEX index_preview_cards_statuses_on_status_id_and_preview_card_id ON pu
 
 
 --
+-- Name: index_report_notes_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_report_notes_on_account_id ON public.report_notes USING btree (account_id);
+
+
+--
+-- Name: index_report_notes_on_report_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_report_notes_on_report_id ON public.report_notes USING btree (report_id);
+
+
+--
 -- Name: index_reports_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -3325,13 +3656,6 @@ CREATE UNIQUE INDEX index_status_pins_on_account_id_and_status_id ON public.stat
 --
 
 CREATE INDEX index_statuses_20180106 ON public.statuses USING btree (account_id, id DESC, visibility, updated_at);
-
-
---
--- Name: index_statuses_on_conversation_id; Type: INDEX; Schema: public; Owner: pinafore
---
-
-CREATE INDEX index_statuses_on_conversation_id ON public.statuses USING btree (conversation_id);
 
 
 --
@@ -3419,17 +3743,24 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_filtered_languages; Type: INDEX; Schema: public; Owner: pinafore
---
-
-CREATE INDEX index_users_on_filtered_languages ON public.users USING gin (filtered_languages);
-
-
---
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: pinafore
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: index_web_push_subscriptions_on_access_token_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_web_push_subscriptions_on_access_token_id ON public.web_push_subscriptions USING btree (access_token_id);
+
+
+--
+-- Name: index_web_push_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_web_push_subscriptions_on_user_id ON public.web_push_subscriptions USING btree (user_id);
 
 
 --
@@ -3727,6 +4058,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: backups fk_rails_096669d221; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.backups
+    ADD CONSTRAINT fk_rails_096669d221 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: accounts fk_rails_2320833084; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -3775,6 +4114,22 @@ ALTER TABLE ONLY public.list_accounts
 
 
 --
+-- Name: reports fk_rails_4e7a498fb4; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT fk_rails_4e7a498fb4 FOREIGN KEY (assigned_account_id) REFERENCES public.accounts(id) ON DELETE SET NULL;
+
+
+--
+-- Name: identities fk_rails_5373344100; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT fk_rails_5373344100 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: mentions fk_rails_59edbe2887; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -3799,11 +4154,35 @@ ALTER TABLE ONLY public.status_pins
 
 
 --
+-- Name: web_push_subscriptions fk_rails_751a9f390b; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.web_push_subscriptions
+    ADD CONSTRAINT fk_rails_751a9f390b FOREIGN KEY (access_token_id) REFERENCES public.oauth_access_tokens(id) ON DELETE CASCADE;
+
+
+--
+-- Name: report_notes fk_rails_7fa83a61eb; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.report_notes
+    ADD CONSTRAINT fk_rails_7fa83a61eb FOREIGN KEY (report_id) REFERENCES public.reports(id) ON DELETE CASCADE;
+
+
+--
 -- Name: list_accounts fk_rails_85fee9d6ab; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
 ALTER TABLE ONLY public.list_accounts
     ADD CONSTRAINT fk_rails_85fee9d6ab FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: custom_filters fk_rails_8b8d786993; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.custom_filters
+    ADD CONSTRAINT fk_rails_8b8d786993 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -3828,6 +4207,22 @@ ALTER TABLE ONLY public.statuses
 
 ALTER TABLE ONLY public.admin_action_logs
     ADD CONSTRAINT fk_rails_a7667297fa FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: web_push_subscriptions fk_rails_b006f28dac; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.web_push_subscriptions
+    ADD CONSTRAINT fk_rails_b006f28dac FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: report_notes fk_rails_cae66353f3; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.report_notes
+    ADD CONSTRAINT fk_rails_cae66353f3 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --

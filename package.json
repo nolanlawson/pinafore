@@ -44,7 +44,7 @@
     "deploy-prod": "run-s stage-prod launch alias-prod cleanup",
     "deploy-dev": "run-s stage-dev launch alias-dev cleanup",
     "deploy-dev-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then run-s stage-dev launch-travis alias-dev-travis cleanup-travis; fi",
-    "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w mastodon_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
+    "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.7",
