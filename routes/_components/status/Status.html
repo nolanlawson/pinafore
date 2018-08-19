@@ -21,7 +21,7 @@
   {#if !showContent}
     <StatusMentions {...params} />
   {/if}
-  {#if showContent || contentPreloaded}
+  {#if content && (showContent || contentPreloaded)}
     <StatusContent {...params} shown={showContent}/>
   {/if}
   {#if showMedia }
@@ -223,6 +223,7 @@
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread'
       )),
+      content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
