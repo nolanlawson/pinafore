@@ -10,7 +10,7 @@
   import escapeHtml from 'escape-html'
   import emojiRegex from 'emoji-regex'
 
-  const EMOJI_REGEX = emojiRegex()
+  let theEmojiRegex
 
   export default {
     store: () => store,
@@ -21,9 +21,10 @@
         accountName = escapeHtml(accountName)
 
         if ($omitEmojiInDisplayNames) { // display name emoji are annoying to some screenreader users
-          let emojiFreeAccountName = removeEmoji(accountName.replace(EMOJI_REGEX, ''), emojis).trim()
+          theEmojiRegex = theEmojiRegex || emojiRegex() // only init when needed
+          let emojiFreeAccountName = removeEmoji(accountName.replace(theEmojiRegex, ''), emojis).trim()
           if (emojiFreeAccountName) {
-            return emojiFreeAccountName // in case the username is only emoji, just keep them
+            return emojiFreeAccountName // only remove emoji if the resulting username is non-empty
           }
         }
 
