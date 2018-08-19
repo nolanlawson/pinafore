@@ -14,7 +14,7 @@ const writeFile = pify(fs.writeFile.bind(fs))
 const dir = __dirname
 
 const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
-const GIT_TAG = 'v2.4.0'
+const GIT_TAG = 'v2.4.3'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'
