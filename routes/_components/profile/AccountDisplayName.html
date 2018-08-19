@@ -1,0 +1,18 @@
+<span>{@html massagedAccountName }</span>
+<script>
+  import { emojifyText } from '../../_utils/emojifyText'
+  import { store } from '../../_store/store'
+  import escapeHtml from 'escape-html'
+
+  export default {
+    store: () => store,
+    computed: {
+      emojis: ({ account }) => (account.emojis || []),
+      accountName: ({ account }) => (account.display_name || account.username),
+      massagedAccountName: ({ accountName, emojis, $autoplayGifs }) => {
+        accountName = escapeHtml(accountName)
+        return emojifyText(accountName, emojis, $autoplayGifs)
+      }
+    }
+  }
+</script>

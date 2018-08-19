@@ -16,7 +16,7 @@
          class="status-header-author"
          title="{'@' + account.acct}"
          focus-key={focusKey} >
-        {account.display_name || account.username}
+        <AccountDisplayName {account} />
       </a>
     {/if}
 
@@ -103,10 +103,12 @@
 </style>
 <script>
   import Avatar from '../Avatar.html'
+  import AccountDisplayName from '../profile/AccountDisplayName.html'
 
   export default {
     components: {
-      Avatar
+      Avatar,
+      AccountDisplayName
     },
     computed: {
       focusKey: ({ uuid }) => `status-header-${uuid}`,

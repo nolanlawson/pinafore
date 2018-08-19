@@ -198,3 +198,12 @@ textarea {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+/* this gets injected as raw HTML, so it's easiest to just define it in global.scss */
+.inline-custom-emoji {
+  width: 1.4em;
+  height: 1.4em;
+  margin: -0.1em 0;
+  object-fit: contain;
+  vertical-align: middle;
+}

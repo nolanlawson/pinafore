@@ -7,7 +7,7 @@
                 normalIconColor="true"
                 ariaLabel="{account.display_name || account.acct} (opens in new window)"
   >
-    {account.display_name || account.acct}
+    <AccountDisplayName {account} />
   </ExternalLink>
 </div>
 <div class="account-profile-username">
@@ -80,11 +80,13 @@
 <script>
   import Avatar from '../Avatar.html'
   import ExternalLink from '../ExternalLink.html'
+  import AccountDisplayName from '../profile/AccountDisplayName.html'
 
   export default {
     components: {
       Avatar,
-      ExternalLink
+      ExternalLink,
+      AccountDisplayName
     }
   }
 </script>

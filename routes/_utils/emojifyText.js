@@ -8,7 +8,7 @@ export function emojifyText (text, emojis, autoplayGifs) {
       text = replaceAll(
         text,
         shortcodeWithColons,
-        `<img class="status-emoji" draggable="false" src="${urlToUse}"
+        `<img class="inline-custom-emoji" draggable="false" src="${urlToUse}"
                     alt="${shortcodeWithColons}" title="${shortcodeWithColons}" />`
       )
     }

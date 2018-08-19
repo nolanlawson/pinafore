@@ -6,6 +6,7 @@ import { postStatus } from '../routes/_api/statuses'
 import { deleteStatus } from '../routes/_api/delete'
 import { authorizeFollowRequest, getFollowRequests } from '../routes/_actions/followRequests'
 import { followAccount, unfollowAccount } from '../routes/_api/follow'
+import { updateCredentials } from '../routes/_api/updateCredentials'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -45,4 +46,8 @@ export async function followAs (username, userToFollow) {
 
 export async function unfollowAs (username, userToFollow) {
   return unfollowAccount(instanceName, users[username].accessToken, users[userToFollow].id)
+}
+
+export async function updateUserDisplayNameAs (username, displayName) {
+  return updateCredentials(instanceName, users[username].accessToken, {display_name: displayName})
 }
