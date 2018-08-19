@@ -34,3 +34,9 @@ if (!localStorage.store_currentInstance) {
   style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'
   document.head.appendChild(style)
 }
+
+// TODO: remove this hack when Safari works with cross-origin window.open()
+// in a PWA: https://github.com/nolanlawson/pinafore/issues/45
+if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
+  document.head.removeChild(document.getElementById('theManifest'))
+}

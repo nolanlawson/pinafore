@@ -48,17 +48,6 @@ app.use(nonDebugOnly(helmet({
   }
 })))
 
-// TODO: remove this hack when Safari works with cross-origin window.open()
-// in a PWA: https://github.com/nolanlawson/pinafore/issues/45
-app.get('/manifest.json', (req, res, next) => {
-  if (/iP(?:hone|ad|od)/.test(req.headers['user-agent'])) {
-    return res.status(404).send({
-      error: 'manifest.json is disabled for iOS. see https://github.com/nolanlawson/pinafore/issues/45'
-    })
-  }
-  return next()
-})
-
 app.use(serveStatic('assets', {
   setHeaders: (res) => {
     res.setHeader('Cache-Control', 'public,max-age=600')

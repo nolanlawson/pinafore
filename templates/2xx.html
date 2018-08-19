@@ -6,7 +6,7 @@
   <meta id='theThemeColor' name='theme-color' content='#4169e1' >
   <meta name="description" content="An alternative web client for Mastodon, focused on speed and simplicity." >
 
-  <link rel='manifest' href='/manifest.json' >
+  <link id='theManifest' rel='manifest' href='/manifest.json' >
   <link id='theFavicon' rel='icon' type='image/png' href='/favicon.png' >
   <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120.png" >
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180.png" >
@@ -76,6 +76,12 @@ if (!localStorage.store_currentInstance) {
   let style = document.createElement('style')
   style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'
   document.head.appendChild(style)
+}
+
+// TODO: remove this hack when Safari works with cross-origin window.open()
+// in a PWA: https://github.com/nolanlawson/pinafore/issues/45
+if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
+  document.head.removeChild(document.getElementById('theManifest'))
 }
 })()</script><!-- end insert inline script here -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
