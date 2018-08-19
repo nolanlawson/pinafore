@@ -1,4 +1,9 @@
-<span>{@html massagedAccountName }</span>
+<span class="account-display-name">{@html massagedAccountName }</span>
+<style>
+  .account-display-name {
+    pointer-events: none; /* allows focus to work correctly, focus on the parent only */
+  }
+</style>
 <script>
   import { emojifyText } from '../../_utils/emojifyText'
   import { store } from '../../_store/store'
