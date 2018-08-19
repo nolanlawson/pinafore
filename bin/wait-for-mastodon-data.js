@@ -1,7 +1,11 @@
 import fetch from 'node-fetch'
 import { actions } from './mastodon-data'
 
-const numStatuses = actions.filter(_ => _.post || _.boost).length
+const numStatuses = actions
+  .map(_ => _.post || _.boost)
+  .filter(Boolean)
+  .filter(_ => _.privacy !== 'direct')
+  .length
 
 async function waitForMastodonData () {
   while (true) {
