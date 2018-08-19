@@ -44,9 +44,9 @@ test('content warnings can have emoji', async t => {
     .typeText(composeContentWarning, 'can you feel the :blobpats: tonight')
     .click(composeButton)
     .expect(getNthStatus(0).innerText).contains('can you feel the', {timeout: 30000})
-    .expect($(`${getNthStatusSelector(0)} .status-spoiler img.status-emoji`).getAttribute('alt')).eql(':blobpats:')
+    .expect($(`${getNthStatusSelector(0)} .status-spoiler img.inline-custom-emoji`).getAttribute('alt')).eql(':blobpats:')
     .click(getNthShowOrHideButton(0))
-    .expect($(`${getNthStatusSelector(0)} .status-content img.status-emoji`).getAttribute('alt')).eql(':blobnom:')
+    .expect($(`${getNthStatusSelector(0)} .status-content img.inline-custom-emoji`).getAttribute('alt')).eql(':blobnom:')
 })
 
 test('no XSS in content warnings or text', async t => {

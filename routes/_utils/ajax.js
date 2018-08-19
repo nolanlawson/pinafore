@@ -39,7 +39,7 @@ async function _fetch (url, fetchOptions, options) {
   return throwErrorIfInvalidResponse(response)
 }
 
-async function _putOrPost (method, url, body, headers, options) {
+async function _putOrPostOrPatch (method, url, body, headers, options) {
   let fetchOptions = makeFetchOptions(method, headers)
   if (body) {
     if (body instanceof FormData) {
@@ -53,11 +53,15 @@ async function _putOrPost (method, url, body, headers, options) {
 }
 
 export async function put (url, body, headers, options) {
-  return _putOrPost('PUT', url, body, headers, options)
+  return _putOrPostOrPatch('PUT', url, body, headers, options)
 }
 
 export async function post (url, body, headers, options) {
-  return _putOrPost('POST', url, body, headers, options)
+  return _putOrPostOrPatch('POST', url, body, headers, options)
+}
+
+export async function patch (url, body, headers, options) {
+  return _putOrPostOrPatch('PATCH', url, body, headers, options)
 }
 
 export async function get (url, headers, options) {

@@ -3,7 +3,7 @@
    title="{'@' + originalAccount.acct}"
    focus-key={focusKey}
 >
-  {originalAccount.display_name || originalAccount.username}
+  <AccountDisplayName account={originalAccount} />
 </a>
 <style>
   .status-author-name {
@@ -34,9 +34,14 @@
 
 </style>
 <script>
+  import AccountDisplayName from '../profile/AccountDisplayName.html'
+
   export default {
     computed: {
       focusKey: ({ uuid }) => `status-author-name-${uuid}`
+    },
+    components: {
+      AccountDisplayName
     }
   }
 </script>

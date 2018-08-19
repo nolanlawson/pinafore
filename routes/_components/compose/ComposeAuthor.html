@@ -4,7 +4,7 @@
   <Avatar account={verifyCredentials} size="small"/>
 </a>
 <a class="compose-box-display-name" href="/accounts/{verifyCredentials.id}">
-  {verifyCredentials.display_name || verifyCredentials.acct}
+  <AccountDisplayName account={verifyCredentials} />
 </a>
 <span class="compose-box-handle">
   {'@' + verifyCredentials.acct}
@@ -51,9 +51,12 @@
 <script>
   import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
+  import AccountDisplayName from '../profile/AccountDisplayName.html'
+
   export default {
     components: {
-      Avatar
+      Avatar,
+      AccountDisplayName
     },
     store: () => store,
     computed: {

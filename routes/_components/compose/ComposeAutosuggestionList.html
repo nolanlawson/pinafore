@@ -12,7 +12,7 @@
           account={item}
         />
         <span class="compose-autosuggest-list-display-name">
-            {item.display_name || item.acct}
+            <AccountDisplayName account={item} />
         </span>
         <span class="compose-autosuggest-list-username">
             {'@' + item.acct}
@@ -99,6 +99,7 @@
 <script>
   import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
+  import AccountDisplayName from '../profile/AccountDisplayName.html'
 
   export default {
     store: () => store,
@@ -110,7 +111,8 @@
       }
     },
     components: {
-      Avatar
+      Avatar,
+      AccountDisplayName
     }
   }
 </script>

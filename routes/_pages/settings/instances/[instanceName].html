@@ -9,7 +9,9 @@
                     href={verifyCredentials.url}>
         {'@' + verifyCredentials.acct}
       </ExternalLink>
-      <span class="acct-display-name">{verifyCredentials.display_name || verifyCredentials.acct}</span>
+      <span class="acct-display-name">
+        <AccountDisplayName account={verifyCredentials} />
+      </span>
     </div>
     <h2>Theme:</h2>
     <form class="theme-chooser" aria-label="Choose a theme">
@@ -103,6 +105,7 @@
     updateVerifyCredentialsForInstance
   } from '../../../_actions/instances'
   import { themes } from '../../../_static/themes'
+  import AccountDisplayName from '../../../_components/profile/AccountDisplayName.html'
 
   export default {
     async oncreate () {
@@ -148,7 +151,8 @@
     components: {
       SettingsLayout,
       ExternalLink,
-      Avatar
+      Avatar,
+      AccountDisplayName
     }
   }
 </script>
