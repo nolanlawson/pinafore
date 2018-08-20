@@ -5,12 +5,10 @@
   }
 </style>
 <script>
-  import { emojifyText, removeEmoji } from '../../_utils/emojifyText'
+  import { emojifyText } from '../../_utils/emojifyText'
   import { store } from '../../_store/store'
   import escapeHtml from 'escape-html'
-  import emojiRegex from 'emoji-regex'
-
-  let theEmojiRegex
+  import { removeEmoji } from '../../_utils/removeEmoji'
 
   export default {
     store: () => store,
@@ -21,10 +19,9 @@
         accountName = escapeHtml(accountName)
 
         if ($omitEmojiInDisplayNames) { // display name emoji are annoying to some screenreader users
-          theEmojiRegex = theEmojiRegex || emojiRegex() // only init when needed
-          let emojiFreeAccountName = removeEmoji(accountName.replace(theEmojiRegex, ''), emojis).trim()
-          if (emojiFreeAccountName) {
-            return emojiFreeAccountName // only remove emoji if the resulting username is non-empty
+          let emojiFreeDisplayName = removeEmoji(accountName, emojis)
+          if (emojiFreeDisplayName) {
+            return emojiFreeDisplayName
           }
         }
 

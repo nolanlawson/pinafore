@@ -110,6 +110,7 @@
   import { classname } from '../../_utils/classname'
   import { checkDomAncestors } from '../../_utils/checkDomAncestors'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { removeEmoji } from '../../_utils/removeEmoji'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -208,9 +209,17 @@
         originalStatus.media_attachments &&
         originalStatus.media_attachments.length
       ),
-      ariaLabel: ({ originalAccount, originalStatus, visibility }) => (
+      originalAccountEmojis: ({ originalAccount }) => (originalAccount.emojis || []),
+      originalAccountDisplayName: ({ originalAccount }) => (originalAccount.display_name || originalAccount.username),
+      originalAccountAccessibleName: ({ originalAccountDisplayName, originalAccountEmojis, $omitEmojiInDisplayNames }) => {
+        if ($omitEmojiInDisplayNames) {
+          return removeEmoji(originalAccountDisplayName, originalAccountEmojis) || originalAccountDisplayName
+        }
+        return originalAccountDisplayName
+      },
+      ariaLabel: ({ originalAccountAccessibleName, originalStatus, visibility }) => (
         (visibility === 'direct' ? 'Direct message' : 'Status') +
-          ` by ${originalAccount.display_name || originalAccount.username}`
+          ` by ${originalAccountAccessibleName}`
       ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
