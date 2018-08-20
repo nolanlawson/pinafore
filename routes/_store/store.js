@@ -15,6 +15,7 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'autoplayGifs',
   'markMediaAsSensitive',
   'reduceMotion',
+  'omitEmojiInDisplayNames',
   'pinnedPages',
   'composeData'
 ])

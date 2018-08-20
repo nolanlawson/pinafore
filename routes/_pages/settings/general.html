@@ -18,6 +18,11 @@
              bind:checked="$reduceMotion" on:change="$save()">
       <label for="choice-reduce-motion">Reduce motion in UI animations</label>
     </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-omit-emoji-in-display-names"
+             bind:checked="$omitEmojiInDisplayNames" on:change="$save()">
+      <label for="choice-omit-emoji-in-display-names">Remove emoji from user display names</label>
+    </div>
   </form>
 
 </SettingsLayout>

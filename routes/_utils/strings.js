@@ -1,5 +1,5 @@
 export function replaceAll (string, replacee, replacement) {
-  if (!string.length || !replacee.length || !replacement.length) {
+  if (!string.length || !replacee.length) {
     return string
   }
   let idx

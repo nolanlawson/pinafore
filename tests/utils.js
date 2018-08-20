@@ -41,6 +41,8 @@ export const followsButton = $('.account-profile-details > *:nth-child(2)')
 export const followersButton = $('.account-profile-details > *:nth-child(3)')
 export const avatarInComposeBox = $('.compose-box-avatar')
 export const displayNameInComposeBox = $('.compose-box-display-name')
+export const generalSettingsButton = $('a[href="/settings/general"]')
+export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 
 export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
