@@ -3,7 +3,7 @@
           {status} {notification} on:recalculateHeight
   />
 {:else}
-  <article class="notification-article"
+  <article class={"notification-article notification-" + notification.type}
            tabindex="0"
            aria-posinset={index}
            aria-setsize={length} >

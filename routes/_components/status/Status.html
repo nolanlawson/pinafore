@@ -226,11 +226,12 @@
         status.reblog ||
         timelineType === 'pinned'
       ),
-      className: ({ visibility, timelineType, isStatusInOwnThread }) => (classname(
+      className: ({ visibility, timelineType, isStatusInOwnThread, notification }) => (classname(
         'status-article',
         visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
-        isStatusInOwnThread && 'status-in-own-thread'
+        isStatusInOwnThread && 'status-in-own-thread',
+        notification && notification.type && 'status-' + notification.type
       )),
       content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
