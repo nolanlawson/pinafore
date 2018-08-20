@@ -106,3 +106,23 @@ test('Check status aria labels for de-emojified text', async t => {
     .click(displayNameInComposeBox)
     .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
 })
+
+test('Check some odd emoji', async t => {
+  await updateUserDisplayNameAs('foobar', 'foo 🕹📺')
+  await sleep(1000)
+  await loginAsFoobar(t)
+  await t
+    .expect(displayNameInComposeBox.innerText).eql('foo 🕹📺')
+    .click(settingsNavButton)
+    .click(generalSettingsButton)
+    .click(removeEmojiFromDisplayNamesInput)
+    .expect(removeEmojiFromDisplayNamesInput.checked).ok()
+    .click(homeNavButton)
+    .expect(displayNameInComposeBox.innerText).eql('foo')
+    .click(settingsNavButton)
+    .click(generalSettingsButton)
+    .click(removeEmojiFromDisplayNamesInput)
+    .expect(removeEmojiFromDisplayNamesInput.checked).notOk()
+    .click(homeNavButton)
+    .expect(displayNameInComposeBox.innerText).eql('foo 🕹📺')
+})
