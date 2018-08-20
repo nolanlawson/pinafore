@@ -5,7 +5,7 @@
   <ExternalLink href={account.url}
                 showIcon="true"
                 normalIconColor="true"
-                ariaLabel="{account.display_name || account.acct} (opens in new window)"
+                ariaLabel="{accessibleName} (opens in new window)"
   >
     <AccountDisplayName {account} />
   </ExternalLink>
@@ -81,8 +81,21 @@
   import Avatar from '../Avatar.html'
   import ExternalLink from '../ExternalLink.html'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
+  import { removeEmoji } from '../../_utils/removeEmoji'
+  import { store } from '../../_store/store'
 
   export default {
+    store: () => store,
+    computed: {
+      emojis: ({ account }) => (account.emojis || []),
+      displayName: ({ account }) => account.display_name || account.username,
+      accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
+        if ($omitEmojiInDisplayNames) {
+          return removeEmoji(displayName, emojis) || displayName
+        }
+        return displayName
+      }
+    },
     components: {
       Avatar,
       ExternalLink,

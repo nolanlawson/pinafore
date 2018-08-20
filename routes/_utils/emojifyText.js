@@ -15,13 +15,3 @@ export function emojifyText (text, emojis, autoplayGifs) {
   }
   return text
 }
-
-export function removeEmoji (text, emojis) {
-  if (emojis) {
-    for (let emoji of emojis) {
-      let shortcodeWithColons = `:${emoji.shortcode}:`
-      text = replaceAll(text, shortcodeWithColons, '')
-    }
-  }
-  return text
-}

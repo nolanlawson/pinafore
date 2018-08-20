@@ -1,6 +1,7 @@
 import { loginAsFoobar } from '../roles'
 import {
-  displayNameInComposeBox, generalSettingsButton, getNthStatusSelector, getUrl, homeNavButton,
+  avatarInComposeBox,
+  displayNameInComposeBox, generalSettingsButton, getNthStatus, getNthStatusSelector, getUrl, homeNavButton,
   removeEmojiFromDisplayNamesInput,
   settingsNavButton,
   sleep
@@ -38,6 +39,7 @@ test('Can remove emoji from user display names', async t => {
   await t
     .expect(displayNameInComposeBox.innerText).eql('🌈 foo  🌈')
     .expect($('.compose-box-display-name img').exists).ok()
+    .expect(avatarInComposeBox.getAttribute('aria-label')).eql('Profile for 🌈 foo :blobpats: 🌈')
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
@@ -45,6 +47,7 @@ test('Can remove emoji from user display names', async t => {
     .click(homeNavButton)
     .expect(displayNameInComposeBox.innerText).eql('foo')
     .expect($('.compose-box-display-name img').exists).notOk()
+    .expect(avatarInComposeBox.getAttribute('aria-label')).eql('Profile for foo')
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
@@ -52,6 +55,7 @@ test('Can remove emoji from user display names', async t => {
     .click(homeNavButton)
     .expect(displayNameInComposeBox.innerText).eql('🌈 foo  🌈')
     .expect($('.compose-box-display-name img').exists).ok()
+    .expect(avatarInComposeBox.getAttribute('aria-label')).eql('Profile for 🌈 foo :blobpats: 🌈')
 })
 
 test('Cannot remove emoji from user display names if result would be empty', async t => {
@@ -61,6 +65,7 @@ test('Cannot remove emoji from user display names if result would be empty', asy
   await t
     .expect(displayNameInComposeBox.innerText).eql('🌈  🌈')
     .expect($('.compose-box-display-name img').exists).ok()
+    .expect(avatarInComposeBox.getAttribute('aria-label')).eql('Profile for 🌈 :blobpats: 🌈')
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
@@ -68,6 +73,7 @@ test('Cannot remove emoji from user display names if result would be empty', asy
     .click(homeNavButton)
     .expect(displayNameInComposeBox.innerText).eql('🌈  🌈')
     .expect($('.compose-box-display-name img').exists).ok()
+    .expect(avatarInComposeBox.getAttribute('aria-label')).eql('Profile for 🌈 :blobpats: 🌈')
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
@@ -75,4 +81,28 @@ test('Cannot remove emoji from user display names if result would be empty', asy
     .click(homeNavButton)
     .expect(displayNameInComposeBox.innerText).eql('🌈  🌈')
     .expect($('.compose-box-display-name img').exists).ok()
+    .expect(avatarInComposeBox.getAttribute('aria-label')).eql('Profile for 🌈 :blobpats: 🌈')
+})
+
+test('Check status aria labels for de-emojified text', async t => {
+  await updateUserDisplayNameAs('foobar', '🌈 foo :blobpats: 🌈')
+  await sleep(1000)
+  await loginAsFoobar(t)
+  await t
+    .click(displayNameInComposeBox)
+    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
+    .click(settingsNavButton)
+    .click(generalSettingsButton)
+    .click(removeEmojiFromDisplayNamesInput)
+    .expect(removeEmojiFromDisplayNamesInput.checked).ok()
+    .click(homeNavButton)
+    .click(displayNameInComposeBox)
+    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by foo')
+    .click(settingsNavButton)
+    .click(generalSettingsButton)
+    .click(removeEmojiFromDisplayNamesInput)
+    .expect(removeEmojiFromDisplayNamesInput.checked).notOk()
+    .click(homeNavButton)
+    .click(displayNameInComposeBox)
+    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
 })

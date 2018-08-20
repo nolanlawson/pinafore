@@ -1,6 +1,6 @@
 <a href="/accounts/{verifyCredentials.id}"
    class="compose-box-avatar"
-   aria-label="Profile for {verifyCredentials.display_name || verifyCredentials.acct}">
+   aria-label="Profile for {accessibleName}">
   <Avatar account={verifyCredentials} size="small"/>
 </a>
 <a class="compose-box-display-name" href="/accounts/{verifyCredentials.id}">
@@ -52,6 +52,7 @@
   import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
+  import { removeEmoji } from '../../_utils/removeEmoji'
 
   export default {
     components: {
@@ -60,7 +61,15 @@
     },
     store: () => store,
     computed: {
-      verifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials
+      verifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials,
+      emojis: ({ verifyCredentials }) => (verifyCredentials.emojis || []),
+      displayName: ({ verifyCredentials }) => verifyCredentials.display_name || verifyCredentials.username,
+      accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
+        if ($omitEmojiInDisplayNames) {
+          return removeEmoji(displayName, emojis) || displayName
+        }
+        return displayName
+      }
     }
   }
 </script>
