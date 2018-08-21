@@ -1,0 +1,93 @@
+<div class="account-profile-meta">
+   {@html meta}
+</div>
+<style>
+  .account-profile-meta {
+    grid-area: meta;
+    padding: 10px 0;
+    font-size: 0.9em;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+  }
+
+  :global(.account-profile-meta p) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-meta p:first-child) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-meta p:last-child) {
+    margin: 0;
+  }
+
+  :global(.account-profile-meta-field) {
+    display: grid;
+    grid-template-areas: "name value";
+    grid-template-columns: min-content auto;
+    align-items: center;
+    border-top: 1px solid var(--main-border);
+    padding: 5px 0px;
+  }
+
+  :global(.account-profile-meta-field:last-child) {
+    border-bottom: 1px solid var(--main-border);
+  }
+
+  :global(.account-profile-meta-field-name) {
+    grid-area: name;
+    padding: 5px 20px 5px 30px;
+    border-right: 1px solid var(--main-border);
+    font-weight: bold;
+  }
+
+  :global(.account-profile-meta-field-value) {
+    grid-area: value;
+    padding: 5px 30px 5px 20px;
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-meta {
+      padding: 5px 0;
+    }
+
+    :global(.account-profile-meta-field) {
+      display: grid;
+      grid-template-areas: "name"
+                           "value";
+      grid-template-columns: 100%;
+      text-align: center;
+    }
+
+    :global(.account-profile-meta-field) {
+      padding: 5px 0px !important;
+    }
+
+    :global(.account-profile-meta-field-name, .account-profile-meta-field-value) {
+      padding: 5px 0px;
+      border: none;
+    }
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      meta: ({ account }) => {
+        let metaHTML = '';
+        for(var i=0; i < account.fields.length; i++) {
+          metaHTML += `<div class="account-profile-meta-field">`;
+          metaHTML += `<div class="account-profile-meta-field-name">`;
+          metaHTML += `<p>${account.fields[i].name}</p>`;
+          metaHTML += `</div>`;
+          metaHTML += `<div class="account-profile-meta-field-value">`;
+          metaHTML += `<p>${account.fields[i].value}</p>`;
+          metaHTML += `</div>`;
+          metaHTML += `</div>`;
+        }
+        return metaHTML;
+      }    
+    }
+  }
+</script>
