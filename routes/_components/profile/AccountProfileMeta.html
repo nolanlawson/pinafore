@@ -1,0 +1,132 @@
+<div class="account-profile-meta">
+   {@html meta}
+</div>
+<style>
+  .account-profile-meta {
+    display: grid;
+    grid-template-areas: "meta-name-1 meta-value-1"
+                         "meta-name-2 meta-value-2"
+                         "meta-name-3 meta-value-3"
+                         "meta-name-4 meta-value-4";
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content;
+    grid-area: meta;
+    padding: 10px 0;
+    font-size: 0.9em;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+  }
+
+  :global(.account-profile-meta p) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-meta p:first-child) {
+    margin: 0 0 20px;
+  }
+
+  :global(.account-profile-meta p:last-child) {
+    margin: 0;
+  }
+
+  :global(.account-profile-meta > *:last-child,.account-profile-meta > *:nth-last-child(2)) {
+    border-bottom: 1px solid var(--main-border);
+  }
+  
+  :global(.account-profile-meta > *) {
+    border-top: 1px solid var(--main-border);
+  }
+
+  :global(.account-profile-meta-field-name) {
+    position: relative;
+    padding: 10px 20px 10px 30px;
+    font-weight: bold;
+  }
+
+  :global(.account-profile-meta-field-name:after) {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 15%;
+    height: 70%;
+    border-right: 1px solid var(--main-border);
+  }
+
+  :global(.account-profile-meta-field-value) {
+    padding: 10px 30px 10px 20px;
+  }
+
+  .meta-name-1  { grid-area: meta-name-1;  }
+  .meta-value-1 { grid-area: meta-value-1; }
+  .meta-name-2  { grid-area: meta-name-2;  }
+  .meta-value-2 { grid-area: meta-value-2; }
+  .meta-name-3  { grid-area: meta-name-3;  }
+  .meta-value-3 { grid-area: meta-value-3; }
+  .meta-name-4  { grid-area: meta-name-4;  }
+  .meta-value-4 { grid-area: meta-value-4; }
+
+  @media (max-width: 767px) {
+    .account-profile-meta {
+      padding: 5px 0;
+      grid-template-areas: "meta-name-1"
+                           "meta-value-1"
+                           "meta-name-2"
+                           "meta-value-2"
+                           "meta-name-3"
+                           "meta-value-3"
+                           "meta-name-4"
+                           "meta-value-4";
+      grid-template-columns: 100%;
+    }
+
+    :global(.account-profile-meta > *) {
+      border: none;
+    }
+
+    :global(.account-profile-meta > *:last-child,.account-profile-meta > *:nth-last-child(2)) {
+      border: none;
+    }
+
+    :global(.account-profile-meta-field-name:after) {
+      border: none;
+    }
+
+    :global(.account-profile-meta-field-name) {
+      text-align: center;
+      padding: 10px 0px 0px;
+      border-top: 1px solid var(--main-border);
+    }
+    
+    :global(.account-profile-meta-field-value) {
+      text-align: center;
+      padding: 0px 0px 10px;
+    }
+
+    :global(.account-profile-meta-field-name:nth-last-child(2)) {
+      border-top: 1px solid var(--main-border);
+    }
+
+    :global(.account-profile-meta-field-value:last-child) {
+      border-bottom: 1px solid var(--main-border);
+    }
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      meta: ({ account }) => {
+        let metaHTML = '';
+        for(var i=0; i < account.fields.length; i++) {
+          metaHTML += `<div class="account-profile-meta-field-name meta-name-${i+1}">`;
+          metaHTML += `<p>${account.fields[i].name}</p>`;
+          metaHTML += `</div>`;
+          metaHTML += `<div class="account-profile-meta-field-value meta-value-${i+1}">`;
+          metaHTML += `<p>${account.fields[i].value}</p>`;
+          metaHTML += `</div>`;
+        }
+        return metaHTML;
+      }    
+    }
+  }
+</script>
