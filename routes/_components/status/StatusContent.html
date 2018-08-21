@@ -64,7 +64,9 @@
         if (!uuid) {
           return
         }
-        this.hydrateContent()
+        requestAnimationFrame(() => {
+          this.hydrateContent()
+        })
       })
     },
     store: () => store,

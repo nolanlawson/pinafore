@@ -22,34 +22,46 @@
 </style>
 <script>
   import { mark, stop } from '../_utils/marks'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      mark('LazyImage oncreate()')
-      let img = new Image()
-      let { src } = this.get()
-      let { fallback } = this.get()
-      img.onload = () => {
-        requestAnimationFrame(() => {
-          this.set({
-            displaySrc: src,
-            hidden: true
-          })
-          requestAnimationFrame(() => {
-            this.set({hidden: false})
-          })
+      this.observe('src', src => {
+        if (!src) {
+          return
+        }
+        mark('LazyImage observe()')
+        this.set({
+          displaySrc: void 0,
+          hidden: false
         })
-      }
-      img.onerror = () => {
-        this.set({displaySrc: fallback})
-      }
-      img.src = src
-      stop('LazyImage oncreate()')
+        let { fallback } = this.get()
+        let img = new Image()
+        img.onload = () => {
+          requestAnimationFrame(() => {
+            this.set({
+              displaySrc: src,
+              hidden: true
+            })
+            requestAnimationFrame(() => {
+              this.set({hidden: false})
+            })
+          })
+        }
+        img.onerror = () => {
+          this.set({displaySrc: fallback})
+        }
+        img.src = src
+        stop('LazyImage observe()')
+      })
     },
     data: () => ({
       displaySrc: void 0,
       hidden: false,
       ariaHidden: false
-    })
+    }),
+    methods: {
+      observe
+    }
   }
 </script>

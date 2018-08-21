@@ -70,11 +70,14 @@
         let itemComponent
 
         if (this._recycledItems.length) {
+          mark('recycle v-item')
           let recycledItem = this._recycledItems.pop()
           target = recycledItem.target
           itemComponent = recycledItem.itemComponent
           itemComponent.set(item)
+          stop('recycle v-item')
         } else {
+          mark('create v-item')
           target = document.createElement('div')
           let { component, makeProps } = this.get()
           let { offset, key, index } = item
@@ -88,6 +91,7 @@
               index
             }
           })
+          stop('create v-item')
         }
 
         this.refs.node.appendChild(target)
