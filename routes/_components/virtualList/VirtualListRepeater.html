@@ -1,0 +1,98 @@
+<div ref:node></div>
+<script>
+  import VirtualListLazyItem from './VirtualListLazyItem.html'
+  import { observe } from 'svelte-extras'
+  import { mark, stop } from '../../_utils/marks'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+
+  const getKey = _ => _.key
+
+  export default {
+    oncreate () {
+      this._itemMap = new Map()
+      this.observe('visibleItems', (newVisibleItems, oldVisibleItems) => {
+        newVisibleItems = newVisibleItems || []
+        oldVisibleItems = oldVisibleItems || []
+
+        let newVisibleItemsSet = new Set(newVisibleItems.map(getKey))
+        let oldVisibleItemsSet = new Set(oldVisibleItems.map(getKey))
+
+        for (let i = 0; i < newVisibleItems.length; i++) {
+          let visibleItem = newVisibleItems[i]
+          if (!oldVisibleItemsSet.has(visibleItem.key)) {
+            this.addItem(visibleItem)
+          } else {
+            this.updateItem(visibleItem)
+          }
+        }
+
+        for (let i = 0; i < oldVisibleItems.length; i++) {
+          let visibleItem = oldVisibleItems[i]
+          if (!newVisibleItemsSet.has(visibleItem.key)) {
+            this.removeItem(visibleItem)
+          }
+        }
+      }, {init: false})
+    },
+    ondestroy () {
+      this._itemMap.forEach(cachedItem => {
+        scheduleIdleTask(() => { // this work is non-critical
+          mark('destroy v-item')
+          cachedItem.itemComponent.destroy()
+          stop('destroy v-item')
+        })
+      })
+    },
+    data: () => ({
+      component: void 0,
+      visibleItems: void 0
+    }),
+    methods: {
+      observe,
+      removeItem (item) {
+        let cachedItem = this._itemMap.get(item.key)
+        if (cachedItem) {
+          this._itemMap.delete(item.key)
+          mark('remove v-item')
+          this.refs.node.removeChild(cachedItem.target)
+          stop('remove v-item')
+          scheduleIdleTask(() => { // this work is non-critical
+            mark('destroy v-item')
+            cachedItem.itemComponent.destroy()
+            stop('destroy v-item')
+          })
+        }
+      },
+      addItem (item) {
+        mark('add v-item')
+        let target = document.createElement('div')
+        this.refs.node.appendChild(target)
+        let { component, makeProps } = this.get()
+        let { offset, key, index } = item
+        let itemComponent = new VirtualListLazyItem({
+          target,
+          data: {
+            component,
+            makeProps,
+            offset,
+            key,
+            index
+          }
+        })
+        this._itemMap.set(item.key, {
+          target,
+          itemComponent
+        })
+        stop('add v-item')
+      },
+      updateItem (item) {
+        let cachedItem = this._itemMap.get(item.key)
+        if (cachedItem) {
+          mark('update v-item')
+          cachedItem.itemComponent.set(item)
+          stop('update v-item')
+        }
+      }
+    }
+  }
+</script>
