@@ -126,12 +126,24 @@
 <script>
   import MediaAttachments from './MediaAttachments.html'
   import { store } from '../../_store/store'
-  import { registerClickDelegate } from '../../_utils/delegate'
+  import { addClickDelegate, removeClickDelegate } from '../../_utils/delegate'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.onClickSensitiveMediaButton())
+      this.onClickSensitiveMediaButton = this.onClickSensitiveMediaButton.bind(this)
+      this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
+        if (!delegateKey) {
+          return
+        }
+        if (oldDelegateKey) {
+          removeClickDelegate(oldDelegateKey, this.onClickSensitiveMediaButton)
+        }
+        addClickDelegate(delegateKey, this.onClickSensitiveMediaButton)
+      })
+    },
+    ondestroy () {
+      removeClickDelegate(this.get().delegateKey, this.onClickSensitiveMediaButton)
     },
     components: {
       MediaAttachments
@@ -144,6 +156,7 @@
       delegateKey: ({ uuid }) => `sensitive-${uuid}`
     },
     methods: {
+      observe,
       onClickSensitiveMediaButton () {
         let { uuid } = this.get()
         let { sensitivesShown } = this.store.get()

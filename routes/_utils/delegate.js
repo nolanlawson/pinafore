@@ -23,24 +23,36 @@ function onEvent (e) {
     }
     element = element.parentElement
   }
-  if (key && callbacks[key]) {
-    callbacks[key](e)
+  let cbs = key && callbacks[key]
+  if (cbs) {
+    for (let i = 0; i < cbs.length; i++) {
+      cbs[i](e)
+    }
   }
   stop('delegate onEvent')
 }
 
-export function registerClickDelegates (component, delegates) {
-  Object.assign(callbacks, delegates)
-
-  component.on('destroy', () => {
-    Object.keys(delegates).forEach(key => {
-      delete callbacks[key]
-    })
-  })
+export function addClickDelegate (key, callback) {
+  callbacks[key] = callbacks[key] || []
+  callbacks[key].push(callback)
 }
 
-export function registerClickDelegate (component, key, callback) {
-  registerClickDelegates(component, {[key]: callback})
+export function removeClickDelegate (key, callback) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!callback) {
+      throw new Error('callback must be non-null')
+    }
+  }
+  let cbs = callbacks[key]
+  if (cbs) {
+    let idx = cbs.indexOf(callback)
+    if (idx !== -1) {
+      cbs.splice(idx, 1)
+    }
+  }
+  if (!cbs.length) {
+    delete callbacks[key]
+  }
 }
 
 if (process.browser) {

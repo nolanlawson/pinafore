@@ -56,10 +56,18 @@
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
   import { emojifyText } from '../../_utils/emojifyText'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      this.hydrateContent()
+      this.observe('uuid', uuid => {
+        if (!uuid) {
+          return
+        }
+        requestAnimationFrame(() => {
+          this.hydrateContent()
+        })
+      })
     },
     store: () => store,
     computed: {
@@ -84,6 +92,7 @@
       }
     },
     methods: {
+      observe,
       hydrateContent () {
         if (!this.refs.node) {
           return

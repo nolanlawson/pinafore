@@ -1,0 +1,122 @@
+<!--
+  Much of this is inspired by https://valdrinkoshi.github.io/virtual-scroller/
+  The idea is to recycle DOM nodes and Svelte components by keeping a pool of them around.
+-->
+<div ref:node></div>
+<script>
+  import VirtualListLazyItem from './VirtualListLazyItem.html'
+  import { observe } from 'svelte-extras'
+  import { mark, stop } from '../../_utils/marks'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+
+  const getKey = _ => _.key
+
+  export default {
+    oncreate () {
+      this._itemMap = new Map()
+      this._recycledItems = []
+      this.observe('visibleItems', (newVisibleItems, oldVisibleItems) => {
+        newVisibleItems = newVisibleItems || []
+        oldVisibleItems = oldVisibleItems || []
+
+        let newVisibleItemsSet = new Set(newVisibleItems.map(getKey))
+        let oldVisibleItemsSet = new Set(oldVisibleItems.map(getKey))
+
+        for (let i = 0; i < newVisibleItems.length; i++) {
+          let visibleItem = newVisibleItems[i]
+          if (!oldVisibleItemsSet.has(visibleItem.key)) {
+            this.addItem(visibleItem)
+          } else {
+            this.updateItem(visibleItem)
+          }
+        }
+
+        for (let i = 0; i < oldVisibleItems.length; i++) {
+          let visibleItem = oldVisibleItems[i]
+          if (!newVisibleItemsSet.has(visibleItem.key)) {
+            this.removeItem(visibleItem)
+          }
+        }
+      }, {init: false})
+    },
+    ondestroy () {
+      this._itemMap.forEach(cachedItem => {
+        this.lazilyDestroy(cachedItem.itemComponent)
+      })
+      this._recycledItems.forEach(recycledItem => {
+        this.lazilyDestroy(recycledItem.itemComponent)
+      })
+    },
+    data: () => ({
+      component: void 0,
+      visibleItems: void 0
+    }),
+    methods: {
+      observe,
+      removeItem (item) {
+        let cachedItem = this._itemMap.get(item.key)
+        if (cachedItem) {
+          this._itemMap.delete(item.key)
+          mark('remove v-item')
+          this.refs.node.removeChild(cachedItem.target)
+          stop('remove v-item')
+          this._recycledItems.push(cachedItem)
+        }
+      },
+      addItem (item) {
+        mark('add v-item')
+
+        let target
+        let itemComponent
+
+        if (this._recycledItems.length) {
+          mark('recycle v-item')
+          let recycledItem = this._recycledItems.pop()
+          target = recycledItem.target
+          itemComponent = recycledItem.itemComponent
+          itemComponent.set(item)
+          stop('recycle v-item')
+        } else {
+          mark('create v-item')
+          target = document.createElement('div')
+          let { component, makeProps } = this.get()
+          let { offset, key, index } = item
+          itemComponent = new VirtualListLazyItem({
+            target,
+            data: {
+              component,
+              makeProps,
+              offset,
+              key,
+              index
+            }
+          })
+          stop('create v-item')
+        }
+
+        this.refs.node.appendChild(target)
+
+        this._itemMap.set(item.key, {
+          target,
+          itemComponent
+        })
+        stop('add v-item')
+      },
+      updateItem (item) {
+        let cachedItem = this._itemMap.get(item.key)
+        if (cachedItem) {
+          mark('update v-item')
+          cachedItem.itemComponent.set(item)
+          stop('update v-item')
+        }
+      },
+      lazilyDestroy (itemComponent) {
+        scheduleIdleTask(() => { // this work is non-critical
+          mark('destroy v-item')
+          itemComponent.destroy()
+          stop('destroy v-item')
+        })
+      }
+    }
+  }
+</script>

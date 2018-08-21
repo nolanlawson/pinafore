@@ -40,15 +40,27 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { registerClickDelegate } from '../../_utils/delegate'
+  import { addClickDelegate, removeClickDelegate } from '../../_utils/delegate'
   import { mark, stop } from '../../_utils/marks'
   import { emojifyText } from '../../_utils/emojifyText'
   import escapeHtml from 'escape-html'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.onClickSpoilerButton())
+      this.onClickSpoilerButton = this.onClickSpoilerButton.bind(this)
+      this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
+        if (!delegateKey) {
+          return
+        }
+        if (oldDelegateKey) {
+          removeClickDelegate(oldDelegateKey, this.onClickSpoilerButton)
+        }
+        addClickDelegate(delegateKey, this.onClickSpoilerButton)
+      })
+    },
+    ondestroy () {
+      removeClickDelegate(this.get().delegateKey, this.onClickSpoilerButton)
     },
     store: () => store,
     computed: {
@@ -61,6 +73,7 @@
       delegateKey: ({ uuid }) => `spoiler-${uuid}`
     },
     methods: {
+      observe,
       onClickSpoilerButton () {
         requestAnimationFrame(() => {
           mark('clickSpoilerButton')
