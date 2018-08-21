@@ -17,8 +17,13 @@
   export default {
     oncreate () {
       requestAnimationFrame(() => {
+        let node = this.refs.node
+        if (!node) {
+          return
+        }
+
         mark('VirtualListFooter gBCR')
-        let rect = this.refs.node.getBoundingClientRect()
+        let rect = node.getBoundingClientRect()
         stop('VirtualListFooter gBCR')
         this.store.setForRealm({footerHeight: rect.height})
       })
