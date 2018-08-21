@@ -119,18 +119,19 @@
 
   export default {
     oncreate () {
+      this.onClickOrKeydown = this.onClickOrKeydown.bind(this)
       this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
         if (!delegateKey) {
           return
         }
         if (oldDelegateKey) {
-          removeClickDelegate(oldDelegateKey)
+          removeClickDelegate(oldDelegateKey, this.onClickOrKeydown)
         }
-        addClickDelegate(delegateKey, (e) => this.onClickOrKeydown(e))
+        addClickDelegate(delegateKey, this.onClickOrKeydown)
       })
     },
     ondestroy () {
-      removeClickDelegate(this.get().delegateKey)
+      removeClickDelegate(this.get().delegateKey, this.onClickOrKeydown)
     },
     components: {
       StatusSidebar,

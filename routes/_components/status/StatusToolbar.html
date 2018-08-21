@@ -69,13 +69,18 @@
 
   export default {
     oncreate () {
+      this.onFavoriteClick = this.onFavoriteClick.bind(this)
+      this.onReblogClick = this.onReblogClick.bind(this)
+      this.onReplyClick = this.onReplyClick.bind(this)
+      this.onOptionsClick = this.onOptionsClick.bind(this)
+
       delegateKeys.forEach(key => {
         this.observe(key, (delegateKey, oldDelegateKey) => {
           if (!delegateKey) {
             return
           }
           if (oldDelegateKey) {
-            removeClickDelegate(oldDelegateKey)
+            removeClickDelegate(oldDelegateKey, this.getDelegateKeyCallback(key))
           }
           addClickDelegate(delegateKey, this.getDelegateKeyCallback(key))
         })
@@ -84,7 +89,7 @@
     },
     ondestroy () {
       delegateKeys.forEach(key => {
-        removeClickDelegate(this.get()[key])
+        removeClickDelegate(this.get()[key], this.getDelegateKeyCallback(key))
       })
     },
     components: {
@@ -96,13 +101,13 @@
       getDelegateKeyCallback (key) {
         switch (key) {
           case 'favoriteKey':
-            return e => this.onFavoriteClick(e)
+            return this.onFavoriteClick
           case 'reblogKey':
-            return e => this.onReblogClick(e)
+            return this.onReblogClick
           case 'replyKey':
-            return e => this.onReplyClick(e)
+            return this.onReplyClick
           case 'optionsKey':
-            return e => this.onOptionsClick(e)
+            return this.onOptionsClick
         }
       },
       onFavoriteClick (e) {

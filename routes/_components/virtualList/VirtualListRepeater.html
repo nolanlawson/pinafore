@@ -10,6 +10,7 @@
   export default {
     oncreate () {
       this._itemMap = new Map()
+      this._recycledItems = []
       this.observe('visibleItems', (newVisibleItems, oldVisibleItems) => {
         newVisibleItems = newVisibleItems || []
         oldVisibleItems = oldVisibleItems || []
@@ -36,11 +37,10 @@
     },
     ondestroy () {
       this._itemMap.forEach(cachedItem => {
-        scheduleIdleTask(() => { // this work is non-critical
-          mark('destroy v-item')
-          cachedItem.itemComponent.destroy()
-          stop('destroy v-item')
-        })
+        this.lazilyDestroy(cachedItem.itemComponent)
+      })
+      this._recycledItems.forEach(recycledItem => {
+        this.lazilyDestroy(recycledItem.itemComponent)
       })
     },
     data: () => ({
@@ -56,29 +56,38 @@
           mark('remove v-item')
           this.refs.node.removeChild(cachedItem.target)
           stop('remove v-item')
-          scheduleIdleTask(() => { // this work is non-critical
-            mark('destroy v-item')
-            cachedItem.itemComponent.destroy()
-            stop('destroy v-item')
-          })
+          this._recycledItems.push(cachedItem)
         }
       },
       addItem (item) {
         mark('add v-item')
-        let target = document.createElement('div')
+
+        let target
+        let itemComponent
+
+        if (this._recycledItems.length) {
+          let recycledItem = this._recycledItems.pop()
+          target = recycledItem.target
+          itemComponent = recycledItem.itemComponent
+          itemComponent.set(item)
+        } else {
+          target = document.createElement('div')
+          let { component, makeProps } = this.get()
+          let { offset, key, index } = item
+          itemComponent = new VirtualListLazyItem({
+            target,
+            data: {
+              component,
+              makeProps,
+              offset,
+              key,
+              index
+            }
+          })
+        }
+
         this.refs.node.appendChild(target)
-        let { component, makeProps } = this.get()
-        let { offset, key, index } = item
-        let itemComponent = new VirtualListLazyItem({
-          target,
-          data: {
-            component,
-            makeProps,
-            offset,
-            key,
-            index
-          }
-        })
+
         this._itemMap.set(item.key, {
           target,
           itemComponent
@@ -92,6 +101,13 @@
           cachedItem.itemComponent.set(item)
           stop('update v-item')
         }
+      },
+      lazilyDestroy (itemComponent) {
+        scheduleIdleTask(() => { // this work is non-critical
+          mark('destroy v-item')
+          itemComponent.destroy()
+          stop('destroy v-item')
+        })
       }
     }
   }

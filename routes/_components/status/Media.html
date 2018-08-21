@@ -110,18 +110,19 @@
 
   export default {
     oncreate () {
+      this.onClick = this.onClick.bind(this)
       this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
         if (!delegateKey) {
           return
         }
         if (oldDelegateKey) {
-          removeClickDelegate(oldDelegateKey)
+          removeClickDelegate(oldDelegateKey, this.onClick)
         }
-        addClickDelegate(delegateKey, () => this.onClick())
+        addClickDelegate(delegateKey, this.onClick)
       })
     },
     ondestroy () {
-      removeClickDelegate(this.get().delegateKey)
+      removeClickDelegate(this.get().delegateKey, this.onClick)
     },
     computed: {
       // width/height to show inline

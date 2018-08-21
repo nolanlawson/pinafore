@@ -131,18 +131,19 @@
 
   export default {
     oncreate () {
+      this.onClickSensitiveMediaButton = this.onClickSensitiveMediaButton.bind(this)
       this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
         if (!delegateKey) {
           return
         }
         if (oldDelegateKey) {
-          removeClickDelegate(oldDelegateKey)
+          removeClickDelegate(oldDelegateKey, this.onClickSensitiveMediaButton)
         }
-        addClickDelegate(delegateKey, (e) => this.onClickSensitiveMediaButton())
+        addClickDelegate(delegateKey, this.onClickSensitiveMediaButton)
       })
     },
     ondestroy () {
-      removeClickDelegate(this.get().delegateKey)
+      removeClickDelegate(this.get().delegateKey, this.onClickSensitiveMediaButton)
     },
     components: {
       MediaAttachments

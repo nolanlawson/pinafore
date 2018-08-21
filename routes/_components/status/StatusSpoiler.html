@@ -48,18 +48,19 @@
 
   export default {
     oncreate () {
+      this.onClickSpoilerButton = this.onClickSpoilerButton.bind(this)
       this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
         if (!delegateKey) {
           return
         }
         if (oldDelegateKey) {
-          removeClickDelegate(oldDelegateKey)
+          removeClickDelegate(oldDelegateKey, this.onClickSpoilerButton)
         }
-        addClickDelegate(delegateKey, () => this.onClickSpoilerButton())
+        addClickDelegate(delegateKey, this.onClickSpoilerButton)
       })
     },
     ondestroy () {
-      removeClickDelegate(this.get().delegateKey)
+      removeClickDelegate(this.get().delegateKey, this.onClickSpoilerButton)
     },
     store: () => store,
     computed: {
