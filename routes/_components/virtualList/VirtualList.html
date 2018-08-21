@@ -3,16 +3,8 @@
        style="height: {$height}px;"
        ref:node >
     <VirtualListHeader component={headerComponent} virtualProps={headerProps} shown={$showHeader}/>
-    {#if $visibleItems}
-      {#each $visibleItems as visibleItem (visibleItem.key)}
-        <VirtualListLazyItem {component}
-                             offset={visibleItem.offset}
-                             {makeProps}
-                             key={visibleItem.key}
-                             index={visibleItem.index}
-        />
-      {/each}
-    {/if}
+
+    <VirtualListRepeater {component} {makeProps} visibleItems={$visibleItems} />
     {#if $showFooter}
       <VirtualListFooter component={footerComponent} />
     {/if}
@@ -25,7 +17,7 @@
 </style>
 <script>
   import VirtualListContainer from './VirtualListContainer.html'
-  import VirtualListLazyItem from './VirtualListLazyItem'
+  import VirtualListRepeater from './VirtualListRepeater.html'
   import VirtualListFooter from './VirtualListFooter.html'
   import VirtualListHeader from './VirtualListHeader.html'
   import { virtualListStore } from './virtualListStore'
@@ -90,13 +82,10 @@
         this.calculateListOffset()
       })
     },
-    data: () => ({
-      component: null
-    }),
     store: () => virtualListStore,
     components: {
       VirtualListContainer,
-      VirtualListLazyItem,
+      VirtualListRepeater,
       VirtualListFooter,
       VirtualListHeader
     },
