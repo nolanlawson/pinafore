@@ -1,11 +1,21 @@
-{#if props && shown}
-  <VirtualListItem {component}
-                   {offset}
-                   {props}
-                   {key}
-                   {index}
-  />
-{/if}
+<div class="virtual-list-lazy-item {shown ? 'shown' : ''}">
+  {#if props}
+    <VirtualListItem {component}
+                     {offset}
+                     {props}
+                     {key}
+                     {index}
+    />
+  {/if}
+</div>
+<style>
+  .virtual-list-lazy-item {
+    display: none;
+  }
+  .virtual-list-lazy-item.shown {
+    display: block;
+  }
+</style>
 <script>
   import VirtualListItem from './VirtualListItem'
   import { mark, stop } from '../../_utils/marks'

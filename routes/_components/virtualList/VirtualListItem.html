@@ -26,23 +26,29 @@
   import { virtualListStore } from './virtualListStore'
   import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
   import { mark, stop } from '../../_utils/marks'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      let { key } = this.get()
-      let node = this.refs.node
-      requestAnimationFrame(() => {
-        if (!node || !key) {
-          return
-        }
-        mark('VirtualListItem gBCR')
-        let rect = node.getBoundingClientRect()
-        stop('VirtualListItem gBCR')
-        // update all item heights in one batch for better perf
-        this.store.batchUpdateForRealm('itemHeights', key, rect.height)
-      })
       this.doRecalculateHeight = this.doRecalculateHeight.bind(this)
       registerResizeListener(this.doRecalculateHeight)
+
+      this.observe('key', key => {
+        if (!key) {
+          return
+        }
+        requestAnimationFrame(() => {
+          let node = this.refs.node
+          if (!node) {
+            return
+          }
+          mark('VirtualListItem gBCR')
+          let rect = node.getBoundingClientRect()
+          stop('VirtualListItem gBCR')
+          // update all item heights in one batch for better perf
+          this.store.batchUpdateForRealm('itemHeights', key, rect.height)
+        })
+      })
     },
     ondestroy () {
       unregisterResizeListener(this.doRecalculateHeight)
@@ -52,6 +58,7 @@
       'shown': ({ $itemHeights, key }) => $itemHeights[key] > 0
     },
     methods: {
+      observe,
       doRecalculateHeight () {
         // Recalculate immediately because this is done on-demand, e.g.
         // when clicking the "More" button on a spoiler.

@@ -1,3 +1,7 @@
+<!--
+  Much of this is inspired by https://valdrinkoshi.github.io/virtual-scroller/
+  The idea is to recycle DOM nodes and Svelte components by keeping a pool of them around.
+-->
 <div ref:node></div>
 <script>
   import VirtualListLazyItem from './VirtualListLazyItem.html'
