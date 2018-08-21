@@ -4,10 +4,9 @@
   import throttle from 'lodash-es/throttle'
   import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../../_utils/fullscreen'
   import { mark, stop } from '../../_utils/marks'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { isMobile } from '../../_utils/isMobile'
   import { doubleRAF } from '../../_utils/doubleRAF'
   import { observe } from 'svelte-extras'
+  import { doubleRAF } from '../../_utils/doubleRAF'
 
   const SCROLL_EVENT_DELAY = 300
 
@@ -95,12 +94,7 @@
       onScroll (event) {
         let { scrollTop, scrollHeight } = event.target
 
-        // On mobile devices, this can make scrolling more responsive. On
-        // desktop browsers... it's probably overkill, and can lead to a
-        // checkerboarding issue ("I just scrolled, why is it blank for 5 seconds?").
-        let runTask = isMobile() ? scheduleIdleTask : requestAnimationFrame
-
-        runTask(() => {
+        doubleRAF(() => {
           mark('onScroll -> setForRealm()')
           this.store.setForRealm({scrollTop, scrollHeight})
           stop('onScroll -> setForRealm()')
