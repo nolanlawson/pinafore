@@ -51,35 +51,60 @@
 <script>
   import IconButton from '../IconButton.html'
   import { store } from '../../_store/store'
-  import { registerClickDelegates } from '../../_utils/delegate'
+  import { addClickDelegate, removeClickDelegate } from '../../_utils/delegate'
   import { setFavorited } from '../../_actions/favorite'
   import { setReblogged } from '../../_actions/reblog'
   import { importShowStatusOptionsDialog } from '../dialog/asyncDialogs'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
   import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
   import { on } from '../../_utils/eventBus'
+  import { observe } from 'svelte-extras'
+
+  const delegateKeys = [
+    'favoriteKey',
+    'reblogKey',
+    'replyKey',
+    'optionsKey'
+  ]
 
   export default {
     oncreate () {
-      let {
-        favoriteKey,
-        reblogKey,
-        replyKey,
-        optionsKey
-      } = this.get()
-      registerClickDelegates(this, {
-        [favoriteKey]: (e) => this.onFavoriteClick(e),
-        [reblogKey]: (e) => this.onReblogClick(e),
-        [replyKey]: (e) => this.onReplyClick(e),
-        [optionsKey]: (e) => this.onOptionsClick(e)
+      delegateKeys.forEach(key => {
+        this.observe(key, (delegateKey, oldDelegateKey) => {
+          if (!delegateKey) {
+            return
+          }
+          if (oldDelegateKey) {
+            removeClickDelegate(oldDelegateKey)
+          }
+          addClickDelegate(delegateKey, this.getDelegateKeyCallback(key))
+        })
       })
       on('postedStatus', this, this.onPostedStatus)
+    },
+    ondestroy () {
+      delegateKeys.forEach(key => {
+        removeClickDelegate(this.get()[key])
+      })
     },
     components: {
       IconButton
     },
     store: () => store,
     methods: {
+      observe,
+      getDelegateKeyCallback (key) {
+        switch (key) {
+          case 'favoriteKey':
+            return e => this.onFavoriteClick(e)
+          case 'reblogKey':
+            return e => this.onReblogClick(e)
+          case 'replyKey':
+            return e => this.onReplyClick(e)
+          case 'optionsKey':
+            return e => this.onOptionsClick(e)
+        }
+      },
       onFavoriteClick (e) {
         e.preventDefault()
         e.stopPropagation()

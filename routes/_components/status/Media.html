@@ -105,19 +105,23 @@
   import { store } from '../../_store/store'
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
-  import { registerClickDelegate } from '../../_utils/delegate'
+  import { addClickDelegate, removeClickDelegate } from '../../_utils/delegate'
+  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => {
-        let { type } = this.get()
-        if (type === 'video') {
-          this.onClickPlayVideoButton()
-        } else {
-          this.onClickShowImageButton()
+      this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
+        if (!delegateKey) {
+          return
         }
+        if (oldDelegateKey) {
+          removeClickDelegate(oldDelegateKey)
+        }
+        addClickDelegate(delegateKey, () => this.onClick())
       })
+    },
+    ondestroy () {
+      removeClickDelegate(this.get().delegateKey)
     },
     computed: {
       // width/height to show inline
@@ -141,6 +145,15 @@
       type: ({ media }) => media.type
     },
     methods: {
+      observe,
+      onClick () {
+        let { type } = this.get()
+        if (type === 'video') {
+          this.onClickPlayVideoButton()
+        } else {
+          this.onClickShowImageButton()
+        }
+      },
       async onClickPlayVideoButton () {
         let { previewUrl, url, modalWidth, modalHeight, description } = this.get()
         let showVideoDialog = await importShowVideoDialog()

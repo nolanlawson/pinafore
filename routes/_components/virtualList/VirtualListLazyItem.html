@@ -1,4 +1,4 @@
-{#if props}
+{#if props && shown}
   <VirtualListItem {component}
                    {offset}
                    {props}
@@ -9,20 +9,30 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { mark, stop } from '../../_utils/marks'
+  import { observe } from 'svelte-extras'
 
   export default {
-    async oncreate () {
-      let { makeProps, key } = this.get()
-      if (makeProps) {
+    oncreate () {
+      this.observe('key', async key => {
+        let { makeProps } = this.get()
+        if (!key || !makeProps) {
+          return
+        }
+        this.set({shown: false})
         let props = await makeProps(key)
+        this.set({shown: true})
         mark('VirtualListLazyItem set props')
         this.set({props: props})
         stop('VirtualListLazyItem set props')
-      }
+      })
     },
     data: () => ({
-      props: void 0
+      props: void 0,
+      shown: false
     }),
+    methods: {
+      observe
+    },
     components: {
       VirtualListItem
     }

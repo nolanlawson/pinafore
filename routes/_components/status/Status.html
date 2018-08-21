@@ -21,7 +21,7 @@
   {#if !showContent}
     <StatusMentions {...params} />
   {/if}
-  {#if content && (showContent || contentPreloaded)}
+  {#if content}
     <StatusContent {...params} shown={showContent}/>
   {/if}
   {#if showMedia }
@@ -106,11 +106,11 @@
   import StatusMentions from './StatusMentions.html'
   import { store } from '../../_store/store'
   import { goto } from 'sapper/runtime.js'
-  import { registerClickDelegate } from '../../_utils/delegate'
+  import { addClickDelegate, removeClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
   import { checkDomAncestors } from '../../_utils/checkDomAncestors'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { removeEmoji } from '../../_utils/removeEmoji'
+  import { observe } from 'svelte-extras'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -119,18 +119,18 @@
 
   export default {
     oncreate () {
-      let { delegateKey, isStatusInOwnThread, showContent } = this.get()
-      if (!isStatusInOwnThread) {
-        // the whole <article> is clickable in this case
-        registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
-      }
-      if (!showContent) {
-        scheduleIdleTask(() => {
-          // Perf optimization: lazily load the StatusContent when the user is idle so that
-          // it's fast when they click the "show more" button
-          this.set({contentPreloaded: true})
-        })
-      }
+      this.observe('delegateKey', (delegateKey, oldDelegateKey) => {
+        if (!delegateKey) {
+          return
+        }
+        if (oldDelegateKey) {
+          removeClickDelegate(oldDelegateKey)
+        }
+        addClickDelegate(delegateKey, (e) => this.onClickOrKeydown(e))
+      })
+    },
+    ondestroy () {
+      removeClickDelegate(this.get().delegateKey)
     },
     components: {
       StatusSidebar,
@@ -148,17 +148,20 @@
     },
     data: () => ({
       notification: void 0,
-      replyVisibility: void 0,
-      contentPreloaded: false
+      replyVisibility: void 0
     }),
     store: () => store,
     methods: {
+      observe,
       onClickOrKeydown (e) {
         let { type, keyCode, target } = e
 
         let isClick = type === 'click'
         let isEnter = type === 'keydown' && keyCode === 13
         if (!isClick && !isEnter) {
+          return
+        }
+        if (this.get().isStatusInOwnThread) {
           return
         }
         if (checkDomAncestors(target, isUserInputElement, isStatusArticle)) {
