@@ -36,6 +36,7 @@
   import AutoplayVideo from '../../AutoplayVideo.html'
   import { show } from '../helpers/showDialog'
   import { oncreate } from '../helpers/onCreateDialog'
+  import { close } from '../helpers/closeDialog'
 
   export default {
     oncreate,
@@ -44,6 +45,7 @@
       AutoplayVideo
     },
     methods: {
+      close,
       show
     }
   }
