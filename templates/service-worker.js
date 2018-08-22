@@ -1,7 +1,6 @@
 const timestamp = '__timestamp__'
 const ASSETS = `assets_${timestamp}`
 const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
-const ON_DEMAND = `ondemand_${timestamp}`
 
 // `assets` is an array of everything in the `assets` directory
 const assets = __assets__
@@ -36,7 +35,6 @@ self.addEventListener('activate', event => {
     // delete old asset/ondemand caches
     for (let key of keys) {
       if (key !== ASSETS &&
-          key !== ON_DEMAND &&
           !key.startsWith('webpack_assets_')) {
         await caches.delete(key)
       }
@@ -63,10 +61,6 @@ self.addEventListener('activate', event => {
   })())
 })
 
-const ON_DEMAND_PATHS = [
-  '/system/accounts/avatars'
-]
-
 self.addEventListener('fetch', event => {
   const req = event.request
   const url = new URL(req.url)
@@ -91,23 +85,6 @@ self.addEventListener('fetch', event => {
       if (routes.find(route => route.pattern.test(url.pathname))) {
         return caches.match('/index.html')
       }
-    }
-
-    // For these GET requests, go cache-first
-    if (req.method === 'GET' &&
-        ON_DEMAND_PATHS.some(pattern => url.pathname.startsWith(pattern))) {
-      let cache = await caches.open(ON_DEMAND)
-      let response = await cache.match(req)
-      if (response) {
-        // update asynchronously
-        fetch(req).then(response => {
-          cache.put(req, response.clone())
-        })
-        return response
-      }
-      response = await fetch(req)
-      cache.put(req, response.clone())
-      return response
     }
 
     // for everything else, go network-only
