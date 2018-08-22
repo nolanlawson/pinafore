@@ -17,4 +17,5 @@ export default function showImageDialog (poster, src, type, width, height, descr
     }
   })
   imageDialog.show()
+  return imageDialog
 }

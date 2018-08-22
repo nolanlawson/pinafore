@@ -106,6 +106,7 @@
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate } from '../../_utils/delegate'
+  import { setModalData, getNewModalId } from '../../_utils/modalCache'
 
   export default {
     oncreate () {
@@ -149,9 +150,11 @@
       },
       async onClickShowImageButton () {
         let { previewUrl, url, modalWidth, modalHeight, description, type } = this.get()
-        let showImageDialog = await importShowImageDialog()
-        showImageDialog(previewUrl, url, type,
-          modalWidth, modalHeight, description)
+
+        let modalId = getNewModalId()
+        setModalData(modalId, { previewUrl, url, modalWidth, modalHeight, description, type })
+
+        location.hash = '#image-' + modalId
       }
     },
     data: () => ({

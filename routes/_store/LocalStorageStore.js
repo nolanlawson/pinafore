@@ -1,8 +1,5 @@
 import { Store } from 'svelte/store'
-let lifecycle
-if (process.browser) {
-  lifecycle = require('page-lifecycle/dist/lifecycle.mjs').default
-}
+const lifecycle = process.browser && require('page-lifecycle/dist/lifecycle.mjs').default
 
 const LS = process.browser && localStorage
 

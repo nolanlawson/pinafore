@@ -37,6 +37,8 @@ export function createStream (streamingApi, instanceName, accessToken,
       console.log('opened stream for timeline', timelineName)
     },
     onClose () {
+      localStorage._closed = localStorage._closed || '[]'
+      localStorage._closed = JSON.stringify(JSON.parse(localStorage._closed).concat(['closed!']))
       console.log('closed stream for timeline', timelineName)
     },
     onReconnect () {
