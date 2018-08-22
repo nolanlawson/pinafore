@@ -35,15 +35,25 @@
   import ModalDialog from './ModalDialog.html'
   import AutoplayVideo from '../../AutoplayVideo.html'
   import { show } from '../helpers/showDialog'
-  import { oncreate } from '../helpers/onCreateDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { close } from '../helpers/closeDialog'
 
   export default {
-    oncreate,
+    oncreate () {
+      onCreateDialog.call(this)
+      this.close = this.close.bind(this)
+      history.pushState({type: 'image-dialog'}, null, location.pathname)
+      window.addEventListener('popstate', this.close)
+    },
+    ondestroy () {
+      window.removeEventListener('popstate', this.close)
+    },
     components: {
       ModalDialog,
       AutoplayVideo
     },
     methods: {
+      close,
       show
     }
   }
