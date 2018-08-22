@@ -2,7 +2,7 @@ import ImageDialog from '../components/ImageDialog.html'
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export default function showImageDialog (poster, src, type, width, height, description) {
+export default function showImageDialog ({poster, src, type, width, height, description}) {
   let imageDialog = new ImageDialog({
     target: createDialogElement(),
     data: {
@@ -17,4 +17,5 @@ export default function showImageDialog (poster, src, type, width, height, descr
     }
   })
   imageDialog.show()
+  return imageDialog
 }
