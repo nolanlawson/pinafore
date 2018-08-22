@@ -1,7 +1,9 @@
 const timestamp = '__timestamp__'
 const ASSETS = `assets_${timestamp}`
 const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
-const ON_DEMAND = `ondemand_${timestamp}`
+const ON_DEMAND = `ondemand`
+
+const MAX_ONDEMAND_ITEMS = 50
 
 // `assets` is an array of everything in the `assets` directory
 const assets = __assets__
@@ -67,6 +69,14 @@ const ON_DEMAND_PATHS = [
   '/system/accounts/avatars'
 ]
 
+// avatar images can quickly get too big; use an LRU cache for them
+async function addToLRU (cache, request, response) {
+  let keys = await cache.keys()
+  let excessKeys = keys.slice(0, -MAX_ONDEMAND_ITEMS)
+  await Promise.all(excessKeys.map(key => cache.delete(key)))
+  return cache.put(request, response)
+}
+
 self.addEventListener('fetch', event => {
   const req = event.request
   const url = new URL(req.url)
@@ -101,12 +111,12 @@ self.addEventListener('fetch', event => {
       if (response) {
         // update asynchronously
         fetch(req).then(response => {
-          cache.put(req, response.clone())
+          /* no await */ addToLRU(cache, req, response.clone())
         })
         return response
       }
       response = await fetch(req)
-      cache.put(req, response.clone())
+      /* no await */ addToLRU(cache, req, response.clone())
       return response
     }
 
