@@ -1,8 +1,10 @@
 <img
   class={computedClass}
   aria-hidden={ariaHidden}
-  alt={alt || ''}
-  title={alt || ''}
+  {alt}
+  {title}
+  {width}
+  {height}
   src={displaySrc}
   on:mouseover="onMouseOver(event)"
 />
@@ -43,7 +45,9 @@
       mouseover
     },
     data: () => ({
-      displaySrc: ONE_TRANSPARENT_PIXEL
+      displaySrc: ONE_TRANSPARENT_PIXEL,
+      alt: '',
+      title: ''
     }),
     computed: {
       computedClass: ({className, src, staticSrc, isLink}) => (classname(

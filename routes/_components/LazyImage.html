@@ -1,25 +1,14 @@
-<div class="lazy-image"
-     style={computedStyle}>
+<div class="lazy-image" style={computedStyle} >
   {#if displaySrc}
-    {#if width && height}
-      <img
-        class="{className || ''}"
-        aria-hidden={ariaHidden || ''}
-        alt={alt || ''}
-        title={alt || ''}
-        src={displaySrc}
-        {width}
-        {height}
-      />
-    {:else}
-      <img
-        class="{className || ''}"
-        aria-hidden={ariaHidden || ''}
-        alt={alt || ''}
-        title={alt || ''}
-        src={displaySrc}
-      />
-    {/if}
+    <img
+      class={className}
+      aria-hidden={ariaHidden}
+      {alt}
+      {title}
+      {width}
+      {height}
+      src={displaySrc}
+    />
   {/if}
 </div>
 <style>
@@ -48,18 +37,21 @@
     data: () => ({
       displaySrc: void 0,
       hidden: false,
-      ariaHidden: false,
       fallback: void 0,
       background: '',
       width: void 0,
-      height: void 0
+      height: void 0,
+      className: '',
+      ariaHidden: '',
+      alt: '',
+      title: ''
     }),
     computed: {
       computedStyle: ({width, height, background}) => {
         return [
           width && `width: ${width}px;`,
           height && `height: ${height}px;`,
-          background && `background: ${background};`,
+          background && `background: ${background};`
         ].filter(Boolean).join('')
       }
     }

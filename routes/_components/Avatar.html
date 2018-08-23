@@ -1,5 +1,5 @@
 {#if error}
-<svg class={computedClass} aria-hidden="true">
+<svg class={computedClass} style={svgStyle} aria-hidden="true">
   <use xlink:href="#fa-user" />
 </svg>
 {:elseif $autoplayGifs}
@@ -8,6 +8,8 @@
     ariaHidden="true"
     alt=""
     src={account.avatar}
+    {width}
+    {height}
     on:imgLoad="set({loaded: true})"
     on:imgLoadError="set({error: true})" />
 {:else}
@@ -17,6 +19,8 @@
     alt=""
     src={account.avatar}
     staticSrc={account.avatar_static}
+    {width}
+    {height}
     {isLink}
     on:imgLoad="set({loaded: true})"
     on:imgLoadError="set({error: true})"
@@ -30,33 +34,6 @@
 
   :global(.avatar.loaded) {
     background: none;
-  }
-
-  :global(.avatar.size-extra-small) {
-    width: 24px;
-    height: 24px;
-  }
-
-  :global(.avatar.size-small) {
-    width: 48px;
-    height: 48px;
-  }
-
-  :global(.avatar.size-medium) {
-    width: 64px;
-    height: 64px;
-  }
-
-  :global(.avatar.size-big) {
-    width: 100px;
-    height: 100px;
-  }
-
-  @media (max-width: 767px) {
-    :global(.avatar.size-big) {
-      width: 80px;
-      height: 80px;
-    }
   }
 
   svg.avatar {
@@ -78,12 +55,26 @@
     }),
     store: () => store,
     computed: {
-      computedClass: ({ className, loaded, size }) => (classname(
+      computedClass: ({ className, loaded }) => (classname(
         'avatar',
         className,
-        loaded && 'loaded',
-        `size-${size}`
-      ))
+        loaded && 'loaded'
+      )),
+      width: ({ size, $isMobileSize }) => {
+        switch (size) {
+          case 'extra-small':
+            return 24
+          case 'small':
+            return 48
+          case 'big':
+            return $isMobileSize ? 80 : 100
+          case 'medium':
+          default:
+            return 64
+        }
+      },
+      height: ({ width }) => width,
+      svgStyle: ({ width, height }) => `width: ${width}px; height: ${height}px;`
     },
     components: {
       NonAutoplayImg,
