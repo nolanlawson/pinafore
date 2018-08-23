@@ -12,7 +12,6 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  will-change: transform; /* avoids "Repaints on Scroll" warning in Chrome */
   position: absolute;
   top: 42px;
   left: 0;
