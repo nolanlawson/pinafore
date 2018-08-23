@@ -55,7 +55,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
-  import { emojifyText } from '../../_utils/emojifyText'
+  import { massageUserText } from '../../_utils/massageUserText'
 
   export default {
     oncreate () {
@@ -73,15 +73,7 @@
       },
       content: ({ originalStatus }) => (originalStatus.content || ''),
       emojis: ({ originalStatus }) => originalStatus.emojis,
-      massagedContent: ({ content, emojis, $autoplayGifs }) => {
-        content = emojifyText(content, emojis, $autoplayGifs)
-
-        // GNU Social and Pleroma don't add <p> tags
-        if (content && !content.startsWith('<p>')) {
-          content = `<p>${content}</p>`
-        }
-        return content
-      }
+      massagedContent: ({ content, emojis, $autoplayGifs }) => massageUserText(content, emojis, $autoplayGifs)
     },
     methods: {
       hydrateContent () {

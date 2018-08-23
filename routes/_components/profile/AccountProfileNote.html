@@ -30,16 +30,15 @@
   }
 </style>
 <script>
+  import { store } from '../../_store/store'
+  import { massageUserText } from '../../_utils/massageUserText'
+
   export default {
+    store: () => store,
     computed: {
       note: ({ account }) => account.note,
-      massagedNote: ({ note }) => {
-        // GNU Social / Pleroma don't add <p> tags
-        if (!note.startsWith('<p>')) {
-          note = `<p>${note}</p>`
-        }
-        return note
-      }
+      emojis: ({ account }) => account.emojis || [],
+      massagedNote: ({ note, emojis, $autoplayGifs }) => massageUserText(note, emojis, $autoplayGifs)
     }
   }
 </script>
