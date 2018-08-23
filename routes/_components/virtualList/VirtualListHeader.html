@@ -5,19 +5,14 @@
 <style>
   .virtual-list-header {
     position: absolute;
-    top: 0;
     width: 100%;
-    opacity: 0;
     z-index: 10;
-    transition: none;
     display: none;
   }
   .virtual-list-header.shown {
     display: block;
-    transition: opacity 0.333s linear;
   }
   .virtual-list-header.faded-in {
-    opacity: 1;
   }
 </style>
 <script>

@@ -9,15 +9,19 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { mark, stop } from '../../_utils/marks'
+  import { queueRender, getRenderHandle } from '../../_utils/queueRender'
 
   export default {
     async oncreate () {
       let { makeProps, key } = this.get()
       if (makeProps) {
+        let handle = getRenderHandle()
         let props = await makeProps(key)
-        mark('VirtualListLazyItem set props')
-        this.set({props: props})
-        stop('VirtualListLazyItem set props')
+        queueRender(handle, () => {
+          mark('VirtualListLazyItem set props')
+          this.set({props: props})
+          stop('VirtualListLazyItem set props')
+        })
       }
     },
     data: () => ({

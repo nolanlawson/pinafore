@@ -24,16 +24,16 @@
   {#if content && (showContent || contentPreloaded)}
     <StatusContent {...params} shown={showContent}/>
   {/if}
-  {#if showMedia }
+  <!--{#if showMedia }
     <StatusMediaAttachments {...params} on:recalculateHeight />
-  {/if}
+  {/if}-->
   {#if isStatusInOwnThread}
     <StatusDetails {...params} />
   {/if}
-  <StatusToolbar {...params} on:recalculateHeight />
-  {#if replyShown}
+  <!--<StatusToolbar {...params} on:recalculateHeight />-->
+  <!--{#if replyShown}
     <StatusComposeBox {...params} on:recalculateHeight />
-  {/if}
+  {/if}-->
 </article>
 
 <style>
