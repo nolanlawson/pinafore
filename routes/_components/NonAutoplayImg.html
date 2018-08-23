@@ -1,22 +1,11 @@
-{#if staticSrc === src}
-  <img class={className || ''}
-       aria-hidden={ariaHidden}
-       alt={alt || ''}
-       title={alt || ''}
-       {src}
-       on:imgLoad
-       on:imgLoadError />
-{:else}
-  <img class="{className || ''} non-autoplay-zoom-in {isLink ? 'is-link' : ''}"
-       aria-hidden={ariaHidden}
-       alt={alt || ''}
-       title={alt || ''}
-       src={staticSrc}
-       on:imgLoad
-       on:imgLoadError
-       on:mouseover="onMouseOver(event)"
-       ref:node />
-{/if}
+<img
+  class={computedClass}
+  aria-hidden={ariaHidden}
+  alt={alt || ''}
+  title={alt || ''}
+  src={displaySrc}
+  on:mouseover="onMouseOver(event)"
+/>
 <style>
   .non-autoplay-zoom-in {
     cursor: zoom-in;
@@ -26,18 +15,42 @@
   }
 </style>
 <script>
-  import { imgLoad, imgLoadError, mouseover } from '../_utils/events'
+  import { mouseover } from '../_utils/events'
+  import { decodeImage } from '../_utils/decodeImage'
+  import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
+  import { classname } from '../_utils/classname'
+
   export default {
+    async oncreate () {
+      let { staticSrc } = this.get()
+      try {
+        await decodeImage(staticSrc)
+        this.set({ displaySrc: staticSrc })
+        this.fire('imgLoad')
+      } catch (e) {
+        this.fire('imgLoadError', e)
+      }
+    },
     methods: {
       onMouseOver (mouseOver) {
-        let { src, staticSrc } = this.get()
-        this.refs.node.src = mouseOver ? src : staticSrc
+        let { src, staticSrc, displaySrc } = this.get()
+        if (displaySrc !== ONE_TRANSPARENT_PIXEL) {
+          this.set({ displaySrc: mouseOver ? src : staticSrc })
+        }
       }
     },
     events: {
-      imgLoad,
-      imgLoadError,
       mouseover
+    },
+    data: () => ({
+      displaySrc: ONE_TRANSPARENT_PIXEL
+    }),
+    computed: {
+      computedClass: ({className, src, staticSrc, isLink}) => (classname(
+        className,
+        src !== staticSrc && 'non-autoplay-zoom-in',
+        isLink && 'is-link'
+      ))
     }
   }
 </script>

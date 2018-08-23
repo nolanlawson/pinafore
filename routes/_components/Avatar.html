@@ -3,9 +3,9 @@
   <use xlink:href="#fa-user" />
 </svg>
 {:elseif $autoplayGifs}
-  <img
-    class={computedClass}
-    aria-hidden="true"
+  <LazyImage
+    className={computedClass}
+    ariaHidden="true"
     alt=""
     src={account.avatar}
     on:imgLoad="set({loaded: true})"
@@ -64,16 +64,12 @@
   }
 </style>
 <script>
-  import { imgLoad, imgLoadError } from '../_utils/events'
   import { store } from '../_store/store'
   import NonAutoplayImg from './NonAutoplayImg.html'
   import { classname } from '../_utils/classname'
+  import LazyImage from './LazyImage.html'
 
   export default {
-    events: {
-      imgLoad,
-      imgLoadError
-    },
     data: () => ({
       className: void 0,
       loaded: false,
@@ -90,7 +86,8 @@
       ))
     },
     components: {
-      NonAutoplayImg
+      NonAutoplayImg,
+      LazyImage
     }
   }
 </script>
