@@ -1,14 +1,13 @@
-<div class="lazy-image"
-     style="width: {width}px; height: {height}px; background: {background};">
+<div class="lazy-image" style={computedStyle} >
   {#if displaySrc}
     <img
-      class="{hidden ? 'hidden' : ''} {className || ''}"
-      aria-hidden={ariaHidden || ''}
-      alt={alt || ''}
-      title={alt || ''}
-      src={displaySrc}
+      class={className}
+      aria-hidden={ariaHidden}
+      {alt}
+      {title}
       {width}
       {height}
+      src={displaySrc}
     />
   {/if}
 </div>
@@ -16,40 +15,45 @@
   .lazy-image {
     overflow: hidden;
   }
-  .lazy-image img {
-    transition: opacity 0.2s linear;
-  }
 </style>
 <script>
   import { mark, stop } from '../_utils/marks'
+  import { decodeImage } from '../_utils/decodeImage'
 
   export default {
-    oncreate () {
+    async oncreate () {
       mark('LazyImage oncreate()')
-      let img = new Image()
-      let { src } = this.get()
-      let { fallback } = this.get()
-      img.onload = () => {
-        requestAnimationFrame(() => {
-          this.set({
-            displaySrc: src,
-            hidden: true
-          })
-          requestAnimationFrame(() => {
-            this.set({hidden: false})
-          })
-        })
+      let { src, fallback } = this.get()
+      try {
+        await decodeImage(src)
+        this.set({ displaySrc: src })
+      } catch (e) {
+        if (fallback) {
+          this.set({displaySrc: fallback})
+        }
       }
-      img.onerror = () => {
-        this.set({displaySrc: fallback})
-      }
-      img.src = src
       stop('LazyImage oncreate()')
     },
     data: () => ({
       displaySrc: void 0,
       hidden: false,
-      ariaHidden: false
-    })
+      fallback: void 0,
+      background: '',
+      width: void 0,
+      height: void 0,
+      className: '',
+      ariaHidden: '',
+      alt: '',
+      title: ''
+    }),
+    computed: {
+      computedStyle: ({width, height, background}) => {
+        return [
+          width && `width: ${width}px;`,
+          height && `height: ${height}px;`,
+          background && `background: ${background};`
+        ].filter(Boolean).join('')
+      }
+    }
   }
 </script>

@@ -5,6 +5,7 @@ import { onlineObservers } from './onlineObservers'
 import { navObservers } from './navObservers'
 import { autosuggestObservers } from './autosuggestObservers'
 import { pageVisibilityObservers } from './pageVisibilityObservers'
+import { resizeObservers } from './resizeObservers'
 
 export function observers (store) {
   instanceObservers(store)
@@ -14,4 +15,5 @@ export function observers (store) {
   navObservers(store)
   autosuggestObservers(store)
   pageVisibilityObservers(store)
+  resizeObservers(store)
 }
