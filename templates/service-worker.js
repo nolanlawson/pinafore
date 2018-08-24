@@ -83,7 +83,10 @@ self.addEventListener('fetch', event => {
       // for routes, serve the /index.html file from the most recent
       // assets cache
       if (routes.find(route => route.pattern.test(url.pathname))) {
-        return caches.match('/index.html')
+        let response = await caches.match('/index.html')
+        if (response) {
+          return response
+        }
       }
     }
 
