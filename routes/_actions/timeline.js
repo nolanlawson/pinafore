@@ -2,7 +2,7 @@ import { store } from '../_store/store'
 import { getTimeline } from '../_api/timelines'
 import { toast } from '../_utils/toast'
 import { mark, stop } from '../_utils/marks'
-import { mergeArrays } from '../_utils/arrays'
+import { concat, mergeArrays } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'
 import isEqual from 'lodash-es/isEqual'
 import {
@@ -11,8 +11,21 @@ import {
 import {
   getTimeline as getTimelineFromDatabase
 } from '../_database/timelines/pagination'
+import { getStatus, getStatusContext } from '../_api/statuses'
 
 const FETCH_LIMIT = 20
+
+async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelineName, lastTimelineItemId) {
+  if (timelineName.startsWith('status/')) { // special case - this is a list of descendents and ancestors
+    let statusId = timelineName.split('/').slice(-1)[0]
+    let statusRequest = getStatus(instanceName, accessToken, statusId)
+    let contextRequest = getStatusContext(instanceName, accessToken, statusId)
+    let [ status, context ] = await Promise.all([statusRequest, contextRequest])
+    return concat(context.ancestors, status, context.descendants)
+  } else { // normal timeline
+    return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, FETCH_LIMIT)
+  }
+}
 
 async function fetchTimelineItems (instanceName, accessToken, timelineName, lastTimelineItemId, online) {
   mark('fetchTimelineItems')
@@ -23,7 +36,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
     stale = true
   } else {
     try {
-      items = await getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, FETCH_LIMIT)
+      items = await fetchTimelineItemsFromNetwork(instanceName, accessToken, timelineName, lastTimelineItemId)
       /* no await */ insertTimelineItemsInDatabase(instanceName, timelineName, items)
     } catch (e) {
       console.error(e)

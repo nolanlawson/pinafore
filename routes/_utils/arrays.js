@@ -31,3 +31,16 @@ export function mergeArrays (leftArray, rightArray) {
   }
   return merged
 }
+
+export function concat () {
+  let res = []
+  for (let i = 0, len = arguments.length; i < len; i++) {
+    let arg = arguments[i]
+    if (Array.isArray(arg)) {
+      res = res.concat(arguments[i])
+    } else {
+      res.push(arguments[i])
+    }
+  }
+  return res
+}
