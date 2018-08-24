@@ -5,6 +5,7 @@
       <AccountProfileHeader {account} {relationship} {verifyCredentials} />
       <AccountProfileFollow {account} {relationship} {verifyCredentials} />
       <AccountProfileNote {account} />
+      <AccountProfileMeta {account} />
       <AccountProfileDetails {account} {relationship} {verifyCredentials} />
     </div>
   </div>
@@ -27,6 +28,7 @@
     grid-template-areas: "avatar     name        label     followed-by   follow"
                          "avatar     username    username  username      follow"
                          "avatar     note        note      note          follow"
+                         "meta       meta        meta      meta          meta"      
                          "details    details     details   details       details";
     grid-template-columns: min-content auto 1fr 1fr min-content;
     grid-column-gap: 10px;
@@ -57,6 +59,7 @@
                            "avatar     username      follow"
                            "avatar     followed-by   follow"
                            "note       note          note"
+                           "meta       meta          meta"
                            "details    details       details";
       grid-template-columns: min-content minmax(auto, 1fr) min-content;
       grid-template-rows: min-content min-content 1fr min-content;
@@ -68,6 +71,7 @@
   import AccountProfileHeader from './AccountProfileHeader.html'
   import AccountProfileFollow from './AccountProfileFollow.html'
   import AccountProfileNote from './AccountProfileNote.html'
+  import AccountProfileMeta from './AccountProfileMeta.html'
   import AccountProfileDetails from './AccountProfileDetails.html'
   import { store } from '../../_store/store'
 
@@ -81,6 +85,7 @@
       AccountProfileHeader,
       AccountProfileFollow,
       AccountProfileNote,
+      AccountProfileMeta,
       AccountProfileDetails
     }
   }
