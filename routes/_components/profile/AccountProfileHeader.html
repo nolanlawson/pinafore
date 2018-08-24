@@ -2,14 +2,18 @@
   <Avatar {account} size="big" />
 </div>
 <div class="account-profile-name">
-  <ExternalLink href={account.url}
-                showIcon="true"
-                normalIconColor="true"
-                ariaLabel="{accessibleName} (opens in new window)"
-  >
+  <ExternalLink
+    className="account-profile-name-link"
+    href={account.url}
+    showIcon="true"
+    normalIconColor="true"
+    ariaLabel="{accessibleName} (opens in new window)">
     <AccountDisplayName {account} />
   </ExternalLink>
 </div>
+{#if label}
+  <Label {label} className="account-profile-label" />
+{/if}
 <div class="account-profile-username">
   {'@' + account.acct}
 </div>
@@ -56,13 +60,20 @@
     text-overflow: ellipsis;
     min-width: 0;
   }
-  :global(.account-profile-name a) {
+
+  :global(.account-profile-name-link) {
     color: var(--body-text-color);
     text-decoration: none;
   }
-  :global(.account-profile-name a:hover) {
+
+  :global(.account-profile-name-link:hover) {
     color: var(--body-text-color);
     text-decoration: underline;
+  }
+
+  :global(.account-profile-label) {
+    grid-area: label;
+    justify-content: left !important;
   }
 
   @media (max-width: 767px) {
@@ -83,6 +94,7 @@
   import AccountDisplayName from '../profile/AccountDisplayName.html'
   import { removeEmoji } from '../../_utils/removeEmoji'
   import { store } from '../../_store/store'
+  import Label from '../Label.html'
 
   export default {
     store: () => store,
@@ -94,12 +106,15 @@
           return removeEmoji(displayName, emojis) || displayName
         }
         return displayName
-      }
+      },
+      bot: ({ account }) => !!account.bot,
+      label: ({ bot }) => bot ? 'bot' : ''
     },
     components: {
       Avatar,
       ExternalLink,
-      AccountDisplayName
+      AccountDisplayName,
+      Label
     }
   }
 </script>

@@ -24,11 +24,11 @@
 
   .account-profile-grid {
     display: grid;
-    grid-template-areas: "avatar     name        followed-by   follow"
-                         "avatar     username    username      follow"
-                         "avatar     note        note          follow"
-                         "details    details     details       details";
-    grid-template-columns: min-content auto 1fr min-content;
+    grid-template-areas: "avatar     name        label     followed-by   follow"
+                         "avatar     username    username  username      follow"
+                         "avatar     note        note      note          follow"
+                         "details    details     details   details       details";
+    grid-template-columns: min-content auto 1fr 1fr min-content;
     grid-column-gap: 10px;
     grid-row-gap: 5px;
     padding: 20px;
@@ -53,6 +53,7 @@
     .account-profile-grid {
       display: grid;
       grid-template-areas: "avatar     name          follow"
+                           "avatar     label         follow"
                            "avatar     username      follow"
                            "avatar     followed-by   follow"
                            "note       note          note"
