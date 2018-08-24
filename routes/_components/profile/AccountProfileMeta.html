@@ -1,59 +1,52 @@
 {#if emojifiedFields.length}
   <div class="account-profile-meta">
-   {#each emojifiedFields as field, i}
-     <div class="account-profile-meta-field-name meta-name-{i + 1}">
-       <p>{field.name}</p>
-     </div>
-     <div class="account-profile-meta-field-value meta-value-{i + 1}">
-       <p>{@html field.value}</p>
-     </div>
-   {/each}
+    <div class="account-profile-meta-border"></div>
+    {#each emojifiedFields as field, i}
+      <div class="account-profile-meta-cell account-profile-meta-name">
+        {field.name}
+      </div>
+      <div class="account-profile-meta-cell account-profile-meta-value">
+        {@html field.value}
+      </div>
+    {/each}
+    <div class="account-profile-meta-border"></div>
   </div>
 {/if}
 <style>
   .account-profile-meta {
-    display: grid;
-    grid-template-areas: "meta-name-1 meta-value-1"
-                         "meta-name-2 meta-value-2"
-                         "meta-name-3 meta-value-3"
-                         "meta-name-4 meta-value-4";
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: max-content;
     grid-area: meta;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-row-gap: 5px;
+    align-items: center;
     padding: 10px 0;
-    font-size: 0.9em;
+  }
+
+  .account-profile-meta-border {
+    height: 1px;
+    width: 100%;
+    grid-column: 1 / 3;
+    background: var(--main-border);
+    justify-self: center;
+  }
+
+  .account-profile-meta-cell {
     word-wrap: break-word;
     overflow: hidden;
     white-space: pre-wrap;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
   }
 
-  :global(.account-profile-meta p) {
-    margin: 0 0 20px;
-  }
-
-  :global(.account-profile-meta p:first-child) {
-    margin: 0 0 20px;
-  }
-
-  :global(.account-profile-meta p:last-child) {
-    margin: 0;
-  }
-
-  :global(.account-profile-meta > *:last-child,.account-profile-meta > *:nth-last-child(2)) {
-    border-bottom: 1px solid var(--main-border);
-  }
-  
-  :global(.account-profile-meta > *) {
-    border-top: 1px solid var(--main-border);
-  }
-
-  :global(.account-profile-meta-field-name) {
+  .account-profile-meta-name {
+    padding: 10px 20px 10px 0;
+    text-transform: uppercase;
+    color: var(--deemphasized-text-color);
     position: relative;
-    padding: 10px 20px 10px 30px;
-    font-weight: bold;
+    max-width: 33vw;
   }
 
-  :global(.account-profile-meta-field-name:after) {
+  .account-profile-meta-name:after {
     content: '';
     position: absolute;
     right: 0;
@@ -62,62 +55,22 @@
     border-right: 1px solid var(--main-border);
   }
 
-  :global(.account-profile-meta-field-value) {
-    padding: 10px 30px 10px 20px;
+  .account-profile-meta-value {
+    padding: 10px 10px 10px 20px;
   }
-
-  .meta-name-1  { grid-area: meta-name-1;  }
-  .meta-value-1 { grid-area: meta-value-1; }
-  .meta-name-2  { grid-area: meta-name-2;  }
-  .meta-value-2 { grid-area: meta-value-2; }
-  .meta-name-3  { grid-area: meta-name-3;  }
-  .meta-value-3 { grid-area: meta-value-3; }
-  .meta-name-4  { grid-area: meta-name-4;  }
-  .meta-value-4 { grid-area: meta-value-4; }
 
   @media (max-width: 767px) {
     .account-profile-meta {
       padding: 5px 0;
-      grid-template-areas: "meta-name-1"
-                           "meta-value-1"
-                           "meta-name-2"
-                           "meta-value-2"
-                           "meta-name-3"
-                           "meta-value-3"
-                           "meta-name-4"
-                           "meta-value-4";
-      grid-template-columns: 100%;
     }
-
-    :global(.account-profile-meta > *) {
-      border: none;
+    .account-profile-meta-cell {
+      font-size: 1em;
     }
-
-    :global(.account-profile-meta > *:last-child,.account-profile-meta > *:nth-last-child(2)) {
-      border: none;
+    .account-profile-meta-name {
+      padding: 5px 10px 5px 0;
     }
-
-    :global(.account-profile-meta-field-name:after) {
-      border: none;
-    }
-
-    :global(.account-profile-meta-field-name) {
-      text-align: center;
-      padding: 10px 0px 0px;
-      border-top: 1px solid var(--main-border);
-    }
-    
-    :global(.account-profile-meta-field-value) {
-      text-align: center;
-      padding: 0px 0px 10px;
-    }
-
-    :global(.account-profile-meta-field-name:nth-last-child(2)) {
-      border-top: 1px solid var(--main-border);
-    }
-
-    :global(.account-profile-meta-field-value:last-child) {
-      border-bottom: 1px solid var(--main-border);
+    .account-profile-meta-value {
+      padding: 5px 10px 5px 10px;
     }
   }
 </style>
