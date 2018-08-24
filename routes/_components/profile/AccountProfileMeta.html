@@ -1,6 +1,15 @@
-<div class="account-profile-meta">
-   {@html meta}
-</div>
+{#if emojifiedFields.length}
+  <div class="account-profile-meta">
+   {#each emojifiedFields as field, i}
+     <div class="account-profile-meta-field-name meta-name-{i + 1}">
+       <p>{field.name}</p>
+     </div>
+     <div class="account-profile-meta-field-value meta-value-{i + 1}">
+       <p>{@html field.value}</p>
+     </div>
+   {/each}
+  </div>
+{/if}
 <style>
   .account-profile-meta {
     display: grid;
@@ -113,20 +122,18 @@
   }
 </style>
 <script>
+  import { emojifyText } from '../../_utils/emojifyText'
+  import { store } from '../../_store/store'
+
   export default {
+    store: () => store,
     computed: {
-      meta: ({ account }) => {
-        let metaHTML = '';
-        for(var i=0; i < account.fields.length; i++) {
-          metaHTML += `<div class="account-profile-meta-field-name meta-name-${i+1}">`;
-          metaHTML += `<p>${account.fields[i].name}</p>`;
-          metaHTML += `</div>`;
-          metaHTML += `<div class="account-profile-meta-field-value meta-value-${i+1}">`;
-          metaHTML += `<p>${account.fields[i].value}</p>`;
-          metaHTML += `</div>`;
-        }
-        return metaHTML;
-      }    
+      emojis: ({ account }) => account.emojis || [],
+      fields: ({ account }) => account.fields || [],
+      emojifiedFields: ({ fields, emojis, $autoplayGifs }) => (fields.map(field => ({
+        name: field.name,
+        value: emojifyText(field.value, emojis, $autoplayGifs)
+      })))
     }
   }
 </script>
