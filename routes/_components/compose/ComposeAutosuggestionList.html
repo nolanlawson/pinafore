@@ -1,16 +1,17 @@
 <ul class="compose-autosuggest-list">
-  {#each items as item, i}
+  {#each items as item, i (item.shortcode ? `emoji-${item.shortcode}` : `account-${item.id}`)}
   <li class="compose-autosuggest-list-item">
     <button class="compose-autosuggest-list-button {i === selected ? 'selected' : ''}"
             tabindex="0"
             on:click="onClick(event, item)">
       <div class="compose-autosuggest-list-grid">
         {#if type === 'account'}
-        <Avatar
-          className="compose-autosuggest-list-item-avatar"
-          size="small"
-          account={item}
-        />
+        <div class="compose-autosuggest-list-item-avatar">
+          <Avatar
+            size="small"
+            account={item}
+          />
+        </div>
         <span class="compose-autosuggest-list-display-name">
             <AccountDisplayName account={item} />
         </span>
