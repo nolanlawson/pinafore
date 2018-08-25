@@ -53,6 +53,8 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Building
 
+Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and `npm`.
+
 To build Pinafore for production:
 
     npm install
@@ -68,7 +70,11 @@ To build a docker image for production:
 
 Now Pinafore is running at `localhost:4002`.
 
-Pinafore requires [Node.js](https://nodejs.org/en/) v8+.
+### Updating
+
+To keep your version of Pinafore up to date, you can use `git` to check out the latest tag:
+
+    git checkout $(git tag -l | sort -Vr | head -n 1)
 
 ## Developing and testing
 
