@@ -16,7 +16,6 @@
   }
 </style>
 <script>
-  import { CHAR_LIMIT } from '../../_static/statuses'
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
@@ -41,7 +40,7 @@
     }),
     store: () => store,
     computed: {
-      lengthToDisplay: ({ length }) => CHAR_LIMIT - length,
+      lengthToDisplay: ({ length, $maxStatusChars }) => $maxStatusChars - length,
       lengthLabel: ({ overLimit, lengthToDisplayDeferred }) => {
         if (overLimit) {
           return `${lengthToDisplayDeferred} characters over limit`

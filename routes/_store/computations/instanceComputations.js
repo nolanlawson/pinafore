@@ -47,4 +47,13 @@ export function instanceComputations (store) {
     ['currentInstanceData'],
     (currentInstanceData) => currentInstanceData && currentInstanceData.access_token
   )
+
+  store.compute(
+    'maxStatusChars',
+    ['currentInstanceInfo'],
+    (currentInstanceInfo) => (
+      // unofficial api used in glitch-soc and pleroma
+      (currentInstanceInfo && currentInstanceInfo.max_toot_chars) || 500
+    )
+  )
 }
