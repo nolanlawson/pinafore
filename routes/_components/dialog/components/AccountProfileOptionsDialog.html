@@ -10,7 +10,7 @@
 import ModalDialog from './ModalDialog.html'
 import { store } from '../../../_store/store'
 import GenericDialogList from './GenericDialogList.html'
-import { importShowComposeDialog, importShowCopyDialog } from '../asyncDialogs'
+import { importShowComposeDialog } from '../asyncDialogs'
 import { createDialogId } from '../helpers/createDialogId'
 import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
@@ -20,6 +20,7 @@ import { setAccountMuted } from '../../../_actions/mute'
 import { setAccountFollowed } from '../../../_actions/follow'
 import { setShowReblogs } from '../../../_actions/setShowReblogs'
 import { setDomainBlocked } from '../../../_actions/setDomainBlocked'
+import { copyText } from '../../../_actions/copyText'
 
 export default {
   oncreate,
@@ -175,8 +176,8 @@ export default {
     async onCopyClicked () {
       let { account } = this.get()
       let { url } = account
-      let showCopyDialog = await importShowCopyDialog()
-      showCopyDialog(url)
+      this.close()
+      await copyText(url)
     }
   },
   components: {
