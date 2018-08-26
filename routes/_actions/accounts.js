@@ -1,10 +1,12 @@
-import { getAccount, getRelationship } from '../_api/user'
+import { getAccount } from '../_api/user'
+import { getRelationship } from '../_api/relationships'
 import {
   getAccount as getAccountFromDatabase,
-  setAccount as setAccountInDatabase,
+  setAccount as setAccountInDatabase} from '../_database/accounts'
+import {
   getRelationship as getRelationshipFromDatabase,
   setRelationship as setRelationshipInDatabase
-} from '../_database/accountsAndRelationships'
+} from '../_database/relationships'
 import { store } from '../_store/store'
 
 async function updateAccount (accountId, instanceName, accessToken) {
