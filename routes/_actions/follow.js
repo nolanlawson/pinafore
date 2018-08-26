@@ -4,7 +4,7 @@ import { toast } from '../_utils/toast'
 import { updateProfileAndRelationship } from './accounts'
 import {
   getRelationship as getRelationshipFromDatabase
-} from '../_database/accountsAndRelationships'
+} from '../_database/relationships'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

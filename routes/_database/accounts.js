@@ -1,7 +1,5 @@
-import {
-  ACCOUNTS_STORE, RELATIONSHIPS_STORE, USERNAME_LOWERCASE
-} from './constants'
-import { accountsCache, relationshipsCache } from './cache'
+import { ACCOUNTS_STORE, USERNAME_LOWERCASE } from './constants'
+import { accountsCache } from './cache'
 import { cloneForStorage, getGenericEntityWithId, setGenericEntityWithId } from './helpers'
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { createAccountUsernamePrefixKeyRange } from './keys'
@@ -12,14 +10,6 @@ export async function getAccount (instanceName, accountId) {
 
 export async function setAccount (instanceName, account) {
   return setGenericEntityWithId(ACCOUNTS_STORE, accountsCache, instanceName, cloneForStorage(account))
-}
-
-export async function getRelationship (instanceName, accountId) {
-  return getGenericEntityWithId(RELATIONSHIPS_STORE, relationshipsCache, instanceName, accountId)
-}
-
-export async function setRelationship (instanceName, relationship) {
-  return setGenericEntityWithId(RELATIONSHIPS_STORE, relationshipsCache, instanceName, cloneForStorage(relationship))
 }
 
 export async function searchAccountsByUsername (instanceName, usernamePrefix, limit = 20) {

@@ -18,6 +18,7 @@ import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
 import { setAccountMuted } from '../../../_actions/mute'
 import { setAccountFollowed } from '../../../_actions/follow'
+import { setShowReblogs } from '../../../_actions/setShowReblogs'
 
 export default {
   oncreate,
@@ -59,10 +60,16 @@ export default {
     //
     // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
+    showingReblogs: ({ relationship }) => !!relationship.showing_reblogs,
+    showReblogsLabel: ({ showingReblogs, acct }) => (
+      showingReblogs
+        ? `Hide boosts from @${acct}`
+        : `Show boosts from @${acct}`
+    ),
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon,
       followLabel, followIcon, following, followRequested,
-      accountId, verifyCredentialsId, acct, isUser
+      accountId, verifyCredentialsId, acct, isUser, showReblogsLabel
     }) => ([
       !isUser && {
         key: 'mention',
@@ -83,6 +90,11 @@ export default {
         key: 'mute',
         label: muteLabel,
         icon: muteIcon
+      },
+      !isUser && following && {
+        key: 'showReblogs',
+        label: showReblogsLabel,
+        icon: '#fa-retweet'
       },
       {
         key: 'copy',
@@ -106,6 +118,8 @@ export default {
           return this.onMuteClicked()
         case 'copy':
           return this.onCopyClicked()
+        case 'showReblogs':
+          return this.onShowReblogsClicked()
       }
     },
     async onMentionClicked () {
@@ -131,6 +145,11 @@ export default {
       let { accountId, muting } = this.get()
       this.close()
       await setAccountMuted(accountId, !muting, true)
+    },
+    async onShowReblogsClicked () {
+      let { accountId, showingReblogs } = this.get()
+      this.close()
+      await setShowReblogs(accountId, !showingReblogs, true)
     },
     async onCopyClicked () {
       let { account } = this.get()

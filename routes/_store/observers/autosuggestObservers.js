@@ -1,6 +1,6 @@
 import {
   searchAccountsByUsername as searchAccountsByUsernameInDatabase
-} from '../../_database/accountsAndRelationships'
+} from '../../_database/accounts'
 
 const SEARCH_RESULTS_LIMIT = 4
 const DATABASE_SEARCH_RESULTS_LIMIT = 30
