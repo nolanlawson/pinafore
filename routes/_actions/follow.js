@@ -1,17 +1,18 @@
 import { store } from '../_store/store'
 import { followAccount, unfollowAccount } from '../_api/follow'
 import { toast } from '../_utils/toast'
-import { updateProfileAndRelationship } from './accounts'
+import { updateLocalRelationship } from './accounts'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()
   try {
+    let relationship
     if (follow) {
-      await followAccount(currentInstance, accessToken, accountId)
+      relationship = await followAccount(currentInstance, accessToken, accountId)
     } else {
-      await unfollowAccount(currentInstance, accessToken, accountId)
+      relationship = await unfollowAccount(currentInstance, accessToken, accountId)
     }
-    await updateProfileAndRelationship(accountId)
+    await updateLocalRelationship(currentInstance, accountId, relationship)
     if (toastOnSuccess) {
       if (follow) {
         toast.say('Followed account')

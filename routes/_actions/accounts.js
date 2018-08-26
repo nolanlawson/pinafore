@@ -46,6 +46,15 @@ async function updateRelationship (accountId, instanceName, accessToken) {
   }
 }
 
+export async function updateLocalRelationship (instanceName, accountId, relationship) {
+  await setRelationshipInDatabase(instanceName, relationship)
+  try {
+    store.set({currentAccountRelationship: relationship})
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export async function clearProfileAndRelationship () {
   store.set({
     currentAccountProfile: null,
