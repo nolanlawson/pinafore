@@ -9,7 +9,7 @@ import {
 } from '../_database/relationships'
 import { store } from '../_store/store'
 
-async function updateAccount (accountId, instanceName, accessToken) {
+async function _updateAccount (accountId, instanceName, accessToken) {
   let localPromise = getAccountFromDatabase(instanceName, accountId)
   let remotePromise = getAccount(instanceName, accessToken, accountId).then(account => {
     /* no await */ setAccountInDatabase(instanceName, account)
@@ -28,7 +28,7 @@ async function updateAccount (accountId, instanceName, accessToken) {
   }
 }
 
-async function updateRelationship (accountId, instanceName, accessToken) {
+async function _updateRelationship (accountId, instanceName, accessToken) {
   let localPromise = getRelationshipFromDatabase(instanceName, accountId)
   let remotePromise = getRelationship(instanceName, accessToken, accountId).then(relationship => {
     /* no await */ setRelationshipInDatabase(instanceName, relationship)
@@ -66,7 +66,13 @@ export async function updateProfileAndRelationship (accountId) {
   let { currentInstance, accessToken } = store.get()
 
   await Promise.all([
-    updateAccount(accountId, currentInstance, accessToken),
-    updateRelationship(accountId, currentInstance, accessToken)
+    _updateAccount(accountId, currentInstance, accessToken),
+    _updateRelationship(accountId, currentInstance, accessToken)
   ])
+}
+
+export async function updateRelationship (accountId) {
+  let { currentInstance, accessToken } = store.get()
+
+  await _updateRelationship(accountId, currentInstance, accessToken)
 }
