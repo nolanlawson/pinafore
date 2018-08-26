@@ -1,18 +1,19 @@
 import { store } from '../_store/store'
 import { blockAccount, unblockAccount } from '../_api/block'
 import { toast } from '../_utils/toast'
-import { updateProfileAndRelationship } from './accounts'
+import { updateLocalRelationship } from './accounts'
 import { emit } from '../_utils/eventBus'
 
 export async function setAccountBlocked (accountId, block, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()
   try {
+    let relationship
     if (block) {
-      await blockAccount(currentInstance, accessToken, accountId)
+      relationship = await blockAccount(currentInstance, accessToken, accountId)
     } else {
-      await unblockAccount(currentInstance, accessToken, accountId)
+      relationship = await unblockAccount(currentInstance, accessToken, accountId)
     }
-    await updateProfileAndRelationship(accountId)
+    await updateLocalRelationship(currentInstance, accountId, relationship)
     if (toastOnSuccess) {
       if (block) {
         toast.say('Blocked account')
