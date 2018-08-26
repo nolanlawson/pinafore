@@ -18,7 +18,6 @@
   }
 </style>
 <script>
-  import { CHAR_LIMIT } from '../../_static/statuses'
   import { mark, stop } from '../../_utils/marks'
   import { store } from '../../_store/store'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
@@ -45,9 +44,9 @@
     }),
     store: () => store,
     computed: {
-      lengthAsFraction: ({ length }) => {
+      lengthAsFraction: ({ length, $maxStatusChars }) => {
         // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
-        let int = Math.round(Math.min(CHAR_LIMIT, length) / CHAR_LIMIT * 100)
+        let int = Math.round(Math.min($maxStatusChars, length) / $maxStatusChars * 100)
         return (int - (int % 2)) / 100
       }
     },

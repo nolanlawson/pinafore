@@ -1,5 +1,3 @@
-export const CHAR_LIMIT = 500
-
 export const POST_PRIVACY_OPTIONS = [
   {
     label: 'Public',

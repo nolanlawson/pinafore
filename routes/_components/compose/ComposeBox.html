@@ -109,7 +109,7 @@
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
   import { measureText } from '../../_utils/measureText'
-  import { CHAR_LIMIT, POST_PRIVACY_OPTIONS } from '../../_static/statuses'
+  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
@@ -183,7 +183,7 @@
       length: ({ textLength, contentWarningLength, contentWarningShown }) => (
         textLength + (contentWarningShown ? contentWarningLength : 0)
       ),
-      overLimit: ({ length }) => length > CHAR_LIMIT,
+      overLimit: ({ length, $maxStatusChars }) => length > $maxStatusChars,
       contentWarningShown: ({ composeData }) => composeData.contentWarningShown,
       contentWarning: ({ composeData }) => composeData.contentWarning || '',
       timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized,
