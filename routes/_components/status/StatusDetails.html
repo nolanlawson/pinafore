@@ -1,11 +1,25 @@
 <div class="status-details">
   <ExternalLink className="status-absolute-date"
                 href={originalStatus.url}
-                showIcon="true"
+                showIcon={true}
                 ariaLabel="{formattedDate} (opens in new window)"
   >
     <time datetime={createdAtDate} title={formattedDate}>{formattedDate}</time>
   </ExternalLink>
+  {#if applicationWebsite}
+    <ExternalLink className="status-application"
+                  href={applicationWebsite}
+                  showIcon={false}
+                  ariaLabel="{applicationName} (opens in new window)">
+      <span class="status-application-span">
+        {applicationName}
+      </span>
+    </ExternalLink>
+  {:else}
+    <span class="status-application status-application-span">
+      {applicationName}
+    </span>
+  {/if}
   <a class="status-favs-reblogs"
      href="/statuses/{originalStatusId}/reblogs"
      aria-label={reblogsLabel}>
@@ -27,7 +41,7 @@
   .status-details {
     grid-area: details;
     display: grid;
-    grid-template-columns: minmax(0, max-content) min-content min-content;
+    grid-template-columns: minmax(0, max-content) min-content min-content min-content;
     grid-gap: 20px;
     align-items: center;
     justify-content: left;
@@ -41,7 +55,31 @@
   :global(.status-absolute-date time) {
     word-wrap: break-word;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  :global(.status-application) {
+    word-wrap: break-word;
+    overflow: hidden;
     white-space: pre-wrap;
+    font-size: 1.1em;
+  }
+
+  :global(.status-application, a.status-application, a.status-application:hover) {
+    color: var(--deemphasized-text-color);
+  }
+
+  :global(a.status-application) {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .status-application-span {
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .status-favs-reblogs {
@@ -78,6 +116,9 @@
     .status-favs-reblogs {
       font-size: 1em;
     }
+    :global(.status-application) {
+      font-size: 1em;
+    }
     .status-details {
       grid-gap: 5px;
       justify-content: space-between;
@@ -88,21 +129,22 @@
 </style>
 <script>
   import ExternalLink from '../ExternalLink.html'
-
-  const formatter = new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  import { store } from '../../_store/store'
+  import { getDateFormatter, getShortDateFormatter } from '../../_utils/formatters'
 
   export default {
+    store: () => store,
     computed: {
+      application: ({ originalStatus }) => originalStatus.application,
+      applicationName: ({ application }) => ((application && application.name) || 'Web'),
+      applicationWebsite: ({ application }) => (application && application.website),
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       numReblogs: ({ originalStatus }) => originalStatus.reblogs_count || 0,
       numFavs: ({ originalStatus }) => originalStatus.favourites_count || 0,
-      formattedDate: ({ createdAtDate }) => formatter.format(new Date(createdAtDate)),
+      formattedDate: ({ createdAtDate, $isMobileSize }) => {
+        let formatter = $isMobileSize ? getShortDateFormatter() : getDateFormatter()
+        return formatter.format(new Date(createdAtDate))
+      },
       reblogsLabel: ({ numReblogs }) => {
         // TODO: intl
         return numReblogs === 1

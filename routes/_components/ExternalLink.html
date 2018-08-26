@@ -2,7 +2,7 @@
    target="_blank"
    {href}
    aria-label={ariaLabel}
-   class="{className || ''} {showIcon ? 'external-link-with-icon' : ''} {normalIconColor ? 'normal-icon-color' : ''}">
+   class={computedClass}>
   <slot></slot>{#if showIcon}
     <svg class="external-link-svg">
       <use xlink:href="#fa-external-link" />
@@ -24,12 +24,22 @@
   }
 </style>
 <script>
+  import { classname } from '../_utils/classname'
+
   export default {
     data: () => ({
       className: void 0,
       normalIconColor: false,
       ariaLabel: '',
       showIcon: false
-    })
+    }),
+    computed: {
+      computedClass: ({ className, showIcon, normalIconColor }) => (classname(
+        'external-link',
+        className,
+        showIcon && 'external-link-with-icon',
+        normalIconColor && 'normal-icon-color'
+      ))
+    }
   }
 </script>
