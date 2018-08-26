@@ -44,11 +44,11 @@ export const displayNameInComposeBox = $('.compose-box-display-name')
 export const generalSettingsButton = $('a[href="/settings/general"]')
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 
-export const favoritesCountElement = $('.status-favs-reblogs:nth-child(3)').addCustomDOMProperties({
+export const favoritesCountElement = $('.status-favs').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
 })
 
-export const reblogsCountElement = $('.status-favs-reblogs:nth-child(2)').addCustomDOMProperties({
+export const reblogsCountElement = $('.status-reblogs').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
 })
 
