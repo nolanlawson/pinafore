@@ -18,8 +18,8 @@ import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
 import { setAccountMuted } from '../../../_actions/mute'
 import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
-import { importShowCopyDialog } from '../asyncDialogs'
 import { setConversationMuted } from '../../../_actions/muteConversation'
+import { copyText } from '../../../_actions/copyText'
 
 export default {
   oncreate,
@@ -162,17 +162,16 @@ export default {
       this.close()
       await setAccountMuted(accountId, !muting, true)
     },
-    async onCopyClicked () {
-      let { status } = this.get()
-      let { url } = status
-      let showCopyDialog = await importShowCopyDialog()
-      this.close()
-      showCopyDialog(url)
-    },
     async onMuteConversationClicked () {
       let { statusId, mutingConversation } = this.get()
       this.close()
       await setConversationMuted(statusId, !mutingConversation, true)
+    },
+    async onCopyClicked () {
+      let { status } = this.get()
+      let { url } = status
+      await copyText(url)
+      this.close()
     }
   }
 }
