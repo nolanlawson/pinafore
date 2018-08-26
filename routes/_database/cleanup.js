@@ -18,7 +18,7 @@ import { deleteAll } from './utils'
 import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 
 const BATCH_SIZE = 20
-const TIME_AGO = 14 * 24 * 60 * 60 * 1000 // two weeks ago
+const TIME_AGO = 7 * 24 * 60 * 60 * 1000 // one week ago
 const DELAY = 5 * 60 * 1000 // five minutes
 
 function batchedGetAll (callGetAll, callback) {
