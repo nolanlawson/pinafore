@@ -19,6 +19,7 @@ import { setAccountBlocked } from '../../../_actions/block'
 import { setAccountMuted } from '../../../_actions/mute'
 import { setAccountFollowed } from '../../../_actions/follow'
 import { setShowReblogs } from '../../../_actions/setShowReblogs'
+import { setDomainBlocked } from '../../../_actions/setDomainBlocked'
 
 export default {
   oncreate,
@@ -66,10 +67,18 @@ export default {
         ? `Hide boosts from @${acct}`
         : `Show boosts from @${acct}`
     ),
+    domain: ({ acct }) => acct.split('@')[1],
+    blockingDomain: ({ relationship }) => !!relationship.domain_blocking,
+    blockDomainLabel: ({ blockingDomain, domain }) => (
+      blockingDomain
+        ? `Unhide ${domain}`
+        : `Hide ${domain}`
+    ),
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon,
       followLabel, followIcon, following, followRequested,
-      accountId, verifyCredentialsId, acct, isUser, showReblogsLabel
+      accountId, verifyCredentialsId, acct, isUser, showReblogsLabel,
+      domain, blockDomainLabel
     }) => ([
       !isUser && {
         key: 'mention',
@@ -96,6 +105,11 @@ export default {
         label: showReblogsLabel,
         icon: '#fa-retweet'
       },
+      !isUser && domain && {
+        key: 'blockDomain',
+        label: blockDomainLabel,
+        icon: '#fa-ban'
+      },
       {
         key: 'copy',
         label: 'Copy link to account',
@@ -116,10 +130,12 @@ export default {
           return this.onBlockClicked()
         case 'mute':
           return this.onMuteClicked()
-        case 'copy':
-          return this.onCopyClicked()
         case 'showReblogs':
           return this.onShowReblogsClicked()
+        case 'blockDomain':
+          return this.onBlockDomainClicked()
+        case 'copy':
+          return this.onCopyClicked()
       }
     },
     async onMentionClicked () {
@@ -150,6 +166,11 @@ export default {
       let { accountId, showingReblogs } = this.get()
       this.close()
       await setShowReblogs(accountId, !showingReblogs, true)
+    },
+    async onBlockDomainClicked () {
+      let { accountId, domain, blockingDomain } = this.get()
+      this.close()
+      await setDomainBlocked(accountId, domain, !blockingDomain, true)
     },
     async onCopyClicked () {
       let { account } = this.get()
