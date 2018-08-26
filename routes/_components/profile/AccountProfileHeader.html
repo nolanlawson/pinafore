@@ -20,7 +20,14 @@
 <div class="account-profile-followed-by">
   {#if relationship && relationship.blocking}
     <span class="account-profile-followed-by-span">Blocked</span>
-  {:elseif relationship && relationship.followed_by}
+  {/if}
+  {#if relationship && relationship.domain_blocking}
+    <span class="account-profile-followed-by-span">Domain hidden</span>
+  {/if}
+  {#if relationship && relationship.muting}
+    <span class="account-profile-followed-by-span">Muted</span>
+  {/if}
+  {#if relationship && relationship.followed_by}
     <span class="account-profile-followed-by-span">Follows you</span>
   {/if}
 </div>
@@ -31,6 +38,7 @@
     text-transform: uppercase;
     color: var(--deemphasized-text-color);
     font-size: 0.8em;
+    white-space: nowrap;
   }
   .account-profile-followed-by-span {
     background: rgba(30, 30, 30, 0.2);
