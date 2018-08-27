@@ -1,4 +1,5 @@
 <Nav {page} />
+<Sidebar {page} />
 
 <div class="container" tabindex="0" ref:container>
   <main>
@@ -12,6 +13,7 @@
   import Nav from './Nav.html'
   import { store } from '../_store/store'
   import InformationalFooter from './InformationalFooter.html'
+  import Sidebar from './sidebar/Sidebar.html'
 
   // Only focus the `.container` div on first load so it does not intefere
   // with other desired behaviours (e.g. you click a toot, you navigate from
@@ -22,7 +24,8 @@
   export default {
     components: {
       Nav,
-      InformationalFooter
+      InformationalFooter,
+      Sidebar
     },
     oncreate () {
       if (firstTime) {
