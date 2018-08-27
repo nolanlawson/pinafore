@@ -13,7 +13,7 @@
   <ComposeLengthGauge {length} {overLimit} />
   <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
   <ComposeLengthIndicator {length} {overLimit} />
-  <ComposeMedia {realm} {media} {mediaDescriptions} />
+  <ComposeMedia {realm} {media} />
 </div>
 <div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
 <div class="compose-box-button-wrapper {realm === 'home' ? 'compose-button-sticky' : ''} {hideAndFadeIn}" >
@@ -186,8 +186,7 @@
       overLimit: ({ length, $maxStatusChars }) => length > $maxStatusChars,
       contentWarningShown: ({ composeData }) => composeData.contentWarningShown,
       contentWarning: ({ composeData }) => composeData.contentWarning || '',
-      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized,
-      mediaDescriptions: ({ composeData }) => composeData.mediaDescriptions || []
+      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized
     },
     transitions: {
       slide
@@ -214,14 +213,14 @@
           contentWarning,
           realm,
           overLimit,
-          mediaDescriptions,
           inReplyToUuid
         } = this.get()
         let sensitive = media.length && !!contentWarning
         let mediaIds = media.map(_ => _.data.id)
+        let mediaDescriptions = media.map(_ => _.description)
         let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
 
-        if (!text || overLimit) {
+        if (overLimit || (!text && !media.length)) {
           return // do nothing if invalid
         }
 

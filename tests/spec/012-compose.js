@@ -1,8 +1,9 @@
 import { Selector as $ } from 'testcafe'
 import {
-  composeButton, composeInput, composeLengthIndicator, emojiButton, getComposeSelectionStart, getUrl,
+  composeButton, composeInput, composeLengthIndicator, emojiButton, getComposeSelectionStart,
+  getNthStatusContent, getUrl,
   homeNavButton,
-  notificationsNavButton,
+  notificationsNavButton, sleep,
   times
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -96,4 +97,14 @@ test('inserts emoji without typing anything', async t => {
     .click(emojiButton)
     .click($('button img[title=":blobpeek:"]'))
     .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
+})
+
+test('cannot post an empty status', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatusContent(0).innerText).contains('pinned toot 1')
+    .click(composeButton)
+  await sleep(2)
+  await t
+    .expect(getNthStatusContent(0).innerText).contains('pinned toot 1')
 })
