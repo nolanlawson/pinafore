@@ -11,13 +11,11 @@ export async function doMediaUpload (realm, file) {
     let composeMedia = store.getComposeData(realm, 'media') || []
     composeMedia.push({
       data: response,
-      file: { name: file.name }
+      file: { name: file.name },
+      description: ''
     })
-    let composeText = store.getComposeData(realm, 'text') || ''
-    composeText += ' ' + response.text_url
     store.setComposeData(realm, {
-      media: composeMedia,
-      text: composeText
+      media: composeMedia
     })
     scheduleIdleTask(() => store.save())
   } catch (e) {
@@ -30,20 +28,10 @@ export async function doMediaUpload (realm, file) {
 
 export function deleteMedia (realm, i) {
   let composeMedia = store.getComposeData(realm, 'media')
-  let deletedMedia = composeMedia.splice(i, 1)[0]
-
-  let composeText = store.getComposeData(realm, 'text') || ''
-  composeText = composeText.replace(' ' + deletedMedia.data.text_url, '')
-
-  let mediaDescriptions = store.getComposeData(realm, 'mediaDescriptions') || []
-  if (mediaDescriptions[i]) {
-    mediaDescriptions[i] = null
-  }
+  composeMedia.splice(i, 1)
 
   store.setComposeData(realm, {
-    media: composeMedia,
-    text: composeText,
-    mediaDescriptions: mediaDescriptions
+    media: composeMedia
   })
   scheduleIdleTask(() => store.save())
 }

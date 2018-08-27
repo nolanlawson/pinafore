@@ -1,5 +1,6 @@
 import {
-  composeInput, getNthDeleteMediaButton, getNthMedia, mediaButton,
+  composeInput, getNthDeleteMediaButton, getNthMedia, getNthMediaAltInput, homeNavButton, mediaButton,
+  settingsNavButton, sleep,
   uploadKittenImage
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -51,16 +52,70 @@ test('removes media', async t => {
     .expect(getNthMedia(2).exists).notOk()
 })
 
-test('changes URLs as media is added/removed', async t => {
+test('does not add URLs as media is added/removed', async t => {
+  await loginAsFoobar(t)
+  await t
+    .typeText(composeInput, 'this is a toot')
+    .expect(mediaButton.exists).ok()
+  await (uploadKittenImage(1)())
+  await t.expect(composeInput.value).eql('this is a toot')
+  await (uploadKittenImage(1)())
+  await t.expect(composeInput.value).eql('this is a toot')
+    .click(getNthDeleteMediaButton(1))
+    .expect(composeInput.value).eql('this is a toot')
+    .click(getNthDeleteMediaButton(1))
+    .expect(composeInput.value).eql('this is a toot')
+})
+
+test('keeps media descriptions as media is removed', async t => {
   await loginAsFoobar(t)
   await t
     .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
-  await t.expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+$/)
+  await t
+    .typeText(getNthMediaAltInput(1), 'kitten numero uno')
+  await (uploadKittenImage(2)())
+  await t
+    .typeText(getNthMediaAltInput(2), 'kitten numero dos')
+    .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
+    .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
+    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .click(getNthDeleteMediaButton(1))
+    .expect(getNthMediaAltInput(1).value).eql('kitten numero dos')
+    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten2.jpg')
+})
+
+test('keeps media in local storage', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
-  await t.expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+ http:\/\/localhost:3000\/media\/\S+$/)
-    .click(getNthDeleteMediaButton(1))
-    .expect(composeInput.value).match(/^ http:\/\/localhost:3000\/media\/\S+$/)
-    .click(getNthDeleteMediaButton(1))
-    .expect(composeInput.value).eql('')
+  await t
+    .typeText(getNthMediaAltInput(1), 'kitten numero uno')
+  await (uploadKittenImage(2)())
+  await t
+    .typeText(getNthMediaAltInput(2), 'kitten numero dos')
+  await t
+    .typeText(composeInput, 'hello hello')
+    .expect(composeInput.value).eql('hello hello')
+    .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
+    .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
+    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+  await sleep(1)
+  await t
+    .click(settingsNavButton)
+    .click(homeNavButton)
+    .expect(composeInput.value).eql('hello hello')
+    .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
+    .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
+    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .navigateTo('/')
+    .expect(composeInput.value).eql('hello hello')
+    .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
+    .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
+    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
 })

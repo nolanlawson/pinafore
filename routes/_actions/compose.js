@@ -22,13 +22,16 @@ export async function insertHandleForReply (statusId) {
 
 export async function postStatus (realm, text, inReplyToId, mediaIds,
   sensitive, spoilerText, visibility,
-  mediaDescriptions = [], inReplyToUuid) {
+  mediaDescriptions, inReplyToUuid) {
   let { currentInstance, accessToken, online } = store.get()
 
   if (!online) {
     toast.say('You cannot post while offline')
     return
   }
+
+  text = text || ''
+  mediaDescriptions = mediaDescriptions || []
 
   store.set({
     postingStatus: true

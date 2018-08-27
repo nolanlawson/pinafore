@@ -16,7 +16,8 @@ export async function postStatus (instanceName, accessToken, text, inReplyToId, 
 
   for (let key of Object.keys(body)) {
     let value = body[key]
-    if (!value || (Array.isArray(value) && !value.length)) {
+    // remove any unnecessary fields, except 'status' which must at least be an empty string
+    if (key !== 'status' && (!value || (Array.isArray(value) && !value.length))) {
       delete body[key]
     }
   }

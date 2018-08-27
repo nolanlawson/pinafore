@@ -1,5 +1,5 @@
 import {
-  composeButton, getNthDeleteMediaButton, getNthMedia, getNthMediaAltInput, getNthStatusAndImage, getUrl,
+  composeButton, composeInput, getNthDeleteMediaButton, getNthMedia, getNthMediaAltInput, getNthStatusAndImage, getUrl,
   homeNavButton,
   mediaButton, notificationsNavButton,
   uploadKittenImage
@@ -76,4 +76,16 @@ test('saves alts to local storage', async t => {
     .click(composeButton)
     .expect(getNthStatusAndImage(0, 0).getAttribute('alt')).eql('kitten numero uno')
     .expect(getNthStatusAndImage(0, 1).getAttribute('alt')).eql('kitten numero dos')
+})
+
+test('can post a status with empty content if there is media', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(mediaButton.hasAttribute('disabled')).notOk()
+    .typeText(composeInput, 'this is a toot')
+  await (uploadKittenImage(1)())
+  await t
+    .typeText(getNthMediaAltInput(1), 'just an image!')
+  await t.click(composeButton)
+    .expect(getNthStatusAndImage(0, 0).getAttribute('alt')).eql('just an image!')
 })

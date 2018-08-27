@@ -95,10 +95,10 @@
     methods: {
       observe,
       setupSyncFromStore () {
-        this.observe('mediaDescriptions', mediaDescriptions => {
-          mediaDescriptions = mediaDescriptions || []
+        this.observe('media', media => {
+          media = media || []
           let { index, rawText } = this.get()
-          let text = mediaDescriptions[index] || ''
+          let text = (media[index] && media[index].description) || ''
           if (rawText !== text) {
             this.set({rawText: text})
           }
@@ -108,17 +108,12 @@
         const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
-          let { realm } = this.get()
-          let { index } = this.get()
-          let mediaDescriptions = store.getComposeData(realm, 'mediaDescriptions') || []
-          if (mediaDescriptions[index] === rawText) {
+          let { realm, index, media } = this.get()
+          if (media[index].description === rawText) {
             return
           }
-          while (mediaDescriptions.length <= index) {
-            mediaDescriptions.push(null)
-          }
-          mediaDescriptions[index] = rawText
-          store.setComposeData(realm, {mediaDescriptions})
+          media[index].description = rawText
+          store.setComposeData(realm, {media})
           saveStore()
         }, {init: false})
       },
