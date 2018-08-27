@@ -6,19 +6,21 @@
   >
     <time datetime={createdAtDate} title={formattedDate}>{formattedDate}</time>
   </ExternalLink>
-  {#if applicationWebsite}
-    <ExternalLink className="status-application"
-                  href={applicationWebsite}
-                  showIcon={false}
-                  ariaLabel="{applicationName} (opens in new window)">
-      <span class="status-application-span">
+  {#if applicationName}
+    {#if applicationWebsite}
+      <ExternalLink className="status-application"
+                    href={applicationWebsite}
+                    showIcon={false}
+                    ariaLabel="{applicationName} (opens in new window)">
+        <span class="status-application-span">
+          {applicationName}
+        </span>
+      </ExternalLink>
+    {:else}
+      <span class="status-application status-application-span">
         {applicationName}
       </span>
-    </ExternalLink>
-  {:else}
-    <span class="status-application status-application-span">
-      {applicationName}
-    </span>
+    {/if}
   {/if}
   <a class="status-favs-reblogs status-reblogs"
      href="/statuses/{originalStatusId}/reblogs"
@@ -136,7 +138,7 @@
     store: () => store,
     computed: {
       application: ({ originalStatus }) => originalStatus.application,
-      applicationName: ({ application }) => ((application && application.name) || 'Web'),
+      applicationName: ({ application }) => (application && application.name),
       applicationWebsite: ({ application }) => (application && application.website),
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       numReblogs: ({ originalStatus }) => originalStatus.reblogs_count || 0,
