@@ -1,13 +1,16 @@
-<div role="feed" aria-label="Pinned toots" class="pinned-statuses">
-  {#each pinnedStatuses as status, index (status.id)}
-    <Status {status}
-            timelineType="pinned"
-            timelineValue={accountId}
-            {index}
-            length={pinnedStatuses.length}
-    />
-  {/each}
-</div>
+{#if pinnedStatuses.length }
+  <h1 class="sr-only">Pinned statuses</h1>
+  <div role="feed" aria-label="Pinned statuses" class="pinned-statuses">
+    {#each pinnedStatuses as status, index (status.id)}
+      <Status {status}
+              timelineType="pinned"
+              timelineValue={accountId}
+              {index}
+              length={pinnedStatuses.length}
+      />
+    {/each}
+  </div>
+{/if}
 <script>
   import { store } from '../../_store/store'
   import Status from '../status/Status.html'

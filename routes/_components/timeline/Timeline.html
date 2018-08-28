@@ -109,20 +109,20 @@
       },
       label: ({ timeline, $currentInstance, timelineType, timelineValue }) => {
         if (timelines[timeline]) {
-          return `${timelines[timeline].label} timeline for ${$currentInstance}`
+          return `Statuses: ${timelines[timeline].label} timeline on ${$currentInstance}`
         }
 
         switch (timelineType) {
           case 'tag':
-            return `#${timelineValue} timeline for ${$currentInstance}`
+            return `Statuses: #${timelineValue} hashtag`
           case 'status':
-            return 'Status context'
+            return `Statuses: thread`
           case 'account':
-            return `Account #${timelineValue} on ${$currentInstance}`
+            return `Statuses: account timeline`
           case 'list':
-            return `List #${timelineValue} on ${$currentInstance}`
+            return `Statuses: list`
           case 'notifications':
-            return `Notifications for ${$currentInstance}`
+            return `Notifications on ${$currentInstance}`
         }
       },
       timelineType: ({ timeline }) => {

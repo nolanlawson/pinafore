@@ -217,9 +217,10 @@
         }
         return originalAccountDisplayName
       },
-      ariaLabel: ({ originalAccountAccessibleName, originalStatus, visibility }) => (
+      ariaLabel: ({ originalAccountAccessibleName, originalStatus, visibility, isStatusInOwnThread }) => (
         (visibility === 'direct' ? 'Direct message' : 'Status') +
-          ` by ${originalAccountAccessibleName}`
+          ` by ${originalAccountAccessibleName}` +
+        (isStatusInOwnThread ? ' (focused)' : '')
       ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||

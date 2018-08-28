@@ -1,12 +1,15 @@
-<div class="dynamic-page-banner {icon ? 'dynamic-page-with-icon' : ''}">
+<div class="dynamic-page-banner {icon ? 'dynamic-page-with-icon' : ''}"
+     role="navigation" aria-label="Page header"
+>
   {#if icon}
   <svg class="dynamic-page-banner-svg">
     <use xlink:href={icon} />
   </svg>
   {/if}
-  <h1 class="dynamic-page-title">{title}</h1>
+  <h1 class="dynamic-page-title" aria-label={ariaTitle}>{title}</h1>
   <button type="button"
           class="dynamic-page-go-back"
+          aria-label="Go back"
           on:click="onGoBack(event)">Back</button>
 </div>
 <style>
@@ -61,7 +64,8 @@
 <script>
   export default {
     data: () => ({
-      icon: void 0
+      icon: void 0,
+      ariaTitle: ''
     }),
     methods: {
       onGoBack (e) {

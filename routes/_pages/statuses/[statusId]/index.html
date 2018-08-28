@@ -1,6 +1,6 @@
 {#if $isUserLoggedIn}
   <TimelinePage timeline="status/{params.statusId}">
-    <DynamicPageBanner title=""/>
+    <DynamicPageBanner title="" ariaTitle="Status thread page" />
   </TimelinePage>
 {:else}
   <HiddenFromSSR>

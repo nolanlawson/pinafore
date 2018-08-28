@@ -1,6 +1,6 @@
 {#if $isUserLoggedIn}
   <TimelinePage timeline="account/{params.accountId}">
-    <DynamicPageBanner title="" />
+    <DynamicPageBanner title="" ariaTitle="Profile page for {accountName}"/>
     {#if $currentAccountProfile && $currentVerifyCredentials}
     <AccountProfile account={$currentAccountProfile}
                     relationship={$currentAccountRelationship}
@@ -42,6 +42,9 @@
       },
       shortProfileName: ({ $currentAccountProfile }) => {
         return ($currentAccountProfile && ('@' + $currentAccountProfile.username)) || ''
+      },
+      accountName: ({ $currentAccountProfile }) => {
+        return ($currentAccountProfile && ($currentAccountProfile.display_name || $currentAccountProfile.username)) || ''
       }
     },
     components: {

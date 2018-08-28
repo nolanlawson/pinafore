@@ -3,7 +3,7 @@
     <svg class="page-list-item-svg">
       <use xlink:href={icon} />
     </svg>
-    <span aria-label="{label} {$pinnedPage === href ? 'Pinned page' : 'Unpinned page'}">
+    <span aria-label={ariaLabel}>
       {label}
     </span>
     {#if pinnable}
@@ -72,6 +72,15 @@
     data: () => ({
       pinnable: false
     }),
+    computed: {
+      ariaLabel: ({label, pinnable, $pinnedPage, href}) => {
+        let res = label
+        if (pinnable) {
+          res += ' (' + ($pinnedPage === href ? 'Pinned page' : 'Unpinned page') + ')'
+        }
+        return res
+      }
+    },
     components: {
       IconButton
     },
