@@ -45,7 +45,8 @@ export async function logInToInstance () {
     console.error(err)
     let error = `${err.message || err.name}. ` +
       (navigator.onLine
-        ? `Is this a valid Mastodon instance? Is a browser extension blocking the request?`
+        ? `Is this a valid Mastodon instance? Is a browser extension
+           blocking the request? Are you in private browsing mode?`
         : `Are you offline?`)
     let { instanceNameInSearch } = store.get()
     store.set({
