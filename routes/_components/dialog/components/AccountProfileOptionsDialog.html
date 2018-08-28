@@ -37,8 +37,8 @@ export default {
     followRequested: ({ relationship }) => relationship && relationship.requested,
     accountId: ({ account }) => account && account.id,
     acct: ({ account }) => account.acct,
-    muting: ({ relationship }) => relationship.muting,
-    blocking: ({ relationship }) => relationship.blocking,
+    muting: ({ relationship }) => relationship && relationship.muting,
+    blocking: ({ relationship }) => relationship && relationship.blocking,
     followLabel: ({ following, followRequested, account, acct }) => {
       if (typeof following === 'undefined' || !account) {
         return ''
@@ -62,14 +62,14 @@ export default {
     //
     // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
-    showingReblogs: ({ relationship }) => !!relationship.showing_reblogs,
+    showingReblogs: ({ relationship }) => relationship ? relationship.showing_reblogs : true,
     showReblogsLabel: ({ showingReblogs, acct }) => (
       showingReblogs
         ? `Hide boosts from @${acct}`
         : `Show boosts from @${acct}`
     ),
     domain: ({ acct }) => acct.split('@')[1],
-    blockingDomain: ({ relationship }) => !!relationship.domain_blocking,
+    blockingDomain: ({ relationship }) => relationship && relationship.domain_blocking,
     blockDomainLabel: ({ blockingDomain, domain }) => (
       blockingDomain
         ? `Unhide ${domain}`
