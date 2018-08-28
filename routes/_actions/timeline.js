@@ -12,8 +12,21 @@ import {
   getTimeline as getTimelineFromDatabase
 } from '../_database/timelines/pagination'
 import { getStatus, getStatusContext } from '../_api/statuses'
+import { emit } from '../_utils/eventBus'
 
 const FETCH_LIMIT = 20
+
+async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, items) {
+  await insertTimelineItemsInDatabase(instanceName, timelineName, items)
+  if (timelineName.startsWith('status/')) {
+    // For status threads, we want to be sure to update the favorite/reblog counts even if
+    // this is a stale "view" of the status. See 119-status-counts-update.js for
+    // an example of why we need this.
+    items.forEach(item => {
+      emit('statusUpdated', item)
+    })
+  }
+}
 
 async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelineName, lastTimelineItemId) {
   if (timelineName.startsWith('status/')) { // special case - this is a list of descendents and ancestors
@@ -37,7 +50,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
   } else {
     try {
       items = await fetchTimelineItemsFromNetwork(instanceName, accessToken, timelineName, lastTimelineItemId)
-      /* no await */ insertTimelineItemsInDatabase(instanceName, timelineName, items)
+      /* no await */ storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
     } catch (e) {
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')

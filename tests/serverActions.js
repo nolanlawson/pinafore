@@ -7,6 +7,7 @@ import { deleteStatus } from '../routes/_api/delete'
 import { authorizeFollowRequest, getFollowRequests } from '../routes/_actions/followRequests'
 import { followAccount, unfollowAccount } from '../routes/_api/follow'
 import { updateCredentials } from '../routes/_api/updateCredentials'
+import { reblogStatus } from '../routes/_api/reblog'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -16,6 +17,10 @@ const instanceName = 'localhost:3000'
 
 export async function favoriteStatusAs (username, statusId) {
   return favoriteStatus(instanceName, users[username].accessToken, statusId)
+}
+
+export async function reblogStatusAs (username, statusId) {
+  return reblogStatus(instanceName, users[username].accessToken, statusId)
 }
 
 export async function postAs (username, text) {
