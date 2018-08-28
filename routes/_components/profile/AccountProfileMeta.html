@@ -1,11 +1,20 @@
 {#if emojifiedFields.length}
+  <h2 class="sr-only">Fields</h2>
   <div class="account-profile-meta">
     <div class="account-profile-meta-border"></div>
     {#each emojifiedFields as field, i}
-      <div class="account-profile-meta-cell account-profile-meta-name">
+      <div
+        id="account-profile-meta-name-{i}"
+        class="account-profile-meta-cell account-profile-meta-name"
+        role="term"
+      >
         {field.name}
       </div>
-      <div class="account-profile-meta-cell account-profile-meta-value">
+      <div
+        class="account-profile-meta-cell account-profile-meta-value"
+        role="definition"
+        aria-labelledby="account-profile-meta-name-{i}"
+      >
         {@html field.value}
       </div>
     {/each}

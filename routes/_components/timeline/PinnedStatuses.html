@@ -1,4 +1,5 @@
-<div role="feed" aria-label="Pinned toots" class="pinned-statuses">
+<h1 class="sr-only">Pinned statuses</h1>
+<div role="feed" aria-label="Pinned statuses" class="pinned-statuses">
   {#each pinnedStatuses as status, index (status.id)}
     <Status {status}
             timelineType="pinned"
