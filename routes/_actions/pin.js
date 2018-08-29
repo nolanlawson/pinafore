@@ -1,7 +1,7 @@
 import { store } from '../_store/store'
 import { toast } from '../_utils/toast'
 import { pinStatus, unpinStatus } from '../_api/pin'
-import { setStatusPinned as setStatusPinnedInDatabase } from '../_database/timelines/updateStatus'
+import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
 
 export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSuccess) {
@@ -19,7 +19,7 @@ export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSucces
         toast.say('Unpinned status')
       }
     }
-    await setStatusPinnedInDatabase(currentInstance, statusId, pinned)
+    await database.setStatusPinned(currentInstance, statusId, pinned)
     emit('updatePinnedStatuses')
   } catch (e) {
     console.error(e)

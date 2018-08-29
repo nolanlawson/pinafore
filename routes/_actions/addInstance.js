@@ -5,7 +5,7 @@ import { switchToTheme } from '../_utils/themeEngine'
 import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
 import { updateCustomEmojiForInstance } from './emoji'
-import { setInstanceInfo as setInstanceInfoInDatabase } from '../_database/meta'
+import { database } from '../_database/database'
 
 const REDIRECT_URI = (typeof location !== 'undefined'
   ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -19,7 +19,7 @@ async function redirectToOauth () {
   }
   let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
   let instanceInfo = await getInstanceInfo(instanceNameInSearch)
-  await setInstanceInfoInDatabase(instanceNameInSearch, instanceInfo) // cache for later
+  await database.setInstanceInfo(instanceNameInSearch, instanceInfo) // cache for later
   let instanceData = await registrationPromise
   store.set({
     currentRegisteredInstanceName: instanceNameInSearch,

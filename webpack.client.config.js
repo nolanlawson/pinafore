@@ -80,6 +80,11 @@ module.exports = {
       paths: true
     })
   ].concat(isDev ? [
+    // workerize-loader makes dev mode hard (e.g. HMR)
+    new webpack.NormalModuleReplacementPlugin(
+      /\/_database\/database\.js$/,
+      './database.dev.js'
+    ),
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
     })

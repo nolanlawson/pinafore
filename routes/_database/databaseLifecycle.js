@@ -87,7 +87,9 @@ export function getDatabase (instanceName) {
       }
     }
     req.onsuccess = () => resolve(req.result)
-  }).then(() => addKnownInstance(instanceName))
+  }).then(res => {
+    return addKnownInstance(instanceName).then(() => res)
+  })
   return databaseCache[instanceName]
 }
 

@@ -5,13 +5,7 @@ import { toast } from '../_utils/toast'
 import { goto } from 'sapper/runtime.js'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getInstanceInfo } from '../_api/instance'
-import { clearDatabaseForInstance } from '../_database/clear'
-import {
-  getInstanceVerifyCredentials as getInstanceVerifyCredentialsFromDatabase,
-  setInstanceVerifyCredentials as setInstanceVerifyCredentialsInDatabase,
-  getInstanceInfo as getInstanceInfoFromDatabase,
-  setInstanceInfo as setInstanceInfoInDatabase
-} from '../_database/meta'
+import { database } from '../_database/database'
 
 export function changeTheme (instanceName, newTheme) {
   let { instanceThemes } = store.get()
@@ -62,7 +56,7 @@ export async function logOutOfInstance (instanceName) {
   store.save()
   toast.say(`Logged out of ${instanceName}`)
   switchToTheme(instanceThemes[newInstance] || 'default')
-  await clearDatabaseForInstance(instanceName)
+  await database.clearDatabaseForInstance(instanceName)
   goto('/settings/instances')
 }
 
@@ -77,8 +71,8 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
   let accessToken = loggedInInstances[instanceName].access_token
   await cacheFirstUpdateAfter(
     () => getVerifyCredentials(instanceName, accessToken),
-    () => getInstanceVerifyCredentialsFromDatabase(instanceName),
-    verifyCredentials => setInstanceVerifyCredentialsInDatabase(instanceName, verifyCredentials),
+    () => database.getInstanceVerifyCredentials(instanceName),
+    verifyCredentials => database.setInstanceVerifyCredentials(instanceName, verifyCredentials),
     verifyCredentials => setStoreVerifyCredentials(instanceName, verifyCredentials)
   )
 }
@@ -91,8 +85,8 @@ export async function updateVerifyCredentialsForCurrentInstance () {
 export async function updateInstanceInfo (instanceName) {
   await cacheFirstUpdateAfter(
     () => getInstanceInfo(instanceName),
-    () => getInstanceInfoFromDatabase(instanceName),
-    info => setInstanceInfoInDatabase(instanceName, info),
+    () => database.getInstanceInfo(instanceName),
+    info => database.setInstanceInfo(instanceName, info),
     info => {
       let { instanceInfos } = store.get()
       instanceInfos[instanceName] = info

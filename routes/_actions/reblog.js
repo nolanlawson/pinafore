@@ -1,7 +1,7 @@
 import { store } from '../_store/store'
 import { toast } from '../_utils/toast'
 import { reblogStatus, unreblogStatus } from '../_api/reblog'
-import { setStatusReblogged as setStatusRebloggedInDatabase } from '../_database/timelines/updateStatus'
+import { database } from '../_database/database'
 
 export async function setReblogged (statusId, reblogged) {
   let online = store.get()
@@ -16,7 +16,7 @@ export async function setReblogged (statusId, reblogged) {
   store.setStatusReblogged(currentInstance, statusId, reblogged) // optimistic update
   try {
     await networkPromise
-    await setStatusRebloggedInDatabase(currentInstance, statusId, reblogged)
+    await database.setStatusReblogged(currentInstance, statusId, reblogged)
   } catch (e) {
     console.error(e)
     toast.say(`Failed to ${reblogged ? 'boost' : 'unboost'}. ` + (e.message || ''))
