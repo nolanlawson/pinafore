@@ -74,6 +74,11 @@
         [optionsKey]: (e) => this.onOptionsClick(e)
       })
       on('postedStatus', this, this.onPostedStatus)
+      on('statusUpdated', this, (statusId, statusUpdater) => {
+        if (statusId === this.get().originalStatusId) {
+          this.set({ originalStatus: statusUpdater(this.get().originalStatus) })
+        }
+      })
     },
     components: {
       IconButton
@@ -167,18 +172,8 @@
       reblogDisabled: ({ visibility }) => {
         return visibility === 'private' || visibility === 'direct'
       },
-      reblogged: ({ originalStatusId, $currentStatusModifications, originalStatus }) => {
-        if ($currentStatusModifications && originalStatusId in $currentStatusModifications.reblogs) {
-          return $currentStatusModifications.reblogs[originalStatusId]
-        }
-        return originalStatus.reblogged
-      },
-      favorited: ({ originalStatusId, $currentStatusModifications, originalStatus }) => {
-        if ($currentStatusModifications && originalStatusId in $currentStatusModifications.favorites) {
-          return $currentStatusModifications.favorites[originalStatusId]
-        }
-        return originalStatus.favourited
-      },
+      reblogged: ({ originalStatusId, originalStatus }) => originalStatus.reblogged,
+      favorited: ({ originalStatusId, originalStatus }) => originalStatus.favourited,
       favoriteKey: ({ uuid }) => `fav-${uuid}`,
       reblogKey: ({ uuid }) => `reblog-${uuid}`,
       replyKey: ({ uuid }) => `reply-${uuid}`,

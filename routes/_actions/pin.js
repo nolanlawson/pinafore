@@ -20,6 +20,7 @@ export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSucces
       }
     }
     await setStatusPinnedInDatabase(currentInstance, statusId, pinned)
+    emit('statusUpdated', statusId, _ => Object.assign({}, _, {pinned: !pinned}))
     emit('updatePinnedStatuses')
   } catch (e) {
     console.error(e)

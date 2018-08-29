@@ -23,7 +23,10 @@ async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, it
     // this is a stale "view" of the status. See 119-status-counts-update.js for
     // an example of why we need this.
     items.forEach(item => {
-      emit('statusUpdated', item)
+      emit('statusUpdated', item.id, () => item)
+      if (item.reblog) {
+        emit('statusUpdated', item.reblog.id, () => item.reblog)
+      }
     })
   }
 }
