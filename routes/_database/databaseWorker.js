@@ -1,150 +1,187 @@
-import { getAccount, searchAccountsByUsername, setAccount } from './accounts'
-import { clearDatabaseForInstance } from './clear'
-import { getNotificationIdsForStatuses, getReblogsForStatus } from './timelines/lookup'
-import { getPinnedStatuses, insertPinnedStatuses } from './timelines/pinnedStatuses'
-import { getNotificationTimeline, getStatusThread, getStatusTimeline, getTimeline } from './timelines/pagination'
-import { getNotification, getStatus } from './timelines/getStatusOrNotification'
-import { setStatusFavorited, setStatusMuted, setStatusPinned, setStatusReblogged } from './timelines/updateStatus'
-import { deleteStatusesAndNotifications } from './timelines/deletion'
 import {
-  insertStatusThread, insertTimelineItems, insertTimelineNotifications,
-  insertTimelineStatuses
+  getAccount as _getAccount,
+  searchAccountsByUsername as _searchAccountsByUsername,
+  setAccount as _setAccount
+} from './accounts'
+import {
+  clearDatabaseForInstance as _clearDatabaseForInstance
+} from './clear'
+import {
+  getNotificationIdsForStatuses as _getNotificationIdsForStatuses,
+  getReblogsForStatus as _getReblogsForStatus
+} from './timelines/lookup'
+import {
+  getPinnedStatuses as _getPinnedStatuses,
+  insertPinnedStatuses as _insertPinnedStatuses
+} from './timelines/pinnedStatuses'
+import {
+  getNotificationTimeline as _getNotificationTimeline,
+  getStatusThread as _getStatusThread,
+  getStatusTimeline as _getStatusTimeline,
+  getTimeline as _getTimeline
+} from './timelines/pagination'
+import {
+  getNotification as _getNotification,
+  getStatus as _getStatus
+} from './timelines/getStatusOrNotification'
+import {
+  setStatusFavorited as _setStatusFavorited,
+  setStatusMuted as _setStatusMuted,
+  setStatusPinned as _setStatusPinned,
+  setStatusReblogged as _setStatusReblogged
+} from './timelines/updateStatus'
+import {
+  deleteStatusesAndNotifications as _deleteStatusesAndNotifications
+} from './timelines/deletion'
+import {
+  insertStatusThread as _insertStatusThread,
+  insertTimelineItems as _insertTimelineItems,
+  insertTimelineNotifications as _insertTimelineNotifications,
+  insertTimelineStatuses as _insertTimelineStatuses
 } from './timelines/insertion'
 import {
-  getCustomEmoji,
-  getInstanceInfo, getInstanceVerifyCredentials, getLists, setCustomEmoji, setInstanceInfo,
-  setInstanceVerifyCredentials, setLists
+  getCustomEmoji as _getCustomEmoji,
+  getInstanceInfo as _getInstanceInfo,
+  getInstanceVerifyCredentials as _getInstanceVerifyCredentials,
+  getLists as _getLists,
+  setCustomEmoji as _setCustomEmoji,
+  setInstanceInfo as _setInstanceInfo,
+  setInstanceVerifyCredentials as _setInstanceVerifyCredentials,
+  setLists as _setLists
 } from './meta'
-import { getRelationship, setRelationship } from './relationships'
+import {
+  getRelationship as _getRelationship,
+  setRelationship as _setRelationship
+} from './relationships'
 
-export async function _getAccount (instanceName, accountId) {
-  return getAccount(instanceName, accountId)
+export async function getAccount (instanceName, accountId) {
+  return _getAccount(instanceName, accountId)
 }
 
-export async function _setAccount (instanceName, account) {
-  return setAccount(instanceName, account)
+export async function setAccount (instanceName, account) {
+  return _setAccount(instanceName, account)
 }
 
-export async function _searchAccountsByUsername (instanceName, usernamePrefix, limit) {
-  return searchAccountsByUsername(instanceName, usernamePrefix, limit)
+export async function searchAccountsByUsername (instanceName, usernamePrefix, limit) {
+  return _searchAccountsByUsername(instanceName, usernamePrefix, limit)
 }
 
-export async function _clearDatabaseForInstance (instanceName) {
-  return clearDatabaseForInstance(instanceName)
+export async function clearDatabaseForInstance (instanceName) {
+  return _clearDatabaseForInstance(instanceName)
 }
 
-export async function _getReblogsForStatus (instanceName, id) {
-  return getReblogsForStatus(instanceName, id)
+export async function getReblogsForStatus (instanceName, id) {
+  return _getReblogsForStatus(instanceName, id)
 }
 
-export async function _getNotificationIdsForStatuses (instanceName, statusIds) {
-  return getNotificationIdsForStatuses(instanceName, statusIds)
+export async function getNotificationIdsForStatuses (instanceName, statusIds) {
+  return _getNotificationIdsForStatuses(instanceName, statusIds)
 }
 
-export async function _insertPinnedStatuses (instanceName, accountId, statuses) {
-  return insertPinnedStatuses(instanceName, accountId, statuses)
+export async function insertPinnedStatuses (instanceName, accountId, statuses) {
+  return _insertPinnedStatuses(instanceName, accountId, statuses)
 }
 
-export async function _getPinnedStatuses (instanceName, accountId) {
-  return getPinnedStatuses(instanceName, accountId)
+export async function getPinnedStatuses (instanceName, accountId) {
+  return _getPinnedStatuses(instanceName, accountId)
 }
 
-export async function _getNotificationTimeline (instanceName, timeline, maxId, limit) {
-  return getNotificationTimeline(instanceName, timeline, maxId, limit)
+export async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
+  return _getNotificationTimeline(instanceName, timeline, maxId, limit)
 }
 
-export async function _getStatusTimeline (instanceName, timeline, maxId, limit) {
-  return getStatusTimeline(instanceName, timeline, maxId, limit)
+export async function getStatusTimeline (instanceName, timeline, maxId, limit) {
+  return _getStatusTimeline(instanceName, timeline, maxId, limit)
 }
 
-export async function _getStatusThread (instanceName, statusId) {
-  return getStatusThread(instanceName, statusId)
+export async function getStatusThread (instanceName, statusId) {
+  return _getStatusThread(instanceName, statusId)
 }
 
-export async function _getTimeline (instanceName, timeline, maxId, limit) {
-  return getTimeline(instanceName, timeline, maxId, limit)
+export async function getTimeline (instanceName, timeline, maxId, limit) {
+  return _getTimeline(instanceName, timeline, maxId, limit)
 }
 
-export async function _getStatus (instanceName, id) {
-  return getStatus(instanceName, id)
+export async function getStatus (instanceName, id) {
+  return _getStatus(instanceName, id)
 }
 
-export async function _getNotification (instanceName, id) {
-  return getNotification(instanceName, id)
+export async function getNotification (instanceName, id) {
+  return _getNotification(instanceName, id)
 }
 
-export async function _setStatusFavorited (instanceName, statusId, favorited) {
-  return setStatusFavorited(instanceName, statusId, favorited)
+export async function setStatusFavorited (instanceName, statusId, favorited) {
+  return _setStatusFavorited(instanceName, statusId, favorited)
 }
 
-export async function _setStatusReblogged (instanceName, statusId, reblogged) {
-  return setStatusReblogged(instanceName, statusId, reblogged)
+export async function setStatusReblogged (instanceName, statusId, reblogged) {
+  return _setStatusReblogged(instanceName, statusId, reblogged)
 }
 
-export async function _setStatusPinned (instanceName, statusId, pinned) {
-  return setStatusPinned(instanceName, statusId, pinned)
+export async function setStatusPinned (instanceName, statusId, pinned) {
+  return _setStatusPinned(instanceName, statusId, pinned)
 }
 
-export async function _setStatusMuted (instanceName, statusId, muted) {
-  return setStatusMuted(instanceName, statusId, muted)
+export async function setStatusMuted (instanceName, statusId, muted) {
+  return _setStatusMuted(instanceName, statusId, muted)
 }
 
-export async function _deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
-  return deleteStatusesAndNotifications(instanceName, statusIds, notificationIds)
+export async function deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
+  return _deleteStatusesAndNotifications(instanceName, statusIds, notificationIds)
 }
 
-export async function _insertTimelineNotifications (instanceName, timeline, notifications) {
-  return insertTimelineNotifications(instanceName, timeline, notifications)
+export async function insertTimelineNotifications (instanceName, timeline, notifications) {
+  return _insertTimelineNotifications(instanceName, timeline, notifications)
 }
 
-export async function _insertTimelineStatuses (instanceName, timeline, statuses) {
-  return insertTimelineStatuses(instanceName, timeline, statuses)
+export async function insertTimelineStatuses (instanceName, timeline, statuses) {
+  return _insertTimelineStatuses(instanceName, timeline, statuses)
 }
 
-export async function _insertStatusThread (instanceName, statusId, statuses) {
-  return insertStatusThread(instanceName, statusId, statuses)
+export async function insertStatusThread (instanceName, statusId, statuses) {
+  return _insertStatusThread(instanceName, statusId, statuses)
 }
 
-export async function _insertTimelineItems (instanceName, timeline, timelineItems) {
-  return insertTimelineItems(instanceName, timeline, timelineItems)
+export async function insertTimelineItems (instanceName, timeline, timelineItems) {
+  return _insertTimelineItems(instanceName, timeline, timelineItems)
 }
 
-export async function _getInstanceVerifyCredentials (instanceName) {
-  return getInstanceVerifyCredentials(instanceName)
+export async function getInstanceVerifyCredentials (instanceName) {
+  return _getInstanceVerifyCredentials(instanceName)
 }
 
-export async function _setInstanceVerifyCredentials (instanceName, value) {
-  return setInstanceVerifyCredentials(instanceName, value)
+export async function setInstanceVerifyCredentials (instanceName, value) {
+  return _setInstanceVerifyCredentials(instanceName, value)
 }
 
-export async function _getInstanceInfo (instanceName) {
-  return getInstanceInfo(instanceName)
+export async function getInstanceInfo (instanceName) {
+  return _getInstanceInfo(instanceName)
 }
 
-export async function _setInstanceInfo (instanceName, value) {
-  return setInstanceInfo(instanceName, value)
+export async function setInstanceInfo (instanceName, value) {
+  return _setInstanceInfo(instanceName, value)
 }
 
-export async function _getLists (instanceName) {
-  return getLists(instanceName)
+export async function getLists (instanceName) {
+  return _getLists(instanceName)
 }
 
-export async function _setLists (instanceName, value) {
-  return setLists(instanceName, value)
+export async function setLists (instanceName, value) {
+  return _setLists(instanceName, value)
 }
 
-export async function _getCustomEmoji (instanceName) {
-  return getCustomEmoji(instanceName)
+export async function getCustomEmoji (instanceName) {
+  return _getCustomEmoji(instanceName)
 }
 
-export async function _setCustomEmoji (instanceName, value) {
-  return setCustomEmoji(instanceName, value)
+export async function setCustomEmoji (instanceName, value) {
+  return _setCustomEmoji(instanceName, value)
 }
 
-export async function _getRelationship (instanceName, accountId) {
-  return getRelationship(instanceName, accountId)
+export async function getRelationship (instanceName, accountId) {
+  return _getRelationship(instanceName, accountId)
 }
 
-export async function _setRelationship (instanceName, relationship) {
-  return setRelationship(instanceName, relationship)
+export async function setRelationship (instanceName, relationship) {
+  return _setRelationship(instanceName, relationship)
 }
