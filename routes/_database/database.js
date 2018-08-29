@@ -1,4 +1,7 @@
 // workerize version
-import worker from './databaseWorker'
-const database = worker()
+let database
+if (process.browser) {
+  const worker = require('./databaseWorker')
+  database = worker()
+}
 export { database }

@@ -10,6 +10,8 @@ const isDev = config.dev
 
 module.exports = {
   entry: config.client.entry(),
+  // uncomment to enable HMR within workers
+  // output: Object.assign(config.client.output(), { globalObject: 'this' }),
   output: config.client.output(),
   resolve: {
     extensions: ['.js', '.json', '.html']
