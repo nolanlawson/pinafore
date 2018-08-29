@@ -1,6 +1,6 @@
 <div class="status-details">
   <ExternalLink className="status-absolute-date"
-                href={originalStatus.url}
+                href={url}
                 showIcon={true}
                 ariaLabel="{formattedDate} (opens in new window)"
   >
@@ -149,6 +149,7 @@
       application: ({ originalStatus }) => originalStatus.application,
       applicationName: ({ application }) => (application && application.name),
       applicationWebsite: ({ application }) => (application && application.website),
+      url: ({ originalStatus }) => originalStatus.url,
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       numReblogs: ({ originalStatus }) => (originalStatus.reblogs_count || 0),
       numFavs: ({ originalStatus }) => (originalStatus.favourites_count || 0),
