@@ -1,3 +1,4 @@
 // workerize version
-import database from 'workerize-loader!./databaseWorker' // eslint-disable-line
+import worker from './databaseWorker'
+const database = worker()
 export { database }
