@@ -1,5 +1,4 @@
 import { dbPromise, getDatabase } from './databaseLifecycle'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
@@ -135,7 +134,8 @@ async function cleanup (instanceName) {
 }
 
 function doCleanup (instanceName) {
-  scheduleIdleTask(() => cleanup(instanceName))
+  // run in setTimeout because we're in a worker and there's no requestIdleCallback
+  setTimeout(() => cleanup(instanceName))
 }
 
 async function scheduledCleanup () {
@@ -146,4 +146,4 @@ async function scheduledCleanup () {
   }
 }
 
-export const scheduleCleanup = debounce(() => scheduleIdleTask(scheduledCleanup), DELAY)
+export const scheduleCleanup = debounce(scheduledCleanup, DELAY)
