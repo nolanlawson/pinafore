@@ -24,6 +24,9 @@ async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, it
     // an example of why we need this.
     items.forEach(item => {
       emit('statusUpdated', item.id, () => item)
+      if (item.reblog) {
+        emit('statusUpdated', item.reblog.id, () => item.reblog)
+      }
     })
   }
 }

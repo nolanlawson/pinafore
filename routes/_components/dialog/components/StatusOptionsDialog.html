@@ -20,7 +20,6 @@ import { setAccountMuted } from '../../../_actions/mute'
 import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
 import { setConversationMuted } from '../../../_actions/muteConversation'
 import { copyText } from '../../../_actions/copyText'
-import { emit } from '../../../_utils/eventBus'
 
 export default {
   oncreate,
@@ -147,7 +146,6 @@ export default {
       let { statusId, pinned } = this.get()
       this.close()
       await setStatusPinnedOrUnpinned(statusId, !pinned, true)
-      emit('statusUpdated', statusId, _ => Object.assign({}, _, {pinned: !pinned}))
     },
     async onFollowClicked () {
       let { accountId, following } = this.get()
