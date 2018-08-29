@@ -19,6 +19,7 @@ export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSucces
         toast.say('Unpinned status')
       }
     }
+    store.setStatusPinned(currentInstance, statusId, pinned)
     await setStatusPinnedInDatabase(currentInstance, statusId, pinned)
     emit('updatePinnedStatuses')
   } catch (e) {
