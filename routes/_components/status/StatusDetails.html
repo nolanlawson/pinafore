@@ -137,39 +137,21 @@
 
   export default {
     oncreate () {
-      let { originalStatusId } = this.get()
-      on('statusUpdated', this, status => {
-        if (status.id === originalStatusId) {
-          this.set({
-            overrideNumReblogs: status.reblogs_count || 0,
-            overrideNumFavs: status.favourites_count || 0
-          })
+      on('statusUpdated', this, (statusId, statusUpdater) => {
+        if (statusId === this.get().originalStatusId) {
+          this.set({ originalStatus: statusUpdater(this.get().originalStatus) })
         }
       })
     },
     store: () => store,
-    data: () => ({
-      overrideNumReblogs: void 0,
-      overrideNumFavs: void 0
-    }),
     computed: {
       originalStatusId: ({ originalStatus }) => originalStatus.id,
       application: ({ originalStatus }) => originalStatus.application,
       applicationName: ({ application }) => (application && application.name),
       applicationWebsite: ({ application }) => (application && application.website),
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
-      numReblogs: ({ overrideNumReblogs, originalStatus }) => {
-        if (typeof overrideNumReblogs === 'number') {
-          return overrideNumReblogs
-        }
-        return originalStatus.reblogs_count || 0
-      },
-      numFavs: ({ overrideNumFavs, originalStatus }) => {
-        if (typeof overrideNumFavs === 'number') {
-          return overrideNumFavs
-        }
-        return originalStatus.favourites_count || 0
-      },
+      numReblogs: ({ originalStatus }) => (originalStatus.reblogs_count || 0),
+      numFavs: ({ originalStatus }) => (originalStatus.favourites_count || 0),
       formattedDate: ({ createdAtDate, $isMobileSize }) => {
         let formatter = $isMobileSize ? getShortDateFormatter() : getDateFormatter()
         return formatter.format(new Date(createdAtDate))

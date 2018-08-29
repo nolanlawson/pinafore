@@ -4,6 +4,7 @@ import { toast } from '../_utils/toast'
 import {
   setStatusFavorited as setStatusFavoritedInDatabase
 } from '../_database/timelines/updateStatus'
+import { emit } from '../_utils/eventBus'
 
 export async function setFavorited (statusId, favorited) {
   let { online } = store.get()
@@ -15,13 +16,13 @@ export async function setFavorited (statusId, favorited) {
   let networkPromise = favorited
     ? favoriteStatus(currentInstance, accessToken, statusId)
     : unfavoriteStatus(currentInstance, accessToken, statusId)
-  store.setStatusFavorited(currentInstance, statusId, favorited) // optimistic update
+  emit('statusUpdated', statusId, _ => Object.assign({}, _, {favourited: favorited})) // optimistic update
   try {
     await networkPromise
     await setStatusFavoritedInDatabase(currentInstance, statusId, favorited)
   } catch (e) {
     console.error(e)
     toast.say(`Failed to ${favorited ? 'favorite' : 'unfavorite'}. ` + (e.message || ''))
-    store.setStatusFavorited(currentInstance, statusId, !favorited) // undo optimistic update
+    emit('statusUpdated', statusId, _ => Object.assign({}, _, {favourited: !favorited})) // undo optimistic update
   }
 }
