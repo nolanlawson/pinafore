@@ -32,7 +32,7 @@ export default {
       if ($currentStatusModifications && statusId in $currentStatusModifications.pins) {
         return $currentStatusModifications.pins[statusId]
       }
-      status.pinned
+      return status.pinned
     },
     //
     // begin copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
