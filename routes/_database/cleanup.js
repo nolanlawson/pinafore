@@ -12,10 +12,10 @@ import {
   TIMESTAMP
 } from './constants'
 import debounce from 'lodash-es/debounce'
-import { store } from '../_store/store'
 import { mark, stop } from '../_utils/marks'
 import { deleteAll } from './utils'
 import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
+import { getKnownInstances } from './knownInstances'
 
 const BATCH_SIZE = 20
 const TIME_AGO = 7 * 24 * 60 * 60 * 1000 // one week ago
@@ -138,10 +138,10 @@ function doCleanup (instanceName) {
   scheduleIdleTask(() => cleanup(instanceName))
 }
 
-function scheduledCleanup () {
+async function scheduledCleanup () {
   console.log('scheduledCleanup')
-  let { loggedInInstancesInOrder } = store.get()
-  for (let instance of loggedInInstancesInOrder) {
+  let knownInstances = await getKnownInstances()
+  for (let instance of knownInstances) {
     doCleanup(instance)
   }
 }

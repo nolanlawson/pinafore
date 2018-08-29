@@ -12,7 +12,8 @@ export async function setAccount (instanceName, account) {
   return setGenericEntityWithId(ACCOUNTS_STORE, accountsCache, instanceName, cloneForStorage(account))
 }
 
-export async function searchAccountsByUsername (instanceName, usernamePrefix, limit = 20) {
+export async function searchAccountsByUsername (instanceName, usernamePrefix, limit) {
+  limit = limit || 20
   const db = await getDatabase(instanceName)
   return dbPromise(db, ACCOUNTS_STORE, 'readonly', (accountsStore, callback) => {
     let keyRange = createAccountUsernamePrefixKeyRange(usernamePrefix.toLowerCase())
