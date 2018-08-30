@@ -13,6 +13,7 @@ import {
   STATUS_ID,
   USERNAME_LOWERCASE
 } from './constants'
+import { addKnownInstance, deleteKnownInstance } from './knownInstances'
 
 const openReqs = {}
 const databaseCache = {}
@@ -86,6 +87,8 @@ export function getDatabase (instanceName) {
       }
     }
     req.onsuccess = () => resolve(req.result)
+  }).then(res => {
+    return addKnownInstance(instanceName).then(() => res)
   })
   return databaseCache[instanceName]
 }
@@ -118,5 +121,5 @@ export function deleteDatabase (instanceName) {
     let req = indexedDB.deleteDatabase(instanceName)
     req.onsuccess = () => resolve()
     req.onerror = () => reject(req.error)
-  })
+  }).then(() => deleteKnownInstance(instanceName))
 }

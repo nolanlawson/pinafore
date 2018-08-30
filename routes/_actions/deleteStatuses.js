@@ -2,9 +2,7 @@ import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './
 import { store } from '../_store/store'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import isEqual from 'lodash-es/isEqual'
-import {
-  deleteStatusesAndNotifications as deleteStatusesAndNotificationsFromDatabase
-} from '../_database/timelines/deletion'
+import { database } from '../_database/database'
 
 function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
   let keys = ['timelineItemIds', 'itemIdsToAdd']
@@ -45,7 +43,7 @@ function deleteNotificationIdsFromStore (instanceName, idsToDelete) {
 async function deleteStatusesAndNotifications (instanceName, statusIdsToDelete, notificationIdsToDelete) {
   deleteStatusIdsFromStore(instanceName, statusIdsToDelete)
   deleteNotificationIdsFromStore(instanceName, notificationIdsToDelete)
-  await deleteStatusesAndNotificationsFromDatabase(instanceName, statusIdsToDelete, notificationIdsToDelete)
+  await database.deleteStatusesAndNotifications(instanceName, statusIdsToDelete, notificationIdsToDelete)
 }
 
 async function doDeleteStatus (instanceName, statusId) {

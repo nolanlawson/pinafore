@@ -80,7 +80,9 @@ export async function getStatusThread (instanceName, statusId) {
   })
 }
 
-export async function getTimeline (instanceName, timeline, maxId = null, limit = 20) {
+export async function getTimeline (instanceName, timeline, maxId, limit) {
+  maxId = maxId || null
+  limit = limit || 20
   if (timeline === 'notifications') {
     return getNotificationTimeline(instanceName, timeline, maxId, limit)
   } else if (timeline.startsWith('status/')) {

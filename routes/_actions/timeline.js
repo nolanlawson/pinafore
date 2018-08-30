@@ -5,19 +5,14 @@ import { mark, stop } from '../_utils/marks'
 import { concat, mergeArrays } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'
 import isEqual from 'lodash-es/isEqual'
-import {
-  insertTimelineItems as insertTimelineItemsInDatabase
-} from '../_database/timelines/insertion'
-import {
-  getTimeline as getTimelineFromDatabase
-} from '../_database/timelines/pagination'
+import { database } from '../_database/database'
 import { getStatus, getStatusContext } from '../_api/statuses'
 import { emit } from '../_utils/eventBus'
 
 const FETCH_LIMIT = 20
 
 async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, items) {
-  await insertTimelineItemsInDatabase(instanceName, timelineName, items)
+  await database.insertTimelineItems(instanceName, timelineName, items)
   if (timelineName.startsWith('status/')) {
     // For status threads, we want to be sure to update the favorite/reblog counts even if
     // this is a stale "view" of the status. See 119-status-counts-update.js for
@@ -45,7 +40,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
   let items
   let stale = false
   if (!online) {
-    items = await getTimelineFromDatabase(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+    items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
     stale = true
   } else {
     try {
@@ -54,7 +49,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
     } catch (e) {
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')
-      items = await getTimelineFromDatabase(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+      items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
       stale = true
     }
   }

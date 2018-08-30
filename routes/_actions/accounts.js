@@ -1,18 +1,12 @@
 import { getAccount } from '../_api/user'
 import { getRelationship } from '../_api/relationships'
-import {
-  getAccount as getAccountFromDatabase,
-  setAccount as setAccountInDatabase} from '../_database/accounts'
-import {
-  getRelationship as getRelationshipFromDatabase,
-  setRelationship as setRelationshipInDatabase
-} from '../_database/relationships'
+import { database } from '../_database/database'
 import { store } from '../_store/store'
 
 async function _updateAccount (accountId, instanceName, accessToken) {
-  let localPromise = getAccountFromDatabase(instanceName, accountId)
+  let localPromise = database.getAccount(instanceName, accountId)
   let remotePromise = getAccount(instanceName, accessToken, accountId).then(account => {
-    /* no await */ setAccountInDatabase(instanceName, account)
+    /* no await */ database.setAccount(instanceName, account)
     return account
   })
 
@@ -29,9 +23,9 @@ async function _updateAccount (accountId, instanceName, accessToken) {
 }
 
 async function _updateRelationship (accountId, instanceName, accessToken) {
-  let localPromise = getRelationshipFromDatabase(instanceName, accountId)
+  let localPromise = database.getRelationship(instanceName, accountId)
   let remotePromise = getRelationship(instanceName, accessToken, accountId).then(relationship => {
-    /* no await */ setRelationshipInDatabase(instanceName, relationship)
+    /* no await */ database.setRelationship(instanceName, relationship)
     return relationship
   })
   try {
@@ -47,7 +41,7 @@ async function _updateRelationship (accountId, instanceName, accessToken) {
 }
 
 export async function updateLocalRelationship (instanceName, accountId, relationship) {
-  await setRelationshipInDatabase(instanceName, relationship)
+  await database.setRelationship(instanceName, relationship)
   try {
     store.set({currentAccountRelationship: relationship})
   } catch (e) {

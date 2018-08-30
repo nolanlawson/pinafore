@@ -1,7 +1,7 @@
 import { store } from '../_store/store'
 import { muteConversation, unmuteConversation } from '../_api/muteConversation'
 import { toast } from '../_utils/toast'
-import { setStatusMuted as setStatusMutedInDatabase } from '../_database/timelines/updateStatus'
+import { database } from '../_database/database'
 
 export async function setConversationMuted (statusId, mute, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()
@@ -11,7 +11,7 @@ export async function setConversationMuted (statusId, mute, toastOnSuccess) {
     } else {
       await unmuteConversation(currentInstance, accessToken, statusId)
     }
-    await setStatusMutedInDatabase(currentInstance, statusId, mute)
+    await database.setStatusMuted(currentInstance, statusId, mute)
     if (toastOnSuccess) {
       if (mute) {
         toast.say('Muted conversation')
