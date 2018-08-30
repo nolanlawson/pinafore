@@ -34,6 +34,6 @@ export function onlineObservers (store) {
     }
   })
 
-  window.addEventListener('offline', () => store.set({online: false}))
-  window.addEventListener('online', () => store.set({online: true}))
+  window.addEventListener('offline', () => store.set({ online: false }))
+  window.addEventListener('online', () => store.set({ online: true }))
 }

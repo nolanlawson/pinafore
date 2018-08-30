@@ -21,11 +21,11 @@ export function timelineObservers (store) {
   function shouldObserveTimeline (timeline) {
     return timeline &&
       !(
-      timeline !== 'local' &&
+        timeline !== 'local' &&
         timeline !== 'federated' &&
         !timeline.startsWith('list/') &&
         !timeline.startsWith('tag/')
-    )
+      )
   }
 
   store.observe('currentTimeline', async (currentTimeline) => {

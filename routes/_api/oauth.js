@@ -12,7 +12,7 @@ export function registerApplication (instanceName, redirectUri) {
     redirect_uris: redirectUri,
     scopes: SCOPES,
     website: WEBSITE
-  }, null, {timeout: WRITE_TIMEOUT})
+  }, null, { timeout: WRITE_TIMEOUT })
 }
 
 export function generateAuthLink (instanceName, clientId, redirectUri) {
@@ -33,5 +33,5 @@ export function getAccessTokenFromAuthCode (instanceName, clientId, clientSecret
     redirect_uri: redirectUri,
     grant_type: 'authorization_code',
     code: code
-  }, null, {timeout: WRITE_TIMEOUT})
+  }, null, { timeout: WRITE_TIMEOUT })
 }

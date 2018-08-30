@@ -14,7 +14,7 @@ test('Shows the home timeline', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok({timeout: 30000})
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .hover(getNthStatus(0))
     .expect(getFirstVisibleStatus().exists).ok()
     .expect(getFirstVisibleStatus().hasAttribute('aria-setsize')).ok()
@@ -29,7 +29,7 @@ test('Shows notifications', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok({timeout: 30000})
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
 
@@ -40,7 +40,7 @@ test('Shows the local timeline', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok({timeout: 30000})
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .click(localTimelineNavButton)
     .expect(getUrl()).contains('/local')
 
@@ -51,7 +51,7 @@ test('Shows the federated timeline', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok({timeout: 30000})
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .click(communityNavButton)
     .expect(getUrl()).contains('/community')
     .click($('a').withText('Federated'))
@@ -64,7 +64,7 @@ test('Shows favorites', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok({timeout: 30000})
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .click(communityNavButton)
     .expect(getUrl()).contains('/community')
     .click($('a').withText('Favorites'))

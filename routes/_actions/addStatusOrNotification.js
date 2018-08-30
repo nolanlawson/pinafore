@@ -34,7 +34,7 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
   if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
     console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
       'items to itemIdsToAdd for timeline', timelineName)
-    store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: newItemIdsToAdd})
+    store.setForTimeline(instanceName, timelineName, { itemIdsToAdd: newItemIdsToAdd })
   }
 }
 
@@ -58,7 +58,7 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
     if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
       console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
         'items to itemIdsToAdd for thread', timelineName)
-      store.setForTimeline(instanceName, timelineName, {itemIdsToAdd: newItemIdsToAdd})
+      store.setForTimeline(instanceName, timelineName, { itemIdsToAdd: newItemIdsToAdd })
     }
   }
 }
@@ -68,7 +68,7 @@ async function processFreshUpdates (instanceName, timelineName) {
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates')
   if (freshUpdates && freshUpdates.length) {
     let updates = freshUpdates.slice()
-    store.setForTimeline(instanceName, timelineName, {freshUpdates: []})
+    store.setForTimeline(instanceName, timelineName, { freshUpdates: [] })
 
     await Promise.all([
       insertUpdatesIntoTimeline(instanceName, timelineName, updates),
@@ -93,6 +93,6 @@ export function addStatusesOrNotifications (instanceName, timelineName, newStatu
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
   freshUpdates = [].concat(freshUpdates).concat(newStatusesOrNotifications)
   freshUpdates = uniqBy(freshUpdates, _ => _.id)
-  store.setForTimeline(instanceName, timelineName, {freshUpdates: freshUpdates})
+  store.setForTimeline(instanceName, timelineName, { freshUpdates: freshUpdates })
   lazilyProcessFreshUpdates(instanceName, timelineName)
 }

@@ -16,7 +16,7 @@ fixture`117-pin-unpin.js`
 test('Can pin statuses', async t => {
   await loginAsFoobar(t)
   await t
-    .typeText(composeInput, 'I am going to pin this', {paste: true})
+    .typeText(composeInput, 'I am going to pin this', { paste: true })
     .click(postStatusButton)
     .expect(getNthStatus(0).innerText).contains('I am going to pin this')
     .click(avatarInComposeBox)

@@ -159,16 +159,16 @@
     oncreate () {
       let { name } = this.get()
       let indicator = this.refs.indicator
-      on('animateNavPart1', this, ({fromPage, toPage}) => {
+      on('animateNavPart1', this, ({ fromPage, toPage }) => {
         if (fromPage !== name) {
           return
         }
         mark('animateNavPart1 gBCR')
         let fromRect = indicator.getBoundingClientRect()
         stop('animateNavPart1 gBCR')
-        emit('animateNavPart2', {fromRect, fromPage, toPage})
+        emit('animateNavPart2', { fromRect, fromPage, toPage })
       })
-      on('animateNavPart2', this, ({fromPage, fromRect, toPage}) => {
+      on('animateNavPart2', this, ({ fromPage, fromRect, toPage }) => {
         if (toPage !== name) {
           return
         }

@@ -34,7 +34,7 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
 function getOrCreateInstanceCache (cache, instanceName) {
   let cached = cache.caches[instanceName]
   if (!cached) {
-    cached = cache.caches[instanceName] = new QuickLRU({maxSize: cache.maxSize})
+    cached = cache.caches[instanceName] = new QuickLRU({ maxSize: cache.maxSize })
   }
   return cached
 }

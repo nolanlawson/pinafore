@@ -47,12 +47,12 @@
       }, SCROLL_EVENT_THROTTLE)
       this.observe('showFooter', showFooter => {
         mark('set showFooter')
-        this.store.setForRealm({showFooter: showFooter})
+        this.store.setForRealm({ showFooter: showFooter })
         mark('set showFooter')
       })
       this.observe('showHeader', showHeader => {
         mark('set showHeader')
-        this.store.setForRealm({showHeader: showHeader})
+        this.store.setForRealm({ showHeader: showHeader })
         stop('set showHeader')
       })
       this.observe('items', (newItems, oldItems) => {
@@ -60,7 +60,7 @@
           return
         }
         mark('set items')
-        this.store.setForRealm({items: newItems})
+        this.store.setForRealm({ items: newItems })
         stop('set items')
       })
       this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
@@ -118,7 +118,7 @@
         }
         mark('calculateListOffset')
         let listOffset = node.offsetParent.offsetTop
-        this.store.setForRealm({listOffset})
+        this.store.setForRealm({ listOffset })
         stop('calculateListOffset')
       }
     }

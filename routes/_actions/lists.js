@@ -13,7 +13,7 @@ export async function updateLists () {
     lists => {
       let { instanceLists } = store.get()
       instanceLists[currentInstance] = lists
-      store.set({instanceLists: instanceLists})
+      store.set({ instanceLists: instanceLists })
     }
   )
 }

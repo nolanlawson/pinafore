@@ -14,7 +14,7 @@ async function redirectToOauth () {
   let { instanceNameInSearch, loggedInInstances } = store.get()
   instanceNameInSearch = instanceNameInSearch.replace(/^https?:\/\//, '').replace(/\/$/, '').replace('/$', '').toLowerCase()
   if (Object.keys(loggedInInstances).includes(instanceNameInSearch)) {
-    store.set({logInToInstanceError: `You've already logged in to ${instanceNameInSearch}`})
+    store.set({ logInToInstanceError: `You've already logged in to ${instanceNameInSearch}` })
     return
   }
   let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
@@ -54,7 +54,7 @@ export async function logInToInstance () {
       logInToInstanceErrorForText: instanceNameInSearch
     })
   } finally {
-    store.set({logInToInstanceLoading: false})
+    store.set({ logInToInstanceLoading: false })
   }
 }
 
@@ -92,11 +92,11 @@ async function registerNewInstance (code) {
 
 export async function handleOauthCode (code) {
   try {
-    store.set({logInToInstanceLoading: true})
+    store.set({ logInToInstanceLoading: true })
     await registerNewInstance(code)
   } catch (err) {
-    store.set({logInToInstanceError: `${err.message || err.name}. Failed to connect to instance.`})
+    store.set({ logInToInstanceError: `${err.message || err.name}. Failed to connect to instance.` })
   } finally {
-    store.set({logInToInstanceLoading: false})
+    store.set({ logInToInstanceLoading: false })
   }
 }

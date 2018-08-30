@@ -56,7 +56,7 @@
         this.observe('text', text => {
           let { rawText } = this.get()
           if (rawText !== text) {
-            this.set({rawText: text})
+            this.set({ rawText: text })
             // this next autosize is required to resize after
             // the user clicks the "toot" button
             mark('autosize.update()')
@@ -78,10 +78,10 @@
         this.observe('rawText', rawText => {
           mark('observe rawText')
           let { realm } = this.get()
-          this.store.setComposeData(realm, {text: rawText})
+          this.store.setComposeData(realm, { text: rawText })
           saveStore()
           stop('observe rawText')
-        }, {init: false})
+        }, { init: false })
       },
       setupAutosize () {
         let textarea = this.refs.textarea
@@ -98,19 +98,19 @@
       },
       onBlur () {
         scheduleIdleTask(() => {
-          this.store.setForCurrentAutosuggest({composeFocused: false})
+          this.store.setForCurrentAutosuggest({ composeFocused: false })
         })
       },
       onFocus () {
         scheduleIdleTask(() => {
-          let {realm} = this.get()
-          this.store.set({currentComposeRealm: realm})
-          this.store.setForCurrentAutosuggest({composeFocused: true})
+          let { realm } = this.get()
+          this.store.set({ currentComposeRealm: realm })
+          this.store.setForCurrentAutosuggest({ composeFocused: true })
         })
       },
       onSelectionChange (selectionStart) {
         scheduleIdleTask(() => {
-          this.store.setForCurrentAutosuggest({composeSelectionStart: selectionStart})
+          this.store.setForCurrentAutosuggest({ composeSelectionStart: selectionStart })
         })
       },
       onKeydown (e) {
@@ -172,7 +172,7 @@
         } else {
           autosuggestSelected = autosuggestSearchResults.length + autosuggestSelected
         }
-        this.store.setForCurrentAutosuggest({autosuggestSelected})
+        this.store.setForCurrentAutosuggest({ autosuggestSelected })
         event.preventDefault()
         event.stopPropagation()
       },

@@ -43,7 +43,7 @@
         } else { // follow/unfollow
           let newFollowingValue = !(following || followRequested)
           if (!account.locked) { // be optimistic, show the user that it succeeded
-            this.set({overrideFollowing: newFollowingValue})
+            this.set({ overrideFollowing: newFollowingValue })
           }
           if (newFollowingValue) {
             this.refs.icon.animate(FOLLOW_BUTTON_ANIMATION)

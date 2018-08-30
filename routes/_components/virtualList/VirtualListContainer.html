@@ -26,7 +26,7 @@
           console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
           let { initializedScrollTop } = this.get()
           if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
-            this.set({'initializedScrollTop': true})
+            this.set({ 'initializedScrollTop': true })
             mark('set scrollTop')
             console.log('forcing scroll top to ', scrollTop)
             node.scrollTop = scrollTop
@@ -95,7 +95,7 @@
 
         doubleRAF(() => {
           mark('onScroll -> setForRealm()')
-          this.store.setForRealm({scrollTop, scrollHeight})
+          this.store.setForRealm({ scrollTop, scrollHeight })
           stop('onScroll -> setForRealm()')
         })
       },

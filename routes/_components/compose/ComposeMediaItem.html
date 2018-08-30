@@ -100,7 +100,7 @@
           let { index, rawText } = this.get()
           let text = (media[index] && media[index].description) || ''
           if (rawText !== text) {
-            this.set({rawText: text})
+            this.set({ rawText: text })
           }
         })
       },
@@ -113,9 +113,9 @@
             return
           }
           media[index].description = rawText
-          store.setComposeData(realm, {media})
+          store.setComposeData(realm, { media })
           saveStore()
-        }, {init: false})
+        }, { init: false })
       },
       onDeleteMedia () {
         let {

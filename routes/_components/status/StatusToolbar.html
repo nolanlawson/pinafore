@@ -107,7 +107,7 @@
           let { uuid } = this.get()
           let { repliesShown } = this.store.get()
           repliesShown[uuid] = !repliesShown[uuid]
-          this.store.set({repliesShown})
+          this.store.set({ repliesShown })
           this.fire('recalculateHeight')
         })
       },

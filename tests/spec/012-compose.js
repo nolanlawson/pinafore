@@ -20,10 +20,10 @@ test('shows compose limits', async t => {
     .typeText(composeInput, 'typing some text')
     .expect(composeLengthIndicator.innerText).eql('484')
     .expect(composeButton.hasAttribute('disabled')).notOk()
-    .typeText(composeInput, times(50, () => 'hello world').join(' '), {replace: true, paste: true})
+    .typeText(composeInput, times(50, () => 'hello world').join(' '), { replace: true, paste: true })
     .expect(composeLengthIndicator.innerText).eql('-99')
     .expect(composeButton.getAttribute('disabled')).eql('')
-    .typeText(composeInput, 'hello world', {replace: true})
+    .typeText(composeInput, 'hello world', { replace: true })
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .click(homeNavButton)
@@ -45,7 +45,7 @@ test('shows compose limits for URLs/handles', async t => {
     .expect(composeButton.hasAttribute('disabled')).notOk()
     .typeText(composeInput, 'hello world ' +
       'http://foo.bar.baz.whatever.example.com/hello ' +
-      '@reallylongnamethatstretchesonandon@foo.example.com', {paste: true})
+      '@reallylongnamethatstretchesonandon@foo.example.com', { paste: true })
     .expect(composeLengthIndicator.innerText).eql('429')
     .expect(composeButton.hasAttribute('disabled')).notOk()
 })

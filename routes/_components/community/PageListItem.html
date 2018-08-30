@@ -73,7 +73,7 @@
       pinnable: false
     }),
     computed: {
-      ariaLabel: ({label, pinnable, $pinnedPage, href}) => {
+      ariaLabel: ({ label, pinnable, $pinnedPage, href }) => {
         let res = label
         if (pinnable) {
           res += ' (' + ($pinnedPage === href ? 'Pinned page' : 'Unpinned page') + ')'
@@ -90,7 +90,7 @@
         let { currentInstance, pinnedPages } = this.store.get()
         let { href } = this.get()
         pinnedPages[currentInstance] = href
-        this.store.set({pinnedPages: pinnedPages})
+        this.store.set({ pinnedPages: pinnedPages })
         this.store.save()
       }
     }

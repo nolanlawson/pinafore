@@ -54,5 +54,5 @@ export async function unfollowAs (username, userToFollow) {
 }
 
 export async function updateUserDisplayNameAs (username, displayName) {
-  return updateCredentials(instanceName, users[username].accessToken, {display_name: displayName})
+  return updateCredentials(instanceName, users[username].accessToken, { display_name: displayName })
 }

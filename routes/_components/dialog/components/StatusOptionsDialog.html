@@ -24,11 +24,11 @@ import { copyText } from '../../../_actions/copyText'
 export default {
   oncreate,
   computed: {
-    relationship: ({$currentAccountRelationship}) => $currentAccountRelationship,
-    account: ({$currentAccountProfile}) => $currentAccountProfile,
-    verifyCredentials: ({$currentVerifyCredentials}) => $currentVerifyCredentials,
-    statusId: ({status}) => status.id,
-    pinned: ({statusId, $currentStatusModifications, status}) => {
+    relationship: ({ $currentAccountRelationship }) => $currentAccountRelationship,
+    account: ({ $currentAccountProfile }) => $currentAccountProfile,
+    verifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials,
+    statusId: ({ status }) => status.id,
+    pinned: ({ statusId, $currentStatusModifications, status }) => {
       if ($currentStatusModifications && statusId in $currentStatusModifications.pins) {
         return $currentStatusModifications.pins[statusId]
       }
@@ -37,14 +37,14 @@ export default {
     //
     // begin copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
-    verifyCredentialsId: ({verifyCredentials}) => verifyCredentials.id,
-    following: ({relationship}) => relationship && relationship.following,
-    followRequested: ({relationship}) => relationship && relationship.requested,
-    accountId: ({account}) => account && account.id,
-    acct: ({account}) => account.acct,
-    muting: ({relationship}) => relationship.muting,
-    blocking: ({relationship}) => relationship.blocking,
-    followLabel: ({following, followRequested, account, acct}) => {
+    verifyCredentialsId: ({ verifyCredentials }) => verifyCredentials.id,
+    following: ({ relationship }) => relationship && relationship.following,
+    followRequested: ({ relationship }) => relationship && relationship.requested,
+    accountId: ({ account }) => account && account.id,
+    acct: ({ account }) => account.acct,
+    muting: ({ relationship }) => relationship.muting,
+    blocking: ({ relationship }) => relationship.blocking,
+    followLabel: ({ following, followRequested, account, acct }) => {
       if (typeof following === 'undefined' || !account) {
         return ''
       }
@@ -52,28 +52,28 @@ export default {
         ? `Unfollow @${acct}`
         : `Follow @${acct}`
     },
-    followIcon: ({following, followRequested}) => (
+    followIcon: ({ following, followRequested }) => (
       following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
     ),
-    blockLabel: ({blocking, acct}) => (
+    blockLabel: ({ blocking, acct }) => (
       blocking ? `Unblock @${acct}` : `Block @${acct}`
     ),
-    blockIcon: ({blocking}) => blocking ? '#fa-unlock' : '#fa-ban',
-    muteLabel: ({muting, acct}) => (
+    blockIcon: ({ blocking }) => blocking ? '#fa-unlock' : '#fa-ban',
+    muteLabel: ({ muting, acct }) => (
       muting ? `Unmute @${acct}` : `Mute @${acct}`
     ),
-    muteIcon: ({muting}) => muting ? '#fa-volume-up' : '#fa-volume-off',
-    isUser: ({accountId, verifyCredentialsId}) => accountId === verifyCredentialsId,
+    muteIcon: ({ muting }) => muting ? '#fa-volume-up' : '#fa-volume-off',
+    isUser: ({ accountId, verifyCredentialsId }) => accountId === verifyCredentialsId,
     //
     // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
-    pinLabel: ({pinned, isUser}) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
-    visibility: ({status}) => status.visibility,
-    mentions: ({status}) => status.mentions || [],
-    mentionsUser: ({mentions, verifyCredentialsId}) => !!mentions.find(_ => _.id === verifyCredentialsId),
-    mutingConversation: ({status}) => !!status.muted,
-    muteConversationLabel: ({mutingConversation}) => mutingConversation ? `Unmute conversation` : `Mute conversation`,
-    muteConversationIcon: ({mutingConversation}) => mutingConversation ? '#fa-volume-up' : '#fa-volume-off',
+    pinLabel: ({ pinned, isUser }) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
+    visibility: ({ status }) => status.visibility,
+    mentions: ({ status }) => status.mentions || [],
+    mentionsUser: ({ mentions, verifyCredentialsId }) => !!mentions.find(_ => _.id === verifyCredentialsId),
+    mutingConversation: ({ status }) => !!status.muted,
+    muteConversationLabel: ({ mutingConversation }) => mutingConversation ? `Unmute conversation` : `Mute conversation`,
+    muteConversationIcon: ({ mutingConversation }) => mutingConversation ? '#fa-volume-up' : '#fa-volume-off',
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
       following, followRequested, pinLabel, isUser, visibility, mentionsUser, mutingConversation,

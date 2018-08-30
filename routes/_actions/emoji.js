@@ -11,7 +11,7 @@ export async function updateCustomEmojiForInstance (instanceName) {
     emoji => {
       let { customEmoji } = store.get()
       customEmoji[instanceName] = emoji
-      store.set({customEmoji: customEmoji})
+      store.set({ customEmoji: customEmoji })
     }
   )
 }
@@ -23,5 +23,5 @@ export function insertEmoji (realm, emoji) {
   let pre = oldText.substring(0, idx)
   let post = oldText.substring(idx)
   let newText = `${pre}:${emoji.shortcode}: ${post}`
-  store.setComposeData(realm, {text: newText})
+  store.setComposeData(realm, { text: newText })
 }

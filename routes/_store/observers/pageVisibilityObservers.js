@@ -4,6 +4,6 @@ export function pageVisibilityObservers (store) {
   }
 
   document.addEventListener('visibilitychange', () => {
-    store.set({pageVisibilityHidden: document.hidden})
+    store.set({ pageVisibilityHidden: document.hidden })
   })
 }

@@ -136,7 +136,7 @@
           return
         }
         let svg = this.refs.svg
-        let animations = animation.map(({properties, options}) => svg.animate(properties, options))
+        let animations = animation.map(({ properties, options }) => svg.animate(properties, options))
         animations.forEach(anim => anim.play())
       }
     }

@@ -17,7 +17,7 @@ export function reselect (store, outputKey, inputKey) {
 
   store.compute(countKey, [inputKey], input => {
     if (process.browser && process.env.NODE_ENV !== 'production') {
-      window.reselectStats[inputKey] = window.reselectStats[inputKey] || {numInputChanges: 0, numOutputChanges: 0}
+      window.reselectStats[inputKey] = window.reselectStats[inputKey] || { numInputChanges: 0, numOutputChanges: 0 }
       window.reselectStats[inputKey].numInputChanges++
     }
     if (!isEqual(prevValue, input)) {

@@ -3,10 +3,10 @@ import { auth, basename } from './utils'
 
 export async function blockDomain (instanceName, accessToken, domain) {
   let url = `${basename(instanceName)}/api/v1/domain_blocks?${paramsString({ domain })}`
-  return post(url, null, auth(accessToken), {timeout: WRITE_TIMEOUT})
+  return post(url, null, auth(accessToken), { timeout: WRITE_TIMEOUT })
 }
 
 export async function unblockDomain (instanceName, accessToken, domain) {
   let url = `${basename(instanceName)}/api/v1/domain_blocks?${paramsString({ domain })}`
-  return del(url, auth(accessToken), {timeout: WRITE_TIMEOUT})
+  return del(url, auth(accessToken), { timeout: WRITE_TIMEOUT })
 }

@@ -11,7 +11,7 @@ fixture`103-compose.js`
 test('statuses show up in home timeline', async t => {
   await loginAsFoobar(t)
   await t
-    .typeText(composeInput, 'hello world', {paste: true})
+    .typeText(composeInput, 'hello world', { paste: true })
     .click(postStatusButton)
     .expect(getNthStatus(0).innerText).contains('hello world')
     .click(notificationsNavButton)
@@ -30,7 +30,7 @@ test('statuses in threads show up in right order', async t => {
     .click(getNthStatus(2))
     .expect(getUrl()).contains('/statuses')
     .click(getNthReplyButton(3))
-    .typeText(getNthComposeReplyInput(3), 'my reply!', {paste: true})
+    .typeText(getNthComposeReplyInput(3), 'my reply!', { paste: true })
     .click(getNthComposeReplyButton(3))
     .expect(getNthComposeReplyInput(3).exists).notOk()
     .expect(getNthStatus(5).innerText).contains('@baz my reply!')

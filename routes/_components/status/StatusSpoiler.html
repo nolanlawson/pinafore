@@ -67,7 +67,7 @@
           let { uuid } = this.get()
           let { spoilersShown } = this.store.get()
           spoilersShown[uuid] = !spoilersShown[uuid]
-          this.store.set({spoilersShown})
+          this.store.set({ spoilersShown })
           this.fire('recalculateHeight')
           stop('clickSpoilerButton')
         })

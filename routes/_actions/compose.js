@@ -49,7 +49,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     console.error(e)
     toast.say('Unable to post status: ' + (e.message || ''))
   } finally {
-    store.set({postingStatus: false})
+    store.set({ postingStatus: false })
   }
 }
 
@@ -84,5 +84,5 @@ export function setReplyVisibility (realm, replyVisibility) {
   let visibility = PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]
     ? replyVisibility
     : defaultVisibility
-  store.setComposeData(realm, {postPrivacy: visibility})
+  store.setComposeData(realm, { postPrivacy: visibility })
 }

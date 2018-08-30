@@ -10,7 +10,7 @@ import { database } from '../_database/database'
 export function changeTheme (instanceName, newTheme) {
   let { instanceThemes } = store.get()
   instanceThemes[instanceName] = newTheme
-  store.set({instanceThemes: instanceThemes})
+  store.set({ instanceThemes: instanceThemes })
   store.save()
   let { currentInstance } = store.get()
   if (instanceName === currentInstance) {
@@ -63,7 +63,7 @@ export async function logOutOfInstance (instanceName) {
 function setStoreVerifyCredentials (instanceName, thisVerifyCredentials) {
   let { verifyCredentials } = store.get()
   verifyCredentials[instanceName] = thisVerifyCredentials
-  store.set({verifyCredentials: verifyCredentials})
+  store.set({ verifyCredentials: verifyCredentials })
 }
 
 export async function updateVerifyCredentialsForInstance (instanceName) {
@@ -90,7 +90,7 @@ export async function updateInstanceInfo (instanceName) {
     info => {
       let { instanceInfos } = store.get()
       instanceInfos[instanceName] = info
-      store.set({instanceInfos: instanceInfos})
+      store.set({ instanceInfos: instanceInfos })
     }
   )
 }

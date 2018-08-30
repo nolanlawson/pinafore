@@ -15,7 +15,7 @@ async function main () {
   let checksum = crypto.createHash('sha256').update(headScript).digest('base64')
 
   let checksumFilepath = path.join(__dirname, '../inline-script-checksum.json')
-  await writeFile(checksumFilepath, JSON.stringify({checksum}), 'utf8')
+  await writeFile(checksumFilepath, JSON.stringify({ checksum }), 'utf8')
 
   let html2xxFilepath = path.join(__dirname, '../templates/2xx.html')
   let html2xxFile = await readFile(html2xxFilepath, 'utf8')

@@ -231,7 +231,7 @@
       },
       setupStickyObserver () {
         this.__stickyObserver = new IntersectionObserver(entries => {
-          this.set({sticky: !entries[0].isIntersecting})
+          this.set({ sticky: !entries[0].isIntersecting })
         })
         this.__stickyObserver.observe(this.refs.sentinel)
 
@@ -241,12 +241,12 @@
         this.observe('timelineInitialized', timelineInitialized => {
           if (timelineInitialized) {
             let observer = new IntersectionObserver(entries => {
-              this.set({sticky: !entries[0].isIntersecting})
+              this.set({ sticky: !entries[0].isIntersecting })
               observer.disconnect()
             })
             observer.observe(this.refs.sentinel)
           }
-        }, {init: false})
+        }, { init: false })
       },
       teardownStickyObserver () {
         if (this.__stickyObserver) {

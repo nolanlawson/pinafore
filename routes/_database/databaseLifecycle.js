@@ -53,24 +53,24 @@ export function getDatabase (instanceName) {
       }
 
       if (e.oldVersion < DB_VERSION_INITIAL) {
-        createObjectStore(STATUSES_STORE, {keyPath: 'id'}, {
+        createObjectStore(STATUSES_STORE, { keyPath: 'id' }, {
           [TIMESTAMP]: TIMESTAMP,
           [REBLOG_ID]: REBLOG_ID
         })
         createObjectStore(STATUS_TIMELINES_STORE, null, {
           'statusId': ''
         })
-        createObjectStore(NOTIFICATIONS_STORE, {keyPath: 'id'}, {
+        createObjectStore(NOTIFICATIONS_STORE, { keyPath: 'id' }, {
           [TIMESTAMP]: TIMESTAMP,
           [STATUS_ID]: STATUS_ID
         })
         createObjectStore(NOTIFICATION_TIMELINES_STORE, null, {
           'notificationId': ''
         })
-        createObjectStore(ACCOUNTS_STORE, {keyPath: 'id'}, {
+        createObjectStore(ACCOUNTS_STORE, { keyPath: 'id' }, {
           [TIMESTAMP]: TIMESTAMP
         })
-        createObjectStore(RELATIONSHIPS_STORE, {keyPath: 'id'}, {
+        createObjectStore(RELATIONSHIPS_STORE, { keyPath: 'id' }, {
           [TIMESTAMP]: TIMESTAMP
         })
         createObjectStore(THREADS_STORE, null, {
