@@ -45,7 +45,7 @@ export async function restoreMastodonData () {
   console.log('Restoring mastodon data...')
   let internalIdsToIds = {}
   for (let action of actions) {
-    await new Promise(resolve => setTimeout(resolve, 1000)) // delay so that notifications have proper order
+    await new Promise(resolve => setTimeout(resolve, 100)) // delay so that notifications have proper order
     console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
 
