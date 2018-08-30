@@ -41,7 +41,6 @@
     importNotificationVirtualListItem
   } from '../../_utils/asyncModules'
   import { timelines } from '../../_static/timelines'
-  import { database } from '../../_database/database'
   import {
     fetchTimelineItemsOnScrollToBottom,
     setupTimeline,
@@ -55,6 +54,7 @@
   import isEqual from 'lodash-es/isEqual'
   import { doubleRAF } from '../../_utils/doubleRAF'
   import { observe } from 'svelte-extras'
+  import { createMakeProps } from '../../_actions/createMakeProps'
 
   export default {
     oncreate () {
@@ -92,18 +92,9 @@
           listItemComponent: results[1]
         }))
       },
-      makeProps: ({ $currentInstance, timelineType, timelineValue }) => async (itemId) => {
-        let res = {
-          timelineType,
-          timelineValue
-        }
-        if (timelineType === 'notifications') {
-          res.notification = await database.getNotification($currentInstance, itemId)
-        } else {
-          res.status = await database.getStatus($currentInstance, itemId)
-        }
-        return res
-      },
+      makeProps: ({ $currentInstance, timelineType, timelineValue }) => (
+        createMakeProps($currentInstance, timelineType, timelineValue)
+      ),
       label: ({ timeline, $currentInstance, timelineType, timelineValue }) => {
         if (timelines[timeline]) {
           return `Statuses: ${timelines[timeline].label} timeline on ${$currentInstance}`
