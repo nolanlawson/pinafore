@@ -6,6 +6,7 @@ import uniq from 'lodash-es/uniq'
 import isEqual from 'lodash-es/isEqual'
 import { database } from '../_database/database'
 import { runMediumPriorityTask } from '../_utils/runMediumPriorityTask'
+import { concat } from '../_utils/arrays'
 
 const STREAMING_THROTTLE_DELAY = 3000
 
@@ -30,7 +31,7 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
   await database.insertTimelineItems(instanceName, timelineName, updates)
 
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-  let newItemIdsToAdd = uniq([].concat(itemIdsToAdd).concat(updates.map(_ => _.id)))
+  let newItemIdsToAdd = uniq(concat(itemIdsToAdd, updates.map(_ => _.id)))
   if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
     console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
       'items to itemIdsToAdd for timeline', timelineName)
@@ -47,14 +48,16 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
 
   for (let timelineName of Object.keys(threads)) {
     let thread = threads[timelineName]
-    let updatesForThisThread = updates.filter(
-      status => thread.includes(status.in_reply_to_id) && !thread.includes(status.id)
-    )
+    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
+    let updatesForThisThread = updates.filter(status => (
+      thread.includes(status.in_reply_to_id) &&
+      !thread.includes(status.id) &&
+      !itemIdsToAdd.includes(status.id)
+    ))
     if (!updatesForThisThread.length) {
       continue
     }
-    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-    let newItemIdsToAdd = uniq([].concat(itemIdsToAdd).concat(updatesForThisThread.map(_ => _.id)))
+    let newItemIdsToAdd = uniq(concat(itemIdsToAdd, updatesForThisThread.map(_ => _.id)))
     if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
       console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
         'items to itemIdsToAdd for thread', timelineName)
@@ -91,7 +94,7 @@ export function addStatusOrNotification (instanceName, timelineName, newStatusOr
 export function addStatusesOrNotifications (instanceName, timelineName, newStatusesOrNotifications) {
   console.log('addStatusesOrNotifications', Date.now())
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
-  freshUpdates = [].concat(freshUpdates).concat(newStatusesOrNotifications)
+  freshUpdates = concat(freshUpdates, newStatusesOrNotifications)
   freshUpdates = uniqBy(freshUpdates, _ => _.id)
   store.setForTimeline(instanceName, timelineName, { freshUpdates: freshUpdates })
   lazilyProcessFreshUpdates(instanceName, timelineName)
