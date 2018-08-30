@@ -3,7 +3,8 @@ import {
   avatarInComposeBox, closeDialogButton, composeInput, getNthDialogOptionsOption, getNthPinnedStatus,
   getNthPinnedStatusFavoriteButton,
   getNthStatus, getNthStatusContent,
-  getNthStatusOptionsButton, getUrl, homeNavButton, postStatusButton, scrollToBottomOfTimeline, scrollToTopOfTimeline,
+  getNthStatusOptionsButton, getUrl, homeNavButton, postStatusButton, scrollContainerToTop, scrollToBottomOfTimeline,
+  scrollToTopOfTimeline,
   settingsNavButton, sleep
 } from '../utils'
 import { users } from '../users'
@@ -54,10 +55,11 @@ test('Can favorite a pinned status', async t => {
 })
 
 test('Saved pinned/unpinned state of status', async t => {
+  const timeout = 20000
   await postAs('foobar', 'hey I am going to pin and unpin this')
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(0).innerText).contains('hey I am going to pin and unpin this')
+    .expect(getNthStatusContent(0).innerText).contains('hey I am going to pin and unpin this', { timeout })
     .click(getNthStatusOptionsButton(0))
     .expect(getNthDialogOptionsOption(2).innerText).contains('Pin to profile')
     .click(getNthDialogOptionsOption(2))
@@ -70,14 +72,16 @@ test('Saved pinned/unpinned state of status', async t => {
   // scroll down and back up to force an unrender
   await scrollToBottomOfTimeline(t)
   await scrollToTopOfTimeline(t)
+  await scrollContainerToTop() // otherwise the ... button is obscured by the pen button
 
   await t
-    .expect(getNthStatusContent(0).innerText).contains('hey I am going to pin and unpin this')
+    .expect(getNthStatusContent(0).innerText).contains('hey I am going to pin and unpin this', { timeout })
     .click(getNthStatusOptionsButton(0))
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Unpin from profile')
+    .expect(getNthDialogOptionsOption(2).innerText).contains('Unpin from profile', { timeout })
     // navigate to another page and back to force another unrender
     .click(settingsNavButton)
     .click(homeNavButton)
+    .expect(getNthStatusContent(0).innerText).contains('hey I am going to pin and unpin this', { timeout })
     .click(getNthStatusOptionsButton(0))
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Unpin from profile')
+    .expect(getNthDialogOptionsOption(2).innerText).contains('Unpin from profile', { timeout })
 })
