@@ -36,8 +36,8 @@ const scroll = (node, key, target) => {
     node.removeEventListener('touchstart', cancel)
   }
 
-  node.addEventListener('wheel', cancel, {passive: true})
-  node.addEventListener('touchstart', cancel, {passive: true})
+  node.addEventListener('wheel', cancel, { passive: true })
+  node.addEventListener('touchstart', cancel, { passive: true })
 
   step()
 

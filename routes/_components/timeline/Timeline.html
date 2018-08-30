@@ -154,16 +154,16 @@
         if (initializeStarted) {
           return
         }
-        this.set({initializeStarted: true})
+        this.set({ initializeStarted: true })
         mark('initializeTimeline')
         doubleRAF(() => {
           console.log('timeline initialized')
-          this.store.set({timelineInitialized: true})
+          this.store.set({ timelineInitialized: true })
           stop('initializeTimeline')
         })
       },
       onScrollTopChanged (scrollTop) {
-        this.set({scrollTop: scrollTop})
+        this.set({ scrollTop: scrollTop })
       },
       onScrollToBottom () {
         let { timelineType } = this.get()
@@ -212,7 +212,7 @@
             showMoreItemsForTimeline(currentInstance, timeline)
           } else {
             // user hasn't scrolled to the top, show a header instead
-            this.store.setForTimeline(currentInstance, timeline, {shouldShowHeader: true})
+            this.store.setForTimeline(currentInstance, timeline, { shouldShowHeader: true })
           }
           stop('handleItemIdsToAdd')
         }
@@ -294,7 +294,7 @@
         // i.e. render anything above the fold of the timeline. This avoids the affect
         // where the scrollable content appears to jump around if we need to scroll it.
         console.log('timeline preinitialized')
-        this.store.set({timelinePreinitialized: true})
+        this.store.set({ timelinePreinitialized: true })
       }
     }
   }

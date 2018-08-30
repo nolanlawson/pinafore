@@ -18,7 +18,7 @@
       if (makeProps) {
         let props = await makeProps(key)
         mark('ListLazyItem set props')
-        this.set({props: props})
+        this.set({ props: props })
         this.fire('initialized')
         stop('ListLazyItem set props')
       }

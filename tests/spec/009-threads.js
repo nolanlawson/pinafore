@@ -44,7 +44,7 @@ test('Scrolls to proper point in thread', async t => {
 async function navigateToBazAccount (t) {
   await t.click(searchNavButton)
     .expect(getUrl()).contains('/search')
-    .typeText(searchInput, 'baz', {paste: true})
+    .typeText(searchInput, 'baz', { paste: true })
     .pressKey('enter')
     .click(getNthSearchResult(1))
     .expect(getUrl()).contains('/accounts/5')

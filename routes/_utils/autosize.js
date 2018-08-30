@@ -8,7 +8,7 @@ import debounce from 'lodash-es/debounce'
 import throttle from 'lodash-es/throttle'
 
 const map = new Map()
-let createEvent = (name) => new Event(name, {bubbles: true})
+let createEvent = (name) => new Event(name, { bubbles: true })
 
 function assign (ta) {
   if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) {

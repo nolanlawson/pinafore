@@ -6,8 +6,8 @@ export async function insertUsername (realm, username, startIndex, endIndex) {
   let pre = oldText.substring(0, startIndex)
   let post = oldText.substring(endIndex)
   let newText = `${pre}@${username} ${post}`
-  store.setComposeData(realm, {text: newText})
-  store.setForAutosuggest(currentInstance, realm, {autosuggestSearchResults: []})
+  store.setComposeData(realm, { text: newText })
+  store.setForAutosuggest(currentInstance, realm, { autosuggestSearchResults: [] })
 }
 
 export async function clickSelectedAutosuggestionUsername (realm) {
@@ -29,8 +29,8 @@ export function insertEmojiAtPosition (realm, emoji, startIndex, endIndex) {
   let pre = oldText.substring(0, startIndex)
   let post = oldText.substring(endIndex)
   let newText = `${pre}:${emoji.shortcode}: ${post}`
-  store.setComposeData(realm, {text: newText})
-  store.setForAutosuggest(currentInstance, realm, {autosuggestSearchResults: []})
+  store.setComposeData(realm, { text: newText })
+  store.setForAutosuggest(currentInstance, realm, { autosuggestSearchResults: [] })
 }
 
 export async function clickSelectedAutosuggestionEmoji (realm) {

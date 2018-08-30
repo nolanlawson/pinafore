@@ -5,7 +5,7 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 export async function doMediaUpload (realm, file) {
   let { currentInstance, accessToken } = store.get()
-  store.set({uploadingMedia: true})
+  store.set({ uploadingMedia: true })
   try {
     let response = await uploadMedia(currentInstance, accessToken, file)
     let composeMedia = store.getComposeData(realm, 'media') || []
@@ -22,7 +22,7 @@ export async function doMediaUpload (realm, file) {
     console.error(e)
     toast.say('Failed to upload media: ' + (e.message || ''))
   } finally {
-    store.set({uploadingMedia: false})
+    store.set({ uploadingMedia: false })
   }
 }
 

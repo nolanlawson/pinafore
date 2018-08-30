@@ -6,5 +6,5 @@ export function search (instanceName, accessToken, query) {
     q: query,
     resolve: true
   })
-  return get(url, auth(accessToken), {timeout: DEFAULT_TIMEOUT})
+  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 }

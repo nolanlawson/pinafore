@@ -11,5 +11,5 @@ export function base64StringToBlob (base64, type) {
   }
 
   let parts = [binaryStringToArrayBuffer(atob(base64))]
-  return type ? new Blob(parts, {type: type}) : new Blob(parts)
+  return type ? new Blob(parts, { type: type }) : new Blob(parts)
 }

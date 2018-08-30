@@ -15,7 +15,7 @@ test('Can block and unblock an account from a status', async t => {
   await postAs('admin', post)
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatus(0).innerText).contains(post, {timeout: 30000})
+    .expect(getNthStatus(0).innerText).contains(post, { timeout: 30000 })
     .click(getNthStatusOptionsButton(0))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')

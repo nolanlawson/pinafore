@@ -26,17 +26,17 @@
   export default {
     oncreate () {
       let { lengthAsFraction } = this.get()
-      this.set({lengthAsFractionDeferred: lengthAsFraction})
+      this.set({ lengthAsFractionDeferred: lengthAsFraction })
       // perf improvement for keyboard input latency
       this.observe('lengthAsFraction', () => {
         scheduleIdleTask(() => {
           mark('set lengthAsFractionDeferred')
           let { lengthAsFraction } = this.get()
-          this.set({lengthAsFractionDeferred: lengthAsFraction})
+          this.set({ lengthAsFractionDeferred: lengthAsFraction })
           stop('set lengthAsFractionDeferred')
-          requestAnimationFrame(() => this.set({shouldAnimate: true}))
+          requestAnimationFrame(() => this.set({ shouldAnimate: true }))
         })
-      }, {init: false})
+      }, { init: false })
     },
     data: () => ({
       shouldAnimate: false,

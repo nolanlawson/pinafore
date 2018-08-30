@@ -45,7 +45,7 @@
       } catch (e) {
         toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
       } finally {
-        this.set({loading: false})
+        this.set({ loading: false })
       }
       on('refreshAccountsList', this, () => this.refreshAccounts())
     },

@@ -37,9 +37,9 @@ function doWatch () {
 
 async function compileGlobalSass () {
   let results = await Promise.all([
-    render({file: defaultThemeScss, outputStyle: 'compressed'}),
-    render({file: globalScss, outputStyle: 'compressed'}),
-    render({file: offlineThemeScss, outputStyle: 'compressed'})
+    render({ file: defaultThemeScss, outputStyle: 'compressed' }),
+    render({ file: globalScss, outputStyle: 'compressed' }),
+    render({ file: offlineThemeScss, outputStyle: 'compressed' })
   ])
 
   let css = results.map(_ => _.css).join('')
@@ -54,7 +54,7 @@ async function compileGlobalSass () {
 async function compileThemesSass () {
   let files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
   await Promise.all(files.map(async file => {
-    let res = await render({file: path.join(themesScssDir, file), outputStyle: 'compressed'})
+    let res = await render({ file: path.join(themesScssDir, file), outputStyle: 'compressed' })
     let outputFilename = 'theme-' + path.basename(file).replace(/\.scss$/, '.css')
     await writeFile(path.join(assetsDir, outputFilename), res.css, 'utf8')
   }))

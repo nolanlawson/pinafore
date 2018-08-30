@@ -31,11 +31,11 @@
       this.observe('shown', shown => {
         if (shown) {
           this.doCalculateHeight()
-          doubleRAF(() => this.set({fadedIn: true})) //  animate in
+          doubleRAF(() => this.set({ fadedIn: true })) //  animate in
         } else {
-          this.set({fadedIn: false})
+          this.set({ fadedIn: false })
         }
-      }, {init: false})
+      }, { init: false })
     },
     data: () => ({
       fadedIn: false
@@ -48,12 +48,12 @@
         if (heightCalculated) { // only need to calculate once, it never changes
           return
         }
-        this.set({heightCalculated: true})
+        this.set({ heightCalculated: true })
         requestAnimationFrame(() => {
           mark('VirtualListHeader gBCR')
           let rect = this.refs.node.getBoundingClientRect()
           stop('VirtualListHeader gBCR')
-          this.store.setForRealm({headerHeight: rect.height})
+          this.store.setForRealm({ headerHeight: rect.height })
         })
       }
     }

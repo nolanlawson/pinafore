@@ -16,7 +16,7 @@ export async function updatePinnedStatusesForAccount (accountId) {
       let { pinnedStatuses } = store.get()
       pinnedStatuses[currentInstance] = pinnedStatuses[currentInstance] || {}
       pinnedStatuses[currentInstance][accountId] = statuses
-      store.set({pinnedStatuses: pinnedStatuses})
+      store.set({ pinnedStatuses: pinnedStatuses })
     }
   )
 }

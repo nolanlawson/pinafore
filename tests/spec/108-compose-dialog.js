@@ -23,7 +23,7 @@ test('can compose using a dialog', async t => {
     .expect(getUrl()).contains('/notifications')
     .navigateTo('/')
     .hover(getNthStatus(0))
-    .expect(getNthStatus(0).innerText).contains('hello from the modal', {timeout: 20000})
+    .expect(getNthStatus(0).innerText).contains('hello from the modal', { timeout: 20000 })
 })
 
 test('can use emoji dialog within compose dialog', async t => {
@@ -40,5 +40,5 @@ test('can use emoji dialog within compose dialog', async t => {
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .navigateTo('/')
-  await t.expect($(`${getNthStatusSelector(0)} img[alt=":blobpats:"]`).exists).ok({timeout: 20000})
+  await t.expect($(`${getNthStatusSelector(0)} img[alt=":blobpats:"]`).exists).ok({ timeout: 20000 })
 })

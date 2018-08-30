@@ -19,9 +19,9 @@ test('External links, hashtags, and mentions have correct attributes', async t =
 
   await loginAsFoobar(t)
   await t
-    .typeText(composeInput, text, {paste: true})
+    .typeText(composeInput, text, { paste: true })
     .click(composeButton)
-    .expect(getNthStatus(0).innerText).contains('Why hello there', {timeout: 20000})
+    .expect(getNthStatus(0).innerText).contains('Why hello there', { timeout: 20000 })
     .expect(nthAnchor(0).getAttribute('href')).eql('/accounts/1')
     .expect(nthAnchor(0).hasAttribute('rel')).notOk()
     .expect(nthAnchor(0).getAttribute('title')).eql('@admin')

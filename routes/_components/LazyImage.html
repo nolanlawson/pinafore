@@ -29,7 +29,7 @@
         this.set({ displaySrc: src })
       } catch (e) {
         if (fallback) {
-          this.set({displaySrc: fallback})
+          this.set({ displaySrc: fallback })
         }
       }
       stop('LazyImage oncreate()')
@@ -47,7 +47,7 @@
       title: ''
     }),
     computed: {
-      computedStyle: ({width, height, background}) => {
+      computedStyle: ({ width, height, background }) => {
         return [
           width && `width: ${width}px;`,
           height && `height: ${height}px;`,

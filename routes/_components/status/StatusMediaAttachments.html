@@ -148,7 +148,7 @@
         let { uuid } = this.get()
         let { sensitivesShown } = this.store.get()
         sensitivesShown[uuid] = !sensitivesShown[uuid]
-        this.store.set({sensitivesShown})
+        this.store.set({ sensitivesShown })
         this.fire('recalculateHeight')
       }
     }

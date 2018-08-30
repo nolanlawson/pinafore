@@ -7,5 +7,5 @@ export async function getPinnedStatuses (instanceName, accessToken, accountId) {
     limit: 40,
     pinned: true
   })
-  return get(url, auth(accessToken), {timeout: DEFAULT_TIMEOUT})
+  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 }

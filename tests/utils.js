@@ -303,7 +303,7 @@ export async function scrollToBottomOfTimeline (t) {
 export async function scrollToStatus (t, n) {
   let timeout = 20000
   for (let i = 0; i <= n; i++) {
-    await t.expect(getNthStatus(i).exists).ok({timeout})
+    await t.expect(getNthStatus(i).exists).ok({ timeout })
       .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk()
     if (i < n) {

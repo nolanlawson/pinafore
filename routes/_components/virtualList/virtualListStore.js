@@ -106,7 +106,7 @@ virtualListStore.compute('allVisibleItemsHaveHeight',
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.virtualListStore = virtualListStore
 
-  virtualListStore.on('state', ({changed}) => {
+  virtualListStore.on('state', ({ changed }) => {
     if (changed.visibleItems) {
       window.visibleItemsChangedCount = (window.visibleItemsChangedCount || 0) + 1
     }

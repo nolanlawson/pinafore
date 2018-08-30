@@ -62,5 +62,5 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
 
 // needed for tests
 if (process.browser) {
-  window.__forceOnline = online => store.set({online})
+  window.__forceOnline = online => store.set({ online })
 }

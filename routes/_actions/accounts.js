@@ -11,12 +11,12 @@ async function _updateAccount (accountId, instanceName, accessToken) {
   })
 
   try {
-    store.set({currentAccountProfile: (await localPromise)})
+    store.set({ currentAccountProfile: (await localPromise) })
   } catch (e) {
     console.error(e)
   }
   try {
-    store.set({currentAccountProfile: (await remotePromise)})
+    store.set({ currentAccountProfile: (await remotePromise) })
   } catch (e) {
     console.error(e)
   }
@@ -29,12 +29,12 @@ async function _updateRelationship (accountId, instanceName, accessToken) {
     return relationship
   })
   try {
-    store.set({currentAccountRelationship: (await localPromise)})
+    store.set({ currentAccountRelationship: (await localPromise) })
   } catch (e) {
     console.error(e)
   }
   try {
-    store.set({currentAccountRelationship: (await remotePromise)})
+    store.set({ currentAccountRelationship: (await remotePromise) })
   } catch (e) {
     console.error(e)
   }
@@ -43,7 +43,7 @@ async function _updateRelationship (accountId, instanceName, accessToken) {
 export async function updateLocalRelationship (instanceName, accountId, relationship) {
   await database.setRelationship(instanceName, relationship)
   try {
-    store.set({currentAccountRelationship: relationship})
+    store.set({ currentAccountRelationship: relationship })
   } catch (e) {
     console.error(e)
   }

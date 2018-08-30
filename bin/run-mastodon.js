@@ -56,24 +56,24 @@ async function setupMastodonDatabase () {
   try {
     await exec(`dropdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {
       cwd: mastodonDir,
-      env: Object.assign({PGPASSWORD: DB_PASS}, process.env)
+      env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
     })
   } catch (e) { /* ignore */ }
   await exec(`createdb -h 127.0.0.1 -U ${DB_USER} -w ${DB_NAME}`, {
     cwd: mastodonDir,
-    env: Object.assign({PGPASSWORD: DB_PASS}, process.env)
+    env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
   })
 
   let dumpFile = path.join(dir, '../fixtures/dump.sql')
   await exec(`psql -h 127.0.0.1 -U ${DB_USER} -w -d ${DB_NAME} -f "${dumpFile}"`, {
     cwd: mastodonDir,
-    env: Object.assign({PGPASSWORD: DB_PASS}, process.env)
+    env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
   })
 
   let tgzFile = path.join(dir, '../fixtures/system.tgz')
   let systemDir = path.join(mastodonDir, 'public/system')
   await mkdirp(systemDir)
-  await exec(`tar -xzf "${tgzFile}"`, {cwd: systemDir})
+  await exec(`tar -xzf "${tgzFile}"`, { cwd: systemDir })
 }
 
 async function runMastodon () {
@@ -97,10 +97,10 @@ async function runMastodon () {
 
   for (let cmd of cmds) {
     console.log(cmd)
-    await exec(cmd, {cwd, env})
+    await exec(cmd, { cwd, env })
   }
-  const promise = spawn('foreman', ['start'], {cwd, env})
-  const log = fs.createWriteStream('mastodon.log', {flags: 'a'})
+  const promise = spawn('foreman', ['start'], { cwd, env })
+  const log = fs.createWriteStream('mastodon.log', { flags: 'a' })
   childProc = promise.childProcess
   childProc.stdout.pipe(log)
   childProc.stderr.pipe(log)

@@ -15,7 +15,7 @@ test('account handle populated correctly for replies', async t => {
   await t
     .click(getNthReplyButton(0))
     .expect(getNthComposeReplyInput(0).value).eql('@quux ')
-    .typeText(getNthComposeReplyInput(0), 'hello quux', {paste: true})
+    .typeText(getNthComposeReplyInput(0), 'hello quux', { paste: true })
     .expect(getNthComposeReplyInput(0).value).eql('@quux hello quux')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
@@ -91,7 +91,7 @@ test('replies save changes to CW', async t => {
   await scrollToStatus(t, 7)
   await t.click(getNthReplyButton(7))
     .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
-    .typeText(getNthReplyContentWarningInput(7), ' yolo', {paste: true})
+    .typeText(getNthReplyContentWarningInput(7), ' yolo', { paste: true })
     .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW yolo')
     .click(getNthStatus(7))
     .click(getNthReplyButton(0))

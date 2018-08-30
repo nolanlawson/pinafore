@@ -31,7 +31,7 @@
       itemInitialized () {
         let { initializedCount, length } = this.get()
         initializedCount++
-        this.set({initializedCount})
+        this.set({ initializedCount })
         if (initializedCount === length) {
           this.initialize()
         }

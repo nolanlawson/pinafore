@@ -32,7 +32,7 @@
       observe,
       setupSyncFromStore () {
         this.observe('contentWarning', contentWarning => {
-          this.set({rawText: contentWarning})
+          this.set({ rawText: contentWarning })
         })
       },
       setupSyncToStore () {
@@ -44,7 +44,7 @@
             contentWarning: rawText
           })
           saveText()
-        }, {init: false})
+        }, { init: false })
       }
     }
   }

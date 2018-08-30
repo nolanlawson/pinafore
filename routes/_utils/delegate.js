@@ -40,7 +40,7 @@ export function registerClickDelegates (component, delegates) {
 }
 
 export function registerClickDelegate (component, key, callback) {
-  registerClickDelegates(component, {[key]: callback})
+  registerClickDelegates(component, { [key]: callback })
 }
 
 if (process.browser) {

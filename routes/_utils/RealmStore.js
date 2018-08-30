@@ -8,18 +8,18 @@ import { mark, stop } from './marks'
 export class RealmStore extends Store {
   constructor (init, maxSize) {
     super(init)
-    this.set({realms: new QuickLRU({maxSize: maxSize})})
+    this.set({ realms: new QuickLRU({ maxSize: maxSize }) })
     this._batches = {}
   }
 
   setCurrentRealm (realm) {
-    this.set({currentRealm: realm})
+    this.set({ currentRealm: realm })
   }
 
   setForRealm (obj) {
     let { currentRealm, realms } = this.get()
     realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, obj))
-    this.set({realms: realms})
+    this.set({ realms: realms })
   }
 
   computeForRealm (key, defaultValue) {
@@ -63,8 +63,8 @@ export class RealmStore extends Store {
       }
       delete this._batches[currentRealm][key]
       let { realms } = this.get()
-      realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, {[key]: obj}))
-      this.set({realms: realms})
+      realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, { [key]: obj }))
+      this.set({ realms: realms })
       stop('batchUpdate')
     })
   }

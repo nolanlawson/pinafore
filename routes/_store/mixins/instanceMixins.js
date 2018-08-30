@@ -3,7 +3,7 @@ export function instanceMixins (Store) {
     let { composeData, currentInstance } = this.get()
     let instanceNameData = composeData[currentInstance] = composeData[currentInstance] || {}
     instanceNameData[realm] = Object.assign(instanceNameData[realm] || {}, obj)
-    this.set({composeData})
+    this.set({ composeData })
   }
 
   Store.prototype.getComposeData = function (realm, key) {
@@ -18,6 +18,6 @@ export function instanceMixins (Store) {
     if (composeData && composeData[currentInstance]) {
       delete composeData[currentInstance][realm]
     }
-    this.set({composeData})
+    this.set({ composeData })
   }
 }

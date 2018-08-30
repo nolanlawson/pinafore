@@ -46,7 +46,7 @@ test('Can approve and reject follow requests', async t => {
     .expect(approveAdminButton().getAttribute('aria-label')).eql('Approve')
     .hover(approveAdminButton())
     .click(approveAdminButton())
-    .expect(getNthSearchResult(1).innerText).match(/(@baz|@quux)/, {timeout})
+    .expect(getNthSearchResult(1).innerText).match(/(@baz|@quux)/, { timeout })
     .expect(getNthSearchResult(2).innerText).match(/(@baz|@quux)/)
     .expect(getNthSearchResult(3).exists).notOk()
   await goBack()
@@ -56,7 +56,7 @@ test('Can approve and reject follow requests', async t => {
     .expect(rejectBazButton().getAttribute('aria-label')).eql('Reject')
     .hover(rejectBazButton())
     .click(rejectBazButton())
-    .expect(getNthSearchResult(1).innerText).contains('@quux', {timeout})
+    .expect(getNthSearchResult(1).innerText).contains('@quux', { timeout })
     .expect(getNthSearchResult(2).exists).notOk()
   await goBack()
   await t
@@ -65,7 +65,7 @@ test('Can approve and reject follow requests', async t => {
     .expect(approveQuuxButton().getAttribute('aria-label')).eql('Approve')
     .hover(approveQuuxButton())
     .click(approveQuuxButton())
-    .expect(getNthSearchResult(1).exists).notOk({timeout})
+    .expect(getNthSearchResult(1).exists).notOk({ timeout })
     // check our follow list to make sure they follow us
     .click(homeNavButton)
     .click(avatarInComposeBox)
