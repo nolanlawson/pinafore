@@ -4,9 +4,7 @@ import { store } from '../_store/store'
 import uniqBy from 'lodash-es/uniqBy'
 import uniq from 'lodash-es/uniq'
 import isEqual from 'lodash-es/isEqual'
-import {
-  insertTimelineItems as insertTimelineItemsInDatabase
-} from '../_database/timelines/insertion'
+import { database } from '../_database/database'
 import { runMediumPriorityTask } from '../_utils/runMediumPriorityTask'
 
 const STREAMING_THROTTLE_DELAY = 3000
@@ -29,7 +27,7 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
     return
   }
 
-  await insertTimelineItemsInDatabase(instanceName, timelineName, updates)
+  await database.insertTimelineItems(instanceName, timelineName, updates)
 
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
   let newItemIdsToAdd = uniq([].concat(itemIdsToAdd).concat(updates.map(_ => _.id)))

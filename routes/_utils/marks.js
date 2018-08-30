@@ -1,6 +1,6 @@
 const enabled = process.browser && performance.mark && (
   process.env.NODE_ENV !== 'production' ||
-  location.search.includes('marks=true')
+  (typeof location !== 'undefined' && location.search.includes('marks=true'))
 )
 
 const perf = process.browser && performance
