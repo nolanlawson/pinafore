@@ -28,7 +28,12 @@ export default {
     account: ({$currentAccountProfile}) => $currentAccountProfile,
     verifyCredentials: ({$currentVerifyCredentials}) => $currentVerifyCredentials,
     statusId: ({status}) => status.id,
-    pinned: ({status}) => status.pinned,
+    pinned: ({statusId, $currentStatusModifications, status}) => {
+      if ($currentStatusModifications && statusId in $currentStatusModifications.pins) {
+        return $currentStatusModifications.pins[statusId]
+      }
+      return status.pinned
+    },
     //
     // begin copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
