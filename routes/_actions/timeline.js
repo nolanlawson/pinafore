@@ -8,8 +8,9 @@ import isEqual from 'lodash-es/isEqual'
 import { database } from '../_database/database'
 import { getStatus, getStatusContext } from '../_api/statuses'
 import { emit } from '../_utils/eventBus'
+import { TIMELINE_BATCH_SIZE } from '../_static/timelines'
 
-const FETCH_LIMIT = 20
+const SCROLL_TO_BOTTOM_DELAY = 2000
 
 async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, items) {
   await database.insertTimelineItems(instanceName, timelineName, items)
@@ -31,7 +32,7 @@ async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelin
     let [ status, context ] = await Promise.all([statusRequest, contextRequest])
     return concat(context.ancestors, status, context.descendants)
   } else { // normal timeline
-    return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, FETCH_LIMIT)
+    return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, null, TIMELINE_BATCH_SIZE)
   }
 }
 
@@ -40,7 +41,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
   let items
   let stale = false
   if (!online) {
-    items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+    items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, TIMELINE_BATCH_SIZE)
     stale = true
   } else {
     try {
@@ -49,7 +50,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
     } catch (e) {
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')
-      items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, FETCH_LIMIT)
+      items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, TIMELINE_BATCH_SIZE)
       stale = true
     }
   }
@@ -116,7 +117,9 @@ export async function setupTimeline () {
 export async function fetchTimelineItemsOnScrollToBottom (instanceName, timelineName) {
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })
   await fetchTimelineItemsAndPossiblyFallBack()
-  store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
+  setTimeout(() => {
+    store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
+  }, SCROLL_TO_BOTTOM_DELAY) // delay to avoid spamming network calls on scroll to bottom
 }
 
 export async function showMoreItemsForTimeline (instanceName, timelineName) {

@@ -22,7 +22,7 @@ function getTimelineUrlPath (timeline) {
   }
 }
 
-export function getTimeline (instanceName, accessToken, timeline, maxId, since) {
+export function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
   let timelineUrlName = getTimelineUrlPath(timeline)
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
@@ -41,6 +41,10 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since) 
 
   if (maxId) {
     params.max_id = maxId
+  }
+
+  if (limit) {
+    params.limit = limit
   }
 
   if (timeline === 'local') {

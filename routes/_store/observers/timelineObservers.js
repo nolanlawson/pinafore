@@ -2,6 +2,7 @@ import { updateInstanceInfo } from '../../_actions/instances'
 import { createStream } from '../../_actions/streaming'
 import { getTimeline } from '../../_api/timelines'
 import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
+import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 
 export function timelineObservers (store) {
   // stream to watch for local/federated/etc. updates. home and notification
@@ -67,7 +68,7 @@ export function timelineObservers (store) {
       // fill in the "streaming gap" – i.e. fetch the most recent 20 items so that there isn't
       // a big gap in the timeline if you haven't looked at it in awhile
       let newTimelineItems = await getTimeline(currentInstance, accessToken,
-        currentTimeline, null, firstTimelineItemId)
+        currentTimeline, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
       if (newTimelineItems.length) {
         addStatusesOrNotifications(currentInstance, currentTimeline, newTimelineItems)
       }

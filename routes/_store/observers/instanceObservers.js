@@ -4,6 +4,7 @@ import { createStream } from '../../_actions/streaming'
 import { updateCustomEmojiForInstance } from '../../_actions/emoji'
 import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
 import { getTimeline } from '../../_api/timelines'
+import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 
 export function instanceObservers (store) {
   // stream to watch for home timeline updates and notifications
@@ -63,7 +64,7 @@ export function instanceObservers (store) {
           return
         }
         let newTimelineItems = await getTimeline(currentInstance, accessToken,
-          timelineName, null, firstTimelineItemId)
+          timelineName, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
         if (newTimelineItems.length) {
           addStatusesOrNotifications(currentInstance, timelineName, newTimelineItems)
         }
