@@ -13,6 +13,7 @@ import {
 } from '../keys'
 import { fetchStatus } from './fetchStatus'
 import { fetchNotification } from './fetchNotification'
+import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 
 export async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
   let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
@@ -82,7 +83,7 @@ export async function getStatusThread (instanceName, statusId) {
 
 export async function getTimeline (instanceName, timeline, maxId, limit) {
   maxId = maxId || null
-  limit = limit || 20
+  limit = limit || TIMELINE_BATCH_SIZE
   if (timeline === 'notifications') {
     return getNotificationTimeline(instanceName, timeline, maxId, limit)
   } else if (timeline.startsWith('status/')) {
