@@ -1,4 +1,11 @@
 <h1 class="sr-only">{label}</h1>
+<!-- for debugging
+<div style="padding:5px;position:fixed;left:0;top:0;z-index:999999999;font-size:0.9em;width: 75vw;background:rgba(0, 0, 0, 0.8);color:white;pointer-events:none;">
+  <p>$timelineItemIds: {JSON.stringify(($timelineItemIds || []).map(_ => '...' + _.slice(-6)), null, '  ')}</p>
+  <p>$itemIdsToAdd: {JSON.stringify(($itemIdsToAdd || []).map(_ => '...' + _.slice(-6)), null, '  ')}</p>
+  <p>$runningUpdate: {$runningUpdate}</p>
+</div>
+-->
 <div class="timeline"
      role="feed"
      on:focusWithCapture="saveFocus(event)"
@@ -13,7 +20,7 @@
                 containerQuery=".container"
                 {makeProps}
                 items={$timelineItemIds}
-                showFooter={$timelineInitialized && $runningUpdate}
+                showFooter={true}
                 footerComponent={LoadingFooter}
                 showHeader={$showHeader}
                 headerComponent={MoreHeaderVirtualWrapper}

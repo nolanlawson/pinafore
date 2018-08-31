@@ -45,6 +45,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
     stale = true
   } else {
     try {
+      console.log('fetchTimelineItemsFromNetwork')
       items = await fetchTimelineItemsFromNetwork(instanceName, accessToken, timelineName, lastTimelineItemId)
       /* no await */ storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
     } catch (e) {
@@ -115,9 +116,11 @@ export async function setupTimeline () {
 }
 
 export async function fetchTimelineItemsOnScrollToBottom (instanceName, timelineName) {
+  console.log('setting runningUpdate: true')
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })
   await fetchTimelineItemsAndPossiblyFallBack()
   setTimeout(() => {
+    console.log('setting runningUpdate: false')
     store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
   }, SCROLL_TO_BOTTOM_DELAY) // delay to avoid spamming network calls on scroll to bottom
 }
