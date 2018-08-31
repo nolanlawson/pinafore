@@ -1,7 +1,3 @@
-// workerize version
-let database
-if (process.browser) {
-  const worker = require('./databaseWorker')
-  database = worker()
-}
+// dev version to play nice with IDEs
+import * as database from './databaseWorker'
 export { database }

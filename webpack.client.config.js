@@ -10,9 +10,7 @@ const isDev = config.dev
 
 module.exports = {
   entry: config.client.entry(),
-  // uncomment to enable HMR within workers
-  // output: Object.assign(config.client.output(), { globalObject: 'this' }),
-  output: config.client.output(),
+  output: Object.assign(config.client.output(), { globalObject: 'this' }), // enables HMR in workers
   resolve: {
     extensions: ['.js', '.json', '.html']
   },
@@ -48,7 +46,7 @@ module.exports = {
           'css-loader'
         ]
       },
-      !isDev && { // workerize-loader makes dev mode hard (e.g. HMR)
+      {
         test: /\/_database\/databaseWorker\.js$/,
         use: [
           'workerize-loader'
@@ -86,12 +84,12 @@ module.exports = {
   plugins: [
     new LodashModuleReplacementPlugin({
       paths: true
-    })
-  ].concat(isDev ? [
+    }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/,
-      './database.dev.js'
-    ),
+      './database.workerize.js'
+    )
+  ].concat(isDev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
     })
