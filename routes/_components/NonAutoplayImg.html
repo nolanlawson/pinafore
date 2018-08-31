@@ -7,6 +7,7 @@
   {height}
   src={displaySrc}
   on:mouseover="onMouseOver(event)"
+  ref:node
 />
 <style>
   .non-autoplay-zoom-in {
@@ -19,15 +20,12 @@
 <script>
   import { mouseover } from '../_utils/events'
   import { decodeImage } from '../_utils/decodeImage'
-  import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
   import { classname } from '../_utils/classname'
 
   export default {
     async oncreate () {
-      let { staticSrc } = this.get()
       try {
-        await decodeImage(staticSrc)
-        this.set({ displaySrc: staticSrc })
+        await decodeImage(this.refs.node)
         this.fire('imgLoad')
       } catch (e) {
         this.fire('imgLoadError', e)
@@ -35,26 +33,24 @@
     },
     methods: {
       onMouseOver (mouseOver) {
-        let { src, staticSrc, displaySrc } = this.get()
-        if (displaySrc !== ONE_TRANSPARENT_PIXEL) {
-          this.set({ displaySrc: mouseOver ? src : staticSrc })
-        }
+        this.set({ mouseOver })
       }
     },
     events: {
       mouseover
     },
     data: () => ({
-      displaySrc: ONE_TRANSPARENT_PIXEL,
       alt: '',
-      title: ''
+      title: '',
+      mouseOver: false
     }),
     computed: {
       computedClass: ({ className, src, staticSrc, isLink }) => (classname(
         className,
         src !== staticSrc && 'non-autoplay-zoom-in',
         isLink && 'is-link'
-      ))
+      )),
+      displaySrc: ({ src, staticSrc, mouseOver }) => (mouseOver ? src : staticSrc)
     }
   }
 </script>
