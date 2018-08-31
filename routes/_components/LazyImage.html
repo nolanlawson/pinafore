@@ -1,15 +1,14 @@
 <div class="lazy-image" style={computedStyle} >
-  {#if displaySrc}
-    <img
-      class={className}
-      aria-hidden={ariaHidden}
-      {alt}
-      {title}
-      {width}
-      {height}
-      src={displaySrc}
-    />
-  {/if}
+  <img
+    class={className}
+    aria-hidden={ariaHidden}
+    {alt}
+    {title}
+    {width}
+    {height}
+    src={displaySrc}
+    ref:node
+  />
 </div>
 <style>
   .lazy-image {
@@ -23,20 +22,15 @@
   export default {
     async oncreate () {
       mark('LazyImage oncreate()')
-      let { src, fallback } = this.get()
       try {
-        await decodeImage(src)
-        this.set({ displaySrc: src })
+        await decodeImage(this.refs.node)
       } catch (e) {
-        if (fallback) {
-          this.set({ displaySrc: fallback })
-        }
+        this.set({ error: true })
       }
       stop('LazyImage oncreate()')
     },
     data: () => ({
-      displaySrc: void 0,
-      hidden: false,
+      error: false,
       fallback: void 0,
       background: '',
       width: void 0,
@@ -53,7 +47,8 @@
           height && `height: ${height}px;`,
           background && `background: ${background};`
         ].filter(Boolean).join('')
-      }
+      },
+      displaySrc: ({ error, src, fallback }) => ((error && fallback) || src)
     }
   }
 </script>

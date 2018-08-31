@@ -1,13 +1,9 @@
-export function decodeImage (src) {
-  if (typeof Image.prototype.decode === 'function') {
-    let img = new Image()
-    img.src = src
+export function decodeImage (img) {
+  if (typeof img.decode === 'function') {
     return img.decode()
   }
 
   return new Promise((resolve, reject) => {
-    let img = new Image()
-    img.src = src
     img.onload = resolve
     img.onerror = reject
   })
