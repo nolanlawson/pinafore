@@ -10,8 +10,6 @@ import { getStatus, getStatusContext } from '../_api/statuses'
 import { emit } from '../_utils/eventBus'
 import { TIMELINE_BATCH_SIZE } from '../_static/timelines'
 
-const SCROLL_TO_BOTTOM_DELAY = 2000
-
 async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, items) {
   await database.insertTimelineItems(instanceName, timelineName, items)
   if (timelineName.startsWith('status/')) {
@@ -119,10 +117,8 @@ export async function fetchTimelineItemsOnScrollToBottom (instanceName, timeline
   console.log('setting runningUpdate: true')
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })
   await fetchTimelineItemsAndPossiblyFallBack()
-  setTimeout(() => {
-    console.log('setting runningUpdate: false')
-    store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
-  }, SCROLL_TO_BOTTOM_DELAY) // delay to avoid spamming network calls on scroll to bottom
+  console.log('setting runningUpdate: false')
+  store.setForTimeline(instanceName, timelineName, { runningUpdate: false })
 }
 
 export async function showMoreItemsForTimeline (instanceName, timelineName) {
