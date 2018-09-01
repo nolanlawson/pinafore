@@ -10,7 +10,7 @@
         <use xlink:href={svg} />
       </svg>
       {#if $hasNotifications}
-      <span class="nav-link-notifications" aria-hidden="true">
+      <span class="nav-link-notifications nav-link-notifications-digits-{notificationDigits}" aria-hidden="true">
           {$numberOfNotifications}
         </span>
       {/if}
@@ -70,8 +70,13 @@
     background: var(--nav-svg-fill);
     color: var(--nav-bg);
     border-radius: 100%;
-    font-size: 0.9em;
-    margin: 3px 0;
+    font-size: 0.8em;
+    margin: 0 0 3px;
+    font-weight: 600;
+  }
+
+  .nav-link-notifications-digits-2, .nav-link-notifications-digits-3 {
+    font-size: 0.7em;
   }
 
   .main-nav-link.selected {
@@ -144,7 +149,7 @@
     }
     .nav-link-notifications {
       transform: translate(15px, 7px);
-      margin: 3px 1px 4px;
+      margin: 2px 1px 4px;
     }
   }
 </style>
@@ -201,7 +206,10 @@
           res += ` (${$numberOfNotifications})`
         }
         return res
-      }
+      },
+      notificationDigits: ({ $numberOfNotifications }) => (
+        $numberOfNotifications.toString().length
+      )
     },
     methods: {
       onClick (e) {
