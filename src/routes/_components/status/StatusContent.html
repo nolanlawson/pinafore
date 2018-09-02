@@ -111,6 +111,9 @@
           } else if (anchor.getAttribute('rel') === 'nofollow noopener') {
             anchor.setAttribute('title', href)
           }
+          if (anchor.getAttribute('href')[0] !== '/' || anchor.getAttribute('href')[1] === '/') {
+            anchor.setAttribute('target', '_blank')
+          }
         }
         stop('hydrateContent')
       }
