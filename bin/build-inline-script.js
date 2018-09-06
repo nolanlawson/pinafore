@@ -17,7 +17,7 @@ async function main () {
   let checksumFilepath = path.join(__dirname, '../inline-script-checksum.json')
   await writeFile(checksumFilepath, JSON.stringify({ checksum }), 'utf8')
 
-  let htmlTemplateFilepath = path.join(__dirname, '../routes/template.html')
+  let htmlTemplateFilepath = path.join(__dirname, '../routes/_layout.html')
   let htmlTemplateFile = await readFile(htmlTemplateFilepath, 'utf8')
   htmlTemplateFile = htmlTemplateFile.replace(
     /<!-- insert inline script here -->[\s\S]+<!-- end insert inline script here -->/,

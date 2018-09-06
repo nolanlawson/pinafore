@@ -28,7 +28,7 @@ async function main () {
 
   result = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">\n${result}\n</svg>`
 
-  let htmlTemplateFilepath = path.join(__dirname, '../routes/template.html')
+  let htmlTemplateFilepath = path.join(__dirname, '../routes/_layout.html')
   let htmlTemplateFile = await readFile(htmlTemplateFilepath, 'utf8')
   htmlTemplateFile = htmlTemplateFile.replace(
     /<!-- insert svg here -->[\s\S]+<!-- end insert svg here -->/,
