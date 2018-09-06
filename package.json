@@ -106,7 +106,7 @@
     "eslint-plugin-html": "^4.0.5",
     "now": "^11.4.0",
     "standard": "^12.0.0",
-    "testcafe": "^0.21.1"
+    "testcafe": "^0.22.0"
   },
   "engines": {
     "node": ">= 8"
