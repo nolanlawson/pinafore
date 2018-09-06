@@ -1,4 +1,4 @@
-const config = require('sapper/webpack/config.js')
+const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
 
 const dev = process.env.NODE_ENV === 'development'

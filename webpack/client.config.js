@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const config = require('sapper/webpack/config.js')
+const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin')

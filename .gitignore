@@ -8,3 +8,7 @@ assets/*.css
 mastodon.log
 assets/robots.txt
 /inline-script-checksum.json
+/templates/.*
+/export/
+/build/
+/app/manifest/
