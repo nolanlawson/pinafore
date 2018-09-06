@@ -82,6 +82,12 @@ input {
   box-sizing: border-box;
 }
 
+// Fixes gray/black background when using a dark GTK theme
+input, textarea {
+  background: inherit;
+  color: inherit;
+}
+
 button, .button {
   font-size: 1.2em;
   background: var(--button-bg);
