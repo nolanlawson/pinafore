@@ -91,7 +91,6 @@ export async function getDatabase (instanceName) {
   if (!instanceName) {
     throw new Error('instanceName is undefined in getDatabase()')
   }
-  await idbPolyfillPromise
   if (!databaseCache[instanceName]) {
     databaseCache[instanceName] = await createDatabase(instanceName)
     await addKnownInstance(instanceName)
