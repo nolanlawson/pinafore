@@ -1,4 +1,4 @@
-export const TIMELINE_BATCH_SIZE = 10
+export const TIMELINE_BATCH_SIZE = 20
 
 export const timelines = {
   home: { name: 'home', label: 'Home' },
