@@ -1,13 +1,34 @@
 <Nav page={child.segment}/>
 
-  <main>
-    <svelte:component this={child.component} {...child.props}/>
-  </main>
+<main>
+  <svelte:component this={child.component} {...child.props}/>
+</main>
+{#if !$isUserLoggedIn && page === 'home'}
+  <InformationalFooter />
+{/if}
 
-  <script>
-    export default {
-      components: {
-        Nav: '../components/Nav.html'
+<script>
+  import { store } from '../_store/store'
+
+  // Only focus the `.container` div on first load so it does not intefere
+  // with other desired behaviours (e.g. you click a toot, you navigate from
+  // a timeline view to a thread view, you press the back button, and now
+  // you're still focused on the toot).
+  let firstTime = true
+
+  export default {
+    components: {
+      Nav: './_components/Nav.html',
+      InformationalFooter: './InformationalFooter.html'
+    },
+    oncreate () {
+      if (firstTime) {
+        firstTime = false
+        this.refs.container.focus()
       }
-    };
-  </script>
+      let { page } = this.get()
+      this.store.set({ currentPage: page })
+    },
+    store: () => store
+  };
+</script>
