@@ -114,5 +114,5 @@ module.exports = {
       logLevel: 'silent' // do not bother Webpacker, who runs with --json and parses stdout
     })
   ]),
-  devtool: isDev ? 'inline-source-map' : 'source-map'
+  devtool: isDev ? 'cheap-module-source-map' : 'source-map'
 }

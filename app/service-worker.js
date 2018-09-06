@@ -5,6 +5,7 @@ import {
   routes as __routes__
 } from './manifest/service-worker.js'
 
+const ASSETS = `assets_${timestamp}`
 const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
 
 // `assets` is an array of everything in the `assets` directory

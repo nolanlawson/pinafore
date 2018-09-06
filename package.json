@@ -7,7 +7,7 @@
     "lint-fix": "standard --fix && standard --fix --plugin html 'routes/**/*.html'",
     "dev": "run-s build-svg build-inline-script serve-dev",
     "serve-dev": "run-p --race build-sass-watch sapper-dev",
-    "sapper-dev": "sapper dev",
+    "sapper-dev": "PORT=4002 sapper dev",
     "sapper-prod": "node build",
     "build": "cross-env NODE_ENV=production npm run build-steps",
     "build-steps": "run-s globalize-css build-sass build-svg build-inline-script sapper-build deglobalize-css",

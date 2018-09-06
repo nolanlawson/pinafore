@@ -1,34 +1,41 @@
-<Nav page={child.segment}/>
+<Nav page={child.props.path.slice(1) || 'home'} />
 
-<main>
-  <svelte:component this={child.component} {...child.props}/>
-</main>
-{#if !$isUserLoggedIn && page === 'home'}
-  <InformationalFooter />
-{/if}
+<div class="container" tabindex="0" ref:container >
+  <main>
+    <svelte:component this={child.component} {...child.props} />
+  </main>
+  {#if !$isUserLoggedIn && (child.props.path.slice(1) || 'home') === 'home'}
+    <InformationalFooter />
+  {/if}
+</div>
 
 <script>
-  import { store } from '../_store/store'
-
-  // Only focus the `.container` div on first load so it does not intefere
-  // with other desired behaviours (e.g. you click a toot, you navigate from
-  // a timeline view to a thread view, you press the back button, and now
-  // you're still focused on the toot).
-  let firstTime = true
+  import { store } from './_store/store'
+  import { observe } from 'svelte-extras'
 
   export default {
     components: {
       Nav: './_components/Nav.html',
-      InformationalFooter: './InformationalFooter.html'
+      InformationalFooter: './_components/InformationalFooter.html'
     },
     oncreate () {
-      if (firstTime) {
-        firstTime = false
-        this.refs.container.focus()
+      // Only focus the `.container` div on first load so it does not intefere
+      // with other desired behaviours (e.g. you click a toot, you navigate from
+      // a timeline view to a thread view, you press the back button, and now
+      // you're still focused on the toot).
+      this.refs.container.focus()
+
+      if (process.browser && process.env.NODE_ENV !== 'production') {
+        window.layoutObject = this
       }
-      let { page } = this.get()
-      this.store.set({ currentPage: page })
+
+      this.observe('child', child => {
+        this.store.set({currentPage: (child.props.path.slice(1) || 'home')})
+      })
     },
-    store: () => store
-  };
+    store: () => store,
+    methods: {
+      observe
+    }
+  }
 </script>

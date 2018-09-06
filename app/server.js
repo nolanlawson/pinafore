@@ -6,6 +6,8 @@ const serveStatic = require('serve-static')
 const app = express()
 const helmet = require('helmet')
 
+const SAPPER_INLINE_SCRIPT_CHECKSUM = "'sha256-OQjxgqHHnjfZwkCEsAo2MRjd3GuPmg+RvmjrZd35TN4='"
+
 const headScriptChecksum = require('../inline-script-checksum').checksum
 
 const { PORT = 4002 } = process.env
@@ -36,7 +38,7 @@ app.use(debugOnly(helmet()))
 app.use(nonDebugOnly(helmet({
   contentSecurityPolicy: {
     directives: {
-      scriptSrc: [`'self'`, `'sha256-${headScriptChecksum}'`],
+      scriptSrc: [`'self'`, `'sha256-${headScriptChecksum}'`, SAPPER_INLINE_SCRIPT_CHECKSUM],
       workerSrc: [`'self'`],
       styleSrc: [`'self'`, `'unsafe-inline'`],
       frameSrc: [`'none'`],
