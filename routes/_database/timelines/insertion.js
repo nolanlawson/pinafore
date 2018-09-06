@@ -52,7 +52,7 @@ export function storeNotification (notificationsStore, statusesStore, accountsSt
   putNotification(notificationsStore, notification)
 }
 
-export async function insertTimelineNotifications (instanceName, timeline, notifications) {
+async function insertTimelineNotifications (instanceName, timeline, notifications) {
   for (let notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
     setInCache(accountsCache, instanceName, notification.account.id, notification.account)
@@ -71,7 +71,7 @@ export async function insertTimelineNotifications (instanceName, timeline, notif
   })
 }
 
-export async function insertTimelineStatuses (instanceName, timeline, statuses) {
+async function insertTimelineStatuses (instanceName, timeline, statuses) {
   for (let status of statuses) {
     cacheStatus(status, instanceName)
   }
@@ -86,7 +86,7 @@ export async function insertTimelineStatuses (instanceName, timeline, statuses) 
   })
 }
 
-export async function insertStatusThread (instanceName, statusId, statuses) {
+async function insertStatusThread (instanceName, statusId, statuses) {
   for (let status of statuses) {
     cacheStatus(status, instanceName)
   }
