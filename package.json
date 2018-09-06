@@ -83,7 +83,7 @@
     "pify": "^4.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
-    "sapper": "github:nolanlawson/sapper#for-pinafore-7",
+    "sapper": "^0.20.0",
     "serve-static": "^1.13.2",
     "shrink-ray-current": "^2.1.2",
     "stringz": "^1.0.0",

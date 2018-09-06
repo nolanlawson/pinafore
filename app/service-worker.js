@@ -1,5 +1,10 @@
-const timestamp = '__timestamp__'
-const ASSETS = `assets_${timestamp}`
+import {
+  timestamp,
+  assets as __assets__,
+  shell as __shell__,
+  routes as __routes__
+} from './manifest/service-worker.js'
+
 const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
 
 // `assets` is an array of everything in the `assets` directory

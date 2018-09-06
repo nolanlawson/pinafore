@@ -1,0 +1,13 @@
+<Nav page={child.segment}/>
+
+  <main>
+    <svelte:component this={child.component} {...child.props}/>
+  </main>
+
+  <script>
+    export default {
+      components: {
+        Nav: '../components/Nav.html'
+      }
+    };
+  </script>

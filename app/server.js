@@ -1,3 +1,4 @@
+const manifest = require('./manifest/server.js').manifest;
 const express = require('express')
 const shrinkRay = require('shrink-ray-current')
 const sapper = require('sapper')
@@ -5,7 +6,7 @@ const serveStatic = require('serve-static')
 const app = express()
 const helmet = require('helmet')
 
-const headScriptChecksum = require('./inline-script-checksum').checksum
+const headScriptChecksum = require('../inline-script-checksum').checksum
 
 const { PORT = 4002 } = process.env
 
@@ -58,7 +59,7 @@ debugPaths.forEach(debugPath => {
   app.use(debugPath, express.static(`.sapper/client${debugPath}`))
 })
 
-app.use(sapper())
+app.use(sapper({ manifest }))
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`)

@@ -16,7 +16,7 @@ const now = require('performance-now')
 const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
 const offlineThemeScss = path.join(__dirname, '../scss/themes/_offline.scss')
-const html2xxFile = path.join(__dirname, '../templates/2xx.html')
+const htmlTemplateFile = path.join(__dirname, '../routes/template.html')
 const scssDir = path.join(__dirname, '../scss')
 const themesScssDir = path.join(__dirname, '../scss/themes')
 const assetsDir = path.join(__dirname, '../assets')
@@ -44,11 +44,11 @@ async function compileGlobalSass () {
 
   let css = results.map(_ => _.css).join('')
 
-  let html = await readFile(html2xxFile, 'utf8')
+  let html = await readFile(htmlTemplateFile, 'utf8')
   html = html.replace(/<style>[\s\S]+?<\/style>/,
     `<style>\n/* auto-generated w/ build-sass.js */\n${css}\n</style>`)
 
-  await writeFile(html2xxFile, html, 'utf8')
+  await writeFile(htmlTemplateFile, html, 'utf8')
 }
 
 async function compileThemesSass () {

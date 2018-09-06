@@ -12,9 +12,9 @@ module.exports = {
   entry: config.client.entry(),
   output: Object.assign(config.client.output(), { globalObject: 'this' }), // enables HMR in workers
   resolve: {
-    extensions: ['.js', '.json', '.html']
+    extensions: ['.js', '.json', '.html'],
+    mainFields: ['svelte', 'module', 'browser', 'main']
   },
-  mode: isDev ? 'development' : 'production',
   module: {
     rules: [
       {
@@ -54,6 +54,7 @@ module.exports = {
       }
     ].filter(Boolean)
   },
+  mode: isDev ? 'development' : 'production',
   node: {
     setImmediate: false
   },
@@ -113,5 +114,5 @@ module.exports = {
       logLevel: 'silent' // do not bother Webpacker, who runs with --json and parses stdout
     })
   ]),
-  devtool: isDev ? 'cheap-module-source-map' : 'source-map'
+  devtool: isDev ? 'inline-source-map' : 'source-map'
 }

@@ -28,13 +28,13 @@ async function main () {
 
   result = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">\n${result}\n</svg>`
 
-  let html2xxFilepath = path.join(__dirname, '../templates/2xx.html')
-  let html2xxFile = await readFile(html2xxFilepath, 'utf8')
-  html2xxFile = html2xxFile.replace(
+  let htmlTemplateFilepath = path.join(__dirname, '../routes/template.html')
+  let htmlTemplateFile = await readFile(htmlTemplateFilepath, 'utf8')
+  htmlTemplateFile = htmlTemplateFile.replace(
     /<!-- insert svg here -->[\s\S]+<!-- end insert svg here -->/,
     '<!-- insert svg here -->' + result + '<!-- end insert svg here -->'
   )
-  await writeFile(html2xxFilepath, html2xxFile, 'utf8')
+  await writeFile(htmlTemplateFilepath, htmlTemplateFile, 'utf8')
 }
 
 main().catch(err => {
