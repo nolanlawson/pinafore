@@ -15,9 +15,6 @@ import {
   insertPinnedStatuses as _insertPinnedStatuses
 } from './timelines/pinnedStatuses'
 import {
-  getNotificationTimeline as _getNotificationTimeline,
-  getStatusThread as _getStatusThread,
-  getStatusTimeline as _getStatusTimeline,
   getTimeline as _getTimeline
 } from './timelines/pagination'
 import {
@@ -34,10 +31,7 @@ import {
   deleteStatusesAndNotifications as _deleteStatusesAndNotifications
 } from './timelines/deletion'
 import {
-  insertStatusThread as _insertStatusThread,
-  insertTimelineItems as _insertTimelineItems,
-  insertTimelineNotifications as _insertTimelineNotifications,
-  insertTimelineStatuses as _insertTimelineStatuses
+  insertTimelineItems as _insertTimelineItems
 } from './timelines/insertion'
 import {
   getCustomEmoji as _getCustomEmoji,
@@ -86,18 +80,6 @@ export async function getPinnedStatuses (instanceName, accountId) {
   return _getPinnedStatuses(instanceName, accountId)
 }
 
-export async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
-  return _getNotificationTimeline(instanceName, timeline, maxId, limit)
-}
-
-export async function getStatusTimeline (instanceName, timeline, maxId, limit) {
-  return _getStatusTimeline(instanceName, timeline, maxId, limit)
-}
-
-export async function getStatusThread (instanceName, statusId) {
-  return _getStatusThread(instanceName, statusId)
-}
-
 export async function getTimeline (instanceName, timeline, maxId, limit) {
   return _getTimeline(instanceName, timeline, maxId, limit)
 }
@@ -128,18 +110,6 @@ export async function setStatusMuted (instanceName, statusId, muted) {
 
 export async function deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
   return _deleteStatusesAndNotifications(instanceName, statusIds, notificationIds)
-}
-
-export async function insertTimelineNotifications (instanceName, timeline, notifications) {
-  return _insertTimelineNotifications(instanceName, timeline, notifications)
-}
-
-export async function insertTimelineStatuses (instanceName, timeline, statuses) {
-  return _insertTimelineStatuses(instanceName, timeline, statuses)
-}
-
-export async function insertStatusThread (instanceName, statusId, statuses) {
-  return _insertStatusThread(instanceName, statusId, statuses)
 }
 
 export async function insertTimelineItems (instanceName, timeline, timelineItems) {

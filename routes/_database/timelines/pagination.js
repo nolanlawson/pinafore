@@ -15,7 +15,7 @@ import { fetchStatus } from './fetchStatus'
 import { fetchNotification } from './fetchNotification'
 import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 
-export async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
+async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
   let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
@@ -35,7 +35,7 @@ export async function getNotificationTimeline (instanceName, timeline, maxId, li
   })
 }
 
-export async function getStatusTimeline (instanceName, timeline, maxId, limit) {
+async function getStatusTimeline (instanceName, timeline, maxId, limit) {
   let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
@@ -54,7 +54,7 @@ export async function getStatusTimeline (instanceName, timeline, maxId, limit) {
   })
 }
 
-export async function getStatusThread (instanceName, statusId) {
+async function getStatusThread (instanceName, statusId) {
   let storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   const db = await getDatabase(instanceName)
   return dbPromise(db, storeNames, 'readonly', (stores, callback) => {
