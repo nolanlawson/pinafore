@@ -30,6 +30,7 @@
       }
 
       this.observe('child', child => {
+        // TODO: sapper has a bug apparently, can't use computed properties for this
         this.store.set({currentPage: (child.props.path.slice(1) || 'home')})
       })
     },
