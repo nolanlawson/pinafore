@@ -14,7 +14,6 @@ import {
   USERNAME_LOWERCASE
 } from './constants'
 import { addKnownInstance, deleteKnownInstance } from './knownInstances'
-import { importIndexedDBGetAllShim } from '../_utils/asyncModules'
 
 const openReqs = {}
 const databaseCache = {}
@@ -23,11 +22,9 @@ const DB_VERSION_INITIAL = 9
 const DB_VERSION_SEARCH_ACCOUNTS = 10
 const DB_VERSION_CURRENT = 10
 
-const idbPolyfillPromise = Promise.resolve(
-  process.browser &&
-  !IDBObjectStore.prototype.getAll &&
-  importIndexedDBGetAllShim()
-)
+if (process.browser) {
+  require('indexeddb-getall-shim') // needed for Edge
+}
 
 function createDatabase (instanceName) {
   return new Promise((resolve, reject) => {

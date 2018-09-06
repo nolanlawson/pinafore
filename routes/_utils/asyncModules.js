@@ -10,10 +10,6 @@ export const importRequestIdleCallback = () => import(
   /* webpackChunkName: 'requestidlecallback' */ 'requestidlecallback'
   )
 
-export const importIndexedDBGetAllShim = () => import(
-  /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
-  )
-
 export const importWebAnimationPolyfill = () => import(
   /* webpackChunkName: 'web-animations-js' */ 'web-animations-js'
   )
