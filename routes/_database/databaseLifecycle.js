@@ -22,15 +22,12 @@ const DB_VERSION_INITIAL = 9
 const DB_VERSION_SEARCH_ACCOUNTS = 10
 const DB_VERSION_CURRENT = 10
 
-export function getDatabase (instanceName) {
-  if (!instanceName) {
-    throw new Error('instanceName is undefined in getDatabase()')
-  }
-  if (databaseCache[instanceName]) {
-    return Promise.resolve(databaseCache[instanceName])
-  }
+if (process.browser) {
+  require('indexeddb-getall-shim') // needed for Edge
+}
 
-  databaseCache[instanceName] = new Promise((resolve, reject) => {
+function createDatabase (instanceName) {
+  return new Promise((resolve, reject) => {
     let req = indexedDB.open(instanceName, DB_VERSION_CURRENT)
     openReqs[instanceName] = req
     req.onerror = reject
@@ -87,9 +84,17 @@ export function getDatabase (instanceName) {
       }
     }
     req.onsuccess = () => resolve(req.result)
-  }).then(res => {
-    return addKnownInstance(instanceName).then(() => res)
   })
+}
+
+export async function getDatabase (instanceName) {
+  if (!instanceName) {
+    throw new Error('instanceName is undefined in getDatabase()')
+  }
+  if (!databaseCache[instanceName]) {
+    databaseCache[instanceName] = await createDatabase(instanceName)
+    await addKnownInstance(instanceName)
+  }
   return databaseCache[instanceName]
 }
 
