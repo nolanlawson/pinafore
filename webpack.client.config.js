@@ -49,7 +49,7 @@ module.exports = {
       {
         test: /\/_database\/databaseWorker\.js$/,
         use: [
-          'workerize-loader'
+          'worker-loader'
         ]
       }
     ].filter(Boolean)
@@ -87,7 +87,7 @@ module.exports = {
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/,
-      './database.workerize.js'
+      './database.worker.js'
     )
   ].concat(isDev ? [
     new webpack.HotModuleReplacementPlugin({

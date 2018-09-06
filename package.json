@@ -81,6 +81,7 @@
     "page-lifecycle": "^0.1.1",
     "performance-now": "^2.1.0",
     "pify": "^4.0.0",
+    "promise-worker": "^2.0.0",
     "quick-lru": "^1.1.0",
     "requestidlecallback": "^0.3.0",
     "sapper": "github:nolanlawson/sapper#for-pinafore-7",
@@ -99,7 +100,7 @@
     "web-animations-js": "^2.3.1",
     "webpack": "^4.17.1",
     "webpack-bundle-analyzer": "^2.13.1",
-    "workerize-loader": "^1.0.4",
+    "worker-loader": "^2.0.0",
     "yargs": "^12.0.1"
   },
   "devDependencies": {
