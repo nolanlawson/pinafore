@@ -69,17 +69,26 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const req = event.request
+  const method = req.method
   const url = new URL(req.url)
+  const sameOrigin = url.origin === self.origin
+
+  if (method !== 'GET') {
+    return
+  }
 
   // don't try to handle e.g. data: URIs
   if (!url.protocol.startsWith('http')) {
     return
   }
 
-  event.respondWith((async () => {
-    let sameOrigin = url.origin === self.origin
+  // ignore dev server requests
+  if (url.hostname === self.location.hostname && url.port !== self.location.port) {
+    return
+  }
 
-    if (sameOrigin) {
+  if (sameOrigin) {
+    event.respondWith((async () => {
       // always serve webpack-generated resources and
       // assets from the cache if possible
       let response = await caches.match(req)
@@ -94,9 +103,7 @@ self.addEventListener('fetch', event => {
           return response
         }
       }
-    }
-
-    // for everything else, go network-only
-    return fetch(req)
-  })())
+      return fetch(req)
+    })())
+  }
 })
