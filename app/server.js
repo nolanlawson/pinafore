@@ -6,11 +6,14 @@ const serveStatic = require('serve-static')
 const app = express()
 const helmet = require('helmet')
 
-const SAPPER_INLINE_SCRIPT_CHECKSUM = "'sha256-OQjxgqHHnjfZwkCEsAo2MRjd3GuPmg+RvmjrZd35TN4='"
+const SAPPER_INLINE_SCRIPT_CHECKSUMS = [
+  "'sha256-aASq1hOJ8PP2cfK9QGXaCLdqgtkDXDb5VFXlSyrpX/M='",
+  "'sha256-OQjxgqHHnjfZwkCEsAo2MRjd3GuPmg+RvmjrZd35TN4='"
+]
 
 const headScriptChecksum = require('../inline-script-checksum').checksum
 
-const { PORT = 4002 } = process.env
+const { PORT } = process.env
 
 // this allows us to do e.g. `fetch('/_api/blog')` on the server
 const fetch = require('node-fetch')
@@ -38,7 +41,7 @@ app.use(debugOnly(helmet()))
 app.use(nonDebugOnly(helmet({
   contentSecurityPolicy: {
     directives: {
-      scriptSrc: [`'self'`, `'sha256-${headScriptChecksum}'`, SAPPER_INLINE_SCRIPT_CHECKSUM],
+      scriptSrc: [`'self'`, `'sha256-${headScriptChecksum}'`].concat(SAPPER_INLINE_SCRIPT_CHECKSUMS),
       workerSrc: [`'self'`],
       styleSrc: [`'self'`, `'unsafe-inline'`],
       frameSrc: [`'none'`],
