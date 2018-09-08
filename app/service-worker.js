@@ -1,9 +1,10 @@
 import {
-  timestamp,
   assets as __assets__,
   shell as __shell__,
   routes as __routes__
 } from './manifest/service-worker.js'
+
+const timestamp = process.env.SAPPER_TIMESTAMP
 
 const ASSETS = `assets_${timestamp}`
 const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
