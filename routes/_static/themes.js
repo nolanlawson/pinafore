@@ -40,12 +40,12 @@ const themes = [
     label: 'Sorcery'
   },
   {
-    name: 'darkpink',
-    label: 'Dark Pink'
+    name: 'punk',
+    label: 'Punk'
   },
   {
-    name: 'darkscarlet',
-    label: 'Dark Scarlet'
+    name: 'riot',
+    label: 'Riot'
   },
   {
     name: 'hacker',

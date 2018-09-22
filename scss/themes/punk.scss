@@ -1,5 +1,5 @@
-$main-theme-color: hotpink;
-//$main-theme-color: hotpink;
+$main-theme-color: #e04e41;
+//$main-theme-color: #e04e41;
 $main-bg-color: #28252E;
 $body-bg-color: darken($main-bg-color, 5%);
 $anchor-color: $main-theme-color;
@@ -14,7 +14,7 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_base.scss";
 @import "_dark.scss";
 
-body.theme-darkpink {
+body.theme-punk {
   @include baseTheme();
   @include darkTheme();
 
