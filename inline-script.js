@@ -12,6 +12,9 @@ window.__themeColors = {
   ozark: '#5263af',
   cobalt: '#08439b',
   sorcery: '#ae91e8',
+  darkpink: 'hotpink',
+  darkscarlet: '#e04e41',
+  hacker: '#4ab92f',
   offline: '#999999'
 }
 if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {

@@ -38,6 +38,18 @@ const themes = [
   {
     name: 'sorcery',
     label: 'Sorcery'
+  },
+  {
+    name: 'darkpink',
+    label: 'Dark Pink'
+  },
+  {
+    name: 'darkscarlet',
+    label: 'Dark Scarlet'
+  },
+  {
+    name: 'hacker',
+    label: 'Hacker'
   }
 ]
 
