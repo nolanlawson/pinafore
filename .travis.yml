@@ -39,7 +39,7 @@ addons:
 services:
   - redis-server
 before_install:
-  - npm install -g npm@5
+  - npm install -g npm@6
   - npm install -g greenkeeper-lockfile@1
   - ./bin/setup-mastodon-in-travis.sh
 before_script:
