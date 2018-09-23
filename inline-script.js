@@ -1,6 +1,7 @@
 // For perf reasons, this script is run inline to quickly set certain styles.
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to inline-script-checksum.json.
+// TODO: these should not have to be defined twice, once here and again in themes.js
 window.__themeColors = {
   'default': 'royalblue',
   scarlet: '#e04e41',
