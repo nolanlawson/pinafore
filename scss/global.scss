@@ -82,6 +82,10 @@ input {
   box-sizing: border-box;
 }
 
+input[type=search] {
+  -webkit-appearance: none; // reset Safari user agent stylesheet
+}
+
 // Fixes gray/black background when using a dark GTK theme
 input, textarea {
   background: inherit;
