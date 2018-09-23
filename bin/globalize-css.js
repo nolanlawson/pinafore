@@ -2,7 +2,6 @@
 // Change all the Svelte CSS to just use globals everywhere,
 // to reduce CSS size and complexity.
 
-const argv = require('yargs').argv
 const path = require('path')
 const fs = require('fs')
 const pify = require('pify')
@@ -15,7 +14,7 @@ const selectorRegex = /\n[ \t\n]*([0-9\w\- \t\n.:#,]+?)[ \t\n]*{/g
 const styleRegex = /<style>[\s\S]+?<\/style>/
 
 async function main () {
-  if (argv.reverse) { // reverse the operation we just did
+  if (process.argv.includes('--reverse')) { // reverse the operation we just did
     let tmpComponents = await glob('./routes/**/.tmp-*.html')
     for (let filename of tmpComponents) {
       let text = await readFile(filename, 'utf8')

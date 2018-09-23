@@ -2,7 +2,6 @@
 
 const sass = require('node-sass')
 const chokidar = require('chokidar')
-const argv = require('yargs').argv
 const path = require('path')
 const debounce = require('lodash/debounce')
 const fs = require('fs')
@@ -62,7 +61,7 @@ async function compileThemesSass () {
 
 async function main () {
   await Promise.all([compileGlobalSass(), compileThemesSass()])
-  if (argv.watch) {
+  if (process.argv.includes('--watch')) {
     doWatch()
   }
 }
