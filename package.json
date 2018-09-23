@@ -14,7 +14,7 @@
     "start": "cross-env NODE_ENV=production npm run serve",
     "build-and-start": "run-s build start",
     "build-svg": "node ./bin/build-svg.js",
-    "build-inline-script": "node ./bin/build-inline-script.js",
+    "build-inline-script": "node -r esm ./bin/build-inline-script.js",
     "build-sass": "node ./bin/build-sass.js",
     "build-sass-watch": "node ./bin/build-sass.js --watch",
     "run-mastodon": "node -r esm ./bin/run-mastodon.js",

@@ -89,7 +89,9 @@ export const getComposeSelectionStart = exec(() => composeInput().selectionStart
   dependencies: { composeInput }
 })
 
-export const getBodyClassList = exec(() => Array.prototype.slice.apply(document.body.classList))
+export const getBodyClassList = exec(() => (
+  Array.prototype.slice.apply(document.body.classList).filter(_ => _ !== 'the-body'))
+)
 
 export const scrollContainerToTop = exec(() => {
   document.getElementsByClassName('container')[0].scrollTop = 0

@@ -1,23 +1,8 @@
 // For perf reasons, this script is run inline to quickly set certain styles.
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to inline-script-checksum.json.
-// TODO: these should not have to be defined twice, once here and again in themes.js
-window.__themeColors = {
-  'default': 'royalblue',
-  scarlet: '#e04e41',
-  seafoam: '#177380',
-  hotpants: 'hotpink',
-  oaken: 'saddlebrown',
-  majesty: 'blueviolet',
-  gecko: '#4ab92f',
-  ozark: '#5263af',
-  cobalt: '#08439b',
-  sorcery: '#ae91e8',
-  punk: '#e04e41',
-  riot: 'hotpink',
-  hacker: '#4ab92f',
-  offline: '#999999'
-}
+window.__themeColors = process.env.THEME_COLORS
+
 if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
   let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
@@ -32,6 +17,7 @@ if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
     }
   }
 }
+
 if (!localStorage.store_currentInstance) {
   // if not logged in, show all these 'hidden-from-ssr' elements
   let style = document.createElement('style')
