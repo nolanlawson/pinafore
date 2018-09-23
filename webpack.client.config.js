@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const config = require('sapper/webpack/config.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin')
+const TerserWebpackPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
@@ -59,11 +59,11 @@ module.exports = {
   },
   optimization: isDev ? {} : {
     minimizer: [
-      new UglifyWebpackPlugin({
+      new TerserWebpackPlugin({
         cache: true,
         parallel: true,
         sourceMap: true,
-        uglifyOptions: {
+        terserOptions: {
           ecma: 6,
           mangle: true,
           compress: true,
