@@ -11,7 +11,6 @@ const readFile = pify(fs.readFile.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 
 async function main () {
-
   let inlineScriptPath = path.join(__dirname, '../inline-script.js')
   let code = await readFile(inlineScriptPath, 'utf8')
 
