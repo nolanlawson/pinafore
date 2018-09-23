@@ -12,18 +12,6 @@ $compose-background: lighten($main-theme-color, 17%);
 
 @import "_base.scss";
 
-body.offline,
-body.theme-hotpants.offline,
-body.theme-majesty.offline,
-body.theme-oaken.offline,
-body.theme-scarlet.offline,
-body.theme-seafoam.offline,
-body.theme-gecko.offline,
-body.theme-ozark.offline,
-body.theme-cobalt.offline,
-body.theme-sorcery.offline,
-body.theme-riot.offline,
-body.theme-punk.offline,
-body.theme-hacker.offline {
+body.the-body.offline { /* "the-body" is a specificity hack to allow offline to always trump themes */
   @include baseTheme();
 }
