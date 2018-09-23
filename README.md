@@ -84,3 +84,4 @@ how to run Pinafore in dev mode and run tests.
 ## Changelog
 
 For a changelog, see the [GitHub releases](http://github.com/nolanlawson/pinafore/releases/).
+
