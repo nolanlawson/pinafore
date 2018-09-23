@@ -16,7 +16,7 @@ async function main () {
   let code = await readFile(inlineScriptPath, 'utf8')
 
   code = code.replace('process.env.THEME_COLORS', JSON.stringify(fromPairs(themes.map(_ => ([_.name, _.color])))))
-  code = `(function () {'use strict';\n${code})()`
+  code = `(function () {'use strict'\n${code}})()`
 
   let checksum = crypto.createHash('sha256').update(code).digest('base64')
 
