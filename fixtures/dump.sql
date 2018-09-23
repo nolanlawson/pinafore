@@ -156,6 +156,42 @@ ALTER SEQUENCE public.account_moderation_notes_id_seq OWNED BY public.account_mo
 
 
 --
+-- Name: account_pins; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.account_pins (
+    id bigint NOT NULL,
+    account_id bigint,
+    target_account_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.account_pins OWNER TO pinafore;
+
+--
+-- Name: account_pins_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.account_pins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_pins_id_seq OWNER TO pinafore;
+
+--
+-- Name: account_pins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.account_pins_id_seq OWNED BY public.account_pins.id;
+
+
+--
 -- Name: accounts; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -1138,7 +1174,8 @@ CREATE TABLE public.oauth_applications (
     superapp boolean DEFAULT false NOT NULL,
     website character varying,
     owner_type character varying,
-    owner_id bigint
+    owner_id bigint,
+    confidential boolean DEFAULT true NOT NULL
 );
 
 
@@ -1226,6 +1263,43 @@ CREATE TABLE public.preview_cards_statuses (
 
 
 ALTER TABLE public.preview_cards_statuses OWNER TO pinafore;
+
+--
+-- Name: relays; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.relays (
+    id bigint NOT NULL,
+    inbox_url character varying DEFAULT ''::character varying NOT NULL,
+    follow_activity_id character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    state integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.relays OWNER TO pinafore;
+
+--
+-- Name: relays_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.relays_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.relays_id_seq OWNER TO pinafore;
+
+--
+-- Name: relays_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.relays_id_seq OWNED BY public.relays.id;
+
 
 --
 -- Name: report_notes; Type: TABLE; Schema: public; Owner: pinafore
@@ -1471,6 +1545,44 @@ ALTER SEQUENCE public.status_pins_id_seq OWNED BY public.status_pins.id;
 
 
 --
+-- Name: status_stats; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.status_stats (
+    id bigint NOT NULL,
+    status_id bigint NOT NULL,
+    replies_count bigint DEFAULT 0 NOT NULL,
+    reblogs_count bigint DEFAULT 0 NOT NULL,
+    favourites_count bigint DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.status_stats OWNER TO pinafore;
+
+--
+-- Name: status_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.status_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.status_stats_id_seq OWNER TO pinafore;
+
+--
+-- Name: status_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.status_stats_id_seq OWNED BY public.status_stats.id;
+
+
+--
 -- Name: statuses; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -1487,8 +1599,6 @@ CREATE TABLE public.statuses (
     visibility integer DEFAULT 0 NOT NULL,
     spoiler_text text DEFAULT ''::text NOT NULL,
     reply boolean DEFAULT false NOT NULL,
-    favourites_count integer DEFAULT 0 NOT NULL,
-    reblogs_count integer DEFAULT 0 NOT NULL,
     language character varying,
     conversation_id bigint,
     local boolean,
@@ -1795,6 +1905,13 @@ ALTER TABLE ONLY public.account_moderation_notes ALTER COLUMN id SET DEFAULT nex
 
 
 --
+-- Name: account_pins id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_pins ALTER COLUMN id SET DEFAULT nextval('public.account_pins_id_seq'::regclass);
+
+
+--
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -1977,6 +2094,13 @@ ALTER TABLE ONLY public.preview_cards ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: relays id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.relays ALTER COLUMN id SET DEFAULT nextval('public.relays_id_seq'::regclass);
+
+
+--
 -- Name: report_notes id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2016,6 +2140,13 @@ ALTER TABLE ONLY public.site_uploads ALTER COLUMN id SET DEFAULT nextval('public
 --
 
 ALTER TABLE ONLY public.status_pins ALTER COLUMN id SET DEFAULT nextval('public.status_pins_id_seq'::regclass);
+
+
+--
+-- Name: status_stats id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.status_stats ALTER COLUMN id SET DEFAULT nextval('public.status_stats_id_seq'::regclass);
 
 
 --
@@ -2073,6 +2204,14 @@ COPY public.account_domain_blocks (id, domain, created_at, updated_at, account_i
 --
 
 COPY public.account_moderation_notes (id, content, account_id, target_account_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: account_pins; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.account_pins (id, account_id, target_account_id, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -2311,8 +2450,8 @@ COPY public.oauth_access_tokens (id, token, refresh_token, expires_in, revoked_a
 -- Data for Name: oauth_applications; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.oauth_applications (id, name, uid, secret, redirect_uri, scopes, created_at, updated_at, superapp, website, owner_type, owner_id) FROM stdin;
-1	Web	376d13061ec170c84519ae921ff81056188764ceb6d5a68e0368ad028ae0d03d	f2637a09a9f1121fde9713e3a9ecef4f49fc5a4dccb3357df3239b702eaa50ae	urn:ietf:wg:oauth:2.0:oob	read write follow	2018-03-06 03:50:48.998748	2018-03-06 03:50:48.998748	t	\N	\N	\N
+COPY public.oauth_applications (id, name, uid, secret, redirect_uri, scopes, created_at, updated_at, superapp, website, owner_type, owner_id, confidential) FROM stdin;
+1	Web	376d13061ec170c84519ae921ff81056188764ceb6d5a68e0368ad028ae0d03d	f2637a09a9f1121fde9713e3a9ecef4f49fc5a4dccb3357df3239b702eaa50ae	urn:ietf:wg:oauth:2.0:oob	read write follow	2018-03-06 03:50:48.998748	2018-03-06 03:50:48.998748	t	\N	\N	\N	t
 \.
 
 
@@ -2329,6 +2468,14 @@ COPY public.preview_cards (id, url, title, description, image_file_name, image_c
 --
 
 COPY public.preview_cards_statuses (preview_card_id, status_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: relays; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.relays (id, inbox_url, follow_activity_id, created_at, updated_at, state) FROM stdin;
 \.
 
 
@@ -2523,6 +2670,14 @@ COPY public.schema_migrations (version) FROM stdin;
 20180617162849
 20180628181026
 20180707154237
+20180711152640
+20180808175627
+20180812123222
+20180812162710
+20180812173710
+20180813113448
+20180814171349
+20180820232245
 \.
 
 
@@ -2569,10 +2724,18 @@ COPY public.status_pins (id, account_id, status_id, created_at, updated_at) FROM
 
 
 --
+-- Data for Name: status_stats; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.status_stats (id, status_id, replies_count, reblogs_count, favourites_count, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: statuses; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.statuses (id, uri, text, created_at, updated_at, in_reply_to_id, reblog_of_id, url, sensitive, visibility, spoiler_text, reply, favourites_count, reblogs_count, language, conversation_id, local, account_id, application_id, in_reply_to_account_id) FROM stdin;
+COPY public.statuses (id, uri, text, created_at, updated_at, in_reply_to_id, reblog_of_id, url, sensitive, visibility, spoiler_text, reply, language, conversation_id, local, account_id, application_id, in_reply_to_account_id) FROM stdin;
 \.
 
 
@@ -2654,6 +2817,13 @@ SELECT pg_catalog.setval('public.account_domain_blocks_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.account_moderation_notes_id_seq', 1, false);
+
+
+--
+-- Name: account_pins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.account_pins_id_seq', 1, false);
 
 
 --
@@ -2839,6 +3009,13 @@ SELECT pg_catalog.setval('public.preview_cards_id_seq', 1, false);
 
 
 --
+-- Name: relays_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.relays_id_seq', 1, false);
+
+
+--
 -- Name: report_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -2878,6 +3055,13 @@ SELECT pg_catalog.setval('public.site_uploads_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.status_pins_id_seq', 1, false);
+
+
+--
+-- Name: status_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.status_stats_id_seq', 1, false);
 
 
 --
@@ -2943,6 +3127,14 @@ ALTER TABLE ONLY public.account_domain_blocks
 
 ALTER TABLE ONLY public.account_moderation_notes
     ADD CONSTRAINT account_moderation_notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account_pins account_pins_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_pins
+    ADD CONSTRAINT account_pins_pkey PRIMARY KEY (id);
 
 
 --
@@ -3162,6 +3354,14 @@ ALTER TABLE ONLY public.preview_cards
 
 
 --
+-- Name: relays relays_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.relays
+    ADD CONSTRAINT relays_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: report_notes report_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -3215,6 +3415,14 @@ ALTER TABLE ONLY public.site_uploads
 
 ALTER TABLE ONLY public.status_pins
     ADD CONSTRAINT status_pins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: status_stats status_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.status_stats
+    ADD CONSTRAINT status_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -3309,6 +3517,34 @@ CREATE INDEX index_account_moderation_notes_on_target_account_id ON public.accou
 
 
 --
+-- Name: index_account_pins_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_pins_on_account_id ON public.account_pins USING btree (account_id);
+
+
+--
+-- Name: index_account_pins_on_account_id_and_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_account_pins_on_account_id_and_target_account_id ON public.account_pins USING btree (account_id, target_account_id);
+
+
+--
+-- Name: index_account_pins_on_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_pins_on_target_account_id ON public.account_pins USING btree (target_account_id);
+
+
+--
+-- Name: index_accounts_on_moved_to_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_accounts_on_moved_to_account_id ON public.accounts USING btree (moved_to_account_id);
+
+
+--
 -- Name: index_accounts_on_uri; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -3348,6 +3584,13 @@ CREATE INDEX index_admin_action_logs_on_target_type_and_target_id ON public.admi
 --
 
 CREATE UNIQUE INDEX index_blocks_on_account_id_and_target_account_id ON public.blocks USING btree (account_id, target_account_id);
+
+
+--
+-- Name: index_blocks_on_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_blocks_on_target_account_id ON public.blocks USING btree (target_account_id);
 
 
 --
@@ -3425,6 +3668,13 @@ CREATE UNIQUE INDEX index_follow_requests_on_account_id_and_target_account_id ON
 --
 
 CREATE UNIQUE INDEX index_follows_on_account_id_and_target_account_id ON public.follows USING btree (account_id, target_account_id);
+
+
+--
+-- Name: index_follows_on_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_follows_on_target_account_id ON public.follows USING btree (target_account_id);
 
 
 --
@@ -3519,6 +3769,13 @@ CREATE UNIQUE INDEX index_mutes_on_account_id_and_target_account_id ON public.mu
 
 
 --
+-- Name: index_mutes_on_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_mutes_on_target_account_id ON public.mutes USING btree (target_account_id);
+
+
+--
 -- Name: index_notifications_on_account_id_and_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -3530,6 +3787,20 @@ CREATE INDEX index_notifications_on_account_id_and_id ON public.notifications US
 --
 
 CREATE INDEX index_notifications_on_activity_id_and_activity_type ON public.notifications USING btree (activity_id, activity_type);
+
+
+--
+-- Name: index_notifications_on_from_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_notifications_on_from_account_id ON public.notifications USING btree (from_account_id);
+
+
+--
+-- Name: index_oauth_access_grants_on_resource_owner_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_oauth_access_grants_on_resource_owner_id ON public.oauth_access_grants USING btree (resource_owner_id);
 
 
 --
@@ -3617,6 +3888,13 @@ CREATE INDEX index_reports_on_target_account_id ON public.reports USING btree (t
 
 
 --
+-- Name: index_session_activations_on_access_token_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_session_activations_on_access_token_id ON public.session_activations USING btree (access_token_id);
+
+
+--
 -- Name: index_session_activations_on_session_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -3652,10 +3930,24 @@ CREATE UNIQUE INDEX index_status_pins_on_account_id_and_status_id ON public.stat
 
 
 --
+-- Name: index_status_stats_on_status_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_status_stats_on_status_id ON public.status_stats USING btree (status_id);
+
+
+--
 -- Name: index_statuses_20180106; Type: INDEX; Schema: public; Owner: pinafore
 --
 
 CREATE INDEX index_statuses_20180106 ON public.statuses USING btree (account_id, id DESC, visibility, updated_at);
+
+
+--
+-- Name: index_statuses_on_in_reply_to_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_statuses_on_in_reply_to_account_id ON public.statuses USING btree (in_reply_to_account_id);
 
 
 --
@@ -4114,6 +4406,14 @@ ALTER TABLE ONLY public.list_accounts
 
 
 --
+-- Name: status_stats fk_rails_4a247aac42; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.status_stats
+    ADD CONSTRAINT fk_rails_4a247aac42 FOREIGN KEY (status_id) REFERENCES public.statuses(id) ON DELETE CASCADE;
+
+
+--
 -- Name: reports fk_rails_4e7a498fb4; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4202,6 +4502,14 @@ ALTER TABLE ONLY public.statuses
 
 
 --
+-- Name: account_pins fk_rails_a176e26c37; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_pins
+    ADD CONSTRAINT fk_rails_a176e26c37 FOREIGN KEY (target_account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: admin_action_logs fk_rails_a7667297fa; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4223,6 +4531,14 @@ ALTER TABLE ONLY public.web_push_subscriptions
 
 ALTER TABLE ONLY public.report_notes
     ADD CONSTRAINT fk_rails_cae66353f3 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: account_pins fk_rails_d44979e5dd; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_pins
+    ADD CONSTRAINT fk_rails_d44979e5dd FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
