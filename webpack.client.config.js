@@ -69,7 +69,8 @@ module.exports = {
           compress: true,
           output: {
             comments: false
-          }
+          },
+          safari10: true
         }
       }),
       new OptimizeCSSAssetsPlugin({})
