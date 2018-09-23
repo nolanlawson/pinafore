@@ -4,8 +4,6 @@ import crypto from 'crypto'
 import fs from 'fs'
 import pify from 'pify'
 import path from 'path'
-import { rollup } from 'rollup'
-import replace from 'rollup-plugin-replace'
 import { themes } from '../routes/_static/themes.js'
 import { fromPairs } from 'lodash-es'
 
@@ -13,16 +11,12 @@ const readFile = pify(fs.readFile.bind(fs))
 const writeFile = pify(fs.writeFile.bind(fs))
 
 async function main () {
-  let bundle = await rollup({
-    input: path.join(__dirname, '../inline-script.js'),
-    plugins: [
-      replace({
-        'process.env.THEME_COLORS': JSON.stringify(fromPairs(themes.map(_ => ([_.name, _.color]))))
-      })
-    ]
-  })
 
-  let { code } = await bundle.generate({ format: 'iife' })
+  let inlineScriptPath = path.join(__dirname, '../inline-script.js')
+  let code = await readFile(inlineScriptPath, 'utf8')
+
+  code = code.replace('process.env.THEME_COLORS', JSON.stringify(fromPairs(themes.map(_ => ([_.name, _.color])))))
+  code = `(function () {'use strict';\n${code})()`
 
   let checksum = crypto.createHash('sha256').update(code).digest('base64')
 
