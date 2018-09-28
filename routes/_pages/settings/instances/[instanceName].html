@@ -15,6 +15,25 @@
         <AccountDisplayName account={verifyCredentials} />
       </span>
     </div>
+    <h2>Push notifications:</h2>
+    <div class="push-notifications">
+      {#if $notificationPermission === "denied"}
+        <p role="alert">You have denied permission to show notifications.</p>
+      {/if}
+      <form id="push-notification-settings" disabled ref:pushNotificationsForm aria-label="Push notification settings">
+        <input type="checkbox" id="push-notifications-follow" name="follow" on:change="onPushSettingsChange(event)">
+        <label for="push-notifications-follow">New followers</label>
+        <br>
+        <input type="checkbox" id="push-notifications-favourite" name="favourite" on:change="onPushSettingsChange(event)">
+        <label for="push-notifications-favourite">Favourites</label>
+        <br>
+        <input type="checkbox" id="push-notifications-reblog" name="reblog" on:change="onPushSettingsChange(event)">
+        <label for="push-notifications-reblog">Boosts</label>
+        <br>
+        <input type="checkbox" id="push-notifications-mention" name="mention" on:change="onPushSettingsChange(event)">
+        <label for="push-notifications-mention">Mentions</label>
+      </form>
+    </div>
     <h2>Theme:</h2>
     <form class="theme-chooser" aria-label="Choose a theme">
         <div class="theme-groups">
@@ -73,6 +92,17 @@
   }
   .acct-display-name {
     grid-area: display-name;
+  }
+  .push-notifications {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    display: block;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .push-notifications p {
+    margin: 0;
   }
   .theme-chooser {
     background: var(--form-bg);
@@ -148,8 +178,10 @@
     logOutOfInstance,
     updateVerifyCredentialsForInstance
   } from '../../../_actions/instances'
+  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
   import { themes } from '../../../_static/themes'
   import AccountDisplayName from '../../../_components/profile/AccountDisplayName.html'
+  import { toast } from '../../../_utils/toast'
 
   export default {
     async oncreate () {
@@ -159,6 +191,15 @@
         selectedTheme: instanceThemes[instanceName] || 'default'
       })
       await updateVerifyCredentialsForInstance(instanceName)
+      await updatePushSubscriptionForInstance(instanceName)
+
+      const form = this.refs.pushNotificationsForm
+      const { pushSubscription } = this.store.get()
+
+      form.elements.follow.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.follow
+      form.elements.favourite.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.favourite
+      form.elements.reblog.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.reblog
+      form.elements.mention.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.mention
     },
     store: () => store,
     data: () => ({
@@ -188,6 +229,23 @@
         e.preventDefault()
         let { instanceName } = this.get()
         switchToInstance(instanceName)
+      },
+      async onPushSettingsChange (e) {
+        const { instanceName } = this.get()
+        const form = this.refs.pushNotificationsForm
+        const alerts = {
+          follow: form.elements.follow.checked,
+          favourite: form.elements.favourite.checked,
+          reblog: form.elements.reblog.checked,
+          mention: form.elements.mention.checked
+        }
+
+        try {
+          await updateAlerts(instanceName, alerts)
+        } catch (err) {
+          e.target.checked = !e.target.checked
+          toast.say(`Failed to update push notification settings: ${err.message}`)
+        }
       },
       async onLogOut (e) {
         e.preventDefault()

@@ -94,3 +94,123 @@ self.addEventListener('fetch', event => {
     return fetch(req)
   })())
 })
+
+self.addEventListener('push', event => {
+  event.waitUntil((async () => {
+    const data = event.data.json()
+    const { origin } = new URL(data.icon)
+
+    try {
+      const notification = await get(`${origin}/api/v1/notifications/${data.notification_id}`, {
+        'Authorization': `Bearer ${data.access_token}`
+      }, { timeout: 2000 })
+
+      await showRichNotification(data, notification)
+    } catch (e) {
+      await showSimpleNotification(data)
+    }
+  })())
+})
+
+async function showSimpleNotification (data) {
+  await self.registration.showNotification(data.title, {
+    icon: data.icon,
+    body: data.body
+  })
+}
+
+async function showRichNotification (data, notification) {
+  switch (notification.type) {
+    case 'follow': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        data: {
+          url: `${self.location.origin}/accounts/${notification.account.id}`
+        }
+      })
+      break
+    }
+    case 'mention': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        data: {
+          url: `${self.location.origin}/statuses/${notification.status.id}`
+        }
+      })
+      break
+    }
+    case 'reblog': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        data: {
+          url: `${self.location.origin}/statuses/${notification.status.id}`
+        }
+      })
+      break
+    }
+    case 'favourite': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        data: {
+          url: `${self.location.origin}/statuses/${notification.status.id}`
+        }
+      })
+      break
+    }
+  }
+}
+
+self.addEventListener('notificationclick', event => {
+  event.waitUntil((async () => {
+    if (event.notification.data && event.notification.data.url) {
+      await self.clients.openWindow(event.notification.data.url)
+      await event.notification.close()
+    }
+  })())
+})
+
+// Copy-paste from ajax.js
+async function get (url, headers, options) {
+  return _fetch(url, makeFetchOptions('GET', headers), options)
+}
+
+async function _fetch (url, fetchOptions, options) {
+  let response
+  if (options && options.timeout) {
+    response = await fetchWithTimeout(url, fetchOptions, options.timeout)
+  } else {
+    response = await fetch(url, fetchOptions)
+  }
+  return throwErrorIfInvalidResponse(response)
+}
+
+async function throwErrorIfInvalidResponse (response) {
+  let json = await response.json()
+  if (response.status >= 200 && response.status < 300) {
+    return json
+  }
+  if (json && json.error) {
+    throw new Error(response.status + ': ' + json.error)
+  }
+  throw new Error('Request failed: ' + response.status)
+}
+
+function fetchWithTimeout (url, fetchOptions, timeout) {
+  return new Promise((resolve, reject) => {
+    fetch(url, fetchOptions).then(resolve, reject)
+    setTimeout(() => reject(new Error(`Timed out after ${timeout / 1000} seconds`)), timeout)
+  })
+}
+
+function makeFetchOptions (method, headers) {
+  return {
+    method,
+    headers: Object.assign(headers || {}, {
+      'Accept': 'application/json'
+    })
+  }
+}
