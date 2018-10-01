@@ -51,6 +51,7 @@ export const store = new PinaforeStore({
   composeData: {},
   verifyCredentials: {},
   online: !process.browser || navigator.onLine,
+  pushNotificationsSupport: process.browser && ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in window.PushSubscription.prototype),
   pushSubscription: null
 })
 

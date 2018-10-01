@@ -17,20 +17,22 @@
     </div>
     <h2>Push notifications:</h2>
     <div class="push-notifications">
-      {#if $notificationPermission === "denied"}
+      {#if pushNotificationsSupport === false}
+        <p>Your browser doesn't support push notifications.</p>
+      {:elseif $notificationPermission === "denied"}
         <p role="alert">You have denied permission to show notifications.</p>
       {/if}
-      <form id="push-notification-settings" disabled ref:pushNotificationsForm aria-label="Push notification settings">
-        <input type="checkbox" id="push-notifications-follow" name="follow" on:change="onPushSettingsChange(event)">
+      <form id="push-notification-settings" disabled="{!pushNotificationsSupport}" ref:pushNotificationsForm aria-label="Push notification settings">
+        <input type="checkbox" id="push-notifications-follow" name="follow" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
         <label for="push-notifications-follow">New followers</label>
         <br>
-        <input type="checkbox" id="push-notifications-favourite" name="favourite" on:change="onPushSettingsChange(event)">
+        <input type="checkbox" id="push-notifications-favourite" name="favourite" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
         <label for="push-notifications-favourite">Favourites</label>
         <br>
-        <input type="checkbox" id="push-notifications-reblog" name="reblog" on:change="onPushSettingsChange(event)">
+        <input type="checkbox" id="push-notifications-reblog" name="reblog" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
         <label for="push-notifications-reblog">Boosts</label>
         <br>
-        <input type="checkbox" id="push-notifications-mention" name="mention" on:change="onPushSettingsChange(event)">
+        <input type="checkbox" id="push-notifications-mention" name="mention" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
         <label for="push-notifications-mention">Mentions</label>
       </form>
     </div>
@@ -100,6 +102,9 @@
     display: block;
     padding: 20px;
     line-height: 2em;
+  }
+  .push-notifications form[disabled="true"] {
+    opacity: 0.5;
   }
   .push-notifications p {
     margin: 0;
@@ -209,6 +214,7 @@
     computed: {
       instanceName: ({ params }) => params.instanceName,
       verifyCredentials: ({ $verifyCredentials, instanceName }) => $verifyCredentials && $verifyCredentials[instanceName],
+      pushNotificationsSupport: ({ $pushNotificationsSupport }) => $pushNotificationsSupport,
       themeGroups: ({ themes }) => ([
         {
           dark: false,
