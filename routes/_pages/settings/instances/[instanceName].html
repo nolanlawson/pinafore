@@ -250,7 +250,19 @@
           await updateAlerts(instanceName, alerts)
         } catch (err) {
           e.target.checked = !e.target.checked
-          toast.say(`Failed to update push notification settings: ${err.message}`)
+
+          // TODO: Better way to detect missing authorization scope
+          if (err.message.startsWith('403:')) {
+            let showConfirmationDialog = await importShowConfirmationDialog()
+            showConfirmationDialog({
+              text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`,
+              onPositive () {
+                logOutOfInstance(instanceName)
+              }
+            })
+          } else {
+            toast.say(`Failed to update push notification settings: ${err.message}`)
+          }
         }
       },
       async onLogOut (e) {
