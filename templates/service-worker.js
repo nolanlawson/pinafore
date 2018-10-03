@@ -120,6 +120,8 @@ async function showSimpleNotification (data) {
 }
 
 async function showRichNotification (data, notification) {
+  const { origin } = new URL(data.icon)
+
   switch (notification.type) {
     case 'follow': {
       await self.registration.showNotification(data.title, {
@@ -133,13 +135,33 @@ async function showRichNotification (data, notification) {
       break
     }
     case 'mention': {
+      const actions = [{
+        action: 'favourite',
+        title: 'Favourite'
+      }, {
+        action: 'reblog',
+        title: 'Boost'
+      }]
+
+      if ('reply' in NotificationEvent.prototype) {
+        actions.splice(0, 0, {
+          action: 'reply',
+          type: 'text',
+          title: 'Reply'
+        })
+      }
+
       await self.registration.showNotification(data.title, {
         icon: data.icon,
         body: data.body,
         tag: notification.id,
         data: {
+          instance: origin,
+          status_id: notification.status.id,
+          access_token: data.access_token,
           url: `${self.location.origin}/statuses/${notification.status.id}`
-        }
+        },
+        actions
       })
       break
     }
@@ -168,11 +190,51 @@ async function showRichNotification (data, notification) {
   }
 }
 
+const cloneNotification = notification => {
+  const clone = { }
+
+  // Object.assign() does not work with notifications
+  for (let k in notification) {
+    clone[k] = notification[k]
+  }
+
+  return clone
+}
+
+const updateNotificationWithoutAction = (notification, action) => {
+  const newNotification = cloneNotification(notification)
+
+  newNotification.actions = newNotification.actions.filter(item => item.action !== action)
+
+  return self.registration.showNotification(newNotification.title, newNotification)
+}
+
 self.addEventListener('notificationclick', event => {
   event.waitUntil((async () => {
-    if (event.notification.data && event.notification.data.url) {
-      await self.clients.openWindow(event.notification.data.url)
-      await event.notification.close()
+    switch (event.action) {
+      case 'reply': {
+        await post(`${event.notification.data.instance}/api/v1/statuses/`, {
+          status: event.reply,
+          in_reply_to_id: event.notification.data.status_id
+        }, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        await updateNotificationWithoutAction(event.notification, 'reply')
+        break
+      }
+      case 'reblog': {
+        await post(`${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/reblog`, null, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        await updateNotificationWithoutAction(event.notification, 'reblog')
+        break
+      }
+      case 'favourite': {
+        await post(`${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/favourite`, null, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        await updateNotificationWithoutAction(event.notification, 'favourite')
+        break
+      }
+      default: {
+        await self.clients.openWindow(event.notification.data.url)
+        await event.notification.close()
+        break
+      }
     }
   })())
 })
@@ -180,6 +242,23 @@ self.addEventListener('notificationclick', event => {
 // Copy-paste from ajax.js
 async function get (url, headers, options) {
   return _fetch(url, makeFetchOptions('GET', headers), options)
+}
+
+async function post (url, body, headers, options) {
+  return _putOrPostOrPatch('POST', url, body, headers, options)
+}
+
+async function _putOrPostOrPatch (method, url, body, headers, options) {
+  let fetchOptions = makeFetchOptions(method, headers)
+  if (body) {
+    if (body instanceof FormData) {
+      fetchOptions.body = body
+    } else {
+      fetchOptions.body = JSON.stringify(body)
+      fetchOptions.headers['Content-Type'] = 'application/json'
+    }
+  }
+  return _fetch(url, fetchOptions, options)
 }
 
 async function _fetch (url, fetchOptions, options) {
