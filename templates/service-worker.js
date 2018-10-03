@@ -125,6 +125,7 @@ async function showRichNotification (data, notification) {
       await self.registration.showNotification(data.title, {
         icon: data.icon,
         body: data.body,
+        tag: notification.id,
         data: {
           url: `${self.location.origin}/accounts/${notification.account.id}`
         }
@@ -135,6 +136,7 @@ async function showRichNotification (data, notification) {
       await self.registration.showNotification(data.title, {
         icon: data.icon,
         body: data.body,
+        tag: notification.id,
         data: {
           url: `${self.location.origin}/statuses/${notification.status.id}`
         }
@@ -145,6 +147,7 @@ async function showRichNotification (data, notification) {
       await self.registration.showNotification(data.title, {
         icon: data.icon,
         body: data.body,
+        tag: notification.id,
         data: {
           url: `${self.location.origin}/statuses/${notification.status.id}`
         }
@@ -155,6 +158,7 @@ async function showRichNotification (data, notification) {
       await self.registration.showNotification(data.title, {
         icon: data.icon,
         body: data.body,
+        tag: notification.id,
         data: {
           url: `${self.location.origin}/statuses/${notification.status.id}`
         }
