@@ -138,7 +138,8 @@
       "btoa",
       "Blob",
       "Element",
-      "Image"
+      "Image",
+      "NotificationEvent"
     ],
     "ignore": [
       "dist",

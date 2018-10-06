@@ -1,6 +1,7 @@
 import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances'
 import { updateLists } from '../../_actions/lists'
 import { createStream } from '../../_actions/streaming'
+import { updatePushSubscriptionForInstance } from '../../_actions/pushSubscription'
 import { updateCustomEmojiForInstance } from '../../_actions/emoji'
 import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
 import { getTimeline } from '../../_api/timelines'
@@ -28,6 +29,7 @@ export function instanceObservers (store) {
     updateInstanceInfo(currentInstance)
     updateCustomEmojiForInstance(currentInstance)
     updateLists()
+    updatePushSubscriptionForInstance(currentInstance)
 
     await updateInstanceInfo(currentInstance)
 

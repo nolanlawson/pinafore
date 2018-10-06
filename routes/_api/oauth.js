@@ -2,7 +2,7 @@ import { post, paramsString, WRITE_TIMEOUT } from '../_utils/ajax'
 import { basename } from './utils'
 
 const WEBSITE = 'https://pinafore.social'
-const SCOPES = 'read write follow'
+const SCOPES = 'read write follow push'
 const CLIENT_NAME = 'Pinafore'
 
 export function registerApplication (instanceName, redirectUri) {

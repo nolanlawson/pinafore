@@ -94,3 +94,206 @@ self.addEventListener('fetch', event => {
     return fetch(req)
   })())
 })
+
+self.addEventListener('push', event => {
+  event.waitUntil((async () => {
+    const data = event.data.json()
+    const { origin } = new URL(data.icon)
+
+    try {
+      const notification = await get(`${origin}/api/v1/notifications/${data.notification_id}`, {
+        'Authorization': `Bearer ${data.access_token}`
+      }, { timeout: 2000 })
+
+      await showRichNotification(data, notification)
+    } catch (e) {
+      await showSimpleNotification(data)
+    }
+  })())
+})
+
+async function showSimpleNotification (data) {
+  await self.registration.showNotification(data.title, {
+    icon: data.icon,
+    body: data.body
+  })
+}
+
+async function showRichNotification (data, notification) {
+  const { origin } = new URL(data.icon)
+
+  switch (notification.type) {
+    case 'follow': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        tag: notification.id,
+        data: {
+          url: `${self.location.origin}/accounts/${notification.account.id}`
+        }
+      })
+      break
+    }
+    case 'mention': {
+      const actions = [{
+        action: 'favourite',
+        title: 'Favourite'
+      }, {
+        action: 'reblog',
+        title: 'Boost'
+      }]
+
+      if ('reply' in NotificationEvent.prototype) {
+        actions.splice(0, 0, {
+          action: 'reply',
+          type: 'text',
+          title: 'Reply'
+        })
+      }
+
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        tag: notification.id,
+        data: {
+          instance: origin,
+          status_id: notification.status.id,
+          access_token: data.access_token,
+          url: `${self.location.origin}/statuses/${notification.status.id}`
+        },
+        actions
+      })
+      break
+    }
+    case 'reblog': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        tag: notification.id,
+        data: {
+          url: `${self.location.origin}/statuses/${notification.status.id}`
+        }
+      })
+      break
+    }
+    case 'favourite': {
+      await self.registration.showNotification(data.title, {
+        icon: data.icon,
+        body: data.body,
+        tag: notification.id,
+        data: {
+          url: `${self.location.origin}/statuses/${notification.status.id}`
+        }
+      })
+      break
+    }
+  }
+}
+
+const cloneNotification = notification => {
+  const clone = { }
+
+  // Object.assign() does not work with notifications
+  for (let k in notification) {
+    clone[k] = notification[k]
+  }
+
+  return clone
+}
+
+const updateNotificationWithoutAction = (notification, action) => {
+  const newNotification = cloneNotification(notification)
+
+  newNotification.actions = newNotification.actions.filter(item => item.action !== action)
+
+  return self.registration.showNotification(newNotification.title, newNotification)
+}
+
+self.addEventListener('notificationclick', event => {
+  event.waitUntil((async () => {
+    switch (event.action) {
+      case 'reply': {
+        await post(`${event.notification.data.instance}/api/v1/statuses/`, {
+          status: event.reply,
+          in_reply_to_id: event.notification.data.status_id
+        }, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        await updateNotificationWithoutAction(event.notification, 'reply')
+        break
+      }
+      case 'reblog': {
+        await post(`${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/reblog`, null, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        await updateNotificationWithoutAction(event.notification, 'reblog')
+        break
+      }
+      case 'favourite': {
+        await post(`${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/favourite`, null, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        await updateNotificationWithoutAction(event.notification, 'favourite')
+        break
+      }
+      default: {
+        await self.clients.openWindow(event.notification.data.url)
+        await event.notification.close()
+        break
+      }
+    }
+  })())
+})
+
+// Copy-paste from ajax.js
+async function get (url, headers, options) {
+  return _fetch(url, makeFetchOptions('GET', headers), options)
+}
+
+async function post (url, body, headers, options) {
+  return _putOrPostOrPatch('POST', url, body, headers, options)
+}
+
+async function _putOrPostOrPatch (method, url, body, headers, options) {
+  let fetchOptions = makeFetchOptions(method, headers)
+  if (body) {
+    if (body instanceof FormData) {
+      fetchOptions.body = body
+    } else {
+      fetchOptions.body = JSON.stringify(body)
+      fetchOptions.headers['Content-Type'] = 'application/json'
+    }
+  }
+  return _fetch(url, fetchOptions, options)
+}
+
+async function _fetch (url, fetchOptions, options) {
+  let response
+  if (options && options.timeout) {
+    response = await fetchWithTimeout(url, fetchOptions, options.timeout)
+  } else {
+    response = await fetch(url, fetchOptions)
+  }
+  return throwErrorIfInvalidResponse(response)
+}
+
+async function throwErrorIfInvalidResponse (response) {
+  let json = await response.json()
+  if (response.status >= 200 && response.status < 300) {
+    return json
+  }
+  if (json && json.error) {
+    throw new Error(response.status + ': ' + json.error)
+  }
+  throw new Error('Request failed: ' + response.status)
+}
+
+function fetchWithTimeout (url, fetchOptions, timeout) {
+  return new Promise((resolve, reject) => {
+    fetch(url, fetchOptions).then(resolve, reject)
+    setTimeout(() => reject(new Error(`Timed out after ${timeout / 1000} seconds`)), timeout)
+  })
+}
+
+function makeFetchOptions (method, headers) {
+  return {
+    method,
+    headers: Object.assign(headers || {}, {
+      'Accept': 'application/json'
+    })
+  }
+}

@@ -17,7 +17,8 @@ const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
   'reduceMotion',
   'omitEmojiInDisplayNames',
   'pinnedPages',
-  'composeData'
+  'composeData',
+  'pushSubscription'
 ])
 
 class PinaforeStore extends LocalStorageStore {
@@ -49,7 +50,9 @@ export const store = new PinaforeStore({
   customEmoji: {},
   composeData: {},
   verifyCredentials: {},
-  online: !process.browser || navigator.onLine
+  online: !process.browser || navigator.onLine,
+  pushNotificationsSupport: process.browser && ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in window.PushSubscription.prototype),
+  pushSubscription: null
 })
 
 mixins(PinaforeStore)

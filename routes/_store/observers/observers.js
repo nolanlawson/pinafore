@@ -6,6 +6,7 @@ import { navObservers } from './navObservers'
 import { autosuggestObservers } from './autosuggestObservers'
 import { pageVisibilityObservers } from './pageVisibilityObservers'
 import { resizeObservers } from './resizeObservers'
+import { notificationPermissionObservers } from './notificationPermissionObservers'
 
 export function observers (store) {
   instanceObservers(store)
@@ -16,4 +17,5 @@ export function observers (store) {
   autosuggestObservers(store)
   pageVisibilityObservers(store)
   resizeObservers(store)
+  notificationPermissionObservers(store)
 }
