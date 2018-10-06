@@ -1,0 +1,93 @@
+<div class="push-notifications">
+  {#if pushNotificationsSupport === false}
+  <p>Your browser doesn't support push notifications.</p>
+  {:elseif $notificationPermission === "denied"}
+  <p role="alert">You have denied permission to show notifications.</p>
+  {/if}
+  <form id="push-notification-settings" disabled="{!pushNotificationsSupport}" ref:pushNotificationsForm aria-label="Push notification settings">
+    <input type="checkbox" id="push-notifications-follow" name="follow" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
+    <label for="push-notifications-follow">New followers</label>
+    <br>
+    <input type="checkbox" id="push-notifications-favourite" name="favourite" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
+    <label for="push-notifications-favourite">Favourites</label>
+    <br>
+    <input type="checkbox" id="push-notifications-reblog" name="reblog" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
+    <label for="push-notifications-reblog">Boosts</label>
+    <br>
+    <input type="checkbox" id="push-notifications-mention" name="mention" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
+    <label for="push-notifications-mention">Mentions</label>
+  </form>
+</div>
+<style>
+  .push-notifications {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    display: block;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .push-notifications form[disabled="true"] {
+    opacity: 0.5;
+  }
+  .push-notifications p {
+    margin: 0;
+  }
+</style>
+<script>
+  import { store } from '../../../_store/store'
+  import { importShowConfirmationDialog } from '../../dialog/asyncDialogs'
+  import { logOutOfInstance } from '../../../_actions/instances'
+  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
+  import { toast } from '../../../_utils/toast'
+
+  export default {
+    async oncreate () {
+      let { instanceName } = this.get()
+      await updatePushSubscriptionForInstance(instanceName)
+
+      const form = this.refs.pushNotificationsForm
+      const { pushSubscription } = this.store.get()
+
+      form.elements.follow.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.follow
+      form.elements.favourite.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.favourite
+      form.elements.reblog.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.reblog
+      form.elements.mention.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.mention
+    },
+    store: () => store,
+    computed: {
+      pushNotificationsSupport: ({ $pushNotificationsSupport }) => $pushNotificationsSupport
+    },
+    methods: {
+      async onPushSettingsChange (e) {
+        const { instanceName } = this.get()
+        const form = this.refs.pushNotificationsForm
+        const alerts = {
+          follow: form.elements.follow.checked,
+          favourite: form.elements.favourite.checked,
+          reblog: form.elements.reblog.checked,
+          mention: form.elements.mention.checked
+        }
+
+        try {
+          await updateAlerts(instanceName, alerts)
+        } catch (err) {
+          e.target.checked = !e.target.checked
+
+          // TODO: Better way to detect missing authorization scope
+          if (err.message.startsWith('403:')) {
+            let showConfirmationDialog = await importShowConfirmationDialog()
+            showConfirmationDialog({
+              text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`,
+              onPositive () {
+                logOutOfInstance(instanceName)
+              }
+            })
+          } else {
+            toast.say(`Failed to update push notification settings: ${err.message}`)
+          }
+        }
+      }
+    }
+  }
+</script>

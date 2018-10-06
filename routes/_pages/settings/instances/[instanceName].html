@@ -3,286 +3,47 @@
 
   {#if verifyCredentials}
     <h2>Logged in as:</h2>
-    <div class="acct-current-user">
-      <div class="acct-avatar">
-        <Avatar account={verifyCredentials} size="big"/>
-      </div>
-      <ExternalLink className="acct-handle"
-                    href={verifyCredentials.url}>
-        {'@' + verifyCredentials.acct}
-      </ExternalLink>
-      <span class="acct-display-name">
-        <AccountDisplayName account={verifyCredentials} />
-      </span>
-    </div>
+    <InstanceUserProfile {verifyCredentials} />
     <h2>Push notifications:</h2>
-    <div class="push-notifications">
-      {#if pushNotificationsSupport === false}
-        <p>Your browser doesn't support push notifications.</p>
-      {:elseif $notificationPermission === "denied"}
-        <p role="alert">You have denied permission to show notifications.</p>
-      {/if}
-      <form id="push-notification-settings" disabled="{!pushNotificationsSupport}" ref:pushNotificationsForm aria-label="Push notification settings">
-        <input type="checkbox" id="push-notifications-follow" name="follow" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-        <label for="push-notifications-follow">New followers</label>
-        <br>
-        <input type="checkbox" id="push-notifications-favourite" name="favourite" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-        <label for="push-notifications-favourite">Favourites</label>
-        <br>
-        <input type="checkbox" id="push-notifications-reblog" name="reblog" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-        <label for="push-notifications-reblog">Boosts</label>
-        <br>
-        <input type="checkbox" id="push-notifications-mention" name="mention" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-        <label for="push-notifications-mention">Mentions</label>
-      </form>
-    </div>
+    <PushNotificationSettings {instanceName} />
     <h2>Theme:</h2>
-    <form class="theme-chooser" aria-label="Choose a theme">
-        <div class="theme-groups">
-          {#each themeGroups as themeGroup}
-            <div class="theme-group">
-              {#each themeGroup.themes as theme}
-                <div class="theme-picker">
-                  <input type="radio" id="choice-theme-{theme.name}"
-                         value={theme.name} checked="$currentTheme === theme.name"
-                         bind:group="selectedTheme" on:change="onThemeChange()">
-                  <div class="theme-preview theme-preview-{themeGroup.dark ? 'dark' : 'light'}"
-                       style="background-color: {theme.color};" >
-                  </div>
-                  <label class="theme-picker-label" for="choice-theme-{theme.name}">
-                    {theme.label}
-                  </label>
-                </div>
-              {/each}
-            </div>
-          {/each}
-        </div>
-    </form>
+    <ThemeSettings {instanceName} />
 
-    <form class="instance-actions" aria-label="Switch to or log out of this instance">
-      {#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== params.instanceName}
-        <button class="primary"
-          on:click="onSwitchToThisInstance(event)">
-          Switch to this instance
-        </button>
-      {/if}
-      <button on:click="onLogOut(event)">Log out</button>
-    </form>
+    <InstanceActions {instanceName} />
   {/if}
 </SettingsLayout>
 <style>
-  .acct-current-user {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    padding: 20px;
-    display: grid;
-    align-items: center;
-    font-size: 1.3em;
-    grid-template-areas:
-        "avatar handle"
-        "avatar display-name";
-    grid-template-columns: min-content 1fr;
-    grid-column-gap: 20px;
-    grid-row-gap: 10px;
-  }
-  :global(.acct-avatar) {
-    grid-area: avatar;
-  }
-  :global(.acct-handle) {
-    grid-area: handle;
-  }
-  .acct-display-name {
-    grid-area: display-name;
-  }
-  .push-notifications {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    display: block;
-    padding: 20px;
-    line-height: 2em;
-  }
-  .push-notifications form[disabled="true"] {
-    opacity: 0.5;
-  }
-  .push-notifications p {
-    margin: 0;
-  }
-  .theme-chooser {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    display: block;
-    padding: 20px;
-    line-height: 2em;
-  }
-  .theme-groups {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .theme-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex: 1;
-  }
-  .theme-picker {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .theme-picker-label {
-    margin: 2px 10px 0;
-  }
-  .theme-preview {
-    width: 1.5em;
-    height: 1.5em;
-    box-sizing: border-box;
-    border-radius: 2px;
-    margin: 0 2px 0 10px;
-  }
-  .theme-preview-dark {
-    border: 2px solid #000;
-  }
-  .theme-preview-light {
-    border: 2px solid #dadada;
-  }
-  .instance-actions {
-    width: 100%;
-    display: flex;
-    justify-content: right;
-    margin: 20px 0;
-  }
-  .instance-actions button {
-    margin: 0 5px;
-    flex-basis: 100%;
-  }
   .instance-name-h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  @media (max-width: 479px) {
-    .theme-groups {
-      grid-template-columns: 1fr;
-    }
-  }
-
 </style>
 <script>
   import { store } from '../../../_store/store'
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
-  import ExternalLink from '../../../_components/ExternalLink.html'
-  import Avatar from '../../../_components/Avatar.html'
-  import { importShowConfirmationDialog } from '../../../_components/dialog/asyncDialogs'
-  import {
-    changeTheme,
-    switchToInstance,
-    logOutOfInstance,
-    updateVerifyCredentialsForInstance
-  } from '../../../_actions/instances'
-  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
-  import { themes } from '../../../_static/themes'
-  import AccountDisplayName from '../../../_components/profile/AccountDisplayName.html'
-  import { toast } from '../../../_utils/toast'
+  import InstanceUserProfile from '../../../_components/settings/instance/InstanceUserProfile.html'
+  import PushNotificationSettings from '../../../_components/settings/instance/PushNotificationSettings.html'
+  import ThemeSettings from '../../../_components/settings/instance/ThemeSettings.html'
+  import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
+  import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
 
   export default {
     async oncreate () {
       let { instanceName } = this.get()
-      let { instanceThemes } = this.store.get()
-      this.set({
-        selectedTheme: instanceThemes[instanceName] || 'default'
-      })
       await updateVerifyCredentialsForInstance(instanceName)
-      await updatePushSubscriptionForInstance(instanceName)
-
-      const form = this.refs.pushNotificationsForm
-      const { pushSubscription } = this.store.get()
-
-      form.elements.follow.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.follow
-      form.elements.favourite.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.favourite
-      form.elements.reblog.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.reblog
-      form.elements.mention.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.mention
     },
     store: () => store,
-    data: () => ({
-      themes: themes,
-      selectedTheme: 'default'
-    }),
     computed: {
       instanceName: ({ params }) => params.instanceName,
-      verifyCredentials: ({ $verifyCredentials, instanceName }) => $verifyCredentials && $verifyCredentials[instanceName],
-      pushNotificationsSupport: ({ $pushNotificationsSupport }) => $pushNotificationsSupport,
-      themeGroups: ({ themes }) => ([
-        {
-          dark: false,
-          themes: themes.filter(_ => !_.dark)
-        },
-        {
-          dark: true,
-          themes: themes.filter(_ => _.dark)
-        }
-      ])
-    },
-    methods: {
-      onThemeChange () {
-        let { selectedTheme, instanceName } = this.get()
-        changeTheme(instanceName, selectedTheme)
-      },
-      onSwitchToThisInstance (e) {
-        e.preventDefault()
-        let { instanceName } = this.get()
-        switchToInstance(instanceName)
-      },
-      async onPushSettingsChange (e) {
-        const { instanceName } = this.get()
-        const form = this.refs.pushNotificationsForm
-        const alerts = {
-          follow: form.elements.follow.checked,
-          favourite: form.elements.favourite.checked,
-          reblog: form.elements.reblog.checked,
-          mention: form.elements.mention.checked
-        }
-
-        try {
-          await updateAlerts(instanceName, alerts)
-        } catch (err) {
-          e.target.checked = !e.target.checked
-
-          // TODO: Better way to detect missing authorization scope
-          if (err.message.startsWith('403:')) {
-            let showConfirmationDialog = await importShowConfirmationDialog()
-            showConfirmationDialog({
-              text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`,
-              onPositive () {
-                logOutOfInstance(instanceName)
-              }
-            })
-          } else {
-            toast.say(`Failed to update push notification settings: ${err.message}`)
-          }
-        }
-      },
-      async onLogOut (e) {
-        e.preventDefault()
-        let { instanceName } = this.get()
-
-        let showConfirmationDialog = await importShowConfirmationDialog()
-        showConfirmationDialog({
-          text: `Log out of ${instanceName}?`,
-          onPositive () {
-            logOutOfInstance(instanceName)
-          }
-        })
-      }
+      verifyCredentials: ({ $verifyCredentials, instanceName }) => $verifyCredentials && $verifyCredentials[instanceName]
     },
     components: {
       SettingsLayout,
-      ExternalLink,
-      Avatar,
-      AccountDisplayName
+      InstanceUserProfile,
+      PushNotificationSettings,
+      ThemeSettings,
+      InstanceActions
     }
   }
 </script>
