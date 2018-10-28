@@ -138,9 +138,6 @@ async function showRichNotification (data, notification) {
       const actions = [{
         action: 'favourite',
         title: 'Favourite'
-      }, {
-        action: 'reblog',
-        title: 'Boost'
       }]
 
       if ('reply' in NotificationEvent.prototype) {
@@ -148,6 +145,13 @@ async function showRichNotification (data, notification) {
           action: 'reply',
           type: 'text',
           title: 'Reply'
+        })
+      }
+
+      if (['public', 'unlisted'].includes(notification.status.visibility)) {
+        actions.push({
+          action: 'reblog',
+          title: 'Boost'
         })
       }
 
