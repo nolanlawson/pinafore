@@ -1,0 +1,106 @@
+<form class="theme-chooser" aria-label="Choose a theme">
+  <div class="theme-groups">
+    {#each themeGroups as themeGroup}
+    <div class="theme-group">
+      {#each themeGroup.themes as theme}
+      <div class="theme-picker">
+        <input type="radio" id="choice-theme-{theme.name}"
+               value={theme.name} checked="$currentTheme === theme.name"
+               bind:group="selectedTheme" on:change="onThemeChange()">
+        <div class="theme-preview theme-preview-{themeGroup.dark ? 'dark' : 'light'}"
+             style="background-color: {theme.color};" >
+        </div>
+        <label class="theme-picker-label" for="choice-theme-{theme.name}">
+          {theme.label}
+        </label>
+      </div>
+      {/each}
+    </div>
+    {/each}
+  </div>
+</form>
+<style>
+  .theme-chooser {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    display: block;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .theme-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .theme-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+  }
+  .theme-picker {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .theme-picker-label {
+    margin: 2px 10px 0;
+  }
+  .theme-preview {
+    width: 1.5em;
+    height: 1.5em;
+    box-sizing: border-box;
+    border-radius: 2px;
+    margin: 0 2px 0 10px;
+  }
+  .theme-preview-dark {
+    border: 2px solid #000;
+  }
+  .theme-preview-light {
+    border: 2px solid #dadada;
+  }
+
+  @media (max-width: 479px) {
+    .theme-groups {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+<script>
+  import { changeTheme } from '../../../_actions/instances'
+  import { store } from '../../../_store/store'
+  import { themes } from '../../../_static/themes'
+
+  export default {
+    async oncreate () {
+      let { instanceName } = this.get()
+      let { instanceThemes } = this.store.get()
+      this.set({
+        selectedTheme: instanceThemes[instanceName] || 'default'
+      })
+    },
+    store: () => store,
+    data: () => ({
+      themes,
+      selectedTheme: 'default'
+    }),
+    computed: {
+      themeGroups: ({ themes }) => ([
+        {
+          dark: false,
+          themes: themes.filter(_ => !_.dark)
+        },
+        {
+          dark: true,
+          themes: themes.filter(_ => _.dark)
+        }
+      ])
+    },
+    methods: {
+      onThemeChange () {
+        let { selectedTheme, instanceName } = this.get()
+        changeTheme(instanceName, selectedTheme)
+      }
+    }
+  }
+</script>
