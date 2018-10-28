@@ -17,7 +17,7 @@ import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 import { getKnownInstances } from './knownInstances'
 
 const BATCH_SIZE = 20
-const TIME_AGO = 7 * 24 * 60 * 60 * 1000 // one week ago
+const TIME_AGO = 5 * 24 * 60 * 60 * 1000 // five days ago
 const DELAY = 5 * 60 * 1000 // five minutes
 
 function batchedGetAll (callGetAll, callback) {
