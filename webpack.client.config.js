@@ -45,12 +45,6 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader'
         ]
-      },
-      {
-        test: /\/_database\/databaseWorker\.js$/,
-        use: [
-          'workerize-loader'
-        ]
       }
     ].filter(Boolean)
   },
@@ -85,11 +79,7 @@ module.exports = {
   plugins: [
     new LodashModuleReplacementPlugin({
       paths: true
-    }),
-    new webpack.NormalModuleReplacementPlugin(
-      /\/_database\/database\.js$/,
-      './database.workerize.js'
-    )
+    })
   ].concat(isDev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
