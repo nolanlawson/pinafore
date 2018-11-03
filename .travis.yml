@@ -4,7 +4,7 @@ node_js:
 dist: trusty   # needed for chrome headless
 sudo: required # needed for chrome headless
 addons:
-  chrome: stable
+  chrome: beta
   postgresql: "10"
   apt:
     packages:
