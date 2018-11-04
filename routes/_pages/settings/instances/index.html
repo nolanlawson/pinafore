@@ -2,10 +2,7 @@
   <h1>Instances</h1>
 
   {#if $isUserLoggedIn}
-  <p>Instances you've logged in to:
-  <br />
-    (click to change themes/colours)
-  </p>
+  <p>Instances you've logged in to:</p>
   <SettingsList label="Instances">
     {#each $loggedInInstancesAsList as instance}
       <SettingsListItem offsetForIcon={instance.name !== $currentInstance}
