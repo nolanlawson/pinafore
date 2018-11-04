@@ -126,5 +126,6 @@ export function deleteDatabase (instanceName) {
     let req = indexedDB.deleteDatabase(instanceName)
     req.onsuccess = () => resolve()
     req.onerror = () => reject(req.error)
+    req.onblocked = () => console.error(`database ${instanceName} blocked`)
   }).then(() => deleteKnownInstance(instanceName))
 }

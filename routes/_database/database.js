@@ -1,3 +1,3 @@
-// dev version to play nice with IDEs
-import * as database from './databaseWorker'
+// this used to be workerized, hence the API looks like this
+import * as database from './databaseApis'
 export { database }
