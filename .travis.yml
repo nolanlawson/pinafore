@@ -2,42 +2,40 @@ language: node_js
 node_js:
   - "8"
 dist: trusty   # needed for chrome headless
-sudo: required # needed for chrome headless
+sudo: required # needed for various sudo operations
 addons:
   chrome: stable
   postgresql: "10"
   apt:
     packages:
-    - postgresql-10
-    - postgresql-client-10
-    - postgresql-contrib-10
-    # the following are mastodon dependencies
-    - imagemagick
-    - libpq-dev
-    - libxml2-dev
-    - libxslt1-dev
-    - file
-    - g++
-    - libprotobuf-dev
-    - protobuf-compiler
-    - pkg-config nodejs
-    - gcc
     - autoconf
     - bison
     - build-essential
-    - libssl-dev
-    - libyaml-dev
-    - libreadline6-dev
-    - zlib1g-dev
-    - libncurses5-dev
+    - file
+    - g++
+    - gcc
+    - imagemagick
     - libffi-dev
-    - libgdbm3
     - libgdbm-dev
-    - redis-tools
-    - libidn11-dev
+    - libgdbm3
     - libicu-dev
-services:
-  - redis-server
+    - libidn11-dev
+    - libncurses5-dev
+    - libpq-dev
+    - libprotobuf-dev
+    - libreadline6-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - libyaml-dev
+    - pkg-config nodejs
+    - postgresql-10
+    - postgresql-client-10
+    - postgresql-contrib-10
+    - protobuf-compiler
+    - redis-tools
+    - tcl # required to build redis from source
+    - zlib1g-dev
 before_install:
   - npm install -g npm@6
   - npm install -g greenkeeper-lockfile@1
