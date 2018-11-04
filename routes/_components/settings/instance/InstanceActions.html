@@ -40,7 +40,7 @@
         showConfirmationDialog({
           text: `Log out of ${instanceName}?`,
           onPositive () {
-            logOutOfInstance(instanceName)
+            /* no await */ logOutOfInstance(instanceName)
           }
         })
       }
