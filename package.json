@@ -54,7 +54,7 @@
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.4",
     "cross-env": "^5.2.0",
-    "css-loader": "^1.0.0",
+    "css-loader": "^1.0.1",
     "emoji-regex": "^7.0.1",
     "escape-html": "^1.0.3",
     "esm": "^3.0.84",
