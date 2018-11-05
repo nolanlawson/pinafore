@@ -98,7 +98,7 @@
     "tiny-queue": "^0.2.1",
     "web-animations-js": "^2.3.1",
     "webpack": "^4.24.0",
-    "webpack-bundle-analyzer": "^3.0.2"
+    "webpack-bundle-analyzer": "^3.0.3"
   },
   "devDependencies": {
     "eslint-plugin-html": "^4.0.6",
