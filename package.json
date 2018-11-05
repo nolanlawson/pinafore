@@ -85,7 +85,7 @@
     "requestidlecallback": "^0.3.0",
     "sapper": "github:nolanlawson/sapper#for-pinafore-8",
     "serve-static": "^1.13.2",
-    "shrink-ray-current": "^3.0.0",
+    "shrink-ray-current": "^3.0.1",
     "stringz": "^1.0.0",
     "style-loader": "^0.23.1",
     "svelte": "^2.15.0",
