@@ -1,5 +1,5 @@
 export function notificationPermissionObservers (store) {
-  if (!process.browser) {
+  if (!process.browser || !navigator.permissions || !navigator.permissions.query) {
     return
   }
 
