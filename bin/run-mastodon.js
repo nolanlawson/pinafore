@@ -95,9 +95,17 @@ async function runMastodon () {
     'yarn --pure-lockfile'
   ]
 
-  for (let cmd of cmds) {
-    console.log(cmd)
-    await exec(cmd, { cwd, env })
+  const installedFile = path.join(mastodonDir, 'installed.txt')
+  try {
+    await stat(installedFile)
+    console.log('Already installed Mastodon')
+  } catch (e) {
+    console.log('Installing Mastodon...')
+    for (let cmd of cmds) {
+      console.log(cmd)
+      await exec(cmd, { cwd, env })
+    }
+    await writeFile(installedFile, '', 'utf8')
   }
   const promise = spawn('foreman', ['start'], { cwd, env })
   const log = fs.createWriteStream('mastodon.log', { flags: 'a' })
