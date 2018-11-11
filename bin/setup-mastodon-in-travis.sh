@@ -23,7 +23,7 @@ if [ ! -f ffmpeg/ffmpeg ]; then
   mkdir -p ffmpeg
   cd ffmpeg
   curl -sO https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz
-  tar -xzf ffmpeg-release-64bit-static.tar.xz
+  tar -xf ffmpeg-release-64bit-static.tar.xz
   mv ffmpeg-*-static/* .
   cd ..
 fi
