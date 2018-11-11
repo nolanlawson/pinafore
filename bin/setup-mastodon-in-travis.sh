@@ -18,10 +18,15 @@ sudo mv redis.conf /etc/redis
 sudo service redis-server start
 echo PING | nc localhost 6379 # check redis running
 
-# install ffmpeg from PPA because it's not in Trusty
-sudo -E add-apt-repository -y ppa:mc3man/trusty-media
-sudo -E apt-get update
-sudo -E apt-get install -y ffmpeg
+# install ffmpeg because it's not in Trusty. this method is faster than PPA
+if [ ! -f ffmpeg/ffmpeg ]; then
+  mkdir -p ffmpeg
+  cd ffmpeg
+  curl -sO https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz
+  tar -xzf ffmpeg-release-64bit-static.tar.xz
+  mv ffmpeg-*-static/* .
+  cd ..
+fi
 
 # check versions
 ruby --version
@@ -29,4 +34,4 @@ node --version
 npm --version
 postgres --version
 redis-server --version
-ffmpeg -version
+"$FFMPEG_BINARY" -version
