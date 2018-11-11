@@ -53,13 +53,13 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Building
 
-Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and `npm`.
+Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and [Yarn](https://yarnpkg.com).
 
 To build Pinafore for production:
 
-    npm install
-    npm run build
-    PORT=4002 npm start
+    yarn --pure-lockfile
+    yarn run build
+    PORT=4002 yarn start
 
 ### Docker
 

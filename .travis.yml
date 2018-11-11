@@ -40,13 +40,11 @@ before_install:
   - npm install -g greenkeeper-lockfile@1
   - ./bin/setup-mastodon-in-travis.sh
 before_script:
-  - npm run lint
+  - yarn run lint
   - greenkeeper-lockfile-update
 after_script:
   - greenkeeper-lockfile-upload
-install:
-  - npm ci || npm i
-script: travis_retry npm run $COMMAND
+script: travis_retry yarn run $COMMAND
 env:
   global:
   - PGPORT=5433
@@ -64,8 +62,7 @@ branches:
   - master
   - /^greenkeeper/.*$/
 cache:
+  yarn: true
+  bundler: true
   directories:
-  - $HOME/.npm
-  - $HOME/.rvm
-  - $HOME/.bundle
-  - $HOME/.yarn-cache
+  - /home/travis/.rvm/

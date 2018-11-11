@@ -27,6 +27,7 @@ sudo -E apt-get install -y ffmpeg
 ruby --version
 node --version
 npm --version
+yarn --version
 postgres --version
 redis-server --version
 ffmpeg -version
