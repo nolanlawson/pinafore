@@ -44,8 +44,6 @@ before_script:
   - greenkeeper-lockfile-update
 after_script:
   - greenkeeper-lockfile-upload
-install:
-  - npm ci || npm i
 script: travis_retry npm run $COMMAND
 env:
   global:
@@ -64,8 +62,8 @@ branches:
   - master
   - /^greenkeeper/.*$/
 cache:
+  npm: true
+  yarn: true
+  bundler: true
   directories:
-  - $HOME/.npm
-  - $HOME/.rvm
-  - $HOME/.bundle
-  - $HOME/.yarn-cache
+  - /home/travis/.rvm/
