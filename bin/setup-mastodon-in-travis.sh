@@ -20,9 +20,9 @@ echo PING | nc localhost 6379 # check redis running
 
 # install ffmpeg because it's not in Trusty. this method is faster than PPA
 if [ ! -f "$FFMPEG_BINARY" ]; then
-  rm -fr ffmpeg
-  mkdir -p ffmpeg
-  cd ffmpeg
+  rm -fr ffmpeg-bin
+  mkdir -p ffmpeg-bin
+  cd ffmpeg-bin
   curl -sO https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz
   tar -xf ffmpeg-release-64bit-static.tar.xz
   mv ffmpeg-*-static/* .
