@@ -26,6 +26,7 @@ if [ ! -f "$FFMPEG_BINARY" ]; then
   curl -sO https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz
   tar -xf ffmpeg-release-64bit-static.tar.xz
   mv ffmpeg-*-static/* .
+  rmdir ffmpeg-*-static
   cd ..
 fi
 
