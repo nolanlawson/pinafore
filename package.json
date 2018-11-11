@@ -81,7 +81,7 @@
     "page-lifecycle": "^0.1.1",
     "performance-now": "^2.1.0",
     "pify": "^4.0.1",
-    "quick-lru": "^1.1.0",
+    "quick-lru": "^2.0.0",
     "requestidlecallback": "^0.3.0",
     "sapper": "github:nolanlawson/sapper#for-pinafore-8",
     "serve-static": "^1.13.2",
