@@ -53,6 +53,10 @@ sudo mv redis.conf /etc/redis
 sudo service redis-server start
 echo PING | nc localhost 6379 # check redis running
 
+# run postgres
+sudo service postgresql start 10
+pg_isready -p "$PGPORT" # check postgres running
+
 # check versions
 ruby --version
 node --version
