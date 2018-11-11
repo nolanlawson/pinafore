@@ -45,11 +45,9 @@ export async function restoreMastodonData () {
   console.log('Restoring mastodon data...')
   let internalIdsToIds = {}
   for (let action of actions) {
-    if (!action.post) {
-      // If the action is a boost, favorite, etc., then it needs to
-      // be delayed, otherwise it may appear in an unpredictable order and break the tests.
-      await new Promise(resolve => setTimeout(resolve, 1000))
-    }
+    // If the action is a boost, favorite, etc., then it needs to
+    // be delayed, otherwise it may appear in an unpredictable order and break the tests.
+    await new Promise(resolve => setTimeout(resolve, 2000))
     console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
 
