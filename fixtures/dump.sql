@@ -83,6 +83,45 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: account_conversations; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.account_conversations (
+    id bigint NOT NULL,
+    account_id bigint,
+    conversation_id bigint,
+    participant_account_ids bigint[] DEFAULT '{}'::bigint[] NOT NULL,
+    status_ids bigint[] DEFAULT '{}'::bigint[] NOT NULL,
+    last_status_id bigint,
+    lock_version integer DEFAULT 0 NOT NULL,
+    unread boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.account_conversations OWNER TO pinafore;
+
+--
+-- Name: account_conversations_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.account_conversations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_conversations_id_seq OWNER TO pinafore;
+
+--
+-- Name: account_conversations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.account_conversations_id_seq OWNED BY public.account_conversations.id;
+
+
+--
 -- Name: account_domain_blocks; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -558,7 +597,8 @@ CREATE TABLE public.domain_blocks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     severity integer DEFAULT 0,
-    reject_media boolean DEFAULT false NOT NULL
+    reject_media boolean DEFAULT false NOT NULL,
+    reject_reports boolean DEFAULT false NOT NULL
 );
 
 
@@ -976,7 +1016,8 @@ CREATE TABLE public.mentions (
     status_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    account_id bigint
+    account_id bigint,
+    silent boolean DEFAULT false NOT NULL
 );
 
 
@@ -1200,6 +1241,43 @@ ALTER TABLE public.oauth_applications_id_seq OWNER TO pinafore;
 --
 
 ALTER SEQUENCE public.oauth_applications_id_seq OWNED BY public.oauth_applications.id;
+
+
+--
+-- Name: pghero_space_stats; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.pghero_space_stats (
+    id bigint NOT NULL,
+    database text,
+    schema text,
+    relation text,
+    size bigint,
+    captured_at timestamp without time zone
+);
+
+
+ALTER TABLE public.pghero_space_stats OWNER TO pinafore;
+
+--
+-- Name: pghero_space_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.pghero_space_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pghero_space_stats_id_seq OWNER TO pinafore;
+
+--
+-- Name: pghero_space_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.pghero_space_stats_id_seq OWNED BY public.pghero_space_stats.id;
 
 
 --
@@ -1891,6 +1969,13 @@ ALTER SEQUENCE public.web_settings_id_seq OWNED BY public.web_settings.id;
 
 
 --
+-- Name: account_conversations id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_conversations ALTER COLUMN id SET DEFAULT nextval('public.account_conversations_id_seq'::regclass);
+
+
+--
 -- Name: account_domain_blocks id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2087,6 +2172,13 @@ ALTER TABLE ONLY public.oauth_applications ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: pghero_space_stats id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.pghero_space_stats ALTER COLUMN id SET DEFAULT nextval('public.pghero_space_stats_id_seq'::regclass);
+
+
+--
 -- Name: preview_cards id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2189,6 +2281,14 @@ ALTER TABLE ONLY public.web_push_subscriptions ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.web_settings ALTER COLUMN id SET DEFAULT nextval('public.web_settings_id_seq'::regclass);
+
+
+--
+-- Data for Name: account_conversations; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.account_conversations (id, account_id, conversation_id, participant_account_ids, status_ids, last_status_id, lock_version, unread) FROM stdin;
+\.
 
 
 --
@@ -2304,7 +2404,7 @@ COPY public.custom_filters (id, account_id, expires_at, phrase, context, irrever
 -- Data for Name: domain_blocks; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.domain_blocks (id, domain, created_at, updated_at, severity, reject_media) FROM stdin;
+COPY public.domain_blocks (id, domain, created_at, updated_at, severity, reject_media, reject_reports) FROM stdin;
 \.
 
 
@@ -2397,7 +2497,7 @@ COPY public.media_attachments (id, status_id, file_file_name, file_content_type,
 -- Data for Name: mentions; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.mentions (id, status_id, created_at, updated_at, account_id) FROM stdin;
+COPY public.mentions (id, status_id, created_at, updated_at, account_id, silent) FROM stdin;
 \.
 
 
@@ -2452,6 +2552,14 @@ COPY public.oauth_access_tokens (id, token, refresh_token, expires_in, revoked_a
 
 COPY public.oauth_applications (id, name, uid, secret, redirect_uri, scopes, created_at, updated_at, superapp, website, owner_type, owner_id, confidential) FROM stdin;
 1	Web	376d13061ec170c84519ae921ff81056188764ceb6d5a68e0368ad028ae0d03d	f2637a09a9f1121fde9713e3a9ecef4f49fc5a4dccb3357df3239b702eaa50ae	urn:ietf:wg:oauth:2.0:oob	read write follow	2018-03-06 03:50:48.998748	2018-03-06 03:50:48.998748	t	\N	\N	\N	t
+\.
+
+
+--
+-- Data for Name: pghero_space_stats; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.pghero_space_stats (id, database, schema, relation, size, captured_at) FROM stdin;
 \.
 
 
@@ -2678,6 +2786,13 @@ COPY public.schema_migrations (version) FROM stdin;
 20180813113448
 20180814171349
 20180820232245
+20180929222014
+20181007025445
+20181010141500
+20181017170937
+20181018205649
+20181024224956
+20181026034033
 \.
 
 
@@ -2803,6 +2918,13 @@ COPY public.web_settings (id, data, created_at, updated_at, user_id) FROM stdin;
 3	{"onboarded":true,"skinTone":1,"home":{"shows":{"reblog":true,"reply":true},"regex":{"body":""}},"notifications":{"alerts":{"follow":true,"favourite":true,"reblog":true,"mention":true},"shows":{"follow":true,"favourite":true,"reblog":true,"mention":true},"sounds":{"follow":true,"favourite":true,"reblog":true,"mention":true}},"community":{"regex":{"body":""}},"public":{"regex":{"body":""}},"columns":[{"id":"COMPOSE","uuid":"a31cb067-99a7-42e5-855a-518a851eef51","params":{}},{"id":"HOME","uuid":"e72285de-fde1-4939-9640-84098f301af1","params":{}},{"id":"NOTIFICATIONS","uuid":"86509c82-e0d8-4768-b4fe-71cd908e5ad7","params":{}}]}	2018-03-08 17:13:46.311542	2018-03-08 17:13:46.311542	5
 4	{"onboarded":true,"skinTone":1,"home":{"shows":{"reblog":true,"reply":true},"regex":{"body":""}},"notifications":{"alerts":{"follow":true,"favourite":true,"reblog":true,"mention":true},"shows":{"follow":true,"favourite":true,"reblog":true,"mention":true},"sounds":{"follow":true,"favourite":true,"reblog":true,"mention":true}},"community":{"regex":{"body":""}},"public":{"regex":{"body":""}},"columns":[{"id":"COMPOSE","uuid":"534d5170-4e10-4ed3-9329-c864d8fd8386","params":{}},{"id":"HOME","uuid":"1a920c13-a8a7-481c-868d-e88fac754b8f","params":{}},{"id":"NOTIFICATIONS","uuid":"76869a99-a78a-47f5-8938-3f56d5e3a217","params":{}}]}	2018-03-15 04:08:02.30709	2018-03-15 04:08:02.30709	6
 \.
+
+
+--
+-- Name: account_conversations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.account_conversations_id_seq', 1, false);
 
 
 --
@@ -3002,6 +3124,13 @@ SELECT pg_catalog.setval('public.oauth_applications_id_seq', 1, true);
 
 
 --
+-- Name: pghero_space_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.pghero_space_stats_id_seq', 1, false);
+
+
+--
 -- Name: preview_cards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3111,6 +3240,14 @@ SELECT pg_catalog.setval('public.web_push_subscriptions_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.web_settings_id_seq', 4, true);
+
+
+--
+-- Name: account_conversations account_conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_conversations
+    ADD CONSTRAINT account_conversations_pkey PRIMARY KEY (id);
 
 
 --
@@ -3346,6 +3483,14 @@ ALTER TABLE ONLY public.oauth_applications
 
 
 --
+-- Name: pghero_space_stats pghero_space_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.pghero_space_stats
+    ADD CONSTRAINT pghero_space_stats_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: preview_cards preview_cards_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -3493,6 +3638,20 @@ CREATE UNIQUE INDEX account_activity ON public.notifications USING btree (accoun
 --
 
 CREATE INDEX hashtag_search_index ON public.tags USING btree (lower((name)::text) text_pattern_ops);
+
+
+--
+-- Name: index_account_conversations_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_conversations_on_account_id ON public.account_conversations USING btree (account_id);
+
+
+--
+-- Name: index_account_conversations_on_conversation_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_conversations_on_conversation_id ON public.account_conversations USING btree (conversation_id);
 
 
 --
@@ -3846,6 +4005,13 @@ CREATE UNIQUE INDEX index_oauth_applications_on_uid ON public.oauth_applications
 
 
 --
+-- Name: index_pghero_space_stats_on_database_and_captured_at; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_pghero_space_stats_on_database_and_captured_at ON public.pghero_space_stats USING btree (database, captured_at);
+
+
+--
 -- Name: index_preview_cards_on_url; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -4011,6 +4177,13 @@ CREATE UNIQUE INDEX index_subscriptions_on_account_id_and_callback_url ON public
 --
 
 CREATE UNIQUE INDEX index_tags_on_name ON public.tags USING btree (name);
+
+
+--
+-- Name: index_unique_conversations; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_unique_conversations ON public.account_conversations USING btree (account_id, conversation_id, participant_account_ids);
 
 
 --
@@ -4358,6 +4531,14 @@ ALTER TABLE ONLY public.backups
 
 
 --
+-- Name: account_conversations fk_rails_1491654f9f; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_conversations
+    ADD CONSTRAINT fk_rails_1491654f9f FOREIGN KEY (conversation_id) REFERENCES public.conversations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: accounts fk_rails_2320833084; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4451,6 +4632,14 @@ ALTER TABLE ONLY public.conversation_mutes
 
 ALTER TABLE ONLY public.status_pins
     ADD CONSTRAINT fk_rails_65c05552f1 FOREIGN KEY (status_id) REFERENCES public.statuses(id) ON DELETE CASCADE;
+
+
+--
+-- Name: account_conversations fk_rails_6f5278b6e9; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_conversations
+    ADD CONSTRAINT fk_rails_6f5278b6e9 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
