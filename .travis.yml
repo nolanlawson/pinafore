@@ -5,6 +5,7 @@ dist: trusty   # needed for chrome headless
 sudo: required # needed for various sudo operations
 addons:
   chrome: stable
+  postgresql: "10"
 before_install:
   - npm install -g greenkeeper-lockfile@1
   - ./bin/setup-mastodon-in-travis.sh
