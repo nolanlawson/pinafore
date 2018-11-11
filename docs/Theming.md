@@ -24,4 +24,4 @@ const themes = [
 ]
 ```
 
-Start the development server (`npm run dev`), go to `http://localhost:4002/settings/instances/your-instance-name` and select your newly created theme. Once you've done that, you can update your theme, and refresh the page to see the change (you don't have to restart the server).
+Start the development server (`yarn run dev`), go to `http://localhost:4002/settings/instances/your-instance-name` and select your newly created theme. Once you've done that, you can update your theme, and refresh the page to see the change (you don't have to restart the server).

@@ -34,7 +34,7 @@ sudo ln -s /home/travis/ffmpeg-static/ffprobe /usr/local/bin/ffprobe
 # check versions
 ruby --version
 node --version
-npm --version
+yarn --version
 postgres --version
 redis-server --version
 ffmpeg -version
