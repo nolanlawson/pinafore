@@ -5,37 +5,6 @@ dist: trusty   # needed for chrome headless
 sudo: required # needed for various sudo operations
 addons:
   chrome: stable
-  postgresql: "10"
-  apt:
-    packages:
-    - autoconf
-    - bison
-    - build-essential
-    - file
-    - g++
-    - gcc
-    - imagemagick
-    - libffi-dev
-    - libgdbm-dev
-    - libgdbm3
-    - libicu-dev
-    - libidn11-dev
-    - libncurses5-dev
-    - libpq-dev
-    - libprotobuf-dev
-    - libreadline6-dev
-    - libssl-dev
-    - libxml2-dev
-    - libxslt1-dev
-    - libyaml-dev
-    - pkg-config nodejs
-    - postgresql-10
-    - postgresql-client-10
-    - postgresql-contrib-10
-    - protobuf-compiler
-    - redis-server
-    - redis-tools
-    - zlib1g-dev
 before_install:
   - npm install -g greenkeeper-lockfile@1
   - ./bin/setup-mastodon-in-travis.sh
