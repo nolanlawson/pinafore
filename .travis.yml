@@ -37,7 +37,6 @@ addons:
     - redis-tools
     - zlib1g-dev
 before_install:
-  - npm install -g npm@6
   - npm install -g greenkeeper-lockfile@1
   - ./bin/setup-mastodon-in-travis.sh
 before_script:
