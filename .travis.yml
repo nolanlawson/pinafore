@@ -70,4 +70,4 @@ cache:
   - $HOME/.rvm
   - $HOME/.bundle
   - $HOME/.yarn-cache
-  - $HOME/ffmpeg-bin/ffmpeg
+  - $HOME/ffmpeg-bin/ffmpeg/ffmpeg
