@@ -4,6 +4,7 @@
   background="var(--muted-modal-bg)"
   muted="true"
   className="video-modal-dialog"
+  on:close="onClose()"
 >
   <video {poster}
          {src}
@@ -11,6 +12,7 @@
          {height}
          aria-label="Video: {description || ''}"
          controls
+         ref:video
   />
 </ModalDialog>
 <style>
@@ -32,7 +34,12 @@
       ModalDialog
     },
     methods: {
-      show
+      show,
+      onClose () {
+        if (this.refs.video && !this.refs.video.paused) {
+          this.refs.video.pause()
+        }
+      }
     }
   }
 </script>

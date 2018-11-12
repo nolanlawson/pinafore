@@ -131,8 +131,9 @@
       let dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
-        this._a11yDialog.destroy()
         let { id } = this.get()
+        this.fire('close')
+        this._a11yDialog.destroy()
         emit('destroyDialog', id)
         requestAnimationFrame(() => document.body.removeChild(dialogElement))
       })
