@@ -67,3 +67,4 @@ cache:
   bundler: true
   directories:
   - /home/travis/.rvm/
+  - /home/travis/ffmpeg-static/
