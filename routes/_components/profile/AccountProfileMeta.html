@@ -1,8 +1,8 @@
-{#if emojifiedFields.length}
+{#if massagedFields.length}
   <h2 class="sr-only">Fields</h2>
   <div class="account-profile-meta">
     <div class="account-profile-meta-border"></div>
-    {#each emojifiedFields as field, i}
+    {#each massagedFields as field, i}
       <div
         id="account-profile-meta-name-{i}"
         class="account-profile-meta-cell account-profile-meta-name"
@@ -17,6 +17,13 @@
       >
         {@html field.value}
       </div>
+      <div class="account-profile-meta-cell account-profile-meta-verified">
+        {#if field.verified}
+          <svg class="account-profile-meta-verified-svg">
+            <use xlink:href='#fa-check' />
+          </svg>
+        {/if}
+      </div>
     {/each}
     <div class="account-profile-meta-border"></div>
   </div>
@@ -25,7 +32,7 @@
   .account-profile-meta {
     grid-area: meta;
     display: grid;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: max-content 1fr min-content;
     grid-row-gap: 5px;
     align-items: center;
     padding: 10px 0;
@@ -34,7 +41,7 @@
   .account-profile-meta-border {
     height: 1px;
     width: 100%;
-    grid-column: 1 / 3;
+    grid-column: 1 / 4;
     background: var(--main-border);
     justify-self: center;
   }
@@ -45,6 +52,12 @@
     white-space: pre-wrap;
     text-overflow: ellipsis;
     font-size: 1.1em;
+  }
+
+  .account-profile-meta-verified-svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--svg-fill);
   }
 
   .account-profile-meta-name {
@@ -92,9 +105,10 @@
     computed: {
       emojis: ({ account }) => account.emojis || [],
       fields: ({ account }) => account.fields || [],
-      emojifiedFields: ({ fields, emojis, $autoplayGifs }) => (fields.map(field => ({
+      massagedFields: ({ fields, emojis, $autoplayGifs }) => (fields.map(field => ({
         name: field.name,
-        value: emojifyText(field.value, emojis, $autoplayGifs)
+        value: emojifyText(field.value, emojis, $autoplayGifs),
+        verified: !!field.verified_at
       })))
     }
   }
