@@ -22,7 +22,7 @@ test('Shows the home timeline', async t => {
 
   await validateTimeline(t, homeTimeline)
 
-  await t.expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql('49')
+  await t.expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql('47')
 })
 
 test('Shows notifications', async t => {
