@@ -21,7 +21,7 @@ echo PING | nc localhost 6379 # check redis running
 # install ffmpeg from PPA because it's not in Trusty
 sudo -E add-apt-repository -y ppa:mc3man/trusty-media
 sudo -E apt-get update
-sudo -E apt-get install -y ffmpeg
+sudo -E apt-get install -yq --no-install-suggests --no-install-recommends ffmpeg
 
 # check versions
 ruby --version
