@@ -4,6 +4,8 @@ import {
   scrollToBottomOfTimeline, scrollToTopOfTimeline
 } from '../utils'
 import { loginAsFoobar } from '../roles'
+import { indexWhere } from '../../routes/_utils/arrays'
+import { homeTimeline } from '../fixtures'
 
 fixture`100-favorite-unfavorite.js`
   .page`http://localhost:4002`
@@ -59,20 +61,21 @@ test('unfavorites a status', async t => {
 
 test('Keeps the correct favorites count', async t => {
   await loginAsFoobar(t)
+  let idx = indexWhere(homeTimeline, _ => _.content === 'this is unlisted')
   await t
-    .hover(getNthStatus(4))
-    .click(getNthFavoriteButton(4))
-    .expect(getNthFavorited(4)).eql('true')
-    .click(getNthStatus(4))
+    .hover(getNthStatus(idx))
+    .click(getNthFavoriteButton(idx))
+    .expect(getNthFavorited(idx)).eql('true')
+    .click(getNthStatus(idx))
     .expect(getUrl()).contains('/status')
     .expect(getNthFavorited(0)).eql('true')
     .expect(getFavoritesCount()).eql(2)
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
-    .hover(getNthStatus(4))
-    .click(getNthFavoriteButton(4))
-    .expect(getNthFavorited(4)).eql('false')
-    .click(getNthStatus(4))
+    .hover(getNthStatus(idx))
+    .click(getNthFavoriteButton(idx))
+    .expect(getNthFavorited(idx)).eql('false')
+    .click(getNthStatus(idx))
     .expect(getUrl()).contains('/status')
     .expect(getNthFavorited(0)).eql('false')
     .expect(getFavoritesCount()).eql(1)

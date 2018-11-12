@@ -1,37 +1,25 @@
 import { loginAsFoobar } from '../roles'
 import {
-  getNthStatus, getNthStatusSelector, getUrl, homeNavButton, notificationsNavButton,
-  validateTimeline
+  getNthStatus, getUrl, homeNavButton, notificationsNavButton
 } from '../utils'
-import { favoriteStatusAs } from '../serverActions'
-import { notifications } from '../fixtures'
-import { Selector as $ } from 'testcafe'
+import { favoriteStatusAs, postAs } from '../serverActions'
 
 fixture`102-notifications.js`
   .page`http://localhost:4002`
 
 test('shows unread notifications', async t => {
+  let { id } = await postAs('foobar', 'somebody please favorite this to validate me')
   await loginAsFoobar(t)
   await t
-    .hover(getNthStatus(0))
-    .hover(getNthStatus(2))
-    .hover(getNthStatus(4))
-    .hover(getNthStatus(5))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-  let statusId = (await $(`${getNthStatusSelector(5)} .status-relative-date`).getAttribute('href'))
-    .split('/').slice(-1)[0]
-  await favoriteStatusAs('admin', statusId)
+  await favoriteStatusAs('admin', id)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1)')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (current page)')
-  await validateTimeline(t, [
-    {
-      favoritedBy: 'admin',
-      content: 'this is followers-only'
-    }
-  ].concat(notifications))
+    .expect(getNthStatus(0).innerText).contains('somebody please favorite this to validate me')
+    .expect(getNthStatus(0).innerText).match(/admin\s+favorited your status/)
   await t
     .click(homeNavButton)
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')

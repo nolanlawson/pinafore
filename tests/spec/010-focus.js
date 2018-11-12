@@ -5,21 +5,26 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
+import { indexWhere } from '../../routes/_utils/arrays'
+import { homeTimeline } from '../fixtures'
 
 fixture`010-focus.js`
   .page`http://localhost:4002`
 
 test('modal preserves focus', async t => {
   await loginAsFoobar(t)
-  await scrollToStatus(t, 9)
+
+  let idx = indexWhere(homeTimeline, _ => _.content === "here's a video")
+
+  await scrollToStatus(t, idx)
   // explicitly hover-focus-click
-  await t.hover($(`${getNthStatusSelector(9)} .play-video-button`))
-  await focus(`${getNthStatusSelector(9)} .play-video-button`)()
-  await t.click($(`${getNthStatusSelector(9)} .play-video-button`))
+  await t.hover($(`${getNthStatusSelector(idx)} .play-video-button`))
+  await focus(`${getNthStatusSelector(idx)} .play-video-button`)()
+  await t.click($(`${getNthStatusSelector(idx)} .play-video-button`))
     .click(closeDialogButton)
     .expect(modalDialogContents.exists).notOk()
     .expect(getActiveElementClass()).contains('play-video-button')
-    .expect(getActiveElementInsideNthStatus()).eql('9')
+    .expect(getActiveElementInsideNthStatus()).eql(idx.toString())
 })
 
 test('timeline preserves focus', async t => {

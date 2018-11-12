@@ -6,6 +6,8 @@ import {
   getNthStatus, getUrl, homeNavButton, notificationsNavButton, scrollToStatus
 } from '../utils'
 import { loginAsFoobar } from '../roles'
+import { homeTimeline } from '../fixtures'
+import { indexWhere } from '../../routes/_utils/arrays'
 
 fixture`017-compose-reply.js`
   .page`http://localhost:4002`
@@ -52,48 +54,46 @@ test('replies have same privacy as replied-to status by default', async t => {
     .expect(getNthPostPrivacyButton(2).getAttribute('aria-label')).eql('Adjust privacy (currently Followers-only)')
     .click(getNthReplyButton(2))
     .hover(getNthStatus(3))
-    .click(getNthReplyButton(3))
-    .expect(getNthPostPrivacyButton(3).getAttribute('aria-label')).eql('Adjust privacy (currently Direct)')
-    .click(getNthReplyButton(3))
     .hover(getNthStatus(4))
     .hover(getNthStatus(5))
-    .hover(getNthStatus(6))
-    .hover(getNthStatus(7))
-    .click(getNthReplyButton(7))
-    .expect(getNthPostPrivacyButton(7).getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
-    .click(getNthReplyButton(7))
+    .click(getNthReplyButton(5))
+    .expect(getNthPostPrivacyButton(5).getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
+    .click(getNthReplyButton(5))
 })
 
 test('replies have same CW as replied-to status', async t => {
   await loginAsFoobar(t)
-  await scrollToStatus(t, 7)
-  await t.click(getNthReplyButton(7))
-    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
-    .click(getNthStatus(7))
+  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  await scrollToStatus(t, kittenIdx)
+  await t.click(getNthReplyButton(kittenIdx))
+    .expect(getNthReplyContentWarningInput(kittenIdx).value).eql('kitten CW')
+    .click(getNthStatus(kittenIdx))
     .click(getNthReplyButton(0))
     .expect(getNthReplyContentWarningInput(0).value).eql('kitten CW')
 })
 
 test('replies save deletions of CW', async t => {
   await loginAsFoobar(t)
-  await scrollToStatus(t, 7)
-  await t.click(getNthReplyButton(7))
-    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
-    .click(getNthReplyContentWarningButton(7))
-    .expect(getNthReplyContentWarningInput(7).exists).notOk()
-    .click(getNthStatus(7))
+  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  await scrollToStatus(t, kittenIdx)
+  await t.click(getNthReplyButton(kittenIdx))
+    .expect(getNthReplyContentWarningInput(kittenIdx).value).eql('kitten CW')
+    .click(getNthReplyContentWarningButton(kittenIdx))
+    .expect(getNthReplyContentWarningInput(kittenIdx).exists).notOk()
+    .click(getNthStatus(kittenIdx))
     .click(getNthReplyButton(0))
     .expect(getNthReplyContentWarningInput(0).exists).notOk()
 })
 
 test('replies save changes to CW', async t => {
   await loginAsFoobar(t)
-  await scrollToStatus(t, 7)
-  await t.click(getNthReplyButton(7))
-    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW')
-    .typeText(getNthReplyContentWarningInput(7), ' yolo', { paste: true })
-    .expect(getNthReplyContentWarningInput(7).value).eql('kitten CW yolo')
-    .click(getNthStatus(7))
+  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  await scrollToStatus(t, kittenIdx)
+  await t.click(getNthReplyButton(kittenIdx))
+    .expect(getNthReplyContentWarningInput(kittenIdx).value).eql('kitten CW')
+    .typeText(getNthReplyContentWarningInput(kittenIdx), ' yolo', { paste: true })
+    .expect(getNthReplyContentWarningInput(kittenIdx).value).eql('kitten CW yolo')
+    .click(getNthStatus(kittenIdx))
     .click(getNthReplyButton(0))
     .expect(getNthReplyContentWarningInput(0).value).eql('kitten CW yolo')
 })
