@@ -55,14 +55,12 @@ export async function restoreMastodonData () {
 
     if (action.post) {
       let { text, media, sensitive, spoiler, privacy, inReplyTo, internalId } = action.post
-      if (typeof inReplyTo !== 'undefined') {
-        inReplyTo = internalIdsToIds[inReplyTo]
-      }
       let mediaIds = media && await Promise.all(media.map(async mediaItem => {
         let mediaResponse = await submitMedia(accessToken, mediaItem, 'kitten')
         return mediaResponse.id
       }))
-      let status = await postStatus('localhost:3000', accessToken, text, inReplyTo, mediaIds,
+      let inReplyToId = inReplyTo && internalIdsToIds[inReplyTo]
+      let status = await postStatus('localhost:3000', accessToken, text, inReplyToId, mediaIds,
         sensitive, spoiler, privacy || 'public')
       if (typeof internalId !== 'undefined') {
         internalIdsToIds[internalId] = status.id
