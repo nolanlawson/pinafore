@@ -43,39 +43,62 @@ async function submitMedia (accessToken, filename, alt) {
 
 export async function restoreMastodonData () {
   console.log('Restoring mastodon data...')
-  let internalIdsToIds = {}
-  for (let action of actions) {
-    if (!action.post) {
+  let internalIdsToPromises = {}
+
+  let sequentialActions = Promise.resolve()
+  let postActions = Promise.resolve()
+
+  async function doAction (action) {
+    if (action.post) {
+      // If the action is a post, then the IDs just have to be unique by timestamp. Delaying by a millisecond
+      // is sufficient for this.
+      postActions = postActions.then(() => new Promise(resolve => setTimeout(resolve, 100)))
+      await postActions
+    } else {
       // If the action is a boost, favorite, etc., then it needs to
-      // be delayed, otherwise it may appear in an unpredictable order and break the tests.
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // be delayed by a second, otherwise it may appear in an unpredictable order and break the tests.
+      sequentialActions = sequentialActions.then(() => new Promise(resolve => setTimeout(resolve, 1000)))
+      await sequentialActions
     }
     console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
 
     if (action.post) {
-      let { text, media, sensitive, spoiler, privacy, inReplyTo, internalId } = action.post
-      if (typeof inReplyTo !== 'undefined') {
-        inReplyTo = internalIdsToIds[inReplyTo]
+      let { text, media, sensitive, spoiler, privacy, inReplyTo } = action.post
+      if (inReplyTo) {
+        inReplyTo = (await internalIdsToPromises[inReplyTo]).id
       }
       let mediaIds = media && await Promise.all(media.map(async mediaItem => {
         let mediaResponse = await submitMedia(accessToken, mediaItem, 'kitten')
         return mediaResponse.id
       }))
-      let status = await postStatus('localhost:3000', accessToken, text, inReplyTo, mediaIds,
+      return postStatus('localhost:3000', accessToken, text, inReplyTo, mediaIds,
         sensitive, spoiler, privacy || 'public')
-      if (typeof internalId !== 'undefined') {
-        internalIdsToIds[internalId] = status.id
-      }
     } else if (action.follow) {
-      await followAccount('localhost:3000', accessToken, users[action.follow].id)
+      return followAccount('localhost:3000', accessToken, users[action.follow].id)
     } else if (action.favorite) {
-      await favoriteStatus('localhost:3000', accessToken, internalIdsToIds[action.favorite])
+      return favoriteStatus('localhost:3000', accessToken,
+        (await internalIdsToPromises[action.favorite]).id
+      )
     } else if (action.boost) {
-      await reblogStatus('localhost:3000', accessToken, internalIdsToIds[action.boost])
+      return reblogStatus('localhost:3000', accessToken,
+        (await internalIdsToPromises[action.boost]).id
+      )
     } else if (action.pin) {
-      await pinStatus('localhost:3000', accessToken, internalIdsToIds[action.pin])
+      return pinStatus('localhost:3000', accessToken,
+        (await internalIdsToPromises[action.pin]).id
+      )
     }
   }
+
+  await Promise.all(actions.map(action => {
+    const promise = doAction(action)
+    const internalId = action.post && action.post.internalId
+    if (internalId) {
+      internalIdsToPromises[internalId] = promise
+    }
+    return promise
+  }))
+
   console.log('Restored mastodon data')
 }
