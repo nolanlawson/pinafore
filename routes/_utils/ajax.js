@@ -1,6 +1,6 @@
 export const DEFAULT_TIMEOUT = 20000
-export const MEDIA_WRITE_TIMEOUT = 90000 // media uploads can take awhile
-export const WRITE_TIMEOUT = 45000 // allow more time if the user did a write action
+export const MEDIA_WRITE_TIMEOUT = process.browser ? 90000 : 180000 // media uploads can take awhile
+export const WRITE_TIMEOUT = process.browser ? 45000 : 120000 // allow more time if the user did a write action
 
 function fetchWithTimeout (url, fetchOptions, timeout) {
   return new Promise((resolve, reject) => {
@@ -19,7 +19,15 @@ function makeFetchOptions (method, headers) {
 }
 
 async function throwErrorIfInvalidResponse (response) {
-  let json = await response.json()
+  let text = await response.text()
+  let json
+  try {
+    json = JSON.parse(text)
+  } catch (err) {
+    console.error('unable to parse json', err)
+    console.error(text)
+    throw err
+  }
   if (response.status >= 200 && response.status < 300) {
     return json
   }

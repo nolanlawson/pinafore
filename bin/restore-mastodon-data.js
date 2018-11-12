@@ -5,12 +5,16 @@ import { followAccount } from '../routes/_api/follow'
 import { favoriteStatus } from '../routes/_api/favorite'
 import { reblogStatus } from '../routes/_api/reblog'
 import fetch from 'node-fetch'
+import bluebird from 'bluebird'
 import FileApi from 'file-api'
 import path from 'path'
 import fs from 'fs'
 import FormData from 'form-data'
 import { auth } from '../routes/_api/utils'
 import { pinStatus } from '../routes/_api/pin'
+
+fetch.Promise = bluebird
+bluebird.longStackTraces()
 
 global.File = FileApi.File
 global.FormData = FileApi.FormData
@@ -41,64 +45,62 @@ async function submitMedia (accessToken, filename, alt) {
   })
 }
 
+async function sequential (promiseFactories) {
+  for (let promiseFactory of promiseFactories) {
+    await promiseFactory()
+  }
+}
+
 export async function restoreMastodonData () {
   console.log('Restoring mastodon data...')
-  let internalIdsToPromises = {}
-
-  let sequentialActions = Promise.resolve()
-  let postActions = Promise.resolve()
+  let internalIdsToIds = {}
 
   async function doAction (action) {
-    if (action.post) {
-      // If the action is a post, then the IDs just have to be unique by timestamp. Delaying by a millisecond
-      // is sufficient for this.
-      postActions = postActions.then(() => new Promise(resolve => setTimeout(resolve, 100)))
-      await postActions
-    } else {
-      // If the action is a boost, favorite, etc., then it needs to
-      // be delayed by a second, otherwise it may appear in an unpredictable order and break the tests.
-      sequentialActions = sequentialActions.then(() => new Promise(resolve => setTimeout(resolve, 1000)))
-      await sequentialActions
-    }
     console.log(JSON.stringify(action))
     let accessToken = users[action.user].accessToken
 
     if (action.post) {
-      let { text, media, sensitive, spoiler, privacy, inReplyTo } = action.post
+      let { text, media, sensitive, spoiler, privacy, inReplyTo, internalId } = action.post
       if (inReplyTo) {
-        inReplyTo = (await internalIdsToPromises[inReplyTo]).id
+        inReplyTo = internalIdsToIds[inReplyTo].id
       }
       let mediaIds = media && await Promise.all(media.map(async mediaItem => {
         let mediaResponse = await submitMedia(accessToken, mediaItem, 'kitten')
         return mediaResponse.id
       }))
-      return postStatus('localhost:3000', accessToken, text, inReplyTo, mediaIds,
+      let status = await postStatus('localhost:3000', accessToken, text, inReplyTo, mediaIds,
         sensitive, spoiler, privacy || 'public')
+      if (internalId) {
+        internalIdsToIds[internalId] = status.id
+      }
     } else if (action.follow) {
       return followAccount('localhost:3000', accessToken, users[action.follow].id)
     } else if (action.favorite) {
       return favoriteStatus('localhost:3000', accessToken,
-        (await internalIdsToPromises[action.favorite]).id
+        internalIdsToIds[action.favorite].id
       )
     } else if (action.boost) {
       return reblogStatus('localhost:3000', accessToken,
-        (await internalIdsToPromises[action.boost]).id
+        internalIdsToIds[action.boost].id
       )
     } else if (action.pin) {
       return pinStatus('localhost:3000', accessToken,
-        (await internalIdsToPromises[action.pin]).id
+        internalIdsToIds[action.pin].id
       )
     }
   }
 
-  await Promise.all(actions.map(action => {
-    const promise = doAction(action)
-    const internalId = action.post && action.post.internalId
-    if (internalId) {
-      internalIdsToPromises[internalId] = promise
-    }
-    return promise
-  }))
+  const posts = actions.filter(action => action.post && !action.post.inReplyTo)
+  const replies = actions.filter(action => action.post && action.post.inReplyTo)
+  const interactions = actions.filter(action => !action.post)
+
+  await sequential(posts.map(_ => () => doAction(_)))
+  await sequential(replies.map(_ => () => doAction(_)))
+
+  for (let interaction of interactions) {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    await doAction(interaction)
+  }
 
   console.log('Restored mastodon data')
 }
