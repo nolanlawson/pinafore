@@ -79,6 +79,8 @@ export const getActiveElementInsideNthStatus = exec(() => {
   return ''
 })
 
+export const getTitleText = exec(() => document.head.querySelector('title').innerHTML)
+
 export const goBack = exec(() => window.history.back())
 
 export const forceOffline = exec(() => window.__forceOnline(false))

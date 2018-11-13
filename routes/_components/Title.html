@@ -1,0 +1,24 @@
+<svelte:head>
+  <title>{instanceIndicator} · {name}{notificationsIndicator}</title>
+</svelte:head>
+<script>
+  import { store } from '../_store/store'
+
+  export default {
+    data: () => ({
+      settingsPage: false
+    }),
+    store: () => store,
+    computed: {
+      instanceIndicator: ({ $isUserLoggedIn, $currentInstance, settingsPage }) => (
+        // If the user is not logged in, or if they're on a settings page (which
+        // is more general than instance-specific), of if this is server-rendered, then
+        // show "Pinafore". Otherwise show the instance name.
+        `${($isUserLoggedIn && !settingsPage && $currentInstance) ? $currentInstance : 'Pinafore'}`
+      ),
+      notificationsIndicator: ({ $hasNotifications, $numberOfNotifications }) => (
+        $hasNotifications ? ` (${$numberOfNotifications})` : ''
+      )
+    }
+  }
+</script>
