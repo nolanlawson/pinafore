@@ -48,7 +48,7 @@
     "deploy-prod-travis": "if echo $TRAVIS_COMMIT_MESSAGE | grep -q -E '\\d+\\.\\d+\\.\\d+'; then run-s stage-prod launch-travis alias-prod-travis cleanup-travis; fi",
     "deploy-all-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then run-s deploy-dev-travis deploy-prod-travis; fi",
     "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz .",
-    "what-is-commit-message": "echo 'here is the travis commit message' && echo $TRAVIS_COMMIT_MESSAGE && echo 'here is the commit' && echo $TRAVIS_COMMIT && echo 'here is some git output' && git show -s --format=short $TRAVIS_COMMIT"
+    "what-is-commit-message": "echo 'here is the travis commit message' && echo $TRAVIS_COMMIT_MESSAGE && echo 'here is the commit' && echo $TRAVIS_COMMIT && echo 'here is some git output' && git show -s --format=short $TRAVIS_COMMIT && echo 'here is what git thinks is the head' && git rev-parse HEAD"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
