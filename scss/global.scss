@@ -17,6 +17,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  contain: content; /* see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content */
   @media (max-width: 991px) {
     top: 52px;
   }
