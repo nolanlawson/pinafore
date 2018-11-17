@@ -38,7 +38,7 @@ test('Scrolls to proper point in thread', async t => {
     .expect(getUrl()).contains('/statuses/')
     .expect(getNthStatus(16).innerText).contains('unlisted thread 17')
     .expect(Math.round(getNthStatus(16).boundingClientRect.top))
-    .eql(Math.round($('.container').boundingClientRect.top))
+    .eql(Math.round($('.main-content').boundingClientRect.top))
 })
 
 async function navigateToBazAccount (t) {

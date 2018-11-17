@@ -96,7 +96,7 @@ export const getBodyClassList = exec(() => (
 )
 
 export const scrollContainerToTop = exec(() => {
-  document.getElementsByClassName('container')[0].scrollTop = 0
+  document.scrollingElement.scrollTop = 0
 })
 
 export const uploadKittenImage = i => (exec(() => {
