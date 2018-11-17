@@ -18,6 +18,8 @@
 <script>
   import ListLazyItem from './ListLazyItem.html'
   import { listStore } from './listStore'
+  import { getScrollContainer } from '../../_utils/scrollContainer'
+  import { getMainTopMargin } from '../../_utils/getMainTopMargin'
 
   export default {
     oncreate () {
@@ -42,7 +44,9 @@
           let element = document.getElementById(`list-item-${scrollToItem}`)
           requestAnimationFrame(() => {
             console.log('scrolling element into view')
+            // TODO: this is hacky
             element.scrollIntoView(true)
+            getScrollContainer().scrollTop -= (getMainTopMargin() + 10) // 10 is the status-article padding top
             this.fire('initialized')
           })
         } else {

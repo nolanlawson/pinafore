@@ -6,6 +6,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { doubleRAF } from '../../_utils/doubleRAF'
   import { observe } from 'svelte-extras'
+  import { addScrollListener, removeScrollListener, getScrollContainer } from '../../_utils/scrollContainer'
 
   const SCROLL_EVENT_DELAY = 300
 
@@ -13,23 +14,21 @@
     oncreate () {
       mark('onCreate VirtualListContainer')
       let {
-        realm,
-        containerQuery
+        realm
       } = this.get()
       this.store.setCurrentRealm(realm)
-      let node = document.querySelector(containerQuery)
-      this.setupScroll(node)
+      this.setupScroll()
       this.setupFullscreen()
       let { scrollTop } = this.store.get()
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
           let { initializedScrollTop } = this.get()
-          if (!initializedScrollTop && allVisibleItemsHaveHeight && node) {
+          if (!initializedScrollTop && allVisibleItemsHaveHeight) {
             this.set({ 'initializedScrollTop': true })
             mark('set scrollTop')
             console.log('forcing scroll top to ', scrollTop)
-            node.scrollTop = scrollTop
+            getScrollContainer().scrollTop = scrollTop
             stop('set scrollTop')
             doubleRAF(() => {
               console.log('initialized VirtualList')
@@ -46,8 +45,8 @@
           }
         })
         this.store.setForRealm({
-          scrollHeight: node.scrollHeight,
-          offsetHeight: node.offsetHeight
+          scrollHeight: getScrollContainer().scrollHeight,
+          offsetHeight: getScrollContainer().offsetHeight
         })
       }
       stop('onCreate VirtualListContainer')
@@ -60,28 +59,21 @@
     store: () => virtualListStore,
     methods: {
       observe,
-      setupScroll (node) {
-        if (!node) {
-          return
-        }
+      setupScroll () {
         this.scrollListener = throttle(event => {
           let { fullscreen } = this.get()
           if (fullscreen) {
             return
           }
-          this.onScroll(event)
+          this.onScroll()
         }, SCROLL_EVENT_DELAY, {
           leading: true,
           trailing: true
         })
-        node.addEventListener('scroll', this.scrollListener)
+        addScrollListener(this.scrollListener)
       },
       teardownScroll () {
-        let { containerQuery } = this.get()
-        let node = document.querySelector(containerQuery)
-        if (node) {
-          node.removeEventListener('scroll', this.scrollListener)
-        }
+        removeScrollListener(this.scrollListener)
       },
       setupFullscreen () {
         this.onFullscreenChange = this.onFullscreenChange.bind(this)
@@ -90,8 +82,8 @@
       teardownFullscreen () {
         detachFullscreenListener(this.onFullscreenChange)
       },
-      onScroll (event) {
-        let { scrollTop, scrollHeight } = event.target
+      onScroll () {
+        let { scrollTop, scrollHeight } = getScrollContainer()
 
         doubleRAF(() => {
           mark('onScroll -> setForRealm()')

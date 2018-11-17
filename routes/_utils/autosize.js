@@ -6,6 +6,7 @@
 import { mark, stop } from './marks'
 import debounce from 'lodash-es/debounce'
 import throttle from 'lodash-es/throttle'
+import { getScrollContainer } from './scrollContainer'
 
 const map = new Map()
 let createEvent = (name) => new Event(name, { bubbles: true })
@@ -16,7 +17,7 @@ function assign (ta) {
   }
 
   // TODO: hack - grab our scroll container so we can maintain the scrollTop
-  let container = document.getElementsByClassName('container')[0]
+  let container = getScrollContainer()
   let heightOffset = null
   let cachedHeight = null
 

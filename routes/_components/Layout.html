@@ -1,6 +1,6 @@
 <Nav {page} />
 
-<div class="container" tabindex="0" ref:container>
+<div class="main-content">
   <main>
     <slot></slot>
   </main>
@@ -12,6 +12,7 @@
   import Nav from './Nav.html'
   import { store } from '../_store/store'
   import InformationalFooter from './InformationalFooter.html'
+  import { getScrollContainer } from '../_utils/scrollContainer'
 
   // Only focus the `.container` div on first load so it does not intefere
   // with other desired behaviours (e.g. you click a toot, you navigate from
@@ -27,7 +28,7 @@
     oncreate () {
       if (firstTime) {
         firstTime = false
-        this.refs.container.focus()
+        getScrollContainer().focus()
       }
       let { page } = this.get()
       this.store.set({ currentPage: page })
