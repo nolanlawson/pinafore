@@ -159,6 +159,7 @@
   import { on, emit } from '../_utils/eventBus'
   import { mark, stop } from '../_utils/marks'
   import { doubleRAF } from '../_utils/doubleRAF'
+  import { getScrollContainer } from '../_utils/scrollContainer'
 
   export default {
     oncreate () {
@@ -219,7 +220,7 @@
         }
         e.preventDefault()
         e.stopPropagation()
-        smoothScrollToTop(document.getElementsByClassName('container')[0])
+        smoothScrollToTop(getScrollContainer())
       }
     }
   }

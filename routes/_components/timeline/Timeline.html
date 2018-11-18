@@ -17,7 +17,6 @@
     <svelte:component this={result.listComponent}
                 component={result.listItemComponent}
                 realm="{$currentInstance + '/' + timeline}"
-                containerQuery=".container"
                 {makeProps}
                 items={$timelineItemIds}
                 showFooter={true}

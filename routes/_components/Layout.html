@@ -1,6 +1,6 @@
 <Nav {page} />
 
-<div class="container" tabindex="0" ref:container>
+<div class="main-content">
   <main>
     <slot></slot>
   </main>
@@ -13,22 +13,12 @@
   import { store } from '../_store/store'
   import InformationalFooter from './InformationalFooter.html'
 
-  // Only focus the `.container` div on first load so it does not intefere
-  // with other desired behaviours (e.g. you click a toot, you navigate from
-  // a timeline view to a thread view, you press the back button, and now
-  // you're still focused on the toot).
-  let firstTime = true
-
   export default {
     components: {
       Nav,
       InformationalFooter
     },
     oncreate () {
-      if (firstTime) {
-        firstTime = false
-        this.refs.container.focus()
-      }
       let { page } = this.get()
       this.store.set({ currentPage: page })
     },

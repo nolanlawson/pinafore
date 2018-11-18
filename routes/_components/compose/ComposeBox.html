@@ -76,7 +76,7 @@
   .compose-box-button-wrapper.compose-button-sticky {
     position: -webkit-sticky;
     position: sticky;
-    top: 10px;
+    top: 52px; /* padding-top for .main-content plus 10px */
     z-index: 5000;
   }
 
@@ -95,7 +95,12 @@
       max-width: calc(100vw - 40px);
     }
     .compose-box-button-wrapper.compose-button-sticky {
-      top: 5px;
+      top: 57px; /* padding-top for .main-content plus 5px */
+    }
+  }
+  @media (max-width: 991px) {
+    .compose-box-button-wrapper.compose-button-sticky {
+      top: 62px; /* padding-top for .main-content plus 10px */
     }
   }
 </style>

@@ -103,6 +103,6 @@ test('reply preserves focus and moves focus to the text input', async t => {
     .expect(getActiveElementClass()).contains('compose-box-input')
 })
 
-test('focus .container div on index page load', async t => {
-  await t.expect(getActiveElementClass()).contains('container')
+test('focus .main-content div on index page load', async t => {
+  await t.expect(getActiveElementClass()).contains('the-body')
 })

@@ -55,6 +55,6 @@ test('Logs in and logs out of localhost:3000', async t => {
     .expect($('.acct-display-name').innerText).eql('foobar')
     .click($('button').withText('Log out'))
     .click($('.modal-dialog button').withText('OK'))
-    .expect($('.container').innerText)
+    .expect($('.main-content').innerText)
     .contains("You're not logged in to any instances")
 })
