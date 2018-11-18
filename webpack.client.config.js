@@ -60,7 +60,9 @@ module.exports = {
         terserOptions: {
           ecma: 6,
           mangle: true,
-          compress: true,
+          compress: {
+            pure_funcs: ['console.log']
+          },
           output: {
             comments: false
           },
