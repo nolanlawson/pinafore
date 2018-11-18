@@ -4,7 +4,7 @@ const eventBus = new EventEmitter()
 
 // we need enough 'postedStatus' listeners for each
 // visible status in a timeline
-eventBus.setMaxListeners(100)
+eventBus.setMaxListeners(1000)
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.eventBus = eventBus
