@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ "$COMMAND" = deploy-all-travis ]]; then
+if [[ "$COMMAND" = deploy-all-travis || "$COMMAND" = test-unit ]]; then
   exit 0 # no need to setup mastodon in this case
 fi
 
