@@ -1,16 +1,9 @@
 import { replaceAll } from './strings'
-import { getEmojiRegex } from './emojiRegex'
-
-function replacer (substring) {
-  if (substring.match(/^[0-9]+$/)) { // for some reason, emoji-regex matches digits
-    return substring
-  }
-  return `<span class="inline-emoji">${substring}</span>`
-}
+import { replaceEmoji } from './replaceEmoji'
 
 export function emojifyText (text, emojis, autoplayGifs) {
   // replace native emoji with wrapped spans so we can give them the proper font-family
-  text = text.replace(getEmojiRegex(), replacer)
+  text = replaceEmoji(text, substring => `<span class="inline-emoji">${substring}</span>`)
 
   // replace custom emoji
   if (emojis) {

@@ -1,12 +1,5 @@
 import { replaceAll } from './strings'
-import { getEmojiRegex } from './emojiRegex'
-
-function replacer (substring) {
-  if (substring.match(/^[0-9]+$/)) { // for some reason, emoji-regex matches digits
-    return substring
-  }
-  return ''
-}
+import { replaceEmoji } from './replaceEmoji'
 
 export function removeEmoji (text, emojis) {
   // remove custom emoji
@@ -17,5 +10,5 @@ export function removeEmoji (text, emojis) {
     }
   }
   // remove native emoji
-  return text.replace(getEmojiRegex(), replacer).trim()
+  return replaceEmoji(text, () => '').trim()
 }
