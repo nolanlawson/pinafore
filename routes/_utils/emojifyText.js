@@ -1,6 +1,11 @@
 import { replaceAll } from './strings'
+import { getEmojiRegex } from './emojiRegex'
 
 export function emojifyText (text, emojis, autoplayGifs) {
+  // replace native emoji with wrapped spans so we can give them the proper font-family
+  text = text.replace(getEmojiRegex(), substring => `<span class="inline-emoji">${substring}</span>`)
+
+  // replace custom emoji
   if (emojis) {
     for (let emoji of emojis) {
       let urlToUse = autoplayGifs ? emoji.url : emoji.static_url
@@ -13,5 +18,6 @@ export function emojifyText (text, emojis, autoplayGifs) {
       )
     }
   }
+
   return text
 }
