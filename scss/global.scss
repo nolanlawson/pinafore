@@ -1,6 +1,37 @@
+@font-face {
+  font-family: pinafore-system;
+
+  // fonts for non-emoji
+  src: local("Segoe UI"),
+    local("Roboto"),
+    local("Oxygen-Sans"),
+    local("Ubuntu"),
+    local("Cantarel"),
+    local("Fira Sans"),
+    local("Droid Sans"),
+    local("Helvetica Neue")
+}
+
+@font-face {
+  font-family: pinafore-system;
+
+  // fonts for emoji
+  src: local("Apple Color Emoji"),
+    local("Segoe UI Emoji"),
+    local("Segoe UI Symbol"),
+    local("Twemoji Mozilla"),
+    local("Noto Color Emoji"),
+    local("EmojiOne Color"),
+    local("Android Emoji");
+
+    
+    // Emoji unicode blocks, per https://git.io/fpCei
+    unicode-range: U+1F300-1F5FF, U+1F600-1F64F, U+1F680-1F6FF, U+2600-26FF;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, pinafore-system, sans-serif;
   font-size: 14px;
   line-height: 1.4;
   color: var(--body-text-color);
@@ -212,6 +243,3 @@ textarea {
   vertical-align: middle;
 }
 
-.inline-emoji {
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Twemoji Mozilla", "Noto Color Emoji", "EmojiOne Color", "Android Emoji", sans-serif;
-}
