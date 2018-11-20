@@ -9,7 +9,7 @@ export function replaceEmoji (string, replacer) {
 
   function safeReplacer (substring) {
     // emoji regex matches digits and pound sign https://git.io/fpl6J
-    if (substring.match(/^(?:[0-9]#)+$/)) {
+    if (substring.match(/^[0-9#]+$/)) {
       return substring
     }
     return replacer(substring)
