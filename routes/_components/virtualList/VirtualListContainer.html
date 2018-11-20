@@ -6,7 +6,13 @@
   import { mark, stop } from '../../_utils/marks'
   import { doubleRAF } from '../../_utils/doubleRAF'
   import { observe } from 'svelte-extras'
-  import { addScrollListener, removeScrollListener, getScrollContainer } from '../../_utils/scrollContainer'
+  import {
+    addScrollListener,
+    removeScrollListener,
+    getScrollContainer,
+    getOffsetHeight
+  } from '../../_utils/scrollContainer'
+  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
 
   const SCROLL_EVENT_DELAY = 300
 
@@ -19,7 +25,9 @@
       this.store.setCurrentRealm(realm)
       this.setupScroll()
       this.setupFullscreen()
+      this.onResize = this.onResize.bind(this)
       let { scrollTop } = this.store.get()
+      let scrollContainer = getScrollContainer()
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
@@ -28,7 +36,7 @@
             this.set({ 'initializedScrollTop': true })
             mark('set scrollTop')
             console.log('forcing scroll top to ', scrollTop)
-            getScrollContainer().scrollTop = scrollTop
+            scrollContainer.scrollTop = scrollTop
             stop('set scrollTop')
             doubleRAF(() => {
               console.log('initialized VirtualList')
@@ -44,17 +52,16 @@
             this.fire('initialized')
           }
         })
-        this.store.setForRealm({
-          scrollHeight: getScrollContainer().scrollHeight,
-          offsetHeight: getScrollContainer().offsetHeight
-        })
+        this.onResize()
       }
+      registerResizeListener(this.onResize)
       stop('onCreate VirtualListContainer')
     },
     ondestroy () {
       this.teardownScroll()
       this.teardownFullscreen()
       this.store.setCurrentRealm(null)
+      unregisterResizeListener(this.onResize)
     },
     store: () => virtualListStore,
     methods: {
@@ -96,6 +103,12 @@
         console.log('is fullscreen? ', isFullscreen())
         this.set({ fullscreen: isFullscreen() })
         stop('onFullscreenChange')
+      },
+      onResize () {
+        this.store.setForRealm({
+          scrollHeight: getScrollContainer().scrollHeight,
+          offsetHeight: getOffsetHeight()
+        })
       }
     },
     computed: {
