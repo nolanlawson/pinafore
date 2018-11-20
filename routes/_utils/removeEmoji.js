@@ -1,7 +1,5 @@
 import { replaceAll } from './strings'
-import emojiRegex from 'emoji-regex/es2015/text.js'
-
-let theEmojiRegex
+import { replaceEmoji } from './replaceEmoji'
 
 export function removeEmoji (text, emojis) {
   // remove custom emoji
@@ -11,7 +9,6 @@ export function removeEmoji (text, emojis) {
       text = replaceAll(text, shortcodeWithColons, '')
     }
   }
-  // remove regular emoji
-  theEmojiRegex = theEmojiRegex || emojiRegex() // only init when needed, then cache
-  return text.replace(theEmojiRegex, '').trim()
+  // remove native emoji
+  return replaceEmoji(text, () => '').trim()
 }

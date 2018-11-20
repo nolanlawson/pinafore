@@ -102,3 +102,8 @@ This is also available locally after `npm run build` at `.sapper/client/report.h
 7. Run `rm -fr mastodon/` and `npm run run-mastodon` to confirm everything's working
 
 Check `mastodon.log` if you have any issues.
+
+## Unit tests
+
+There are also some unit tests that run in Node using Mocha. You can find them in `tests/unit` and
+run them using `npm run test-unit`.

@@ -1,14 +1,11 @@
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   line-height: 1.4;
   color: var(--body-text-color);
   background: var(--body-bg);
   -webkit-tap-highlight-color: transparent; /* fix for blue background on spoiler tap on Chrome for Android */
-  //-webkit-overflow-scrolling: touch;
-  //overflow-y: auto;
-  //overflow-x: hidden;
 }
 
 .main-content {
@@ -213,4 +210,8 @@ textarea {
   margin: -0.1em 0;
   object-fit: contain;
   vertical-align: middle;
+}
+
+.inline-emoji {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Twemoji Mozilla", "Noto Color Emoji", "EmojiOne Color", "Android Emoji", sans-serif;
 }

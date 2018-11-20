@@ -56,6 +56,7 @@ matrix:
   include:
     - env: BROWSER=chrome:headless COMMAND=test-browser-suite0
     - env: BROWSER=chrome:headless COMMAND=test-browser-suite1
+    - env: COMMAND=test-unit
     - env: COMMAND=deploy-all-travis
   allow_failures:
     - env: COMMAND=deploy-all-travis
