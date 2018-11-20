@@ -8,7 +8,8 @@ export function replaceEmoji (string, replacer) {
   let emojiRegex = getEmojiRegex()
 
   function safeReplacer (substring) {
-    if (substring.match(/^[0-9]+$/)) { // for some reason, emoji-regex matches digits
+    // emoji regex matches digits and pound sign https://git.io/fpl6J
+    if (substring.match(/^(?:[0-9]#)+$/)) {
       return substring
     }
     return replacer(substring)
