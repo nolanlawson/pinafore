@@ -20,7 +20,11 @@ export function replaceEmoji (string, replacer) {
     output += substring.replace(emojiRegex, safeReplacer)
 
     let rightAngleBracketIdx = string.indexOf('>', leftAngleBracketIdx + 1)
-    output += string.substring(leftAngleBracketIdx, rightAngleBracketIdx)
+    if (rightAngleBracketIdx === -1) { // broken HTML, abort
+      output += string.substring(leftAngleBracketIdx, string.length)
+      return output
+    }
+    output += string.substring(leftAngleBracketIdx, rightAngleBracketIdx) + '>'
     currentIdx = rightAngleBracketIdx + 1
     leftAngleBracketIdx = string.indexOf('<', currentIdx)
   }
