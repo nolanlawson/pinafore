@@ -52,7 +52,6 @@
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
-    "a11y-dialog": "^4.0.1",
     "browserslist": "^4.3.4",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
@@ -144,7 +143,8 @@
       "Blob",
       "Element",
       "Image",
-      "NotificationEvent"
+      "NotificationEvent",
+      "NodeList"
     ],
     "ignore": [
       "dist",
@@ -181,8 +181,7 @@
   },
   "greenkeeper": {
     "ignore": [
-      "sapper",
-      "a11y-dialog"
+      "sapper"
     ]
   },
   "repository": {

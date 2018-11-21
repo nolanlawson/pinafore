@@ -3,10 +3,10 @@
 // remove parent overflow checks, make page resizes more performant,
 // add deferredUpdate, and add perf marks.
 
-import { mark, stop } from './marks'
+import { mark, stop } from '../../_utils/marks'
 import debounce from 'lodash-es/debounce'
 import throttle from 'lodash-es/throttle'
-import { getScrollContainer } from './scrollContainer'
+import { getScrollContainer } from '../../_utils/scrollContainer'
 
 const map = new Map()
 let createEvent = (name) => new Event(name, { bubbles: true })
