@@ -29,13 +29,14 @@ body {
   line-height: 1.4;
   color: var(--body-text-color);
   background: var(--body-bg);
-  -webkit-tap-highlight-color: transparent; /* fix for blue background on spoiler tap on Chrome for Android */
+  -webkit-tap-highlight-color: transparent; // fix for blue background on spoiler tap on Chrome for Android
 }
 
 .main-content {
-  // these margins should be kept in sync with getMainTopMargin.js
+  overflow-x: hidden; // prevents horizontal scroll in mobile Safari/Firefox https://stackoverflow.com/a/14271049
+  contain: content; // see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content
+  // these paddings should be kept in sync with getMainTopMargin.js
   padding-top: 42px;
-  contain: content; /* see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content */
   @media (max-width: 991px) {
     padding-top: 52px;
   }
