@@ -30,20 +30,13 @@ body {
   color: var(--body-text-color);
   background: var(--body-bg);
   -webkit-tap-highlight-color: transparent; // fix for blue background on spoiler tap on Chrome for Android
-  @supports not (-webkit-overflow-scrolling: touch) {
-    // Prevent horizontal scrolling on mobile Firefox on small screens. See below for why we're
-    // using a @supports here to target non-iOS browsers.
-    overflow-x: hidden;
-  }
+  // Prevent horizontal scrolling on mobile Firefox on small screens. Unfortunately iOS Safari ignores this,
+  // but if we were to put overflow-x:hidden anywhere else (which fixes it: https://stackoverflow.com/a/14271049),
+  // then it would break the sticky-positioned button.
+  overflow-x: hidden;
 }
 
 .main-content {
-  @supports (-webkit-overflow-scrolling: touch) {
-    // iOS Safari ignores overflow-x:hidden on body, so we add it again here. Unfortunately, this breaks the display
-    // of the position:sticky button in Chrome, so we wrap it in a @supports query that only targets iOS
-    // See https://stackoverflow.com/a/14271049
-    overflow-x: hidden;
-  }
   contain: content; // see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content
   // these paddings should be kept in sync with getMainTopMargin.js
   padding-top: 42px;
