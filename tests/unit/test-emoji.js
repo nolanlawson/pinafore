@@ -60,11 +60,15 @@ describe('test-emoji.js', function () {
     )
   })
 
-  it('does not replace digits or pound', function () {
+  it('does not replace non-emoji characters', function () {
     let replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`it's over #9000`, replacer),
       `it's over #9000`
+    )
+    assert.strictEqual(
+      replaceEmoji(`woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£`, replacer),
+      `woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£`
     )
   })
 
