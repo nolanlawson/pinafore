@@ -1,6 +1,30 @@
+@font-face {
+  font-family: PinaforeRegular;
+  src: local("BlinkMacSystemFont"),
+    local("Segoe UI"),
+    local("Roboto"),
+    local("Oxygen-Sans"),
+    local("Ubuntu"),
+    local("Cantarell"),
+    local("Fira Sans"),
+    local("Droid Sans"),
+    local("Helvetica Neue");
+}
+
+@font-face {
+  font-family: PinaforeEmoji;
+  src: local("Apple Color Emoji"),
+    local("Segoe UI Emoji"),
+    local("Segoe UI Symbol"),
+    local("Twemoji Mozilla"),
+    local("Noto Color Emoji"),
+    local("EmojiOne Color"),
+    local("Android Emoji");
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, PinaforeRegular, sans-serif;
   font-size: 14px;
   line-height: 1.4;
   color: var(--body-text-color);
@@ -85,6 +109,10 @@ input[type=search] {
 input, textarea {
   background: inherit;
   color: inherit;
+}
+
+textarea {
+  font-family: system-ui, -apple-system, PinaforeRegular, sans-serif, PinaforeEmoji;
 }
 
 button, .button {
@@ -213,5 +241,5 @@ textarea {
 }
 
 .inline-emoji {
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Twemoji Mozilla", "Noto Color Emoji", "EmojiOne Color", "Android Emoji", sans-serif;
+  font-family: PinaforeEmoji, sans-serif;
 }
