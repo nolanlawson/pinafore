@@ -64,10 +64,6 @@ export const getActiveElementInnerText = exec(() =>
   (document.activeElement && document.activeElement.innerText) || ''
 )
 
-export const getActiveElementAriaLabel = exec(() =>
-  (document.activeElement && document.activeElement.getAttribute('aria-label')) || ''
-)
-
 export const getActiveElementInsideNthStatus = exec(() => {
   let element = document.activeElement
   while (element) {
@@ -95,10 +91,6 @@ export const getBodyClassList = exec(() => (
   Array.prototype.slice.apply(document.body.classList).filter(_ => _ !== 'the-body'))
 )
 
-export const scrollContainerToTop = exec(() => {
-  document.scrollingElement.scrollTop = 0
-})
-
 export const uploadKittenImage = i => (exec(() => {
   let image = images[`kitten${i}`]
   let blob = blobUtils.base64StringToBlob(image.data, 'image/png')
@@ -119,6 +111,14 @@ export const focus = (selector) => (exec(() => {
     selector
   }
 }))
+
+export const scrollToBottom = exec(() => {
+  document.scrollingElement.scrollTop = document.scrollingElement.scrollHeight
+})
+
+export const scrollToTop = exec(() => {
+  document.scrollingElement.scrollTop = 0
+})
 
 export function getNthMediaAltInput (n) {
   return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt input`)
@@ -277,29 +277,6 @@ export async function validateTimeline (t, timeline) {
     if (status.favoritedBy) {
       await t.expect(getNthStatusHeader(i).innerText)
         .match(new RegExp(status.favoritedBy + '\\s+favorited your status'), { timeout })
-    }
-  }
-}
-
-export async function scrollToTopOfTimeline (t) {
-  let i = await getFirstVisibleStatus().getAttribute('aria-posinset')
-  while (true) {
-    await t.hover(getNthStatus(i))
-      .expect($('.loading-footer').exist).notOk()
-    if (--i <= 0) {
-      break
-    }
-  }
-}
-
-export async function scrollToBottomOfTimeline (t) {
-  let i = 0
-  while (true) {
-    await t.hover(getNthStatus(i))
-      .expect($('.loading-footer').exist).notOk()
-    let size = await getNthStatus(i).getAttribute('aria-setsize')
-    if (++i >= size - 1) {
-      break
     }
   }
 }
