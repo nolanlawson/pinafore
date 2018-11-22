@@ -3,8 +3,7 @@ import {
   avatarInComposeBox, closeDialogButton, composeInput, getNthDialogOptionsOption, getNthPinnedStatus,
   getNthPinnedStatusFavoriteButton,
   getNthStatus, getNthStatusContent,
-  getNthStatusOptionsButton, getUrl, homeNavButton, postStatusButton, scrollContainerToTop, scrollToBottomOfTimeline,
-  scrollToTopOfTimeline,
+  getNthStatusOptionsButton, getUrl, homeNavButton, postStatusButton, scrollToTop, scrollToBottom,
   settingsNavButton, sleep
 } from '../utils'
 import { users } from '../users'
@@ -70,9 +69,9 @@ test('Saved pinned/unpinned state of status', async t => {
     .click(closeDialogButton)
 
   // scroll down and back up to force an unrender
-  await scrollToBottomOfTimeline(t)
-  await scrollToTopOfTimeline(t)
-  await scrollContainerToTop() // otherwise the ... button is obscured by the pen button
+  await scrollToBottom()
+  await sleep(1)
+  await scrollToTop()
 
   await t
     .expect(getNthStatusContent(0).innerText).contains('hey I am going to pin and unpin this', { timeout })

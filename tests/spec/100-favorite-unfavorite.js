@@ -1,7 +1,7 @@
 import {
   getFavoritesCount,
   getNthFavoriteButton, getNthFavorited, getNthStatus, getUrl, homeNavButton, notificationsNavButton,
-  scrollToBottomOfTimeline, scrollToTopOfTimeline
+  scrollToBottom, scrollToTop, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { indexWhere } from '../../routes/_utils/arrays'
@@ -19,8 +19,9 @@ test('favorites a status', async t => {
     .expect(getNthFavorited(4)).eql('true')
 
   // scroll down and back up to force an unrender
-  await scrollToBottomOfTimeline(t)
-  await scrollToTopOfTimeline(t)
+  await scrollToBottom()
+  await sleep(1)
+  await scrollToTop()
   await t
     .hover(getNthStatus(4))
     .expect(getNthFavorited(4)).eql('true')
@@ -45,8 +46,9 @@ test('unfavorites a status', async t => {
     .expect(getNthFavorited(1)).eql('false')
 
   // scroll down and back up to force an unrender
-  await scrollToBottomOfTimeline(t)
-  await scrollToTopOfTimeline(t)
+  await scrollToBottom()
+  await sleep(1)
+  await scrollToTop()
   await t
     .expect(getNthFavorited(1)).eql('false')
     .click(notificationsNavButton)

@@ -1,6 +1,6 @@
 import { loginAsFoobar } from '../roles'
 import {
-  getNthStatus, scrollContainerToTop, showMoreButton, sleep
+  getNthStatus, scrollToTop, showMoreButton, sleep
 } from '../utils'
 import { postAs } from '../serverActions'
 
@@ -27,7 +27,7 @@ test('new incoming toots show a button if scrolled down', async t => {
   await sleep(4000)
   await t.hover(getNthStatus(2))
     .hover(getNthStatus(0))
-  await scrollContainerToTop()
+  await scrollToTop()
   await sleep(1000)
   await t
     .expect(showMoreButton.innerText).contains('Show 2 more')
