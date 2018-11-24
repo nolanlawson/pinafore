@@ -34,18 +34,21 @@ function doWatch () {
   chokidar.watch()
 }
 
-async function compileGlobalSass () {
-  let results = await Promise.all([
-    render({ file: defaultThemeScss, outputStyle: 'compressed' }),
-    render({ file: globalScss, outputStyle: 'compressed' }),
-    render({ file: offlineThemeScss, outputStyle: 'compressed' })
-  ])
+async function renderCss (file) {
+  return (await render({ file, outputStyle: 'compressed' })).css
+}
 
-  let css = results.map(_ => _.css).join('')
+async function compileGlobalSass () {
+  let mainStyle = (await Promise.all([defaultThemeScss, globalScss].map(renderCss))).join('\n')
+  let offlineStyle = (await renderCss(offlineThemeScss))
 
   let html = await readFile(html2xxFile, 'utf8')
-  html = html.replace(/<style>[\s\S]+?<\/style>/,
-    `<style>\n/* auto-generated w/ build-sass.js */\n${css}\n</style>`)
+  html = html.replace(/<!-- begin inline CSS -->[\s\S]+<!-- end inline CSS -->/,
+    `<!-- begin inline CSS -->\n` +
+    `<style>\n\n${mainStyle}\n</style>\n` +
+    `<style media="only x" id="theOfflineStyle">\n\n${offlineStyle}</style>\n` +
+    `<!--end inline CSS -->`
+  )
 
   await writeFile(html2xxFile, html, 'utf8')
 }

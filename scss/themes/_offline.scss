@@ -11,7 +11,3 @@ $focus-outline: lighten($main-theme-color, 15%);
 $compose-background: lighten($main-theme-color, 17%);
 
 @import "_base.scss";
-
-body.the-body.offline { /* "the-body" is a specificity hack to allow offline to always trump themes */
-  @include baseTheme();
-}

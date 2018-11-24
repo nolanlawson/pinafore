@@ -13,10 +13,7 @@ $compose-background: lighten($main-theme-color, 32%);
 @import "_base.scss";
 @import "_dark.scss";
 
-body.theme-cobalt {
-  @include baseTheme();
-  @include darkTheme();
-
+:root {
   --settings-list-item-text: #{$main-text-color};
   --settings-list-item-text-hover: #{$main-text-color};
   

@@ -7,11 +7,11 @@ if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
   let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
   if (theme && theme !== 'default') {
-    document.body.classList.add(`theme-${theme}`)
     let link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = `/theme-${theme}.css`
-    document.head.appendChild(link)
+    // inserting before the offline <style> ensures that the offline style wins when offline
+    document.head.insertBefore(link, document.getElementById('theOfflineStyle'))
     if (window.__themeColors[theme]) {
       document.getElementById('theThemeColor').content = window.__themeColors[theme]
     }

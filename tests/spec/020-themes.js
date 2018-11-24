@@ -1,5 +1,5 @@
 import {
-  getBodyClassList,
+  getCurrentTheme,
   settingsNavButton
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -14,9 +14,9 @@ test('can set a theme', async t => {
     .click(settingsNavButton)
     .click($('a[href="/settings/instances"]'))
     .click($('a[href="/settings/instances/localhost:3000"]'))
-    .expect(getBodyClassList()).eql([])
+    .expect(getCurrentTheme()).eql('default')
     .click($('input[value="scarlet"]'))
-    .expect(getBodyClassList()).eql(['theme-scarlet'])
+    .expect(getCurrentTheme()).eql('scarlet')
     .click($('input[value="default"]'))
-    .expect(getBodyClassList()).eql([])
+    .expect(getCurrentTheme()).eql('default')
 })
