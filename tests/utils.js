@@ -60,6 +60,10 @@ export const getActiveElementClass = exec(() =>
   (document.activeElement && document.activeElement.getAttribute('class')) || ''
 )
 
+export const getActiveElementTagName = exec(() =>
+  (document.activeElement && document.activeElement.tagName) || ''
+)
+
 export const getActiveElementInnerText = exec(() =>
   (document.activeElement && document.activeElement.innerText) || ''
 )
@@ -87,9 +91,13 @@ export const getComposeSelectionStart = exec(() => composeInput().selectionStart
   dependencies: { composeInput }
 })
 
-export const getBodyClassList = exec(() => (
-  Array.prototype.slice.apply(document.body.classList).filter(_ => _ !== 'the-body'))
-)
+export const getCurrentTheme = exec(() => {
+  let themeLink = document.head.querySelector('link[rel=stylesheet][href^="/theme-"]')
+  if (themeLink) {
+    return themeLink.getAttribute('href').match(/^\/theme-(.*)\.css$/, '')[1]
+  }
+  return 'default'
+})
 
 export const uploadKittenImage = i => (exec(() => {
   let image = images[`kitten${i}`]

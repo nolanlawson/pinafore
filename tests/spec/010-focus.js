@@ -1,7 +1,7 @@
 import {
   getNthStatus, scrollToStatus, closeDialogButton, modalDialogContents, getActiveElementClass, goBack, getUrl,
   goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementInsideNthStatus, focus,
-  getNthStatusSelector
+  getNthStatusSelector, getActiveElementTagName
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -103,6 +103,6 @@ test('reply preserves focus and moves focus to the text input', async t => {
     .expect(getActiveElementClass()).contains('compose-box-input')
 })
 
-test('focus .main-content div on index page load', async t => {
-  await t.expect(getActiveElementClass()).contains('the-body')
+test('focus main content element on index page load', async t => {
+  await t.expect(getActiveElementTagName()).match(/body/i)
 })

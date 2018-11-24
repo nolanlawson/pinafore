@@ -1,5 +1,4 @@
-@mixin baseTheme() {
-
+:root {
   $deemphasized-color: #666;
 
   --button-primary-bg: #{lighten($main-theme-color, 7%)};

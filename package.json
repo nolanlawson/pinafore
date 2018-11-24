@@ -64,7 +64,6 @@
     "esm": "^3.0.84",
     "events": "^3.0.0",
     "express": "^4.16.4",
-    "fg-loadcss": "^2.0.1",
     "file-api": "^0.10.4",
     "font-awesome-svg-png": "^1.2.2",
     "form-data": "^2.3.3",

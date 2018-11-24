@@ -14,10 +14,7 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_base.scss";
 @import "_dark.scss";
 
-body.theme-riot {
-  @include baseTheme();
-  @include darkTheme();
-
+:root {
   --nav-bg: #{lighten($body-bg-color, 10%)};
   --nav-a-selected-bg: #{lighten($body-bg-color, 25%)};
   --nav-a-bg-hover: #{lighten($body-bg-color, 25%)};

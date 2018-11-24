@@ -1,4 +1,4 @@
-@mixin darkTheme() {
+:root {
   $deemphasized-color: lighten($main-bg-color, 45%);
 
   --action-button-deemphasized-fill-color: #{$deemphasized-color};

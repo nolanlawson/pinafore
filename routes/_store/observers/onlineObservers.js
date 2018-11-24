@@ -6,6 +6,8 @@ const NOTIFY_OFFLINE_LIMIT = 1
 
 let notifyCount = 0
 
+let offlineStyle = process.browser && document.getElementById('theOfflineStyle')
+
 // debounce to avoid notifying for a short connection issue
 const notifyOffline = debounce(() => {
   if (process.browser && !navigator.onLine && ++notifyCount <= NOTIFY_OFFLINE_LIMIT) {
@@ -21,7 +23,8 @@ export function onlineObservers (store) {
   let oldTheme = meta.content
 
   store.observe('online', online => {
-    document.body.classList.toggle('offline', !online)
+    // "only x" ensures the <style> tag does not have any effect
+    offlineStyle.setAttribute('media', online ? 'only x' : 'all')
     if (online) {
       meta.content = oldTheme
     } else {
