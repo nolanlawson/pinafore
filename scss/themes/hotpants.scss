@@ -10,4 +10,9 @@ $toast-bg: #333;
 $focus-outline: lighten($main-theme-color, 15%);
 $compose-background: lighten($main-theme-color, 17%);
 
+// override scrollbar color to improve contrast
+$scrollbar-face: #{lighten($main-theme-color, 12%)};
+$scrollbar-face-hover: #{lighten($main-theme-color, 14%)};
+$scrollbar-face-active: #{lighten($main-theme-color, 10%)};
+
 @import "_base.scss";
