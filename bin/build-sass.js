@@ -39,15 +39,15 @@ async function renderCss (file) {
 }
 
 async function compileGlobalSass () {
-  let mainStyle = (await Promise.all([defaultThemeScss, globalScss].map(renderCss))).join('\n')
+  let mainStyle = (await Promise.all([defaultThemeScss, globalScss].map(renderCss))).join('')
   let offlineStyle = (await renderCss(offlineThemeScss))
 
   let html = await readFile(html2xxFile, 'utf8')
   html = html.replace(/<!-- begin inline CSS -->[\s\S]+<!-- end inline CSS -->/,
     `<!-- begin inline CSS -->\n` +
-    `<style>\n\n${mainStyle}\n</style>\n` +
-    `<style media="only x" id="theOfflineStyle">\n\n${offlineStyle}</style>\n` +
-    `<!--end inline CSS -->`
+    `<style>\n${mainStyle}</style>\n` +
+    `<style media="only x" id="theOfflineStyle">\n${offlineStyle}</style>\n` +
+    `<!-- end inline CSS -->`
   )
 
   await writeFile(html2xxFile, html, 'utf8')
