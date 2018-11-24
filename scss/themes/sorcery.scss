@@ -11,8 +11,14 @@ $toast-bg: #333;
 $focus-outline: lighten($main-theme-color, 50%);
 $compose-background: lighten($main-theme-color, 52%);
 
+// override scrollbar color to make it a bit darker
+$scrollbar-face: #{lighten($main-theme-color, 3%)};
+$scrollbar-face-hover: #{lighten($main-theme-color, 5%)};
+$scrollbar-face-active: #{lighten($main-theme-color, 1%)};
+
 @import "_base.scss";
 @import "_dark.scss";
+@import "_dark_scrollbars.scss";
 
 :root {
   --nav-bg: #{lighten($body-bg-color, 10%)};

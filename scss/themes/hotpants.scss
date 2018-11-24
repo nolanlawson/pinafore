@@ -16,3 +16,4 @@ $scrollbar-face-hover: #{lighten($main-theme-color, 14%)};
 $scrollbar-face-active: #{lighten($main-theme-color, 10%)};
 
 @import "_base.scss";
+@import "_light_scrollbars.scss";

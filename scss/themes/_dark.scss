@@ -30,10 +30,3 @@
   --compose-autosuggest-item-active: #{lighten($main-bg-color, 15%)};
   --compose-autosuggest-outline: #{lighten($border-color, 20%)};
 }
-
-$scrollbar-face: #{lighten($main-theme-color, 5%)};
-$scrollbar-face-hover: #{lighten($main-theme-color, 7%)};
-$scrollbar-face-active: #{lighten($main-theme-color, 3%)};
-$scrollbar-track: #{darken($body-bg-color, 3%)};
-
-@import "_scrollbars.scss";
