@@ -120,6 +120,9 @@
   .muted-style.modal-dialog-contents {
     border: none;
   }
+  :global(body.modal-open) {
+    overflow-y: hidden;
+  }
 </style>
 <script>
   import { A11yDialog } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
@@ -132,6 +135,7 @@
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
         let { id } = this.get()
+        document.body.classList.toggle('modal-open', false)
         this.fire('close')
         this._a11yDialog.destroy()
         emit('destroyDialog', id)
@@ -172,6 +176,7 @@
         if (id !== thisId) {
           return
         }
+        document.body.classList.toggle('modal-open', true)
         this._a11yDialog.show()
         requestAnimationFrame(() => {
           this.set({ fadedIn: true })
