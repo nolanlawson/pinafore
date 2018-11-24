@@ -1,0 +1,30 @@
+html {
+  scrollbar-face-color: $scrollbar-face;
+  scrollbar-track-color: $scrollbar-track;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbar-face;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollbar-face-hover;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: $scrollbar-face-active;
+}
+
+::-webkit-scrollbar-track, ::-webkit-scrollbar-track:hover, ::-webkit-scrollbar-track:active {
+  background: $scrollbar-track
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
