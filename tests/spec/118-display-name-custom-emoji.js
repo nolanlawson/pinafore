@@ -4,7 +4,6 @@ import {
   displayNameInComposeBox,
   generalSettingsButton,
   getNthStatus,
-  getNthStatusAuthorName,
   getNthStatusSelector,
   getUrl,
   homeNavButton,
