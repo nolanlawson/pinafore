@@ -54,6 +54,12 @@ test('aria-labels for notifications', async t => {
     .expect(getNthStatus(2).getAttribute('aria-label')).match(
       /admin, @foobar notification of unlisted message, .* ago, @admin, Unlisted/i
     )
+  await scrollToStatus(t, 4)
+  await t
+    .hover(getNthStatus(4))
+    .expect(getNthStatus(4).getAttribute('aria-label')).match(
+      /admin, @foobar notification of direct message, .* ago, @admin, Direct/i
+    )
   await scrollToStatus(t, 5)
   await t
     .hover(getNthStatus(5))
