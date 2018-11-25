@@ -1,11 +1,9 @@
-import timeago from 'timeago.js'
+import { format } from '../_thirdparty/timeago/timeago'
 import { mark, stop } from '../_utils/marks'
-
-const timeagoInstance = timeago()
 
 export function formatTimeagoDate (date) {
   mark('formatTimeagoDate')
-  let res = timeagoInstance.format(date)
+  let res = format(date)
   stop('formatTimeagoDate')
   return res
 }
