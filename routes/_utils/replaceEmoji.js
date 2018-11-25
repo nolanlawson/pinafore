@@ -1,5 +1,8 @@
 import { getEmojiRegex } from './emojiRegex'
 
+// \ufe0f is a variation selector, which seems to appear for some reason in e.g. ™
+let NON_EMOJI_REGEX = new RegExp('^[0-9#*™®\ufe0f]+$')
+
 // replace emoji in HTML with something else, safely skipping HTML tags
 export function replaceEmoji (string, replacer) {
   let output = ''
@@ -9,7 +12,7 @@ export function replaceEmoji (string, replacer) {
 
   function safeReplacer (substring) {
     // emoji regex matches digits and pound sign https://git.io/fpl6J
-    if (substring.match(/^[0-9#*™®]+$/)) {
+    if (substring.match(NON_EMOJI_REGEX)) {
       return substring
     }
     return replacer(substring)
