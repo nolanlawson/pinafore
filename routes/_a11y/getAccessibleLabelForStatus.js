@@ -1,5 +1,4 @@
 import { getAccountAccessibleName } from './getAccountAccessibleName'
-import { formatDate } from '../_intl/formatDate'
 import { htmlToPlainText } from '../_utils/htmlToPlainText'
 import { POST_PRIVACY_OPTIONS } from '../_static/statuses'
 
@@ -32,7 +31,7 @@ function reblogText (reblog, account, omitEmojiInDisplayNames) {
 }
 
 export function getAccessibleLabelForStatus (originalAccount, account, content,
-  date, spoilerText, showContent,
+  timeagoFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames) {
   let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
 
@@ -40,7 +39,7 @@ export function getAccessibleLabelForStatus (originalAccount, account, content,
     notificationText(notification, omitEmojiInDisplayNames),
     originalAccountDisplayName,
     (showContent || !spoilerText) ? htmlToPlainText(content) : `Content warning: ${spoilerText}`,
-    formatDate(date),
+    timeagoFormattedDate,
     `@${originalAccount.acct}`,
     privacyText(visibility),
     reblogText(reblog, account, omitEmojiInDisplayNames)

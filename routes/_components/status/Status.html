@@ -112,6 +112,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
+  import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -216,11 +217,12 @@
         return getAccountAccessibleName(originalAccount, $omitEmojiInDisplayNames)
       },
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
+      timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
       reblog: ({ status }) => status.reblog,
-      ariaLabel: ({ originalAccount, account, content, createdAtDate, spoilerText,
+      ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
         showContent, reblog, notification, visibility, $omitEmojiInDisplayNames }) => (
         getAccessibleLabelForStatus(originalAccount, account, content,
-          createdAtDate, spoilerText, showContent,
+          timeagoFormattedDate, spoilerText, showContent,
           reblog, notification, visibility, $omitEmojiInDisplayNames)
       ),
       showHeader: ({ notification, status, timelineType }) => (
@@ -239,7 +241,8 @@
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
-        replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId }) => ({
+        replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
+        createdAtDate, timeagoFormattedDate }) => ({
         notification,
         notificationId,
         status,
@@ -259,7 +262,9 @@
         spoilerText,
         originalStatus,
         originalStatusId,
-        inReplyToId
+        inReplyToId,
+        createdAtDate,
+        timeagoFormattedDate
       })
     }
   }

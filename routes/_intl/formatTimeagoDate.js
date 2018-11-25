@@ -3,9 +3,9 @@ import { mark, stop } from '../_utils/marks'
 
 const timeagoInstance = timeago()
 
-export function formatDate (date) {
-  mark('compute relativeDate')
+export function formatTimeagoDate (date) {
+  mark('formatTimeagoDate')
   let res = timeagoInstance.format(date)
-  stop('compute relativeDate')
+  stop('formatTimeagoDate')
   return res
 }
