@@ -1,13 +1,13 @@
 import { mark, stop } from './marks'
-
-let domParser = process.browser && new DOMParser()
+import htmlToFormattedText from 'html-to-formatted-text'
+import { decode } from '../_thirdparty/he/he'
 
 export function htmlToPlainText (html) {
   if (!html) {
     return ''
   }
   mark('htmlToPlainText')
-  let res = domParser.parseFromString(html, 'text/html').documentElement.textContent
+  let res = decode(htmlToFormattedText(html))
   stop('htmlToPlainText')
   return res
 }
