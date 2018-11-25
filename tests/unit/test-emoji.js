@@ -70,6 +70,17 @@ describe('test-emoji.js', function () {
       replaceEmoji(`woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`, replacer),
       `woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`
     )
+
+    assert.strictEqual(
+      replaceEmoji(`woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`, replacer),
+      `woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`
+    )
+
+    // hidden VARIATION SELECTOR character is in here
+    assert.strictEqual(
+      replaceEmoji("<p>It's shapes™️ ... continued</p>", replacer),
+      "<p>It's shapes™️ ... continued</p>"
+    )
   })
 
   it('does not replace emoji inside HTML tags', function () {
