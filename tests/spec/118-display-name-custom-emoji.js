@@ -1,7 +1,13 @@
 import { loginAsFoobar } from '../roles'
 import {
   avatarInComposeBox,
-  displayNameInComposeBox, generalSettingsButton, getNthStatus, getNthStatusSelector, getUrl, homeNavButton,
+  displayNameInComposeBox,
+  generalSettingsButton,
+  getNthStatus,
+  getNthStatusAuthorName,
+  getNthStatusSelector,
+  getUrl,
+  homeNavButton,
   removeEmojiFromDisplayNamesInput,
   settingsNavButton,
   sleep
@@ -85,26 +91,33 @@ test('Cannot remove emoji from user display names if result would be empty', asy
 })
 
 test('Check status aria labels for de-emojified text', async t => {
-  await updateUserDisplayNameAs('foobar', '🌈 foo :blobpats: 🌈')
+  let rainbow = String.fromCodePoint(0x1F308)
+  await updateUserDisplayNameAs('foobar', `${rainbow} foo :blobpats: ${rainbow}`)
   await sleep(1000)
   await loginAsFoobar(t)
   await t
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      new RegExp(`${rainbow} foo :blobpats: ${rainbow}, this is unlisted, .* ago, @foobar, Unlisted`)
+    )
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
     .expect(removeEmojiFromDisplayNamesInput.checked).ok()
     .click(homeNavButton)
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by foo')
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      new RegExp(`foo, this is unlisted, .* ago, @foobar, Unlisted`)
+    )
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
     .expect(removeEmojiFromDisplayNamesInput.checked).notOk()
     .click(homeNavButton)
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      new RegExp(`${rainbow} foo :blobpats: ${rainbow}, this is unlisted, .* ago, @foobar, Unlisted`)
+    )
 })
 
 test('Check some odd emoji', async t => {
