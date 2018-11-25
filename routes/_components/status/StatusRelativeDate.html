@@ -2,9 +2,9 @@
    href="/statuses/{originalStatusId}"
    focus-key={focusKey}
 >
-  <time datetime={createdAtDate} title={relativeDate}
-        aria-label="{relativeDate} – click to show thread">
-    {relativeDate}
+  <time datetime={createdAtDate} title={timeagoFormattedDate}
+        aria-label="{timeagoFormattedDate} – click to show thread">
+    {timeagoFormattedDate}
   </time>
 </a>
 <style>
@@ -29,19 +29,8 @@
 
 </style>
 <script>
-  import { mark, stop } from '../../_utils/marks'
-  import timeago from 'timeago.js'
-  const timeagoInstance = timeago()
-
   export default {
     computed: {
-      createdAtDate: ({ originalStatus }) => originalStatus.created_at,
-      relativeDate: ({ createdAtDate }) => {
-        mark('compute relativeDate')
-        let res = timeagoInstance.format(createdAtDate)
-        stop('compute relativeDate')
-        return res
-      },
       focusKey: ({ uuid }) => `status-relative-date-${uuid}`
     }
   }

@@ -1,12 +1,17 @@
 import { loginAsFoobar } from '../roles'
 import {
   avatarInComposeBox,
-  displayNameInComposeBox, generalSettingsButton, getNthStatus, getNthStatusSelector, getUrl, homeNavButton,
+  displayNameInComposeBox,
+  generalSettingsButton,
+  getNthStatus,
+  getNthStatusSelector,
+  getUrl,
+  homeNavButton,
   removeEmojiFromDisplayNamesInput,
   settingsNavButton,
   sleep
 } from '../utils'
-import { updateUserDisplayNameAs } from '../serverActions'
+import { postAs, updateUserDisplayNameAs } from '../serverActions'
 import { Selector as $ } from 'testcafe'
 
 fixture`118-display-name-custom-emoji.js`
@@ -85,26 +90,34 @@ test('Cannot remove emoji from user display names if result would be empty', asy
 })
 
 test('Check status aria labels for de-emojified text', async t => {
-  await updateUserDisplayNameAs('foobar', '🌈 foo :blobpats: 🌈')
+  let rainbow = String.fromCodePoint(0x1F308)
+  await updateUserDisplayNameAs('foobar', `${rainbow} foo :blobpats: ${rainbow}`)
+  await postAs('foobar', 'hey ho lotsa emojos')
   await sleep(1000)
   await loginAsFoobar(t)
   await t
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      new RegExp(`${rainbow} foo :blobpats: ${rainbow}, hey ho lotsa emojos, (.* ago|just now), @foobar, Public`, 'i')
+    )
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
     .expect(removeEmojiFromDisplayNamesInput.checked).ok()
     .click(homeNavButton)
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by foo')
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      new RegExp(`foo, hey ho lotsa emojos, (.* ago|just now), @foobar, Public`, 'i')
+    )
     .click(settingsNavButton)
     .click(generalSettingsButton)
     .click(removeEmojiFromDisplayNamesInput)
     .expect(removeEmojiFromDisplayNamesInput.checked).notOk()
     .click(homeNavButton)
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).eql('Status by 🌈 foo :blobpats: 🌈')
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      new RegExp(`${rainbow} foo :blobpats: ${rainbow}, hey ho lotsa emojos, (.* ago|just now), @foobar, Public`, 'i')
+    )
 })
 
 test('Check some odd emoji', async t => {

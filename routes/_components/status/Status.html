@@ -110,7 +110,9 @@
   import { classname } from '../../_utils/classname'
   import { checkDomAncestors } from '../../_utils/checkDomAncestors'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { removeEmoji } from '../../_utils/removeEmoji'
+  import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
+  import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
+  import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -211,16 +213,17 @@
       ),
       originalAccountEmojis: ({ originalAccount }) => (originalAccount.emojis || []),
       originalAccountDisplayName: ({ originalAccount }) => (originalAccount.display_name || originalAccount.username),
-      originalAccountAccessibleName: ({ originalAccountDisplayName, originalAccountEmojis, $omitEmojiInDisplayNames }) => {
-        if ($omitEmojiInDisplayNames) {
-          return removeEmoji(originalAccountDisplayName, originalAccountEmojis) || originalAccountDisplayName
-        }
-        return originalAccountDisplayName
+      originalAccountAccessibleName: ({ originalAccount, $omitEmojiInDisplayNames }) => {
+        return getAccountAccessibleName(originalAccount, $omitEmojiInDisplayNames)
       },
-      ariaLabel: ({ originalAccountAccessibleName, originalStatus, visibility, isStatusInOwnThread }) => (
-        (visibility === 'direct' ? 'Direct message' : 'Status') +
-          ` by ${originalAccountAccessibleName}` +
-        (isStatusInOwnThread ? ' (focused)' : '')
+      createdAtDate: ({ originalStatus }) => originalStatus.created_at,
+      timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
+      reblog: ({ status }) => status.reblog,
+      ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
+        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames }) => (
+        getAccessibleLabelForStatus(originalAccount, account, content,
+          timeagoFormattedDate, spoilerText, showContent,
+          reblog, notification, visibility, $omitEmojiInDisplayNames)
       ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
@@ -238,7 +241,8 @@
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
-        replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId }) => ({
+        replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
+        createdAtDate, timeagoFormattedDate }) => ({
         notification,
         notificationId,
         status,
@@ -258,7 +262,9 @@
         spoilerText,
         originalStatus,
         originalStatusId,
-        inReplyToId
+        inReplyToId,
+        createdAtDate,
+        timeagoFormattedDate
       })
     }
   }
