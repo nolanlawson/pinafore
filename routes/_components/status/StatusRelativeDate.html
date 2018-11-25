@@ -29,19 +29,12 @@
 
 </style>
 <script>
-  import { mark, stop } from '../../_utils/marks'
-  import timeago from 'timeago.js'
-  const timeagoInstance = timeago()
+  import { formatDate } from '../../_intl/formatDate'
 
   export default {
     computed: {
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
-      relativeDate: ({ createdAtDate }) => {
-        mark('compute relativeDate')
-        let res = timeagoInstance.format(createdAtDate)
-        stop('compute relativeDate')
-        return res
-      },
+      relativeDate: ({ createdAtDate }) => formatDate(createdAtDate),
       focusKey: ({ uuid }) => `status-relative-date-${uuid}`
     }
   }
