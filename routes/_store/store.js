@@ -41,7 +41,7 @@ export const store = new PinaforeStore({
   repliesShown: {},
   autoplayGifs: false,
   markMediaAsSensitive: false,
-  reduceMotion: false,
+  reduceMotion: !process.browser || window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   pinnedPages: {},
   instanceLists: {},
   pinnedStatuses: {},
