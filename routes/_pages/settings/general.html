@@ -23,6 +23,11 @@
              bind:checked="$omitEmojiInDisplayNames" on:change="$save()">
       <label for="choice-omit-emoji-in-display-names">Remove emoji from user display names</label>
     </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-custom-scrollbars"
+             bind:checked="$disableCustomScrollbars" on:change="$save()">
+      <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
+    </div>
   </form>
 
   <h2>Themes

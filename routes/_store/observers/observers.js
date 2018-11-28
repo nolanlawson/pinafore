@@ -7,6 +7,7 @@ import { autosuggestObservers } from './autosuggestObservers'
 import { pageVisibilityObservers } from './pageVisibilityObservers'
 import { resizeObservers } from './resizeObservers'
 import { notificationPermissionObservers } from './notificationPermissionObservers'
+import { customScrollbarObservers } from './customScrollbarObservers'
 
 export function observers (store) {
   instanceObservers(store)
@@ -18,4 +19,5 @@ export function observers (store) {
   pageVisibilityObservers(store)
   resizeObservers(store)
   notificationPermissionObservers(store)
+  customScrollbarObservers(store)
 }
