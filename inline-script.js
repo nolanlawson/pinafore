@@ -25,6 +25,17 @@ if (!localStorage.store_currentInstance) {
   document.head.appendChild(style)
 }
 
+if (localStorage.store_disableCustomScrollbars === 'true') {
+  // if user has disabled custom scrollbars, remove this style
+  let theScrollbarStyle = document.getElementById('theScrollbarStyle')
+  theScrollbarStyle.setAttribute('media', 'only x') // disables the style
+}
+
+// hack to make the scrollbars rounded only on macOS
+if (/mac/i.test(navigator.platform)) {
+  document.documentElement.style.setProperty('--scrollbar-border-radius', '50px')
+}
+
 // TODO: remove this hack when Safari works with cross-origin window.open()
 // in a PWA: https://github.com/nolanlawson/pinafore/issues/45
 if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {

@@ -1,34 +1,10 @@
-html {
-  // Firefox with scrollbar config changes as of 2018-11
-  scrollbar-face-color: #{$scrollbar-face};
-  scrollbar-track-color: #{$scrollbar-track};
-  // Firefox nightly as of 2018-11, new standard version
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color
-  scrollbar-color: #{$scrollbar-face $scrollbar-track};
-}
-
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #{$scrollbar-face};
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #{$scrollbar-face-hover};
-}
-
-::-webkit-scrollbar-thumb:active {
-  background: #{$scrollbar-face-active};
-}
-
-::-webkit-scrollbar-track, ::-webkit-scrollbar-track:hover, ::-webkit-scrollbar-track:active {
-  background: #{$scrollbar-track};
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
+:root {
+  --scrollbar-face-color: #{$scrollbar-face};
+  --scrollbar-track-color: #{$scrollbar-track};
+  --scrollbar-border-radius: 0;
+  --scrollbar-face-color-hover: #{$scrollbar-face-hover};
+  --scrollbar-face-color-active: #{$scrollbar-face-active};
+  --scrollbar-width: 12px;
+  --scrollbar-height: 12px;
+  --scrollbar-background-color: transparent;
 }
