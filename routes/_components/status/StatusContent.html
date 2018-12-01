@@ -77,9 +77,6 @@
     },
     methods: {
       hydrateContent () {
-        if (!this.refs.node) {
-          return
-        }
         mark('hydrateContent')
         let node = this.refs.node
         let { originalStatus, uuid } = this.get()

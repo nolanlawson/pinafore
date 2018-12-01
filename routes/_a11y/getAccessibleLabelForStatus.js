@@ -1,6 +1,8 @@
 import { getAccountAccessibleName } from './getAccountAccessibleName'
-import { htmlToPlainText } from '../_utils/htmlToPlainText'
 import { POST_PRIVACY_OPTIONS } from '../_static/statuses'
+import { htmlToPlainText } from '../_utils/htmlToPlainText'
+
+const MAX_TEXT_LENGTH = 150
 
 function notificationText (notification, omitEmojiInDisplayNames) {
   if (!notification) {
@@ -30,15 +32,28 @@ function reblogText (reblog, account, omitEmojiInDisplayNames) {
   return `Boosted by ${accountDisplayName}`
 }
 
+// Works around a bug in NVDA where it may crash if the string is too long
+// https://github.com/nolanlawson/pinafore/issues/694
+function truncateTextForSRs (text) {
+  if (text.length > MAX_TEXT_LENGTH) {
+    text = text.substring(0, MAX_TEXT_LENGTH)
+    text = text.replace(/\S+$/, '') + ' (truncated)'
+  }
+  return text.replace(/\s+/g, ' ').trim()
+}
+
 export function getAccessibleLabelForStatus (originalAccount, account, content,
   timeagoFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames) {
   let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
+  let contentTextToShow = (showContent || !spoilerText)
+    ? truncateTextForSRs(htmlToPlainText(content))
+    : `Content warning: ${truncateTextForSRs(spoilerText)}`
 
   let values = [
     notificationText(notification, omitEmojiInDisplayNames),
     originalAccountDisplayName,
-    (showContent || !spoilerText) ? htmlToPlainText(content) : `Content warning: ${spoilerText}`,
+    contentTextToShow,
     timeagoFormattedDate,
     `@${originalAccount.acct}`,
     privacyText(visibility),

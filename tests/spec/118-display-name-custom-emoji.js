@@ -138,4 +138,7 @@ test('Check some odd emoji', async t => {
     .expect(removeEmojiFromDisplayNamesInput.checked).notOk()
     .click(homeNavButton)
     .expect(displayNameInComposeBox.innerText).eql('foo 🕹📺')
+
+  // clean up after all these tests are done
+  await updateUserDisplayNameAs('foobar', 'foobar')
 })
