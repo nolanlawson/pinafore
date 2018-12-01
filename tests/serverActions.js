@@ -8,6 +8,7 @@ import { authorizeFollowRequest, getFollowRequests } from '../routes/_actions/fo
 import { followAccount, unfollowAccount } from '../routes/_api/follow'
 import { updateCredentials } from '../routes/_api/updateCredentials'
 import { reblogStatus } from '../routes/_api/reblog'
+import { submitMedia } from './submitMedia'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -26,6 +27,12 @@ export async function reblogStatusAs (username, statusId) {
 export async function postAs (username, text) {
   return postStatus(instanceName, users[username].accessToken, text,
     null, null, false, null, 'public')
+}
+
+export async function postEmptyStatusWithMediaAs (username, filename, alt) {
+  let mediaResponse = await submitMedia(users[username].accessToken, filename, alt)
+  return postStatus(instanceName, users[username].accessToken, '',
+    null, [mediaResponse.id], false, null, 'public')
 }
 
 export async function postReplyAs (username, text, inReplyTo) {

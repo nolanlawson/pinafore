@@ -21,8 +21,8 @@
   {#if !showContent}
     <StatusMentions {...params} />
   {/if}
-  {#if content && (showContent || contentPreloaded)}
-    <StatusContent {...params} shown={showContent}/>
+  {#if content}
+    <StatusContent {...params} shown={showContent} ref:statusContent />
   {/if}
   {#if showMedia }
     <StatusMediaAttachments {...params} on:recalculateHeight />
@@ -109,10 +109,10 @@
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
   import { checkDomAncestors } from '../../_utils/checkDomAncestors'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+  import { observe } from 'svelte-extras'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -121,18 +121,23 @@
 
   export default {
     oncreate () {
-      let { delegateKey, isStatusInOwnThread, showContent } = this.get()
+      let { delegateKey, isStatusInOwnThread } = this.get()
       if (!isStatusInOwnThread) {
         // the whole <article> is clickable in this case
         registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
       }
-      if (!showContent) {
-        scheduleIdleTask(() => {
-          // Perf optimization: lazily load the StatusContent when the user is idle so that
-          // it's fast when they click the "show more" button
-          this.set({ contentPreloaded: true })
-        })
-      }
+      this.observe('showContent', showContent => {
+        // set the aria label based on whether the spoiler is shown or not
+        let { originalAccount, account, timeagoFormattedDate, spoilerText,
+          reblog, notification, visibility, $omitEmojiInDisplayNames } = this.get()
+        let contentHtmlAsText = this.refs.statusContent
+          ? this.refs.statusContent.getContentAsText()
+          : ''
+        let ariaLabel = getAccessibleLabelForStatus(originalAccount, account, contentHtmlAsText,
+          timeagoFormattedDate, spoilerText, showContent,
+          reblog, notification, visibility, $omitEmojiInDisplayNames)
+        this.set({ ariaLabel })
+      })
     },
     components: {
       StatusSidebar,
@@ -151,10 +156,11 @@
     data: () => ({
       notification: void 0,
       replyVisibility: void 0,
-      contentPreloaded: false
+      ariaLabel: ''
     }),
     store: () => store,
     methods: {
+      observe,
       onClickOrKeydown (e) {
         let { type, keyCode, target } = e
 
@@ -219,12 +225,6 @@
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
       reblog: ({ status }) => status.reblog,
-      ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
-        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames }) => (
-        getAccessibleLabelForStatus(originalAccount, account, content,
-          timeagoFormattedDate, spoilerText, showContent,
-          reblog, notification, visibility, $omitEmojiInDisplayNames)
-      ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
         status.reblog ||

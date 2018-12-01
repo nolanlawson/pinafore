@@ -56,10 +56,18 @@
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
   import { massageUserText } from '../../_utils/massageUserText'
+  import { htmlToPlainText } from '../../_utils/htmlToPlainText'
+
+  function hydrateNode(htmlString) {
+    mark('hydrateNode')
+    let node = htmlTo
+    stop('hydrateNode')
+  }
 
   export default {
     oncreate () {
       this.hydrateContent()
+      this.set({ contentAsText: this.refs.node.innerText })
     },
     store: () => store,
     computed: {
@@ -77,9 +85,6 @@
     },
     methods: {
       hydrateContent () {
-        if (!this.refs.node) {
-          return
-        }
         mark('hydrateContent')
         let node = this.refs.node
         let { originalStatus, uuid } = this.get()
@@ -116,6 +121,9 @@
           }
         }
         stop('hydrateContent')
+      },
+      getContentAsText () {
+        return this.get().contentAsText
       }
     }
   }
