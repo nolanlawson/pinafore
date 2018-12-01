@@ -42,6 +42,8 @@ export const followersButton = $('.account-profile-details > *:nth-child(3)')
 export const avatarInComposeBox = $('.compose-box-avatar')
 export const displayNameInComposeBox = $('.compose-box-display-name')
 export const generalSettingsButton = $('a[href="/settings/general"]')
+export const markMediaSensitiveInput = $('#choice-mark-media-sensitive')
+export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitive')
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 
 export const favoritesCountElement = $('.status-favs').addCustomDOMProperties({
@@ -178,6 +180,14 @@ export function getNthStatusContent (n) {
 
 export function getNthStatusSpoiler (n) {
   return $(`${getNthStatusSelector(n)} .status-spoiler`)
+}
+
+export function getNthStatusSensitiveMediaButton (n) {
+  return $(`${getNthStatusSelector(n)} .status-sensitive-media-button`)
+}
+
+export function getNthStatusMedia (n) {
+  return $(`${getNthStatusSelector(n)} .status-media`)
 }
 
 export function getNthStatusHeader (n) {

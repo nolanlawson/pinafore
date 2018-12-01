@@ -17,6 +17,7 @@ const persistedState = {
   loggedInInstances: {},
   loggedInInstancesInOrder: [],
   markMediaAsSensitive: false,
+  neverMarkMediaAsSensitive: false,
   omitEmojiInDisplayNames: undefined,
   pinnedPages: {},
   pushSubscription: null,
