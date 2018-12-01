@@ -1,36 +1,45 @@
 <SettingsLayout page='settings/general' label="General">
   <h1>General Settings</h1>
 
-  <h2>UI Settings</h2>
+  <h2>Preferences</h2>
   <form class="ui-settings" aria-label="UI settings">
     <div class="setting-group">
-      <input type="checkbox" id="choice-autoplay-gif"
-             bind:checked="$autoplayGifs" on:change="$save()">
-      <label for="choice-autoplay-gif">Autoplay GIFs</label>
-    </div>
-    <div class="setting-group">
       <input type="checkbox" id="choice-mark-media-sensitive"
-             bind:checked="$markMediaAsSensitive" on:change="$save()">
+             bind:checked="$markMediaAsSensitive" on:change="onChange(event)">
       <label for="choice-mark-media-sensitive">Always mark media as sensitive</label>
     </div>
     <div class="setting-group">
+      <input type="checkbox" id="choice-never-mark-media-sensitive"
+             bind:checked="$neverMarkMediaAsSensitive" on:change="onChange(event)">
+      <label for="choice-never-mark-media-sensitive">Never mark media as sensitive</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-custom-scrollbars"
+             bind:checked="$disableCustomScrollbars" on:change="onChange(event)">
+      <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
+    </div>
+  </form>
+
+  <h2>Accessibility</h2>
+  <form class="ui-settings" aria-label="UI settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-autoplay-gif"
+             bind:checked="$autoplayGifs" on:change="onChange(event)">
+      <label for="choice-autoplay-gif">Autoplay GIFs</label>
+    </div>
+    <div class="setting-group">
       <input type="checkbox" id="choice-reduce-motion"
-             bind:checked="$reduceMotion" on:change="$save()">
+             bind:checked="$reduceMotion" on:change="onChange(event)">
       <label for="choice-reduce-motion">Reduce motion in UI animations</label>
     </div>
     <div class="setting-group">
       <input type="checkbox" id="choice-omit-emoji-in-display-names"
-             bind:checked="$omitEmojiInDisplayNames" on:change="$save()">
+             bind:checked="$omitEmojiInDisplayNames" on:change="onChange(event)">
       <label for="choice-omit-emoji-in-display-names">Remove emoji from user display names</label>
     </div>
     <div class="setting-group">
-      <input type="checkbox" id="choice-disable-custom-scrollbars"
-             bind:checked="$disableCustomScrollbars" on:change="$save()">
-      <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
-    </div>
-    <div class="setting-group">
       <input type="checkbox" id="choice-disable-long-aria-labels"
-             bind:checked="$disableLongAriaLabels" on:change="$save()">
+             bind:checked="$disableLongAriaLabels" on:change="onChange(event)">
       <label for="choice-disable-long-aria-labels">Use short article ARIA labels</label>
     </div>
   </form>
@@ -59,6 +68,21 @@
     components: {
       SettingsLayout,
       ThemeSettings
+    },
+    methods: {
+      onChange (event) {
+        // these two are mutually exclusive
+        let { markMediaAsSensitive, neverMarkMediaAsSensitive } = this.store.get()
+        if (markMediaAsSensitive && neverMarkMediaAsSensitive) {
+          if (event.target.id === 'choice-mark-media-sensitive') {
+            this.store.set({ neverMarkMediaAsSensitive: false })
+          } else {
+            this.store.set({ markMediaAsSensitive: false })
+          }
+        }
+
+        this.store.save()
+      }
     },
     store: () => store,
     computed: {

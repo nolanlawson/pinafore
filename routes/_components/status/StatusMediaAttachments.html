@@ -140,7 +140,9 @@
     computed: {
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
-      sensitive: ({ originalStatus, $markMediaAsSensitive }) => originalStatus.sensitive || $markMediaAsSensitive,
+      sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
+        !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
+      ),
       delegateKey: ({ uuid }) => `sensitive-${uuid}`
     },
     methods: {
