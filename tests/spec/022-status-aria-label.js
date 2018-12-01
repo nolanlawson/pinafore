@@ -1,5 +1,13 @@
 import { loginAsFoobar } from '../roles'
-import { getNthShowOrHideButton, getNthStatus, notificationsNavButton, scrollToStatus } from '../utils'
+import {
+  generalSettingsButton,
+  getNthShowOrHideButton,
+  getNthStatus, homeNavButton,
+  notificationsNavButton,
+  scrollToStatus,
+  settingsNavButton
+} from '../utils'
+import { Selector as $ } from 'testcafe'
 import { indexWhere } from '../../routes/_utils/arrays'
 import { homeTimeline } from '../fixtures'
 
@@ -65,5 +73,26 @@ test('aria-labels for notifications', async t => {
     .hover(getNthStatus(5))
     .expect(getNthStatus(5).getAttribute('aria-label')).match(
       /quux followed you, @quux/i
+    )
+})
+
+test('can shorten aria-labels', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(settingsNavButton)
+    .click(generalSettingsButton)
+    .click($('#choice-disable-long-aria-labels'))
+    .click(homeNavButton)
+    .hover(getNthStatus(0))
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      /Unlisted status by quux/
+    )
+    .click(settingsNavButton)
+    .click(generalSettingsButton)
+    .click($('#choice-disable-long-aria-labels'))
+    .click(homeNavButton)
+    .hover(getNthStatus(0))
+    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+      /quux, pinned toot 1, .+ ago, @quux, Unlisted, Boosted by admin/i
     )
 })

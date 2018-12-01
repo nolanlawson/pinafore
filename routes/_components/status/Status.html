@@ -220,10 +220,10 @@
       timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
       reblog: ({ status }) => status.reblog,
       ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
-        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames }) => (
+        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels }) => (
         getAccessibleLabelForStatus(originalAccount, account, content,
           timeagoFormattedDate, spoilerText, showContent,
-          reblog, notification, visibility, $omitEmojiInDisplayNames)
+          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
       ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||

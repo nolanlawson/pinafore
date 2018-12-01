@@ -4,58 +4,52 @@ import { mixins } from './mixins/mixins'
 import { LocalStorageStore } from './LocalStorageStore'
 import { observe } from 'svelte-extras'
 
-const KEYS_TO_STORE_IN_LOCAL_STORAGE = new Set([
-  'currentInstance',
-  'currentRegisteredInstance',
-  'currentRegisteredInstanceName',
-  'instanceNameInSearch',
-  'instanceThemes',
-  'loggedInInstances',
-  'loggedInInstancesInOrder',
-  'autoplayGifs',
-  'markMediaAsSensitive',
-  'reduceMotion',
-  'disableCustomScrollbars',
-  'omitEmojiInDisplayNames',
-  'pinnedPages',
-  'composeData',
-  'pushSubscription'
-])
+const persistedState = {
+  autoplayGifs: false,
+  composeData: {},
+  currentInstance: null,
+  currentRegisteredInstanceName: undefined,
+  currentRegisteredInstance: undefined,
+  disableCustomScrollbars: false,
+  disableLongAriaLabels: false,
+  instanceNameInSearch: '',
+  instanceThemes: {},
+  loggedInInstances: {},
+  loggedInInstancesInOrder: [],
+  markMediaAsSensitive: false,
+  omitEmojiInDisplayNames: undefined,
+  pinnedPages: {},
+  pushSubscription: null,
+  reduceMotion: !process.browser || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+const nonPersistedState = {
+  customEmoji: {},
+  instanceInfos: {},
+  instanceLists: {},
+  online: !process.browser || navigator.onLine,
+  pinnedStatuses: {},
+  pushNotificationsSupport: process.browser && ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in window.PushSubscription.prototype),
+  queryInSearch: '',
+  repliesShown: {},
+  sensitivesShown: {},
+  spoilersShown: {},
+  statusModifications: {},
+  verifyCredentials: {}
+}
+
+const state = Object.assign({}, persistedState, nonPersistedState)
+const keysToStoreInLocalStorage = new Set(Object.keys(persistedState))
 
 class PinaforeStore extends LocalStorageStore {
   constructor (state) {
-    super(state, KEYS_TO_STORE_IN_LOCAL_STORAGE)
+    super(state, keysToStoreInLocalStorage)
   }
 }
 
 PinaforeStore.prototype.observe = observe
 
-export const store = new PinaforeStore({
-  instanceNameInSearch: '',
-  queryInSearch: '',
-  currentInstance: null,
-  loggedInInstances: {},
-  loggedInInstancesInOrder: [],
-  instanceThemes: {},
-  spoilersShown: {},
-  sensitivesShown: {},
-  repliesShown: {},
-  autoplayGifs: false,
-  markMediaAsSensitive: false,
-  reduceMotion: !process.browser || window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  disableCustomScrollbars: false,
-  pinnedPages: {},
-  instanceLists: {},
-  pinnedStatuses: {},
-  instanceInfos: {},
-  statusModifications: {},
-  customEmoji: {},
-  composeData: {},
-  verifyCredentials: {},
-  online: !process.browser || navigator.onLine,
-  pushNotificationsSupport: process.browser && ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in window.PushSubscription.prototype),
-  pushSubscription: null
-})
+export const store = new PinaforeStore(state)
 
 mixins(PinaforeStore)
 computations(store)
