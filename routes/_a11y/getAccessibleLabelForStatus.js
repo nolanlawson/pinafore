@@ -2,9 +2,7 @@ import { getAccountAccessibleName } from './getAccountAccessibleName'
 import { POST_PRIVACY_OPTIONS } from '../_static/statuses'
 import { htmlToPlainText } from '../_utils/htmlToPlainText'
 
-const MAX_TEXT_LENGTH = 150
-
-function notificationText (notification, omitEmojiInDisplayNames) {
+function getNotificationText (notification, omitEmojiInDisplayNames) {
   if (!notification) {
     return
   }
@@ -16,7 +14,7 @@ function notificationText (notification, omitEmojiInDisplayNames) {
   }
 }
 
-function privacyText (visibility) {
+function getPrivacyText (visibility) {
   for (let option of POST_PRIVACY_OPTIONS) {
     if (option.key === visibility) {
       return option.label
@@ -24,7 +22,7 @@ function privacyText (visibility) {
   }
 }
 
-function reblogText (reblog, account, omitEmojiInDisplayNames) {
+function getReblogText (reblog, account, omitEmojiInDisplayNames) {
   if (!reblog) {
     return
   }
@@ -32,32 +30,34 @@ function reblogText (reblog, account, omitEmojiInDisplayNames) {
   return `Boosted by ${accountDisplayName}`
 }
 
-// Works around a bug in NVDA where it may crash if the string is too long
-// https://github.com/nolanlawson/pinafore/issues/694
-function truncateTextForSRs (text) {
-  if (text.length > MAX_TEXT_LENGTH) {
-    text = text.substring(0, MAX_TEXT_LENGTH)
-    text = text.replace(/\S+$/, '') + ' (truncated)'
-  }
+function cleanupText (text) {
   return text.replace(/\s+/g, ' ').trim()
 }
 
 export function getAccessibleLabelForStatus (originalAccount, account, content,
   timeagoFormattedDate, spoilerText, showContent,
-  reblog, notification, visibility, omitEmojiInDisplayNames) {
+  reblog, notification, visibility, omitEmojiInDisplayNames,
+  disableLongAriaLabels) {
   let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
   let contentTextToShow = (showContent || !spoilerText)
-    ? truncateTextForSRs(htmlToPlainText(content))
-    : `Content warning: ${truncateTextForSRs(spoilerText)}`
+    ? cleanupText(htmlToPlainText(content))
+    : `Content warning: ${cleanupText(spoilerText)}`
+  let privacyText = getPrivacyText(visibility)
+
+  if (disableLongAriaLabels) {
+    // Long text can crash NVDA; allow users to shorten it like we had it before.
+    // https://github.com/nolanlawson/pinafore/issues/694
+    return `${privacyText} status by ${originalAccountDisplayName}`
+  }
 
   let values = [
-    notificationText(notification, omitEmojiInDisplayNames),
+    getNotificationText(notification, omitEmojiInDisplayNames),
     originalAccountDisplayName,
     contentTextToShow,
     timeagoFormattedDate,
     `@${originalAccount.acct}`,
-    privacyText(visibility),
-    reblogText(reblog, account, omitEmojiInDisplayNames)
+    privacyText,
+    getReblogText(reblog, account, omitEmojiInDisplayNames)
   ].filter(Boolean)
 
   return values.join(', ')

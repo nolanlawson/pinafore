@@ -28,6 +28,11 @@
              bind:checked="$disableCustomScrollbars" on:change="$save()">
       <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
     </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-long-aria-labels"
+             bind:checked="$disableLongAriaLabels" on:change="$save()">
+      <label for="choice-disable-long-aria-labels">Use short article ARIA labels</label>
+    </div>
   </form>
 
   <h2>Themes
