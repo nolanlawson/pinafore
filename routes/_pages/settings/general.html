@@ -35,11 +35,8 @@
     </div>
   </form>
 
-  <h2>Themes
-  </h2>
-  <p>
-    Changes to the theme can be made in <em>Settings &gt; Instances &gt; (instance name)</em>
-  </p>
+  <h2>{themeTitle}</h2>
+  <ThemeSettings instanceName={$currentInstance} />
 </SettingsLayout>
 <style>
   .ui-settings {
@@ -55,12 +52,19 @@
 </style>
 <script>
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
+  import ThemeSettings from '../../_components/settings/instance/ThemeSettings.html'
   import { store } from '../../_store/store'
 
   export default {
     components: {
-      SettingsLayout
+      SettingsLayout,
+      ThemeSettings
     },
-    store: () => store
+    store: () => store,
+    computed: {
+      themeTitle: ({ $loggedInInstancesInOrder, $currentInstance }) => (
+        $loggedInInstancesInOrder.length > 1 ? `Theme for ${$currentInstance}` : 'Theme'
+      )
+    }
   }
 </script>
