@@ -1,5 +1,6 @@
 import { getAccountAccessibleName } from './getAccountAccessibleName'
 import { POST_PRIVACY_OPTIONS } from '../_static/statuses'
+import { htmlToPlainText } from '../_utils/htmlToPlainText'
 
 const MAX_TEXT_LENGTH = 150
 
@@ -41,12 +42,12 @@ function truncateTextForSRs (text) {
   return text.replace(/\s+/g, ' ').trim()
 }
 
-export function getAccessibleLabelForStatus (originalAccount, account, contentHtmlAsText,
+export function getAccessibleLabelForStatus (originalAccount, account, content,
   timeagoFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames) {
   let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
   let contentTextToShow = (showContent || !spoilerText)
-    ? truncateTextForSRs(contentHtmlAsText)
+    ? truncateTextForSRs(htmlToPlainText(content))
     : `Content warning: ${truncateTextForSRs(spoilerText)}`
 
   let values = [
