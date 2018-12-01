@@ -1,5 +1,5 @@
 import { loginAsFoobar } from '../roles'
-import { getNthStatus } from '../utils'
+import { getNthStatus, sleep } from '../utils'
 import { postEmptyStatusWithMediaAs } from '../serverActions'
 
 fixture`120-status-aria-label.js`
@@ -7,6 +7,7 @@ fixture`120-status-aria-label.js`
 
 test('aria-labels for statuses with no content text', async t => {
   await postEmptyStatusWithMediaAs('foobar', 'kitten1.jpg', 'kitteh')
+  await sleep(2000)
   await loginAsFoobar(t)
   await t
     .hover(getNthStatus(0))

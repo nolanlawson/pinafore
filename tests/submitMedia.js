@@ -5,7 +5,7 @@ import { auth } from '../routes/_api/utils'
 
 export async function submitMedia (accessToken, filename, alt) {
   let form = new FormData()
-  form.append('file', fs.createReadStream(path.join(__dirname, '../tests/images/' + filename)))
+  form.append('file', fs.createReadStream(path.join(__dirname, 'images', filename)))
   form.append('description', alt)
   return new Promise((resolve, reject) => {
     form.submit({
