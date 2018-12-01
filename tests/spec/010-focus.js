@@ -77,6 +77,7 @@ test('thread preserves focus', async t => {
   await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/3')
+    .hover(getNthStatus(0))
   await scrollToStatus(t, 2)
   await t.click(getNthStatus(2))
     .expect(getUrl()).contains('/statuses/')
@@ -87,6 +88,7 @@ test('thread preserves focus', async t => {
     .expect(getNthStatus(24).exists).ok()
     .expect(getActiveElementClass()).contains('status-sidebar')
     .expect(getActiveElementInsideNthStatus()).eql('24')
+    .hover(getNthStatus(23))
     .click(getNthStatus(23))
     .expect($(`${getNthStatusSelector(23)} .status-absolute-date`).exists).ok()
   await goBack()
