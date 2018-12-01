@@ -37,7 +37,7 @@ function reblogText (reblog, account, omitEmojiInDisplayNames) {
 function truncateTextForSRs (text) {
   if (text.length > MAX_TEXT_LENGTH) {
     text = text.substring(0, MAX_TEXT_LENGTH)
-    text = text.replace(/\S+$/, '') + '…'
+    text = text.replace(/\S+$/, '') + ' (truncated)'
   }
   return text.replace(/\s+/g, ' ').trim()
 }
