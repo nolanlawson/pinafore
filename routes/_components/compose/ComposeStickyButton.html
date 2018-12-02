@@ -1,0 +1,124 @@
+<div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
+<div class="compose-box-button-wrapper {showSticky ? 'compose-button-sticky' : ''} {hideAndFadeIn}" >
+  <ComposeButton {overLimit} {sticky} on:click="onClickButton()" />
+</div>
+<style>
+  .compose-box-button-wrapper {
+    /*
+     * We want pointer-events only for the sticky button, so use fit-content so that
+     * the element doesn't take up the full width, and then set its left margin to
+     * auto so that it sticks to the right. fit-content doesn't work in Edge, but
+     * that just means that content that is level with the button is not clickable.
+     */
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .compose-box-button-wrapper.compose-button-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 52px; /* padding-top for .main-content plus 10px */
+    z-index: 5000;
+  }
+
+  @media (max-width: 767px) {
+    .compose-box {
+      padding: 10px 10px 0 10px;
+      max-width: calc(100vw - 20px);
+      width: 580px;
+    }
+    .compose-box.slim-size {
+      width: 560px;
+      max-width: calc(100vw - 40px);
+    }
+    .compose-box-button-wrapper.compose-button-sticky {
+      top: 57px; /* padding-top for .main-content plus 5px */
+    }
+  }
+  @media (max-width: 991px) {
+    .compose-box-button-wrapper.compose-button-sticky {
+      top: 62px; /* padding-top for .main-content plus 10px */
+    }
+  }
+  @supports (-webkit-overflow-scrolling: touch) {
+    .compose-box-button-wrapper.compose-button-sticky {
+      /* disable sticky positioning on iOS due to
+         https://github.com/nolanlawson/pinafore/issues/667 */
+      position: relative;
+      z-index: 0;
+      top: 0;
+    }
+  }
+</style>
+<script>
+  import ComposeButton from './ComposeButton.html'
+  import { store } from '../../_store/store'
+  import { importShowComposeDialog } from '../dialog/asyncDialogs'
+  import { observe } from 'svelte-extras'
+
+  export default {
+    oncreate () {
+      this.setupStickyObserver()
+    },
+    ondestroy () {
+      this.teardownStickyObserver()
+    },
+    store: () => store,
+    data: () => ({
+      sticky: false
+    }),
+    computed: {
+      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized
+    },
+    methods: {
+      observe,
+      async onClickButton () {
+        let { sticky } = this.get()
+        if (sticky) {
+          // when the button is sticky, we're scrolled down the home timeline,
+          // so we should launch a new compose dialog
+          (await importShowComposeDialog())()
+        } else {
+          // else we're actually posting a new toot, let our parent know
+          this.fire('postAction')
+        }
+      },
+      setupStickyObserver () {
+        if (CSS.supports('-webkit-overflow-scrolling', 'touch')) {
+          // disable sticky positioning button on iOS due to
+          // https://github.com/nolanlawson/pinafore/issues/667
+          return
+        }
+
+        this.__stickyObserver = new IntersectionObserver(entries => {
+          this.set({ sticky: !entries[0].isIntersecting })
+        })
+        this.__stickyObserver.observe(this.refs.sentinel)
+
+        // also create a one-shot observer for the $timelineInitialized event,
+        // due to a bug in Firefox where when the scrollTop is set
+        // manually, the other observer doesn't necessarily fire
+        this.observe('timelineInitialized', timelineInitialized => {
+          if (timelineInitialized) {
+            let observer = new IntersectionObserver(entries => {
+              this.set({ sticky: !entries[0].isIntersecting })
+              observer.disconnect()
+            })
+            observer.observe(this.refs.sentinel)
+          }
+        }, { init: false })
+      },
+      teardownStickyObserver () {
+        if (this.__stickyObserver) {
+          this.__stickyObserver.disconnect()
+        }
+      }
+    },
+    components: {
+      ComposeButton
+    }
+  }
+</script>

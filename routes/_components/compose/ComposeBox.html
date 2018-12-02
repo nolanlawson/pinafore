@@ -15,10 +15,7 @@
   <ComposeLengthIndicator {length} {overLimit} />
   <ComposeMedia {realm} {media} />
 </div>
-<div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
-<div class="compose-box-button-wrapper {realm === 'home' ? 'compose-button-sticky' : ''} {hideAndFadeIn}" >
- <ComposeButton {length} {overLimit} {sticky} on:click="onClickPostButton()" />
-</div>
+<ComposeStickyButton {showSticky} {hideAndFadeIn} {overLimit} on:postAction="doPostStatus()" />
 {#if !hideBottomBorder}
   <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
 {/if}
@@ -59,58 +56,8 @@
     width: 100%;
   }
 
-  .compose-box-button-wrapper {
-    /*
-     * We want pointer-events only for the sticky button, so use fit-content so that
-     * the element doesn't take up the full width, and then set its left margin to
-     * auto so that it sticks to the right. fit-content doesn't work in Edge, but
-     * that just means that content that is level with the button is not clickable.
-     */
-    width: -moz-fit-content;
-    width: fit-content;
-    margin-left: auto;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .compose-box-button-wrapper.compose-button-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 52px; /* padding-top for .main-content plus 10px */
-    z-index: 5000;
-  }
-
   .compose-content-warning-wrapper {
     grid-area: cw;
-  }
-
-  @media (max-width: 767px) {
-    .compose-box {
-      padding: 10px 10px 0 10px;
-      max-width: calc(100vw - 20px);
-      width: 580px;
-    }
-    .compose-box.slim-size {
-      width: 560px;
-      max-width: calc(100vw - 40px);
-    }
-    .compose-box-button-wrapper.compose-button-sticky {
-      top: 57px; /* padding-top for .main-content plus 5px */
-    }
-  }
-  @media (max-width: 991px) {
-    .compose-box-button-wrapper.compose-button-sticky {
-      top: 62px; /* padding-top for .main-content plus 10px */
-    }
-  }
-  @supports (-webkit-overflow-scrolling: touch) {
-    .compose-box-button-wrapper.compose-button-sticky {
-      /* disable sticky positioning on iOS due to
-         https://github.com/nolanlawson/pinafore/issues/667 */
-      position: relative;
-      z-index: 0;
-      top: 0;
-    }
   }
 </style>
 <script>
@@ -119,7 +66,7 @@
   import ComposeLengthIndicator from './ComposeLengthIndicator.html'
   import ComposeAuthor from './ComposeAuthor.html'
   import ComposeInput from './ComposeInput.html'
-  import ComposeButton from './ComposeButton.html'
+  import ComposeStickyButton from './ComposeStickyButton.html'
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
   import { measureText } from '../../_utils/measureText'
@@ -127,34 +74,25 @@
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
-  import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { classname } from '../../_utils/classname'
-  import { observe } from 'svelte-extras'
 
   export default {
     oncreate () {
-      let { realm } = this.get()
-      if (realm === 'home') {
-        this.setupStickyObserver()
-      } else if (realm !== 'dialog') {
+      let { realm, replySpoiler, replyVisibility } = this.get()
+      if (realm !== 'home' && realm !== 'dialog') {
         // if this is a reply, populate the handle immediately
-        insertHandleForReply(realm)
+        /* no await */ insertHandleForReply(realm)
       }
 
-      let { replySpoiler } = this.get()
       if (replySpoiler) {
         // default spoiler is same as the replied-to status
         setReplySpoiler(realm, replySpoiler)
       }
 
-      let { replyVisibility } = this.get()
       if (replyVisibility) {
         // make sure the visibility is consistent with the replied-to status
         setReplyVisibility(realm, replyVisibility)
       }
-    },
-    ondestroy () {
-      this.teardownStickyObserver()
     },
     components: {
       ComposeAuthor,
@@ -162,7 +100,7 @@
       ComposeLengthGauge,
       ComposeLengthIndicator,
       ComposeInput,
-      ComposeButton,
+      ComposeStickyButton,
       ComposeMedia,
       ComposeContentWarning
     },
@@ -170,7 +108,6 @@
       size: void 0,
       isReply: false,
       autoFocus: false,
-      sticky: false,
       hideBottomBorder: false,
       hidden: false
     }),
@@ -186,6 +123,7 @@
         'compose-box-fade-in',
         hidden && 'hidden'
       )),
+      showSticky: ({ realm }) => realm === 'home',
       composeData: ({ $currentComposeData, realm }) => $currentComposeData[realm] || {},
       text: ({ composeData }) => composeData.text || '',
       media: ({ composeData }) => composeData.media || [],
@@ -199,26 +137,12 @@
       ),
       overLimit: ({ length, $maxStatusChars }) => length > $maxStatusChars,
       contentWarningShown: ({ composeData }) => composeData.contentWarningShown,
-      contentWarning: ({ composeData }) => composeData.contentWarning || '',
-      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized
+      contentWarning: ({ composeData }) => composeData.contentWarning || ''
     },
     transitions: {
       slide
     },
     methods: {
-      observe,
-      async onClickPostButton () {
-        let { sticky } = this.get()
-        if (sticky) {
-          // when the button is sticky, we're scrolled down the home timeline,
-          // so we should launch a new compose dialog
-          let showComposeDialog = await importShowComposeDialog()
-          showComposeDialog()
-        } else {
-          // else we're actually posting a new toot
-          this.doPostStatus()
-        }
-      },
       doPostStatus () {
         let {
           text,
@@ -242,36 +166,6 @@
         postStatus(realm, text, inReplyTo, mediaIds,
           sensitive, contentWarning, postPrivacyKey,
           mediaDescriptions, inReplyToUuid)
-      },
-      setupStickyObserver () {
-        if (CSS.supports('-webkit-overflow-scrolling', 'touch')) {
-          // disable sticky positioning button on iOS due to
-          // https://github.com/nolanlawson/pinafore/issues/667
-          return
-        }
-
-        this.__stickyObserver = new IntersectionObserver(entries => {
-          this.set({ sticky: !entries[0].isIntersecting })
-        })
-        this.__stickyObserver.observe(this.refs.sentinel)
-
-        // also create a one-shot observer for the $timelineInitialized event,
-        // due to a bug in Firefox where when the scrollTop is set
-        // manually, the other observer doesn't necessarily fire
-        this.observe('timelineInitialized', timelineInitialized => {
-          if (timelineInitialized) {
-            let observer = new IntersectionObserver(entries => {
-              this.set({ sticky: !entries[0].isIntersecting })
-              observer.disconnect()
-            })
-            observer.observe(this.refs.sentinel)
-          }
-        }, { init: false })
-      },
-      teardownStickyObserver () {
-        if (this.__stickyObserver) {
-          this.__stickyObserver.disconnect()
-        }
       }
     }
   }
