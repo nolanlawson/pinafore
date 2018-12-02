@@ -1,4 +1,4 @@
-<div class="compose-box-button-halo">
+<div class="compose-box-button-halo {sticky ? 'compose-box-button-halo-sticky' : ''}">
   <button class="primary compose-box-button"
           {disabled}
           aria-label={sticky ? 'Compose' : 'Toot!'}
@@ -25,8 +25,10 @@
   .compose-box-button-halo {
     border-radius: 2px;
     margin: 5px 15px 15px 5px;
-    background: var(--compose-button-halo);
     pointer-events: auto;
+  }
+  .compose-box-button-halo-sticky {
+    background-color: var(--compose-button-halo);
   }
   .compose-box-button {
     grid-area: button;
