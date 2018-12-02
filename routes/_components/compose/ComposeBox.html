@@ -16,8 +16,8 @@
   <ComposeMedia {realm} {media} />
 </div>
 <div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
-<div class="compose-box-button-wrapper {realm === 'home' ? 'compose-button-sticky' : ''} {hideAndFadeIn}" >
- <ComposeButton {length} {overLimit} {sticky} on:click="onClickPostButton()" />
+<div class="compose-box-button-wrapper {hideAndFadeIn}" >
+ <ComposeButton {overLimit} on:click="onClickPostButton()" />
 </div>
 {#if !hideBottomBorder}
   <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
@@ -60,24 +60,8 @@
   }
 
   .compose-box-button-wrapper {
-    /*
-     * We want pointer-events only for the sticky button, so use fit-content so that
-     * the element doesn't take up the full width, and then set its left margin to
-     * auto so that it sticks to the right. fit-content doesn't work in Edge, but
-     * that just means that content that is level with the button is not clickable.
-     */
-    width: -moz-fit-content;
-    width: fit-content;
-    margin-left: auto;
     display: flex;
     justify-content: flex-end;
-  }
-
-  .compose-box-button-wrapper.compose-button-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 52px; /* padding-top for .main-content plus 10px */
-    z-index: 5000;
   }
 
   .compose-content-warning-wrapper {
@@ -94,14 +78,6 @@
       width: 560px;
       max-width: calc(100vw - 40px);
     }
-    .compose-box-button-wrapper.compose-button-sticky {
-      top: 57px; /* padding-top for .main-content plus 5px */
-    }
-  }
-  @media (max-width: 991px) {
-    .compose-box-button-wrapper.compose-button-sticky {
-      top: 62px; /* padding-top for .main-content plus 10px */
-    }
   }
 </style>
 <script>
@@ -113,6 +89,7 @@
   import ComposeButton from './ComposeButton.html'
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
+  import StickyComposeButton from './StickyComposeButton.html'
   import { measureText } from '../../_utils/measureText'
   import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
@@ -127,6 +104,7 @@
       let { realm } = this.get()
       if (realm === 'home') {
         this.setupStickyObserver()
+        this.setupStickyButton()
       } else if (realm !== 'dialog') {
         // if this is a reply, populate the handle immediately
         insertHandleForReply(realm)
@@ -146,6 +124,7 @@
     },
     ondestroy () {
       this.teardownStickyObserver()
+      this.teardownStickyButton()
     },
     components: {
       ComposeAuthor,
@@ -155,7 +134,8 @@
       ComposeInput,
       ComposeButton,
       ComposeMedia,
-      ComposeContentWarning
+      ComposeContentWarning,
+      StickyComposeButton
     },
     data: () => ({
       size: void 0,
@@ -198,17 +178,12 @@
     },
     methods: {
       observe,
-      async onClickPostButton () {
-        let { sticky } = this.get()
-        if (sticky) {
-          // when the button is sticky, we're scrolled down the home timeline,
-          // so we should launch a new compose dialog
-          let showComposeDialog = await importShowComposeDialog()
-          showComposeDialog()
-        } else {
-          // else we're actually posting a new toot
-          this.doPostStatus()
-        }
+      onClickPostButton () {
+        this.doPostStatus()
+      },
+      async onClickStickyButton () {
+        let showComposeDialog = await importShowComposeDialog()
+        showComposeDialog()
       },
       doPostStatus () {
         let {
@@ -256,6 +231,28 @@
       teardownStickyObserver () {
         if (this.__stickyObserver) {
           this.__stickyObserver.disconnect()
+        }
+      },
+      setupStickyButton () {
+        let element = document.createElement('div')
+        element.setAttribute('id', 'the-sticky-button')
+        document.body.appendChild(element)
+        let stickyButton = new StickyComposeButton({
+          target: element,
+          data: {
+            sticky: true
+          }
+        })
+        stickyButton.on('click', e => this.onClickStickyButton(e))
+        this.__stickyButton = stickyButton
+      },
+      teardownStickyButton () {
+        if (this.__stickyButton) {
+          this.__stickyButton.destroy()
+        }
+        let element = document.getElementById('the-sticky-button')
+        if (element) {
+          document.body.removeChild(element)
         }
       }
     }

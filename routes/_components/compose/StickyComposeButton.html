@@ -1,0 +1,34 @@
+<div class="sticky-compose-box-button-wrapper" >
+  <ComposeButton sticky={true} on:click />
+</div>
+<style>
+  .sticky-compose-box-button-wrapper {
+    position: fixed;
+    width: 100%;
+    margin: 30px auto 15px;
+    display: flex;
+    justify-content: flex-end;
+    top: 52px; /* padding-top for .main-content plus 10px */
+    z-index: 5000;
+  }
+  @media (max-width: 767px) {
+    .sticky-compose-box-button-wrapper {
+      top: 57px; /* padding-top for .main-content plus 5px */
+      margin: 5px auto 15px;
+    }
+  }
+  @media (max-width: 991px) {
+    .sticky-compose-box-button-wrapper.compose-button-sticky {
+      top: 62px; /* padding-top for .main-content plus 10px */
+    }
+  }
+</style>
+<script>
+  import ComposeButton from './ComposeButton.html'
+
+  export default {
+    components: {
+      ComposeButton
+    }
+  }
+</script>

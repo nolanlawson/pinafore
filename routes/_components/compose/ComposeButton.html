@@ -66,6 +66,10 @@
   import { store } from '../../_store/store'
 
   export default {
+    data: () => ({
+      sticky: false,
+      overLimit: false
+    }),
     store: () => store,
     computed: {
       disabled: ({ $postingStatus, overLimit }) => $postingStatus || overLimit
