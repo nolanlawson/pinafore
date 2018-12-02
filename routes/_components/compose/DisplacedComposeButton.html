@@ -1,0 +1,19 @@
+<div class="displaced-compose-box-button">
+  <ComposeButton dummy={true} length={1} overLimit={false} sticky={false} />
+</div>
+<style>
+</style>
+<script>
+  import ComposeButton from './ComposeButton.html'
+
+  export default {
+    oncreate() {
+      // TODO: inject another ComposeBox into the DOM right under <body>, make it sticky-positioned,
+      // and proxy all events back to this component. Also, make the logic in ComposeBox.html more
+      // generic for swapping between the two component classes.
+    },
+    components: {
+      ComposeButton
+    }
+  }
+</script>

@@ -1,24 +1,26 @@
-<div class="compose-box-button-halo">
+<div class="compose-box-button-halo {dummy ? 'dummy-compose-box-button' : ''}" aria-hidden={dummy}>
   <button class="primary compose-box-button"
           {disabled}
           aria-label={sticky ? 'Compose' : 'Toot!'}
           on:click>
-    <span class={$postingStatus || sticky ? 'hidden' : ''}>
+    <span class={!dummy && ($postingStatus || sticky) ? 'hidden' : ''}>
       Toot!
     </span>
-    <div class="compose-box-button-spinner"
-         aria-hidden="true">
-      <svg class="compose-box-button-svg {$postingStatus ? 'spin' : 'hidden'}">
-        <use xlink:href="#fa-spinner" />
-      </svg>
-    </div>
+    {#if !dummy}
+      <div class="compose-box-button-spinner"
+           aria-hidden="true">
+        <svg class="compose-box-button-svg {$postingStatus ? 'spin' : 'hidden'}">
+          <use xlink:href="#fa-spinner" />
+        </svg>
+      </div>
 
-    <div class="compose-box-button-compose {sticky ? '' : 'hidden'}"
-         aria-hidden="true">
-      <svg class="compose-box-button-svg">
-        <use xlink:href="#fa-pencil" />
-      </svg>
-    </div>
+      <div class="compose-box-button-compose {sticky ? '' : 'hidden'}"
+           aria-hidden="true">
+        <svg class="compose-box-button-svg">
+          <use xlink:href="#fa-pencil" />
+        </svg>
+      </div>
+    {/if}
   </button>
 </div>
 <style>
@@ -27,6 +29,10 @@
     margin: 5px 15px 15px 5px;
     background: var(--compose-button-halo);
     pointer-events: auto;
+  }
+  .compose-box-button-halo.dummy-compose-box-button {
+    visibility: hidden;
+    pointer-events: none;
   }
   .compose-box-button {
     grid-area: button;
@@ -67,6 +73,9 @@
 
   export default {
     store: () => store,
+    data: () => ({
+      dummy: false
+    }),
     computed: {
       disabled: ({ $postingStatus, overLimit }) => $postingStatus || overLimit
     }

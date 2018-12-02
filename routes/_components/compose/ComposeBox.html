@@ -17,7 +17,11 @@
 </div>
 <div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
 <div class="compose-box-button-wrapper {realm === 'home' ? 'compose-button-sticky' : ''} {hideAndFadeIn}" >
- <ComposeButton {length} {overLimit} {sticky} on:click="onClickPostButton()" />
+  {#if realm === 'home'}
+    <DisplacedComposeButton {length} {overLimit} {sticky} on:click="onClickPostButton()" />
+  {:else}
+    <ComposeButton {length} {overLimit} {sticky} on:click="onClickPostButton()" />
+  {/if}
 </div>
 {#if !hideBottomBorder}
   <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
@@ -111,6 +115,7 @@
   import ComposeAuthor from './ComposeAuthor.html'
   import ComposeInput from './ComposeInput.html'
   import ComposeButton from './ComposeButton.html'
+  import DisplacedComposeButton from './DisplacedComposeButton.html'
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
   import { measureText } from '../../_utils/measureText'
@@ -154,6 +159,7 @@
       ComposeLengthIndicator,
       ComposeInput,
       ComposeButton,
+      DisplacedComposeButton,
       ComposeMedia,
       ComposeContentWarning
     },

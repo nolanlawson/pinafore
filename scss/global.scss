@@ -40,6 +40,10 @@ body {
   contain: content; // see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content
   // these paddings should be kept in sync with getMainTopMargin.js
   padding-top: 42px;
+  // Prevent horizontal scrolling on mobile Firefox on small screens. Unfortunately iOS Safari ignores this,
+  // but if we were to put overflow-x:hidden anywhere else (which fixes it: https://stackoverflow.com/a/14271049),
+  // then it would break the sticky-positioned button.
+  overflow-x: hidden;
   @media (max-width: 991px) {
     padding-top: 52px;
   }
