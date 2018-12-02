@@ -1,0 +1,176 @@
+<div class="compose-box-button-sentinel {hideAndFadeIn}" ref:sentinel></div>
+<div class="compose-box-button-wrapper {showSticky ? 'compose-box-button-sticky' : ''} {hideAndFadeIn}"
+     ref:wrapper >
+  <ComposeButton {overLimit} {sticky} on:click="onClickButton()" />
+</div>
+<style>
+  .compose-box-button-wrapper {
+    /*
+     * We want pointer-events only for the sticky button, so use fit-content so that
+     * the element doesn't take up the full width, and then set its left margin to
+     * auto so that it sticks to the right. fit-content doesn't work in Edge, but
+     * that just means that content that is level with the button is not clickable.
+     */
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .compose-box-button-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+
+  :global(.compose-box-button-sticky, .compose-box-button-fixed) {
+    z-index: 5000;
+    top: 52px; /* padding-top for .main-content plus 10px */
+  }
+
+  @media (max-width: 767px) {
+    :global(.compose-box-button-sticky, .compose-box-button-fixed) {
+      top: 57px; /* padding-top for .main-content plus 5px */
+    }
+  }
+  @media (max-width: 991px) {
+    :global(.compose-box-button-sticky, .compose-box-button-fixed) {
+      top: 62px; /* padding-top for .main-content plus 10px */
+    }
+  }
+  @supports (-webkit-overflow-scrolling: touch) {
+    .compose-box-button-sticky {
+      /* disable sticky positioning on iOS due to
+         https://github.com/nolanlawson/pinafore/issues/667 */
+      position: relative;
+      z-index: 0;
+      top: 0;
+    }
+  }
+</style>
+<script>
+  import ComposeButton from './ComposeButton.html'
+  import { store } from '../../_store/store'
+  import { importShowComposeDialog } from '../dialog/asyncDialogs'
+  import { observe } from 'svelte-extras'
+
+  const USE_IOS_WORKAROUND = process.browser && CSS.supports('-webkit-overflow-scrolling', 'touch')
+
+  export default {
+    oncreate () {
+      this.setupStickyObserver()
+      this.setupIOSWorkaround()
+    },
+    ondestroy () {
+      this.teardownStickyObserver()
+    },
+    store: () => store,
+    data: () => ({
+      sticky: false
+    }),
+    computed: {
+      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized
+    },
+    methods: {
+      observe,
+      onClickButton () {
+        let { sticky } = this.get()
+        if (sticky) {
+          // when the button is sticky, we're scrolled down the home timeline,
+          // so we should launch a new compose dialog
+          this.showDialog()
+        } else {
+          // else we're actually posting a new toot, let our parent know
+          this.fire('postAction')
+        }
+      },
+      async showDialog () {
+        (await importShowComposeDialog())()
+      },
+      setupIOSWorkaround () {
+        // This is an elaborate fix for https://github.com/nolanlawson/pinafore/issues/667
+        // We detect iOS using support for -webkit-overflow-scrolling: touch
+        // (both here and in global.scss). Then, we set the main content element
+        // to be overflow-x: hidden, which normally would break the sticky button
+        // because its parent is now the scrolling context. So for iOS only, we
+        // create a fake sticky button by listening to intersecting events
+        // and inserting a permanently fixed-position element into the DOM.
+        let { showSticky } = this.get()
+        if (!USE_IOS_WORKAROUND || !showSticky) {
+          return
+        }
+
+        let cleanup = () => {
+          let existingElement = document.getElementById('the-sticky-button')
+          if (existingElement) {
+            document.body.removeChild(existingElement)
+          }
+          if (this.__fixedStickyButton) {
+            this.__fixedStickyButton.destroy()
+            this.__fixedStickyButton = null
+          }
+        }
+
+        let createFixedStickyButton = () => {
+          let element = document.createElement('div')
+          element.setAttribute('id', 'the-sticky-button')
+          element.classList.add('compose-box-button-wrapper')
+          element.classList.add('compose-box-button-fixed')
+          document.body.appendChild(element)
+          let rect = this.refs.wrapper.getBoundingClientRect()
+          Object.assign(element.style, {
+            right: `${rect.right}px`,
+            left: `${rect.left}px`,
+            position: 'fixed'
+          })
+          this.__fixedStickyButton = new ComposeButton({
+            target: element,
+            data: {
+              sticky: true,
+              overLimit: false
+            }
+          })
+          this.__fixedStickyButton.on('click', () => this.showDialog())
+        }
+
+        this.observe('sticky', sticky => {
+          cleanup()
+          if (sticky) {
+            createFixedStickyButton()
+          }
+        })
+        this.on('destroy', () => cleanup())
+      },
+      setupStickyObserver () {
+        let sentinel = this.refs.sentinel
+
+        this.__stickyObserver = new IntersectionObserver(entries => this.onObserve(entries))
+        this.__stickyObserver.observe(sentinel)
+
+        // also create a one-shot observer for the $timelineInitialized event,
+        // due to a bug in Firefox where when the scrollTop is set
+        // manually, the other observer doesn't necessarily fire
+        this.observe('timelineInitialized', timelineInitialized => {
+          if (timelineInitialized) {
+            let observer = new IntersectionObserver(entries => {
+              this.onObserve(entries)
+              observer.disconnect()
+            })
+            observer.observe(sentinel)
+          }
+        }, { init: false })
+      },
+      onObserve (entries) {
+        this.set({ sticky: !entries[0].isIntersecting })
+      },
+      teardownStickyObserver () {
+        if (this.__stickyObserver) {
+          this.__stickyObserver.disconnect()
+        }
+      }
+    },
+    components: {
+      ComposeButton
+    }
+  }
+</script>
