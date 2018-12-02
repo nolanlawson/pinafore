@@ -29,7 +29,7 @@
       let { scrollTop } = this.store.get()
       let scrollContainer = getScrollContainer()
       if (scrollTop > 0) {
-        this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+        this.store.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
           let { initializedScrollTop } = this.get()
           if (!initializedScrollTop && allVisibleItemsHaveHeight) {
@@ -46,7 +46,7 @@
         })
       } else {
         this.fire('noNeedToScroll')
-        this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+        this.store.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           if (allVisibleItemsHaveHeight) {
             console.log('initialized VirtualList')
             this.fire('initialized')
@@ -110,10 +110,6 @@
           offsetHeight: getOffsetHeight()
         })
       }
-    },
-    computed: {
-      // TODO: bug in svelte/store – the observer in oncreate() never get removed without this hack
-      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight
     }
   }
 </script>
