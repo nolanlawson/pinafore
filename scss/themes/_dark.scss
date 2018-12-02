@@ -24,7 +24,7 @@
   --muted-modal-focus: #{#999};
   --muted-modal-hover: #{rgba(255, 255, 255, 0.2)};
 
-  --compose-button-halo: #{rgba(255, 255, 255, 0.1)};
+  --compose-button-halo: #{rgba(0, 0, 0, 0.1)};
 
   --compose-autosuggest-item-hover: #{lighten($main-bg-color, 10%)};
   --compose-autosuggest-item-active: #{lighten($main-bg-color, 15%)};
