@@ -103,6 +103,15 @@
       top: 62px; /* padding-top for .main-content plus 10px */
     }
   }
+  @supports (-webkit-overflow-scrolling: touch) {
+    .compose-box-button-wrapper.compose-button-sticky {
+      /* disable sticky positioning on iOS due to
+         https://github.com/nolanlawson/pinafore/issues/667 */
+      position: relative;
+      z-index: 0;
+      top: 0;
+    }
+  }
 </style>
 <script>
   import ComposeToolbar from './ComposeToolbar.html'
@@ -235,6 +244,12 @@
           mediaDescriptions, inReplyToUuid)
       },
       setupStickyObserver () {
+        if (CSS.supports('-webkit-overflow-scrolling', 'touch')) {
+          // disable sticky positioning button on iOS due to
+          // https://github.com/nolanlawson/pinafore/issues/667
+          return
+        }
+
         this.__stickyObserver = new IntersectionObserver(entries => {
           this.set({ sticky: !entries[0].isIntersecting })
         })
