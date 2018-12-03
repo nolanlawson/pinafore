@@ -122,7 +122,8 @@
   export default {
     oncreate () {
       let { delegateKey, isStatusInOwnThread, showContent } = this.get()
-      if (!isStatusInOwnThread) {
+      let { disableTapOnStatus } = this.store.get()
+      if (!isStatusInOwnThread && !disableTapOnStatus) {
         // the whole <article> is clickable in this case
         registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
       }
