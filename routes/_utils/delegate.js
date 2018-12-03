@@ -17,7 +17,7 @@ function onEvent (e) {
   if (type === 'click') {
     let selection = window.getSelection()
     let selectionStr = selection && selection.toString()
-    if (selectionStr && selection.toString().length && target.contains(selection.anchorNode)) {
+    if (selectionStr && selectionStr.length && target.contains(selection.anchorNode)) {
       return // ignore if the user is selecting text inside the clickable area
     }
   }
