@@ -14,6 +14,13 @@ function onEvent (e) {
     // we're not interested in any non-click or non-Enter events
     return
   }
+  if (type === 'click') {
+    let selection = window.getSelection()
+    let selectionStr = selection && selection.toString()
+    if (selectionStr && selection.toString().length && target.contains(selection.anchorNode)) {
+      return // ignore if the user is selecting text inside the clickable area
+    }
+  }
   mark('delegate onEvent')
   let key
   let element = target

@@ -12,6 +12,7 @@ const persistedState = {
   currentRegisteredInstance: undefined,
   disableCustomScrollbars: false,
   disableLongAriaLabels: false,
+  disableTapOnStatus: false,
   instanceNameInSearch: '',
   instanceThemes: {},
   loggedInInstances: {},
