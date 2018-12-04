@@ -62,7 +62,7 @@
     "emoji-regex": "^7.0.1",
     "escape-html": "^1.0.3",
     "esm": "^3.0.84",
-    "events": "^3.0.0",
+    "events-light": "^1.0.5",
     "express": "^4.16.4",
     "file-api": "^0.10.4",
     "font-awesome-svg-png": "^1.2.2",
