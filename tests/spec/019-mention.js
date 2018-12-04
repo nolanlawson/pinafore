@@ -1,5 +1,5 @@
 import {
-  accountProfileMoreOptionsButton, closeDialogButton,
+  accountProfileMoreOptionsButton, closeDialogButton, composeModalInput,
   getNthDialogOptionsOption, modalDialog
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -14,7 +14,7 @@ test('can mention from account profile', async t => {
     .click(accountProfileMoreOptionsButton)
     .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @baz')
     .click(getNthDialogOptionsOption(1))
-    .expect(modalDialog.find('.compose-box-input').value).eql('@baz ')
+    .expect(composeModalInput.value).eql('@baz ')
     .click(closeDialogButton)
     .expect(modalDialog.exists).notOk()
 })

@@ -20,6 +20,8 @@ import { setAccountMuted } from '../../../_actions/mute'
 import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
 import { setConversationMuted } from '../../../_actions/muteConversation'
 import { copyText } from '../../../_actions/copyText'
+import { htmlToPlainText } from '../../../_utils/htmlToPlainText'
+import { importShowComposeDialog } from '../asyncDialogs'
 
 export default {
   oncreate,
@@ -109,6 +111,11 @@ export default {
         label: muteConversationLabel,
         icon: muteConversationIcon
       },
+      isUser && {
+        key: 'redraft',
+        label: 'Delete and redraft',
+        icon: '#fa-pencil'
+      },
       {
         key: 'copy',
         label: 'Copy link to toot',
@@ -140,6 +147,8 @@ export default {
           return this.onCopyClicked()
         case 'muteConversation':
           return this.onMuteConversationClicked()
+        case 'redraft':
+          return this.onRedraft()
       }
     },
     async onDeleteClicked () {
@@ -177,6 +186,25 @@ export default {
       let { url } = status
       await copyText(url)
       this.close()
+    },
+    async onRedraft () {
+      let { status } = this.get()
+      let deleteStatusPromise = doDeleteStatus(status.id)
+      let dialogPromise = importShowComposeDialog()
+      await deleteStatusPromise
+      this.store.setComposeData('dialog', {
+        text: (status.content && htmlToPlainText(status.content)) || '',
+        contentWarningShown: !!status.spoiler_text,
+        contentWarning: status.spoiler_text || '',
+        postPrivacy: status.visibility,
+        media: status.media_attachments && status.media_attachments.map(_ => ({
+          description: _.description || '',
+          data: _
+        }))
+      })
+      this.close()
+      let showComposeDialog = await dialogPromise
+      showComposeDialog()
     }
   }
 }
