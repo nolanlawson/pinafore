@@ -30,7 +30,7 @@
         let image = new Image()
         image.src = currentSrc
         await decodeImage(image)
-        this.set({loaded: true})
+        this.set({ loaded: true })
         this.fire('imgLoad')
       } catch (e) {
         this.fire('imgLoadError', e)
