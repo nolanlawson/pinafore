@@ -106,4 +106,4 @@ Check `mastodon.log` if you have any issues.
 ## Unit tests
 
 There are also some unit tests that run in Node using Mocha. You can find them in `tests/unit` and
-run them using `npm run test-unit`.
+run them using `yarn run test-unit`.
