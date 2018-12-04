@@ -45,6 +45,21 @@ export const generalSettingsButton = $('a[href="/settings/general"]')
 export const markMediaSensitiveInput = $('#choice-mark-media-sensitive')
 export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitive')
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
+export const dialogOptionsOption = $(`.modal-dialog button`)
+
+export const composeModalInput = $('.modal-dialog .compose-box-input')
+export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
+export const composeModalContentWarningInput = $('.modal-dialog .content-warning-input')
+export const composeModalEmojiButton = $('.modal-dialog .compose-box-toolbar button:nth-child(1)')
+export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolbar button:nth-child(3)')
+
+export function getComposeModalNthMediaAltInput (n) {
+  return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
+}
+
+export function getComposeModalNthMediaImg (n) {
+  return $(`.modal-dialog .compose-media:nth-child(${n}) img`)
+}
 
 export const favoritesCountElement = $('.status-favs').addCustomDOMProperties({
   innerCount: el => parseInt(el.innerText, 10)
@@ -188,6 +203,10 @@ export function getNthStatusSensitiveMediaButton (n) {
 
 export function getNthStatusMedia (n) {
   return $(`${getNthStatusSelector(n)} .status-media`)
+}
+
+export function getNthStatusMediaImg (n) {
+  return $(`${getNthStatusSelector(n)} .status-media img`)
 }
 
 export function getNthStatusHeader (n) {
