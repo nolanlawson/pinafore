@@ -16,18 +16,16 @@
   }
 </style>
 <script>
-  import { mark, stop } from '../_utils/marks'
   import { decodeImage } from '../_utils/decodeImage'
 
   export default {
     async oncreate () {
-      mark('LazyImage oncreate()')
+      let count = counter++
       try {
         await decodeImage(this.refs.node)
       } catch (e) {
         this.set({ error: true })
       }
-      stop('LazyImage oncreate()')
     },
     data: () => ({
       error: false,
