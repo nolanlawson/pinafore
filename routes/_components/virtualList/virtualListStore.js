@@ -1,7 +1,6 @@
 import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
 import { reselect } from '../../_utils/reselect'
-import { observe } from 'svelte-extras'
 
 const RENDER_BUFFER_FACTOR = 2.5
 
@@ -10,8 +9,6 @@ class VirtualListStore extends RealmStore {
     super(state, /* maxSize */ 10)
   }
 }
-
-VirtualListStore.prototype.observe = observe
 
 const virtualListStore = new VirtualListStore()
 
