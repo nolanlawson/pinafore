@@ -25,12 +25,11 @@ export function instanceObservers (store) {
     if (!currentInstance) {
       return
     }
-    updateVerifyCredentialsForInstance(currentInstance)
-    updateInstanceInfo(currentInstance)
-    updateCustomEmojiForInstance(currentInstance)
-    updateLists()
-    updatePushSubscriptionForInstance(currentInstance)
 
+    /* no await */ updateVerifyCredentialsForInstance(currentInstance)
+    /* no await */ updateCustomEmojiForInstance(currentInstance)
+    /* no await */ updateLists()
+    /* no await */ updatePushSubscriptionForInstance(currentInstance)
     await updateInstanceInfo(currentInstance)
 
     let currentInstanceIsUnchanged = () => {
