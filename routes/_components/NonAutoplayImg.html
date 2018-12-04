@@ -21,11 +21,16 @@
   import { mouseover } from '../_utils/events'
   import { decodeImage } from '../_utils/decodeImage'
   import { classname } from '../_utils/classname'
+  import { ONE_TRANSPARENT_PIXEL } from '../_static/media'
 
   export default {
     async oncreate () {
+      let { currentSrc } = this.get()
       try {
-        await decodeImage(this.refs.node)
+        let image = new Image()
+        image.src = currentSrc
+        await decodeImage(image)
+        this.set({ loaded: true })
         this.fire('imgLoad')
       } catch (e) {
         this.fire('imgLoadError', e)
@@ -42,7 +47,8 @@
     data: () => ({
       alt: '',
       title: '',
-      mouseOver: false
+      mouseOver: false,
+      loaded: false
     }),
     computed: {
       computedClass: ({ className, src, staticSrc, isLink }) => (classname(
@@ -50,7 +56,9 @@
         src !== staticSrc && 'non-autoplay-zoom-in',
         isLink && 'is-link'
       )),
-      displaySrc: ({ src, staticSrc, mouseOver }) => (mouseOver ? src : staticSrc)
+      currentSrc: ({ mouseOver, src, staticSrc }) => mouseOver ? src : staticSrc,
+      // using a transparent pixel as placeholder ensures broken images don't have wrong sizes
+      displaySrc: ({ loaded, currentSrc }) => loaded ? currentSrc : ONE_TRANSPARENT_PIXEL
     }
   }
 </script>
