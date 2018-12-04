@@ -13,6 +13,7 @@ const persistedState = {
   disableCustomScrollbars: false,
   disableLongAriaLabels: false,
   disableTapOnStatus: false,
+  groupedImages: false,
   instanceNameInSearch: '',
   instanceThemes: {},
   loggedInInstances: {},
@@ -22,7 +23,9 @@ const persistedState = {
   omitEmojiInDisplayNames: undefined,
   pinnedPages: {},
   pushSubscription: null,
-  reduceMotion: !process.browser || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  reduceMotion:
+    !process.browser ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
 const nonPersistedState = {
@@ -31,7 +34,11 @@ const nonPersistedState = {
   instanceLists: {},
   online: !process.browser || navigator.onLine,
   pinnedStatuses: {},
-  pushNotificationsSupport: process.browser && ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in window.PushSubscription.prototype),
+  pushNotificationsSupport:
+    process.browser &&
+    ('serviceWorker' in navigator &&
+      'PushManager' in window &&
+      'getKey' in window.PushSubscription.prototype),
   queryInSearch: '',
   repliesShown: {},
   sensitivesShown: {},

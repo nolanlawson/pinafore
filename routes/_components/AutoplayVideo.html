@@ -1,21 +1,67 @@
-<video
-  class="autoplay-video {className || ''}"
-  aria-label={ariaLabel || ''}
-  style="background-image: url({poster});"
-  {poster}
-  {width}
-  {height}
-  {src}
-  autoplay
-  muted
-  loop
-  webkit-playsinline
-  playsinline
-/>
+<div class="autoplay-wrapper  {$groupedImages ? 'fixed-size': ''}"
+     style="width: {width}px; height: {height}px;"
+>
+    <video
+    class="autoplay-video {$groupedImages ? 'fixed-size': ''}"
+    aria-label={ariaLabel || ''}
+    style="{focusStyle} background-image: url({poster}); "
+    {poster}
+    {width}
+    {height}
+    {src}
+    autoplay
+    muted
+    loop
+    webkit-playsinline
+    playsinline
+    />
+</div>
 <style>
+  .autoplay-wrapper {
+    position: relative;
+    margin: 0;
+    padding: 0;
+  }
+
   .autoplay-video {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
+    display: flex;
+  }
+
+  .fixed-size {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+
+  .fixed-size {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
 </style>
+<script>
+  import { store } from '../_store/store'
+  const coordsToPercent = coord => (1 + coord) / 2 * 100
+
+export default {
+
+    data: () => ({
+      focus: void 0
+    }),
+    store: () => store,
+    computed: {
+      focusStyle: ({ focus }) => {
+        // Here we do a pure css version instead of using
+        // https://github.com/jonom/jquery-focuspoint#1-calculate-your-images-focus-point
+
+        if (!focus) return 'background-position: center;'
+        return `object-position: ${coordsToPercent(focus.x)}% ${100 - coordsToPercent(focus.y)}%;`
+      }
+    }
+  }
+</script>

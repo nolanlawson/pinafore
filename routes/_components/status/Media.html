@@ -1,6 +1,6 @@
 {#if type === 'video'}
   <button type="button"
-          class="play-video-button"
+          class="play-video-button {$groupedImages ? 'fixed-size': ''}"
           aria-label="Play video: {description}"
           delegate-key={delegateKey}
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
@@ -13,26 +13,25 @@
       width={inlineWidth}
       height={inlineHeight}
       background="var(--loading-bg)"
-      className={noNativeWidthHeight ? 'no-native-width-height' : ''}
+      {focus}
     />
   </button>
 {:else}
   <button type="button"
-          class="show-image-button"
+          class="show-image-button {$groupedImages ? 'fixed-size': ''}"
           aria-label="Show image: {description}"
           title={description}
           delegate-key={delegateKey}
           on:mouseover="set({mouseover: event})"
-          style="width: {inlineWidth}px; height: {inlineHeight}px;"
-  >
+          style="width: {inlineWidth}px; height: {inlineHeight}px;">
   {#if type === 'gifv' && $autoplayGifs}
     <AutoplayVideo
-      className={noNativeWidthHeight ? 'no-native-width-height' : ''}
       ariaLabel="Animated GIF: {description}"
       poster={previewUrl}
       src={url}
       width={inlineWidth}
       height={inlineHeight}
+      {focus}
     />
   {:elseif type === 'gifv' && !$autoplayGifs}
     <NonAutoplayGifv
@@ -44,6 +43,7 @@
       width={inlineWidth}
       height={inlineHeight}
       playing={mouseover}
+      {focus}
     />
   {:else}
     <LazyImage
@@ -54,46 +54,27 @@
       width={inlineWidth}
       height={inlineHeight}
       background="var(--loading-bg)"
-      className={noNativeWidthHeight ? 'no-native-width-height' : ''}
+      {focus}
     />
   {/if}
 </button>
 {/if}
 <style>
+
   :global(.status-media video, .status-media img) {
     object-fit: cover;
   }
-  :global(.no-native-width-height) {
-    background-color: var(--mask-bg);
-  }
-  .play-video-button {
-    margin: 0;
+  .play-video-button, .show-image-button {
+    margin: auto;
     padding: 0;
     border-radius: 0;
     border: none;
     background: none;
     position: relative;
   }
-  .show-image-button {
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-    border: none;
-    background: none;
-    cursor: zoom-in;
-  }
 
-  :global(.status-media video, .status-media img, .status-media .lazy-image,
-          .status-media .show-image-button, .status-media .non-autoplay-gifv,
-          .status-media .play-video-button) {
-    max-width: calc(100vw - 40px);
-  }
-  @media (max-width: 767px) {
-    :global(.status-media video, .status-media img, .status-media .lazy-image,
-            .status-media .show-image-button, .status-media .non-autoplay-gifv,
-            .status-media .play-video-button) {
-      max-width: calc(100vw - 20px);
-    }
+  .show-image-button {
+    cursor: zoom-in;
   }
 </style>
 <script>
@@ -120,9 +101,16 @@
       })
     },
     computed: {
+      focus: ({ meta }) => meta && meta.focus,
       // width/height to show inline
-      inlineWidth: ({ smallWidth }) => smallWidth || DEFAULT_MEDIA_WIDTH,
-      inlineHeight: ({ smallHeight }) => smallHeight || DEFAULT_MEDIA_HEIGHT,
+      inlineWidth: ({ smallWidth, $groupedImages }) => {
+        if ($groupedImages) return '100%'
+        return smallWidth || DEFAULT_MEDIA_WIDTH
+      },
+      inlineHeight: ({ smallHeight, $groupedImages }) => {
+        if ($groupedImages) return 'auto'
+        return smallHeight || DEFAULT_MEDIA_HEIGHT
+      },
       // width/height to show in a modal
       modalWidth: ({ originalWidth, inlineWidth }) => originalWidth || inlineWidth,
       modalHeight: ({ originalHeight, inlineHeight }) => originalHeight || inlineHeight,

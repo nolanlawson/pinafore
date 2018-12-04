@@ -6,12 +6,18 @@
   className="image-modal-dialog"
 >
   {#if type === 'gifv'}
-    <AutoplayVideo
-      ariaLabel="Animated GIF: {description || ''}"
-      {poster}
-      {src}
+    <video
+      class="autoplay-video"
+      aria-label="Animated GIF: {description || ''}"
+      style="background-image: url({poster}); "
       {width}
       {height}
+      {src}
+      autoplay
+      muted
+      loop
+      webkit-playsinline
+      playsinline
     />
   {:else}
     <img
@@ -30,18 +36,23 @@
     max-height: calc(100% - 20px);
     overflow: hidden;
   }
+
+  .autoplay-video {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import AutoplayVideo from '../../AutoplayVideo.html'
   import { show } from '../helpers/showDialog'
   import { oncreate } from '../helpers/onCreateDialog'
 
   export default {
     oncreate,
     components: {
-      ModalDialog,
-      AutoplayVideo
+      ModalDialog
     },
     methods: {
       show

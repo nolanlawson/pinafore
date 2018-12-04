@@ -28,6 +28,11 @@
       <label for="choice-autoplay-gif">Autoplay GIFs</label>
     </div>
     <div class="setting-group">
+      <input type="checkbox" id="choice-grouped-images"
+             bind:checked="$groupedImages" on:change="onChange(event)">
+      <label for="choice-groupes-images">Group images</label>
+    </div>
+    <div class="setting-group">
       <input type="checkbox" id="choice-reduce-motion"
              bind:checked="$reduceMotion" on:change="onChange(event)">
       <label for="choice-reduce-motion">Reduce motion in UI animations</label>

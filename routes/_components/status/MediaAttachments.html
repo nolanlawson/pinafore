@@ -1,5 +1,10 @@
-<div class="status-media {sensitive ? 'status-media-is-sensitive' : ''}"
-     style="grid-template-columns: repeat(auto-fit, minmax({maxMediaWidth}px, 1fr));" >
+<div class="status-media
+            {sensitive ? 'status-media-is-sensitive' : ''}
+            {oddCols ? 'odd-cols' : ''}
+            {twoCols ? 'two-cols' : ''}
+            {$groupedImages ? 'grouped-images' : ''}
+            "
+     style="grid-template-columns: repeat({nCols}, 1fr); " >
   {#each mediaAttachments as media}
     <Media {media} {uuid} />
   {/each}
@@ -11,36 +16,55 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    margin: 10px 0;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+
+    overflow: hidden;
+    max-width: calc(100vw - 40px);
+    margin: 10px 10px 10px 5px;
   }
+
+  .status-media.grouped-images {
+    border-radius: 6px;
+  }
+
+  .status-media.grouped-images > :global(*) {
+      padding-bottom: 56.25%;
+      width: 100%;
+  }
+
+  .status-media.grouped-images.two-cols > :global(*) {
+      padding-bottom: calc(112.5% + 5px);
+  }
+
+  .status-media.grouped-images.odd-cols > :global(:first-child) {
+      grid-row-end: span 2;
+      padding-bottom: calc(112.5% + 5px);
+      background-color: blue;
+  }
+
   .status-media.status-media-is-sensitive {
     margin: 0;
-  }
-  .status-media {
-    overflow: hidden;
-  }
-  .status-media {
-    max-width: calc(100vw - 40px);
-  }
-  @media (max-width: 767px) {
-    .status-media {
-      max-width: calc(100vw - 20px);
-    }
   }
 </style>
 <script>
   import Media from './Media.html'
-  import { DEFAULT_MEDIA_WIDTH } from '../../_static/media'
 
   export default {
     computed: {
-      maxMediaWidth: ({ mediaAttachments }) => {
-        return Math.max.apply(Math, mediaAttachments.map(media => {
-          return media.meta && media.meta.small && typeof media.meta.small.width === 'number' ? media.meta.small.width : DEFAULT_MEDIA_WIDTH
-        }))
-      }
+      nCols:
+        ({ mediaAttachments, $groupedImages }) => {
+          return ($groupedImages && mediaAttachments.length > 1) ? 2 : 1
+        },
+      oddCols:
+        ({ mediaAttachments }) => {
+          return (mediaAttachments.length > 1 && (mediaAttachments.length % 2))
+        },
+
+      twoCols:
+        ({ mediaAttachments }) => {
+          return (mediaAttachments.length === 2)
+        }
     },
     components: {
       Media
