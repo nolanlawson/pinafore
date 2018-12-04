@@ -20,7 +20,6 @@
 
   export default {
     async oncreate () {
-      let count = counter++
       try {
         await decodeImage(this.refs.node)
       } catch (e) {
