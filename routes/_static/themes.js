@@ -76,6 +76,12 @@ const themes = [
     label: 'Hacker',
     dark: true,
     color: '#4ab92f'
+  },
+  {
+    name: 'pitchblack',
+    label: 'Pitch Black',
+    dark: true,
+    color: '#000'
   }
 ]
 
