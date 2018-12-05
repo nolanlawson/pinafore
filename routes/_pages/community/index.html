@@ -92,13 +92,13 @@
   import HiddenFromSSR from '../../_components/HiddenFromSSR'
   import PageList from '../../_components/community/PageList.html'
   import PageListItem from '../../_components/community/PageListItem.html'
-  import { updateLists } from '../../_actions/lists'
+  import { updateListsForInstance } from '../../_actions/lists'
 
   export default {
     async oncreate () {
       let { currentInstance } = this.store.get()
       if (currentInstance) {
-        await updateLists()
+        await updateListsForInstance(currentInstance)
       }
     },
     store: () => store,
