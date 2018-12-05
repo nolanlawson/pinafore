@@ -1,0 +1,25 @@
+$main-theme-color: rgb( 16,61,80);
+$body-bg-color: #03131b;
+$main-bg-color: #000;
+$anchor-color: lighten($main-theme-color, 20%);
+$main-text-color: #fafaff;
+$border-color: $body-bg-color;
+$secondary-text-color: #f6f6ff;
+$toast-border: lighten($body-bg-color, 4%);
+$toast-bg: lighten($body-bg-color, 4%);
+$focus-outline: lighten($main-theme-color, 10%);
+$compose-background: darken($main-theme-color, 12%);
+
+@import "_base.scss";
+@import "_dark.scss";
+@import "_dark_scrollbars.scss";
+
+:root {
+  --settings-list-item-text: #{$anchor-color};
+  --settings-list-item-text-hover: #{$anchor-color};
+  --settings-list-item-bg-active: #{darken($body-bg-color, 10%)};
+  --settings-list-item-bg-hover: #{darken($body-bg-color, 2%)};
+
+  --form-bg: #{$body-bg-color};
+  --form-border: #{darken($border-color, 10%)};
+}
