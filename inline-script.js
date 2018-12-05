@@ -3,7 +3,17 @@
 // the build process and write it to inline-script-checksum.json.
 window.__themeColors = process.env.THEME_COLORS
 
-if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
+const hasLocalStorage = (() => {
+  try {
+    // iOS safari throws here if cookies are disabled
+    let unused = localStorage.length // eslint-disable-line
+    return true
+  } catch (e) {
+    return false
+  }
+})()
+
+if (hasLocalStorage && localStorage.store_currentInstance && localStorage.store_instanceThemes) {
   let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
   if (theme && theme !== 'default') {
@@ -18,14 +28,14 @@ if (localStorage.store_currentInstance && localStorage.store_instanceThemes) {
   }
 }
 
-if (!localStorage.store_currentInstance) {
+if (!hasLocalStorage || !localStorage.store_currentInstance) {
   // if not logged in, show all these 'hidden-from-ssr' elements
   let style = document.createElement('style')
   style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'
   document.head.appendChild(style)
 }
 
-if (localStorage.store_disableCustomScrollbars === 'true') {
+if (hasLocalStorage && localStorage.store_disableCustomScrollbars === 'true') {
   // if user has disabled custom scrollbars, remove this style
   let theScrollbarStyle = document.getElementById('theScrollbarStyle')
   theScrollbarStyle.setAttribute('media', 'only x') // disables the style

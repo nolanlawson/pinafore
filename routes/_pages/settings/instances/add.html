@@ -3,10 +3,17 @@
 
   <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
+    {#if privateBrowsing}
+      <div class="form-error form-error-user-error" role="alert">
+        You seem to be using private browsing or have disabled cookies.
+        Pinafore stores all data locally, and does not work in private browsing mode.
+      </div>
+    {/if}
+
     {#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}
-    <div class="form-error form-error-user-error" role="alert">
-      Error: {$logInToInstanceError}
-    </div>
+      <div class="form-error form-error-user-error" role="alert">
+        Error: {$logInToInstanceError}
+      </div>
     {/if}
 
     <noscript>
@@ -69,19 +76,25 @@
   import { store } from '../../../_store/store'
   import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
   import ExternalLink from '../../../_components/ExternalLink.html'
+  import { isPrivateBrowsing } from '../../../_utils/isPrivateBrowsing'
 
   export default {
     async oncreate () {
       let codeMatch = location.search.match(/code=([^&]+)/)
       if (codeMatch) {
-        handleOauthCode(codeMatch[1])
+        return handleOauthCode(codeMatch[1])
       }
+      let privateBrowsing = await isPrivateBrowsing()
+      this.set({ privateBrowsing })
     },
     components: {
       SettingsLayout,
       ExternalLink
     },
     store: () => store,
+    data: () => ({
+      privateBrowsing: false
+    }),
     methods: {
       onSubmit (event) {
         event.preventDefault()
