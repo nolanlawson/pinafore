@@ -1,4 +1,5 @@
 <textarea
+  id="the-compose-box-input-{realm}"
   class="compose-box-input"
   placeholder="What's on your mind?"
   ref:textarea
@@ -8,6 +9,9 @@
   on:selectionChange="onSelectionChange(event)"
   on:keydown="onKeydown(event)"
 ></textarea>
+<label for="the-compose-box-input-{realm}" class="sr-only">
+  What's on your mind?
+</label>
 <style>
   .compose-box-input {
     grid-area: input;
