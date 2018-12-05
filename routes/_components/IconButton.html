@@ -2,7 +2,7 @@
   <button type="button"
           title={label}
           aria-label={label}
-          aria-pressed={pressable ? !!pressed : ''}
+          aria-pressed={pressable ? !!pressed : void 0}
           class={computedClass}
           {disabled}
           delegate-key={delegateKey}
@@ -15,7 +15,7 @@
   <button type="button"
           title={label}
           aria-label={label}
-          aria-pressed={pressable ? !!pressed : ''}
+          aria-pressed={pressable ? !!pressed : void 0}
           class={computedClass}
           focus-key={focusKey || ''}
           {disabled}
