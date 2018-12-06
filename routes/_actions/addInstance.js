@@ -14,8 +14,9 @@ async function redirectToOauth () {
   let { instanceNameInSearch, loggedInInstances } = store.get()
   instanceNameInSearch = instanceNameInSearch.replace(/^https?:\/\//, '').replace(/\/$/, '').replace('/$', '').toLowerCase()
   if (Object.keys(loggedInInstances).includes(instanceNameInSearch)) {
-    store.set({ logInToInstanceError: `You've already logged in to ${instanceNameInSearch}` })
-    return
+    let err = new Error(`You've already logged in to ${instanceNameInSearch}`)
+    err.knownError = true
+    throw err
   }
   let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
   let instanceInfo = await getInstanceInfo(instanceNameInSearch)
@@ -44,10 +45,10 @@ export async function logInToInstance () {
   } catch (err) {
     console.error(err)
     let error = `${err.message || err.name}. ` +
-      (navigator.onLine
+      (err.knownError ? '' : (navigator.onLine
         ? `Is this a valid Mastodon instance? Is a browser extension
            blocking the request? Are you in private browsing mode?`
-        : `Are you offline?`)
+        : `Are you offline?`))
     let { instanceNameInSearch } = store.get()
     store.set({
       logInToInstanceError: error,
