@@ -3,10 +3,18 @@
 
   <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
+    {#if !hasIndexedDB}
+      <div class="form-error form-error-user-error" role="alert">
+        Your browser doesn't support IndexedDB, possibly because it's in private browsing mode
+        or blocking cookies. Pinafore stores all data locally, and requires IndexedDB to work
+        correctly.
+      </div>
+    {/if}
+
     {#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}
-    <div class="form-error form-error-user-error" role="alert">
-      Error: {$logInToInstanceError}
-    </div>
+      <div class="form-error form-error-user-error" role="alert">
+        Error: {$logInToInstanceError}
+      </div>
     {/if}
 
     <noscript>
@@ -69,19 +77,25 @@
   import { store } from '../../../_store/store'
   import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
   import ExternalLink from '../../../_components/ExternalLink.html'
+  import { testHasIndexedDB } from '../../../_utils/testStorage'
 
   export default {
     async oncreate () {
       let codeMatch = location.search.match(/code=([^&]+)/)
       if (codeMatch) {
-        handleOauthCode(codeMatch[1])
+        return handleOauthCode(codeMatch[1])
       }
+      let hasIndexedDB = await testHasIndexedDB()
+      this.set({ hasIndexedDB })
     },
     components: {
       SettingsLayout,
       ExternalLink
     },
     store: () => store,
+    data: () => ({
+      hasIndexedDB: true
+    }),
     methods: {
       onSubmit (event) {
         event.preventDefault()

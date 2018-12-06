@@ -1,10 +1,10 @@
 import { Store } from 'svelte/store'
+import { safeLocalStorage as LS } from '../_utils/safeLocalStorage'
+
 let lifecycle
 if (process.browser) {
   lifecycle = require('page-lifecycle/dist/lifecycle.mjs').default
 }
-
-const LS = process.browser && localStorage
 
 function safeParse (str) {
   return !str ? undefined : (str === 'undefined' ? undefined : JSON.parse(str))
