@@ -2,7 +2,7 @@
 const easingOutQuint = (x, t, b, c, d) =>
   c * ((t = t / d - 1) * t * t * t * t + 1) + b
 
-const scroll = (node, key, target) => {
+function smoothScrollPolyfill (node, key, target) {
   const startTime = Date.now()
   const offset = node[key]
   const gap = target - offset
@@ -44,4 +44,32 @@ const scroll = (node, key, target) => {
   return cancel
 }
 
-export const smoothScrollToTop = node => scroll(node, 'scrollTop', 0)
+function testSupportsSmoothScroll () {
+  let supports = false
+  try {
+    let div = document.createElement('div')
+    div.scrollTo({
+      top: 0,
+      get behavior () {
+        supports = true
+        return 'smooth'
+      }
+    })
+  } catch (err) {} // Edge throws an error
+  return supports
+}
+
+const smoothScrollSupported = process.browser && testSupportsSmoothScroll()
+
+export function smoothScrollToTop (node) {
+  if (smoothScrollSupported) {
+    console.log('using native smooth scroll')
+    return node.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  } else {
+    console.log('using polyfilled smooth scroll')
+    return smoothScrollPolyfill(node, 'scrollTop', 0)
+  }
+}
