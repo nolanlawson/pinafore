@@ -103,4 +103,15 @@ const themes = [
   }
 ]
 
+if (process.browser && CSS.supports('color', '-moz-field')) {
+  const div = document.createElement('div')
+  div.style.color = '-moz-field'
+
+  themes.push({
+    name: 'native',
+    label: 'Native (beta)',
+    color: window.getComputedStyle(div).color
+  })
+}
+
 export { themes }

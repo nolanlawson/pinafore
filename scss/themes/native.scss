@@ -1,0 +1,124 @@
+$main-theme-color: -moz-field;
+$body-bg-color: -moz-dialog;
+$anchor-color: -moz-nativehyperlinktext;
+$main-text-color: -moz-fieldtext;
+$border-color: -moz-CellHighlight;
+$main-bg-color: -moz-dialog;
+$secondary-text-color: -moz-fieldtext;
+$toast-border: $main-text-color;
+$toast-bg: -moz-CellHighlight;
+$focus-outline: $main-theme-color;
+$compose-background: $main-theme-color;
+$deemphasized-color: -moz-fieldtext;
+
+$scrollbar-face: #{$secondary-text-color} !default;
+$scrollbar-face-hover: #{$secondary-text-color} !default;
+$scrollbar-face-active: #{$secondary-text-color} !default;
+$scrollbar-track: #{$body-bg-color} !default;
+
+:root {
+    --button-primary-bg: $main-theme-color;
+    --button-primary-text: #{$secondary-text-color};
+    --button-primary-border: $main-theme-color;
+    --button-primary-bg-active: $main-theme-color;
+    --button-primary-bg-hover: $main-theme-color;
+  
+    --button-bg: #{$main-bg-color};
+    --button-text: #{$main-text-color};
+    --button-border: #{$border-color};
+    --button-bg-active: #{$main-bg-color};
+    --button-bg-hover: #{$main-bg-color};
+  
+    --input-border: #{$border-color};
+    --input-bg: #{$main-bg-color};
+    --anchor-text: #{$anchor-color};
+    --main-bg: #{$main-bg-color};
+    --body-bg: #{$body-bg-color};
+    --body-text-color: #{$main-text-color};
+    --main-border: #{$border-color};
+    --svg-fill: #{$main-text-color};
+  
+    --form-bg: #{$main-bg-color};
+    --form-border: #{$border-color};
+  
+    --nav-bg: #{$main-theme-color};
+    --nav-border: $main-theme-color;
+    --nav-a-border: #{$main-theme-color};
+    --nav-a-selected-border: #{$body-bg-color};
+    --nav-a-selected-bg: $main-theme-color;
+    --nav-svg-fill: #{$main-text-color};
+    --nav-text-color: #{$main-text-color};
+  
+    --nav-a-selected-border-hover: #{$body-bg-color};
+    --nav-a-selected-bg-hover: $main-theme-color;
+    --nav-a-bg-hover: $main-theme-color;
+    --nav-a-border-hover: #{$main-theme-color};
+    --nav-svg-fill-hover: #{$main-text-color};
+    --nav-text-color-hover: #{$main-text-color};
+  
+    --action-button-fill-color: #{$main-text-color};
+    --action-button-fill-color-hover: #{$main-text-color};
+    --action-button-fill-color-active: #{$main-text-color};
+    --action-button-fill-color-pressed: #{$main-text-color};
+    --action-button-fill-color-pressed-hover: #{$main-text-color};
+    --action-button-fill-color-pressed-active: #{$main-text-color};
+  
+    --action-button-deemphasized-fill-color: #{$deemphasized-color};
+    --action-button-deemphasized-fill-color-hover: #{$deemphasized-color};
+    --action-button-deemphasized-fill-color-active: #{$deemphasized-color};
+    --action-button-deemphasized-fill-color-pressed: #{$deemphasized-color};
+    --action-button-deemphasized-fill-color-pressed-hover: #{$deemphasized-color};
+    --action-button-deemphasized-fill-color-pressed-active: #{$deemphasized-color};
+  
+    --settings-list-item-bg: #{$main-bg-color};
+    --settings-list-item-text: #{$main-text-color};
+    --settings-list-item-text-hover: #{$main-text-color};
+    --settings-list-item-border: #{$border-color};
+    --settings-list-item-bg-active: #{$main-bg-color};
+    --settings-list-item-bg-hover: #{$main-bg-color};
+  
+    --toast-bg: #{$toast-bg};
+    --toast-border: #{$toast-border};
+    --toast-text: #{$secondary-text-color};
+  
+    --mask-bg: #{$toast-bg};
+    --mask-svg-fill: #{$secondary-text-color};
+    --mask-opaque-bg: #{$toast-bg};
+    --loading-bg: #{#ededed};
+  
+    --account-profile-bg-backdrop-filter: #{$main-bg-color};
+    --account-profile-bg: #{$main-bg-color};
+  
+    --deemphasized-text-color: #{$deemphasized-color};
+    --focus-outline: #{$focus-outline};
+  
+    --very-deemphasized-link-color: #{$anchor-color};
+    --very-deemphasized-text-color: #{rgba(#666, 0.6)};
+  
+    --status-direct-background: $body-bg-color;
+    --main-theme-color: #{$main-theme-color};
+    --warning-color: #{#e01f19};
+    --alt-input-bg: #{$main-bg-color};
+  
+    --muted-modal-bg: #{transparent};
+    --muted-modal-focus: #{#999};
+    --muted-modal-hover: #{rgba(255, 255, 255, 0.2)};
+  
+    --compose-autosuggest-item-hover: #{$compose-background};
+    --compose-autosuggest-item-active: #{$compose-background};
+    --compose-autosuggest-outline: #{$focus-outline};
+  
+    --compose-button-halo: #{rgba(255, 255, 255, 0.1)};
+  }
+
+  :root {
+    --scrollbar-face-color: #{$scrollbar-face};
+    --scrollbar-track-color: #{$scrollbar-track};
+    --scrollbar-border-radius: 0;
+    --scrollbar-face-color-hover: #{$scrollbar-face-hover};
+    --scrollbar-face-color-active: #{$scrollbar-face-active};
+    --scrollbar-width: 12px;
+    --scrollbar-height: 12px;
+    --scrollbar-background-color: transparent;
+  }
+  
