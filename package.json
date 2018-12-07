@@ -58,7 +58,7 @@
     "chokidar": "^2.0.4",
     "compression": "^1.7.3",
     "cross-env": "^5.2.0",
-    "css-loader": "^1.0.1",
+    "css-loader": "^2.0.0",
     "emoji-regex": "^7.0.1",
     "escape-html": "^1.0.3",
     "esm": "^3.0.84",
