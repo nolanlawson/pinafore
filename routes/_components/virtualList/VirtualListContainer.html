@@ -34,13 +34,15 @@
           let { initializedScrollTop } = this.get()
           if (!initializedScrollTop && allVisibleItemsHaveHeight) {
             this.set({ 'initializedScrollTop': true })
-            mark('set scrollTop')
-            console.log('forcing scroll top to ', scrollTop)
-            scrollContainer.scrollTop = scrollTop
-            stop('set scrollTop')
-            doubleRAF(() => {
-              console.log('initialized VirtualList')
-              this.fire('initialized')
+            requestAnimationFrame(() => {
+              mark('set scrollTop')
+              console.log('forcing scroll top to ', scrollTop)
+              scrollContainer.scrollTop = scrollTop
+              stop('set scrollTop')
+              doubleRAF(() => {
+                console.log('initialized VirtualList')
+                this.fire('initialized')
+              })
             })
           }
         })

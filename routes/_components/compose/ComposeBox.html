@@ -15,7 +15,10 @@
   <ComposeLengthIndicator {length} {overLimit} />
   <ComposeMedia {realm} {media} />
 </div>
-<ComposeStickyButton {showSticky} {hideAndFadeIn} {overLimit} on:postAction="doPostStatus()" />
+<ComposeStickyButton {showSticky}
+                     {overLimit}
+                     {hideAndFadeIn}
+                     on:postAction="doPostStatus()" />
 {#if !hideBottomBorder}
   <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
 {/if}
