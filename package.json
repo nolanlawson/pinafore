@@ -48,7 +48,10 @@
     "deploy-dev-travis": "run-s stage-dev launch-travis alias-dev-travis cleanup-travis; fi",
     "deploy-prod-travis": "if echo $TRAVIS_COMMIT_MESSAGE | grep -q -E '\\d+\\.\\d+\\.\\d+'; then run-s stage-prod launch-travis alias-prod-travis cleanup-travis; fi",
     "deploy-all-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then run-s deploy-dev-travis deploy-prod-travis; fi",
-    "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz ."
+    "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz .",
+    "lh-test": "lighthouse-ci --no-comment --perf=95 -a11y=90 --seo=90 --pwa=90 --bp=90 http://127.0.0.1:4002/settings/quick-login?instanceName=localhost:3000&accessToken=b48d72074a467e77a18eafc0d52e373dcf2492bcb3fefadc302a81300ec69002",
+    "lh-wait-and-test": "run-s wait-for-mastodon-to-start wait-for-mastodon-data lh-test",
+    "test-lighthouse-ci": "run-p --race run-mastodon build-and-start lh-wait-and-test"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
@@ -108,6 +111,7 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "eslint-plugin-html": "^5.0.0",
+    "lighthouse-ci": "^1.3.0",
     "mocha": "^5.2.0",
     "now": "^12.1.8",
     "standard": "^12.0.1",
