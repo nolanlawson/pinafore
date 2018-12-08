@@ -14,7 +14,7 @@ const writeFile = pify(fs.writeFile.bind(fs))
 const dir = __dirname
 
 const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
-const GIT_TAG = 'v2.6.1'
+const GIT_TAG = 'v2.6.5'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'
@@ -43,6 +43,7 @@ async function cloneMastodon () {
   } catch (e) {
     console.log('Cloning mastodon...')
     await exec(`git clone --single-branch --branch master ${GIT_URL} "${mastodonDir}"`)
+    await exec(`git fetch origin --tags`, { cwd: mastodonDir }) // may already be cloned, e.g. in CI
     await exec(`git checkout ${GIT_TAG}`, { cwd: mastodonDir })
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
