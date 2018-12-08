@@ -41,6 +41,7 @@
     "alias-prod-travis": "now alias pinafore.social --team nolanlawson --token $NOW_TOKEN",
     "alias-dev": "now alias dev.pinafore.social --team nolanlawson",
     "alias-dev-travis": "now alias dev.pinafore.social --team nolanlawson --token $NOW_TOKEN",
+    "alias-staging-travis": "now alias staging.pinafore.social --team nolanlawson --token $NOW_TOKEN",
     "cleanup": "now rm pinafore --safe --yes --team nolanlawson",
     "cleanup-travis": "now rm pinafore --safe --yes --team nolanlawson --token $NOW_TOKEN",
     "deploy-prod": "run-s stage-prod launch alias-prod cleanup",
@@ -48,10 +49,11 @@
     "deploy-dev-travis": "run-s stage-dev launch-travis alias-dev-travis cleanup-travis; fi",
     "deploy-prod-travis": "if echo $TRAVIS_COMMIT_MESSAGE | grep -q -E '\\d+\\.\\d+\\.\\d+'; then run-s stage-prod launch-travis alias-prod-travis cleanup-travis; fi",
     "deploy-all-travis": "if [ $TRAVIS_BRANCH = master -a $TRAVIS_PULL_REQUEST = false ]; then run-s deploy-dev-travis deploy-prod-travis; fi",
+    "deploy-staging-travis": "run-s stage-dev launch alias-staging-travis cleanup",
     "backup-mastodon-data": "PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development > fixtures/dump.sql && cd mastodon/public/system && tar -czf ../../../fixtures/system.tgz .",
-    "lh-test": "lighthouse-ci --no-comment --performance=90 --pwa=90 --accessibility=90 --best-practices=80 --seo=80 'http://127.0.0.1:4002/settings/quick-login?instanceName=localhost:3000&accessToken=b48d72074a467e77a18eafc0d52e373dcf2492bcb3fefadc302a81300ec69002'",
-    "lh-wait-and-test": "run-s wait-for-mastodon-to-start wait-for-mastodon-data lh-test",
-    "test-lighthouse-ci": "run-p --race run-mastodon build-and-start lh-wait-and-test"
+    "lh-test": "lighthouse-ci --no-comment 'http://staging.pinafore.social/settings/quick-login?instanceName=localhost:3000&accessToken=b48d72074a467e77a18eafc0d52e373dcf2492bcb3fefadc302a81300ec69002'",
+    "lh-wait-and-test": "run-s wait-for-mastodon-to-start wait-for-mastodon-data deploy-staging-travis lh-test",
+    "test-lighthouse-ci": "run-p --race run-mastodon lh-wait-and-test"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
