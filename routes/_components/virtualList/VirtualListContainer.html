@@ -34,7 +34,7 @@
           let { initializedScrollTop } = this.get()
           if (!initializedScrollTop && allVisibleItemsHaveHeight) {
             this.set({ 'initializedScrollTop': true })
-            doubleRAF(() => {
+            requestAnimationFrame(() => {
               mark('set scrollTop')
               console.log('forcing scroll top to ', scrollTop)
               scrollContainer.scrollTop = scrollTop
