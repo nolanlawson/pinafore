@@ -5,7 +5,7 @@ import { thunk } from './thunk'
 
 const testKey = '__test__'
 
-export const testHasLocalStorage = thunk(() => {
+export const testHasLocalStorageOnce = () => {
   try {
     localStorage.setItem(testKey, testKey)
     if (!localStorage.length || localStorage.getItem(testKey) !== testKey) {
@@ -16,7 +16,9 @@ export const testHasLocalStorage = thunk(() => {
     return false
   }
   return true
-})
+}
+
+export const testHasLocalStorage = thunk(testHasLocalStorageOnce)
 
 export const testHasIndexedDB = thunk(async () => {
   if (typeof indexedDB === 'undefined') {

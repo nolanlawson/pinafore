@@ -1,30 +1,18 @@
+import { testHasLocalStorageOnce } from './routes/_utils/testStorage'
+import { switchToTheme } from './routes/_utils/themeEngine'
+
 // For perf reasons, this script is run inline to quickly set certain styles.
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to inline-script-checksum.json.
 window.__themeColors = process.env.THEME_COLORS
 
-const hasLocalStorage = (() => {
-  try {
-    // iOS safari throws here if cookies are disabled
-    let unused = localStorage.length // eslint-disable-line
-    return true
-  } catch (e) {
-    return false
-  }
-})()
+const hasLocalStorage = testHasLocalStorageOnce()
 
 if (hasLocalStorage && localStorage.store_currentInstance && localStorage.store_instanceThemes) {
   let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
   if (theme && theme !== 'default') {
-    let link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = `/theme-${theme}.css`
-    // inserting before the offline <style> ensures that the offline style wins when offline
-    document.head.insertBefore(link, document.getElementById('theOfflineStyle'))
-    if (window.__themeColors[theme]) {
-      document.getElementById('theThemeColor').content = window.__themeColors[theme]
-    }
+    switchToTheme(theme)
   }
 }
 
