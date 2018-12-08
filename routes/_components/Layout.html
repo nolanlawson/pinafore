@@ -1,13 +1,19 @@
 <Nav {page} />
 
 <div class="main-content">
-  <main>
+  <main class="{infiniteScrollPage ? 'infinite-scroll-page' : ''}">
     <slot></slot>
   </main>
   {#if !$isUserLoggedIn && page === 'home'}
     <InformationalFooter />
   {/if}
 </div>
+<style>
+  /* this avoids a flash of the background color when switching timelines */
+  .infinite-scroll-page {
+    min-height: 100vh;
+  }
+</style>
 <script>
   import Nav from './Nav.html'
   import { store } from '../_store/store'
@@ -22,6 +28,9 @@
       let { page } = this.get()
       this.store.set({ currentPage: page })
     },
-    store: () => store
+    store: () => store,
+    computed: {
+      infiniteScrollPage: ({ $isUserLoggedIn, page }) => $isUserLoggedIn && page !== 'settings'
+    }
   }
 </script>
