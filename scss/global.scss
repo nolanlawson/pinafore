@@ -62,6 +62,7 @@ main {
   min-height: 70vh;
   @media (max-width: 767px) {
     margin: 5px auto 15px;
+    min-height: 100vh;
   }
 }
 
