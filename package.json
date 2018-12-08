@@ -87,7 +87,7 @@
     "pify": "^4.0.1",
     "quick-lru": "^2.0.0",
     "requestidlecallback": "^0.3.0",
-    "sapper": "github:nolanlawson/sapper#for-pinafore-8",
+    "sapper": "github:nolanlawson/sapper#for-pinafore-9",
     "serve-static": "^1.13.2",
     "stringz": "^1.0.0",
     "style-loader": "^0.23.1",
