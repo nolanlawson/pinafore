@@ -22,7 +22,6 @@ async function main () {
     input: inlineScriptPath,
     plugins: [
       replace({
-        'process.env.NODE_ENV': '"production"',
         'process.browser': true,
         'process.env.THEME_COLORS': JSON.stringify(themeColors)
       }),
