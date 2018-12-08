@@ -1,10 +1,5 @@
-<div class="status-media
-            {sensitive ? 'status-media-is-sensitive' : ''}
-            {oddCols ? 'odd-cols' : ''}
-            {twoCols ? 'two-cols' : ''}
-            {$groupedImages ? 'grouped-images' : ''}
-            "
-     style="grid-template-columns: repeat({nCols}, 1fr); " >
+<div class={computedClass}
+     style="grid-template-columns: repeat({nCols}, 1fr);" >
   {#each mediaAttachments as media}
     <Media {media} {uuid} />
   {/each}
@@ -50,12 +45,20 @@
 </style>
 <script>
   import Media from './Media.html'
+  import { classname } from '../../_utils/classname'
 
   export default {
     computed: {
+      computedClass: ({ sensitive, $largeInlineMedia, oddCols, twoCols }) => classname(
+        'status-media',
+        sensitive && 'status-media-is-sensitive',
+        oddCols && 'odd-cols',
+        twoCols && 'two-cols',
+        !$largeInlineMedia && 'grouped-images'
+      ),
       nCols:
-        ({ mediaAttachments, $groupedImages }) => {
-          return ($groupedImages && mediaAttachments.length > 1) ? 2 : 1
+        ({ mediaAttachments, $largeInlineMedia }) => {
+          return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
         },
       oddCols:
         ({ mediaAttachments }) => {

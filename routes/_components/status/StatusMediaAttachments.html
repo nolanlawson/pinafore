@@ -1,6 +1,5 @@
 {#if sensitive }
-<div class="status-sensitive-media-container {sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden'}"
->
+<div class={computedClass}>
   {#if sensitiveShown}
   <button type="button"
           class="status-sensitive-media-button"
@@ -42,6 +41,10 @@
     border-radius: 0;
     border: none;
     background: none;
+  }
+
+  .status-sensitive-media-container.grouped-images {
+    grid-area: media-grp;
   }
 
   .status-sensitive-media-button {
@@ -107,6 +110,10 @@
     right: 0;
     bottom: 0;
   }
+
+  .status-sensitive-media-container.grouped-images .svg-wrapper {
+    border-radius: 6px;
+  }
   .status-sensitive-media-container.status-sensitive-media-shown .svg-wrapper {
     background: none;
   }
@@ -128,6 +135,7 @@
   import MediaAttachments from './MediaAttachments.html'
   import { store } from '../../_store/store'
   import { registerClickDelegate } from '../../_utils/delegate'
+  import { classname } from '../../_utils/classname'
 
   export default {
     oncreate () {
@@ -139,6 +147,11 @@
     },
     store: () => store,
     computed: {
+      computedClass: ({ sensitiveShown, $largeInlineMedia }) => classname(
+        'status-sensitive-media-container',
+        sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden',
+        !$largeInlineMedia && 'grouped-images'
+      ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (

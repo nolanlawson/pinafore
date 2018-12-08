@@ -14,6 +14,11 @@
       <label for="choice-never-mark-media-sensitive">Never mark media as sensitive</label>
     </div>
     <div class="setting-group">
+      <input type="checkbox" id="choice-large-inline-media"
+             bind:checked="$largeInlineMedia" on:change="onChange(event)">
+      <label for="choice-large-inline-media">Show large inline images and videos</label>
+    </div>
+    <div class="setting-group">
       <input type="checkbox" id="choice-disable-custom-scrollbars"
              bind:checked="$disableCustomScrollbars" on:change="onChange(event)">
       <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
@@ -26,11 +31,6 @@
       <input type="checkbox" id="choice-autoplay-gif"
              bind:checked="$autoplayGifs" on:change="onChange(event)">
       <label for="choice-autoplay-gif">Autoplay GIFs</label>
-    </div>
-    <div class="setting-group">
-      <input type="checkbox" id="choice-grouped-images"
-             bind:checked="$groupedImages" on:change="onChange(event)">
-      <label for="choice-groupes-images">Group images</label>
     </div>
     <div class="setting-group">
       <input type="checkbox" id="choice-reduce-motion"

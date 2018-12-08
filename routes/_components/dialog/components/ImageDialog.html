@@ -7,7 +7,7 @@
 >
   {#if type === 'gifv'}
     <video
-      class="autoplay-video"
+      class="image-modal-dialog-autoplay-video"
       aria-label="Animated GIF: {description || ''}"
       style="background-image: url({poster}); "
       {width}
@@ -37,7 +37,7 @@
     overflow: hidden;
   }
 
-  .autoplay-video {
+  .image-modal-dialog-autoplay-video {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;

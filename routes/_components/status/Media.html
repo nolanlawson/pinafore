@@ -1,6 +1,6 @@
 {#if type === 'video'}
   <button type="button"
-          class="play-video-button {$groupedImages ? 'fixed-size': ''}"
+          class="play-video-button {$largeInlineMedia ? '' : 'fixed-size'}"
           aria-label="Play video: {description}"
           delegate-key={delegateKey}
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
@@ -18,7 +18,7 @@
   </button>
 {:else}
   <button type="button"
-          class="show-image-button {$groupedImages ? 'fixed-size': ''}"
+          class="show-image-button {$largeInlineMedia ? '' : 'fixed-size'}"
           aria-label="Show image: {description}"
           title={description}
           delegate-key={delegateKey}
@@ -103,12 +103,16 @@
     computed: {
       focus: ({ meta }) => meta && meta.focus,
       // width/height to show inline
-      inlineWidth: ({ smallWidth, $groupedImages }) => {
-        if ($groupedImages) return '100%'
+      inlineWidth: ({ smallWidth, $largeInlineMedia }) => {
+        if (!$largeInlineMedia) {
+          return '100%'
+        }
         return smallWidth || DEFAULT_MEDIA_WIDTH
       },
-      inlineHeight: ({ smallHeight, $groupedImages }) => {
-        if ($groupedImages) return 'auto'
+      inlineHeight: ({ smallHeight, $largeInlineMedia }) => {
+        if (!$largeInlineMedia) {
+          return 'auto'
+        }
         return smallHeight || DEFAULT_MEDIA_HEIGHT
       },
       // width/height to show in a modal
