@@ -1,8 +1,8 @@
-<div class="autoplay-wrapper  {$groupedImages ? 'fixed-size': ''}"
+<div class="autoplay-wrapper  {$largeInlineMedia ? '' : 'fixed-size'}"
      style="width: {width}px; height: {height}px;"
 >
     <video
-    class="autoplay-video {$groupedImages ? 'fixed-size': ''}"
+    class="autoplay-video {$largeInlineMedia ? '' : 'fixed-size'}"
     aria-label={ariaLabel || ''}
     style="{focusStyle} background-image: url({poster}); "
     {poster}
@@ -46,9 +46,9 @@
 </style>
 <script>
   import { store } from '../_store/store'
-  const coordsToPercent = coord => (1 + coord) / 2 * 100
+  import { coordsToPercent } from '../_utils/coordsToPercent'
 
-export default {
+  export default {
 
     data: () => ({
       focus: void 0

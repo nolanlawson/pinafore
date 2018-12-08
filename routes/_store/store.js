@@ -13,7 +13,7 @@ const persistedState = {
   disableCustomScrollbars: false,
   disableLongAriaLabels: false,
   disableTapOnStatus: false,
-  groupedImages: false,
+  largeInlineMedia: false,
   instanceNameInSearch: '',
   instanceThemes: {},
   loggedInInstances: {},
