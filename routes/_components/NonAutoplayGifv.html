@@ -1,15 +1,16 @@
-<div class="non-autoplay-gifv" style="width: {width}px; height: {height}px;"
+<div class="non-autoplay-gifv  {$groupedImages ? 'fixed-size': ''}"
+     style="width: {width}px; height: {height}px;"
      on:mouseover="onMouseOver(event)"
      ref:node
 >
   {#if playing}
     <AutoplayVideo
-      className={class}
       ariaLabel={label}
       {poster}
       {src}
       {width}
       {height}
+      {focus}
       />
   {:else}
     <LazyImage
@@ -20,7 +21,7 @@
       {width}
       {height}
       background="var(--loading-bg)"
-      className={class}
+      {focus}
     />
   {/if}
   <PlayVideoIcon className={playing ? 'hidden' : ''}/>
@@ -28,8 +29,20 @@
 <style>
   .non-autoplay-gifv {
     cursor: zoom-in;
+    display: flex;
     position: relative;
+    margin: 0;
+    padding: 0;
   }
+
+  .fixed-size {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+
   :global(.non-autoplay-gifv .play-video-icon) {
     transition: opacity 0.2s linear;
   }
@@ -51,7 +64,8 @@
       mouseover
     },
     data: () => ({
-      oneTransparentPixel: ONE_TRANSPARENT_PIXEL
+      oneTransparentPixel: ONE_TRANSPARENT_PIXEL,
+      focus: void 0
     }),
     components: {
       PlayVideoIcon,
