@@ -35,8 +35,12 @@
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
     "deploy-prod": "DEPLOY_TYPE=prod ./bin/deploy.sh",
     "deploy-dev": "DEPLOY_TYPE=dev ./bin/deploy.sh",
+    "deploy-staging": "DEPLOY_TYPE=staging ./bin/deploy.sh",
     "deploy-all-travis": "./bin/deploy-all-travis.sh",
-    "backup-mastodon-data": "./bin/backup-mastodon-data.sh"
+    "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
+    "lh-test": "./bin/lighthouse-ci.sh",
+    "lh-wait-and-test": "run-s wait-for-mastodon-to-start wait-for-mastodon-data deploy-staging lh-test",
+    "test-lighthouse-ci": "run-p --race run-mastodon lh-wait-and-test"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
@@ -96,6 +100,7 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "eslint-plugin-html": "^5.0.0",
+    "lighthouse-ci": "github:ebidel/lighthouse-ci",
     "mocha": "^5.2.0",
     "now": "^12.1.8",
     "standard": "^12.0.1",
