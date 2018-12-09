@@ -6,7 +6,7 @@ set -x
 PATH="$PATH:./node_modules/.bin"
 
 # set up robots.txt
-if [[ "$DEPLOY_TYPE" == "dev" ]]; then
+if [[ "$DEPLOY_TYPE" == "prod" ]]; then
   rm -f assets/robots.txt
 else
   printf 'User-agent: *\nDisallow: /' > assets/robots.txt
