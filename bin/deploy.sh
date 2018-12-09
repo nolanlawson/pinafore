@@ -6,7 +6,7 @@ set -x
 PATH="$PATH:./node_modules/.bin"
 
 # set up robots.txt
-if [[ "$DEPLOY_TYPE" == "prod" ]]; then
+if [[ "$DEPLOY_TYPE" == "dev" ]]; then
   printf 'User-agent: *\nDisallow: /' > assets/robots.txt
 else
   rm -f assets/robots.txt
@@ -18,8 +18,8 @@ if [[ ! -z "$NOW_TOKEN" ]]; then
   NOW_COMMAND="$NOW_COMMAND --token $NOW_TOKEN"
 fi
 
-#launch
-$NOW_COMMAND -e SAPPER_TIMESTAMP=$(date +%s%3N)
+# launch
+URL=$($NOW_COMMAND -e SAPPER_TIMESTAMP=$(date +%s%3N))
 
 # fixes issues with now being unavailable immediately
 sleep 60
@@ -32,7 +32,7 @@ if [[ "$DEPLOY_TYPE" == "prod" ]]; then
 fi
 
 # alias
-$NOW_COMMAND alias "$NOW_ALIAS"
+$NOW_COMMAND alias "$NOW_ALIAS" "$URL"
 
 # cleanup
 $NOW_COMMAND rm pinafore --safe --yes
