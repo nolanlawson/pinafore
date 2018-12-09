@@ -36,11 +36,15 @@
     "deglobalize-css": "node ./bin/globalize-css.js --reverse",
     "deploy-prod": "DEPLOY_TYPE=prod ./bin/deploy.sh",
     "deploy-dev": "DEPLOY_TYPE=dev ./bin/deploy.sh",
+    "deploy-staging": "DEPLOY_TYPE=staging ./bin/deploy.sh",
     "deploy-all-travis": "./bin/deploy-all-travis.sh",
     "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
     "sapper-export": "sapper export",
     "print-export-info": "node ./bin/print-export-info.js",
-    "export": "run-s build sapper-export print-export-info"
+    "export": "run-s build sapper-export print-export-info",
+    "lh-test": "./bin/lighthouse-ci.sh",
+    "lh-wait-and-test": "run-s wait-for-mastodon-to-start wait-for-mastodon-data deploy-staging lh-test",
+    "test-lighthouse-ci": "run-p --race run-mastodon lh-wait-and-test"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",

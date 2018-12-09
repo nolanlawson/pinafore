@@ -7,9 +7,9 @@ PATH="$PATH:./node_modules/.bin"
 
 # set up robots.txt
 if [[ "$DEPLOY_TYPE" == "dev" ]]; then
-  printf 'User-agent: *\nDisallow: /' > static/robots.txt
+  printf 'User-agent: *\nDisallow: /' > assets/robots.txt
 else
-  rm -f static/robots.txt
+  rm -f assets/robots.txt
 fi
 
 # if in travis, use the $NOW_TOKEN
@@ -25,10 +25,12 @@ URL=$($NOW_COMMAND -e SAPPER_TIMESTAMP=$(date +%s%3N))
 sleep 60
 
 # choose the right alias
-NOW_ALIAS="dev.pinafore.social"
+NOW_ALIAS="staging.pinafore.social"
 
 if [[ "$DEPLOY_TYPE" == "prod" ]]; then
   NOW_ALIAS="pinafore.social"
+elif [[ "$DEPLOY_TYPE" == "dev" ]]; then
+  NOW_ALIAS="dev.pinafore.social"
 fi
 
 # alias
