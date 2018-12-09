@@ -32,7 +32,7 @@ if [[ "$DEPLOY_TYPE" == "prod" ]]; then
 fi
 
 # alias
-$NOW_COMMAND alias "$NOW_ALIAS" "$URL"
+$NOW_COMMAND alias "$URL" "$NOW_ALIAS"
 
 # cleanup
 $NOW_COMMAND rm pinafore --safe --yes
