@@ -7,7 +7,7 @@
     {#if name === 'notifications'}
     <div class="nav-link-svg-wrapper">
       <svg class="nav-link-svg">
-        <use xlink:href="icons.svg{svg}" />
+        <use xlink:href={svg} />
       </svg>
       {#if $hasNotifications}
       <span class="nav-link-notifications nav-link-notifications-digits-{notificationDigits}" aria-hidden="true">
@@ -17,7 +17,7 @@
     </div>
     {:else}
     <svg class="nav-link-svg">
-      <use xlink:href="icons.svg{svg}" />
+      <use xlink:href={svg} />
     </svg>
     {/if}
     <span class="nav-link-label">{label}</span>
