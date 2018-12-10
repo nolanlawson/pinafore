@@ -8,7 +8,7 @@
           delegate-key={delegateKey}
           focus-key={focusKey || ''} >
     <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
-      <use xlink:href="/icons.svg{href}" />
+      <use xlink:href="icons.svg{href}" />
     </svg>
   </button>
 {:else}
@@ -21,7 +21,7 @@
           {disabled}
           on:click >
     <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
-      <use xlink:href="/icons.svg{href}" />
+      <use xlink:href="icons.svg{href}" />
     </svg>
   </button>
 {/if}
