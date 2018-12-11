@@ -84,7 +84,7 @@ You can export Pinafore as a static site. Run:
 
 Static files will be written to `__sapper__/export`.
 Be sure to add the [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) header printed out in the console to
-your nginx or Apache config!
+your server config!
 
 ## Developing and testing
 
