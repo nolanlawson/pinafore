@@ -3,8 +3,8 @@
   "description": "Alternative web client for Mastodon",
   "version": "0.13.0",
   "scripts": {
-    "lint": "standard && standard --plugin html 'routes/**/*.html'",
-    "lint-fix": "standard --fix && standard --fix --plugin html 'routes/**/*.html'",
+    "lint": "standard && standard --plugin html 'src/routes/**/*.html'",
+    "lint-fix": "standard --fix && standard --fix --plugin html 'src/routes/**/*.html'",
     "dev": "run-s build-svg build-inline-script serve-dev",
     "serve-dev": "run-p --race build-sass-watch sapper-dev",
     "sapper-dev": "cross-env PORT=4002 sapper dev",
@@ -141,8 +141,8 @@
     ],
     "ignore": [
       "dist",
-      "routes/_utils/asyncModules.js",
-      "routes/_components/dialog/asyncDialogs.js"
+      "src/routes/_utils/asyncModules.js",
+      "src/routes/_components/dialog/asyncDialogs.js"
     ]
   },
   "esm": {
