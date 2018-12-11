@@ -65,7 +65,7 @@ app.use(serveStatic('static', {
 }))
 
 debugPaths.forEach(debugPath => {
-  app.use(debugPath, express.static(`sapper/build/client${debugPath}`))
+  app.use(debugPath, express.static(`__sapper__/build/client${debugPath}`))
 })
 
 app.use(sapper.middleware())

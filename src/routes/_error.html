@@ -2,11 +2,17 @@
   <title>{status}</title>
 </svelte:head>
 
-<h1>{status}</h1>
+<div class="error-wrapper">
+  <h1>{status}</h1>
 
-<p>{error.message}</p>
-
+  <p>{error.message}</p>
+</div>
 <style>
+
+  .error-wrapper {
+    margin: 20px;
+  }
+
   h1, p {
     margin: 0 auto;
   }
