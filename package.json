@@ -158,18 +158,16 @@
       "NODE_ENV": "production"
     },
     "files": [
-      "assets",
       "bin",
-      "original-assets",
-      "routes",
+      "inline-script.js",
+      "original-static",
       "scss",
-      "templates",
+      "src",
+      "static",
       "package.json",
       "package-lock.json",
-      "server.js",
-      "inline-script.js",
-      "webpack.client.config.js",
-      "webpack.server.config.js"
+      "webpack",
+      "webpack.config.js"
     ],
     "engines": {
       "node": "^8.0.0"
