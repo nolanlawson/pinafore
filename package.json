@@ -37,7 +37,10 @@
     "deploy-prod": "DEPLOY_TYPE=prod ./bin/deploy.sh",
     "deploy-dev": "DEPLOY_TYPE=dev ./bin/deploy.sh",
     "deploy-all-travis": "./bin/deploy-all-travis.sh",
-    "backup-mastodon-data": "./bin/backup-mastodon-data.sh"
+    "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
+    "sapper-export": "sapper export",
+    "print-export-info": "node ./bin/print-export-info.js",
+    "export": "run-s build sapper-export print-export-info"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",

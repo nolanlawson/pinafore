@@ -76,6 +76,16 @@ To keep your version of Pinafore up to date, you can use `git` to check out the 
 
     git checkout $(git tag -l | sort -Vr | head -n 1)
 
+### Exporting
+
+You can export Pinafore as a static site. Run:
+
+    npm run export
+
+Static files will be written to `__sapper__/export`.
+Be sure to add the [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) header printed out in the console to
+your nginx or Apache config!
+
 ## Developing and testing
 
 See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md) for 
