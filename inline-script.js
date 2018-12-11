@@ -2,8 +2,8 @@
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to inline-script-checksum.json.
 
-import { testHasLocalStorageOnce } from './routes/_utils/testStorage'
-import { switchToTheme } from './routes/_utils/themeEngine'
+import { testHasLocalStorageOnce } from './src/routes/_utils/testStorage'
+import { switchToTheme } from './src/routes/_utils/themeEngine'
 
 window.__themeColors = process.env.THEME_COLORS
 

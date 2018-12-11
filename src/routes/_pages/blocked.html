@@ -1,0 +1,29 @@
+<DynamicPageBanner title="Blocked users" icon="#fa-ban" />
+<AccountsListPage {accountsFetcher} {accountActions} />
+<script>
+  import AccountsListPage from '../_components/AccountsListPage.html'
+  import { store } from '../_store/store'
+  import { getBlockedAccounts } from '../_api/blockedAndMuted'
+  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
+  import { setAccountBlocked } from '../_actions/block'
+
+  export default {
+    data: () => ({
+      accountActions: [
+        {
+          icon: '#fa-unlock',
+          label: 'Unblock',
+          onclick: (accountId) => setAccountBlocked(accountId, false, true)
+        }
+      ]
+    }),
+    computed: {
+      accountsFetcher: ({ $currentInstance, $accessToken }) => () => getBlockedAccounts($currentInstance, $accessToken)
+    },
+    store: () => store,
+    components: {
+      AccountsListPage,
+      DynamicPageBanner
+    }
+  }
+</script>

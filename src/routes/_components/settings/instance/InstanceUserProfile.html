@@ -1,0 +1,51 @@
+<div class="acct-current-user">
+  <div class="acct-avatar">
+    <Avatar account={verifyCredentials} size="big" />
+  </div>
+  <ExternalLink className="acct-handle"
+                href={verifyCredentials.url} >
+    {'@' + verifyCredentials.acct}
+  </ExternalLink>
+  <span class="acct-display-name">
+    <AccountDisplayName account={verifyCredentials} />
+  </span>
+</div>
+<style>
+  .acct-current-user {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    padding: 20px;
+    display: grid;
+    align-items: center;
+    font-size: 1.3em;
+    grid-template-areas:
+      "avatar handle"
+      "avatar display-name";
+    grid-template-columns: min-content 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+  }
+  :global(.acct-avatar) {
+    grid-area: avatar;
+  }
+  :global(.acct-handle) {
+    grid-area: handle;
+  }
+  .acct-display-name {
+    grid-area: display-name;
+  }
+</style>
+<script>
+  import ExternalLink from '../../ExternalLink.html'
+  import Avatar from '../../Avatar.html'
+  import AccountDisplayName from '../../profile/AccountDisplayName.html'
+
+  export default {
+    components: {
+      Avatar,
+      ExternalLink,
+      AccountDisplayName
+    }
+  }
+</script>

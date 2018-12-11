@@ -1,0 +1,34 @@
+<DynamicPageBanner title="Follow requests" icon="#fa-user-plus" />
+<AccountsListPage {accountsFetcher} {accountActions} />
+<script>
+  import AccountsListPage from '../_components/AccountsListPage.html'
+  import { store } from '../_store/store'
+  import { getFollowRequests } from '../_actions/followRequests'
+  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
+  import { setFollowRequestApprovedOrRejected } from '../_actions/requests'
+
+  export default {
+    data: () => ({
+      accountActions: [
+        {
+          icon: '#fa-check',
+          label: 'Approve',
+          onclick: (accountId) => setFollowRequestApprovedOrRejected(accountId, true, true)
+        },
+        {
+          icon: '#fa-times',
+          label: 'Reject',
+          onclick: (accountId) => setFollowRequestApprovedOrRejected(accountId, false, true)
+        }
+      ]
+    }),
+    computed: {
+      accountsFetcher: ({ $currentInstance, $accessToken }) => () => getFollowRequests($currentInstance, $accessToken)
+    },
+    store: () => store,
+    components: {
+      AccountsListPage,
+      DynamicPageBanner
+    }
+  }
+</script>

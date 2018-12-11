@@ -4,7 +4,7 @@ import {
   scrollToBottom, scrollToTop, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
-import { indexWhere } from '../../routes/_utils/arrays'
+import { indexWhere } from '../../src/routes/_utils/arrays'
 import { homeTimeline } from '../fixtures'
 
 fixture`100-favorite-unfavorite.js`

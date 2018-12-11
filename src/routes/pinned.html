@@ -1,0 +1,20 @@
+<Title name="Pinned toots" />
+
+  <LazyPage {pageComponent} {params} />
+
+<script>
+  import Title from './_components/Title.html'
+  import LazyPage from './_components/LazyPage.html'
+  import pageComponent from './_pages/pinned.html'
+
+  export default {
+    components: {
+
+      Title,
+      LazyPage
+    },
+    data: () => ({
+      pageComponent
+    })
+  }
+</script>

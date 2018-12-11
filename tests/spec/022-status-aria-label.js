@@ -8,7 +8,7 @@ import {
   settingsNavButton
 } from '../utils'
 import { Selector as $ } from 'testcafe'
-import { indexWhere } from '../../routes/_utils/arrays'
+import { indexWhere } from '../../src/routes/_utils/arrays'
 import { homeTimeline } from '../fixtures'
 
 fixture`022-status-aria-label.js`
