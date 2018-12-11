@@ -6,7 +6,7 @@ const TerserWebpackPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
-const isDev = config.dev
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
   entry: config.client.entry(),

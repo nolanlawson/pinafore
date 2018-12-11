@@ -24,17 +24,19 @@
       InformationalFooter: './_components/InformationalFooter.html'
     },
     oncreate () {
-      let { page } = this.get()
 
-      this.observe('child', child => {
-        // TODO: sapper has a bug apparently, can't use computed properties for this
-        this.store.set({ currentPage: (child.props.path.slice(1) || 'home') })
+      if (process.browser && process.env.NODE_ENV !== 'production') {
+        window.layoutObject = this
+      }
+
+      this.observe('page', page => {
+        console.log('currentPage', page)
+        this.store.set({ currentPage: page })
       })
-
-      this.store.set({ currentPage: page })
     },
     store: () => store,
     computed: {
+      page: ({ child }) => child.props.path.slice(1) || 'home',
       infiniteScrollPage: ({ $isUserLoggedIn, page }) => $isUserLoggedIn && !page.startsWith('settings')
     },
     methods: {

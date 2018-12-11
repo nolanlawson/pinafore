@@ -49,6 +49,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^2.0.0",
     "emoji-regex": "^7.0.1",
+    "encoding": "^0.1.12",
     "escape-html": "^1.0.3",
     "esm": "^3.0.84",
     "events-light": "^1.0.5",

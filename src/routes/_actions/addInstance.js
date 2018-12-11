@@ -1,6 +1,6 @@
 import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../_api/oauth'
 import { getInstanceInfo } from '../_api/instance'
-import { goto } from 'sapper/runtime.js'
+import { goto } from '../../../__sapper__/client'
 import { switchToTheme } from '../_utils/themeEngine'
 import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
