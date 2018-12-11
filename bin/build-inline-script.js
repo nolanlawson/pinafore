@@ -36,7 +36,7 @@ async function main () {
     sourcemap: true
   })
 
-  let fullCode = `${code}\n//# sourceMappingURL=inline-script.js.map`
+  let fullCode = `${code}\n//# sourceMappingURL=/inline-script.js.map`
 
   let checksum = crypto.createHash('sha256').update(fullCode).digest('base64')
 
