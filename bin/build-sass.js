@@ -16,10 +16,10 @@ const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
 const offlineThemeScss = path.join(__dirname, '../scss/themes/_offline.scss')
 const customScrollbarScss = path.join(__dirname, '../scss/custom-scrollbars.scss')
-const html2xxFile = path.join(__dirname, '../templates/2xx.html')
+const htmlTemplateFile = path.join(__dirname, '../src/template.html')
 const scssDir = path.join(__dirname, '../scss')
 const themesScssDir = path.join(__dirname, '../scss/themes')
-const assetsDir = path.join(__dirname, '../assets')
+const assetsDir = path.join(__dirname, '../static')
 
 function doWatch () {
   let start = now()
@@ -44,7 +44,7 @@ async function compileGlobalSass () {
   let offlineStyle = (await renderCss(offlineThemeScss))
   let scrollbarStyle = (await renderCss(customScrollbarScss))
 
-  let html = await readFile(html2xxFile, 'utf8')
+  let html = await readFile(htmlTemplateFile, 'utf8')
   html = html.replace(/<!-- begin inline CSS -->[\s\S]+<!-- end inline CSS -->/,
     `<!-- begin inline CSS -->\n` +
     `<style>\n${mainStyle}</style>\n` +
@@ -53,7 +53,7 @@ async function compileGlobalSass () {
     `<!-- end inline CSS -->`
   )
 
-  await writeFile(html2xxFile, html, 'utf8')
+  await writeFile(htmlTemplateFile, html, 'utf8')
 }
 
 async function compileThemesSass () {

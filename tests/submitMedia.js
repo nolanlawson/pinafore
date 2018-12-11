@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 import fs from 'fs'
 import path from 'path'
-import { auth } from '../routes/_api/utils'
+import { auth } from '../src/routes/_api/utils'
 
 export async function submitMedia (accessToken, filename, alt) {
   let form = new FormData()

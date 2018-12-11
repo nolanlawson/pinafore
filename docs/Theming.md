@@ -1,6 +1,9 @@
 ## Theming
 
-Create a file `scss/themes/foobar.scss`, write some SCSS inside and add the following at the bottom of `scss/themes/foobar.scss`.
+This document describes how to write your own theme for Pinafore.
+
+First, create a file `scss/themes/foobar.scss`, write some SCSS inside and add
+the following at the bottom of `scss/themes/foobar.scss`.
 ```scss
 @import "_base.scss";
 
@@ -9,9 +12,10 @@ body.theme-foobar {
 }
 ```
 
-> Note: You can find all the SCSS variables available in `scss/themes/_default.scss` while the all CSS Custom Properties available are listed in `scss/themes/_base.scss`.
+> Note: You can find all the SCSS variables available in `scss/themes/_default.scss` 
+> while the all CSS Custom Properties available are listed in `scss/themes/_base.scss`.
 
-Add your theme to `routes/_static/themes.js`
+Then, Add your theme to `src/routes/_static/themes.js`
 ```js
 const themes = [
   ...
@@ -24,4 +28,7 @@ const themes = [
 ]
 ```
 
-Start the development server (`npm run dev`), go to `http://localhost:4002/settings/instances/your-instance-name` and select your newly created theme. Once you've done that, you can update your theme, and refresh the page to see the change (you don't have to restart the server).
+Start the development server (`npm run dev`), go to 
+`http://localhost:4002/settings/instances/your-instance-name` and select your 
+newly-created theme. Once you've done that, you can update your theme, and refresh 
+the page to see the change (you don't have to restart the server).

@@ -5,7 +5,7 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
-import { indexWhere } from '../../routes/_utils/arrays'
+import { indexWhere } from '../../src/routes/_utils/arrays'
 import { homeTimeline } from '../fixtures'
 
 fixture`010-focus.js`

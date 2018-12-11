@@ -1,0 +1,64 @@
+<DynamicPageBanner title="Pinned toots" icon="#fa-thumb-tack" />
+<div class="pinned-toots-page">
+  {#if loading}
+  <LoadingPage />
+  {:elseif statuses && statuses.length}
+  <ul class="pinned-toots-results">
+    {#each statuses as status, index}
+    <StatusSearchResult {status} {index} length={statuses.length} />
+    {/each}
+  </ul>
+  {/if}
+</div>
+<style>
+  .pinned-toots-page {
+    padding: 20px 20px;
+    position: relative;
+  }
+  .pinned-toots-results {
+    list-style: none;
+    box-sizing: border-box;
+    border: 1px solid var(--main-border);
+    border-radius: 2px;
+  }
+  @media (max-width: 767px) {
+    .pinned-toots-page {
+      padding: 20px 10px;
+    }
+  }
+</style>
+<script>
+  import { store } from '../_store/store'
+  import LoadingPage from '../_components/LoadingPage.html'
+  import StatusSearchResult from '../_components/search/StatusSearchResult.html'
+  import { toast } from '../_utils/toast'
+  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
+  import { getPinnedStatuses } from '../_api/pinnedStatuses'
+  import { updateVerifyCredentialsForInstance } from '../_actions/instances'
+
+  export default {
+    async oncreate () {
+      try {
+        let { currentInstance } = this.store.get()
+        await updateVerifyCredentialsForInstance(currentInstance)
+        let { accessToken, currentVerifyCredentials } = this.store.get()
+        let statuses = await getPinnedStatuses(currentInstance, accessToken, currentVerifyCredentials.id)
+        this.set({ statuses: statuses })
+      } catch (e) {
+        toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
+      } finally {
+        this.set({ loading: false })
+      }
+    },
+    data: () => ({
+      loading: true,
+      accounts: []
+    }),
+    store: () => store,
+    components: {
+      LoadingPage,
+      StatusSearchResult,
+      DynamicPageBanner
+    }
+  }
+</script>

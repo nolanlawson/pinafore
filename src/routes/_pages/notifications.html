@@ -1,0 +1,26 @@
+{#if $isUserLoggedIn}
+  <TimelinePage timeline="notifications" />
+{:else}
+<HiddenFromSSR>
+  <FreeTextLayout>
+    <h1>Notifications</h1>
+
+    <p>Your notifications will appear here when logged in.</p>
+  </FreeTextLayout>
+</HiddenFromSSR>
+{/if}
+<script>
+  import FreeTextLayout from '../_components/FreeTextLayout.html'
+  import { store } from '../_store/store.js'
+  import HiddenFromSSR from '../_components/HiddenFromSSR'
+  import TimelinePage from '../_components/TimelinePage.html'
+
+  export default {
+    store: () => store,
+    components: {
+      FreeTextLayout,
+      HiddenFromSSR,
+      TimelinePage
+    }
+  }
+</script>

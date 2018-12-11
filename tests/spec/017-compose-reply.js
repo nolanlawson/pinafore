@@ -7,7 +7,7 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { homeTimeline } from '../fixtures'
-import { indexWhere } from '../../routes/_utils/arrays'
+import { indexWhere } from '../../src/routes/_utils/arrays'
 
 fixture`017-compose-reply.js`
   .page`http://localhost:4002`

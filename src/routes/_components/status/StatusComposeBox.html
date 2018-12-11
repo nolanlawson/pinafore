@@ -1,0 +1,70 @@
+<div class="status-article-compose-box">
+  <ComposeBox realm={originalStatusId}
+              size="slim"
+              autoFocus="true"
+              hideBottomBorder="true"
+              isReply="true"
+              replyVisibility={visibility}
+              replySpoiler={spoilerText}
+              inReplyToUuid={uuid}
+  />
+</div>
+<style>
+  .status-article-compose-box {
+    grid-area: compose;
+  }
+</style>
+<script>
+  import ComposeBox from '../compose/ComposeBox.html'
+  import { store } from '../../_store/store'
+  import debounce from 'lodash-es/debounce'
+  import throttle from 'lodash-es/throttle'
+  import { on } from '../../_utils/eventBus'
+  import { observe } from 'svelte-extras'
+
+  const DEBOUNCE_DELAY = 400
+  const THROTTLE_DELAY = 150
+
+  export default {
+    oncreate () {
+      on('postedStatus', this, this.onPostedStatus)
+      this.setupRecalculateHeightListener()
+    },
+    store: () => store,
+    computed: {
+      composeData: ({ $currentComposeData, originalStatusId }) => $currentComposeData[originalStatusId] || {}
+    },
+    methods: {
+      observe,
+      onPostedStatus (realm) {
+        let { originalStatusId } = this.get()
+        if (realm !== originalStatusId) {
+          return
+        }
+        requestAnimationFrame(() => {
+          let { uuid } = this.get()
+          let { repliesShown } = this.store.get()
+          repliesShown[uuid] = false
+          this.store.set({ repliesShown })
+          this.fire('recalculateHeight')
+        })
+      },
+      setupRecalculateHeightListener () {
+        const recalc = () => requestAnimationFrame(() => this.fire('recalculateHeight'))
+        // debounce AND throttle due to 333ms content warning animation
+        const debounced = debounce(recalc, DEBOUNCE_DELAY)
+        const throttled = throttle(() => {
+          debounced()
+          recalc()
+        }, THROTTLE_DELAY, {
+          leading: true,
+          trailing: true
+        })
+        this.observe('composeData', throttled)
+      }
+    },
+    components: {
+      ComposeBox
+    }
+  }
+</script>

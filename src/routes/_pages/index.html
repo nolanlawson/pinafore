@@ -1,0 +1,18 @@
+{#if $isUserLoggedIn}
+  <TimelineHomePage/>
+{:else}
+  <NotLoggedInHome/>
+{/if}
+<script>
+  import NotLoggedInHome from '../_components/NotLoggedInHome.html'
+  import { store } from '../_store/store.js'
+  import TimelineHomePage from '../_components/TimelineHomePage.html'
+
+  export default {
+    store: () => store,
+    components: {
+      NotLoggedInHome,
+      TimelineHomePage
+    }
+  }
+</script>

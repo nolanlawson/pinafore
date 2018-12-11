@@ -1,0 +1,274 @@
+<article class={className}
+         tabindex="0"
+         delegate-key={delegateKey}
+         focus-key={delegateKey}
+         aria-posinset={index}
+         aria-setsize={length}
+         aria-label={ariaLabel}
+         on:recalculateHeight>
+  {#if showHeader}
+    <StatusHeader {...params} />
+  {/if}
+  <StatusAuthorName {...params} />
+  <StatusAuthorHandle {...params} />
+  {#if !isStatusInOwnThread}
+    <StatusRelativeDate {...params} />
+  {/if}
+  <StatusSidebar {...params} />
+  {#if spoilerText}
+    <StatusSpoiler {...params} on:recalculateHeight />
+  {/if}
+  {#if !showContent}
+    <StatusMentions {...params} />
+  {/if}
+  {#if content && (showContent || contentPreloaded)}
+    <StatusContent {...params} shown={showContent}/>
+  {/if}
+  {#if showMedia }
+    <StatusMediaAttachments {...params} on:recalculateHeight />
+  {/if}
+  {#if isStatusInOwnThread}
+    <StatusDetails {...params} />
+  {/if}
+  <StatusToolbar {...params} on:recalculateHeight />
+  {#if replyShown}
+    <StatusComposeBox {...params} on:recalculateHeight />
+  {/if}
+</article>
+
+<style>
+  .status-article {
+    cursor: pointer;
+    max-width: calc(100vw - 40px);
+    padding: 10px 20px;
+    display: grid;
+    grid-template-areas:
+        "header  header       header        header"
+        "sidebar author-name  author-handle relative-date"
+        "sidebar spoiler      spoiler       spoiler"
+        "sidebar spoiler-btn  spoiler-btn   spoiler-btn"
+        "sidebar mentions     mentions      mentions"
+        "sidebar content      content       content"
+        "sidebar media-grp    media-grp     media-grp"
+        "media   media        media         media"
+        "....... toolbar      toolbar       toolbar"
+        "compose compose      compose       compose";
+    grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
+    grid-template-rows: repeat(8, max-content);
+  }
+
+  .status-article.status-in-timeline {
+    width: 560px;
+    border-bottom: 1px solid var(--main-border);
+  }
+
+  .status-article.status-direct {
+    background-color: var(--status-direct-background);
+  }
+
+  .status-article.status-in-own-thread {
+    grid-template-areas:
+      "sidebar     author-name"
+      "sidebar     author-handle"
+      "spoiler     spoiler"
+      "spoiler-btn spoiler-btn"
+      "mentions    mentions"
+      "content     content"
+      "media-grp   media-grp"
+      "media       media"
+      "details     details"
+      "toolbar     toolbar"
+      "compose     compose";
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: repeat(7, max-content);
+  }
+
+  @media (max-width: 767px) {
+    .status-article {
+      padding: 10px 10px;
+      max-width: calc(100vw - 20px);
+    }
+    .status-article.status-in-timeline {
+      width: 580px;
+    }
+  }
+</style>
+<script>
+  import StatusSidebar from './StatusSidebar.html'
+  import StatusHeader from './StatusHeader.html'
+  import StatusAuthorName from './StatusAuthorName.html'
+  import StatusAuthorHandle from './StatusAuthorHandle.html'
+  import StatusRelativeDate from './StatusRelativeDate.html'
+  import StatusDetails from './StatusDetails.html'
+  import StatusToolbar from './StatusToolbar.html'
+  import StatusMediaAttachments from './StatusMediaAttachments.html'
+  import StatusContent from './StatusContent.html'
+  import StatusSpoiler from './StatusSpoiler.html'
+  import StatusComposeBox from './StatusComposeBox.html'
+  import StatusMentions from './StatusMentions.html'
+  import { store } from '../../_store/store'
+  import { goto } from '../../../../__sapper__/client'
+  import { registerClickDelegate } from '../../_utils/delegate'
+  import { classname } from '../../_utils/classname'
+  import { checkDomAncestors } from '../../_utils/checkDomAncestors'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
+  import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
+  import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+
+  const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
+  const isUserInputElement = node => INPUT_TAGS.has(node.localName)
+  const isToolbar = node => node.classList.contains('status-toolbar')
+  const isStatusArticle = node => node.classList.contains('status-article')
+
+  export default {
+    oncreate () {
+      let { delegateKey, isStatusInOwnThread, showContent } = this.get()
+      let { disableTapOnStatus } = this.store.get()
+      if (!isStatusInOwnThread && !disableTapOnStatus) {
+        // the whole <article> is clickable in this case
+        registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
+      }
+      if (!showContent) {
+        scheduleIdleTask(() => {
+          // Perf optimization: lazily load the StatusContent when the user is idle so that
+          // it's fast when they click the "show more" button
+          this.set({ contentPreloaded: true })
+        })
+      }
+    },
+    components: {
+      StatusSidebar,
+      StatusHeader,
+      StatusAuthorName,
+      StatusAuthorHandle,
+      StatusRelativeDate,
+      StatusDetails,
+      StatusToolbar,
+      StatusMediaAttachments,
+      StatusContent,
+      StatusSpoiler,
+      StatusComposeBox,
+      StatusMentions
+    },
+    data: () => ({
+      notification: void 0,
+      replyVisibility: void 0,
+      contentPreloaded: false
+    }),
+    store: () => store,
+    methods: {
+      onClickOrKeydown (e) {
+        let { type, keyCode, target } = e
+
+        let isClick = type === 'click'
+        let isEnter = type === 'keydown' && keyCode === 13
+        if (!isClick && !isEnter) {
+          return
+        }
+        if (checkDomAncestors(target, isUserInputElement, isStatusArticle)) {
+          // this element or any ancestors up to the status-article element is
+          // a user input element
+          return
+        }
+        if (checkDomAncestors(target, isToolbar, isStatusArticle)) {
+          // this element or any of its ancestors is the toolbar
+          return
+        }
+
+        e.preventDefault()
+        e.stopPropagation()
+        let { originalStatusId } = this.get()
+        goto(`/statuses/${originalStatusId}`)
+      }
+    },
+    computed: {
+      originalStatus: ({ status }) => status.reblog ? status.reblog : status,
+      originalStatusId: ({ originalStatus }) => originalStatus.id,
+      statusId: ({ status }) => status.id,
+      notificationId: ({ notification }) => notification && notification.id,
+      account: ({ notification, status }) => (
+        (notification && notification.account) || status.account
+      ),
+      accountId: ({ account }) => account.id,
+      originalAccount: ({ originalStatus }) => originalStatus.account,
+      originalAccountId: ({ originalAccount }) => originalAccount.id,
+      visibility: ({ originalStatus }) => originalStatus.visibility,
+      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
+      inReplyToId: ({ originalStatus }) => originalStatus.in_reply_to_id,
+      uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
+        `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
+      ),
+      delegateKey: ({ uuid }) => `status-${uuid}`,
+      isStatusInOwnThread: ({ timelineType, timelineValue, originalStatusId }) => (
+        (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
+      ),
+      isStatusInNotification: ({ originalStatusId, notification }) => (
+        notification && notification.status &&
+          notification.type !== 'mention' && notification.status.id === originalStatusId
+      ),
+      spoilerShown: ({ $spoilersShown, uuid }) => !!$spoilersShown[uuid],
+      replyShown: ({ $repliesShown, uuid }) => !!$repliesShown[uuid],
+      showMedia: ({ originalStatus, isStatusInNotification }) => (
+        !isStatusInNotification &&
+        originalStatus.media_attachments &&
+        originalStatus.media_attachments.length
+      ),
+      originalAccountEmojis: ({ originalAccount }) => (originalAccount.emojis || []),
+      originalAccountDisplayName: ({ originalAccount }) => (originalAccount.display_name || originalAccount.username),
+      originalAccountAccessibleName: ({ originalAccount, $omitEmojiInDisplayNames }) => {
+        return getAccountAccessibleName(originalAccount, $omitEmojiInDisplayNames)
+      },
+      createdAtDate: ({ originalStatus }) => originalStatus.created_at,
+      timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
+      reblog: ({ status }) => status.reblog,
+      ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
+        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels }) => (
+        getAccessibleLabelForStatus(originalAccount, account, content,
+          timeagoFormattedDate, spoilerText, showContent,
+          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
+      ),
+      showHeader: ({ notification, status, timelineType }) => (
+        (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
+        status.reblog ||
+        timelineType === 'pinned'
+      ),
+      className: ({ visibility, timelineType, isStatusInOwnThread }) => (classname(
+        'status-article',
+        visibility === 'direct' && 'status-direct',
+        timelineType !== 'search' && 'status-in-timeline',
+        isStatusInOwnThread && 'status-in-own-thread'
+      )),
+      content: ({ originalStatus }) => originalStatus.content || '',
+      showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
+      params: ({ notification, notificationId, status, statusId, timelineType,
+        account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
+        originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
+        replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
+        createdAtDate, timeagoFormattedDate }) => ({
+        notification,
+        notificationId,
+        status,
+        statusId,
+        timelineType,
+        account,
+        accountId,
+        uuid,
+        isStatusInNotification,
+        isStatusInOwnThread,
+        originalAccount,
+        originalAccountId,
+        spoilerShown,
+        visibility,
+        replyShown,
+        replyVisibility,
+        spoilerText,
+        originalStatus,
+        originalStatusId,
+        inReplyToId,
+        createdAtDate,
+        timeagoFormattedDate
+      })
+    }
+  }
+</script>

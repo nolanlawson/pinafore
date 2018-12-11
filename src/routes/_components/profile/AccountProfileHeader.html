@@ -1,0 +1,129 @@
+<h2 class="sr-only">Name and following</h2>
+<div class="account-profile-avatar">
+  <Avatar {account} size="big" />
+</div>
+<div class="account-profile-name">
+  <ExternalLink
+    className="account-profile-name-link"
+    href={account.url}
+    showIcon="true"
+    normalIconColor="true"
+    ariaLabel="{accessibleName} (opens in new window)">
+    <AccountDisplayName {account} />
+  </ExternalLink>
+</div>
+{#if label}
+  <Label {label} className="account-profile-label" />
+{/if}
+<div class="account-profile-username">
+  {'@' + account.acct}
+</div>
+<div class="account-profile-followed-by">
+  {#if relationship && relationship.blocking}
+    <span class="account-profile-followed-by-span">Blocked</span>
+  {/if}
+  {#if relationship && relationship.domain_blocking}
+    <span class="account-profile-followed-by-span">Domain hidden</span>
+  {/if}
+  {#if relationship && relationship.muting}
+    <span class="account-profile-followed-by-span">Muted</span>
+  {/if}
+  {#if relationship && relationship.followed_by}
+    <span class="account-profile-followed-by-span">Follows you</span>
+  {/if}
+</div>
+<style>
+  .account-profile-followed-by {
+    grid-area: followed-by;
+    align-self: center;
+    text-transform: uppercase;
+    color: var(--deemphasized-text-color);
+    font-size: 0.8em;
+    white-space: nowrap;
+  }
+  .account-profile-followed-by-span {
+    background: rgba(30, 30, 30, 0.2);
+    border-radius: 4px;
+    padding: 3px 5px;
+    white-space: nowrap;
+  }
+  .account-profile-avatar {
+    grid-area: avatar;
+  }
+
+  .account-profile-username {
+    grid-area: username;
+    color: var(--deemphasized-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-self: center;
+  }
+
+  .account-profile-name {
+    grid-area: name;
+    font-size: 1.5em;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  :global(a.account-profile-name-link) {
+    color: var(--body-text-color);
+    text-decoration: none;
+  }
+
+  :global(a.account-profile-name-link:hover) {
+    color: var(--body-text-color);
+    text-decoration: underline;
+  }
+
+  :global(.account-profile-label) {
+    grid-area: label;
+    justify-content: left !important;
+  }
+
+  @media (max-width: 767px) {
+    .account-profile-name {
+      font-size: 1.3em;
+    }
+    .account-profile-username {
+      font-size: 1.1em;
+    }
+    .account-profile-name, .account-profile-username {
+      align-self: flex-start;
+    }
+  }
+</style>
+<script>
+  import Avatar from '../Avatar.html'
+  import ExternalLink from '../ExternalLink.html'
+  import AccountDisplayName from './AccountDisplayName.html'
+  import { removeEmoji } from '../../_utils/removeEmoji'
+  import { store } from '../../_store/store'
+  import Label from '../Label.html'
+
+  export default {
+    store: () => store,
+    computed: {
+      emojis: ({ account }) => (account.emojis || []),
+      displayName: ({ account }) => account.display_name || account.username,
+      accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
+        if ($omitEmojiInDisplayNames) {
+          return removeEmoji(displayName, emojis) || displayName
+        }
+        return displayName
+      },
+      bot: ({ account }) => !!account.bot,
+      label: ({ bot }) => bot ? 'bot' : ''
+    },
+    components: {
+      Avatar,
+      ExternalLink,
+      AccountDisplayName,
+      Label
+    }
+  }
+</script>

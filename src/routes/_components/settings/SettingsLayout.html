@@ -1,0 +1,34 @@
+<SettingsNav {page} {label}/>
+
+<div class="settings">
+  <FreeTextLayout>
+    <slot></slot>
+  </FreeTextLayout>
+</div>
+<style>
+  .settings {
+    margin: 20px;
+  }
+  :global(.settings .free-text h1) {
+    margin-bottom: 30px;
+  }
+  :global(.settings .free-text h2) {
+    margin: 20px 0 10px;
+  }
+  @media (max-width: 767px) {
+    .settings {
+      margin: 20px 10px;
+    }
+  }
+</style>
+<script>
+  import SettingsNav from './SettingsNav.html'
+  import FreeTextLayout from '../FreeTextLayout'
+
+  export default {
+    components: {
+      FreeTextLayout,
+      SettingsNav
+    }
+  }
+</script>
