@@ -2,7 +2,7 @@
   <svelte:component this={pageComponent} {params} />
 {/if}
 <script>
-  import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+  import { doubleRAF } from '../_utils/doubleRAF'
   // On the very first page load, avoid doing a "reveal" because
   // it leads to a flash between when the SSR is shown, the two frame we hide it,
   // and then when we show it again.
@@ -14,9 +14,9 @@
   export default {
     oncreate () {
       firstTime = false
-      scheduleIdleTask(() => {
-        this.set({ revealed: true })
-      })
+      // Yes, triple raf. This is to ensure the NavItem animation plays before we
+      // start rendering the new page.
+      doubleRAF(() => requestAnimationFrame(() => this.set({ revealed: true })))
     },
     data: () => ({
       revealed: !process.browser || firstTime
