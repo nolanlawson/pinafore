@@ -21,7 +21,7 @@
   export default {
     components: {
       Nav: './_components/Nav.html',
-      InformationalFooter: './components/InformationalFooter.html'
+      InformationalFooter: './_components/InformationalFooter.html'
     },
     oncreate () {
       let { page } = this.get()
@@ -35,7 +35,7 @@
     },
     store: () => store,
     computed: {
-      infiniteScrollPage: ({ $isUserLoggedIn, page }) => $isUserLoggedIn && page !== 'settings'
+      infiniteScrollPage: ({ $isUserLoggedIn, page }) => $isUserLoggedIn && !page.startsWith('settings')
     },
     methods: {
       observe
