@@ -6,6 +6,8 @@
   <meta id='theThemeColor' name='theme-color' content='#4169e1' >
   <meta name="description" content="An alternative web client for Mastodon, focused on speed and simplicity." >
 
+  %sapper.base%
+
   <link id='theManifest' rel='manifest' href='/manifest.json' >
   <link id='theFavicon' rel='icon' type='image/png' href='/favicon.png' >
   <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120.png" >
@@ -51,7 +53,7 @@ html{scrollbar-face-color:var(--scrollbar-face-color);scrollbar-track-color:var(
 //# sourceMappingURL=inline-script.js.map</script><!-- end insert inline script here -->
 
   <!-- The application will be rendered inside this element,
-       because `templates/main.js` references it -->
+       because `templates/client.js` references it -->
   <div id='sapper'>%sapper.html%</div>
 
   <!-- Toast.html gets rendered here -->
@@ -105,9 +107,9 @@ html{scrollbar-face-color:var(--scrollbar-face-color);scrollbar-track-color:var(
 </svg><!-- end insert svg here -->
   </svg>
 
-  <!-- Sapper creates a <script> tag containing `templates/main.js`
+  <!-- Sapper creates a <script> tag containing `templates/client.js`
        and anything else it needs to hydrate the app and
        initialise the router -->
-  <script src='%sapper.main%'></script>
+  %sapper.scripts%
 </body>
 </html>

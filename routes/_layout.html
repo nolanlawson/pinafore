@@ -1,0 +1,44 @@
+<Nav {page} />
+
+<div class="main-content">
+  <main class="{infiniteScrollPage ? 'infinite-scroll-page' : ''}">
+    <svelte:component this={child.component} {..child.props} />
+  </main>
+  {#if !$isUserLoggedIn && page === 'home'}
+  <InformationalFooter />
+  {/if}
+</div>
+<style>
+  /* this avoids a flash of the background color when switching timelines */
+  .infinite-scroll-page {
+    min-height: 100vh;
+  }
+</style>
+<script>
+  import { store } from './_store/store'
+  import { observe } from 'svelte-extras'
+
+  export default {
+    components: {
+      Nav: './_components/Nav.html',
+      InformationalFooter: './components/InformationalFooter.html'
+    },
+    oncreate () {
+      let { page } = this.get()
+
+      this.observe('child', child => {
+        // TODO: sapper has a bug apparently, can't use computed properties for this
+        this.store.set({ currentPage: (child.props.path.slice(1) || 'home') })
+      })
+
+      this.store.set({ currentPage: page })
+    },
+    store: () => store,
+    computed: {
+      infiniteScrollPage: ({ $isUserLoggedIn, page }) => $isUserLoggedIn && page !== 'settings'
+    },
+    methods: {
+      observe
+    }
+  }
+</script>
