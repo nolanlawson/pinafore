@@ -1,8 +1,8 @@
-<div class="autoplay-wrapper  {$largeInlineMedia ? '' : 'fixed-size'}"
+<div class="autoplay-wrapper  {$largeInlineMedia ? '' : 'autoplay-video-fixed-size'}"
      style="width: {width}px; height: {height}px;"
 >
     <video
-    class="autoplay-video {$largeInlineMedia ? '' : 'fixed-size'}"
+    class="autoplay-video {$largeInlineMedia ? '' : 'autoplay-video-fixed-size'}"
     aria-label={ariaLabel || ''}
     style="{focusStyle} background-image: url({poster}); "
     {poster}
@@ -30,18 +30,11 @@
     display: flex;
   }
 
-  .fixed-size {
+  .autoplay-video-fixed-size {
     position: absolute;
     width: 100%;
     height: 100%;
     overflow: hidden;
-  }
-
-
-  .fixed-size {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
   }
 </style>
 <script>
