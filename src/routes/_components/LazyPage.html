@@ -2,6 +2,7 @@
   <svelte:component this={pageComponent} {params} />
 {/if}
 <script>
+  import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
   // On the very first page load, avoid doing a "reveal" because
   // it leads to a flash between when the SSR is shown, the two frame we hide it,
   // and then when we show it again.
@@ -13,10 +14,8 @@
   export default {
     oncreate () {
       firstTime = false
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
+      scheduleIdleTask(() => {
           this.set({ revealed: true })
-        })
       })
     },
     data: () => ({
