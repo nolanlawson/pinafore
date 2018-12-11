@@ -1,12 +1,12 @@
 import { actions } from './mastodon-data'
 import { users } from '../tests/users'
-import { postStatus } from '../routes/_api/statuses'
-import { followAccount } from '../routes/_api/follow'
-import { favoriteStatus } from '../routes/_api/favorite'
-import { reblogStatus } from '../routes/_api/reblog'
+import { postStatus } from '../src/routes/_api/statuses'
+import { followAccount } from '../src/routes/_api/follow'
+import { favoriteStatus } from '../src/routes/_api/favorite'
+import { reblogStatus } from '../src/routes/_api/reblog'
 import fetch from 'node-fetch'
 import FileApi from 'file-api'
-import { pinStatus } from '../routes/_api/pin'
+import { pinStatus } from '../src/routes/_api/pin'
 import { submitMedia } from '../tests/submitMedia'
 
 global.File = FileApi.File

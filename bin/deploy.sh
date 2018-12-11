@@ -7,9 +7,9 @@ PATH="$PATH:./node_modules/.bin"
 
 # set up robots.txt
 if [[ "$DEPLOY_TYPE" == "dev" ]]; then
-  printf 'User-agent: *\nDisallow: /' > assets/robots.txt
+  printf 'User-agent: *\nDisallow: /' > static/robots.txt
 else
-  rm -f assets/robots.txt
+  rm -f static/robots.txt
 fi
 
 # if in travis, use the $NOW_TOKEN

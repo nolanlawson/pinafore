@@ -1,0 +1,49 @@
+<form class="instance-actions" aria-label="Switch to or log out of this instance">
+  {#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== instanceName}
+    <button class="primary"
+            on:click="onSwitchToThisInstance(event)">
+      Switch to this instance
+    </button>
+  {/if}
+  <button on:click="onLogOut(event)">Log out</button>
+</form>
+<style>
+  .instance-actions {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    margin: 20px 0;
+  }
+  .instance-actions button {
+    margin: 0 5px;
+    flex-basis: 100%;
+  }
+</style>
+<script>
+  import { store } from '../../../_store/store'
+  import { importShowConfirmationDialog } from '../../dialog/asyncDialogs'
+  import { switchToInstance, logOutOfInstance } from '../../../_actions/instances'
+
+  export default {
+    store: () => store,
+    methods: {
+      onSwitchToThisInstance (e) {
+        e.preventDefault()
+        let { instanceName } = this.get()
+        switchToInstance(instanceName)
+      },
+      async onLogOut (e) {
+        e.preventDefault()
+        let { instanceName } = this.get()
+
+        let showConfirmationDialog = await importShowConfirmationDialog()
+        showConfirmationDialog({
+          text: `Log out of ${instanceName}?`,
+          onPositive () {
+            /* no await */ logOutOfInstance(instanceName)
+          }
+        })
+      }
+    }
+  }
+</script>

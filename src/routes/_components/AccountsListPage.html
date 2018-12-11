@@ -1,0 +1,74 @@
+<div class="accounts-page">
+  {#if loading}
+    <LoadingPage />
+  {:elseif accounts && accounts.length}
+    <ul class="accounts-results">
+      {#each accounts as account}
+        <AccountSearchResult
+          {account}
+          actions={accountActions}
+          on:click="onClickAction(event)"
+        />
+      {/each}
+    </ul>
+  {/if}
+</div>
+<style>
+  .accounts-page {
+    padding: 20px 20px;
+    position: relative;
+  }
+  .accounts-results {
+    list-style: none;
+    box-sizing: border-box;
+    border: 1px solid var(--main-border);
+    border-radius: 2px;
+  }
+  @media (max-width: 767px) {
+    .accounts-page {
+      padding: 20px 10px;
+    }
+  }
+</style>
+<script>
+  import { store } from '../_store/store'
+  import LoadingPage from './LoadingPage.html'
+  import AccountSearchResult from './search/AccountSearchResult.html'
+  import { toast } from '../_utils/toast'
+  import { on } from '../_utils/eventBus'
+
+  // TODO: paginate
+  export default {
+    async oncreate () {
+      try {
+        await this.refreshAccounts()
+      } catch (e) {
+        toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
+      } finally {
+        this.set({ loading: false })
+      }
+      on('refreshAccountsList', this, () => this.refreshAccounts())
+    },
+    data: () => ({
+      loading: true,
+      accounts: [],
+      accountActions: void 0
+    }),
+    store: () => store,
+    components: {
+      LoadingPage,
+      AccountSearchResult
+    },
+    methods: {
+      onClickAction (event) {
+        let { action, accountId } = event
+        action.onclick(accountId)
+      },
+      async refreshAccounts () {
+        let { accountsFetcher } = this.get()
+        let accounts = await accountsFetcher()
+        this.set({ accounts: accounts })
+      }
+    }
+  }
+</script>

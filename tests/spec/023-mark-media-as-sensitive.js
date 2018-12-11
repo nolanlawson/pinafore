@@ -4,7 +4,7 @@ import {
   getNthStatus, getNthStatusMedia, getNthStatusSensitiveMediaButton, homeNavButton, markMediaSensitiveInput,
   scrollToStatus, settingsNavButton, neverMarkMediaSensitiveInput
 } from '../utils'
-import { indexWhere } from '../../routes/_utils/arrays'
+import { indexWhere } from '../../src/routes/_utils/arrays'
 import { homeTimeline } from '../fixtures'
 
 fixture`023-mark-media-as-sensitive.js`

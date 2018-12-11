@@ -16,10 +16,10 @@ const globalScss = path.join(__dirname, '../scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../scss/themes/_default.scss')
 const offlineThemeScss = path.join(__dirname, '../scss/themes/_offline.scss')
 const customScrollbarScss = path.join(__dirname, '../scss/custom-scrollbars.scss')
-const htmlTemplateFile = path.join(__dirname, '../app/template.html')
+const htmlTemplateFile = path.join(__dirname, '../src/template.html')
 const scssDir = path.join(__dirname, '../scss')
 const themesScssDir = path.join(__dirname, '../scss/themes')
-const assetsDir = path.join(__dirname, '../assets')
+const assetsDir = path.join(__dirname, '../static')
 
 function doWatch () {
   let start = now()

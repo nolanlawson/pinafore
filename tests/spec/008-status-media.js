@@ -2,7 +2,7 @@ import { closeDialogButton, getNthStatus, getNthStatusSelector, modalDialogConte
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
-import { indexWhere } from '../../routes/_utils/arrays'
+import { indexWhere } from '../../src/routes/_utils/arrays'
 
 fixture`008-status-media.js`
   .page`http://localhost:4002`

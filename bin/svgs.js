@@ -1,5 +1,5 @@
 module.exports = [
-  { id: 'pinafore-logo', src: 'original-assets/sailboat.svg', title: 'Home' },
+  { id: 'pinafore-logo', src: 'original-static/sailboat.svg', title: 'Home' },
   { id: 'fa-bell', src: 'node_modules/font-awesome-svg-png/white/svg/bell.svg', title: 'Notifications' },
   { id: 'fa-users', src: 'node_modules/font-awesome-svg-png/white/svg/users.svg', title: 'Local' },
   { id: 'fa-globe', src: 'node_modules/font-awesome-svg-png/white/svg/globe.svg', title: 'Federated' },
