@@ -20,6 +20,19 @@ $compose-background: darken($main-theme-color, 12%);
   --settings-list-item-bg-active: #{darken($body-bg-color, 10%)};
   --settings-list-item-bg-hover: #{darken($body-bg-color, 2%)};
 
+  --button-bg: #{lighten($body-bg-color, 5%)};
+  --button-border: #{$border-color};
+  --button-bg-hover: #{lighten($body-bg-color, 10%)};
+  --button-bg-active: #{lighten($body-bg-color, 15%)};
+
   --form-bg: #{$body-bg-color};
   --form-border: #{darken($border-color, 10%)};
+
+
+  --action-button-fill-color: #{$main-theme-color};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 4%)};
+  --action-button-fill-color-active: #{darken($main-theme-color, 13%)};
+  --action-button-fill-color-pressed: #{lighten($main-theme-color, 20%)};
+  --action-button-fill-color-pressed-hover: #{lighten($main-theme-color, 24%)};
+  --action-button-fill-color-pressed-active: #{lighten($main-theme-color, 7%)};
 }
