@@ -1,6 +1,6 @@
 {#if sensitive }
 <div class={computedClass} style={customSize}>
-  <div class="inner-div">
+  <div class="status-sensitive-inner-div">
   {#if sensitiveShown}
   <button type="button"
           class="status-sensitive-media-button"
@@ -45,11 +45,11 @@
     background: none;
   }
 
-  .inner-div {
+  .status-sensitive-inner-div {
     height: 100%;
   }
 
-  .status-sensitive-media-container.grouped-images .inner-div {
+  .status-sensitive-media-container.grouped-images .status-sensitive-inner-div {
     position: absolute;
     width: 100%;
   }
@@ -92,7 +92,7 @@
     width: 100%;
     margin: 10px auto;
   }
-  .status-sensitive-media-container.status-sensitive-media-hidden:not(.grouped-images) {
+  .status-sensitive-media-container.status-sensitive-media-hidden.not-grouped-images {
       height: 200px;
   }
 
@@ -164,7 +164,7 @@
       computedClass: ({ sensitiveShown, $largeInlineMedia }) => classname(
         'status-sensitive-media-container',
         sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden',
-        !$largeInlineMedia && 'grouped-images'
+        $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
