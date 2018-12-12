@@ -3,11 +3,11 @@
 
   <form class="add-new-instance" on:submit='onSubmit(event)' aria-labelledby="add-an-instance-h1">
 
-    {#if !hasIndexedDB}
+    {#if !hasIndexedDB || !hasLocalStorage}
       <div class="form-error form-error-user-error" role="alert">
-        Your browser doesn't support IndexedDB, possibly because it's in private browsing mode
-        or blocking cookies. Pinafore stores all data locally, and requires IndexedDB to work
-        correctly.
+        It seems Pinafore cannot store data locally. Is your browser in private mode
+        or blocking cookies? Pinafore stores all data locally, and requires LocalStorage and
+        IndexedDB to work correctly.
       </div>
     {/if}
 
@@ -77,7 +77,7 @@
   import { store } from '../../../_store/store'
   import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
   import ExternalLink from '../../../_components/ExternalLink.html'
-  import { testHasIndexedDB } from '../../../_utils/testStorage'
+  import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
 
   export default {
     async oncreate () {
@@ -85,8 +85,10 @@
       if (codeMatch) {
         return handleOauthCode(codeMatch[1])
       }
-      let hasIndexedDB = await testHasIndexedDB()
-      this.set({ hasIndexedDB })
+      this.set({
+        hasIndexedDB: await testHasIndexedDB(),
+        hasLocalStorage: testHasLocalStorage()
+      })
     },
     components: {
       SettingsLayout,
@@ -94,7 +96,8 @@
     },
     store: () => store,
     data: () => ({
-      hasIndexedDB: true
+      hasIndexedDB: true,
+      hasLocalStorage: true
     }),
     methods: {
       onSubmit (event) {
