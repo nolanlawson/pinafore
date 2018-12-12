@@ -100,6 +100,8 @@ export const getTitleText = exec(() => document.head.querySelector('title').inne
 
 export const goBack = exec(() => window.history.back())
 
+export const goForward = exec(() => window.history.forward())
+
 export const forceOffline = exec(() => window.__forceOnline(false))
 
 export const forceOnline = exec(() => window.__forceOnline(true))
@@ -179,6 +181,10 @@ export function getNthMedia (n) {
 
 export function getNthDeleteMediaButton (n) {
   return $(`.compose-media:nth-child(${n}) .compose-media-delete-button`)
+}
+
+export function getAriaSetSize () {
+  return getNthStatus(0).getAttribute('aria-setsize')
 }
 
 export function getNthStatus (n) {

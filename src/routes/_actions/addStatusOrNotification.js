@@ -39,25 +39,39 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
   }
 }
 
+function isValidStatusForThread (thread, timelineName, itemIdsToAdd) {
+  let focusedStatusId = timelineName.split('/')[1] // e.g. "status/123456"
+  let focusedStatusIdx = thread.indexOf(focusedStatusId)
+  return status => {
+    let repliedToStatusIdx = thread.indexOf(status.in_reply_to_id)
+    return (
+      // A reply to an ancestor status is not valid for this thread, but for the focused status
+      // itself or any of its descendents, it is valid.
+      repliedToStatusIdx >= focusedStatusIdx &&
+      // Not a duplicate
+      !thread.includes(status.id) &&
+      // Not already about to be added
+      !itemIdsToAdd.includes(status.id)
+    )
+  }
+}
+
 async function insertUpdatesIntoThreads (instanceName, updates) {
   if (!updates.length) {
     return
   }
 
   let threads = store.getThreads(instanceName)
-
-  for (let timelineName of Object.keys(threads)) {
+  let timelineNames = Object.keys(threads)
+  for (let timelineName of timelineNames) {
     let thread = threads[timelineName]
+
     let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-    let updatesForThisThread = updates.filter(status => (
-      thread.includes(status.in_reply_to_id) &&
-      !thread.includes(status.id) &&
-      !itemIdsToAdd.includes(status.id)
-    ))
-    if (!updatesForThisThread.length) {
+    let validUpdates = updates.filter(isValidStatusForThread(thread, timelineName, itemIdsToAdd))
+    if (!validUpdates.length) {
       continue
     }
-    let newItemIdsToAdd = uniq(concat(itemIdsToAdd, updatesForThisThread.map(_ => _.id)))
+    let newItemIdsToAdd = uniq(concat(itemIdsToAdd, validUpdates.map(_ => _.id)))
     if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
       console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
         'items to itemIdsToAdd for thread', timelineName)
