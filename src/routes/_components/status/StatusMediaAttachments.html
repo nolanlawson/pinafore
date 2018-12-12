@@ -173,9 +173,8 @@
       ),
       delegateKey: ({ uuid }) => `sensitive-${uuid}`,
       customSize: ({ $largeInlineMedia, mediaAttachments }) => {
-          console.log(mediaAttachments);
         if ($largeInlineMedia || !mediaAttachments || !mediaAttachments.length > 4) {
-            return ''
+          return ''
         }
         return `padding-bottom: ${Math.ceil(mediaAttachments.length / 2) * 29}%;`
       }
