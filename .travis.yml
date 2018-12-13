@@ -56,13 +56,7 @@ env:
   - secure: agVLNIHboXBWgu5V6a1mrUPqmGdwg8DSBVJ+9HKxpvNuB27EuEIILw9AZPQR8mQi22Njbf8d4mgKmcMDYAFqR/OeD4gy4lamJJ3pXu8fNv1cs0BMjoQ4bU/ZXu23YqatV7k+abQWKppgoIN4fN5p999nW666YfZdZPkKfFDG/EfoLaso6dZiHJOMIbFkI3ibgQ93Xs82K9WmyxgXAQcKOv9pOcCoNZGtIiFazHqVVeEskFioveppW3eteuPvKu3QikbG/qgmN7TJcUjYn/DWic5L9h43E+EVXfyMtQpdu0wT7K/vB5NaM85jGGNu+cWrpd54uT3K5cq0pxUq/RJk50RqUlakU1+6ectkJc1+VBz8DHBXzrpQQYipU8pAp+HF37t0igcdWyuTR0obDwo63F3idYpHxDyPerSE3Bk4Al9mA+dVoW/PjW+3cNYwSmRn4nBg5J+9FPcT1g+xgL9b8OiiRuhPIoZe7macNGnrhqVS/0C5LSL6crumG9N15bT7ywZ8a5+yDXxY/mDFCwcfCnJB9Ea8q+a81KsT8VuIbCjp7E/UC+vJPEfODiP6avlAfmTrPMC9nY2XBRj7hLPWsmrPaSoPs0ml6LxEJd5bncTfROzRdxcKoRufr6ZVp7gV7AebdQbEZlN7SfI0wZ/H5hj32ckMJ6KKTV1h4RsZNOQ=
 matrix:
   include:
-  - env: BROWSER=chrome:headless COMMAND=test-browser-suite0
-  - env: BROWSER=chrome:headless COMMAND=test-browser-suite1
-  - env: COMMAND=test-unit
-  - env: COMMAND=deploy-all-travis
   - env: COMMAND=test-lighthouse-ci
-  allow_failures:
-  - env: COMMAND=deploy-all-travis
 branches:
   only:
   - master
