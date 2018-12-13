@@ -35,6 +35,3 @@ fi
 
 # alias
 $NOW_COMMAND alias "$URL" "$NOW_ALIAS"
-
-# cleanup
-$NOW_COMMAND rm pinafore --safe --yes
