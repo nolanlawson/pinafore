@@ -9,7 +9,11 @@ import {
   getNthStatusMediaImg,
   composeModalPostPrivacyButton,
   getComposeModalNthMediaImg,
-  getComposeModalNthMediaAltInput, getNthStatusSpoiler, composeModalContentWarningInput, dialogOptionsOption
+  getComposeModalNthMediaAltInput,
+  getNthStatusSpoiler,
+  composeModalContentWarningInput,
+  dialogOptionsOption,
+  getNthReplyButton, getNthComposeReplyInput, getNthComposeReplyButton, getUrl
 } from '../utils'
 import { postAs, postEmptyStatusWithMediaAs, postWithSpoilerAndPrivacyAs } from '../serverActions'
 
@@ -90,4 +94,54 @@ test('privacy and spoiler delete and redraft', async t => {
     .click(composeModalComposeButton)
     .expect(modalDialog.exists).notOk()
     .expect(getNthStatusSpoiler(0).innerText).contains('no really, you should click this!')
+})
+
+test('delete and redraft reply', async t => {
+  await postAs('admin', 'hey hello')
+  await loginAsFoobar(t)
+  await t
+    .hover(getNthStatus(0))
+    .expect(getNthStatusContent(0).innerText).contains('hey hello')
+    .click(getNthReplyButton(0))
+    .typeText(getNthComposeReplyInput(0), 'hello there admin', { paste: true })
+    .click(getNthComposeReplyButton(0))
+    .expect(getNthStatus(0).innerText).contains('@admin hello there admin')
+    .click(getNthStatusOptionsButton(0))
+    .click(dialogOptionsOption.withText('Delete and redraft'))
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .typeText(composeModalInput, ' oops forgot to say thank you')
+    .click(composeModalComposeButton)
+    .expect(modalDialog.exists).notOk()
+    .expect(getNthStatusContent(0).innerText).match(/@admin hello there admin\s+oops forgot to say thank you/, {
+      timeout: 30000
+    })
+    .click(getNthStatus(0))
+    .expect(getUrl()).match(/statuses/)
+    .expect(getNthStatusContent(0).innerText).contains('hey hello')
+    .expect(getNthStatusContent(1).innerText).match(/@admin hello there admin\s+oops forgot to say thank you/)
+})
+
+test('delete and redraft reply within thread', async t => {
+  await postAs('admin', 'this is a thread')
+  await loginAsFoobar(t)
+  await t
+    .hover(getNthStatus(0))
+    .expect(getNthStatusContent(0).innerText).contains('this is a thread')
+    .click(getNthStatus(0))
+    .expect(getUrl()).match(/statuses/)
+    .expect(getNthStatusContent(0).innerText).contains('this is a thread')
+    .click(getNthReplyButton(0))
+    .typeText(getNthComposeReplyInput(0), 'heyo', { paste: true })
+    .click(getNthComposeReplyButton(0))
+    .expect(getNthStatus(1).innerText).contains('@admin heyo')
+    .click(getNthStatusOptionsButton(1))
+    .click(dialogOptionsOption.withText('Delete and redraft'))
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .typeText(composeModalInput, ' update!', { paste: true })
+    .click(composeModalComposeButton)
+    .expect(modalDialog.exists).notOk()
+    .expect(getNthStatusContent(1).innerText).match(/@admin heyo\s+update!/, {
+      timeout: 30000
+    })
+    .expect(getNthStatus(2).exists).notOk()
 })

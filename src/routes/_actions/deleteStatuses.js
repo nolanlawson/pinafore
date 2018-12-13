@@ -1,8 +1,8 @@
 import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './statuses'
 import { store } from '../_store/store'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import isEqual from 'lodash-es/isEqual'
 import { database } from '../_database/database'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
   let keys = ['timelineItemIds', 'itemIdsToAdd']
@@ -16,6 +16,7 @@ function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
       }
       let filteredIds = ids.filter(idFilter)
       if (!isEqual(ids, filteredIds)) {
+        console.log('deleting an item from timelineName', timelineName, 'for key', key)
         store.setForTimeline(instanceName, timelineName, {
           [key]: filteredIds
         })
