@@ -211,6 +211,10 @@ export function getNthStatusMedia (n) {
   return $(`${getNthStatusSelector(n)} .status-media`)
 }
 
+export function getNthStatusRelativeDate (n) {
+  return $(`${getNthStatusSelector(n)} .status-relative-date`)
+}
+
 export function getNthStatusMediaImg (n) {
   return $(`${getNthStatusSelector(n)} .status-media img`)
 }
