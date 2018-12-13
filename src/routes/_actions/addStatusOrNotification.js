@@ -1,14 +1,11 @@
-import throttle from 'lodash-es/throttle'
 import { mark, stop } from '../_utils/marks'
 import { store } from '../_store/store'
 import uniqBy from 'lodash-es/uniqBy'
 import uniq from 'lodash-es/uniq'
 import isEqual from 'lodash-es/isEqual'
 import { database } from '../_database/database'
-import { runMediumPriorityTask } from '../_utils/runMediumPriorityTask'
 import { concat } from '../_utils/arrays'
-
-const STREAMING_THROTTLE_DELAY = 3000
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 function getExistingItemIdsSet (instanceName, timelineName) {
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
@@ -81,11 +78,11 @@ async function processFreshUpdates (instanceName, timelineName) {
   stop('processFreshUpdates')
 }
 
-const lazilyProcessFreshUpdates = throttle((instanceName, timelineName) => {
-  runMediumPriorityTask(() => {
+function lazilyProcessFreshUpdates (instanceName, timelineName) {
+  scheduleIdleTask(() => {
     /* no await */ processFreshUpdates(instanceName, timelineName)
   })
-}, STREAMING_THROTTLE_DELAY)
+}
 
 export function addStatusOrNotification (instanceName, timelineName, newStatusOrNotification) {
   addStatusesOrNotifications(instanceName, timelineName, [newStatusOrNotification])

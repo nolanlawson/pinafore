@@ -143,6 +143,7 @@
       composeData: ({ $currentComposeData, realm }) => $currentComposeData[realm] || {},
       text: ({ composeData }) => composeData.text || '',
       media: ({ composeData }) => composeData.media || [],
+      inReplyToId: ({ composeData }) => composeData.inReplyToId,
       postPrivacy: ({ postPrivacyKey }) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
       defaultPostPrivacyKey: ({ $currentVerifyCredentials }) => $currentVerifyCredentials.source.privacy,
       postPrivacyKey: ({ composeData, defaultPostPrivacyKey }) => composeData.postPrivacy || defaultPostPrivacyKey,
@@ -167,12 +168,13 @@
           contentWarning,
           realm,
           overLimit,
-          inReplyToUuid
+          inReplyToUuid, // typical replies, using Pinafore-specific uuid
+          inReplyToId // delete-and-redraft replies, using standard id
         } = this.get()
         let sensitive = media.length && !!contentWarning
         let mediaIds = media.map(_ => _.data.id)
         let mediaDescriptions = media.map(_ => _.description)
-        let inReplyTo = (realm === 'home' || realm === 'dialog') ? null : realm
+        let inReplyTo = inReplyToId || ((realm === 'home' || realm === 'dialog') ? null : realm)
 
         if (overLimit || (!text && !media.length)) {
           return // do nothing if invalid
