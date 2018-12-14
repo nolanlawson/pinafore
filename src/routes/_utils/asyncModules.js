@@ -1,6 +1,8 @@
+const getDefault = mod => mod.default
+
 export const importTimeline = () => import(
   /* webpackChunkName: 'Timeline' */ '../_components/timeline/Timeline.html'
-  ).then(mod => mod.default)
+  ).then(getDefault)
 
 export const importIntersectionObserver = () => import(
   /* webpackChunkName: 'intersection-observer' */ 'intersection-observer'
@@ -14,22 +16,30 @@ export const importWebAnimationPolyfill = () => import(
   /* webpackChunkName: 'web-animations-js' */ 'web-animations-js'
   )
 
+export const importIndexedDBGetAllShim = () => import(
+  /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
+  )
+
+export const importPageLifecycle = () => import(
+  /* webpackChunkName: 'page-lifecycle' */ 'page-lifecycle/dist/lifecycle.mjs'
+  ).then(getDefault)
+
 export const importWebSocketClient = () => import(
   /* webpackChunkName: '@gamestdio/websocket' */ '@gamestdio/websocket'
-  ).then(mod => mod.default)
+  ).then(getDefault)
 
 export const importVirtualList = () => import(
   /* webpackChunkName: 'VirtualList.html' */ '../_components/virtualList/VirtualList.html'
-  ).then(mod => mod.default)
+  ).then(getDefault)
 
 export const importList = () => import(
   /* webpackChunkName: 'List.html' */ '../_components/list/List.html'
-  ).then(mod => mod.default)
+  ).then(getDefault)
 
 export const importStatusVirtualListItem = () => import(
   /* webpackChunkName: 'StatusVirtualListItem.html' */ '../_components/timeline/StatusVirtualListItem.html'
-  ).then(mod => mod.default)
+  ).then(getDefault)
 
 export const importNotificationVirtualListItem = () => import(
   /* webpackChunkName: 'NotificationVirtualListItem.html' */ '../_components/timeline/NotificationVirtualListItem.html'
-  ).then(mod => mod.default)
+  ).then(getDefault)

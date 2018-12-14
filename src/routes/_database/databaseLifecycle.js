@@ -15,10 +15,6 @@ import {
 } from './constants'
 import { addKnownInstance, deleteKnownInstance } from './knownInstances'
 
-if (process.browser) {
-  require('indexeddb-getall-shim') // needed for Edge
-}
-
 const openReqs = {}
 const databaseCache = {}
 
