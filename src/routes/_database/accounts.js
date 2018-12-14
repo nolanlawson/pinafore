@@ -1,8 +1,8 @@
-import { ACCOUNTS_STORE, USERNAME_LOWERCASE } from './constants'
-import { accountsCache } from './cache'
-import { cloneForStorage, getGenericEntityWithId, setGenericEntityWithId } from './helpers'
-import { dbPromise, getDatabase } from './databaseLifecycle'
-import { createAccountUsernamePrefixKeyRange } from './keys'
+import { ACCOUNTS_STORE, USERNAME_LOWERCASE } from './constants.js'
+import { accountsCache } from './cache.js'
+import { cloneForStorage, getGenericEntityWithId, setGenericEntityWithId } from './helpers.js'
+import { dbPromise, getDatabase } from './databaseLifecycle.js'
+import { createAccountUsernamePrefixKeyRange } from './keys.js'
 
 export async function getAccount (instanceName, accountId) {
   return getGenericEntityWithId(ACCOUNTS_STORE, accountsCache, instanceName, accountId)

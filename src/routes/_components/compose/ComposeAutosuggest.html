@@ -38,12 +38,12 @@
 
 </style>
 <script>
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import ComposeAutosuggestionList from './ComposeAutosuggestionList.html'
   import get from 'lodash-es/get'
-  import { selectAutosuggestItem } from '../../_actions/autosuggest'
+  import { selectAutosuggestItem } from '../../_actions/autosuggest.js'
   import { observe } from 'svelte-extras'
-  import { once } from '../../_utils/once'
+  import { once } from '../../_utils/once.js'
 
   export default {
     oncreate () {

@@ -1,6 +1,6 @@
 import ConfirmationDialog from '../components/ConfirmationDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { createDialogElement } from '../helpers/createDialogElement.js'
+import { createDialogId } from '../helpers/createDialogId.js'
 
 export default function showConfirmationDialog (options) {
   let dialog = new ConfirmationDialog({

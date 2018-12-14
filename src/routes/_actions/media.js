@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { uploadMedia } from '../_api/media'
-import { toast } from '../_utils/toast'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { store } from '../_store/store.js'
+import { uploadMedia } from '../_api/media.js'
+import { toast } from '../_utils/toast.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
 
 export async function doMediaUpload (realm, file) {
   let { currentInstance, accessToken } = store.get()

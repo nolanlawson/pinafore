@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { blockDomain, unblockDomain } from '../_api/blockDomain'
-import { toast } from '../_utils/toast'
-import { updateRelationship } from './accounts'
+import { store } from '../_store/store.js'
+import { blockDomain, unblockDomain } from '../_api/blockDomain.js'
+import { toast } from '../_utils/toast.js'
+import { updateRelationship } from './accounts.js'
 
 export async function setDomainBlocked (accountId, domain, block, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

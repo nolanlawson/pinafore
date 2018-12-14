@@ -1,8 +1,8 @@
-import { updateInstanceInfo } from '../../_actions/instances'
-import { createStream } from '../../_actions/streaming'
-import { getTimeline } from '../../_api/timelines'
-import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
-import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
+import { updateInstanceInfo } from '../../_actions/instances.js'
+import { createStream } from '../../_actions/streaming.js'
+import { getTimeline } from '../../_api/timelines.js'
+import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification.js'
+import { TIMELINE_BATCH_SIZE } from '../../_static/timelines.js'
 
 export function timelineObservers (store) {
   // stream to watch for local/federated/etc. updates. home and notification

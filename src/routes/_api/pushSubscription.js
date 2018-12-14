@@ -1,5 +1,5 @@
-import { auth, basename } from './utils'
-import { post, put, get, del } from '../_utils/ajax'
+import { auth, basename } from './utils.js'
+import { post, put, get, del } from '../_utils/ajax.js'
 
 export async function postSubscription (instanceName, accessToken, subscription, alerts) {
   const url = `${basename(instanceName)}/api/v1/push/subscription`

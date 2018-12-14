@@ -1,17 +1,17 @@
 import * as sapper from '../__sapper__/server.js'
-const express = require('express')
-const compression = require('compression')
-const serveStatic = require('serve-static')
-const app = express()
-const helmet = require('helmet')
-const uuidv4 = require('uuid/v4')
+import { checksum as headScriptChecksum } from '../inline-script-checksum.json'
+import express from 'express'
+import compression from 'compression'
+import serveStatic from 'serve-static'
+import helmet from 'helmet'
+import uuidv4 from 'uuid/v4'
+import fetch from 'node-fetch'
 
-const headScriptChecksum = require('../inline-script-checksum').checksum
+const app = express()
 
 const { PORT = 4002 } = process.env
 
 // this allows us to do e.g. `fetch('/_api/blog')` on the server
-const fetch = require('node-fetch')
 global.fetch = (url, opts) => {
   if (url[0] === '/') {
     url = `http://localhost:${PORT}${url}`
@@ -43,8 +43,8 @@ app.use(nonDebugOnly(helmet({
     directives: {
       scriptSrc: [
         `'self'`,
-        `'sha256-${headScriptChecksum}'`,
-        (req, res) => `'nonce-${res.locals.nonce}'`
+        `'unsafe-inline'`,
+        `'unsafe-eval'`
       ],
       workerSrc: [`'self'`],
       styleSrc: [`'self'`, `'unsafe-inline'`],

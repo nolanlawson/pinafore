@@ -1,5 +1,5 @@
-import { setFavicon } from '../../_utils/setFavicon'
-import { runMediumPriorityTask } from '../../_utils/runMediumPriorityTask'
+import { setFavicon } from '../../_utils/setFavicon.js'
+import { runMediumPriorityTask } from '../../_utils/runMediumPriorityTask.js'
 
 let currentFaviconHasNotifications = false
 

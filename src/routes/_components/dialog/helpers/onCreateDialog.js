@@ -1,4 +1,4 @@
-import { on } from '../../../_utils/eventBus'
+import { on } from '../../../_utils/eventBus.js'
 
 function onDestroy (thisId) {
   let { id } = this.get()

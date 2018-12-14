@@ -1,5 +1,5 @@
-import { dbPromise, getDatabase } from '../databaseLifecycle'
-import { STATUSES_STORE, STATUS_ID, REBLOG_ID, NOTIFICATIONS_STORE } from '../constants'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
+import { STATUSES_STORE, STATUS_ID, REBLOG_ID, NOTIFICATIONS_STORE } from '../constants.js'
 
 export async function getReblogsForStatus (instanceName, id) {
   const db = await getDatabase(instanceName)

@@ -31,12 +31,12 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import { autosize } from '../../_thirdparty/autosize/autosize'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { store } from '../../_store/store.js'
+  import { autosize } from '../../_thirdparty/autosize/autosize.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
   import debounce from 'lodash-es/debounce'
-  import { mark, stop } from '../../_utils/marks'
-  import { selectionChange } from '../../_utils/events'
+  import { mark, stop } from '../../_utils/marks.js'
+  import { selectionChange } from '../../_utils/events.js'
   import {
     clickSelectedAutosuggestionUsername,
     clickSelectedAutosuggestionEmoji

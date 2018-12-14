@@ -1,7 +1,7 @@
-import { favoriteStatus, unfavoriteStatus } from '../_api/favorite'
-import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
-import { database } from '../_database/database'
+import { favoriteStatus, unfavoriteStatus } from '../_api/favorite.js'
+import { store } from '../_store/store.js'
+import { toast } from '../_utils/toast.js'
+import { database } from '../_database/database.js'
 
 export async function setFavorited (statusId, favorited) {
   let { online } = store.get()

@@ -1,6 +1,6 @@
-import { scheduleIdleTask } from './scheduleIdleTask'
-import { store } from '../_store/store'
-import { isMobile } from './isMobile'
+import { scheduleIdleTask } from './scheduleIdleTask.js'
+import { store } from '../_store/store.js'
+import { isMobile } from './isMobile.js'
 
 // Run a task that doesn't need to be processed immediately, but should
 // probably be delayed if we're on a mobile device. Also run it sooner

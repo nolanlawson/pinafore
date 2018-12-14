@@ -8,7 +8,3 @@ loadPolyfills().then(() => {
   console.log('init()')
   sapper.start({ target: document.querySelector('#sapper') })
 })
-
-if (module.hot) {
-  module.hot.accept()
-}

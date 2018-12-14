@@ -1,7 +1,7 @@
-import { TimelineStream } from '../_api/TimelineStream'
-import { mark, stop } from '../_utils/marks'
-import { deleteStatus } from './deleteStatuses'
-import { addStatusOrNotification } from './addStatusOrNotification'
+import { TimelineStream } from '../_api/TimelineStream.js'
+import { mark, stop } from '../_utils/marks.js'
+import { deleteStatus } from './deleteStatuses.js'
+import { addStatusOrNotification } from './addStatusOrNotification.js'
 
 function processMessage (instanceName, timelineName, message) {
   mark('processMessage')

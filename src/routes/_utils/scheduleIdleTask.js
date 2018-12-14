@@ -3,7 +3,7 @@
 // for a good breakdown of the concepts behind this.
 
 import Queue from 'tiny-queue'
-import { mark, stop } from './marks'
+import { mark, stop } from './marks.js'
 
 const taskQueue = new Queue()
 let runningRequestIdleCallback = false

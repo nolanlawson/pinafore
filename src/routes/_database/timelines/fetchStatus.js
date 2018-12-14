@@ -1,5 +1,5 @@
-import { fetchAccount } from './fetchAccount'
-import { ACCOUNT_ID, REBLOG_ID } from '../constants'
+import { fetchAccount } from './fetchAccount.js'
+import { ACCOUNT_ID, REBLOG_ID } from '../constants.js'
 
 export function fetchStatus (statusesStore, accountsStore, id, callback) {
   statusesStore.get(id).onsuccess = e => {

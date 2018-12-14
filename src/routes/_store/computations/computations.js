@@ -1,7 +1,7 @@
-import { instanceComputations } from './instanceComputations'
-import { timelineComputations } from './timelineComputations'
-import { navComputations } from './navComputations'
-import { autosuggestComputations } from './autosuggestComputations'
+import { instanceComputations } from './instanceComputations.js'
+import { timelineComputations } from './timelineComputations.js'
+import { navComputations } from './navComputations.js'
+import { autosuggestComputations } from './autosuggestComputations.js'
 
 export function computations (store) {
   instanceComputations(store)

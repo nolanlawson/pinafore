@@ -1,13 +1,13 @@
-import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances'
-import { updateListsForInstance } from '../../_actions/lists'
-import { createStream } from '../../_actions/streaming'
-import { updatePushSubscriptionForInstance } from '../../_actions/pushSubscription'
-import { updateCustomEmojiForInstance } from '../../_actions/emoji'
-import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
-import { getTimeline } from '../../_api/timelines'
-import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
-import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-import { mark, stop } from '../../_utils/marks'
+import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances.js'
+import { updateListsForInstance } from '../../_actions/lists.js'
+import { createStream } from '../../_actions/streaming.js'
+import { updatePushSubscriptionForInstance } from '../../_actions/pushSubscription.js'
+import { updateCustomEmojiForInstance } from '../../_actions/emoji.js'
+import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification.js'
+import { getTimeline } from '../../_api/timelines.js'
+import { TIMELINE_BATCH_SIZE } from '../../_static/timelines.js'
+import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+import { mark, stop } from '../../_utils/marks.js'
 
 // stream to watch for home timeline updates and notifications
 let currentInstanceStream

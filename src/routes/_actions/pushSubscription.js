@@ -1,5 +1,5 @@
-import { getSubscription, deleteSubscription, postSubscription, putSubscription } from '../_api/pushSubscription'
-import { store } from '../_store/store'
+import { getSubscription, deleteSubscription, postSubscription, putSubscription } from '../_api/pushSubscription.js'
+import { store } from '../_store/store.js'
 import { urlBase64ToUint8Array } from '../_utils/base64'
 
 const dummyApplicationServerKey = 'BImgAz4cF_yvNFp8uoBJCaGpCX4d0atNIFMHfBvAAXCyrnn9IMAFQ10DW_ZvBCzGeR4fZI5FnEi2JVcRE-L88jY='

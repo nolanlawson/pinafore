@@ -1,6 +1,6 @@
-import { mark, stop } from '../../_utils/marks'
-import { RealmStore } from '../../_utils/RealmStore'
-import { reselect } from '../../_utils/reselect'
+import { mark, stop } from '../../_utils/marks.js'
+import { RealmStore } from '../../_utils/RealmStore.js'
+import { reselect } from '../../_utils/reselect.js'
 
 const RENDER_BUFFER_FACTOR = 2.5
 

@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
-import { pinStatus, unpinStatus } from '../_api/pin'
-import { database } from '../_database/database'
-import { emit } from '../_utils/eventBus'
+import { store } from '../_store/store.js'
+import { toast } from '../_utils/toast.js'
+import { pinStatus, unpinStatus } from '../_api/pin.js'
+import { database } from '../_database/database.js'
+import { emit } from '../_utils/eventBus.js'
 
 export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

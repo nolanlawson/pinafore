@@ -1,7 +1,7 @@
-import { timelineMixins } from './timelineMixins'
-import { instanceMixins } from './instanceMixins'
-import { statusMixins } from './statusMixins'
-import { autosuggestMixins } from './autosuggestMixins'
+import { timelineMixins } from './timelineMixins.js'
+import { instanceMixins } from './instanceMixins.js'
+import { statusMixins } from './statusMixins.js'
+import { autosuggestMixins } from './autosuggestMixins.js'
 
 export function mixins (Store) {
   instanceMixins(Store)

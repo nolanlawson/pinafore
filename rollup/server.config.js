@@ -1,6 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
+import json from 'rollup-plugin-json'
 import svelte from 'rollup-plugin-svelte'
 import config from 'sapper/config/rollup.js'
 import pkg from '../package.json'
@@ -21,7 +22,8 @@ export default {
       dev
     }),
     resolve(),
-    commonjs()
+    commonjs(),
+    json()
   ],
   external: Object.keys(pkg.dependencies).concat(
     require('module').builtinModules || Object.keys(process.binding('natives'))

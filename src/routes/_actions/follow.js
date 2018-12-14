@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { followAccount, unfollowAccount } from '../_api/follow'
-import { toast } from '../_utils/toast'
-import { updateLocalRelationship } from './accounts'
+import { store } from '../_store/store.js'
+import { followAccount, unfollowAccount } from '../_api/follow.js'
+import { toast } from '../_utils/toast.js'
+import { updateLocalRelationship } from './accounts.js'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

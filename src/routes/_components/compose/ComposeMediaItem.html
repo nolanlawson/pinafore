@@ -80,10 +80,10 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import { deleteMedia } from '../../_actions/media'
+  import { store } from '../../_store/store.js'
+  import { deleteMedia } from '../../_actions/media.js'
   import debounce from 'lodash-es/debounce'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
   import { observe } from 'svelte-extras'
 
   export default {

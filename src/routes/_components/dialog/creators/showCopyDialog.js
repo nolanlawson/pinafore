@@ -1,6 +1,6 @@
 import CopyDialog from '../components/CopyDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { createDialogElement } from '../helpers/createDialogElement.js'
+import { createDialogId } from '../helpers/createDialogId.js'
 
 export default function showCopyDialog (text) {
   let dialog = new CopyDialog({

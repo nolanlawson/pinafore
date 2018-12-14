@@ -20,13 +20,13 @@
   }
 </style>
 <script>
-  import { store } from '../../../_store/store'
+  import { store } from '../../../_store/store.js'
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import InstanceUserProfile from '../../../_components/settings/instance/InstanceUserProfile.html'
   import PushNotificationSettings from '../../../_components/settings/instance/PushNotificationSettings.html'
   import ThemeSettings from '../../../_components/settings/instance/ThemeSettings.html'
   import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
-  import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
+  import { updateVerifyCredentialsForInstance } from '../../../_actions/instances.js'
 
   export default {
     async oncreate () {

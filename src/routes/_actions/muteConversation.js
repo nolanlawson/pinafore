@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { muteConversation, unmuteConversation } from '../_api/muteConversation'
-import { toast } from '../_utils/toast'
-import { database } from '../_database/database'
+import { store } from '../_store/store.js'
+import { muteConversation, unmuteConversation } from '../_api/muteConversation.js'
+import { toast } from '../_utils/toast.js'
+import { database } from '../_database/database.js'
 
 export async function setConversationMuted (statusId, mute, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

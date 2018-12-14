@@ -13,11 +13,7 @@ import {
   STATUS_ID,
   USERNAME_LOWERCASE
 } from './constants'
-import { addKnownInstance, deleteKnownInstance } from './knownInstances'
-
-if (process.browser) {
-  require('indexeddb-getall-shim') // needed for Edge
-}
+import { addKnownInstance, deleteKnownInstance } from './knownInstances.js'
 
 const openReqs = {}
 const databaseCache = {}

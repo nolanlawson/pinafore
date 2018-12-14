@@ -1,13 +1,13 @@
-import { instanceObservers } from './instanceObservers'
-import { timelineObservers } from './timelineObservers'
-import { notificationObservers } from './notificationObservers'
-import { onlineObservers } from './onlineObservers'
-import { navObservers } from './navObservers'
-import { autosuggestObservers } from './autosuggestObservers'
-import { pageVisibilityObservers } from './pageVisibilityObservers'
-import { resizeObservers } from './resizeObservers'
-import { notificationPermissionObservers } from './notificationPermissionObservers'
-import { customScrollbarObservers } from './customScrollbarObservers'
+import { instanceObservers } from './instanceObservers.js'
+import { timelineObservers } from './timelineObservers.js'
+import { notificationObservers } from './notificationObservers.js'
+import { onlineObservers } from './onlineObservers.js'
+import { navObservers } from './navObservers.js'
+import { autosuggestObservers } from './autosuggestObservers.js'
+import { pageVisibilityObservers } from './pageVisibilityObservers.js'
+import { resizeObservers } from './resizeObservers.js'
+import { notificationPermissionObservers } from './notificationPermissionObservers.js'
+import { customScrollbarObservers } from './customScrollbarObservers.js'
 
 export function observers (store) {
   instanceObservers(store)

@@ -1,4 +1,4 @@
-import { database } from '../_database/database'
+import { database } from '../_database/database.js'
 
 export async function getIdThatThisStatusReblogged (instanceName, statusId) {
   let status = await database.getStatus(instanceName, statusId)

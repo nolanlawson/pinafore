@@ -1,4 +1,4 @@
-import { database } from '../../_database/database'
+import { database } from '../../_database/database.js'
 
 const SEARCH_RESULTS_LIMIT = 4
 const DATABASE_SEARCH_RESULTS_LIMIT = 30

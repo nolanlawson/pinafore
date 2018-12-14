@@ -1,4 +1,4 @@
-import { mark, stop } from './marks'
+import { mark, stop } from './marks.js'
 
 let domParser = process.browser && new DOMParser()
 

@@ -1,6 +1,6 @@
 import EmojiDialog from '../components/EmojiDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { createDialogElement } from '../helpers/createDialogElement.js'
+import { createDialogId } from '../helpers/createDialogId.js'
 
 export default function showEmojiDialog (realm) {
   let emojiDialog = new EmojiDialog({

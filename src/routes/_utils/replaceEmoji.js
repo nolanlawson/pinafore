@@ -1,4 +1,4 @@
-import { getEmojiRegex } from './emojiRegex'
+import { getEmojiRegex } from './emojiRegex.js'
 
 // \ufe0f is a variation selector, which seems to appear for some reason in e.g. ™
 let NON_EMOJI_REGEX = new RegExp('^[0-9#*™®\ufe0f]+$')

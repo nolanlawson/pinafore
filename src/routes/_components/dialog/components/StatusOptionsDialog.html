@@ -8,20 +8,20 @@
 </ModalDialog>
 <script>
 import ModalDialog from './ModalDialog.html'
-import { store } from '../../../_store/store'
+import { store } from '../../../_store/store.js'
 import GenericDialogList from './GenericDialogList.html'
-import { setAccountFollowed } from '../../../_actions/follow'
-import { doDeleteStatus } from '../../../_actions/delete'
-import { show } from '../helpers/showDialog'
-import { close } from '../helpers/closeDialog'
-import { oncreate } from '../helpers/onCreateDialog'
-import { setAccountBlocked } from '../../../_actions/block'
-import { setAccountMuted } from '../../../_actions/mute'
-import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
-import { setConversationMuted } from '../../../_actions/muteConversation'
-import { copyText } from '../../../_actions/copyText'
-import { statusHtmlToPlainText } from '../../../_utils/statusHtmlToPlainText'
-import { importShowComposeDialog } from '../asyncDialogs'
+import { setAccountFollowed } from '../../../_actions/follow.js'
+import { doDeleteStatus } from '../../../_actions/delete.js'
+import { show } from '../helpers/showDialog.js'
+import { close } from '../helpers/closeDialog.js'
+import { oncreate } from '../helpers/onCreateDialog.js'
+import { setAccountBlocked } from '../../../_actions/block.js'
+import { setAccountMuted } from '../../../_actions/mute.js'
+import { setStatusPinnedOrUnpinned } from '../../../_actions/pin.js'
+import { setConversationMuted } from '../../../_actions/muteConversation.js'
+import { copyText } from '../../../_actions/copyText.js'
+import { statusHtmlToPlainText } from '../../../_utils/statusHtmlToPlainText.js'
+import { importShowComposeDialog } from '../asyncDialogs.js'
 
 export default {
   oncreate,

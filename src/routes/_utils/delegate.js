@@ -1,6 +1,6 @@
 // Delegate certain events to the global document for perf purposes.
 
-import { mark, stop } from './marks'
+import { mark, stop } from './marks.js'
 
 const callbacks = {}
 

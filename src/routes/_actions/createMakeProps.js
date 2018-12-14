@@ -1,4 +1,4 @@
-import { database } from '../_database/database'
+import { database } from '../_database/database.js'
 
 async function getNotification (instanceName, timelineType, timelineValue, itemId) {
   return {

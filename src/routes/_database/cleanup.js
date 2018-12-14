@@ -1,4 +1,4 @@
-import { dbPromise, getDatabase } from './databaseLifecycle'
+import { dbPromise, getDatabase } from './databaseLifecycle.js'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
@@ -11,10 +11,10 @@ import {
   TIMESTAMP
 } from './constants'
 import debounce from 'lodash-es/debounce'
-import { mark, stop } from '../_utils/marks'
-import { deleteAll } from './utils'
-import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
-import { getKnownInstances } from './knownInstances'
+import { mark, stop } from '../_utils/marks.js'
+import { deleteAll } from './utils.js'
+import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys.js'
+import { getKnownInstances } from './knownInstances.js'
 
 const BATCH_SIZE = 20
 const TIME_AGO = 5 * 24 * 60 * 60 * 1000 // five days ago

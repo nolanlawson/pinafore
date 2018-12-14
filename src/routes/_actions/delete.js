@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { deleteStatus } from '../_api/delete'
-import { toast } from '../_utils/toast'
-import { deleteStatus as deleteStatusLocally } from './deleteStatuses'
+import { store } from '../_store/store.js'
+import { deleteStatus } from '../_api/delete.js'
+import { toast } from '../_utils/toast.js'
+import { deleteStatus as deleteStatusLocally } from './deleteStatuses.js'
 
 export async function doDeleteStatus (statusId) {
   let { currentInstance, accessToken } = store.get()

@@ -35,11 +35,11 @@
   }
 </style>
 <script>
-  import { store } from '../../../_store/store'
-  import { importShowConfirmationDialog } from '../../dialog/asyncDialogs'
-  import { logOutOfInstance } from '../../../_actions/instances'
-  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
-  import { toast } from '../../../_utils/toast'
+  import { store } from '../../../_store/store.js'
+  import { importShowConfirmationDialog } from '../../dialog/asyncDialogs.js'
+  import { logOutOfInstance } from '../../../_actions/instances.js'
+  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription.js'
+  import { toast } from '../../../_utils/toast.js'
 
   export default {
     async oncreate () {

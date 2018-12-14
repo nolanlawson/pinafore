@@ -1,5 +1,5 @@
-import { auth, basename } from './utils'
-import { post, WRITE_TIMEOUT } from '../_utils/ajax'
+import { auth, basename } from './utils.js'
+import { post, WRITE_TIMEOUT } from '../_utils/ajax.js'
 
 export async function muteAccount (instanceName, accessToken, accountId) {
   let url = `${basename(instanceName)}/api/v1/accounts/${accountId}/mute`

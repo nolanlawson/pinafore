@@ -1,4 +1,4 @@
-import { dbPromise, getDatabase } from '../databaseLifecycle'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
 import {
   deleteFromCache, notificationsCache,
   statusesCache
@@ -13,7 +13,7 @@ import {
 import {
   createThreadKeyRange
 } from '../keys'
-import { deleteAll } from '../utils'
+import { deleteAll } from '../utils.js'
 
 export async function deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
   for (let statusId of statusIds) {

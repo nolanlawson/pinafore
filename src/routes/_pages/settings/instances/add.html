@@ -74,10 +74,10 @@
 </style>
 <script>
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
-  import { store } from '../../../_store/store'
-  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
+  import { store } from '../../../_store/store.js'
+  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance.js'
   import ExternalLink from '../../../_components/ExternalLink.html'
-  import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
+  import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage.js'
 
   export default {
     async oncreate () {

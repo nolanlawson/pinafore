@@ -106,15 +106,15 @@
   import StatusSpoiler from './StatusSpoiler.html'
   import StatusComposeBox from './StatusComposeBox.html'
   import StatusMentions from './StatusMentions.html'
-  import { store } from '../../_store/store'
-  import { goto } from '../../../../__sapper__/client'
-  import { registerClickDelegate } from '../../_utils/delegate'
-  import { classname } from '../../_utils/classname'
-  import { checkDomAncestors } from '../../_utils/checkDomAncestors'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { store } from '../../_store/store.js'
+  import { goto } from '../../../../__sapper__/client.js'
+  import { registerClickDelegate } from '../../_utils/delegate.js'
+  import { classname } from '../../_utils/classname.js'
+  import { checkDomAncestors } from '../../_utils/checkDomAncestors.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
-  import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+  import { formatTimeagoDate } from '../../_intl/formatTimeagoDate.js'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)

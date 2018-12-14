@@ -1,8 +1,8 @@
-import { dbPromise, getDatabase } from '../databaseLifecycle'
-import { getInCache, hasInCache, statusesCache } from '../cache'
-import { STATUSES_STORE } from '../constants'
-import { cacheStatus } from './cacheStatus'
-import { putStatus } from './insertion'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
+import { getInCache, hasInCache, statusesCache } from '../cache.js'
+import { STATUSES_STORE } from '../constants.js'
+import { cacheStatus } from './cacheStatus.js'
+import { putStatus } from './insertion.js'
 
 //
 // update statuses

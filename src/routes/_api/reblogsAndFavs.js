@@ -1,5 +1,5 @@
-import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export async function getReblogs (instanceName, accessToken, statusId, limit = 80) {
   let url = `${basename(instanceName)}/api/v1/statuses/${statusId}/reblogged_by`

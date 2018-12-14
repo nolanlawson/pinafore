@@ -1,9 +1,9 @@
 import difference from 'lodash-es/difference'
 import times from 'lodash-es/times'
-import { cloneForStorage } from '../helpers'
-import { dbPromise, getDatabase } from '../databaseLifecycle'
-import { accountsCache, notificationsCache, setInCache, statusesCache } from '../cache'
-import { scheduleCleanup } from '../cleanup'
+import { cloneForStorage } from '../helpers.js'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
+import { accountsCache, notificationsCache, setInCache, statusesCache } from '../cache.js'
+import { scheduleCleanup } from '../cleanup.js'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
@@ -17,7 +17,7 @@ import {
   createThreadKeyRange,
   createTimelineId
 } from '../keys'
-import { cacheStatus } from './cacheStatus'
+import { cacheStatus } from './cacheStatus.js'
 
 export function putStatus (statusesStore, status) {
   statusesStore.put(cloneForStorage(status))

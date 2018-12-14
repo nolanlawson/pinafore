@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { setShowReblogs as setShowReblogsApi } from '../_api/showReblogs'
-import { toast } from '../_utils/toast'
-import { updateLocalRelationship } from './accounts'
+import { store } from '../_store/store.js'
+import { setShowReblogs as setShowReblogsApi } from '../_api/showReblogs.js'
+import { toast } from '../_utils/toast.js'
+import { updateLocalRelationship } from './accounts.js'
 
 export async function setShowReblogs (accountId, showReblogs, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

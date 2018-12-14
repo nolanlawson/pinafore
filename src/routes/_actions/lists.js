@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { getLists } from '../_api/lists'
-import { cacheFirstUpdateAfter } from '../_utils/sync'
-import { database } from '../_database/database'
+import { store } from '../_store/store.js'
+import { getLists } from '../_api/lists.js'
+import { cacheFirstUpdateAfter } from '../_utils/sync.js'
+import { database } from '../_database/database.js'
 
 export async function updateListsForInstance (instanceName) {
   let { loggedInInstances } = store.get()

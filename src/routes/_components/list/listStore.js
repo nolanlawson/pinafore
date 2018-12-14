@@ -1,4 +1,4 @@
-import { RealmStore } from '../../_utils/RealmStore'
+import { RealmStore } from '../../_utils/RealmStore.js'
 
 class ListStore extends RealmStore {
   constructor (state) {

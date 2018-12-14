@@ -1,5 +1,5 @@
-import { replaceAll } from './strings'
-import { replaceEmoji } from './replaceEmoji'
+import { replaceAll } from './strings.js'
+import { replaceEmoji } from './replaceEmoji.js'
 
 export function emojifyText (text, emojis, autoplayGifs) {
   // replace native emoji with wrapped spans so we can give them the proper font-family

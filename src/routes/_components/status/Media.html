@@ -78,15 +78,15 @@
   }
 </style>
 <script>
-  import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media'
-  import { importShowVideoDialog, importShowImageDialog } from '../dialog/asyncDialogs'
-  import { mouseover } from '../../_utils/events'
+  import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media.js'
+  import { importShowVideoDialog, importShowImageDialog } from '../dialog/asyncDialogs.js'
+  import { mouseover } from '../../_utils/events.js'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
-  import { registerClickDelegate } from '../../_utils/delegate'
+  import { registerClickDelegate } from '../../_utils/delegate.js'
 
   export default {
     oncreate () {

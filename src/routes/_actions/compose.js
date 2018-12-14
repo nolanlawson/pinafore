@@ -1,10 +1,10 @@
-import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
-import { postStatus as postStatusToServer } from '../_api/statuses'
-import { addStatusOrNotification } from './addStatusOrNotification'
-import { database } from '../_database/database'
-import { emit } from '../_utils/eventBus'
-import { putMediaDescription } from '../_api/media'
+import { store } from '../_store/store.js'
+import { toast } from '../_utils/toast.js'
+import { postStatus as postStatusToServer } from '../_api/statuses.js'
+import { addStatusOrNotification } from './addStatusOrNotification.js'
+import { database } from '../_database/database.js'
+import { emit } from '../_utils/eventBus.js'
+import { putMediaDescription } from '../_api/media.js'
 
 export async function insertHandleForReply (statusId) {
   let { currentInstance } = store.get()

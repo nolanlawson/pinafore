@@ -1,7 +1,7 @@
-import { observers } from './observers/observers'
-import { computations } from './computations/computations'
-import { mixins } from './mixins/mixins'
-import { LocalStorageStore } from './LocalStorageStore'
+import { observers } from './observers/observers.js'
+import { computations } from './computations/computations.js'
+import { mixins } from './mixins/mixins.js'
+import { LocalStorageStore } from './LocalStorageStore.js'
 import { observe } from 'svelte-extras'
 
 const persistedState = {

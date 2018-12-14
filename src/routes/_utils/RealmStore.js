@@ -3,7 +3,7 @@
 // with computeForRealm(). The maxSize determines how many realms to keep in the LRU cache.
 import { Store } from 'svelte/store.js'
 import QuickLRU from 'quick-lru'
-import { mark, stop } from './marks'
+import { mark, stop } from './marks.js'
 
 export class RealmStore extends Store {
   constructor (init, maxSize) {

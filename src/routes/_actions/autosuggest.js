@@ -1,4 +1,4 @@
-import { store } from '../_store/store'
+import { store } from '../_store/store.js'
 
 export async function insertUsername (realm, username, startIndex, endIndex) {
   let { currentInstance } = store.get()

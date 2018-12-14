@@ -50,8 +50,8 @@
 </style>
 <script>
   import ComposeButton from './ComposeButton.html'
-  import { store } from '../../_store/store'
-  import { importShowComposeDialog } from '../dialog/asyncDialogs'
+  import { store } from '../../_store/store.js'
+  import { importShowComposeDialog } from '../dialog/asyncDialogs.js'
   import { observe } from 'svelte-extras'
 
   const USE_IOS_WORKAROUND = process.browser && CSS.supports('-webkit-overflow-scrolling', 'touch')

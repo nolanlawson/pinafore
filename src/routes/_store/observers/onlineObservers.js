@@ -1,5 +1,5 @@
 import debounce from 'lodash-es/debounce'
-import { toast } from '../../_utils/toast'
+import { toast } from '../../_utils/toast.js'
 
 const OFFLINE_DELAY = 5000
 const NOTIFY_OFFLINE_LIMIT = 1

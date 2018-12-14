@@ -1,6 +1,6 @@
-import { fetchAccount } from './fetchAccount'
-import { ACCOUNT_ID, STATUS_ID } from '../constants'
-import { fetchStatus } from './fetchStatus'
+import { fetchAccount } from './fetchAccount.js'
+import { ACCOUNT_ID, STATUS_ID } from '../constants.js'
+import { fetchStatus } from './fetchStatus.js'
 
 export function fetchNotification (notificationsStore, statusesStore, accountsStore, id, callback) {
   notificationsStore.get(id).onsuccess = e => {

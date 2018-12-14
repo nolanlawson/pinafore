@@ -1,11 +1,11 @@
-import { getVerifyCredentials } from '../_api/user'
-import { store } from '../_store/store'
-import { switchToTheme } from '../_utils/themeEngine'
-import { toast } from '../_utils/toast'
-import { goto } from '../../../__sapper__/client'
-import { cacheFirstUpdateAfter } from '../_utils/sync'
-import { getInstanceInfo } from '../_api/instance'
-import { database } from '../_database/database'
+import { getVerifyCredentials } from '../_api/user.js'
+import { store } from '../_store/store.js'
+import { switchToTheme } from '../_utils/themeEngine.js'
+import { toast } from '../_utils/toast.js'
+import { goto } from '../../../__sapper__/client.js'
+import { cacheFirstUpdateAfter } from '../_utils/sync.js'
+import { getInstanceInfo } from '../_api/instance.js'
+import { database } from '../_database/database.js'
 
 export function changeTheme (instanceName, newTheme) {
   let { instanceThemes } = store.get()

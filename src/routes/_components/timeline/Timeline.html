@@ -36,7 +36,7 @@
   {/await}
 </div>
 <script>
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import Status from '../status/Status.html'
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
@@ -46,7 +46,7 @@
     importStatusVirtualListItem,
     importNotificationVirtualListItem
   } from '../../_utils/asyncModules'
-  import { timelines } from '../../_static/timelines'
+  import { timelines } from '../../_static/timelines.js'
   import {
     fetchTimelineItemsOnScrollToBottom,
     setupTimeline,
@@ -54,13 +54,13 @@
     showMoreItemsForThread,
     showMoreItemsForCurrentTimeline
   } from '../../_actions/timeline'
-  import { focusWithCapture, blurWithCapture } from '../../_utils/events'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { mark, stop } from '../../_utils/marks'
+  import { focusWithCapture, blurWithCapture } from '../../_utils/events.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+  import { mark, stop } from '../../_utils/marks.js'
   import isEqual from 'lodash-es/isEqual'
-  import { doubleRAF } from '../../_utils/doubleRAF'
+  import { doubleRAF } from '../../_utils/doubleRAF.js'
   import { observe } from 'svelte-extras'
-  import { createMakeProps } from '../../_actions/createMakeProps'
+  import { createMakeProps } from '../../_actions/createMakeProps.js'
 
   export default {
     oncreate () {

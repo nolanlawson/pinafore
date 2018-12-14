@@ -1,6 +1,6 @@
-import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
-import { search } from '../_api/search'
+import { store } from '../_store/store.js'
+import { toast } from '../_utils/toast.js'
+import { search } from '../_api/search.js'
 
 export async function doSearch () {
   let { currentInstance, accessToken, queryInSearch } = store.get()

@@ -1,5 +1,5 @@
-import { replaceAll } from './strings'
-import { replaceEmoji } from './replaceEmoji'
+import { replaceAll } from './strings.js'
+import { replaceEmoji } from './replaceEmoji.js'
 
 export function removeEmoji (text, emojis) {
   // remove custom emoji

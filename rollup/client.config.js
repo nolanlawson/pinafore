@@ -1,6 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
+import json from 'rollup-plugin-json'
 import svelte from 'rollup-plugin-svelte'
 import config from 'sapper/config/rollup.js'
 import terser from './terser.config'
@@ -18,11 +19,12 @@ export default {
     svelte({
       dev,
       hydratable: true,
-      emitCss: true,
+      emitCss: false,
       store: true
     }),
     resolve(),
     commonjs(),
+    json(),
 
     !dev && terser()
   ],

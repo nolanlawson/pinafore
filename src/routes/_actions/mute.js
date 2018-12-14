@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { muteAccount, unmuteAccount } from '../_api/mute'
-import { toast } from '../_utils/toast'
-import { updateLocalRelationship } from './accounts'
-import { emit } from '../_utils/eventBus'
+import { store } from '../_store/store.js'
+import { muteAccount, unmuteAccount } from '../_api/mute.js'
+import { toast } from '../_utils/toast.js'
+import { updateLocalRelationship } from './accounts.js'
+import { emit } from '../_utils/eventBus.js'
 
 export async function setAccountMuted (accountId, mute, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()

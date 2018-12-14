@@ -1,7 +1,7 @@
 // LocalStorage and IDB may be disabled in private mode, when "blocking cookies" in Safari,
 // or other cases
 
-import { thunk } from './thunk'
+import { thunk } from './thunk.js'
 
 const testKey = '__test__'
 

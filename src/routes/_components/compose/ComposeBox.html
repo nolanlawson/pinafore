@@ -85,12 +85,12 @@
   import ComposeStickyButton from './ComposeStickyButton.html'
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
-  import { measureText } from '../../_utils/measureText'
-  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
-  import { store } from '../../_store/store'
+  import { measureText } from '../../_utils/measureText.js'
+  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses.js'
+  import { store } from '../../_store/store.js'
   import { slide } from 'svelte-transitions'
-  import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
-  import { classname } from '../../_utils/classname'
+  import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose.js'
+  import { classname } from '../../_utils/classname.js'
 
   export default {
     oncreate () {
