@@ -1,3 +1,4 @@
+
 // For perf reasons, this script is run inline to quickly set certain styles.
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to inline-script-checksum.json.
@@ -7,17 +8,23 @@ import { switchToTheme } from './src/routes/_utils/themeEngine'
 
 window.__themeColors = process.env.THEME_COLORS
 
-const hasLocalStorage = testHasLocalStorageOnce()
+function safeParse (str) {
+  return str === 'undefined' ? undefined : JSON.parse(str)
+}
 
-if (hasLocalStorage && localStorage.store_currentInstance && localStorage.store_instanceThemes) {
-  let safeParse = (str) => str === 'undefined' ? undefined : JSON.parse(str)
+const hasLocalStorage = testHasLocalStorageOnce()
+const currentInstance = hasLocalStorage &&
+  localStorage.store_currentInstance &&
+  safeParse(localStorage.store_currentInstance)
+
+if (currentInstance && localStorage.store_instanceThemes) {
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
   if (theme && theme !== 'default') {
     switchToTheme(theme)
   }
 }
 
-if (!hasLocalStorage || !localStorage.store_currentInstance) {
+if (!hasLocalStorage || !currentInstance) {
   // if not logged in, show all these 'hidden-from-ssr' elements
   let style = document.createElement('style')
   style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'

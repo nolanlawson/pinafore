@@ -102,12 +102,18 @@ export const goBack = exec(() => window.history.back())
 
 export const goForward = exec(() => window.history.forward())
 
+export const reload = exec(() => window.location.reload())
+
 export const forceOffline = exec(() => window.__forceOnline(false))
 
 export const forceOnline = exec(() => window.__forceOnline(true))
 
 export const getComposeSelectionStart = exec(() => composeInput().selectionStart, {
   dependencies: { composeInput }
+})
+
+export const getOpacity = selector => exec(() => window.getComputedStyle(document.querySelector(selector)).opacity, {
+  dependencies: { selector }
 })
 
 export const getCurrentTheme = exec(() => {
