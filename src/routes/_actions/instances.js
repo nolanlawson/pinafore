@@ -6,6 +6,7 @@ import { goto } from '../../../__sapper__/client'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getInstanceInfo } from '../_api/instance'
 import { database } from '../_database/database'
+import { onNotLoggedIn } from '../_utils/onNotLoggedIn'
 
 export function changeTheme (instanceName, newTheme) {
   let { instanceThemes } = store.get()
@@ -56,6 +57,9 @@ export async function logOutOfInstance (instanceName) {
   store.save()
   toast.say(`Logged out of ${instanceName}`)
   switchToTheme(instanceThemes[newInstance] || 'default')
+  if (!loggedInInstances.length) {
+    onNotLoggedIn()
+  }
   /* no await */ database.clearDatabaseForInstance(instanceName)
   goto('/settings/instances')
 }
