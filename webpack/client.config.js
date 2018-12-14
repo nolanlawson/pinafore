@@ -3,8 +3,6 @@ const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -26,17 +24,9 @@ module.exports = {
             dev: isDev,
             hydratable: true,
             store: true,
-            hotReload: isDev,
-            emitCss: !isDev
+            hotReload: isDev
           }
         }
-      },
-      !isDev && {
-        test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
       }
     ].filter(Boolean)
   },
@@ -60,8 +50,7 @@ module.exports = {
           },
           safari10: true
         }
-      }),
-      new OptimizeCSSAssetsPlugin({})
+      })
     ],
     splitChunks: {
       chunks: 'async',
@@ -79,10 +68,6 @@ module.exports = {
       requestTimeout: 120000
     })
   ] : [
-    new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[name].[id].[hash].css'
-    }),
     new webpack.DefinePlugin({
       'process.browser': true,
       'process.env.NODE_ENV': '"production"'
