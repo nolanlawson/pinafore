@@ -5,7 +5,7 @@
 
 import { testHasLocalStorageOnce } from './src/routes/_utils/testStorage'
 import { switchToTheme } from './src/routes/_utils/themeEngine'
-import { onNotLoggedIn } from './src/routes/_utils/onNotLoggedIns='
+import { onNotLoggedIn } from './src/routes/_utils/onNotLoggedIn'
 
 window.__themeColors = process.env.THEME_COLORS
 
