@@ -1,9 +1,16 @@
 import { Selector as $ } from 'testcafe'
 import {
   addInstanceButton,
-  authorizeInput, emailInput, formError, getFirstVisibleStatus, getUrl, instanceInput, logInToInstanceLink,
+  authorizeInput,
+  emailInput,
+  formError,
+  getFirstVisibleStatus, getOpacity,
+  getUrl,
+  homeNavButton,
+  instanceInput,
+  logInToInstanceLink,
   mastodonLogInButton,
-  passwordInput,
+  passwordInput, reload,
   settingsButton,
   sleep
 } from '../utils'
@@ -55,6 +62,14 @@ test('Logs in and logs out of localhost:3000', async t => {
     .expect($('.acct-display-name').innerText).eql('foobar')
     .click($('button').withText('Log out'))
     .click($('.modal-dialog button').withText('OK'))
-    .expect($('.main-content').innerText)
-    .contains("You're not logged in to any instances")
+    .expect($('.main-content').innerText).contains("You're not logged in to any instances")
+    .click(homeNavButton)
+    // check that the "hidden from SSR" content is visible
+    .expect(getOpacity('.hidden-from-ssr')()).eql('1')
+    .expect(getOpacity('.hidden-from-ssr')()).eql('1')
+    .navigateTo('/')
+    .expect(getOpacity('.hidden-from-ssr')()).eql('1')
+  await reload()
+  await t
+    .expect(getOpacity('.hidden-from-ssr')()).eql('1')
 })
