@@ -66,7 +66,6 @@ test('Logs in and logs out of localhost:3000', async t => {
     .click(homeNavButton)
     // check that the "hidden from SSR" content is visible
     .expect(getOpacity('.hidden-from-ssr')()).eql('1')
-    .expect(getOpacity('.hidden-from-ssr')()).eql('1')
     .navigateTo('/')
     .expect(getOpacity('.hidden-from-ssr')()).eql('1')
   await reload()
