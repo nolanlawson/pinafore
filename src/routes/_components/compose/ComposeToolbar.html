@@ -29,7 +29,7 @@
          on:change="onFileChange(event)"
          style="display: none;"
          type="file"
-         accept=".jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,image/jpeg,image/png,image/gif,video/webm,video/mp4">
+         accept={mediaAccept} >
   <ComposeAutosuggest {realm} {text} />
 </div>
 <style>
@@ -50,6 +50,7 @@
   import { doMediaUpload } from '../../_actions/media'
   import { toggleContentWarningShown } from '../../_actions/contentWarnings'
   import ComposeAutosuggest from './ComposeAutosuggest.html'
+  import { mediaAccept } from '../../_static/media'
 
   export default {
     oncreate () {
@@ -66,6 +67,9 @@
       IconButton,
       ComposeAutosuggest
     },
+    data: () => ({
+      mediaAccept
+    }),
     store: () => store,
     methods: {
       async onEmojiClick () {

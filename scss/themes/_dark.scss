@@ -29,4 +29,6 @@
   --compose-autosuggest-item-hover: #{lighten($main-bg-color, 10%)};
   --compose-autosuggest-item-active: #{lighten($main-bg-color, 15%)};
   --compose-autosuggest-outline: #{lighten($border-color, 20%)};
+
+  --file-drop-mask: #{rgba(30, 30, 30, 0.8)};
 }

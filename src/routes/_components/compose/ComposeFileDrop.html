@@ -1,0 +1,71 @@
+<file-drop class="file-drop" accept={mediaAccept} ref:fileDrop >
+  <div class="file-drop-info">
+    <div class="file-drop-info-text">
+      <span class="file-drop-info-text-valid">Drop to upload</span>
+      <span class="file-drop-info-text-invalid">Invalid file type</span>
+    </div>
+  </div>
+  <slot></slot>
+</file-drop>
+<style>
+  .file-drop {
+    display: block;
+    position: relative;
+  }
+
+  .file-drop-info {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 6000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .file-drop-info-text {
+    font-size: 1.2em;
+    color: var(--button-text);
+    padding: 10px 20px;
+    border: 2px dashed var(--button-text);
+    border-radius: 6px;
+  }
+
+  :global(.file-drop.drop-valid .file-drop-info, .file-drop.drop-invalid .file-drop-info) {
+    display: flex;
+    background: var(--file-drop-mask);
+  }
+
+  :global(.file-drop.drop-valid .file-drop-info-text-invalid, .file-drop.drop-invalid .file-drop-info-text-valid) {
+    display: none;
+  }
+</style>
+<script>
+  import { mediaAccept } from '../../_static/media'
+  import { doMediaUpload } from '../../_actions/media'
+  if (process.browser) {
+    require('file-drop-element')
+  }
+  export default {
+    oncreate () {
+      this.onFileDrop = this.onFileDrop.bind(this)
+      this.refs.fileDrop.addEventListener('filedrop', this.onFileDrop)
+    },
+    ondestroy () {
+      this.refs.fileDrop.removeEventListener('filedrop', this.onFileDRop)
+    },
+    data: () => ({
+      mediaAccept
+    }),
+    methods: {
+      onFileDrop (e) {
+        let { file } = e
+        let { realm } = this.get()
+        /* no await */ doMediaUpload(realm, file)
+      }
+    }
+  }
+</script>

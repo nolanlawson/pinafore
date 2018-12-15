@@ -20,6 +20,10 @@ export const importIndexedDBGetAllShim = () => import(
   /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
   )
 
+export const importCustomElementsPolyfill = () => import(
+  /* webpackChunkName: '@webcomponents/custom-elements' */ '@webcomponents/custom-elements'
+  )
+
 export const importPageLifecycle = () => import(
   /* webpackChunkName: 'page-lifecycle' */ 'page-lifecycle/dist/lifecycle.mjs'
   ).then(getDefault)

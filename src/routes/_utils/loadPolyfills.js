@@ -1,4 +1,5 @@
 import {
+  importCustomElementsPolyfill,
   importIndexedDBGetAllShim,
   importIntersectionObserver,
   importRequestIdleCallback,
@@ -10,6 +11,7 @@ export function loadPolyfills () {
     typeof IntersectionObserver === 'undefined' && importIntersectionObserver(),
     typeof requestIdleCallback === 'undefined' && importRequestIdleCallback(),
     !Element.prototype.animate && importWebAnimationPolyfill(),
-    !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim()
+    !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim(),
+    typeof customElements === 'undefined' && importCustomElementsPolyfill()
   ])
 }

@@ -1,20 +1,22 @@
 {#if realm === 'home'}
   <h1 class="sr-only">Compose status</h1>
 {/if}
-<div class="{computedClassName} {hideAndFadeIn}">
-  <ComposeAuthor />
-  {#if contentWarningShown}
-    <div class="compose-content-warning-wrapper"
-         transition:slide="{duration: 333}">
-      <ComposeContentWarning {realm} {contentWarning} />
-    </div>
-  {/if}
-  <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
-  <ComposeLengthGauge {length} {overLimit} />
-  <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
-  <ComposeLengthIndicator {length} {overLimit} />
-  <ComposeMedia {realm} {media} />
-</div>
+<ComposeFileDrop {realm} >
+  <div class="{computedClassName} {hideAndFadeIn}">
+    <ComposeAuthor />
+    {#if contentWarningShown}
+      <div class="compose-content-warning-wrapper"
+           transition:slide="{duration: 333}">
+        <ComposeContentWarning {realm} {contentWarning} />
+      </div>
+    {/if}
+    <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
+    <ComposeLengthGauge {length} {overLimit} />
+    <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
+    <ComposeLengthIndicator {length} {overLimit} />
+    <ComposeMedia {realm} {media} />
+  </div>
+</ComposeFileDrop>
 <ComposeStickyButton {showSticky}
                      {overLimit}
                      {hideAndFadeIn}
@@ -22,6 +24,7 @@
 {#if !hideBottomBorder}
   <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
 {/if}
+
 <style>
   .compose-box {
     border-radius: 4px;
@@ -85,6 +88,7 @@
   import ComposeStickyButton from './ComposeStickyButton.html'
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
+  import ComposeFileDrop from './ComposeFileDrop.html'
   import { measureText } from '../../_utils/measureText'
   import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
@@ -118,7 +122,8 @@
       ComposeInput,
       ComposeStickyButton,
       ComposeMedia,
-      ComposeContentWarning
+      ComposeContentWarning,
+      ComposeFileDrop
     },
     data: () => ({
       size: void 0,
