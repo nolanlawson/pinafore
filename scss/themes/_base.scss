@@ -93,4 +93,6 @@
   --compose-autosuggest-outline: #{lighten($focus-outline, 5%)};
 
   --compose-button-halo: #{rgba(255, 255, 255, 0.1)};
+
+  --file-drop-mask: #{rgba($body-bg-color, 0.8)};
 }

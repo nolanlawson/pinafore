@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
+    "@webcomponents/custom-elements": "^1.2.1",
     "browserslist": "^4.3.5",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
@@ -56,6 +57,7 @@
     "events-light": "^1.0.5",
     "express": "^4.16.4",
     "file-api": "^0.10.4",
+    "file-drop-element": "0.0.9",
     "font-awesome-svg-png": "^1.2.2",
     "form-data": "^2.3.3",
     "glob": "^7.1.3",
