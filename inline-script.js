@@ -5,19 +5,28 @@
 
 import { testHasLocalStorageOnce } from './src/routes/_utils/testStorage'
 import { switchToTheme } from './src/routes/_utils/themeEngine'
+import { basename } from './src/routes/_api/utils'
 
 window.__themeColors = process.env.THEME_COLORS
 
-function safeParse (str) {
-  return str === 'undefined' ? undefined : JSON.parse(str)
+const safeParse = str => (typeof str === 'undefined' || str === 'undefined') ? undefined : JSON.parse(str)
+const hasLocalStorage = testHasLocalStorageOnce()
+const currentInstance = hasLocalStorage && safeParse(localStorage.store_currentInstance)
+
+if (currentInstance) {
+  // Do prefetch if we're logged in, so we can connect faster to the other origin.
+  // Note that /api/v1/instance is basically the only URL that doesn't require credentials,
+  // which is why we can do this. Also we do end up calling this on loading the home page,
+  // so it's not a wasted request.
+  let link = document.createElement('link')
+  link.setAttribute('rel', 'prefetch')
+  link.setAttribute('href', `${basename(currentInstance)}/api/v1/instance`)
+  link.setAttribute('crossorigin', 'anonymous')
+  document.head.appendChild(link)
 }
 
-const hasLocalStorage = testHasLocalStorageOnce()
-const currentInstance = hasLocalStorage &&
-  localStorage.store_currentInstance &&
-  safeParse(localStorage.store_currentInstance)
-
 if (currentInstance && localStorage.store_instanceThemes) {
+  // switch theme ASAP to minimize flash of default theme
   let theme = safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]
   if (theme && theme !== 'default') {
     switchToTheme(theme)
