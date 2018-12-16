@@ -77,7 +77,7 @@
     "pify": "^4.0.1",
     "quick-lru": "^2.0.0",
     "requestidlecallback": "^0.3.0",
-    "rollup": "^0.67.4",
+    "rollup": "^0.68.0",
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-terser": "^3.0.0",
     "sapper": "github:nolanlawson/sapper#nolan/sw-index-html-built",
