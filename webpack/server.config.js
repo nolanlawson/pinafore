@@ -1,7 +1,6 @@
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
-
-const dev = process.env.NODE_ENV === 'development'
+const { mode, dev } = require('./shared.config')
 
 module.exports = {
   entry: config.server.entry(),
@@ -29,7 +28,7 @@ module.exports = {
       }
     ]
   },
-  mode: process.env.NODE_ENV,
+  mode,
   performance: {
     hints: false // it doesn't matter if server.js is large
   }

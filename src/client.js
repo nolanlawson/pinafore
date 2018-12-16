@@ -9,6 +9,8 @@ loadPolyfills().then(() => {
   sapper.start({ target: document.querySelector('#sapper') })
 })
 
+console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+
 if (module.hot) {
   module.hot.accept()
 }
