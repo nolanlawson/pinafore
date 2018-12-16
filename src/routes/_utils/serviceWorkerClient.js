@@ -10,7 +10,7 @@ function onUpdateFound (registration) {
   })
 }
 
-if (!location.origin.match('localhost') && 'serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js').then(registration => {
     registration.addEventListener('updatefound', () => onUpdateFound(registration))
   })
