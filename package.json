@@ -143,6 +143,7 @@
     "ignore": [
       "dist",
       "src/routes/_utils/asyncModules.js",
+      "src/routes/_utils/asyncPolyfills.js",
       "src/routes/_components/dialog/asyncDialogs.js"
     ]
   },

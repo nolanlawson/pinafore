@@ -4,7 +4,7 @@ import {
   importIntersectionObserver,
   importRequestIdleCallback,
   importWebAnimationPolyfill
-} from './asyncModules'
+} from './asyncPolyfills'
 
 export function loadPolyfills () {
   return Promise.all([
