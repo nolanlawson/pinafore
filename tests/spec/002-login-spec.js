@@ -77,10 +77,10 @@ test('Logs in and logs out of localhost:3000', async t => {
 test('Logs in, refreshes, then logs out', async t => {
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatus(0).exists).ok()
+    .hover(getNthStatus(0))
   await reload()
   await t
-    .expect(getNthStatus(0).exists).ok()
+    .hover(getNthStatus(0)).ok()
     .click(settingsButton)
     .click($('a').withText('Instances'))
     .click($('a').withText('localhost:3000'))
