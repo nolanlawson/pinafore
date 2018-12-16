@@ -165,6 +165,7 @@
       "static",
       "package.json",
       "package-lock.json",
+      "thirdparty",
       "webpack",
       "webpack.config.js"
     ],
