@@ -47,6 +47,7 @@
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.4",
+    "circular-dependency-plugin": "^5.0.2",
     "compression": "^1.7.3",
     "cross-env": "^5.2.0",
     "css-loader": "^2.0.1",

@@ -8,6 +8,7 @@ import { getTimeline } from '../../_api/timelines'
 import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 import { mark, stop } from '../../_utils/marks'
+import { store } from '../store'
 
 // stream to watch for home timeline updates and notifications
 let currentInstanceStream
@@ -92,7 +93,7 @@ async function fillGap (instanceName, accessToken, timelineName, firstTimelineIt
   }
 }
 
-export function instanceObservers (store) {
+export function instanceObservers () {
   store.observe('currentInstance', async (currentInstance) => {
     if (!process.browser) {
       return

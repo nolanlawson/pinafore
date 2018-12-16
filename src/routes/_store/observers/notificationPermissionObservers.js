@@ -1,4 +1,6 @@
-export function notificationPermissionObservers (store) {
+import { store } from '../store'
+
+export function notificationPermissionObservers () {
   if (!process.browser || !navigator.permissions || !navigator.permissions.query) {
     return
   }

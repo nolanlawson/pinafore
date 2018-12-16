@@ -1,4 +1,5 @@
 import { database } from '../../_database/database'
+import { store } from '../store'
 
 const SEARCH_RESULTS_LIMIT = 4
 const DATABASE_SEARCH_RESULTS_LIMIT = 30
@@ -20,7 +21,7 @@ function searchEmoji (store, searchText) {
   return results
 }
 
-export function autosuggestObservers (store) {
+export function autosuggestObservers () {
   store.observe('autosuggestSearchText', async autosuggestSearchText => {
     let { composeFocused } = store.get()
     if (!composeFocused || !autosuggestSearchText) {
