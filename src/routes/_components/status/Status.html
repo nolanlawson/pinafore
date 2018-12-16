@@ -115,6 +115,7 @@
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+  import { observe } from 'svelte-extras'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -136,6 +137,11 @@
           this.set({ contentPreloaded: true })
         })
       }
+      this.observe('showContent', () => {
+        // Calculate this whenever content changes, in a rIC because it's a bit expensive.
+        // Useful for screen readers.
+        scheduleIdleTask(() => this.calculateAriaLabel())
+      })
     },
     components: {
       StatusSidebar,
@@ -154,10 +160,12 @@
     data: () => ({
       notification: void 0,
       replyVisibility: void 0,
-      contentPreloaded: false
+      contentPreloaded: false,
+      ariaLabel: void 0
     }),
     store: () => store,
     methods: {
+      observe,
       onClickOrKeydown (e) {
         let { type, keyCode, target } = e
 
@@ -180,6 +188,17 @@
         e.stopPropagation()
         let { originalStatusId } = this.get()
         goto(`/statuses/${originalStatusId}`)
+      },
+      calculateAriaLabel () {
+        let {
+          originalAccount, account, content, timeagoFormattedDate, spoilerText,
+          showContent, reblog, notification, visibility, $omitEmojiInDisplayNames,
+          $disableLongAriaLabels
+        } = this.get()
+        let ariaLabel = getAccessibleLabelForStatus(originalAccount, account, content,
+          timeagoFormattedDate, spoilerText, showContent,
+          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
+        this.set({ ariaLabel })
       }
     },
     computed: {
@@ -222,12 +241,6 @@
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
       reblog: ({ status }) => status.reblog,
-      ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
-        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels }) => (
-        getAccessibleLabelForStatus(originalAccount, account, content,
-          timeagoFormattedDate, spoilerText, showContent,
-          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
-      ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
         status.reblog ||
