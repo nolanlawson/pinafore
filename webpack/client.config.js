@@ -3,6 +3,7 @@ const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
+const CircularDependencyPlugin = require('circular-dependency-plugin')
 const { mode, dev } = require('./shared.config')
 
 module.exports = {
@@ -50,6 +51,11 @@ module.exports = {
     ),
     new LodashModuleReplacementPlugin({
       paths: true
+    }),
+    new CircularDependencyPlugin({
+      exclude: /node_modules/,
+      failOnError: true,
+      cwd: process.cwd()
     })
   ].concat(dev ? [
     new webpack.HotModuleReplacementPlugin({

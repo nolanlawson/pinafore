@@ -3,8 +3,9 @@ import { createStream } from '../../_actions/streaming'
 import { getTimeline } from '../../_api/timelines'
 import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
 import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
+import { store } from '../store'
 
-export function timelineObservers (store) {
+export function timelineObservers () {
   // stream to watch for local/federated/etc. updates. home and notification
   // updates are handled in timelineObservers.js
   let currentTimelineStream

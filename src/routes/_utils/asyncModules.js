@@ -31,3 +31,7 @@ export const importNotificationVirtualListItem = () => import(
 export const importDatabase = () => import(
   /* webpackChunkName: 'database.js' */ '../_database/databaseApis.js'
   )
+
+export const importLoggedInObservers = () => import(
+  /* webpackChunkName: 'loggedInObservers.js' */ '../_store/observers/loggedInObservers.js'
+  ).then(getDefault)
