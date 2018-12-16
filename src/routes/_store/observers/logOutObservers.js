@@ -5,8 +5,7 @@ export function logOutObservers (store) {
     return
   }
   store.observe('isUserLoggedIn', isUserLoggedIn => {
-    let { currentInstance } = store.get()
-    if (!isUserLoggedIn && !currentInstance) {
+    if (!isUserLoggedIn) {
       onUserIsLoggedOut()
     }
   })
