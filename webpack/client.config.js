@@ -2,8 +2,7 @@ const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const TerserWebpackPlugin = require('terser-webpack-plugin')
-
+const terser = require('./terser.config')
 const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
@@ -35,22 +34,7 @@ module.exports = {
   },
   optimization: isDev ? {} : {
     minimizer: [
-      new TerserWebpackPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-        terserOptions: {
-          ecma: 6,
-          mangle: true,
-          compress: {
-            pure_funcs: ['console.log']
-          },
-          output: {
-            comments: false
-          },
-          safari10: true
-        }
-      })
+      terser()
     ],
     splitChunks: {
       chunks: 'async',
