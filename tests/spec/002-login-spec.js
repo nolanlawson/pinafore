@@ -80,7 +80,7 @@ test('Logs in, refreshes, then logs out', async t => {
     .hover(getNthStatus(0))
   await reload()
   await t
-    .hover(getNthStatus(0)).ok()
+    .hover(getNthStatus(0))
     .click(settingsButton)
     .click($('a').withText('Instances'))
     .click($('a').withText('localhost:3000'))
