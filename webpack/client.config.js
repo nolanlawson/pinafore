@@ -3,7 +3,7 @@ const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
-const isDev = process.env.NODE_ENV === 'development'
+const { mode, dev } = require('./shared.config')
 
 module.exports = {
   entry: config.client.entry(),
@@ -12,7 +12,7 @@ module.exports = {
     extensions: ['.js', '.json', '.html'],
     mainFields: ['svelte', 'module', 'browser', 'main']
   },
-  mode: isDev ? 'development' : 'production',
+  mode,
   module: {
     rules: [
       {
@@ -20,10 +20,10 @@ module.exports = {
         use: {
           loader: 'svelte-loader',
           options: {
-            dev: isDev,
+            dev,
             hydratable: true,
             store: true,
-            hotReload: isDev
+            hotReload: dev
           }
         }
       }
@@ -32,7 +32,7 @@ module.exports = {
   node: {
     setImmediate: false
   },
-  optimization: isDev ? {} : {
+  optimization: dev ? {} : {
     minimizer: [
       terser()
     ],
@@ -51,14 +51,14 @@ module.exports = {
     new LodashModuleReplacementPlugin({
       paths: true
     })
-  ].concat(isDev ? [
+  ].concat(dev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
     })
   ] : [
     new webpack.DefinePlugin({
       'process.browser': true,
-      'process.env.NODE_ENV': '"production"'
+      'process.env.NODE_ENV': JSON.stringify(mode)
     }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
@@ -71,5 +71,5 @@ module.exports = {
       logLevel: 'silent' // do not bother Webpacker, who runs with --json and parses stdout
     })
   ]),
-  devtool: isDev ? 'inline-source-map' : 'source-map'
+  devtool: dev ? 'inline-source-map' : 'source-map'
 }
