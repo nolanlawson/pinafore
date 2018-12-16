@@ -137,10 +137,12 @@
           this.set({ contentPreloaded: true })
         })
       }
-      this.observe('showContent', () => {
-        // Calculate this whenever content changes, in a rIC because it's a bit expensive.
-        // Useful for screen readers.
-        scheduleIdleTask(() => this.calculateAriaLabel())
+      this.observe('ariaLabelInputs', ariaLabelInputs => {
+        // Calculate this whenever any of the aria-label inputs change. Do so
+        // in a rIC because it's a bit expensive.
+        scheduleIdleTask(() => {
+          this.set({ ariaLabel: getAccessibleLabelForStatus(ariaLabelInputs) })
+        })
       })
     },
     components: {
@@ -188,17 +190,6 @@
         e.stopPropagation()
         let { originalStatusId } = this.get()
         goto(`/statuses/${originalStatusId}`)
-      },
-      calculateAriaLabel () {
-        let {
-          originalAccount, account, content, timeagoFormattedDate, spoilerText,
-          showContent, reblog, notification, visibility, $omitEmojiInDisplayNames,
-          $disableLongAriaLabels
-        } = this.get()
-        let ariaLabel = getAccessibleLabelForStatus(originalAccount, account, content,
-          timeagoFormattedDate, spoilerText, showContent,
-          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
-        this.set({ ariaLabel })
       }
     },
     computed: {
@@ -254,6 +245,23 @@
       )),
       content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
+      ariaLabelInputs: ({
+        originalAccount, account, content, timeagoFormattedDate, spoilerText,
+        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames,
+        $disableLongAriaLabels
+      }) => ({
+        originalAccount,
+        account,
+        content,
+        timeagoFormattedDate,
+        spoilerText,
+        showContent,
+        reblog,
+        notification,
+        visibility,
+        $omitEmojiInDisplayNames,
+        $disableLongAriaLabels
+      }),
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,

@@ -34,10 +34,10 @@ function cleanupText (text) {
   return text.replace(/\s+/g, ' ').trim()
 }
 
-export function getAccessibleLabelForStatus (originalAccount, account, content,
+export function getAccessibleLabelForStatus ({ originalAccount, account, content,
   timeagoFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames,
-  disableLongAriaLabels) {
+  disableLongAriaLabels }) {
   let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
   let contentTextToShow = (showContent || !spoilerText)
     ? cleanupText(htmlToPlainText(content))
