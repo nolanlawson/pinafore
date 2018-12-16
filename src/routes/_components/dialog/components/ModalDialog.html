@@ -147,6 +147,7 @@
   export default {
     oncreate () {
       let { id } = this.get()
+      this.onPopState = this.onPopState.bind(this)
       let dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
@@ -154,6 +155,9 @@
         this.fire('close')
         this._a11yDialog.destroy()
         emit('destroyDialog', id)
+        if (!this.get().statePopped) {
+          window.history.back()
+        }
         requestAnimationFrame(() => document.body.removeChild(dialogElement))
       })
       on('showDialog', this, this.showDialog)
@@ -197,11 +201,21 @@
         if (id !== thisId) {
           return
         }
+        window.addEventListener('popstate', this.onPopState)
+        window.history.pushState({ modal: id }, null, location.href)
         document.body.classList.toggle('modal-open', true)
         this._a11yDialog.show()
         requestAnimationFrame(() => {
           this.set({ fadedIn: true })
         })
+      },
+      ondestroy () {
+        window.removeEventListener('popstate', this.onPopState)
+      },
+      onPopState () {
+        let { id } = this.get()
+        this.set({ statePopped: true })
+        this.closeDialog(id)
       },
       closeDialog (thisId) {
         let { id } = this.get()
