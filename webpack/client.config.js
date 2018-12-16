@@ -60,6 +60,10 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.NormalModuleReplacementPlugin(
+      /\/_database\/database\.js$/, // this version plays nicer with IDEs
+      './database.prod.js'
+    ),
     new LodashModuleReplacementPlugin({
       paths: true
     })

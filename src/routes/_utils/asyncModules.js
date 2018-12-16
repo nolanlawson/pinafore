@@ -47,3 +47,7 @@ export const importStatusVirtualListItem = () => import(
 export const importNotificationVirtualListItem = () => import(
   /* webpackChunkName: 'NotificationVirtualListItem.html' */ '../_components/timeline/NotificationVirtualListItem.html'
   ).then(getDefault)
+
+export const importDatabase = () => import(
+  /* webpackChunkName: 'database.js' */ '../_database/databaseApis.js'
+  )
