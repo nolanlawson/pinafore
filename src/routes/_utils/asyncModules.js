@@ -4,26 +4,6 @@ export const importTimeline = () => import(
   /* webpackChunkName: 'Timeline' */ '../_components/timeline/Timeline.html'
   ).then(getDefault)
 
-export const importIntersectionObserver = () => import(
-  /* webpackChunkName: 'intersection-observer' */ 'intersection-observer'
-  )
-
-export const importRequestIdleCallback = () => import(
-  /* webpackChunkName: 'requestidlecallback' */ 'requestidlecallback'
-  )
-
-export const importWebAnimationPolyfill = () => import(
-  /* webpackChunkName: 'web-animations-js' */ 'web-animations-js'
-  )
-
-export const importIndexedDBGetAllShim = () => import(
-  /* webpackChunkName: 'indexeddb-getall-shim' */ 'indexeddb-getall-shim'
-  )
-
-export const importCustomElementsPolyfill = () => import(
-  /* webpackChunkName: '@webcomponents/custom-elements' */ '@webcomponents/custom-elements'
-  )
-
 export const importPageLifecycle = () => import(
   /* webpackChunkName: 'page-lifecycle' */ 'page-lifecycle/dist/lifecycle.mjs'
   ).then(getDefault)
