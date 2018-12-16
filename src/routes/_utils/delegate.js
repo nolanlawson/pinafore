@@ -1,7 +1,5 @@
 // Delegate certain events to the global document for perf purposes.
 
-import { mark, stop } from './marks'
-
 const callbacks = {}
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
@@ -14,14 +12,6 @@ function onEvent (e) {
     // we're not interested in any non-click or non-Enter events
     return
   }
-  if (type === 'click') {
-    let selection = window.getSelection()
-    let selectionStr = selection && selection.toString()
-    if (selectionStr && selectionStr.length && target.contains(selection.anchorNode)) {
-      return // ignore if the user is selecting text inside the clickable area
-    }
-  }
-  mark('delegate onEvent')
   let key
   let element = target
   while (element) {
@@ -31,9 +21,15 @@ function onEvent (e) {
     element = element.parentElement
   }
   if (key && callbacks[key]) {
+    if (type === 'click') {
+      let selection = window.getSelection()
+      let selectionStr = selection && selection.toString()
+      if (selectionStr && selectionStr.length && target.contains(selection.anchorNode)) {
+        return // ignore if the user is selecting text inside the clickable area
+      }
+    }
     callbacks[key](e)
   }
-  stop('delegate onEvent')
 }
 
 export function registerClickDelegates (component, delegates) {
