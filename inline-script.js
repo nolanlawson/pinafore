@@ -6,6 +6,7 @@
 import { testHasLocalStorageOnce } from './src/routes/_utils/testStorage'
 import { switchToTheme } from './src/routes/_utils/themeEngine'
 import { basename } from './src/routes/_api/utils'
+import { onUserIsLoggedOut } from './src/routes/_actions/onUserIsLoggedOut'
 
 window.__themeColors = process.env.THEME_COLORS
 
@@ -35,9 +36,7 @@ if (currentInstance && localStorage.store_instanceThemes) {
 
 if (!hasLocalStorage || !currentInstance) {
   // if not logged in, show all these 'hidden-from-ssr' elements
-  let style = document.createElement('style')
-  style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'
-  document.head.appendChild(style)
+  onUserIsLoggedOut()
 }
 
 if (hasLocalStorage && localStorage.store_disableCustomScrollbars === 'true') {
