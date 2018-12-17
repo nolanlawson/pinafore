@@ -116,8 +116,8 @@
         return smallHeight || DEFAULT_MEDIA_HEIGHT
       },
       // width/height to show in a modal
-      modalWidth: ({ originalWidth, inlineWidth }) => originalWidth || inlineWidth,
-      modalHeight: ({ originalHeight, inlineHeight }) => originalHeight || inlineHeight,
+      modalWidth: ({ originalWidth, smallWidth }) => originalWidth || smallWidth || 0,
+      modalHeight: ({ originalHeight, smallHeight }) => originalHeight || smallHeight || 0,
       meta: ({ media }) => media.meta,
       small: ({ meta }) => meta && meta.small,
       original: ({ meta }) => meta && meta.original,
