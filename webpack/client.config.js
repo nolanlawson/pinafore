@@ -41,7 +41,8 @@ module.exports = {
       chunks: 'async',
       minSize: 5000,
       maxAsyncRequests: Infinity,
-      maxInitialRequests: Infinity
+      maxInitialRequests: Infinity,
+      name: false // these chunk names can be annoyingly long
     }
   },
   plugins: [
@@ -77,5 +78,8 @@ module.exports = {
       logLevel: 'silent' // do not bother Webpacker, who runs with --json and parses stdout
     })
   ]),
-  devtool: dev ? 'inline-source-map' : 'source-map'
+  devtool: dev ? 'inline-source-map' : 'source-map',
+  performance: {
+    hints: dev ? false : 'error' // fail if we exceed the default performance budgets
+  }
 }
