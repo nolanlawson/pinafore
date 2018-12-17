@@ -4,13 +4,14 @@
   import { goto } from '../../../__sapper__/client'
 
   export default {
+    store: () => store,
     oncreate () {
       let accessToken = location.search.match(/accessToken=([^&]+)/)[1]
       let instanceName = location.search.match(/instanceName=([^&]+)/)[1]
       let {
         loggedInInstances,
         loggedInInstancesInOrder
-      } = store.get()
+      } = this.store.get()
 
       loggedInInstances[instanceName] = {
         access_token: accessToken
@@ -20,12 +21,12 @@
         loggedInInstancesInOrder.push(instanceName)
       }
 
-      store.set({
+      this.store.set({
         currentInstance: instanceName,
         loggedInInstances,
         loggedInInstancesInOrder
       })
-      store.save()
+      this.store.save()
       goto('/')
     }
   }
