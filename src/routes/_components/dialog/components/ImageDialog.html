@@ -10,8 +10,7 @@
       class="image-modal-dialog-autoplay-video"
       aria-label="Animated GIF: {description || ''}"
       style="background-image: url({poster}); "
-      {width}
-      {height}
+      {style}
       {src}
       autoplay
       muted
@@ -22,8 +21,7 @@
   {:else}
     <img
       {src}
-      {width}
-      {height}
+      {style}
       alt={description || ''}
       title={description || ''}
     />
@@ -53,6 +51,11 @@
     oncreate,
     components: {
       ModalDialog
+    },
+    computed: {
+      style: ({ width, height }) => `
+        width: ${width ? width + 'px' : 'auto'};
+        height: ${height ? height + 'px' : 'auto'};`
     },
     methods: {
       show

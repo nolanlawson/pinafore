@@ -8,8 +8,7 @@
 >
   <video {poster}
          {src}
-         {width}
-         {height}
+         {style}
          aria-label="Video: {description || ''}"
          controls
          ref:video
@@ -32,6 +31,11 @@
     oncreate,
     components: {
       ModalDialog
+    },
+    computed: {
+      style: ({ width, height }) => `
+        width: ${width ? width + 'px' : 'auto'};
+        height: ${height ? height + 'px' : 'auto'};`
     },
     methods: {
       show,
