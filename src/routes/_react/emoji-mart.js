@@ -4,9 +4,10 @@
 import data from 'emoji-mart/data/messenger.json'
 import NimblePicker from 'emoji-mart/dist-es/components/picker/nimble-picker'
 import React from 'react'
+import { emit } from '../_utils/eventBus'
 
 function onEmojiSelected (emoji) {
-  console.log('selected', emoji)
+  emit('emoji-selected', emoji)
 }
 
 export default props => React.createElement(NimblePicker, Object.assign({

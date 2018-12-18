@@ -31,6 +31,12 @@
     align-items: center;
     justify-content: center;
   }
+  :global(.emoji-mart-category .emoji-mart-emoji-custom span,
+    .emoji-mart-preview-emoji .emoji-mart-emoji-custom span) {
+    /* some custom emoji look repeated because they aren't tall enough */
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
@@ -38,14 +44,18 @@
   import { insertEmoji } from '../../../_actions/emoji'
   import { show } from '../helpers/showDialog'
   import { close } from '../helpers/closeDialog'
-  import { oncreate } from '../helpers/onCreateDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import { define } from 'remount/es6'
   import { loadCSS } from '../../../_utils/loadCSS'
   import LoadingSpinner from '../../../_components/LoadingSpinner.html'
   import { importEmojiMart } from '../../../_utils/asyncModules'
+  import { on } from '../../../_utils/eventBus'
 
   export default {
-    oncreate,
+    oncreate () {
+      onCreateDialog.call(this)
+      on('emoji-selected', this, emoji => this.onEmojiSelected(emoji))
+    },
     components: {
       ModalDialog,
       LoadingSpinner
@@ -96,7 +106,7 @@
     methods: {
       show,
       close,
-      onClickEmoji (emoji) {
+      onEmojiSelected (emoji) {
         let { realm } = this.get()
         insertEmoji(realm, emoji)
         this.close()
