@@ -46,6 +46,7 @@ export const markMediaSensitiveInput = $('#choice-mark-media-sensitive')
 export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitive')
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 export const dialogOptionsOption = $(`.modal-dialog button`)
+export const emojiSearchInput = $('.emoji-mart-search input')
 
 export const composeModalInput = $('.modal-dialog .compose-box-input')
 export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
