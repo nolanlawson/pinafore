@@ -5,22 +5,7 @@
   background="var(--main-bg)"
 >
   <div class="custom-emoji-container">
-    {#if emojis.length}
-      <ul class="custom-emoji-list">
-        {#each emojis as emoji}
-          <li class="custom-emoji">
-            <button type="button" on:click="onClickEmoji(emoji)">
-              <img src={$autoplayGifs ? emoji.url : emoji.static_url}
-                   alt=":{emoji.shortcode}:"
-                   title=":{emoji.shortcode}:"
-              />
-            </button>
-          </li>
-        {/each}
-      </ul>
-    {:else}
-      <div class="custom-emoji-no-emoji">No custom emoji found for this instance.</div>
-    {/if}
+    <emoji-mart></emoji-mart>
   </div>
 </ModalDialog>
 <style>
@@ -30,31 +15,6 @@
     height: 300px;
     overflow: auto;
   }
-  .custom-emoji-no-emoji {
-    font-size: 1.3em;
-    padding: 20px;
-  }
-  .custom-emoji-list {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-    grid-gap: 5px;
-    padding: 20px 10px;
-  }
-  .custom-emoji button {
-    padding: 0;
-    margin: 0;
-    border: none;
-    cursor: pointer;
-    box-shadow: none;
-    background: none;
-  }
-  .custom-emoji img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-  }
-
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
@@ -62,10 +22,17 @@
   import { insertEmoji } from '../../../_actions/emoji'
   import { show } from '../helpers/showDialog'
   import { close } from '../helpers/closeDialog'
-  import { oncreate } from '../helpers/onCreateDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { define } from 'remount'
+  import { Picker } from 'emoji-mart'
+  import 'emoji-mart/css/emoji-mart.css'
 
   export default {
-    oncreate,
+    oncreate() {
+      onCreateDialog.apply(this)
+
+      define({'emoji-mart': Picker})
+    },
     components: {
       ModalDialog
     },
