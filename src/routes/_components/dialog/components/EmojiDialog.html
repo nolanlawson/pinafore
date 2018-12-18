@@ -37,6 +37,10 @@
     background-repeat: no-repeat;
     background-position: center center;
   }
+  :global(.emoji-container .emoji-mart-emoji-native) {
+    /* remove if/when https://github.com/missive/emoji-mart/pull/256 is merged */
+    font-family: PinaforeEmoji, sans-serif;
+  }
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
