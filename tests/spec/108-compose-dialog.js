@@ -9,7 +9,7 @@ import {
   getNthStatusSelector,
   composeModalEmojiButton,
   composeModalInput,
-  composeModalComposeButton, emojiButton, emojiSearchInput
+  composeModalComposeButton, emojiSearchInput
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
