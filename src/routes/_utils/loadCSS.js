@@ -13,8 +13,8 @@ export function loadCSS (href) {
       link.removeEventListener('load', onLoad)
       link.removeEventListener('error', onError)
     }
-    const onLoad = () => cleanup() && resolve()
-    const onError = (err) => cleanup() && reject(err)
+    const onLoad = () => (cleanup() && resolve())
+    const onError = (err) => (cleanup() && reject(err))
 
     link.addEventListener('load', onLoad)
     link.addEventListener('error', onError)
