@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "standard && standard --plugin html 'src/routes/**/*.html'",
     "lint-fix": "standard --fix && standard --fix --plugin html 'src/routes/**/*.html'",
-    "dev": "run-p --race build-template-html-watch sapper-dev",
+    "dev": "run-s build-template-html serve-dev",
+    "serve-dev": "run-p --race build-template-html-watch sapper-dev",
     "sapper-dev": "cross-env NODE_ENV=development PORT=4002 sapper dev",
     "sapper-prod": "cross-env PORT=4002 node __sapper__/build",
     "build": "cross-env NODE_ENV=production npm run build-steps",
