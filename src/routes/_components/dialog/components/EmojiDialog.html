@@ -73,8 +73,6 @@
     store: () => store,
     data: () => ({
       loading: true,
-      title: 'Emoji',
-      color: 'var(--nav-bg)',
       loaded: false,
       error: void 0
     }),
@@ -85,12 +83,13 @@
         min-height: ${$isSmallMobileSize ? 300 : 400}px;
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ title, color, perLine, custom, showPreview }) => ({
-        title,
-        color,
+      emojiMartProps: ({ perLine, custom, showPreview }) => ({
         perLine,
         custom,
-        showPreview
+        showPreview,
+        color: 'var(--nav-bg)',
+        emoji: 'sailboat',
+        title: 'Emoji'
       }),
       showPreview: ({ $isSmallMobileSize }) => !$isSmallMobileSize,
       perLine: ({ $isSmallMobileSize }) => $isSmallMobileSize ? 7 : 9,
