@@ -4,9 +4,11 @@ import sass from 'node-sass'
 import path from 'path'
 import fs from 'fs'
 import pify from 'pify'
+import CleanCSS from 'clean-css';
 
 const writeFile = pify(fs.writeFile.bind(fs))
 const readdir = pify(fs.readdir.bind(fs))
+const readFile = pify(fs.readFile.bind(fs))
 const render = pify(sass.render.bind(sass))
 
 const globalScss = path.join(__dirname, '../scss/global.scss')
@@ -39,7 +41,13 @@ async function compileThemesSass () {
   }))
 }
 
+async function compileThirdPartyCss () {
+  let css = await readFile(path.resolve(__dirname, '../node_modules/emoji-mart/css/emoji-mart.css'), 'utf8')
+  css = `/* compiled from emoji-mart.css */` + new CleanCSS().minify(css).styles
+  await writeFile(path.resolve(__dirname, '../static/emoji-mart.css'), css, 'utf8')
+}
+
 export async function buildSass () {
-  let [ result ] = await Promise.all([compileGlobalSass(), compileThemesSass()])
+  let [ result ] = await Promise.all([compileGlobalSass(), compileThemesSass(), compileThirdPartyCss()])
   return result
 }

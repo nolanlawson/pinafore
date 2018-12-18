@@ -4,15 +4,12 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
-const { mode, dev } = require('./shared.config')
+const { mode, dev, resolve } = require('./shared.config')
 
 module.exports = {
   entry: config.client.entry(),
   output: Object.assign(config.client.output(), { globalObject: 'this' }), // enables HMR in workers
-  resolve: {
-    extensions: ['.js', '.json', '.html'],
-    mainFields: ['svelte', 'module', 'browser', 'main']
-  },
+  resolve,
   mode,
   module: {
     rules: [
@@ -80,6 +77,7 @@ module.exports = {
   ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
+    maxAssetSize: 275000,
     hints: dev ? false : 'error' // fail if we exceed the default performance budgets
   }
 }
