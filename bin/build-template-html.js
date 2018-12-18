@@ -94,9 +94,10 @@ async function buildAll () {
 }
 
 async function main () {
-  await buildAll()
   if (process.argv.includes('--watch')) {
     doWatch()
+  } else {
+    await buildAll()
   }
 }
 
