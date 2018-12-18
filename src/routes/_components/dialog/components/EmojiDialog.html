@@ -5,15 +5,15 @@
   background="var(--main-bg)"
 >
   <div class="emoji-container" {style} >
-    {#await loadEmojiMart}
+    {#if loaded}
+      <emoji-mart props-json={emojiMartPropsJson} ></emoji-mart>
+    {:elseif error}
+      <div>Failed to load emoji picker: {error}</div>
+    {:else}
       <div class="emoji-container-loading" >
         <LoadingSpinner />
       </div>
-    {:then}
-      <emoji-mart props-json={emojiMartPropsJson} ></emoji-mart>
-    {:catch err}
-      <div>Failed to load emoji picker: {err}</div>
-    {/await}
+    {/if}
   </div>
 </ModalDialog>
 <style>
@@ -52,9 +52,19 @@
   import { on } from '../../../_utils/eventBus'
 
   export default {
-    oncreate () {
+    async oncreate () {
       onCreateDialog.call(this)
       on('emoji-selected', this, emoji => this.onEmojiSelected(emoji))
+      try {
+        loadCSS('/emoji-mart.css')
+        let Picker = await importEmojiMart()
+        if (!customElements.get('emoji-mart')) {
+          define({ 'emoji-mart': Picker })
+        }
+        this.set({ loaded: true })
+      } catch (error) {
+        this.set({ error }) // should never happen, but you never know
+      }
     },
     components: {
       ModalDialog,
@@ -65,14 +75,8 @@
       loading: true,
       title: 'Emoji',
       color: 'var(--nav-bg)',
-      loadEmojiMart: Promise.all([
-        loadCSS('/emoji-mart.css'),
-        importEmojiMart().then(Picker => {
-          if (!customElements.get('emoji-mart')) {
-            define({ 'emoji-mart': Picker })
-          }
-        })
-      ])
+      loaded: false,
+      error: void 0
     }),
     computed: {
       // try to estimate size of emoji-mart based on mobile vs desktop

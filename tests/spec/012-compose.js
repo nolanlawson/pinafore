@@ -1,4 +1,3 @@
-import { Selector as $ } from 'testcafe'
 import {
   composeButton, composeInput, composeLengthIndicator, emojiButton, emojiSearchInput, getComposeSelectionStart,
   getNthStatusContent, getUrl,
