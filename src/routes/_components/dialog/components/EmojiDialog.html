@@ -4,14 +4,32 @@
   {title}
   background="var(--main-bg)"
 >
-  <div class="custom-emoji-container">
-    <emoji-mart props-json={emojiMartPropsJson} >
-    </emoji-mart>
+  <div class="emoji-container" {style} >
+    {#await loadEmojiMart}
+      <div class="emoji-container-loading" >
+        <LoadingSpinner />
+      </div>
+    {:then}
+      <emoji-mart props-json={emojiMartPropsJson} ></emoji-mart>
+    {:catch err}
+      <div>Failed to load emoji picker: {err}</div>
+    {/await}
   </div>
 </ModalDialog>
 <style>
-  .custom-emoji-container {
+  .emoji-container {
     max-width: calc(100vw - 20px);
+    position: relative;
+  }
+  .emoji-container-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
 <script>
@@ -20,41 +38,59 @@
   import { insertEmoji } from '../../../_actions/emoji'
   import { show } from '../helpers/showDialog'
   import { close } from '../helpers/closeDialog'
-  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
   import { define } from 'remount/es6'
   import { loadCSS } from '../../../_utils/loadCSS'
-  import Picker from '../../../_react/emoji-mart'
+  import LoadingSpinner from '../../../_components/LoadingSpinner.html'
+  import { importEmojiMart } from '../../../_utils/asyncModules'
 
   export default {
-    oncreate() {
-      onCreateDialog.call(this)
-      loadCSS('/emoji-mart.css')
-      if (!customElements.get('emoji-mart')) {
-        define({ 'emoji-mart': Picker })
-      }
-    },
+    oncreate,
     components: {
-      ModalDialog
+      ModalDialog,
+      LoadingSpinner
     },
     store: () => store,
     data: () => ({
+      loading: true,
       title: 'Emoji',
-      color: 'var(--nav-bg)'
+      color: 'var(--nav-bg)',
+      loadEmojiMart: Promise.all([
+        loadCSS('/emoji-mart.css'),
+        importEmojiMart().then(Picker => {
+          if (!customElements.get('emoji-mart')) {
+            define({ 'emoji-mart': Picker })
+          }
+        })
+      ]),
     }),
     computed: {
+      // try to estimate size of emoji-mart based on mobile vs desktop
+      style: ({ $isMobileSize }) => (`
+        min-width: ${$isMobileSize ? 250: 300}px;
+        min-height: ${$isMobileSize ? 400: 400}px;
+      `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ title, color, perLine }) => ({
+      emojiMartProps: ({ title, color, perLine, customEmoji }) => ({
         title,
         color,
         perLine,
-        recent: null
+        recent: null,
+        custom: customEmoji
       }),
-      perLine: ({ $isMobileSize }) => $isMobileSize ? 8 : 9,
-      emojis: ({ $currentCustomEmoji }) => {
+      perLine: ({ $isMobileSize }) => $isMobileSize ? 7 : 9,
+      customEmoji: ({ $currentCustomEmoji, $autoplayGifs }) => {
         if (!$currentCustomEmoji) {
           return []
         }
-        return $currentCustomEmoji.filter(emoji => emoji.visible_in_picker)
+        return $currentCustomEmoji.filter(emoji => emoji.visible_in_picker).map(emoji => ({
+          name: emoji.shortcode,
+          short_names: [emoji.shortcode],
+          text: `:${emoji.shortcode}:`,
+          emoticons: [],
+          keywords: [emoji.shortcode],
+          imageUrl: $autoplayGifs ? emoji.url : emoji.static_url
+        }))
       }
     },
     methods: {
