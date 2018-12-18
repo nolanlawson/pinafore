@@ -6,7 +6,9 @@ const resolve = {
   mainFields: ['svelte', 'module', 'browser', 'main'],
   alias: {
     'react': 'inferno-compat',
-    'react-dom': 'inferno-compat'
+    'react-dom': 'inferno-compat',
+    'inferno': dev ? 'inferno/dist/index.dev.esm.js' : 'inferno'
+
   }
 }
 
