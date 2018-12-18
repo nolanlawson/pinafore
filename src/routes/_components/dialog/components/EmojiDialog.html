@@ -81,13 +81,12 @@
         min-height: ${$isSmallMobileSize ? 300: 400}px;
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ title, color, perLine, custom, showPreview, emojiSize }) => ({
+      emojiMartProps: ({ title, color, perLine, custom, showPreview }) => ({
         title,
         color,
         perLine,
         custom,
-        showPreview,
-        emojiSize: 24
+        showPreview
       }),
       showPreview: ({ $isSmallMobileSize }) => !$isSmallMobileSize,
       perLine: ({ $isSmallMobileSize }) => $isSmallMobileSize ? 7 : 9,
