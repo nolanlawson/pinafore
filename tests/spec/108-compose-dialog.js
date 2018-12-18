@@ -9,7 +9,7 @@ import {
   getNthStatusSelector,
   composeModalEmojiButton,
   composeModalInput,
-  composeModalComposeButton
+  composeModalComposeButton, emojiSearchInput
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -42,7 +42,8 @@ test('can use emoji dialog within compose dialog', async t => {
   await sleep(2000)
   await t.click(composeButton)
     .click(composeModalEmojiButton)
-    .click($('button img[title=":blobpats:"]'))
+    .typeText(emojiSearchInput, 'blobpats')
+    .pressKey('enter')
     .expect(composeModalInput.value).eql(':blobpats: ')
     .click(composeModalComposeButton)
     .expect(modalDialog.exists).notOk()
