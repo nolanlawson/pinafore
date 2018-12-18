@@ -76,20 +76,22 @@
     }),
     computed: {
       // try to estimate size of emoji-mart based on mobile vs desktop
-      style: ({ $isMobileSize }) => (`
-        min-width: ${$isMobileSize ? 250: 300}px;
-        min-height: ${$isMobileSize ? 400: 400}px;
+      style: ({ $isSmallMobileSize }) => (`
+        min-width: ${$isSmallMobileSize ? 250: 300}px;
+        min-height: ${$isSmallMobileSize ? 300: 400}px;
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ title, color, perLine, customEmoji }) => ({
+      emojiMartProps: ({ title, color, perLine, custom, showPreview, emojiSize }) => ({
         title,
         color,
         perLine,
-        recent: null,
-        custom: customEmoji
+        custom,
+        showPreview,
+        emojiSize: 24
       }),
-      perLine: ({ $isMobileSize }) => $isMobileSize ? 7 : 9,
-      customEmoji: ({ $currentCustomEmoji, $autoplayGifs }) => {
+      showPreview: ({ $isSmallMobileSize }) => !$isSmallMobileSize,
+      perLine: ({ $isSmallMobileSize }) => $isSmallMobileSize ? 7 : 9,
+      custom: ({ $currentCustomEmoji, $autoplayGifs }) => {
         if (!$currentCustomEmoji) {
           return []
         }
