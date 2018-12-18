@@ -21,6 +21,10 @@ To run a dev server with hot reloading:
 
 Now it's running at `localhost:4002`.
 
+**Linux users:** for file changes to work, 
+you'll probably want to run `export CHOKIDAR_USEPOLLING=1`
+because of [this issue](https://github.com/paulmillr/chokidar/issues/237).
+
 ## Linting
 
 Pinafore uses [JavaScript Standard Style](https://standardjs.com/).

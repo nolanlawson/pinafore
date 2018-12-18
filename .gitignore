@@ -3,6 +3,7 @@ node_modules
 /__sapper__
 /mastodon
 /mastodon.log
+/src/template.html
 /static/*.css
 /static/robots.txt
 /static/inline-script.js.map
