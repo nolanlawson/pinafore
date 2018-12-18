@@ -34,7 +34,10 @@ module.exports = {
               '@babel/plugin-syntax-dynamic-import',
               '@babel/plugin-transform-react-constant-elements',
               '@babel/plugin-transform-react-inline-elements',
-              'transform-react-remove-prop-types'
+              ['transform-react-remove-prop-types', {
+                additionalLibraries: [/shared-props/],
+                removeImport: true
+              }]
             ]
           }
         }
