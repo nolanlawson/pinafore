@@ -24,6 +24,20 @@ module.exports = {
             hotReload: dev
           }
         }
+      },
+      {
+        test: /\.m?js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-transform-react-constant-elements',
+              '@babel/plugin-transform-react-inline-elements',
+              'transform-react-remove-prop-types'
+            ]
+          }
+        }
       }
     ].filter(Boolean)
   },

@@ -39,8 +39,14 @@
     "export": "run-s build sapper-export print-export-info"
   },
   "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-react-constant-elements": "^7.2.0",
+    "@babel/plugin-transform-react-inline-elements": "^7.2.0",
     "@gamestdio/websocket": "^0.2.8",
     "@webcomponents/custom-elements": "^1.2.1",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.21",
     "browserslist": "^4.3.6",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
