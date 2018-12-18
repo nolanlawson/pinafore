@@ -141,7 +141,8 @@
       "NotificationEvent",
       "NodeList",
       "DOMParser",
-      "CSS"
+      "CSS",
+      "customElements"
     ],
     "ignore": [
       "dist",

@@ -72,13 +72,13 @@
             define({ 'emoji-mart': Picker })
           }
         })
-      ]),
+      ])
     }),
     computed: {
       // try to estimate size of emoji-mart based on mobile vs desktop
       style: ({ $isSmallMobileSize }) => (`
-        min-width: ${$isSmallMobileSize ? 250: 300}px;
-        min-height: ${$isSmallMobileSize ? 300: 400}px;
+        min-width: ${$isSmallMobileSize ? 250 : 300}px;
+        min-height: ${$isSmallMobileSize ? 300 : 400}px;
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
       emojiMartProps: ({ title, color, perLine, custom, showPreview }) => ({

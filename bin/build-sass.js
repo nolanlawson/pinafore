@@ -4,7 +4,7 @@ import sass from 'node-sass'
 import path from 'path'
 import fs from 'fs'
 import pify from 'pify'
-import CleanCSS from 'clean-css';
+import CleanCSS from 'clean-css'
 
 const writeFile = pify(fs.writeFile.bind(fs))
 const readdir = pify(fs.readdir.bind(fs))
