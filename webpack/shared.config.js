@@ -8,7 +8,6 @@ const resolve = {
     'react': 'inferno-compat',
     'react-dom': 'inferno-compat',
     'inferno': dev ? 'inferno/dist/index.dev.esm.js' : 'inferno'
-
   }
 }
 
