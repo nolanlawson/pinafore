@@ -37,5 +37,5 @@ export const importLoggedInObservers = () => import(
   ).then(getDefault)
 
 export const importEmojiMart = () => import(
-  /* webpackChunkName: 'emoji-mart.js' */ '../_react/emoji-mart'
+  /* webpackChunkName: 'emoji-mart.js' */ '../_react/emoji-mart.js'
   ).then(getDefault)
