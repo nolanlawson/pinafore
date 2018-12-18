@@ -1,6 +1,5 @@
-import { Selector as $ } from 'testcafe'
 import {
-  composeButton, composeInput, composeLengthIndicator, emojiButton, getComposeSelectionStart,
+  composeButton, composeInput, composeLengthIndicator, emojiButton, emojiSearchInput, getComposeSelectionStart,
   getNthStatusContent, getUrl,
   homeNavButton,
   notificationsNavButton, sleep,
@@ -63,7 +62,8 @@ test('shows compose limits for custom emoji', async t => {
   await t
     .typeText(composeInput, 'hello world ')
     .click(emojiButton)
-    .click($('button img[title=":blobnom:"]'))
+    .typeText(emojiSearchInput, 'blobnom')
+    .pressKey('enter')
     .expect(composeInput.value).eql('hello world :blobnom: ')
     .expect(composeLengthIndicator.innerText).eql('478')
 })
@@ -75,16 +75,19 @@ test('inserts custom emoji correctly', async t => {
     .selectText(composeInput, 6, 6)
     .expect(getComposeSelectionStart()).eql(6)
     .click(emojiButton)
-    .click($('button img[title=":blobpats:"]'))
+    .typeText(emojiSearchInput, 'blobpats')
+    .pressKey('enter')
     .expect(composeInput.value).eql('hello :blobpats: world')
     .selectText(composeInput, 0, 0)
     .expect(getComposeSelectionStart()).eql(0)
     .click(emojiButton)
-    .click($('button img[title=":blobnom:"]'))
+    .typeText(emojiSearchInput, 'blobnom')
+    .pressKey('enter')
     .expect(composeInput.value).eql(':blobnom: hello :blobpats: world')
     .typeText(composeInput, ' foobar ')
     .click(emojiButton)
-    .click($('button img[title=":blobpeek:"]'))
+    .typeText(emojiSearchInput, 'blobpeek')
+    .pressKey('enter')
     .expect(composeInput.value).eql(':blobnom: hello :blobpats: world foobar :blobpeek: ')
 })
 
@@ -92,11 +95,26 @@ test('inserts emoji without typing anything', async t => {
   await loginAsFoobar(t)
   await t
     .click(emojiButton)
-    .click($('button img[title=":blobpats:"]'))
+    .typeText(emojiSearchInput, 'blobpats')
+    .pressKey('enter')
     .expect(composeInput.value).eql(':blobpats: ')
     .click(emojiButton)
-    .click($('button img[title=":blobpeek:"]'))
+    .typeText(emojiSearchInput, 'blobpeek')
+    .pressKey('enter')
     .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
+})
+
+test('inserts native emoji without typing anything', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(emojiButton)
+    .typeText(emojiSearchInput, 'pineapple')
+    .pressKey('enter')
+    .expect(composeInput.value).eql('\ud83c\udf4d ')
+    .click(emojiButton)
+    .typeText(emojiSearchInput, 'elephant')
+    .pressKey('enter')
+    .expect(composeInput.value).eql('\ud83d\udc18 \ud83c\udf4d ')
 })
 
 test('cannot post an empty status', async t => {

@@ -1,11 +1,12 @@
 const config = require('sapper/config/webpack.js')
 const terser = require('./terser.config')
 const webpack = require('webpack')
-const { mode, dev } = require('./shared.config')
+const { mode, dev, resolve } = require('./shared.config')
 
 module.exports = {
   entry: config.serviceworker.entry(),
   output: config.serviceworker.output(),
+  resolve,
   mode,
   devtool: dev ? 'inline-source-map' : 'source-map',
   plugins: [

@@ -6,7 +6,10 @@ export function resizeObservers (store) {
   }
 
   const recalculateIsMobileSize = () => {
-    store.set({ isMobileSize: window.matchMedia('(max-width: 767px)').matches })
+    store.set({
+      isMobileSize: window.matchMedia('(max-width: 767px)').matches,
+      isSmallMobileSize: window.matchMedia('(max-width: 479px)').matches
+    })
   }
 
   registerResizeListener(recalculateIsMobileSize)
