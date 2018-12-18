@@ -77,7 +77,6 @@ module.exports = {
   ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
-    maxAssetSize: 275000,
     hints: dev ? false : 'error' // fail if we exceed the default performance budgets
   }
 }
