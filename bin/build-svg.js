@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import svgs from './svgs'
 import path from 'path'
 import fs from 'fs'

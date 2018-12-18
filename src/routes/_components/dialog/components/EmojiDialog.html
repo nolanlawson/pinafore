@@ -46,18 +46,16 @@
   import { close } from '../helpers/closeDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import { define } from 'remount/es6'
-  import { loadCSS } from '../../../_utils/loadCSS'
   import LoadingSpinner from '../../../_components/LoadingSpinner.html'
-  import { importEmojiMart } from '../../../_utils/asyncModules'
   import { on } from '../../../_utils/eventBus'
+  import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
 
   export default {
     async oncreate () {
       onCreateDialog.call(this)
       on('emoji-selected', this, emoji => this.onEmojiSelected(emoji))
       try {
-        loadCSS('/emoji-mart.css')
-        let Picker = await importEmojiMart()
+        let Picker = await createEmojiMartPicker()
         if (!customElements.get('emoji-mart')) {
           define({ 'emoji-mart': Picker })
         }
