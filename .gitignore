@@ -7,4 +7,5 @@ node_modules
 /static/*.css
 /static/robots.txt
 /static/inline-script.js.map
+/static/emoji-mart-all.json
 /inline-script-checksum.json
