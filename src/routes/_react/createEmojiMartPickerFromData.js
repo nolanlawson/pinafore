@@ -3,7 +3,7 @@
 // using `remount` to pass in functions as attributes, since everything is stringified. So
 // I just fire a global event here when an emoji is clicked.
 
-import NimblePicker from 'emoji-mart/dist-es/components/picker/nimble-picker'
+import NimblePicker from 'emoji-mart/dist-modern/components/picker/nimble-picker'
 import React from 'react'
 import { emit } from '../_utils/eventBus'
 
