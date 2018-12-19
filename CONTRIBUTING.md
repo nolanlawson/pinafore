@@ -161,7 +161,7 @@ see much value in contributing it back, because it was too Pinafore-specific.
 
 To get a nice animation on the nav bar when you switch columns, every page is lazy-loaded as `LazyPage.html`.
 This "lazy page" is merely delayed a few frames to let the animation run. Therefore there is a duplication
-between `src/routes` and `src/routes_pages`. The "lazy page" is in the former, and the actual page is in the
+between `src/routes` and `src/routes/_pages`. The "lazy page" is in the former, and the actual page is in the
 latter. One imports the other.
 
 ### There are multiple stores
