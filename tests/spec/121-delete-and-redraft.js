@@ -145,3 +145,20 @@ test('delete and redraft reply within thread', async t => {
     })
     .expect(getNthStatus(2).exists).notOk()
 })
+
+test('multiple paragraphs', async t => {
+  let text = 'hey ho\n\ndouble newline!\njust one newline\njust another newline\n\nanother double newline!'
+  await postAs('foobar', text)
+  await loginAsFoobar(t)
+  await t
+    .hover(getNthStatus(0))
+    .expect(getNthStatusContent(0).innerText).contains(text)
+    .click(getNthStatusOptionsButton(0))
+    .click(dialogOptionsOption.withText('Delete and redraft'))
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.value).eql(text)
+    .typeText(composeModalInput, '\n\nwoot', { paste: true })
+    .click(composeModalComposeButton)
+    .expect(modalDialog.exists).notOk()
+    .expect(getNthStatusContent(0).innerText).contains(text + '\n\nwoot')
+})
