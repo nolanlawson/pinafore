@@ -8,6 +8,13 @@ To run a dev server with hot reloading:
 
 Now it's running at `localhost:4002`.
 
+If you don't want to setup Mastodon locally you can use [Serveo](https://serveo.net/) in order to connect to an instance:
+
+    ssh -R 80:localhost:4002 serveo.net
+
+You can then access `localhost:4002` at `https://[random_string].serveo.net` (the exact URL will be printed in the terminal).
+Proceed connecting to an instance (https://malfunctioning.technology/ might be a good choice).
+
 **Linux users:** for file changes to work, 
 you'll probably want to run `export CHOKIDAR_USEPOLLING=1`
 because of [this issue](https://github.com/paulmillr/chokidar/issues/237).
