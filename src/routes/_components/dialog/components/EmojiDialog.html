@@ -99,16 +99,7 @@
           define({ 'emoji-mart': Picker })
         }
         this.set({ loaded: true })
-        requestAnimationFrame(() => {
-          let container = this.refs.container
-          if (container) {
-            let searchInput = container.querySelector('emoji-mart .emoji-mart-search input')
-            if (searchInput) {
-              // do this manually because emoji-mart's built in autofocus doesn't work consistently
-              searchInput.focus()
-            }
-          }
-        })
+        this.focusIfNecessary()
       } catch (error) {
         this.set({ error }) // should never happen, but you never know
       }
@@ -137,8 +128,7 @@
         emoji: 'sailboat',
         title: 'Emoji',
         include: categoriesSort,
-        showPreview: true,
-        autoFocus: true
+        showPreview: true
       }),
       perLine: ({ $isSmallMobileSize, $isTinyMobileSize, $isMobileSize }) => (
         $isTinyMobileSize
@@ -161,7 +151,9 @@
           keywords: [emoji.shortcode],
           imageUrl: $autoplayGifs ? emoji.url : emoji.static_url
         }))
-      }
+      },
+      // it's jarring on mobile if the emoji picker automatically pops open the keyboard
+      autoFocus: ({ $isUserTouching }) => !$isUserTouching
     },
     methods: {
       show,
@@ -170,6 +162,22 @@
         let { realm } = this.get()
         insertEmoji(realm, emoji)
         this.close()
+      },
+      focusIfNecessary () {
+        let { autoFocus } = this.get()
+        if (!autoFocus) {
+          return
+        }
+        requestAnimationFrame(() => {
+          let container = this.refs.container
+          if (container) {
+            let searchInput = container.querySelector('emoji-mart .emoji-mart-search input')
+            if (searchInput) {
+              // do this manually because emoji-mart's built in autofocus doesn't work consistently
+              searchInput.focus()
+            }
+          }
+        })
       }
     }
   }
