@@ -123,6 +123,17 @@
   :global(body.modal-open) {
     overflow-y: hidden;
   }
+
+  @media (max-width: 320px) {
+    .modal-dialog-title {
+      font-size: 1.3em;
+    }
+    .close-dialog-button-svg {
+      padding: 7px;
+      width: 18px;
+      height: 18px;
+    }
+  }
 </style>
 <script>
   import { A11yDialog } from '../../../_thirdparty/a11y-dialog/a11y-dialog'

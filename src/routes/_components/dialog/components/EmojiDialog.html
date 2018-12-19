@@ -4,7 +4,7 @@
   {title}
   background="var(--main-bg)"
 >
-  <div class="emoji-container" {style} >
+  <div class="emoji-container" {style} ref:container >
     {#if loaded}
       <emoji-mart props-json={emojiMartPropsJson} ></emoji-mart>
     {:elseif error}
@@ -37,6 +37,30 @@
     background-repeat: no-repeat;
     background-position: center center;
   }
+  :global(.emoji-container .emoji-mart-category .emoji-mart-emoji span, .emoji-container .emoji-mart-anchor) {
+    cursor: pointer;
+  }
+  :global(.emoji-container .emoji-mart-search-icon) {
+    top: 6px; /* this looks a bit off-center with the native emoji */
+  }
+
+  :global(.emoji-container .emoji-mart-skin) {
+    max-width: 24px;
+  }
+
+  :global(.emoji-container .emoji-mart-skin-swatch.selected) {
+    width: 24px;
+  }
+
+  :global(.emoji-container .emoji-mart-skin-swatches.opened .emoji-mart-skin-swatch) {
+    width: 24px;
+  }
+
+  @media (max-width: 320px) {
+    :global(.emoji-container .emoji-mart-preview) {
+      height: 60px;
+    }
+  }
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
@@ -50,6 +74,21 @@
   import { on } from '../../../_utils/eventBus'
   import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
 
+  // Consistency with Mastodon FE, taken from
+  // app/javascript/mastodon/features/compose/components/emoji_picker_dropdown.js
+  const categoriesSort = [
+    'recent',
+    'custom',
+    'people',
+    'nature',
+    'foods',
+    'activity',
+    'places',
+    'objects',
+    'symbols',
+    'flags'
+  ]
+
   export default {
     async oncreate () {
       onCreateDialog.call(this)
@@ -60,6 +99,16 @@
           define({ 'emoji-mart': Picker })
         }
         this.set({ loaded: true })
+        requestAnimationFrame(() => {
+          let container = this.refs.container
+          if (container) {
+            let searchInput = container.querySelector('emoji-mart .emoji-mart-search input')
+            if (searchInput) {
+              // do this manually because emoji-mart's built in autofocus doesn't work consistently
+              searchInput.focus()
+            }
+          }
+        })
       } catch (error) {
         this.set({ error }) // should never happen, but you never know
       }
@@ -81,16 +130,25 @@
         min-height: ${$isSmallMobileSize ? 300 : 400}px;
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ perLine, custom, showPreview }) => ({
+      emojiMartProps: ({ perLine, custom }) => ({
         perLine,
         custom,
-        showPreview,
         color: 'var(--nav-bg)',
         emoji: 'sailboat',
-        title: 'Emoji'
+        title: 'Emoji',
+        include: categoriesSort,
+        showPreview: true,
+        autoFocus: true
       }),
-      showPreview: ({ $isSmallMobileSize }) => !$isSmallMobileSize,
-      perLine: ({ $isSmallMobileSize }) => $isSmallMobileSize ? 7 : 9,
+      perLine: ({ $isSmallMobileSize, $isTinyMobileSize, $isMobileSize }) => (
+        $isTinyMobileSize
+          ? 7
+          : $isSmallMobileSize
+            ? 8
+            : $isMobileSize
+              ? 9
+              : 10
+      ),
       custom: ({ $currentCustomEmoji, $autoplayGifs }) => {
         if (!$currentCustomEmoji) {
           return []

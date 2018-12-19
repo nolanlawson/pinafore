@@ -13,8 +13,8 @@ function onEmojiSelected (emoji) {
 
 export default function createEmojiMartPickerFromData (data) {
   return props => React.createElement(NimblePicker, Object.assign({
-    set: 'all',
-    data,
+    set: 'twitter', // same as Mastodon frontend
+    data, // same as Mastodon frontend
     native: true,
     onSelect: onEmojiSelected
   }, props))
