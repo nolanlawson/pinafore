@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { muteAccount, unmuteAccount } from '../_api/mute'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { updateLocalRelationship } from './accounts'
 import { emit } from '../_utils/eventBus'
 

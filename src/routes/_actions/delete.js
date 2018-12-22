@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { deleteStatus } from '../_api/delete'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { deleteStatus as deleteStatusLocally } from './deleteStatuses'
 
 export async function doDeleteStatus (statusId) {

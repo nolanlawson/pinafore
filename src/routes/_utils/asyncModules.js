@@ -39,3 +39,7 @@ export const importLoggedInObservers = () => import(
 export const importEmojiMart = () => import(
   /* webpackChunkName: 'createEmojiMartPickerFromData.js' */ '../_react/createEmojiMartPickerFromData.js'
   ).then(getDefault)
+
+export const importToast = () => import(
+  /* webpackChunkName: 'Toast.html' */ '../_components/toast/Toast.html'
+  ).then(getDefault)

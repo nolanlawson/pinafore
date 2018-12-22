@@ -1,5 +1,5 @@
 import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { pinStatus, unpinStatus } from '../_api/pin'
 import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'

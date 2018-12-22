@@ -1,5 +1,5 @@
 import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { search } from '../_api/search'
 
 export async function doSearch () {
