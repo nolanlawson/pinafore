@@ -1,6 +1,6 @@
 import { favoriteStatus, unfavoriteStatus } from '../_api/favorite'
 import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { database } from '../_database/database'
 
 export async function setFavorited (statusId, favorited) {

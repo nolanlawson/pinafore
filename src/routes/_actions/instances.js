@@ -1,7 +1,7 @@
 import { getVerifyCredentials } from '../_api/user'
 import { store } from '../_store/store'
 import { switchToTheme } from '../_utils/themeEngine'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { goto } from '../../../__sapper__/client'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getInstanceInfo } from '../_api/instance'

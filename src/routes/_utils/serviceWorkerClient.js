@@ -1,4 +1,4 @@
-import { toast } from './toast'
+import { toast } from '../_components/toast/toast'
 
 function onUpdateFound (registration) {
   const newWorker = registration.installing

@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { uploadMedia } from '../_api/media'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 export async function doMediaUpload (realm, file) {

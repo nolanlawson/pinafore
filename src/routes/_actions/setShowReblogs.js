@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { setShowReblogs as setShowReblogsApi } from '../_api/showReblogs'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { updateLocalRelationship } from './accounts'
 
 export async function setShowReblogs (accountId, showReblogs, toastOnSuccess) {

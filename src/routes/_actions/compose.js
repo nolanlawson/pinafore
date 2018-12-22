@@ -1,5 +1,5 @@
 import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { postStatus as postStatusToServer } from '../_api/statuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
 import { database } from '../_database/database'
