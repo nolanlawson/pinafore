@@ -30,7 +30,7 @@ function loadCSS (href) {
   document.head.insertBefore(link, offlineStyle)
 }
 
-export function switchToTheme (themeName) {
+export function switchToTheme (themeName = 'default') {
   let themeColor = window.__themeColors[themeName]
   meta.content = themeColor || window.__themeColors['default']
   if (themeName !== 'default') {
