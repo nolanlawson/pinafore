@@ -35,6 +35,10 @@ module.exports = {
       terser()
     ],
     splitChunks: {
+      chunks: 'async',
+      minSize: 5000,
+      maxAsyncRequests: Infinity,
+      maxInitialRequests: Infinity,
       name: false // these chunk names can be annoyingly long
     }
   },
