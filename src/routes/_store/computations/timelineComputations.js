@@ -1,4 +1,4 @@
-import get from 'lodash-es/get'
+import { get } from '../../_utils/lodash-lite'
 
 function computeForTimeline (store, key, defaultValue) {
   store.compute(key,
