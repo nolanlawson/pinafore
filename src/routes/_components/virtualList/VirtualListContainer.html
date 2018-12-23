@@ -1,7 +1,7 @@
 <slot></slot>
 <script>
   import { virtualListStore } from './virtualListStore'
-  import throttle from 'lodash-es/throttle'
+  import { throttle } from 'lodash-es'
   import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../../_utils/fullscreen'
   import { mark, stop } from '../../_utils/marks'
   import { doubleRAF } from '../../_utils/doubleRAF'

@@ -1,5 +1,5 @@
 import { paramsString } from '../_utils/ajax'
-import noop from 'lodash-es/noop'
+import { noop } from 'lodash-es'
 import { importWebSocketClient } from '../_utils/asyncModules'
 
 function getStreamName (timeline) {

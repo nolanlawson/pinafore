@@ -29,9 +29,8 @@
   import VirtualListFooter from './VirtualListFooter.html'
   import VirtualListHeader from './VirtualListHeader.html'
   import { virtualListStore } from './virtualListStore'
-  import throttle from 'lodash-es/throttle'
+  import { throttle, isEqual } from 'lodash-es'
   import { mark, stop } from '../../_utils/marks'
-  import isEqual from 'lodash-es/isEqual'
   import { observe } from 'svelte-extras'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 800

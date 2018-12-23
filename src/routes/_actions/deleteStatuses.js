@@ -1,6 +1,6 @@
 import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './statuses'
 import { store } from '../_store/store'
-import isEqual from 'lodash-es/isEqual'
+import { isEqual } from 'lodash-es'
 import { database } from '../_database/database'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 

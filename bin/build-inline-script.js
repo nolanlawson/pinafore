@@ -5,7 +5,7 @@ import path from 'path'
 import { rollup } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import replace from 'rollup-plugin-replace'
-import fromPairs from 'lodash-es/fromPairs'
+import { fromPairs } from 'lodash-es'
 import { themes } from '../src/routes/_static/themes'
 
 const writeFile = pify(fs.writeFile.bind(fs))

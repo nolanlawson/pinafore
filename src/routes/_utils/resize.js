@@ -1,4 +1,4 @@
-import debounce from 'lodash-es/debounce'
+import { debounce } from 'lodash-es'
 
 const DEBOUNCE_DELAY = 700
 

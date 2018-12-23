@@ -4,8 +4,7 @@
 // add deferredUpdate, and add perf marks.
 
 import { mark, stop } from '../../_utils/marks'
-import debounce from 'lodash-es/debounce'
-import throttle from 'lodash-es/throttle'
+import { debounce, throttle } from 'lodash-es'
 import { getScrollContainer } from '../../_utils/scrollContainer'
 
 const map = new Map()

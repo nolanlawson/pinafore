@@ -10,7 +10,7 @@ import {
   THREADS_STORE,
   TIMESTAMP
 } from './constants'
-import debounce from 'lodash-es/debounce'
+import { debounce } from 'lodash-es'
 import { mark, stop } from '../_utils/marks'
 import { deleteAll } from './utils'
 import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'

@@ -6,7 +6,7 @@ import { buildSass } from './build-sass'
 import { buildInlineScript } from './build-inline-script'
 import { buildSvg } from './build-svg'
 import now from 'performance-now'
-import debounce from 'lodash-es/debounce'
+import { debounce } from 'lodash-es'
 
 const writeFile = pify(fs.writeFile.bind(fs))
 

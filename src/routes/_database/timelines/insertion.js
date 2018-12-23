@@ -1,5 +1,4 @@
-import difference from 'lodash-es/difference'
-import times from 'lodash-es/times'
+import { difference, times } from 'lodash-es'
 import { cloneForStorage } from '../helpers'
 import { dbPromise, getDatabase } from '../databaseLifecycle'
 import { accountsCache, notificationsCache, setInCache, statusesCache } from '../cache'
@@ -12,11 +11,7 @@ import {
   STATUSES_STORE,
   THREADS_STORE
 } from '../constants'
-import {
-  createThreadId,
-  createThreadKeyRange,
-  createTimelineId
-} from '../keys'
+import { createThreadId, createThreadKeyRange, createTimelineId } from '../keys'
 import { cacheStatus } from './cacheStatus'
 
 export function putStatus (statusesStore, status) {

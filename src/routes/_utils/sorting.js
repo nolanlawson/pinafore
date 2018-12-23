@@ -1,4 +1,4 @@
-import padStart from 'lodash-es/padStart'
+import { padStart } from 'lodash-es'
 
 export function zeroPad (str, toSize) {
   return padStart(str, toSize, '0')
