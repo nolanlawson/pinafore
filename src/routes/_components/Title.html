@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>{instanceIndicator} · {name}{notificationsIndicator}</title>
+  <title>{notificationsIndicator} {instanceIndicator} · {name}</title>
 </svelte:head>
 <script>
   import { store } from '../_store/store'
@@ -17,7 +17,7 @@
         `${($isUserLoggedIn && !settingsPage && $currentInstance) ? $currentInstance : 'Pinafore'}`
       ),
       notificationsIndicator: ({ $hasNotifications, $numberOfNotifications }) => (
-        $hasNotifications ? ` (${$numberOfNotifications})` : ''
+        $hasNotifications ? `(${$numberOfNotifications}) ` : ''
       )
     }
   }
