@@ -97,7 +97,7 @@ export const getActiveElementInsideNthStatus = exec(() => {
   return ''
 })
 
-export const getTitleText = exec(() => document.head.querySelector('title').innerHTML)
+export const getTitleText = exec(() => document.head.querySelector('title') && document.head.querySelector('title').innerHTML)
 
 export const goBack = exec(() => window.history.back())
 
