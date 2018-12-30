@@ -61,7 +61,7 @@ test('deleted statuses result in deleted notifications', async t => {
     .hover(getNthStatus(0))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
   let status = await postAs('admin', "@foobar yo yo foobar what's up")
-  await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1)', { timeout })
+  await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1 notification)', { timeout })
   await deleteAs('admin', status.id)
   await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications', { timeout })
 })
