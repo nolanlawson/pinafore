@@ -49,6 +49,14 @@ Run tests for a particular browser:
     BROWSER=safari npm run test-browser
     BROWSER=edge npm run test-browser
 
+If the script isn't able to set up the Postgres database, try running:
+
+    sudo su - postgres
+
+Then:
+
+    psql -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+
 ### Testing in development mode
 
 In separate terminals:
