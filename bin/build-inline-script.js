@@ -28,10 +28,12 @@ export async function buildInlineScript () {
       })
     ]
   })
-  let { code, map } = await bundle.generate({
+  let { output } = await bundle.generate({
     format: 'iife',
     sourcemap: true
   })
+
+  let { code, map } = output[0]
 
   let fullCode = `${code}//# sourceMappingURL=/inline-script.js.map`
   let checksum = crypto.createHash('sha256').update(fullCode).digest('base64')
