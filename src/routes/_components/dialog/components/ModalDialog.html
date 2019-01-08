@@ -24,6 +24,7 @@
     <slot></slot>
   </div>
 </div>
+<Shortcut scope="modal" key="Backspace" on:pressed="closeDialog(id)"/>
 <style>
   :global(.modal-dialog[aria-hidden='true']) {
     display: none;
@@ -125,9 +126,13 @@
   }
 </style>
 <script>
+  import Shortcut from '../../shortcut/Shortcut.html'
   import { A11yDialog } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
   import { classname } from '../../../_utils/classname'
   import { on, emit } from '../../../_utils/eventBus'
+  import {
+    pushShortcutScope,
+    popShortcutScope } from '../../../_utils/shortcuts'
 
   export default {
     oncreate () {
@@ -143,7 +148,12 @@
       })
       on('showDialog', this, this.showDialog)
       on('closeDialog', this, this.closeDialog)
+      pushShortcutScope('modal')
     },
+    ondestroy () {
+      popShortcutScope('modal')
+    },
+    components: { Shortcut },
     data: () => ({
       // don't animate if we're showing a modal dialog on top of another modal dialog. it looks ugly
       shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2,

@@ -35,3 +35,8 @@ export const importDatabase = () => import(
 export const importLoggedInObservers = () => import(
   /* webpackChunkName: 'loggedInObservers.js' */ '../_store/observers/loggedInObservers.js'
   ).then(getDefault)
+
+export const importNavShortcuts = () => import(
+    /* webpackChunkName: 'NavShortcuts' */ '../_components/NavShortcuts.html'
+  ).then(getDefault)
+

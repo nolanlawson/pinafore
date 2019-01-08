@@ -1,4 +1,4 @@
-<nav class="main-nav">
+<nav id="main-nav" class="main-nav">
 	<ul class="main-nav-ul">
     {#each $navPages as navPage (navPage.href)}
       <li class="main-nav-li">
@@ -13,6 +13,13 @@
     {/each}
 	</ul>
 </nav>
+{#await importNavShortcuts}
+<!-- awaiting nav shortcuts promise -->
+{:then component}
+<svelte:component this={component}/>
+{:catch error}
+<!-- nav shortcuts {error} -->
+{/await}
 
 <style>
 	.main-nav {
@@ -47,12 +54,16 @@
 </style>
 <script>
   import NavItem from './NavItem'
+  import { importNavShortcuts } from '../_utils/asyncModules'
   import { store } from '../_store/store'
 
   export default {
     store: () => store,
     components: {
       NavItem
-    }
+    },
+    data: () => ({
+      importNavShortcuts: importNavShortcuts()
+    })
   }
 </script>
