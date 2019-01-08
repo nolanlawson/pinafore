@@ -33,3 +33,7 @@ export const importShowVideoDialog = () => import(
 export const importShowCopyDialog = () => import(
   /* webpackChunkName: 'showCopyDialog' */ './creators/showCopyDialog'
   ).then(mod => mod.default)
+
+export const importShowShortcutHelpDialog = () => import(
+  /* webpackChunkName: 'showShortcutHelpDialog' */ './creators/showShortcutHelpDialog'
+  ).then(mod => mod.default)

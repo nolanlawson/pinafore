@@ -5,17 +5,23 @@
 <Shortcut key="g n" on:pressed="goto('/notifications')"/>
 <Shortcut key="g c" on:pressed="goto('/community')"/>
 <Shortcut key="s" on:pressed="goto('/search')"/>
+<Shortcut key="h|?" on:pressed="showShortcutHelpDialog()"/>
 
 <script>
   import Shortcut from './shortcut/Shortcut'
   import { goto } from '../../../__sapper__/client'
+  import { importShowShortcutHelpDialog } from './dialog/asyncDialogs'
 
   export default {
     components: {
       Shortcut
     },
     methods: {
-      goto
+      goto,
+      async showShortcutHelpDialog () {
+        let showShortcutHelpDialog = await importShowShortcutHelpDialog()
+        showShortcutHelpDialog()
+      }
     }
   }
 </script>
