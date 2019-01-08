@@ -1,9 +1,9 @@
 {#if status}
   <Status {index} {length} {timelineType} {timelineValue} {focusSelector}
-          {status} {notification} on:recalculateHeight
+          {status} {notification} {active} on:recalculateHeight
   />
 {:else}
-  <article class="notification-article"
+  <article class="notification-article {active ? 'active' : ''}"
            tabindex="0"
            aria-posinset={index}
            aria-setsize={length}
@@ -19,6 +19,9 @@
     max-width: calc(100vw - 40px);
     padding: 10px 20px;
     border-bottom: 1px solid var(--main-border);
+  }
+  .notification-article.active {
+    background-color: var(--status-active-background);
   }
   @media (max-width: 767px) {
     .notification-article {

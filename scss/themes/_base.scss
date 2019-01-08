@@ -80,6 +80,7 @@
   --very-deemphasized-text-color: #{rgba(#666, 0.6)};
 
   --status-direct-background: #{darken($body-bg-color, 5%)};
+  --status-active-background: #{lighten($body-bg-color, 2%)};
   --main-theme-color: #{$main-theme-color};
   --warning-color: #{#e01f19};
   --alt-input-bg: #{rgba($main-bg-color, 0.7)};

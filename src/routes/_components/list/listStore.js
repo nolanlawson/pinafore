@@ -8,6 +8,7 @@ class ListStore extends RealmStore {
 
 const listStore = new ListStore()
 
+listStore.computeForRealm('activeItem', null)
 listStore.computeForRealm('intersectionStates', {})
 
 if (process.browser && process.env.NODE_ENV !== 'production') {

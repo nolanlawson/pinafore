@@ -61,15 +61,13 @@ function testSupportsSmoothScroll () {
 
 const smoothScrollSupported = process.browser && testSupportsSmoothScroll()
 
-export function smoothScrollToTop (node) {
+export function smoothScroll (node, top) {
   if (smoothScrollSupported) {
-    console.log('using native smooth scroll')
     return node.scrollTo({
-      top: 0,
+      top: top,
       behavior: 'smooth'
     })
   } else {
-    console.log('using polyfilled smooth scroll')
-    return smoothScrollPolyfill(node, 'scrollTop', 0)
+    return smoothScrollPolyfill(node, 'scrollTop', top)
   }
 }
