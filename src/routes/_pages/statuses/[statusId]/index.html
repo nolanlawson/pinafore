@@ -1,28 +1,14 @@
-{#if $isUserLoggedIn}
-  <TimelinePage timeline="status/{params.statusId}">
-    <DynamicPageBanner title="" ariaTitle="Status thread page" />
-  </TimelinePage>
-{:else}
-  <HiddenFromSSR>
-    <FreeTextLayout>
-      <h1>Status</h1>
-
-      <p>A status thread will appear here when logged in.</p>
-    </FreeTextLayout>
-  </HiddenFromSSR>
-{/if}
+<TimelinePage timeline="status/{params.statusId}">
+  <DynamicPageBanner title="" ariaTitle="Status thread page" />
+</TimelinePage>
 <script>
-  import FreeTextLayout from '../../../_components/FreeTextLayout.html'
   import { store } from '../../../_store/store.js'
-  import HiddenFromSSR from '../../../_components/HiddenFromSSR'
   import DynamicPageBanner from '../../../_components/DynamicPageBanner.html'
   import TimelinePage from '../../../_components/TimelinePage.html'
 
   export default {
     store: () => store,
     components: {
-      FreeTextLayout,
-      HiddenFromSSR,
       DynamicPageBanner,
       TimelinePage
     }

@@ -1,3 +1,4 @@
+import { registerDefaultInstance } from './addInstance'
 import { getAccount } from '../_api/user'
 import { getRelationship } from '../_api/relationships'
 import { database } from '../_database/database'
@@ -58,6 +59,9 @@ export async function clearProfileAndRelationship () {
 
 export async function updateProfileAndRelationship (accountId) {
   let { currentInstance, accessToken } = store.get()
+  if (currentInstance === undefined || currentInstance === null) {
+    currentInstance = await registerDefaultInstance()
+  }
 
   await Promise.all([
     _updateAccount(accountId, currentInstance, accessToken),
@@ -67,6 +71,9 @@ export async function updateProfileAndRelationship (accountId) {
 
 export async function updateRelationship (accountId) {
   let { currentInstance, accessToken } = store.get()
+  if (currentInstance === undefined || currentInstance === null) {
+    currentInstance = await registerDefaultInstance()
+  }
 
   await _updateRelationship(accountId, currentInstance, accessToken)
 }

@@ -1,3 +1,4 @@
+import { registerDefaultInstance } from './addInstance'
 import { store } from '../_store/store'
 import { getTimeline } from '../_api/timelines'
 import { toast } from '../_components/toast/toast'
@@ -88,6 +89,9 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
     lastTimelineItemId,
     online
   } = store.get()
+  if (currentInstance === undefined || currentInstance === null) {
+    currentInstance = await registerDefaultInstance()
+  }
 
   let { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, lastTimelineItemId, online)
   addTimelineItems(currentInstance, currentTimeline, items, stale)

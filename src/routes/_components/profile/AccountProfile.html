@@ -4,7 +4,9 @@
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-grid">
       <AccountProfileHeader {account} {relationship} {verifyCredentials} />
+      {#if $isUserLoggedIn}
       <AccountProfileFollow {account} {relationship} {verifyCredentials} />
+      {/if}
       <AccountProfileNote {account} />
       <AccountProfileMeta {account} />
       <AccountProfileDetails {account} {relationship} {verifyCredentials} />

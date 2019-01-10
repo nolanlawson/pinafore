@@ -31,7 +31,7 @@
     <StatusDetails {...params} />
   {/if}
   <StatusToolbar {...params} on:recalculateHeight />
-  {#if replyShown}
+  {#if replyShown && $isUserLoggedIn}
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
 </article>

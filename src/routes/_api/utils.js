@@ -10,6 +10,10 @@ export function basename (instanceName) {
 }
 
 export function auth (accessToken) {
+  if (accessToken === undefined || accessToken === null) {
+    return {}
+  }
+
   return {
     'Authorization': `Bearer ${accessToken}`
   }
