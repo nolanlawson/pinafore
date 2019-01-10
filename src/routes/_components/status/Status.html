@@ -194,7 +194,7 @@
       originalAccount: ({ originalStatus }) => originalStatus.account,
       originalAccountId: ({ originalAccount }) => originalAccount.id,
       visibility: ({ originalStatus }) => originalStatus.visibility,
-      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
+      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text || ((originalStatus.content || '').length > 1024 ? "LONG" : undefined),
       inReplyToId: ({ originalStatus }) => originalStatus.in_reply_to_id,
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
