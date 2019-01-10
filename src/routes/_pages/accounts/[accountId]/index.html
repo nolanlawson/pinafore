@@ -1,28 +1,16 @@
-{#if $isUserLoggedIn}
-  <TimelinePage timeline="account/{params.accountId}">
-    <DynamicPageBanner title="" ariaTitle="Profile page for {accountName}"/>
-    {#if $currentAccountProfile && $currentVerifyCredentials}
-    <AccountProfile account={$currentAccountProfile}
-                    relationship={$currentAccountRelationship}
-                    verifyCredentials={$currentVerifyCredentials}
-    />
-    {/if}
-    <PinnedStatuses accountId={params.accountId} />
-  </TimelinePage>
-{:else}
-  <HiddenFromSSR>
-    <FreeTextLayout>
-      <h1>Profile</h1>
-
-      <p>A user timeline will appear here when logged in.</p>
-    </FreeTextLayout>
-  </HiddenFromSSR>
-{/if}
+<TimelinePage timeline="account/{params.accountId}">
+  <DynamicPageBanner title="" ariaTitle="Profile page for {accountName}"/>
+  {#if $currentAccountProfile}
+  <AccountProfile account={$currentAccountProfile}
+                  relationship={$currentAccountRelationship}
+                  verifyCredentials={$currentVerifyCredentials}
+  />
+  {/if}
+  <PinnedStatuses accountId={params.accountId} />
+</TimelinePage>
 <script>
   import TimelinePage from '../../../_components/TimelinePage.html'
-  import FreeTextLayout from '../../../_components/FreeTextLayout.html'
   import { store } from '../../../_store/store.js'
-  import HiddenFromSSR from '../../../_components/HiddenFromSSR'
   import DynamicPageBanner from '../../../_components/DynamicPageBanner.html'
   import { updateProfileAndRelationship, clearProfileAndRelationship } from '../../../_actions/accounts'
   import AccountProfile from '../../../_components/profile/AccountProfile.html'
@@ -49,8 +37,6 @@
     },
     components: {
       TimelinePage,
-      FreeTextLayout,
-      HiddenFromSSR,
       DynamicPageBanner,
       AccountProfile,
       PinnedStatuses

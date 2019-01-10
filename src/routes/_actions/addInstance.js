@@ -59,6 +59,20 @@ export async function logInToInstance () {
   }
 }
 
+export async function registerDefaultInstance () {
+  let currentRegisteredInstanceName = 'mastodon.social'
+  let { loggedInInstances, instanceThemes } = store.get()
+  instanceThemes[currentRegisteredInstanceName] = 'default'
+  loggedInInstances[currentRegisteredInstanceName] = {}
+  store.set({
+    currentInstance: currentRegisteredInstanceName,
+    instanceThemes: instanceThemes
+  })
+  store.save()
+  switchToTheme('default')
+  return currentRegisteredInstanceName
+}
+
 async function registerNewInstance (code) {
   let { currentRegisteredInstanceName, currentRegisteredInstance } = store.get()
   let instanceData = await getAccessTokenFromAuthCode(
