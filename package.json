@@ -9,8 +9,9 @@
     "serve-dev": "run-p --race build-template-html-watch sapper-dev",
     "sapper-dev": "cross-env NODE_ENV=development PORT=4002 sapper dev",
     "sapper-prod": "cross-env PORT=4002 node __sapper__/build",
+    "before-build": "run-s build-template-html build-third-party-assets",
     "build": "cross-env NODE_ENV=production npm run build-steps",
-    "build-steps": "run-s build-template-html build-third-party-assets sapper-build",
+    "build-steps": "run-s before-build sapper-build",
     "sapper-build": "sapper build",
     "start": "cross-env NODE_ENV=production npm run sapper-prod",
     "build-and-start": "run-s build start",
@@ -37,7 +38,8 @@
     "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
     "sapper-export": "sapper export",
     "print-export-info": "node ./bin/print-export-info.js",
-    "export": "run-s build sapper-export print-export-info"
+    "export-steps": "run-s before-build sapper-export print-export-info",
+    "export": "cross-env NODE_ENV=production run-s export-steps"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
