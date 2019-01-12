@@ -44,7 +44,7 @@
   "dependencies": {
     "@gamestdio/websocket": "^0.2.8",
     "@webcomponents/custom-elements": "^1.2.1",
-    "browserslist": "^4.3.6",
+    "browserslist": "^4.4.0",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.0.4",
