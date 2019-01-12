@@ -1,4 +1,4 @@
-export function  findall (text, regex) {
+export function findall (text, regex) {
   let result = []
 
   while (true) {
