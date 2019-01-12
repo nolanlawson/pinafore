@@ -28,7 +28,12 @@ walk(exportDir, file => {
 
 app.use(compression({ threshold: 0 }))
 
-app.use(helmet({
+// CSP is useless for non-HTML resources
+const htmlOnly = fn => (req, res, next) => (
+  /\.(js|css|png|svg|json|map)$/.test(req.path) ? next() : fn(req, res, next)
+)
+
+app.use(htmlOnly(helmet({
   contentSecurityPolicy: {
     directives: {
       scriptSrc: [`'self'`, ...[...inlineScriptChecksums].map(_ => `'sha256-${_}'`)],
@@ -42,9 +47,20 @@ app.use(helmet({
   referrerPolicy: {
     policy: 'no-referrer'
   }
-}))
+})))
 
-app.use(serveStatic(exportDir))
+app.use(serveStatic(exportDir, {
+  maxAge: '4h',
+  setHeaders: (res, path) => {
+    if (path.endsWith('/service-worker.js')) {
+      res.setHeader('Cache-Control', 'public, max-age=0')
+    } else if (/\/client\/[^/]+\//.test(path)) {
+      res.setHeader('Cache-Control', 'public, max-age=31557600, immutable')
+    } else if (/^image\//.test(serveStatic.mime.lookup(path))) {
+      res.setHeader('Cache-Control', 'public, max-age=604800')
+    }
+  }
+}))
 
 app.get('/report.html', (req, res) => res.redirect('/client/report.html'))
 app.get('/stats.json', (req, res) => res.redirect('/client/stats.json'))
