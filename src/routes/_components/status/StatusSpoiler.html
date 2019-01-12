@@ -52,7 +52,7 @@
     },
     store: () => store,
     computed: {
-      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text || "LONG",
+      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text || 'LONG',
       emojis: ({ originalStatus }) => originalStatus.emojis,
       massagedSpoilerText: ({ spoilerText, emojis, $autoplayGifs }) => {
         spoilerText = escapeHtml(spoilerText)

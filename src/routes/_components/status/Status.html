@@ -116,6 +116,8 @@
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
 
+  const LONG_POST_LENGTH = 1024
+  const LONG_POST_TEXT = 'Long'
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
   const isToolbar = node => node.classList.contains('status-toolbar')
@@ -194,7 +196,9 @@
       originalAccount: ({ originalStatus }) => originalStatus.account,
       originalAccountId: ({ originalAccount }) => originalAccount.id,
       visibility: ({ originalStatus }) => originalStatus.visibility,
-      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text || ((originalStatus.content || '').length > 1024 ? "LONG" : undefined),
+      spoilerText: ({ originalStatus, content }) => (
+        originalStatus.spoiler_text || (content.length > LONG_POST_LENGTH && LONG_POST_TEXT)
+      ),
       inReplyToId: ({ originalStatus }) => originalStatus.in_reply_to_id,
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
