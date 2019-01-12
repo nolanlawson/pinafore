@@ -8,7 +8,7 @@ export default function showEmojiDialog (realm) {
     data: {
       id: createDialogId(),
       label: 'Emoji dialog',
-      title: 'Custom emoji',
+      title: 'Emoji',
       realm
     }
   })

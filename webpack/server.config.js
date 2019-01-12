@@ -1,15 +1,12 @@
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
-const { mode, dev } = require('./shared.config')
+const { mode, dev, resolve } = require('./shared.config')
 
 module.exports = {
   entry: config.server.entry(),
   output: config.server.output(),
   target: 'node',
-  resolve: {
-    extensions: ['.js', '.json', '.html'],
-    mainFields: ['svelte', 'module', 'browser', 'main']
-  },
+  resolve,
   externals: Object.keys(pkg.dependencies),
   module: {
     rules: [

@@ -126,7 +126,7 @@
             return
           }
           media[index].description = rawText
-          store.setComposeData(realm, { media })
+          this.store.setComposeData(realm, { media })
           saveStore()
         }, { init: false })
       },

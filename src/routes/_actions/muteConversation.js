@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { muteConversation, unmuteConversation } from '../_api/muteConversation'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { database } from '../_database/database'
 
 export async function setConversationMuted (statusId, mute, toastOnSuccess) {

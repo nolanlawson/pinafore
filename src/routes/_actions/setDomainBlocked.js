@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { blockDomain, unblockDomain } from '../_api/blockDomain'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { updateRelationship } from './accounts'
 
 export async function setDomainBlocked (accountId, domain, block, toastOnSuccess) {

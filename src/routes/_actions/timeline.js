@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 import { getTimeline } from '../_api/timelines'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { mark, stop } from '../_utils/marks'
 import { concat, mergeArrays } from '../_utils/arrays'
 import { byItemIds } from '../_utils/sorting'

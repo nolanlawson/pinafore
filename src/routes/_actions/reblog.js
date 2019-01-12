@@ -1,5 +1,5 @@
 import { store } from '../_store/store'
-import { toast } from '../_utils/toast'
+import { toast } from '../_components/toast/toast'
 import { reblogStatus, unreblogStatus } from '../_api/reblog'
 import { database } from '../_database/database'
 

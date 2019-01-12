@@ -205,7 +205,7 @@
           res += ' (current page)'
         }
         if (name === 'notifications' && $numberOfNotifications) {
-          res += ` (${$numberOfNotifications})`
+          res += ` (${$numberOfNotifications} notification${$numberOfNotifications === 1 ? '' : 's'})`
         }
         return res
       },

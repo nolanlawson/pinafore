@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8' >
+  <meta name="viewport" content="width=device-width, initial-scale=1" >
+  <meta id='theThemeColor' name='theme-color' content='#4169e1' >
+  <meta name="description" content="An alternative web client for Mastodon, focused on speed and simplicity." >
+
+  %sapper.base%
+
+  <link id='theManifest' rel='manifest' href='/manifest.json' >
+  <link id='theFavicon' rel='icon' type='image/png' href='/favicon.png' >
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120.png" >
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180.png" >
+  <meta name="mobile-web-app-capable" content="yes" >
+  <meta name="apple-mobile-web-app-title" content="Pinafore" >
+  <meta name="apple-mobile-web-app-status-bar-style" content="white" >
+
+  <!-- inline CSS -->
+
+  <noscript>
+    <style>
+      .hidden-from-ssr {
+        opacity: 1 !important;
+      }
+    </style>
+  </noscript>
+
+  <!-- Sapper generates a <style> tag containing critical CSS
+       for the current page. CSS for the rest of the src is
+       lazily loaded when it precaches secondary pages -->
+  %sapper.styles%
+
+  <!-- This contains the contents of the <:Head> component, if
+       the current page has one -->
+  %sapper.head%
+</head>
+<body>
+  <!-- inline JS -->
+
+  <!-- The application will be rendered inside this element,
+       because `templates/client.js` references it -->
+  <div id='sapper'>%sapper.html%</div>
+
+  <!-- Toast.html gets rendered here -->
+  <div id="theToast"></div>
+
+  <!-- LoadingMask.html gets rendered here -->
+  <div id="loading-mask" aria-hidden="true"></div>
+
+  <!-- inline SVG -->
+
+  <!-- Sapper creates a <script> tag containing `templates/client.js`
+       and anything else it needs to hydrate the src and
+       initialise the router -->
+  %sapper.scripts%
+</body>
+</html>

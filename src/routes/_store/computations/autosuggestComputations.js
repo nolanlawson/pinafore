@@ -1,4 +1,4 @@
-import get from 'lodash-es/get'
+import { get } from '../../_utils/lodash-lite'
 
 const MIN_PREFIX_LENGTH = 1
 const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
