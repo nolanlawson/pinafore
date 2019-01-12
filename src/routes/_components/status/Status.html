@@ -115,9 +115,8 @@
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+  import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
 
-  const LONG_POST_LENGTH = 1024
-  const LONG_POST_TEXT = 'Long'
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
   const isToolbar = node => node.classList.contains('status-toolbar')

@@ -44,6 +44,7 @@
   import { mark, stop } from '../../_utils/marks'
   import { emojifyText } from '../../_utils/emojifyText'
   import escapeHtml from 'escape-html'
+  import { LONG_POST_TEXT } from '../../_static/statuses'
 
   export default {
     oncreate () {
@@ -52,7 +53,7 @@
     },
     store: () => store,
     computed: {
-      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text || 'LONG',
+      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text || LONG_POST_TEXT,
       emojis: ({ originalStatus }) => originalStatus.emojis,
       massagedSpoilerText: ({ spoilerText, emojis, $autoplayGifs }) => {
         spoilerText = escapeHtml(spoilerText)
