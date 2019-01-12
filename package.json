@@ -54,7 +54,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "emoji-mart": "github:nolanlawson/emoji-mart#for-pinafore-1",
-    "emoji-regex": "^7.0.1",
+    "emoji-regex": "^7.0.3",
     "encoding": "^0.1.12",
     "escape-html": "^1.0.3",
     "esm": "^3.0.84",
