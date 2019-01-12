@@ -3,6 +3,7 @@ import { getInstanceInfo } from '../_api/instance'
 import { goto } from '../../../__sapper__/client'
 import { switchToTheme } from '../_utils/themeEngine'
 import { store } from '../_store/store'
+import { DEFAULT_INSTANCE_HOSTNAME } from '../_static/config'
 import { updateVerifyCredentialsForInstance } from './instances'
 import { updateCustomEmojiForInstance } from './emoji'
 import { database } from '../_database/database'
@@ -60,7 +61,7 @@ export async function logInToInstance () {
 }
 
 export async function registerDefaultInstance () {
-  let currentRegisteredInstanceName = 'mastodon.social'
+  let currentRegisteredInstanceName = DEFAULT_INSTANCE_HOSTNAME
   let { loggedInInstances, instanceThemes } = store.get()
   instanceThemes[currentRegisteredInstanceName] = 'default'
   loggedInInstances[currentRegisteredInstanceName] = {}
