@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import fs from 'fs'
 import pify from 'pify'
 import path from 'path'
@@ -36,10 +35,7 @@ export async function buildInlineScript () {
   let { code, map } = output[0]
 
   let fullCode = `${code}//# sourceMappingURL=/inline-script.js.map`
-  let checksum = crypto.createHash('sha256').update(fullCode).digest('base64')
 
-  await writeFile(path.resolve(__dirname, '../inline-script-checksum.json'),
-    JSON.stringify({ checksum }), 'utf8')
   await writeFile(path.resolve(__dirname, '../static/inline-script.js.map'),
     map.toString(), 'utf8')
 
