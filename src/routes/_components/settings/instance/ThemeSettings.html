@@ -2,6 +2,11 @@
   <div class="theme-groups">
     {#each themeGroups as themeGroup}
     <div class="theme-group">
+      {#if themeGroup.dark}
+        <h2>Dark Background</h2>
+      {:else}
+        <h2>Light Background</h2>
+      {/if}
       {#each themeGroup.themes as theme}
       <div class="theme-picker">
         <input type="radio" id="choice-theme-{theme.name}"
