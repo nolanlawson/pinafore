@@ -93,3 +93,19 @@ test('Global shortcut has no effects while in modal dialog', async t => {
     .pressKey('s') // now works
     .expect(getUrl()).contains('/search')
 })
+
+test('Shortcut 1 goes to the home timeline', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .pressKey('1')
+    .expect(getUrl()).contains('/')
+})
+
+test('Shortcut 6 goes to the settings', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .pressKey('6')
+    .expect(getUrl()).contains('/settings')
+})
