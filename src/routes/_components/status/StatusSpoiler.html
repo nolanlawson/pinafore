@@ -6,6 +6,9 @@
     {spoilerShown ? 'Show less' : 'Show more'}
   </button>
 </div>
+{#if shortcutScope}
+<Shortcut scope="{shortcutScope}" key="x" on:pressed="toggleSpoilers()"/>
+{/if}
 <style>
   .status-spoiler {
     grid-area: spoiler;
@@ -39,6 +42,7 @@
   }
 </style>
 <script>
+  import Shortcut from '../shortcut/Shortcut.html'
   import { store } from '../../_store/store'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { mark, stop } from '../../_utils/marks'
@@ -48,9 +52,12 @@
   export default {
     oncreate () {
       let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.onClickSpoilerButton())
+      registerClickDelegate(this, delegateKey, () => this.toggleSpoilers())
     },
     store: () => store,
+    components: {
+      Shortcut
+    },
     computed: {
       spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
       emojis: ({ originalStatus }) => originalStatus.emojis,
@@ -61,7 +68,7 @@
       delegateKey: ({ uuid }) => `spoiler-${uuid}`
     },
     methods: {
-      onClickSpoilerButton () {
+      toggleSpoilers () {
         requestAnimationFrame(() => {
           mark('clickSpoilerButton')
           let { uuid } = this.get()

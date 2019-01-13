@@ -156,7 +156,7 @@
 </style>
 <script>
   import { store } from '../_store/store'
-  import { smoothScrollToTop } from '../_utils/smoothScrollToTop'
+  import { smoothScroll } from '../_utils/smoothScroll'
   import { on, emit } from '../_utils/eventBus'
   import { mark, stop } from '../_utils/marks'
   import { doubleRAF } from '../_utils/doubleRAF'
@@ -221,7 +221,7 @@
         }
         e.preventDefault()
         e.stopPropagation()
-        smoothScrollToTop(getScrollContainer())
+        smoothScroll(getScrollContainer(), 0)
       }
     }
   }

@@ -10,8 +10,9 @@
   <button type="button"
           class="dynamic-page-go-back"
           aria-label="Go back"
-          on:click="onGoBack(event)">Back</button>
+          on:click|preventDefault="onGoBack()">Back</button>
 </div>
+<Shortcut key="Backspace" on:pressed="onGoBack()"/>
 <style>
   .dynamic-page-banner {
     display: grid;
@@ -62,14 +63,16 @@
   }
 </style>
 <script>
+  import Shortcut from './shortcut/Shortcut.html'
+
   export default {
     data: () => ({
       icon: void 0,
       ariaTitle: ''
     }),
+    components: { Shortcut },
     methods: {
-      onGoBack (e) {
-        e.preventDefault()
+      onGoBack () {
         window.history.back()
       }
     }

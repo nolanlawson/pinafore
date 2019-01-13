@@ -4,5 +4,14 @@
               virtualProps={props}
               virtualIndex={index}
               virtualLength={length}
+              virtualKey={key}
+              active={active}
   />
 </div>
+<script>
+  export default {
+    computed: {
+      'active': ({ $activeItem, key }) => $activeItem === key
+    }
+  }
+</script>

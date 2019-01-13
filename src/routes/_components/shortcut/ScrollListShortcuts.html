@@ -1,0 +1,115 @@
+<script>
+  import {
+    isVisible,
+    firstVisibleElementIndex,
+    scrollIntoViewIfNeeded } from '../../_utils/scrollIntoView'
+  import {
+    addShortcutFallback,
+    removeShortcutFallback,
+    onKeyDownInShortcutScope } from '../../_utils/shortcuts'
+  import { smoothScroll } from '../../_utils/smoothScroll'
+  import { getScrollContainer } from '../../_utils/scrollContainer'
+
+  const VISIBILITY_CHECK_DELAY_MS = 600
+
+  export default {
+    data: () => ({
+      scope: 'global',
+      itemToKey: (item) => item,
+      keyToElement: (key) => document.getElementById('list-item-' + key),
+      activeItemChangeTime: 0
+    }),
+    computed: {
+      itemToElement: ({ keyToElement, itemToKey }) => (item) => keyToElement(itemToKey(item))
+    },
+    oncreate () {
+      let { scope } = this.get()
+      addShortcutFallback(scope, this)
+    },
+    ondestroy () {
+      let { scope } = this.get()
+      removeShortcutFallback(scope, this)
+    },
+    methods: {
+      onKeyDown (event) {
+        if (event.key === 'j' || event.key === 'ArrowDown') {
+          event.stopPropagation()
+          event.preventDefault()
+          this.changeActiveItem(1, event.timeStamp)
+          return
+        }
+        if (event.key === 'k' || event.key === 'ArrowUp') {
+          event.stopPropagation()
+          event.preventDefault()
+          this.changeActiveItem(-1, event.timeStamp)
+          return
+        }
+        let activeItemKey = this.checkActiveItem(event.timeStamp)
+        if (!activeItemKey) {
+          let { items, itemToKey, itemToElement } = this.get()
+          let index = firstVisibleElementIndex(items, itemToElement).first
+          if (index >= 0) {
+            activeItemKey = itemToKey(items[index])
+          }
+        }
+        if (activeItemKey) {
+          onKeyDownInShortcutScope(activeItemKey, event)
+        }
+      },
+      changeActiveItem (movement, timeStamp) {
+        let {
+          items,
+          itemToElement,
+          itemToKey,
+          keyToElement } = this.get()
+        let index = -1
+        let activeItemKey = this.checkActiveItem(timeStamp)
+        if (activeItemKey) {
+          let len = items.length
+          let i = -1
+          while (++i < len) {
+            if (itemToKey(items[i]) === activeItemKey) {
+              index = i
+              break
+            }
+          }
+        }
+        if (index === 0 && movement === -1) {
+          activeItemKey = null
+          this.set({ activeItemKey })
+          smoothScroll(getScrollContainer(), 0)
+          return
+        }
+        if (index === -1) {
+          let { first, firstComplete } = firstVisibleElementIndex(
+            items, itemToElement)
+          index = (movement > 0) ? firstComplete : first
+        } else {
+          index += movement
+        }
+        if (index >= 0 && index < items.length) {
+          activeItemKey = itemToKey(items[index])
+          this.setActiveItem(activeItemKey, timeStamp)
+          scrollIntoViewIfNeeded(keyToElement(activeItemKey))
+        }
+      },
+      checkActiveItem (timeStamp) {
+        let { activeItem } = this.store.get()
+        if (!activeItem) {
+          return null
+        }
+        let { activeItemChangeTime, keyToElement } = this.get()
+        if ((timeStamp - activeItemChangeTime) > VISIBILITY_CHECK_DELAY_MS &&
+            !isVisible(keyToElement(activeItem))) {
+          this.setActiveItem(null, 0)
+          return null
+        }
+        return activeItem
+      },
+      setActiveItem (key, timeStamp) {
+        this.set({ activeItemChangeTime: timeStamp })
+        this.store.setForRealm({ activeItem: key })
+      }
+    }
+  }
+</script>

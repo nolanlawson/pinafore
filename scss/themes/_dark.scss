@@ -16,6 +16,7 @@
   --very-deemphasized-text-color: #{lighten($main-bg-color, 32%)};
 
   --status-direct-background: #{darken($body-bg-color, 5%)};
+  --status-active-background: #{lighten($body-bg-color, 10%)};
   --main-theme-color: #{$main-theme-color};
   --warning-color: #{#c7423d};
   --alt-input-bg: #{rgba($main-bg-color, 0.7)};

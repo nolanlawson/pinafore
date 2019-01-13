@@ -35,6 +35,9 @@
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
 </article>
+{#if shortcutScope}
+<Shortcut scope="{shortcutScope}" key="o" on:pressed="open()"/>
+{/if}
 
 <style>
   .status-article {
@@ -64,6 +67,10 @@
 
   .status-article.status-direct {
     background-color: var(--status-direct-background);
+  }
+
+  .status-article.status-active {
+    background-color: var(--status-active-background);
   }
 
   .status-article.status-in-own-thread {
@@ -106,6 +113,7 @@
   import StatusSpoiler from './StatusSpoiler.html'
   import StatusComposeBox from './StatusComposeBox.html'
   import StatusMentions from './StatusMentions.html'
+  import Shortcut from '../shortcut/Shortcut.html'
   import { store } from '../../_store/store'
   import { goto } from '../../../../__sapper__/client'
   import { registerClickDelegate } from '../../_utils/delegate'
@@ -149,12 +157,14 @@
       StatusContent,
       StatusSpoiler,
       StatusComposeBox,
-      StatusMentions
+      StatusMentions,
+      Shortcut
     },
     data: () => ({
       notification: void 0,
       replyVisibility: void 0,
-      contentPreloaded: false
+      contentPreloaded: false,
+      shortcutScope: null
     }),
     store: () => store,
     methods: {
@@ -178,6 +188,9 @@
 
         e.preventDefault()
         e.stopPropagation()
+        this.open()
+      },
+      open () {
         let { originalStatusId } = this.get()
         goto(`/statuses/${originalStatusId}`)
       }
@@ -233,11 +246,12 @@
         status.reblog ||
         timelineType === 'pinned'
       ),
-      className: ({ visibility, timelineType, isStatusInOwnThread }) => (classname(
+      className: ({ visibility, timelineType, isStatusInOwnThread, active }) => (classname(
         'status-article',
         visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
-        isStatusInOwnThread && 'status-in-own-thread'
+        isStatusInOwnThread && 'status-in-own-thread',
+        active && 'status-active'
       )),
       content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
@@ -245,7 +259,7 @@
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
-        createdAtDate, timeagoFormattedDate }) => ({
+        createdAtDate, timeagoFormattedDate, shortcutScope }) => ({
         notification,
         notificationId,
         status,
@@ -267,7 +281,8 @@
         originalStatusId,
         inReplyToId,
         createdAtDate,
-        timeagoFormattedDate
+        timeagoFormattedDate,
+        shortcutScope
       })
     }
   }

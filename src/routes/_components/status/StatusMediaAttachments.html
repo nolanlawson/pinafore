@@ -31,6 +31,9 @@
   {/if}
   </div>
 </div>
+{#if shortcutScope}
+<Shortcut scope="{shortcutScope}" key="y" on:pressed="toggleSensitiveMedia()"/>
+{/if}
 {:else}
   <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
 {/if}
@@ -148,6 +151,7 @@
 </style>
 <script>
   import MediaAttachments from './MediaAttachments.html'
+  import Shortcut from '../shortcut/Shortcut.html'
   import { store } from '../../_store/store'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
@@ -155,10 +159,11 @@
   export default {
     oncreate () {
       let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.onClickSensitiveMediaButton())
+      registerClickDelegate(this, delegateKey, () => this.toggleSensitiveMedia())
     },
     components: {
-      MediaAttachments
+      MediaAttachments,
+      Shortcut
     },
     store: () => store,
     computed: {
@@ -181,7 +186,7 @@
       }
     },
     methods: {
-      onClickSensitiveMediaButton () {
+      toggleSensitiveMedia () {
         let { uuid } = this.get()
         let { sensitivesShown } = this.store.get()
         sensitivesShown[uuid] = !sensitivesShown[uuid]

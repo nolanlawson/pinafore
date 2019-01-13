@@ -36,6 +36,10 @@ export const importLoggedInObservers = () => import(
   /* webpackChunkName: 'loggedInObservers.js' */ '../_store/observers/loggedInObservers.js'
   ).then(getDefault)
 
+export const importNavShortcuts = () => import(
+    /* webpackChunkName: 'NavShortcuts' */ '../_components/NavShortcuts.html'
+  ).then(getDefault)
+
 export const importEmojiMart = () => import(
   /* webpackChunkName: 'createEmojiMartPickerFromData.js' */ '../_react/createEmojiMartPickerFromData.js'
   ).then(getDefault)

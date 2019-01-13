@@ -18,6 +18,8 @@
     {/if}
   </div>
 </VirtualListContainer>
+<ScrollListShortcuts bind:items=$visibleItems
+                     itemToKey={(visibleItem) => visibleItem.key} />
 <style>
   .virtual-list {
     position: relative;
@@ -28,6 +30,7 @@
   import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
   import VirtualListHeader from './VirtualListHeader.html'
+  import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
   import { virtualListStore } from './virtualListStore'
   import throttle from 'lodash-es/throttle'
   import { mark, stop } from '../../_utils/marks'
@@ -64,6 +67,7 @@
         stop('set items')
       })
       this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+        this.calculateListOffset()
         if (allVisibleItemsHaveHeight) {
           this.fire('initializedVisibleItems')
         }
@@ -98,7 +102,8 @@
       VirtualListContainer,
       VirtualListLazyItem,
       VirtualListFooter,
-      VirtualListHeader
+      VirtualListHeader,
+      ScrollListShortcuts
     },
     computed: {
       distanceFromBottom: ({ $scrollHeight, $scrollTop, $offsetHeight }) => {

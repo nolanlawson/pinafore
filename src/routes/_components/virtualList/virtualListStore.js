@@ -22,6 +22,7 @@ virtualListStore.computeForRealm('scrollHeight', 0)
 virtualListStore.computeForRealm('offsetHeight', 0)
 virtualListStore.computeForRealm('listOffset', 0)
 virtualListStore.computeForRealm('itemHeights', {})
+virtualListStore.computeForRealm('activeItem', null)
 
 virtualListStore.compute('rawVisibleItems',
   ['items', 'scrollTop', 'itemHeights', 'offsetHeight', 'showHeader', 'headerHeight', 'listOffset'],
