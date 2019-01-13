@@ -59,7 +59,6 @@
       Shortcut
     },
     computed: {
-      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
       emojis: ({ originalStatus }) => originalStatus.emojis,
       massagedSpoilerText: ({ spoilerText, emojis, $autoplayGifs }) => {
         spoilerText = escapeHtml(spoilerText)

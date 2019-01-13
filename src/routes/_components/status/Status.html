@@ -123,6 +123,9 @@
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+  import { htmlToPlainText } from '../../_utils/htmlToPlainText'
+  import { measureText } from '../../_utils/measureText'
+  import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -207,7 +210,12 @@
       originalAccount: ({ originalStatus }) => originalStatus.account,
       originalAccountId: ({ originalAccount }) => originalAccount.id,
       visibility: ({ originalStatus }) => originalStatus.visibility,
-      spoilerText: ({ originalStatus }) => originalStatus.spoiler_text,
+      plainTextContent: ({ content }) => htmlToPlainText(content),
+      plainTextContentLength: ({ plainTextContent }) => measureText(plainTextContent),
+      plainTextContentOverLength: ({ plainTextContentLength }) => plainTextContentLength > LONG_POST_LENGTH,
+      spoilerText: ({ originalStatus, plainTextContentOverLength }) => (
+        originalStatus.spoiler_text || (plainTextContentOverLength && LONG_POST_TEXT)
+      ),
       inReplyToId: ({ originalStatus }) => originalStatus.in_reply_to_id,
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
@@ -235,9 +243,9 @@
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
       reblog: ({ status }) => status.reblog,
-      ariaLabel: ({ originalAccount, account, content, timeagoFormattedDate, spoilerText,
+      ariaLabel: ({ originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
         showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels }) => (
-        getAccessibleLabelForStatus(originalAccount, account, content,
+        getAccessibleLabelForStatus(originalAccount, account, plainTextContent,
           timeagoFormattedDate, spoilerText, showContent,
           reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
       ),

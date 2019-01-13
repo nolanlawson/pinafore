@@ -1,6 +1,5 @@
 import { getAccountAccessibleName } from './getAccountAccessibleName'
 import { POST_PRIVACY_OPTIONS } from '../_static/statuses'
-import { htmlToPlainText } from '../_utils/htmlToPlainText'
 
 function getNotificationText (notification, omitEmojiInDisplayNames) {
   if (!notification) {
@@ -34,13 +33,13 @@ function cleanupText (text) {
   return text.replace(/\s+/g, ' ').trim()
 }
 
-export function getAccessibleLabelForStatus (originalAccount, account, content,
+export function getAccessibleLabelForStatus (originalAccount, account, plainTextContent,
   timeagoFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames,
   disableLongAriaLabels) {
   let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
   let contentTextToShow = (showContent || !spoilerText)
-    ? cleanupText(htmlToPlainText(content))
+    ? cleanupText(plainTextContent)
     : `Content warning: ${cleanupText(spoilerText)}`
   let privacyText = getPrivacyText(visibility)
 

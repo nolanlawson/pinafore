@@ -20,3 +20,6 @@ export const POST_PRIVACY_OPTIONS = [
     icon: '#fa-envelope'
   }
 ]
+
+export const LONG_POST_LENGTH = 1024
+export const LONG_POST_TEXT = 'Long post'
