@@ -1,11 +1,44 @@
 <SettingsLayout page='settings/hotkeys' label="Hotkeys">
+  <h1>Hotkeys</h1>
+
+  <h2 class="sr-only">Preferences</h2>
+  <form class="ui-settings" aria-label="Hotkey settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-hotkeys"
+             bind:checked="$disableHotkeys" on:change="onChange()">
+      <label for="choice-disable-hotkeys">Disable hotkeys</label>
+    </div>
+  </form>
+
+  <h2 class="sr-only">Guide</h2>
+
   <ShortcutHelpInfo />
 </SettingsLayout>
+<style>
+  .ui-settings {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    padding: 20px;
+    line-height: 2em;
+    margin-bottom: 20px;
+  }
+  .setting-group {
+    padding: 5px 0;
+  }
+</style>
 <script>
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import ShortcutHelpInfo from '../../_components/ShortcutHelpInfo.html'
+  import { store } from '../../_store/store'
 
   export default {
+    store: () => store,
+    methods: {
+      onChange () {
+        this.store.save()
+      }
+    },
     components: {
       SettingsLayout,
       ShortcutHelpInfo

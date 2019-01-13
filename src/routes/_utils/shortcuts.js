@@ -1,3 +1,5 @@
+import { store } from '../_store/store'
+
 // A map of scopeKey to KeyMap
 let scopeKeyMaps
 
@@ -119,6 +121,9 @@ function handleEvent (scopeKey, keyMap, key, event) {
 }
 
 function onKeyDown (event) {
+  if (store.get().disableHotkeys) {
+    return
+  }
   if (!acceptShortcutEvent(event)) {
     return
   }
