@@ -5,49 +5,13 @@
   muted="true"
   className="shortcut-help-modal-dialog">
   
-  <h1>Keyboard Shortcuts</h1>
-
-  <ul>
-    <li><kbd>s</kbd> to search</li>
-    <li><kbd>g</kbd> + <kbd>h</kbd> to go home</li>
-    <li><kbd>g</kbd> + <kbd>n</kbd> to go to the notifications page</li>
-    <li><kbd>g</kbd> + <kbd>l</kbd> to go to the local stream page</li>
-    <li><kbd>g</kbd> + <kbd>t</kbd> to go to the federated stream page</li>
-    <li><kbd>g</kbd> + <kbd>c</kbd> to go to the community page</li>
-    <li><kbd>j</kbd> or <kbd>↓</kbd> to activate the next status</li>
-    <li><kbd>k</kbd> or <kbd>↑</kbd> to activate the previous status</li>
-    <li><kbd>o</kbd> to open the active status</li>
-    <li><kbd>f</kbd> to favorite the active status</li>
-    <li><kbd>b</kbd> to boost the active status</li>
-    <li><kbd>r</kbd> to reply to the active status</li>
-    <li><kbd>x</kbd> to show or hide text behind content warning in the active status</li>
-    <li><kbd>y</kbd> to show or hide sensitive media in the active status</li>
-    <li><kbd>h</kbd> or <kbd>?</kbd> to toggle this dialog</li>
-    <li><kbd>Backspace</kbd> to go back, close dialogs</li>
-  </ul>
+  <ShortcutHelpInfo inDialog={true} />
 
   <Shortcut scope='modal' key='h|?' on:pressed='close()'/>
 </ModalDialog>
-<style>
-  h1 {
-    color: var(--muted-modal-text);
-  }
-  li {
-    list-style-type:none;
-    color: var(--muted-modal-text);
-  }
-  kbd {
-    color: #333;
-    display: inline-block;
-    border: 1px solid #333;
-    border-radius: 2px;
-    padding: 0.1em;
-    margin: 0.2em;
-    background-color: #dadada;
-  }
-</style>
 <script>
   import ModalDialog from './ModalDialog.html'
+  import ShortcutHelpInfo from '../../ShortcutHelpInfo.html'
   import Shortcut from '../../shortcut/Shortcut.html'
   import { show } from '../helpers/showDialog'
   import { close } from '../helpers/closeDialog'
@@ -57,7 +21,8 @@
     oncreate,
     components: {
       ModalDialog,
-      Shortcut
+      Shortcut,
+      ShortcutHelpInfo
     },
     methods: {
       show,
