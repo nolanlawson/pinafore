@@ -126,6 +126,7 @@
   import { htmlToPlainText } from '../../_utils/htmlToPlainText'
   import { measureText } from '../../_utils/measureText'
   import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
+  import { absoluteDateFormatter } from '../../_utils/formatters'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -241,6 +242,7 @@
         return getAccountAccessibleName(originalAccount, $omitEmojiInDisplayNames)
       },
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
+      absoluteFormattedDate: ({ createdAtDate }) => absoluteDateFormatter.format(new Date(createdAtDate)),
       timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
       reblog: ({ status }) => status.reblog,
       ariaLabel: ({ originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
@@ -267,7 +269,7 @@
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
-        createdAtDate, timeagoFormattedDate, shortcutScope }) => ({
+        createdAtDate, timeagoFormattedDate, shortcutScope, absoluteFormattedDate }) => ({
         notification,
         notificationId,
         status,
@@ -290,7 +292,8 @@
         inReplyToId,
         createdAtDate,
         timeagoFormattedDate,
-        shortcutScope
+        shortcutScope,
+        absoluteFormattedDate
       })
     }
   }
