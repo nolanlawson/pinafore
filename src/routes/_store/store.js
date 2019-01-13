@@ -11,6 +11,7 @@ const persistedState = {
   currentRegisteredInstanceName: undefined,
   currentRegisteredInstance: undefined,
   disableCustomScrollbars: false,
+  disableHotkeys: false,
   disableLongAriaLabels: false,
   disableTapOnStatus: false,
   largeInlineMedia: false,

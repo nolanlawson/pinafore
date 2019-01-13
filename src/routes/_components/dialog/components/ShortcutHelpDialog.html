@@ -4,11 +4,18 @@
   background="var(--muted-modal-bg)"
   muted="true"
   className="shortcut-help-modal-dialog">
-  
+
+  <h1>Hotkeys</h1>
+
   <ShortcutHelpInfo inDialog={true} />
 
   <Shortcut scope='modal' key='h|?' on:pressed='close()'/>
 </ModalDialog>
+<style>
+  h1 {
+    color: var(--muted-modal-text);
+  }
+</style>
 <script>
   import ModalDialog from './ModalDialog.html'
   import ShortcutHelpInfo from '../../ShortcutHelpInfo.html'
