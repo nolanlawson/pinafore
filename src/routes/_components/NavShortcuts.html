@@ -6,13 +6,18 @@
 <Shortcut key="g c" on:pressed="goto('/community')"/>
 <Shortcut key="s" on:pressed="goto('/search')"/>
 <Shortcut key="h|?" on:pressed="showShortcutHelpDialog()"/>
+{#each $navPages as navPage, i}
+  <Shortcut key={(i + 1).toString()} on:pressed="goto(navPage.href)" />
+{/each}
 
 <script>
   import Shortcut from './shortcut/Shortcut'
   import { goto } from '../../../__sapper__/client'
   import { importShowShortcutHelpDialog } from './dialog/asyncDialogs'
+  import { store } from '../_store/store'
 
   export default {
+    store: () => store,
     components: {
       Shortcut
     },
