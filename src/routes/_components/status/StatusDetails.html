@@ -2,9 +2,11 @@
   <ExternalLink className="status-absolute-date"
                 href={originalStatus.url}
                 showIcon={true}
-                ariaLabel="{formattedDate} (opens in new window)"
+                ariaLabel="{displayAbsoluteFormattedDate} (opens in new window)"
   >
-    <time datetime={createdAtDate} title={formattedDate}>{formattedDate}</time>
+    <time datetime={createdAtDate} title={absoluteFormattedDate}>
+      {displayAbsoluteFormattedDate}
+    </time>
   </ExternalLink>
   {#if applicationName}
     {#if applicationWebsite}
@@ -132,7 +134,7 @@
 <script>
   import ExternalLink from '../ExternalLink.html'
   import { store } from '../../_store/store'
-  import { getDateFormatter, getShortDateFormatter } from '../../_utils/formatters'
+  import { absoluteDateFormatter, shortAbsoluteDateFormatter } from '../../_utils/formatters'
   import { on } from '../../_utils/eventBus'
 
   export default {
@@ -170,10 +172,9 @@
         }
         return originalStatus.favourites_count || 0
       },
-      formattedDate: ({ createdAtDate, $isMobileSize }) => {
-        let formatter = $isMobileSize ? getShortDateFormatter() : getDateFormatter()
-        return formatter.format(new Date(createdAtDate))
-      },
+      displayAbsoluteFormattedDate: ({ createdAtDate, $isMobileSize }) => (
+        $isMobileSize ? shortAbsoluteDateFormatter : absoluteDateFormatter).format(new Date(createdAtDate)
+      ),
       reblogsLabel: ({ numReblogs }) => {
         // TODO: intl
         return numReblogs === 1
