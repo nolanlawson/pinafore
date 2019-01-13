@@ -22,4 +22,4 @@ export const POST_PRIVACY_OPTIONS = [
 ]
 
 export const LONG_POST_LENGTH = 1024
-export const LONG_POST_TEXT = 'Long'
+export const LONG_POST_TEXT = 'Long post'
