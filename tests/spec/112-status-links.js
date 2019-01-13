@@ -1,7 +1,7 @@
 import {
   composeButton,
   composeInput,
-  getNthStatus, getNthStatusSelector, getNthShowOrHideButton
+  getNthStatus, getNthStatusSelector
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -21,7 +21,6 @@ test('External links, hashtags, and mentions have correct attributes', async t =
   await t
     .typeText(composeInput, text, { paste: true })
     .click(composeButton)
-    .click(getNthShowOrHideButton(0))
     .expect(getNthStatus(0).innerText).contains('Why hello there', { timeout: 20000 })
     .expect(nthAnchor(0).getAttribute('href')).eql('/accounts/1')
     .expect(nthAnchor(0).hasAttribute('rel')).notOk()
