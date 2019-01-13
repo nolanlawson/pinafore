@@ -116,6 +116,17 @@ describe('test-shortcuts.js', function () {
     assert.ok(component.notPressed())
   })
 
+  it('does not skip events for ?', function () {
+    let component = new Component()
+
+    addToShortcutScope('global', '?', component)
+
+    let qEvent = new KeyDownEvent('?')
+    qEvent.shiftKey = true
+    eventListener(qEvent)
+    assert.ok(component.pressed())
+  })
+
   it('skips events for editable elements', function () {
     let component = new Component()
 
