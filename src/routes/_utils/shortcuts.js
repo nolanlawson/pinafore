@@ -173,6 +173,7 @@ function unmapKeys (keyMap, keys, component) {
 function acceptShortcutEvent (event) {
   let { target } = event
   return !(
+    event.altKey ||
     event.metaKey ||
     event.ctrlKey ||
     (event.shiftKey && event.key !== '?') || // '?' is a special case - it is allowed

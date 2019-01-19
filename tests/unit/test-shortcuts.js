@@ -15,6 +15,7 @@ function KeyDownEvent (key) {
   this.metaKey = false
   this.ctrlKey = false
   this.shiftKey = false
+  this.altKey = false
   this.target = null
 }
 
@@ -221,5 +222,16 @@ describe('test-shortcuts.js', function () {
 
     eventListener(new KeyDownEvent('a'))
     assert.ok(globalA.pressed())
+  })
+
+  it('ignores alt key', function () {
+    let component = new Component()
+
+    addToShortcutScope('global', '1', component)
+
+    let event = new KeyDownEvent('1')
+    event.altKey = true
+    eventListener(event)
+    assert.ok(component.notPressed())
   })
 })
