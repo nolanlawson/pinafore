@@ -1,11 +1,11 @@
 import sass from 'node-sass'
 import path from 'path'
 import fs from 'fs'
-import pify from 'pify'
+import { promisify } from 'util'
 
-const writeFile = pify(fs.writeFile.bind(fs))
-const readdir = pify(fs.readdir.bind(fs))
-const render = pify(sass.render.bind(sass))
+const writeFile = promisify(fs.writeFile)
+const readdir = promisify(fs.readdir)
+const render = promisify(sass.render.bind(sass))
 
 const globalScss = path.join(__dirname, '../src/scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../src/scss/themes/_default.scss')

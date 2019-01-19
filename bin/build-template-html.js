@@ -1,14 +1,14 @@
 import chokidar from 'chokidar'
 import fs from 'fs'
 import path from 'path'
-import pify from 'pify'
+import { promisify } from 'util'
 import { buildSass } from './build-sass'
 import { buildInlineScript } from './build-inline-script'
 import { buildSvg } from './build-svg'
 import now from 'performance-now'
 import debounce from 'lodash-es/debounce'
 
-const writeFile = pify(fs.writeFile.bind(fs))
+const writeFile = promisify(fs.writeFile)
 
 const DEBOUNCE = 500
 

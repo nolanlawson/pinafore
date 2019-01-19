@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import fs from 'fs'
-import pify from 'pify'
+import { promisify } from 'util'
 import path from 'path'
 import { rollup } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
@@ -8,7 +8,7 @@ import replace from 'rollup-plugin-replace'
 import fromPairs from 'lodash-es/fromPairs'
 import { themes } from '../src/routes/_static/themes'
 
-const writeFile = pify(fs.writeFile.bind(fs))
+const writeFile = promisify(fs.writeFile)
 
 const themeColors = fromPairs(themes.map(_ => ([_.name, _.color])))
 
