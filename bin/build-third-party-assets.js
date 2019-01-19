@@ -1,11 +1,11 @@
 import path from 'path'
 import fs from 'fs'
-import pify from 'pify'
+import { promisify } from 'util'
 import CleanCSS from 'clean-css'
 
-const writeFile = pify(fs.writeFile.bind(fs))
-const readFile = pify(fs.readFile.bind(fs))
-const copyFile = pify(fs.copyFile.bind(fs))
+const writeFile = promisify(fs.writeFile)
+const readFile = promisify(fs.readFile)
+const copyFile = promisify(fs.copyFile)
 
 async function compileThirdPartyCss () {
   let css = await readFile(path.resolve(__dirname, '../node_modules/emoji-mart/css/emoji-mart.css'), 'utf8')

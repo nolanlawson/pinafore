@@ -1,12 +1,12 @@
 import svgs from './svgs'
 import path from 'path'
 import fs from 'fs'
-import pify from 'pify'
+import { promisify } from 'util'
 import SVGO from 'svgo'
 import $ from 'cheerio'
 
 const svgo = new SVGO()
-const readFile = pify(fs.readFile.bind(fs))
+const readFile = promisify(fs.readFile)
 
 export async function buildSvg () {
   let result = (await Promise.all(svgs.map(async svg => {
