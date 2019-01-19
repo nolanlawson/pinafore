@@ -6,8 +6,9 @@ import {
   getNthStatusMedia,
   getNthStatusSensitiveMediaButton,
   getNthStatusSpoiler,
-  getUrl,
-  scrollToStatus } from '../utils'
+  getUrl, notificationsNavButton,
+  scrollToStatus
+} from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
 import { indexWhere } from '../../src/routes/_utils/arrays'
@@ -117,6 +118,23 @@ test('Shortcut f toggles favorite status', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getNthStatus(idx).exists).ok({ timeout: 30000 })
+    .expect(getNthFavorited(idx)).eql('false')
+    .pressKey('j '.repeat(idx + 1))
+    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .pressKey('f')
+    .expect(getNthFavorited(idx)).eql('true')
+    .pressKey('f')
+    .expect(getNthFavorited(idx)).eql('false')
+})
+
+test('Shortcut f toggles favorite status in notification', async t => {
+  let idx = 0
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .click(notificationsNavButton)
+    .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(idx).exists).ok({ timeout: 30000 })
     .expect(getNthFavorited(idx)).eql('false')
     .pressKey('j '.repeat(idx + 1))
