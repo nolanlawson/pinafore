@@ -34,7 +34,7 @@ const builders = [
 const partials = buildPartials()
 
 function buildPartials () {
-  let rawTemplate = fs.readFileSync(path.resolve(__dirname, '../src-build/template.html'), 'utf8')
+  let rawTemplate = fs.readFileSync(path.resolve(__dirname, '../src/build/template.html'), 'utf8')
 
   let partials = [rawTemplate]
 
