@@ -65,13 +65,13 @@ async function setupMastodonDatabase () {
     env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
   })
 
-  let dumpFile = path.join(dir, '../fixtures/dump.sql')
+  let dumpFile = path.join(dir, '../tests/fixtures/dump.sql')
   await exec(`psql -h 127.0.0.1 -U ${DB_USER} -w -d ${DB_NAME} -f "${dumpFile}"`, {
     cwd: mastodonDir,
     env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
   })
 
-  let tgzFile = path.join(dir, '../fixtures/system.tgz')
+  let tgzFile = path.join(dir, '../tests/fixtures/system.tgz')
   let systemDir = path.join(mastodonDir, 'public/system')
   await mkdirp(systemDir)
   await exec(`tar -xzf "${tgzFile}"`, { cwd: systemDir })
