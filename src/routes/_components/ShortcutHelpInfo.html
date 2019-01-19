@@ -1,30 +1,58 @@
-<div class="{inDialog ? 'in-dialog' : ''}">
-  <ul>
-    <li><kbd>s</kbd> to search</li>
-    <li><kbd>1</kbd> - <kbd>6</kbd> to switch columns</li>
-    <li><kbd>g</kbd> + <kbd>h</kbd> to go home</li>
-    <li><kbd>g</kbd> + <kbd>n</kbd> to go to the notifications page</li>
-    <li><kbd>g</kbd> + <kbd>l</kbd> to go to the local stream page</li>
-    <li><kbd>g</kbd> + <kbd>t</kbd> to go to the federated stream page</li>
-    <li><kbd>g</kbd> + <kbd>c</kbd> to go to the community page</li>
-    <li><kbd>j</kbd> or <kbd>↓</kbd> to activate the next status</li>
-    <li><kbd>k</kbd> or <kbd>↑</kbd> to activate the previous status</li>
-    <li><kbd>o</kbd> to open the active status</li>
-    <li><kbd>f</kbd> to favorite the active status</li>
-    <li><kbd>b</kbd> to boost the active status</li>
-    <li><kbd>r</kbd> to reply to the active status</li>
-    <li><kbd>x</kbd> to show or hide text behind content warning in the active status</li>
-    <li><kbd>y</kbd> to show or hide sensitive media in the active status</li>
-    <li><kbd>h</kbd> or <kbd>?</kbd> to toggle the help dialog</li>
-    <li><kbd>Backspace</kbd> to go back, close dialogs</li>
-  </ul>
+<div class="shortcut-help-info {inDialog ? 'in-dialog' : ''}">
+  <h2>Global</h2>
+  <div class="hotkey-group">
+    <ul>
+      <li><kbd>c</kbd> to compose a new toot</li>
+      <li><kbd>s</kbd> to search</li>
+      <li><kbd>1</kbd> - <kbd>6</kbd> to switch columns</li>
+      <li><kbd>g</kbd> + <kbd>h</kbd> to go home</li>
+      <li><kbd>g</kbd> + <kbd>n</kbd> to go to notifications</li>
+      <li><kbd>g</kbd> + <kbd>l</kbd> to go to the local timeline</li>
+      <li><kbd>g</kbd> + <kbd>t</kbd> to go to the federated timeline</li>
+      <li><kbd>g</kbd> + <kbd>c</kbd> to go to the community page</li>
+      <li><kbd>h</kbd> or <kbd>?</kbd> to toggle the help dialog</li>
+      <li><kbd>Backspace</kbd> to go back, close dialogs</li>
+    </ul>
+  </div>
+  <h2>On an active toot</h2>
+  <div class="hotkey-group">
+    <ul>
+      <li><kbd>o</kbd> to open the thread</li>
+      <li><kbd>f</kbd> to favorite</li>
+      <li><kbd>b</kbd> to boost</li>
+      <li><kbd>r</kbd> to reply</li>
+      <li><kbd>m</kbd> to mention the author</li>
+      <li><kbd>p</kbd> to open the author's profile</li>
+      <li><kbd>x</kbd> to show or hide text behind content warning</li>
+      <li><kbd>y</kbd> to show or hide sensitive media</li>
+      <li><kbd>j</kbd> or <kbd>↓</kbd> to activate the next toot</li>
+      <li><kbd>k</kbd> or <kbd>↑</kbd> to activate the previous toot</li>
+    </ul>
+  </div>
 </div>
 <style>
+  .shortcut-help-info {
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+  .shortcut-help-info::-webkit-scrollbar {
+    display: none;
+  }
   li {
     list-style-type: none;
   }
   .in-dialog li {
     color: var(--muted-modal-text);
+    font-size: 0.9em;
+  }
+  .in-dialog h2 {
+    color: var(--muted-modal-text);
+  }
+  .hotkey-group {
+    margin: 0 0 10px 10px;
+  }
+  .shortcut-help-info h2 {
+    margin: 10px 0;
   }
   kbd {
     color: #333;

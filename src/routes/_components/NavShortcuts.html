@@ -6,6 +6,7 @@
 <Shortcut key="g c" on:pressed="goto('/community')"/>
 <Shortcut key="s" on:pressed="goto('/search')"/>
 <Shortcut key="h|?" on:pressed="showShortcutHelpDialog()"/>
+<Shortcut key="c" on:pressed="showComposeDialog()"/>
 {#each $navPages as navPage, i}
   <Shortcut key={(i + 1).toString()} on:pressed="goto(navPage.href)" />
 {/each}
@@ -13,7 +14,7 @@
 <script>
   import Shortcut from './shortcut/Shortcut'
   import { goto } from '../../../__sapper__/client'
-  import { importShowShortcutHelpDialog } from './dialog/asyncDialogs'
+  import { importShowShortcutHelpDialog, importShowComposeDialog } from './dialog/asyncDialogs'
   import { store } from '../_store/store'
 
   export default {
@@ -26,6 +27,10 @@
       async showShortcutHelpDialog () {
         let showShortcutHelpDialog = await importShowShortcutHelpDialog()
         showShortcutHelpDialog()
+      },
+      async showComposeDialog () {
+        let showComposeDialog = await importShowComposeDialog()
+        showComposeDialog()
       }
     }
   }

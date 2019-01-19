@@ -3,14 +3,19 @@
           {status} {notification} {active} {shortcutScope} on:recalculateHeight
   />
 {:else}
-  <article class="notification-article {active ? 'active' : ''}"
+  <article class="notification-article {active ? 'status-active' : ''}"
            tabindex="0"
            aria-posinset={index}
            aria-setsize={length}
            aria-label={ariaLabel}
+           status-active={active}
   >
     <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
                   {account} {accountId} {uuid} isStatusInNotification="true" />
+    {#if shortcutScope}
+      <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
+      <Shortcut scope={shortcutScope} key="m" on:pressed="mentionAuthor()" />
+    {/if}
   </article>
 {/if}
 <style>
@@ -20,7 +25,7 @@
     padding: 10px 20px;
     border-bottom: 1px solid var(--main-border);
   }
-  .notification-article.active {
+  .notification-article.status-active {
     background-color: var(--status-active-background);
   }
   @media (max-width: 767px) {
@@ -34,14 +39,22 @@
 <script>
   import Status from './Status.html'
   import StatusHeader from './StatusHeader.html'
+  import Shortcut from '../shortcut/Shortcut.html'
   import { store } from '../../_store/store'
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
+  import { goto } from '../../../../__sapper__/client'
+  import { composeNewStatusMentioning } from '../../_actions/mention'
 
   export default {
     components: {
       Status,
-      StatusHeader
+      StatusHeader,
+      Shortcut
     },
+    data: () => ({
+      active: false,
+      shortcutScope: null
+    }),
     store: () => store,
     computed: {
       account: ({ notification }) => notification.account,
@@ -55,6 +68,16 @@
       ariaLabel: ({ status, account, $omitEmojiInDisplayNames }) => (
         !status && `${getAccountAccessibleName(account, $omitEmojiInDisplayNames)} followed you, @${account.acct}`
       )
+    },
+    methods: {
+      openAuthorProfile () {
+        let { accountId } = this.get()
+        goto(`/accounts/${accountId}`)
+      },
+      async mentionAuthor () {
+        let { account } = this.get()
+        await composeNewStatusMentioning(account)
+      }
     }
   }
 </script>
