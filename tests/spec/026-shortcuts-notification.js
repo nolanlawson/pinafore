@@ -7,7 +7,7 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
-fixture`025-shortcuts-status.js`
+fixture`026-shortcuts-notification.js`
   .page`http://localhost:4002`
 
 test('Shortcut f toggles favorite status in notification', async t => {
