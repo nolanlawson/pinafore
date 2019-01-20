@@ -3,8 +3,12 @@ import {
   getOffsetHeight } from './scrollContainer'
 import { smoothScroll } from './smoothScroll'
 
+let mainNavElement
 function getTopOverlay () {
-  return document.getElementById('main-nav').clientHeight
+  if (!mainNavElement) {
+    mainNavElement = document.getElementById('main-nav')
+  }
+  return mainNavElement.clientHeight
 }
 
 export function isVisible (element) {
