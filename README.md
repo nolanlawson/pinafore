@@ -38,7 +38,6 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 - Serve as an alternative frontend tied to a particular instance
 - Support for non-English languages (i18n)
 - Offline search
-- Keyboard shortcuts
 
 ### Non-goals
 
