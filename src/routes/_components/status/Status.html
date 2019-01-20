@@ -36,7 +36,9 @@
   {/if}
 </article>
 {#if shortcutScope}
-<Shortcut scope="{shortcutScope}" key="o" on:pressed="open()"/>
+  <Shortcut scope={shortcutScope} key="o" on:pressed="open()" />
+  <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
+  <Shortcut scope={shortcutScope} key="m" on:pressed="mentionAuthor()" />
 {/if}
 
 <style>
@@ -127,6 +129,7 @@
   import { measureText } from '../../_utils/measureText'
   import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
   import { absoluteDateFormatter } from '../../_utils/formatters'
+  import { composeNewStatusMentioning } from '../../_actions/mention'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -165,6 +168,7 @@
       Shortcut
     },
     data: () => ({
+      active: false,
       notification: void 0,
       replyVisibility: void 0,
       contentPreloaded: false,
@@ -197,6 +201,14 @@
       open () {
         let { originalStatusId } = this.get()
         goto(`/statuses/${originalStatusId}`)
+      },
+      openAuthorProfile () {
+        let { originalAccountId } = this.get()
+        goto(`/accounts/${originalAccountId}`)
+      },
+      async mentionAuthor () {
+        let { originalAccount } = this.get()
+        await composeNewStatusMentioning(originalAccount)
       }
     },
     computed: {

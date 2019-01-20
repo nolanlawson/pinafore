@@ -1,12 +1,14 @@
 import { Selector as $ } from 'testcafe'
 import {
+  closeDialogButton,
+  composeModalInput,
   getNthFavorited,
   getNthStatus,
   getNthStatusContent,
   getNthStatusMedia,
   getNthStatusSensitiveMediaButton,
   getNthStatusSpoiler,
-  getUrl, notificationsNavButton,
+  getUrl, modalDialog,
   scrollToStatus
 } from '../utils'
 import { homeTimeline } from '../fixtures'
@@ -128,19 +130,28 @@ test('Shortcut f toggles favorite status', async t => {
     .expect(getNthFavorited(idx)).eql('false')
 })
 
-test('Shortcut f toggles favorite status in notification', async t => {
-  let idx = 0
+test('Shortcut p toggles profile', async t => {
+  let idx = indexWhere(homeTimeline, _ => _.content === 'pinned toot 1')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .click(notificationsNavButton)
-    .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(idx).exists).ok({ timeout: 30000 })
-    .expect(getNthFavorited(idx)).eql('false')
     .pressKey('j '.repeat(idx + 1))
     .expect(getNthStatus(idx).hasClass('status-active')).ok()
-    .pressKey('f')
-    .expect(getNthFavorited(idx)).eql('true')
-    .pressKey('f')
-    .expect(getNthFavorited(idx)).eql('false')
+    .pressKey('p')
+    .expect(getUrl()).contains('/accounts/3')
+})
+
+test('Shortcut m toggles mention', async t => {
+  let idx = indexWhere(homeTimeline, _ => _.content === 'pinned toot 1')
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getNthStatus(idx).exists).ok({ timeout: 30000 })
+    .pressKey('j '.repeat(idx + 1))
+    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .pressKey('m')
+    .expect(composeModalInput.value).eql('@quux ')
+    .click(closeDialogButton)
+    .expect(modalDialog.exists).notOk()
 })
