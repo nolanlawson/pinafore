@@ -203,12 +203,12 @@
         goto(`/statuses/${originalStatusId}`)
       },
       openAuthorProfile () {
-        let { originalAccountId } = this.get()
-        goto(`/accounts/${originalAccountId}`)
+        let { accountForShortcut } = this.get()
+        goto(`/accounts/${accountForShortcut.id}`)
       },
       async mentionAuthor () {
-        let { originalAccount } = this.get()
-        await composeNewStatusMentioning(originalAccount)
+        let { accountForShortcut } = this.get()
+        await composeNewStatusMentioning(accountForShortcut)
       }
     },
     computed: {
@@ -222,6 +222,7 @@
       accountId: ({ account }) => account.id,
       originalAccount: ({ originalStatus }) => originalStatus.account,
       originalAccountId: ({ originalAccount }) => originalAccount.id,
+      accountForShortcut: ({ originalAccount, notification }) => notification ? notification.account : originalAccount,
       visibility: ({ originalStatus }) => originalStatus.visibility,
       plainTextContent: ({ content }) => htmlToPlainText(content),
       plainTextContentLength: ({ plainTextContent }) => measureText(plainTextContent),
