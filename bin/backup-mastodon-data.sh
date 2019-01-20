@@ -3,6 +3,6 @@
 set -x
 set -e
 
-PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development > fixtures/dump.sql
+PGPASSWORD=pinafore pg_dump -U pinafore -w pinafore_development -h 127.0.0.1 > tests/fixtures/dump.sql
 cd mastodon/public/system
-tar -czf ../../../fixtures/system.tgz .
+tar -czf ../../../tests/fixtures/system.tgz .
