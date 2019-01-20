@@ -1,6 +1,6 @@
 {#if status}
   <Status {index} {length} {timelineType} {timelineValue} {focusSelector}
-          {status} {notification} {active} on:recalculateHeight
+          {status} {notification} {active} {shortcutScope} on:recalculateHeight
   />
 {:else}
   <article class="notification-article {active ? 'active' : ''}"
