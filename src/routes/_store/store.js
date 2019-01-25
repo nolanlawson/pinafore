@@ -26,7 +26,8 @@ const persistedState = {
   pushSubscription: null,
   reduceMotion:
     !process.browser ||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  underlineLinks: false
 }
 
 const nonPersistedState = {

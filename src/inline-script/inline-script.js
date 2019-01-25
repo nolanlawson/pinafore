@@ -45,6 +45,11 @@ if (hasLocalStorage && localStorage.store_disableCustomScrollbars === 'true') {
   theScrollbarStyle.setAttribute('media', 'only x') // disables the style
 }
 
+if (hasLocalStorage && localStorage.store_underlineLinks === 'true') {
+  // if the user wants links underlined, then underline 'em
+  document.body.classList.add('underline-links')
+}
+
 // hack to make the scrollbars rounded only on macOS
 if (/mac/i.test(navigator.platform)) {
   document.documentElement.style.setProperty('--scrollbar-border-radius', '50px')

@@ -90,14 +90,19 @@ h1 {
 a {
   color: var(--anchor-text);
   text-decoration: none;
-}
 
-a:visited {
-  color: var(--anchor-text);
-}
+  &:visited {
+    color: var(--anchor-text);
+  }
 
-a:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .underline-links & {
+    text-decoration: underline;
+  }
+
 }
 
 input {
