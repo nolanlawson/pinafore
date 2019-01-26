@@ -4,7 +4,7 @@
   --scrollbar-border-radius: 0;
   --scrollbar-face-color-hover: #{$scrollbar-face-hover};
   --scrollbar-face-color-active: #{$scrollbar-face-active};
-  --scrollbar-width: 12px;
-  --scrollbar-height: 12px;
+  --scrollbar-width: calc(20px + .25em);
+  --scrollbar-height: calc(20px + .25em);
   --scrollbar-background-color: transparent;
 }
