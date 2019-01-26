@@ -3,8 +3,12 @@ import {
   getOffsetHeight } from './scrollContainer'
 import { smoothScroll } from './smoothScroll'
 
+let mainNavElement
 function getTopOverlay () {
-  return document.getElementById('main-nav').clientHeight
+  if (!mainNavElement) {
+    mainNavElement = document.getElementById('main-nav')
+  }
+  return mainNavElement.clientHeight
 }
 
 export function isVisible (element) {
@@ -20,6 +24,8 @@ export function isVisible (element) {
 export function firstVisibleElementIndex (items, itemElementFunction) {
   let offsetHeight = getOffsetHeight()
   let topOverlay = getTopOverlay()
+  let first = -1
+  let firstComplete = -1
   let len = items.length
   let i = -1
   while (++i < len) {
@@ -29,14 +35,13 @@ export function firstVisibleElementIndex (items, itemElementFunction) {
     }
     let rect = element.getBoundingClientRect()
     if (rect.top < offsetHeight && rect.bottom >= topOverlay) {
-      let firstComplete = i
-      if (rect.top < topOverlay && i < (len - 1)) {
-        firstComplete = i + 1
-      }
-      return { first: i, firstComplete }
+      first = i
+      firstComplete = (
+        rect.top < topOverlay && i < (len - 1)) ? i + 1 : i
+      break
     }
   }
-  return -1
+  return { first, firstComplete }
 }
 
 export function scrollIntoViewIfNeeded (element) {
