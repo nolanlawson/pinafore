@@ -19,7 +19,7 @@ const builders = [
     rebuild: buildSass
   },
   {
-    watch: 'inline-script.js',
+    watch: 'src/inline-script/inline-script.js',
     comment: '<!-- inline JS -->',
     rebuild: buildInlineScript
   },

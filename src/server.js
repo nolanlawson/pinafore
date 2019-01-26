@@ -6,7 +6,7 @@ const app = express()
 const helmet = require('helmet')
 const uuidv4 = require('uuid/v4')
 
-const headScriptChecksum = require('../inline-script-checksum').checksum
+const headScriptChecksum = require('./inline-script/checksum')
 
 const { PORT = 4002 } = process.env
 
