@@ -1,5 +1,5 @@
 <h1 class="sr-only">Profile for {accountName}</h1>
-<div class="account-profile {headerImageIsMissing ? 'header-image-is-missing' : ''}"
+<div class={className}
      style="background-image: url({headerImage});">
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-grid">
@@ -75,13 +75,19 @@
   import AccountProfileMeta from './AccountProfileMeta.html'
   import AccountProfileDetails from './AccountProfileDetails.html'
   import { store } from '../../_store/store'
+  import { classname } from '../../_utils/classname'
 
   export default {
     store: () => store,
     computed: {
       headerImageIsMissing: ({ account }) => account.header.endsWith('missing.png'),
       headerImage: ({ $autoplayGifs, account }) => $autoplayGifs ? account.header : account.header_static,
-      accountName: ({ account }) => (account && (account.display_name || account.username)) || ''
+      accountName: ({ account }) => (account && (account.display_name || account.username)) || '',
+      className: ({ headerImageIsMissing, $underlineLinks }) => (classname(
+        'account-profile',
+        headerImageIsMissing && 'header-image-is-missing',
+        $underlineLinks && 'underline-links'
+      ))
     },
     components: {
       AccountProfileHeader,

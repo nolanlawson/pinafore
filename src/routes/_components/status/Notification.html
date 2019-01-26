@@ -3,7 +3,7 @@
           {status} {notification} {active} {shortcutScope} on:recalculateHeight
   />
 {:else}
-  <article class="notification-article {active ? 'status-active' : ''}"
+  <article class={className}
            tabindex="0"
            aria-posinset={index}
            aria-setsize={length}
@@ -44,6 +44,7 @@
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { goto } from '../../../../__sapper__/client'
   import { composeNewStatusMentioning } from '../../_actions/mention'
+  import { classname } from '../../_utils/classname'
 
   export default {
     components: {
@@ -67,7 +68,12 @@
       },
       ariaLabel: ({ status, account, $omitEmojiInDisplayNames }) => (
         !status && `${getAccountAccessibleName(account, $omitEmojiInDisplayNames)} followed you, @${account.acct}`
-      )
+      ),
+      className: ({ active, $underlineLinks }) => (classname(
+        'notification-article',
+        active && 'status-active',
+        $underlineLinks && 'underline-links'
+      ))
     },
     methods: {
       openAuthorProfile () {
