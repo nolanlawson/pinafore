@@ -14,7 +14,7 @@ const DEBOUNCE = 500
 
 const builders = [
   {
-    watch: 'scss',
+    watch: 'src/scss',
     comment: '<!-- inline CSS -->',
     rebuild: buildSass
   },
@@ -24,7 +24,7 @@ const builders = [
     rebuild: buildInlineScript
   },
   {
-    watch: 'bin/svgs.js',
+    watch: 'src/bin/svgs.js',
     comment: '<!-- inline SVG -->',
     rebuild: buildSvg
   }
