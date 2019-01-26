@@ -41,7 +41,7 @@ export function firstVisibleElementIndex (items, itemElementFunction) {
       break
     }
   }
-  return {first, firstComplete}
+  return { first, firstComplete }
 }
 
 export function scrollIntoViewIfNeeded (element) {
