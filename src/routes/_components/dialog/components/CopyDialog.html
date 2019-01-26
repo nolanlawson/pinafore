@@ -32,6 +32,17 @@
   import { toast } from '../../toast/toast'
   import { doubleRAF } from '../../../_utils/doubleRAF'
 
+  function copyFromInput (input) {
+    // workarounds for iOS, via https://stackoverflow.com/a/34046084
+    let range = document.createRange()
+    range.selectNodeContents(input)
+    let selection = window.getSelection()
+    selection.removeAllRanges()
+    selection.addRange(range)
+    input.setSelectionRange(0, 9999999)
+    document.execCommand('copy')
+  }
+
   export default {
     oncreate () {
       onCreateDialog.call(this)
@@ -48,8 +59,7 @@
       close,
       onClick () {
         let { input } = this.refs
-        input.select()
-        document.execCommand('copy')
+        copyFromInput(input)
         toast.say('Copied to clipboard')
         this.close()
       }
