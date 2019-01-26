@@ -4,7 +4,6 @@ import { notificationObservers } from './notificationObservers'
 import { autosuggestObservers } from './autosuggestObservers'
 import { notificationPermissionObservers } from './notificationPermissionObservers'
 import { customScrollbarObservers } from './customScrollbarObservers'
-import { underlineLinksObservers } from './underlineLinksObservers'
 
 // These observers can be lazy-loaded when the user is actually logged in.
 // Prevents circular dependencies and reduces the size of main.js
@@ -15,5 +14,4 @@ export default function loggedInObservers () {
   autosuggestObservers()
   notificationPermissionObservers()
   customScrollbarObservers()
-  underlineLinksObservers()
 }
