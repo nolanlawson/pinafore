@@ -8,4 +8,4 @@ node_modules
 /static/robots.txt
 /static/inline-script.js.map
 /static/emoji-mart-all.json
-/inline-script-checksum.json
+/src/inline-script/checksum.js

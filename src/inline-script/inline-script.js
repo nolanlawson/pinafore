@@ -1,12 +1,12 @@
 
 // For perf reasons, this script is run inline to quickly set certain styles.
 // To allow CSP to work correctly, we also calculate a sha256 hash during
-// the build process and write it to inline-script-checksum.json.
+// the build process and write it to checksum.js.
 
-import { testHasLocalStorageOnce } from './src/routes/_utils/testStorage'
-import { switchToTheme } from './src/routes/_utils/themeEngine'
-import { basename } from './src/routes/_api/utils'
-import { onUserIsLoggedOut } from './src/routes/_actions/onUserIsLoggedOut'
+import { testHasLocalStorageOnce } from '../routes/_utils/testStorage'
+import { switchToTheme } from '../routes/_utils/themeEngine'
+import { basename } from '../routes/_api/utils'
+import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
 
 window.__themeColors = process.env.THEME_COLORS
 
