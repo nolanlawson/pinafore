@@ -42,7 +42,7 @@
     "export": "cross-env NODE_ENV=production run-s export-steps"
   },
   "dependencies": {
-    "@gamestdio/websocket": "^0.2.8",
+    "@gamestdio/websocket": "^0.3.1",
     "@webcomponents/custom-elements": "^1.2.1",
     "browserslist": "^4.4.1",
     "cheerio": "^1.0.0-rc.2",
