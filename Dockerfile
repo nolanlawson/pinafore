@@ -9,15 +9,15 @@ ADD . /app
 RUN apk update && apk upgrade
 RUN apk add nodejs npm git python build-base clang
 
-# Upgrading NPM
-RUN npm i npm@latest -g
+# Install yarn
+RUN npm i yarn -g
 
 # Install Pinafore
-RUN npm install
-RUN npm run build
+RUN yarn --pure-lockfile
+RUN yarn run build
 
 # Expose port 4002
 EXPOSE 4002
 
 # Setting run-command
-CMD PORT=4002 npm start
+CMD PORT=4002 yarn start
