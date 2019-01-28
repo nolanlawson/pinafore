@@ -1,4 +1,4 @@
-import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
+import { paramsString, DEFAULT_TIMEOUT, getWithResponse } from '../_utils/ajax'
 import { auth, basename } from './utils'
 
 function getTimelineUrlPath (timeline) {
@@ -22,7 +22,25 @@ function getTimelineUrlPath (timeline) {
   }
 }
 
-export function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
+function parseLinkHeader (response) {
+  // the timeline API includes something like:
+  // <https://example.com/api/v1/favourites?limit=20&max_id=82816>; rel="next",
+  // <https://example.com/api/v1/favourites?limit=20&min_id=89916>; rel="prev"
+  // from which we figure out the max ID and min ID
+  let link = response.getHeaders().get('link')
+  let links = link.split(',').map(_ => {
+    let [ urlString, relString ] = _.split(';')
+    let url = new URL(urlString.substring(1, url.length - 1))
+    let rel = relString.match(/rel=['"](.*?)['"]/)[1]
+    let searchParams = new URLSearchParams(url.search)
+    return { rel, searchParams }
+  })
+  let minId = links.find(({ rel }) => rel === 'prev').searchParams.get('min_id')
+  let maxId = links.find(({ rel }) => rel === 'next').searchParams.get('max_id')
+  return [ minId, maxId ]
+}
+
+export async function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
   let timelineUrlName = getTimelineUrlPath(timeline)
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
@@ -53,5 +71,8 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since, 
 
   url += '?' + paramsString(params)
 
-  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
+  let { response, json } = await getWithResponse(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
+  let [ min, max ] = parseLinkHeader(response)
+
+  return { maxId: max, minId: min, json }
 }

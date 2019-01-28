@@ -86,7 +86,7 @@ async function fillGap (instanceName, accessToken, timelineName, firstTimelineIt
   if (!firstTimelineItemId) {
     return
   }
-  let newTimelineItems = await getTimeline(instanceName, accessToken,
+  let { json: newTimelineItems } = await getTimeline(instanceName, accessToken,
     timelineName, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
   if (newTimelineItems.length) {
     addStatusesOrNotifications(instanceName, timelineName, newTimelineItems)

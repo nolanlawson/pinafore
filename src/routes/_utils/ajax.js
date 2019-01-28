@@ -29,14 +29,15 @@ async function throwErrorIfInvalidResponse (response) {
   throw new Error('Request failed: ' + response.status)
 }
 
-async function _fetch (url, fetchOptions, options) {
+async function _fetch (url, fetchOptions, options, includeResponse) {
   let response
   if (options && options.timeout) {
     response = await fetchWithTimeout(url, fetchOptions, options.timeout)
   } else {
     response = await fetch(url, fetchOptions)
   }
-  return throwErrorIfInvalidResponse(response)
+  let json = throwErrorIfInvalidResponse(response)
+  return includeResponse ? { json, response } : json
 }
 
 async function _putOrPostOrPatch (method, url, body, headers, options) {
@@ -66,6 +67,10 @@ export async function patch (url, body, headers, options) {
 
 export async function get (url, headers, options) {
   return _fetch(url, makeFetchOptions('GET', headers), options)
+}
+
+export async function getWithResponse (url, headers, options) {
+  return _fetch(url, makeFetchOptions('GET', headers), options, true)
 }
 
 export async function del (url, headers, options) {

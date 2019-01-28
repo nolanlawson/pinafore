@@ -68,7 +68,7 @@ export function timelineObservers () {
       }
       // fill in the "streaming gap" – i.e. fetch the most recent 20 items so that there isn't
       // a big gap in the timeline if you haven't looked at it in awhile
-      let newTimelineItems = await getTimeline(currentInstance, accessToken,
+      let { json: newTimelineItems } = await getTimeline(currentInstance, accessToken,
         currentTimeline, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
       if (newTimelineItems.length) {
         addStatusesOrNotifications(currentInstance, currentTimeline, newTimelineItems)

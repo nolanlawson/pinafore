@@ -28,7 +28,7 @@ async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelin
     let statusRequest = getStatus(instanceName, accessToken, statusId)
     let contextRequest = getStatusContext(instanceName, accessToken, statusId)
     let [ status, context ] = await Promise.all([statusRequest, contextRequest])
-    return concat(context.ancestors, status, context.descendants)
+    return { json: concat(context.ancestors, status, context.descendants) }
   } else { // normal timeline
     return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, null, TIMELINE_BATCH_SIZE)
   }
