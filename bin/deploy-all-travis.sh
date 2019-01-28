@@ -4,5 +4,5 @@ set -e
 set -x
 
 if [ "$TRAVIS_BRANCH" = master -a "$TRAVIS_PULL_REQUEST" = false ]; then
-  npm run deploy-dev
+  yarn run deploy-dev
 fi

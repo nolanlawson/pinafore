@@ -52,12 +52,12 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Building
 
-Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and `npm`.
+Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and [Yarn](https://yarnpkg.com).
 
 To build Pinafore for production:
 
-    npm install
-    npm run build
+    yarn
+    yarn run build
     PORT=4002 npm start
 
 ### Docker
@@ -79,7 +79,7 @@ To keep your version of Pinafore up to date, you can use `git` to check out the 
 
 You can export Pinafore as a static site. Run:
 
-    npm run export
+    yarn run export
 
 Static files will be written to `__sapper__/export`.
 
