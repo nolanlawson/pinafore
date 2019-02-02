@@ -79,7 +79,7 @@
 </style>
 <script>
   import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media'
-  import { importShowVideoDialog, importShowImageDialog } from '../dialog/asyncDialogs'
+  import { importShowMediaDialog } from '../dialog/asyncDialogs'
   import { mouseover } from '../../_utils/events'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
@@ -91,14 +91,7 @@
   export default {
     oncreate () {
       let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => {
-        let { type } = this.get()
-        if (type === 'video') {
-          this.onClickPlayVideoButton()
-        } else {
-          this.onClickShowImageButton()
-        }
-      })
+      registerClickDelegate(this, delegateKey, () => this.onClick())
     },
     computed: {
       focus: ({ meta }) => meta && meta.focus,
@@ -133,17 +126,10 @@
       type: ({ media }) => media.type
     },
     methods: {
-      async onClickPlayVideoButton () {
-        let { previewUrl, url, modalWidth, modalHeight, description } = this.get()
-        let showVideoDialog = await importShowVideoDialog()
-        showVideoDialog(previewUrl, url,
-          modalWidth, modalHeight, description)
-      },
-      async onClickShowImageButton () {
-        let { previewUrl, url, modalWidth, modalHeight, description, type } = this.get()
-        let showImageDialog = await importShowImageDialog()
-        showImageDialog(previewUrl, url, type,
-          modalWidth, modalHeight, description)
+      async onClick () {
+        let { mediaAttachments, index } = this.get()
+        let showMediaDialog = await importShowMediaDialog()
+        showMediaDialog(mediaAttachments, index)
       }
     },
     data: () => ({

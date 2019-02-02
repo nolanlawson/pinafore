@@ -99,6 +99,22 @@
     fill: var(--action-button-deemphasized-fill-color-pressed-active);
   }
 
+  /*
+   * disable the separate press color (noPressColor)
+   */
+  .icon-button.pressed.no-press-color .icon-button-svg {
+    fill: var(--action-button-fill-color);
+  }
+
+  .icon-button.pressed.no-press-color:hover .icon-button-svg {
+    fill: var(--action-button-fill-color-hover);
+  }
+
+  .icon-button.pressed.no-press-color:active .icon-button-svg {
+    fill: var(--action-button-fill-color-active);
+  }
+
+
 </style>
 <script>
   import { classname } from '../_utils/classname'
@@ -114,17 +130,19 @@
       pressable: false,
       pressed: false,
       className: void 0,
-      delegateKey: void 0
+      delegateKey: void 0,
+      noPressColor: false
     }),
     store: () => store,
     computed: {
-      computedClass: ({ pressable, pressed, big, muted, className }) => {
+      computedClass: ({ pressable, pressed, big, muted, noPressColor, className }) => {
         return classname(
           'icon-button',
           !pressable && 'not-pressable',
           pressed && 'pressed',
           big && 'big-icon',
           muted && 'muted-style',
+          noPressColor && 'no-press-color',
           className
         )
       }
