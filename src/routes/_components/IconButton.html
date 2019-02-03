@@ -55,19 +55,20 @@
     fill: var(--action-button-fill-color-hover);
   }
 
-  .icon-button.not-pressable:active .icon-button-svg {
+  .icon-button.not-pressable:active .icon-button-svg,
+  .icon-button.same-pressed:active .icon-button-svg {
     fill: var(--action-button-fill-color-active);
   }
 
-  .icon-button.pressed .icon-button-svg {
+  .icon-button.pressed.not-same-pressed .icon-button-svg {
     fill: var(--action-button-fill-color-pressed);
   }
 
-  .icon-button.pressed:hover .icon-button-svg {
+  .icon-button.pressed.not-same-pressed:hover .icon-button-svg {
     fill: var(--action-button-fill-color-pressed-hover);
   }
 
-  .icon-button.pressed:active .icon-button-svg {
+  .icon-button.pressed.not-same-pressed:active .icon-button-svg {
     fill: var(--action-button-fill-color-pressed-active);
   }
 
@@ -83,37 +84,22 @@
     fill: var(--action-button-deemphasized-fill-color-hover);
   }
 
-  .icon-button.muted-style.not-pressable:active .icon-button-svg {
+  .icon-button.muted-style.not-pressable:active .icon-button-svg,
+  .icon-button.muted-style.same-pressed:active .icon-button-svg {
     fill: var(--action-button-deemphasized-fill-color-active);
   }
 
-  .icon-button.muted-style.pressed .icon-button-svg {
+  .icon-button.muted-style.pressed.not-same-pressed .icon-button-svg {
     fill: var(--action-button-deemphasized-fill-color-pressed);
   }
 
-  .icon-button.muted-style.pressed:hover .icon-button-svg {
+  .icon-button.muted-style.pressed.not-same-pressed:hover .icon-button-svg {
     fill: var(--action-button-deemphasized-fill-color-pressed-hover);
   }
 
-  .icon-button.muted-style.pressed:active .icon-button-svg {
+  .icon-button.muted-style.pressed.not-same-pressed:active .icon-button-svg {
     fill: var(--action-button-deemphasized-fill-color-pressed-active);
   }
-
-  /*
-   * disable the separate press color (noPressColor)
-   */
-  .icon-button.pressed.no-press-color .icon-button-svg {
-    fill: var(--action-button-fill-color);
-  }
-
-  .icon-button.pressed.no-press-color:hover .icon-button-svg {
-    fill: var(--action-button-fill-color-hover);
-  }
-
-  .icon-button.pressed.no-press-color:active .icon-button-svg {
-    fill: var(--action-button-fill-color-active);
-  }
-
 
 </style>
 <script>
@@ -131,18 +117,18 @@
       pressed: false,
       className: void 0,
       delegateKey: void 0,
-      noPressColor: false
+      sameColorWhenPressed: false
     }),
     store: () => store,
     computed: {
-      computedClass: ({ pressable, pressed, big, muted, noPressColor, className }) => {
+      computedClass: ({ pressable, pressed, big, muted, sameColorWhenPressed, className }) => {
         return classname(
           'icon-button',
           !pressable && 'not-pressable',
           pressed && 'pressed',
           big && 'big-icon',
           muted && 'muted-style',
-          noPressColor && 'no-press-color',
+          sameColorWhenPressed ? 'same-pressed' : 'not-same-pressed',
           className
         )
       }

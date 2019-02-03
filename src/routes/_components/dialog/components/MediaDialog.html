@@ -33,7 +33,7 @@
             label="Show {nth(i)} media"
             pressed={i === scrolledItem}
             href={i === scrolledItem ? '#fa-circle' : '#fa-circle-o'}
-            noPressColor={true}
+            sameColorWhenPressed={true}
             on:click="onClick(i)"
           />
         {/each}
