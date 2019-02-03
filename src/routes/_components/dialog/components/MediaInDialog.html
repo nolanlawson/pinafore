@@ -50,7 +50,7 @@
           let { width, height } = media.meta.original
           return `${width} x ${height}`
         }
-        return ''
+        return '' // pleroma does not give us original width/height
       }
     },
     ondestroy () {
