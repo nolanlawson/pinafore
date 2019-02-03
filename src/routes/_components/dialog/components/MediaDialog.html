@@ -11,44 +11,58 @@
         <div class="media-scroll-item">
           <div class="media-scroll-item-inner">
             <div class="media-scroll-item-inner-inner">
-              <MediaInDialog {media} />
+                <PinchZoomable className='media-pinch-zoom' disabled={!pinchZoomMode} >
+                  <MediaInDialog {media} />
+                </PinchZoomable>
             </div>
           </div>
         </div>
       {/each}
     </div>
-    {#if dots.length > 1}
-      <div class="media-controls">
-        <IconButton
-          className="media-control-button"
-          disabled={scrolledItem === 0}
-          label="Show previous media"
-          href="#fa-angle-left"
-          on:click="prev()"
-        />
-        {#each dots as dot, i (dot.i)}
-          <IconButton
-            className="media-control-button"
-            pressable={true}
-            label="Show {nth(i)} media"
-            pressed={i === scrolledItem}
-            href={i === scrolledItem ? '#fa-circle' : '#fa-circle-o'}
-            sameColorWhenPressed={true}
-            on:click="onClick(i)"
-          />
-        {/each}
-        <IconButton
-          className="media-control-button"
-          disabled={scrolledItem === length - 1}
-          label="Show next media"
-          href="#fa-angle-right"
-          on:click="next()"
-        />
-      </div>
-    {/if}
+    <div class="media-controls-outside">
+      <IconButton
+        className="media-control-button media-control-button-dummy-spacer"
+        href="#fa-search"
+      />
+      {#if dots.length > 1}
+        <div class="media-controls">
+            <IconButton
+              className="media-control-button"
+              disabled={scrolledItem === 0}
+              label="Show previous media"
+              href="#fa-angle-left"
+              on:click="prev()"
+            />
+            {#each dots as dot, i (dot.i)}
+              <IconButton
+                className="media-control-button"
+                pressable={true}
+                label="Show {nth(i)} media"
+                pressed={i === scrolledItem}
+                href={i === scrolledItem ? '#fa-circle' : '#fa-circle-o'}
+                sameColorWhenPressed={true}
+                on:click="onClick(i)"
+              />
+            {/each}
+            <IconButton
+              className="media-control-button"
+              disabled={scrolledItem === length - 1}
+              label="Show next media"
+              href="#fa-angle-right"
+              on:click="next()"
+            />
+        </div>
+      {/if}
+      <IconButton
+        className="media-control-button"
+        pressable={true}
+        pressed={pinchZoomMode}
+        label={pinchZoomMode ? 'Disable pinch-zoom mode' : 'Enable pinch-zoom mode'}
+        href="#fa-search"
+        on:click="togglePinchZoomMode()"
+      />
+    </div>
   </div>
-
-
 </ModalDialog>
 
 <Shortcut scope='mediaDialog' key="ArrowLeft" on:pressed="prev()" />
@@ -92,14 +106,37 @@
     padding: 5px;
   }
 
+  .media-controls-outside {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+  }
+
   .media-controls {
     display: flex;
     justify-content: space-between;
-    margin: 10px auto;
   }
 
-  :global(.media-control-button) {
-    margin: 0 5px;
+  :global(.media-pinch-zoom) {
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.media-control-button-dummy-spacer) {
+    visibility: hidden;
+  }
+
+  @media (min-width: 768px) {
+    :global(.media-control-button) {
+      margin: 0 5px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    :global(.icon-button.media-control-button) {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
   }
 
   @supports (scroll-snap-align: start) {
@@ -129,6 +166,7 @@
   import MediaInDialog from './MediaInDialog.html'
   import IconButton from '../../IconButton.html'
   import Shortcut from '../../shortcut/Shortcut.html'
+  import PinchZoomable from './PinchZoomable.html'
   import { show } from '../helpers/showDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import debounce from 'lodash-es/debounce'
@@ -163,6 +201,9 @@
       popShortcutScope('mediaDialog')
     },
     store: () => store,
+    data: () => ({
+      pinchZoomMode: false
+    }),
     computed: {
       length: ({ mediaItems }) => mediaItems.length,
       dots: ({ length }) => times(length, i => ({ i }))
@@ -171,7 +212,8 @@
       ModalDialog,
       MediaInDialog,
       IconButton,
-      Shortcut
+      Shortcut,
+      PinchZoomable
     },
     helpers: {
       nth (i) {
@@ -229,6 +271,9 @@
         } else {
           scroller.scrollLeft = scrollLeft
         }
+      },
+      togglePinchZoomMode () {
+        this.set({ pinchZoomMode: !this.get().pinchZoomMode })
       }
     }
   }

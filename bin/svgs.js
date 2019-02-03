@@ -40,6 +40,7 @@ module.exports = [
   { id: 'fa-circle', src: 'src/thirdparty/font-awesome-svg-png/white/svg/circle.svg' },
   { id: 'fa-circle-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/circle-o.svg' },
   { id: 'fa-angle-left', src: 'src/thirdparty/font-awesome-svg-png/white/svg/angle-left.svg' },
-  { id: 'fa-angle-right', src: 'src/thirdparty/font-awesome-svg-png/white/svg/angle-right.svg' }
-
+  { id: 'fa-angle-right', src: 'src/thirdparty/font-awesome-svg-png/white/svg/angle-right.svg' },
+  { id: 'fa-search-minus', src: 'src/thirdparty/font-awesome-svg-png/white/svg/search-minus.svg' },
+  { id: 'fa-search-plus', src: 'src/thirdparty/font-awesome-svg-png/white/svg/search-plus.svg' }
 ]
