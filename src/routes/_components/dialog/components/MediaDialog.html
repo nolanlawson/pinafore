@@ -24,7 +24,7 @@
           disabled={scrolledItem === 0}
           label="Show previous media"
           href="#fa-angle-left"
-          on:click="onClick(scrolledItem - 1)"
+          on:click="prev()"
         />
         {#each dots as dot, i (dot.i)}
           <IconButton
@@ -42,7 +42,7 @@
           disabled={scrolledItem === length - 1}
           label="Show next media"
           href="#fa-angle-right"
-          on:click="onClick(scrolledItem + 1)"
+          on:click="next()"
         />
       </div>
     {/if}
@@ -50,6 +50,9 @@
 
 
 </ModalDialog>
+
+<Shortcut scope='mediaDialog' key="ArrowLeft" on:pressed="prev()" />
+<Shortcut scope='mediaDialog' key="ArrowRight" on:pressed="next()" />
 <style>
   :global(.media-modal-dialog) {
     max-width: calc(100vw);
@@ -125,6 +128,7 @@
   import ModalDialog from './ModalDialog.html'
   import MediaInDialog from './MediaInDialog.html'
   import IconButton from '../../IconButton.html'
+  import Shortcut from '../../shortcut/Shortcut.html'
   import { show } from '../helpers/showDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import debounce from 'lodash-es/debounce'
@@ -132,6 +136,9 @@
   import { smoothScroll } from '../../../_utils/smoothScroll'
   import { doubleRAF } from '../../../_utils/doubleRAF'
   import { store } from '../../../_store/store'
+  import {
+    pushShortcutScope,
+    popShortcutScope } from '../../../_utils/shortcuts'
 
   export default {
     oncreate () {
@@ -148,9 +155,12 @@
       } else {
         this.setupScroll()
       }
+      pushShortcutScope('mediaDialog')
     },
     ondestroy () {
       this.teardownScroll()
+
+      popShortcutScope('mediaDialog')
     },
     store: () => store,
     computed: {
@@ -162,7 +172,8 @@
     components: {
       ModalDialog,
       MediaInDialog,
-      IconButton
+      IconButton,
+      Shortcut
     },
     helpers: {
       nth (i) {
@@ -196,6 +207,18 @@
         let { scrolledItem } = this.get()
         if (scrolledItem !== i) {
           this.scrollToItem(i, true)
+        }
+      },
+      next () {
+        let { scrolledItem, length } = this.get()
+        if (scrolledItem < length - 1) {
+          this.scrollToItem(scrolledItem + 1, true)
+        }
+      },
+      prev () {
+        let { scrolledItem } = this.get()
+        if (scrolledItem > 0) {
+          this.scrollToItem(scrolledItem - 1, true)
         }
       },
       scrollToItem (i, smooth) {
