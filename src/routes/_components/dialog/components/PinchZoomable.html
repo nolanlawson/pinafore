@@ -96,7 +96,7 @@
       },
       zoomBy (increment) {
         let { node } = this.refs
-        let { scale } = node
+        let scale = node.scale || 1
         node.scaleTo(scale + increment, {
           originX: '50%',
           originY: '50%'
