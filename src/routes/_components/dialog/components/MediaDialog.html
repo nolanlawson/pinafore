@@ -165,8 +165,6 @@
     store: () => store,
     computed: {
       length: ({ mediaItems }) => mediaItems.length,
-      originalWidths: ({ mediaItems }) => mediaItems.map(_ => _.meta.original.width),
-      maxWidth: ({ originalWidths }) => Math.max.apply(Math, originalWidths),
       dots: ({ length }) => times(length, i => ({ i }))
     },
     components: {
