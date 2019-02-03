@@ -5,6 +5,7 @@
     src={url}
     {poster}
     controls
+    {intrinsicsize}
     ref:video
   />
 {:elseif type === 'gifv'}
@@ -18,6 +19,7 @@
     loop
     webkit-playsinline
     playsinline
+    {intrinsicsize}
   />
 {:else}
   <img
@@ -25,6 +27,7 @@
     alt={description}
     title={description}
     src={url}
+    {intrinsicsize}
   />
 {/if}
 <style>
@@ -41,7 +44,14 @@
       url: ({ media }) => media.url,
       description: ({ media }) => media.description || '',
       poster: ({ media }) => media.poster,
-      static_url: ({ media }) => media.static_url
+      static_url: ({ media }) => media.static_url,
+      intrinsicsize: ({ media }) => {
+        if (media.meta && media.meta.original && media.meta.original.width && media.meta.original.height) {
+          let { width, height } = media.meta.original
+          return `${width} x ${height}`
+        }
+        return '' // pleroma does not give us original width/height
+      }
     },
     ondestroy () {
       if (this.refs.video && !this.refs.video.paused) {
