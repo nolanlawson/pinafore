@@ -1,0 +1,214 @@
+<ModalDialog
+  {id}
+  {label}
+  background="var(--muted-modal-bg)"
+  muted="true"
+  className="media-modal-dialog"
+>
+  <div class="media-container">
+    <div class="media-scroll" ref:scroller>
+      {#each mediaItems as media}
+        <div class="media-scroll-item">
+          <div class="media-scroll-item-inner">
+            <div class="media-scroll-item-inner-inner">
+              <MediaInDialog {media} />
+            </div>
+          </div>
+        </div>
+      {/each}
+    </div>
+    {#if dots.length > 1}
+      <div class="media-controls">
+        <IconButton
+          className="media-control-button"
+          disabled={scrolledItem === 0}
+          label="Show previous media"
+          href="#fa-angle-left"
+          on:click="onClick(scrolledItem - 1)"
+        />
+        {#each dots as dot, i (dot.i)}
+          <IconButton
+            className="media-control-button"
+            pressable={true}
+            label="Show {nth(i)} media"
+            pressed={i === scrolledItem}
+            href={i === scrolledItem ? '#fa-circle' : '#fa-circle-o'}
+            noPressColor={true}
+            on:click="onClick(i)"
+          />
+        {/each}
+        <IconButton
+          className="media-control-button"
+          disabled={scrolledItem === length - 1}
+          label="Show next media"
+          href="#fa-angle-right"
+          on:click="onClick(scrolledItem + 1)"
+        />
+      </div>
+    {/if}
+  </div>
+
+
+</ModalDialog>
+<style>
+  :global(.media-modal-dialog) {
+    max-width: calc(100vw);
+  }
+  .media-container {
+    height: calc(100% - 64px); /* 44px X button height + 20px padding */
+    width: calc(100vw);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .media-scroll {
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    width: 100%;
+    flex: 1;
+    scrollbar-width: none;
+  }
+
+  .media-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .media-scroll-item {
+    height: 100%;
+  }
+  .media-scroll-item-inner {
+    width: 100vw;
+    height: 100%;
+    overflow: hidden;
+  }
+  .media-scroll-item-inner-inner {
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
+    padding: 5px;
+  }
+
+  .media-controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px auto;
+  }
+
+  :global(.media-control-button) {
+    margin: 0 5px;
+  }
+
+  @supports (scroll-snap-align: start) {
+    /* modern scroll snap points */
+    .media-scroll {
+      scroll-snap-type: x mandatory;
+    }
+    .media-scroll-item {
+      scroll-snap-align: center;
+    }
+  }
+  @supports not (scroll-snap-align: start) {
+    /* old scroll snap points spec */
+    .media-scroll {
+      -webkit-scroll-snap-type: mandatory;
+              scroll-snap-type: mandatory;
+      -webkit-scroll-snap-destination: 0% center;
+              scroll-snap-destination: 0% center;
+      -webkit-scroll-snap-points-x: repeat(100%);
+              scroll-snap-points-x: repeat(100%);
+    }
+
+  }
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import MediaInDialog from './MediaInDialog.html'
+  import IconButton from '../../IconButton.html'
+  import { show } from '../helpers/showDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import debounce from 'lodash-es/debounce'
+  import times from 'lodash-es/times'
+  import { smoothScroll } from '../../../_utils/smoothScroll'
+  import { doubleRAF } from '../../../_utils/doubleRAF'
+  import { store } from '../../../_store/store'
+
+  export default {
+    oncreate () {
+      onCreateDialog.call(this)
+
+      this.onScroll = debounce(this.onScroll.bind(this), 100, { leading: false, trailing: true })
+
+      let { scrolledItem } = this.get()
+      if (scrolledItem) {
+        doubleRAF(() => {
+          this.scrollToItem(scrolledItem, false)
+          this.setupScroll()
+        })
+      } else {
+        this.setupScroll()
+      }
+    },
+    ondestroy () {
+      this.teardownScroll()
+    },
+    store: () => store,
+    computed: {
+      length: ({ mediaItems }) => mediaItems.length,
+      originalWidths: ({ mediaItems }) => mediaItems.map(_ => _.meta.original.width),
+      maxWidth: ({ originalWidths }) => Math.max.apply(Math, originalWidths),
+      dots: ({ length }) => times(length, i => ({ i }))
+    },
+    components: {
+      ModalDialog,
+      MediaInDialog,
+      IconButton
+    },
+    helpers: {
+      nth (i) {
+        switch (i) {
+          case 0:
+            return 'first'
+          case 1:
+            return 'second'
+          case 2:
+            return 'third'
+          case 3:
+            return 'fourth'
+        }
+      }
+    },
+    methods: {
+      show,
+      setupScroll () {
+        this.refs.scroller.addEventListener('scroll', this.onScroll)
+      },
+      teardownScroll () {
+        this.refs.scroller.removeEventListener('scroll', this.onScroll)
+      },
+      onScroll () {
+        let { length } = this.get()
+        let { scrollWidth, scrollLeft } = this.refs.scroller
+        let scrolledItem = Math.floor((scrollLeft / scrollWidth) * length)
+        this.set({ scrolledItem })
+      },
+      onClick (i) {
+        let { scrolledItem } = this.get()
+        if (scrolledItem !== i) {
+          this.scrollToItem(i, true)
+        }
+      },
+      scrollToItem (i, smooth) {
+        let { length } = this.get()
+        let { scroller } = this.refs
+        let { scrollWidth } = scroller
+        let scrollLeft = Math.floor(scrollWidth * (i / length))
+        if (smooth) {
+          smoothScroll(scroller, scrollLeft, true)
+        } else {
+          scroller.scrollLeft = scrollLeft
+        }
+      }
+    }
+  }
+</script>

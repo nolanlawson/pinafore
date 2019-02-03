@@ -61,13 +61,13 @@ function testSupportsSmoothScroll () {
 
 const smoothScrollSupported = process.browser && testSupportsSmoothScroll()
 
-export function smoothScroll (node, top) {
+export function smoothScroll (node, topOrLeft, horizontal) {
   if (smoothScrollSupported) {
     return node.scrollTo({
-      top: top,
+      [horizontal ? 'left' : 'top']: topOrLeft,
       behavior: 'smooth'
     })
   } else {
-    return smoothScrollPolyfill(node, 'scrollTop', top)
+    return smoothScrollPolyfill(node, horizontal ? 'scrollLeft' : 'scrollTop', topOrLeft)
   }
 }

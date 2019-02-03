@@ -1,0 +1,52 @@
+{#if type === 'video'}
+  <video
+    class="media-fit"
+    aria-label={description}
+    src={url}
+    {poster}
+    controls
+    ref:video
+  />
+{:elseif type === 'gifv'}
+  <video
+    class="media-fit"
+    style="background-image:url({static_url});"
+    aria-label={description}
+    src={url}
+    autoplay
+    muted
+    loop
+    webkit-playsinline
+    playsinline
+  />
+{:else}
+  <img
+    class="media-fit"
+    alt={description}
+    title={description}
+    src={url}
+  />
+{/if}
+<style>
+  .media-fit {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      type: ({ media }) => media.type,
+      url: ({ media }) => media.url,
+      description: ({ media }) => media.description || '',
+      poster: ({ media }) => media.poster,
+      static_url: ({ media }) => media.static_url
+    },
+    ondestroy () {
+      if (this.refs.video && !this.refs.video.paused) {
+        this.refs.video.pause()
+      }
+    }
+  }
+</script>

@@ -24,7 +24,7 @@ const builders = [
     rebuild: buildInlineScript
   },
   {
-    watch: 'src/bin/svgs.js',
+    watch: 'bin/svgs.js',
     comment: '<!-- inline SVG -->',
     rebuild: buildSvg
   }

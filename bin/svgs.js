@@ -36,5 +36,10 @@ module.exports = [
   { id: 'fa-times', src: 'src/thirdparty/font-awesome-svg-png/white/svg/times.svg' },
   { id: 'fa-volume-off', src: 'src/thirdparty/font-awesome-svg-png/white/svg/volume-off.svg' },
   { id: 'fa-volume-up', src: 'src/thirdparty/font-awesome-svg-png/white/svg/volume-up.svg' },
-  { id: 'fa-link', src: 'src/thirdparty/font-awesome-svg-png/white/svg/link.svg' }
+  { id: 'fa-link', src: 'src/thirdparty/font-awesome-svg-png/white/svg/link.svg' },
+  { id: 'fa-circle', src: 'src/thirdparty/font-awesome-svg-png/white/svg/circle.svg' },
+  { id: 'fa-circle-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/circle-o.svg' },
+  { id: 'fa-angle-left', src: 'src/thirdparty/font-awesome-svg-png/white/svg/angle-left.svg' },
+  { id: 'fa-angle-right', src: 'src/thirdparty/font-awesome-svg-png/white/svg/angle-right.svg' }
+
 ]
