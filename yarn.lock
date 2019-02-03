@@ -6389,9 +6389,10 @@ sanitize-filename@^1.6.0:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-"sapper@github:nolanlawson/sapper#nolan/sw-index-html-built":
-  version "0.24.0"
-  resolved "https://codeload.github.com/nolanlawson/sapper/tar.gz/fe16f53a03390437d3097cd4e1e422ba04595322"
+sapper@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/sapper/-/sapper-0.25.0.tgz#cdda18588d063e10ef464aa77d19669eb01481d4"
+  integrity sha512-qnGPJVYxnGbYnjA4Wu5dHmrr/lsfl/4GfnPTns5O3yOEOcfCPnuTgNtE1juzPzQqG5GUZCyTQ/k5YrpoS1M9fw==
   dependencies:
     html-minifier "^3.5.20"
     shimport "0.0.11"
