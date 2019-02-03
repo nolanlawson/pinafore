@@ -24,7 +24,7 @@
           disabled={scrolledItem === 0}
           label="Show previous media"
           href="#fa-angle-left"
-          on:click="onClick(scrolledItem - 1)"
+          on:click="prev()"
         />
         {#each dots as dot, i (dot.i)}
           <IconButton
@@ -42,7 +42,7 @@
           disabled={scrolledItem === length - 1}
           label="Show next media"
           href="#fa-angle-right"
-          on:click="onClick(scrolledItem + 1)"
+          on:click="next()"
         />
       </div>
     {/if}
@@ -138,7 +138,7 @@
   import { store } from '../../../_store/store'
   import {
     pushShortcutScope,
-    popShortcutScope } from "../../../_utils/shortcuts"
+    popShortcutScope } from '../../../_utils/shortcuts'
 
   export default {
     oncreate () {
@@ -160,7 +160,7 @@
     ondestroy () {
       this.teardownScroll()
 
-    popShortcutScope('mediaDialog')
+      popShortcutScope('mediaDialog')
     },
     store: () => store,
     computed: {
@@ -210,16 +210,16 @@
         }
       },
       next () {
-        let { scrolledItem } = this.get()
-        if (scrolledItem < 4) {
+        let { scrolledItem, length } = this.get()
+        if (scrolledItem < length - 1) {
           this.scrollToItem(scrolledItem + 1, true)
         }
       },
       prev () {
-          let { scrolledItem } = this.get()
-          if (scrolledItem > 0) {
-            this.scrollToItem(scrolledItem - 1, true)
-          }
+        let { scrolledItem } = this.get()
+        if (scrolledItem > 0) {
+          this.scrollToItem(scrolledItem - 1, true)
+        }
       },
       scrollToItem (i, smooth) {
         let { length } = this.get()
