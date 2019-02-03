@@ -171,10 +171,10 @@
       "src-build",
       "static",
       "package.json",
-      "package-lock.json",
       "thirdparty",
       "webpack",
-      "webpack.config.js"
+      "webpack.config.js",
+      "yarn.lock"
     ],
     "engines": {
       "node": "^10.0.0"
