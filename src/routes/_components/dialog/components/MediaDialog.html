@@ -189,7 +189,7 @@
       onScroll () {
         let { length } = this.get()
         let { scrollWidth, scrollLeft } = this.refs.scroller
-        let scrolledItem = Math.floor((scrollLeft / scrollWidth) * length)
+        let scrolledItem = Math.round((scrollLeft / scrollWidth) * length)
         this.set({ scrolledItem })
       },
       onClick (i) {
