@@ -5604,6 +5604,13 @@ pify@^3.0.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
   integrity sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=
 
+pinch-zoom-element@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pinch-zoom-element/-/pinch-zoom-element-1.1.0.tgz#0e12c3f7bd63631e45596d1417a15759f80a4e9c"
+  integrity sha512-jzF7Uad61b1+BnaEktbtOl025WaLDbwVgpcG4qive1OLwuFNU2Itt2c5tD6pp1sx4XgKhLzqjVgQ9qmCr3y6Ew==
+  dependencies:
+    pointer-tracker "^2.0.3"
+
 pinkie-promise@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/pinkie-promise/-/pinkie-promise-1.0.0.tgz#d1da67f5482563bb7cf57f286ae2822ecfbf3670"
@@ -5684,6 +5691,11 @@ pngjs@^3.3.1:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.3.3.tgz#85173703bde3edac8998757b96e5821d0966a21b"
   integrity sha512-1n3Z4p3IOxArEs1VRXnZ/RXdfEniAUS9jb68g58FIXMNkPJeZd+Qh4Uq7/e0LVxAQGos1eIUrqrt4FpjdnEd+Q==
+
+pointer-tracker@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/pointer-tracker/-/pointer-tracker-2.0.3.tgz#6e66be8330e9f4e83c81d76e1d78e42eb4f89c00"
+  integrity sha512-PURBF4oc45JPECuguX6oPL3pJU5AlF0Nb/4sZdmqzPNAkV4LGL9MJMqb0smWDtmQ0F0KpbxEJn4/Lf5ugN1keQ==
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

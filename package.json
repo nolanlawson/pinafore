@@ -78,6 +78,7 @@
     "p-any": "^1.1.0",
     "page-lifecycle": "^0.1.1",
     "performance-now": "^2.1.0",
+    "pinch-zoom-element": "^1.1.0",
     "prop-types": "^15.6.2",
     "quick-lru": "^2.0.0",
     "remount": "^0.9.3",
