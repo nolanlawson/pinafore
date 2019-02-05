@@ -159,6 +159,9 @@
       show,
       close,
       onEmojiSelected (emoji) {
+        // TODO: hack for preact compatibility, need to clear the search after an emoji
+        // is selected or else it will remain the next time the modal is opened
+        this.refs.container.querySelector('input[type=text]').value = ''
         let { realm } = this.get()
         insertEmoji(realm, emoji)
         this.close()
