@@ -183,7 +183,7 @@
     oncreate () {
       onCreateDialog.call(this)
 
-      this.onScroll = debounce(this.onScroll.bind(this), 100, { leading: false, trailing: true })
+      this.onScroll = debounce(this.onScroll.bind(this), 50, { leading: false, trailing: true })
 
       let { scrolledItem } = this.get()
       if (scrolledItem) {
@@ -198,7 +198,6 @@
     },
     ondestroy () {
       this.teardownScroll()
-
       popShortcutScope('mediaDialog')
     },
     store: () => store,
@@ -262,11 +261,12 @@
           this.scrollToItem(scrolledItem - 1, true)
         }
       },
-      scrollToItem (i, smooth) {
+      scrollToItem (scrolledItem, smooth) {
+        this.set({ scrolledItem: scrolledItem })
         let { length } = this.get()
         let { scroller } = this.refs
         let { scrollWidth } = scroller
-        let scrollLeft = Math.floor(scrollWidth * (i / length))
+        let scrollLeft = Math.floor(scrollWidth * (scrolledItem / length))
         if (smooth) {
           smoothScroll(scroller, scrollLeft, true)
         } else {
