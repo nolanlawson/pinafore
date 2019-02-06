@@ -1,0 +1,23 @@
+<a {href} aria-label={ariaLabel || label} class="settings-list-button">
+  <span>
+    {label}
+  </span>
+</a>
+<style>
+  .settings-list-button {
+    display: flex;
+    flex-grow: 1;
+  }
+  .settings-list-button span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+<script>
+  export default {
+    data: () => ({
+      ariaLabel: void 0
+    })
+  }
+</script>

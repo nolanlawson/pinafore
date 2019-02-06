@@ -8,6 +8,7 @@ module.exports = [
   { id: 'fa-reply-all', src: 'src/thirdparty/font-awesome-svg-png/white/svg/reply-all.svg' },
   { id: 'fa-retweet', src: 'src/thirdparty/font-awesome-svg-png/white/svg/retweet.svg' },
   { id: 'fa-star', src: 'src/thirdparty/font-awesome-svg-png/white/svg/star.svg' },
+  { id: 'fa-star-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/star-o.svg' },
   { id: 'fa-ellipsis-h', src: 'src/thirdparty/font-awesome-svg-png/white/svg/ellipsis-h.svg' },
   { id: 'fa-spinner', src: 'src/thirdparty/font-awesome-svg-png/white/svg/spinner.svg' },
   { id: 'fa-user', src: 'src/thirdparty/font-awesome-svg-png/white/svg/user.svg' },

@@ -2,23 +2,33 @@
   <h1>Settings</h1>
 
   <SettingsList>
-    <SettingsListItem href="/settings/general" label="General"/>
-    <SettingsListItem href="/settings/instances" label="Instances"/>
-    <SettingsListItem href="/settings/hotkeys" label="Hotkeys"/>
-    <SettingsListItem href="/settings/about" label="About Pinafore"/>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/general" label="General"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/instances" label="Instances"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/hotkeys" label="Hotkeys"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/about" label="About Pinafore"/>
+    </SettingsListRow>
   </SettingsList>
 
 </SettingsLayout>
 <script>
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import SettingsList from '../../_components/settings/SettingsList.html'
-  import SettingsListItem from '../../_components/settings/SettingsListItem.html'
+  import SettingsListRow from '../../_components/settings/SettingsListRow.html'
+  import SettingsListButton from '../../_components/settings/SettingsListButton.html'
 
   export default {
     components: {
       SettingsLayout,
       SettingsList,
-      SettingsListItem
+      SettingsListRow,
+      SettingsListButton
     }
   }
 </script>
