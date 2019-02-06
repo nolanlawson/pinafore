@@ -147,7 +147,11 @@ export async function showMoreItemsForThread (instanceName, timelineName) {
   let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd')
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds')
   // TODO: update database and do the thread merge correctly
-  timelineItemIds = timelineItemIds.concat(itemIdsToAdd)
+  for (let itemIdToAdd of itemIdsToAdd) {
+    if (!timelineItemIds.includes(itemIdToAdd)) {
+      timelineItemIds.push(itemIdToAdd)
+    }
+  }
   store.setForTimeline(instanceName, timelineName, {
     itemIdsToAdd: [],
     timelineItemIds: timelineItemIds
