@@ -5,11 +5,16 @@
   <p>Instances you've logged in to:</p>
   <SettingsList label="Instances">
     {#each $loggedInInstancesAsList as instance}
-      <SettingsListItem offsetForIcon={instance.name !== $currentInstance}
-                        icon={instance.name === $currentInstance ? '#fa-star' : ''}
-                        href="/settings/instances/{instance.name}"
-                        label={instance.name}
-                        ariaLabel="{instance.name} {instance.name === $currentInstance ? '(current instance)' : ''}" />
+    <SettingsListRow>
+      <SettingsListButton href="/settings/instances/{instance.name}"
+                          label={instance.name}
+                          ariaLabel="{instance.name} {instance.name === $currentInstance ? '(current instance)' : ''}" />
+      <button class="instance-switcher-button" on:click="onSwitchToThisInstance(event, instance.name)">
+        <svg class="instance-switcher-button-svg">
+          <use xlink:href="{instance.name === $currentInstance ? '#fa-star' : '#fa-star-o'}" />
+        </svg>
+      </button>
+    </SettingsListRow>
     {/each}
   </SettingsList>
   <p><a href="/settings/instances/add">Add another instance</a></p>
@@ -18,17 +23,38 @@
   <p><a href="/settings/instances/add">Log in to an instance</a> to start using Pinafore.</p>
   {/if}
 </SettingsLayout>
+<style>
+  .instance-switcher-button {
+    display: flex;
+    flex-grow: 0;
+  }
+  .instance-switcher-button-svg {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    fill: var(--svg-fill);
+  }
+</style>
 <script>
   import { store } from '../../../_store/store'
+  import { switchToInstance } from '../../../_actions/instances'
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import SettingsList from '../../../_components/settings/SettingsList.html'
-  import SettingsListItem from '../../../_components/settings/SettingsListItem.html'
+  import SettingsListRow from '../../../_components/settings/SettingsListRow.html'
+  import SettingsListButton from '../../../_components/settings/SettingsListButton.html'
 
   export default {
     components: {
       SettingsLayout,
       SettingsList,
-      SettingsListItem
+      SettingsListRow,
+      SettingsListButton
+    },
+    methods: {
+      onSwitchToThisInstance (e, instanceName) {
+        e.preventDefault()
+        switchToInstance(instanceName)
+      }
     },
     store: () => store
   }
