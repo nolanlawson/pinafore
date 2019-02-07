@@ -4,16 +4,23 @@
   {#if $isUserLoggedIn}
   <p>Instances you've logged in to:</p>
   <SettingsList label="Instances">
-    {#each $loggedInInstancesAsList as instance}
+    {#each instanceStates as instance}
     <SettingsListRow>
-      <SettingsListButton href="/settings/instances/{instance.name}"
+      <SettingsListButton className="instance-switcher-instance-name"
+                          href="/settings/instances/{instance.name}"
                           label={instance.name}
-                          ariaLabel="{instance.name} {instance.name === $currentInstance ? '(current instance)' : ''}" />
-      <button class="instance-switcher-button" on:click="onSwitchToThisInstance(event, instance.name)">
-        <svg class="instance-switcher-button-svg">
-          <use xlink:href="{instance.name === $currentInstance ? '#fa-star' : '#fa-star-o'}" />
-        </svg>
-      </button>
+                          ariaLabel={instance.label} />
+      <div class="instance-switcher-button-wrapper">
+        <button class="instance-switcher-button"
+                aria-label={instance.switchLabel}
+                title={instance.switchLabel}
+                aria-pressed={instance.current}
+                on:click="onSwitchToThisInstance(event, instance.name)">
+          <svg class="instance-switcher-button-svg">
+            <use xlink:href="{instance.current ? '#fa-star' : '#fa-star-o'}" />
+          </svg>
+        </button>
+      </div>
     </SettingsListRow>
     {/each}
   </SettingsList>
@@ -24,9 +31,29 @@
   {/if}
 </SettingsLayout>
 <style>
+  :global(.instance-switcher-instance-name) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .instance-switcher-button-wrapper {
+    position: relative;
+    border: 1px solid var(--settings-list-item-border);
+    min-width: 44px;
+  }
   .instance-switcher-button {
     display: flex;
-    flex-grow: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    border: none;
+    background: none;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
   }
   .instance-switcher-button-svg {
     width: 24px;
@@ -53,9 +80,20 @@
     methods: {
       onSwitchToThisInstance (e, instanceName) {
         e.preventDefault()
+        e.stopPropagation()
         switchToInstance(instanceName)
       }
     },
-    store: () => store
+    store: () => store,
+    computed: {
+      instanceStates: ({ $loggedInInstancesAsList }) => (
+        $loggedInInstancesAsList.map(({name, current}) => ({
+          name,
+          current,
+          label: `${name} ${current ? '(current instance)' : ''}`,
+          switchLabel: current ? `${name} is the current instance` : `Switch to ${name}`
+        }))
+      )
+    }
   }
 </script>
