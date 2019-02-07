@@ -11,20 +11,26 @@
         <div class="media-scroll-item">
           <div class="media-scroll-item-inner">
             <div class="media-scroll-item-inner-inner">
-                <PinchZoomable className='media-pinch-zoom' disabled={!pinchZoomMode} >
+                {#if canPinchZoom}
+                  <PinchZoomable className='media-pinch-zoom' disabled={!pinchZoomMode} >
+                    <MediaInDialog {media} />
+                  </PinchZoomable>
+                {:else}
                   <MediaInDialog {media} />
-                </PinchZoomable>
+                {/if}
             </div>
           </div>
         </div>
       {/each}
     </div>
     <div class="media-controls-outside">
-      <IconButton
-        className="media-control-button media-control-button-dummy-spacer"
-        href="#fa-search"
-        label=""
-      />
+      {#if canPinchZoom}
+        <IconButton
+          className="media-control-button media-control-button-dummy-spacer"
+          href="#fa-search"
+          label=""
+        />
+      {/if}
       {#if dots.length > 1}
         <div class="media-controls">
             <IconButton
@@ -54,14 +60,16 @@
             />
         </div>
       {/if}
-      <IconButton
-        className="media-control-button"
-        pressable={true}
-        pressed={pinchZoomMode}
-        label={pinchZoomMode ? 'Disable pinch-zoom mode' : 'Enable pinch-zoom mode'}
-        href="#fa-search"
-        on:click="togglePinchZoomMode()"
-      />
+      {#if canPinchZoom}
+        <IconButton
+          className="media-control-button"
+          pressable={true}
+          pressed={pinchZoomMode}
+          label={pinchZoomMode ? 'Disable pinch-zoom mode' : 'Enable pinch-zoom mode'}
+          href="#fa-search"
+          on:click="togglePinchZoomMode()"
+        />
+      {/if}
     </div>
   </div>
 </ModalDialog>
@@ -206,7 +214,8 @@
     }),
     computed: {
       length: ({ mediaItems }) => mediaItems.length,
-      dots: ({ length }) => times(length, i => ({ i }))
+      dots: ({ length }) => times(length, i => ({ i })),
+      canPinchZoom: ({ mediaItems }) => !mediaItems.some(media => media.type === 'video')
     },
     components: {
       ModalDialog,
