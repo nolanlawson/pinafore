@@ -87,7 +87,7 @@
     store: () => store,
     computed: {
       instanceStates: ({ $loggedInInstancesAsList }) => (
-        $loggedInInstancesAsList.map(({name, current}) => ({
+        $loggedInInstancesAsList.map(({ name, current }) => ({
           name,
           current,
           label: `${name} ${current ? '(current instance)' : ''}`,
