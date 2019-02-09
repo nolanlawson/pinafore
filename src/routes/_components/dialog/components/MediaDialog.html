@@ -95,6 +95,7 @@
     width: 100%;
     flex: 1;
     scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   .media-scroll::-webkit-scrollbar {
@@ -180,7 +181,7 @@
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import debounce from 'lodash-es/debounce'
   import times from 'lodash-es/times'
-  import { smoothScroll } from '../../../_utils/smoothScroll'
+  import { smoothScroll, hasNativeSmoothScroll } from '../../../_utils/smoothScroll'
   import { doubleRAF } from '../../../_utils/doubleRAF'
   import { store } from '../../../_store/store'
   import {
@@ -277,7 +278,13 @@
         let { scrollWidth } = scroller
         let scrollLeft = Math.floor(scrollWidth * (scrolledItem / length))
         if (smooth) {
-          smoothScroll(scroller, scrollLeft, true)
+          if (!hasNativeSmoothScroll && 'StyleMedia' in window) {
+            // Edge has a weird bug where it changes the height if we try to
+            // smooth scroll, so disable smooth scrolling
+            scroller.scrollLeft = scrollLeft
+          } else {
+            smoothScroll(scroller, scrollLeft, true)
+          }
         } else {
           scroller.scrollLeft = scrollLeft
         }
