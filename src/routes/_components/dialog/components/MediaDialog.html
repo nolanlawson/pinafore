@@ -136,16 +136,22 @@
     visibility: hidden;
   }
 
-  @media (min-width: 768px) {
-    :global(.media-control-button) {
-      margin: 0 5px;
+  :global(.icon-button.media-control-button) {
+    margin: 0 5px;
+  }
+
+  @media (max-width: 767px) {
+    :global(.icon-button.media-control-button) {
+      margin: 0;
+      padding-left: 5px;
+      padding-right: 5px;
     }
   }
 
   @media (max-width: 320px) {
     :global(.icon-button.media-control-button) {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-left: 2px;
+      padding-right: 2px;
     }
   }
 
