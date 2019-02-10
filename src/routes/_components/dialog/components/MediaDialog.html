@@ -11,8 +11,8 @@
         <li class="media-scroll-item">
           <div class="media-scroll-item-inner">
             <div class="media-scroll-item-inner-inner">
-                {#if canPinchZoom}
-                  <PinchZoomable className='media-pinch-zoom' disabled={!pinchZoomMode} >
+                {#if canPinchZoom && pinchZoomMode}
+                  <PinchZoomable className='media-pinch-zoom' >
                     <MediaInDialog {media} />
                   </PinchZoomable>
                 {:else}

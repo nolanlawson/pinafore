@@ -1,4 +1,4 @@
-<div class="pinch-zoom {disabled ? 'pinch-zoom-disabled' : ''} {className ? className : ''}" >
+<div class="pinch-zoom {className ? className : ''}" >
   <pinch-zoom class="pinch-zoom-inner" ref:node>
     <slot></slot>
   </pinch-zoom>
@@ -8,7 +8,6 @@
     label="Zoom out"
     href="#fa-search-minus"
     on:click="zoomOut()"
-    ariaHidden={disabled}
   />
   <IconButton
     className="pinch-zoom-button pinch-zoom-button-zoom-in"
@@ -16,15 +15,11 @@
     label="Zoom in"
     href="#fa-search-plus"
     on:click="zoomIn()"
-    ariaHidden={disabled}
   />
 </div>
 <style>
   .pinch-zoom {
     position: relative;
-  }
-  .pinch-zoom-disabled {
-    pointer-events: none;
   }
   .pinch-zoom-inner {
     width: 100%;
@@ -62,34 +57,18 @@
       padding-right: 5px;
     }
   }
-
-  :global(.pinch-zoom-disabled .pinch-zoom-button) {
-    visibility: hidden;
-  }
 </style>
 <script>
   import IconButton from '../../IconButton.html'
   import 'pinch-zoom-element/dist/pinch-zoom.js'
-  import { observe } from 'svelte-extras'
 
   const ZOOM_INCREMENT = 0.1
 
   export default {
-    oncreate () {
-      this.observe('disabled', disabled => {
-        if (disabled) {
-          this.resetZoom()
-        }
-      }, { init: false })
-    },
-    data: () => ({
-      disabled: false
-    }),
     components: {
       IconButton
     },
     methods: {
-      observe,
       zoomIn () {
         this.zoomBy(ZOOM_INCREMENT)
       },
@@ -102,14 +81,6 @@
         node.scaleTo(scale + increment, {
           originX: '50%',
           originY: '50%'
-        })
-      },
-      resetZoom () {
-        let { node } = this.refs
-        node.setTransform({
-          scale: 1,
-          x: 0,
-          y: 0
         })
       }
     }
