@@ -96,7 +96,7 @@ how to run Pinafore in dev mode and run tests.
 
 For a changelog, see the [GitHub releases](http://github.com/nolanlawson/pinafore/releases/).
 
-For a list of breaking changes, see [https://github.com/nolanlawson/pinafore/blob/master/BREAKING_CHANGES.md](BREAKING_CHANGES.md).
+For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/nolanlawson/pinafore/blob/master/BREAKING_CHANGES.md).
 
 ## What's with the name?
 
