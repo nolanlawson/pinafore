@@ -43,7 +43,6 @@
 
 <style>
   .status-article {
-    cursor: pointer;
     max-width: calc(100vw - 40px);
     padding: 10px 20px;
     display: grid;
@@ -60,6 +59,10 @@
         "compose compose      compose       compose";
     grid-template-columns: min-content minmax(0, max-content) 1fr min-content;
     grid-template-rows: repeat(8, max-content);
+  }
+
+  .status-article.tap-on-status {
+    cursor: pointer;
   }
 
   .status-article.status-in-timeline {
@@ -269,13 +272,14 @@
         status.reblog ||
         timelineType === 'pinned'
       ),
-      className: ({ visibility, timelineType, isStatusInOwnThread, active, $underlineLinks }) => (classname(
+      className: ({ visibility, timelineType, isStatusInOwnThread, active, $underlineLinks, $disableTapOnStatus }) => (classname(
         'status-article',
         visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
         active && 'status-active',
-        $underlineLinks && 'underline-links'
+        $underlineLinks && 'underline-links',
+        !$disableTapOnStatus && 'tap-on-status'
       )),
       content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
