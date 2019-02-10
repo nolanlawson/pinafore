@@ -8,6 +8,7 @@
     label="Zoom out"
     href="#fa-search-minus"
     on:click="zoomOut()"
+    ariaHidden={disabled}
   />
   <IconButton
     className="pinch-zoom-button pinch-zoom-button-zoom-in"
@@ -15,6 +16,7 @@
     label="Zoom in"
     href="#fa-search-plus"
     on:click="zoomIn()"
+    ariaHidden={disabled}
   />
 </div>
 <style>

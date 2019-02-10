@@ -3,6 +3,7 @@
           title={label}
           aria-label={label}
           aria-pressed={pressable ? !!pressed : void 0}
+          aria-hidden={ariaHidden}
           class={computedClass}
           {disabled}
           delegate-key={delegateKey}
@@ -16,6 +17,7 @@
           title={label}
           aria-label={label}
           aria-pressed={pressable ? !!pressed : void 0}
+          aria-hidden={ariaHidden}
           class={computedClass}
           focus-key={focusKey || ''}
           {disabled}
@@ -117,7 +119,8 @@
       pressed: false,
       className: void 0,
       delegateKey: void 0,
-      sameColorWhenPressed: false
+      sameColorWhenPressed: false,
+      ariaHidden: false
     }),
     store: () => store,
     computed: {
