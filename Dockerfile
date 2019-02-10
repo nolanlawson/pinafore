@@ -14,7 +14,7 @@ RUN npm i yarn -g
 
 # Install Pinafore
 RUN yarn --pure-lockfile
-RUN yarn run build
+RUN yarn build
 
 # Expose port 4002
 EXPOSE 4002

@@ -56,9 +56,9 @@ Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and [Yarn](https://yarnp
 
 To build Pinafore for production:
 
-    yarn
-    yarn run build
-    PORT=4002 npm start
+    yarn --pure-lockfile
+    yarn build
+    PORT=4002 yarn start
 
 ### Docker
 
@@ -95,6 +95,8 @@ how to run Pinafore in dev mode and run tests.
 ## Changelog
 
 For a changelog, see the [GitHub releases](http://github.com/nolanlawson/pinafore/releases/).
+
+For a list of breaking changes, see [https://github.com/nolanlawson/pinafore/blob/master/BREAKING_CHANGES.md](BREAKING_CHANGES.md).
 
 ## What's with the name?
 
