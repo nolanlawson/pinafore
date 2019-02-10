@@ -6,9 +6,9 @@
   className="media-modal-dialog"
 >
   <div class="media-container">
-    <div class="media-scroll" ref:scroller>
+    <ul class="media-scroll" ref:scroller>
       {#each mediaItems as media}
-        <div class="media-scroll-item">
+        <li class="media-scroll-item">
           <div class="media-scroll-item-inner">
             <div class="media-scroll-item-inner-inner">
                 {#if canPinchZoom}
@@ -20,9 +20,9 @@
                 {/if}
             </div>
           </div>
-        </div>
+        </li>
       {/each}
-    </div>
+    </ul>
     <div class="media-controls-outside">
       {#if canPinchZoom}
         <IconButton
@@ -96,6 +96,12 @@
     flex: 1;
     scrollbar-width: none;
     -ms-overflow-style: none;
+  }
+
+  ul.media-scroll {
+    padding: 0;
+    margin: 0;
+    list-style: none;
   }
 
   .media-scroll::-webkit-scrollbar {
