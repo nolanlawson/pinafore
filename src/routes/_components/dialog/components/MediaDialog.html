@@ -2,11 +2,12 @@
   {id}
   {label}
   background="var(--muted-modal-bg)"
-  muted="true"
+  muted={true}
+  clickHeaderToClose={true}
   className="media-modal-dialog"
 >
   <div class="media-container">
-    <div class="media-scroll" ref:scroller>
+    <div class="media-scroll" on:click="onClickScroll(event)" ref:scroller>
       {#each mediaItems as media}
         <div class="media-scroll-item">
           <div class="media-scroll-item-inner">
@@ -301,6 +302,10 @@
       },
       togglePinchZoomMode () {
         this.set({ pinchZoomMode: !this.get().pinchZoomMode })
+      },
+      onClickScroll (e) {
+        console.log('e.target', e.target)
+        console.log('e.currentTarget', e.currentTarget)
       }
     }
   }

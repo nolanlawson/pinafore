@@ -8,7 +8,7 @@
      ref:node
 >
   <div class="modal-dialog-document" role="document" style="background: {background || '#000'};">
-    <div class="modal-dialog-header">
+    <div class="modal-dialog-header" on:click="onClickHeader()">
       {#if title}
         <h1 class="modal-dialog-title">{title}</h1>
       {/if}
@@ -171,7 +171,8 @@
       fadedIn: false,
       muted: false,
       className: void 0,
-      title: void 0
+      title: void 0,
+      clickHeaderToClose: false
     }),
     computed: {
       backdropClass: ({ fadedIn, shouldAnimate }) => {
@@ -211,6 +212,11 @@
         setTimeout(() => { // use setTimeout to workaround svelte timing issue
           this._a11yDialog.hide()
         }, 0)
+      },
+      onClickHeader () {
+        if (this.get().clickHeaderToClose) {
+          this._a11yDialog.hide()
+        }
       }
     }
   }
