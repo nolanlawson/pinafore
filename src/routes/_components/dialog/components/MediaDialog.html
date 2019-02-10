@@ -7,7 +7,7 @@
 >
   <div class="media-container">
     <ul class="media-scroll" ref:scroller>
-      {#each mediaItems as media}
+      {#each mediaItems as media (media.id)}
         <li class="media-scroll-item">
           <div class="media-scroll-item-inner">
             <div class="media-scroll-item-inner-inner">
