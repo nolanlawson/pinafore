@@ -14,7 +14,7 @@
              style="background-color: {theme.color};" >
         </div>
         <label class="theme-picker-label" for="choice-theme-{theme.name}">
-          {theme.label}
+          {theme.label} {theme.name === DEFAULT_THEME ? '(default)' : ''}
         </label>
       </div>
       {/each}
@@ -94,6 +94,7 @@
     store: () => store,
     data: () => ({
       themes,
+      DEFAULT_THEME,
       selectedTheme: DEFAULT_THEME
     }),
     computed: {

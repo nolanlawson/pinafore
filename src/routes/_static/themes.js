@@ -1,7 +1,7 @@
 const themes = [
   {
     name: 'default',
-    label: 'Royal (default)',
+    label: 'Royal',
     dark: false,
     color: 'royalblue'
   },
