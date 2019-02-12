@@ -1,6 +1,6 @@
 import { getVerifyCredentials } from '../_api/user'
 import { store } from '../_store/store'
-import { switchToTheme } from '../_utils/themeEngine'
+import { DEFAULT_THEME, switchToTheme } from '../_utils/themeEngine'
 import { toast } from '../_components/toast/toast'
 import { goto } from '../../../__sapper__/client'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
@@ -55,7 +55,7 @@ export async function logOutOfInstance (instanceName) {
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)
-  switchToTheme(instanceThemes[newInstance] || 'default')
+  switchToTheme(instanceThemes[newInstance] || DEFAULT_THEME)
   /* no await */ database.clearDatabaseForInstance(instanceName)
   goto('/settings/instances')
 }
