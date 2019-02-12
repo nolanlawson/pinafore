@@ -63,8 +63,10 @@
     </div>
   </form>
 
-  <h2>{themeTitle}</h2>
-  <ThemeSettings instanceName={$currentInstance} />
+  {#if $isUserLoggedIn }
+    <h2>{themeTitle}</h2>
+    <ThemeSettings instanceName={$currentInstance} />
+  {/if}
 </SettingsLayout>
 <style>
   .ui-settings {
