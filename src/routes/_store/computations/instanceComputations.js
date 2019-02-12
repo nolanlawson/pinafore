@@ -1,3 +1,5 @@
+import { DEFAULT_THEME } from '../../_utils/themeEngine'
+
 function computeForInstance (store, computedKey, key, defaultValue) {
   store.compute(computedKey,
     [key, 'currentInstance'],
@@ -5,7 +7,7 @@ function computeForInstance (store, computedKey, key, defaultValue) {
 }
 
 export function instanceComputations (store) {
-  computeForInstance(store, 'currentTheme', 'instanceThemes', 'default')
+  computeForInstance(store, 'currentTheme', 'instanceThemes', DEFAULT_THEME)
   computeForInstance(store, 'currentVerifyCredentials', 'verifyCredentials', null)
   computeForInstance(store, 'currentInstanceInfo', 'instanceInfos', null)
   computeForInstance(store, 'pinnedPage', 'pinnedPages', '/local')

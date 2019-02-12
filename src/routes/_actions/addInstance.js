@@ -1,7 +1,7 @@
 import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../_api/oauth'
 import { getInstanceInfo } from '../_api/instance'
 import { goto } from '../../../__sapper__/client'
-import { switchToTheme } from '../_utils/themeEngine'
+import { DEFAULT_THEME, switchToTheme } from '../_utils/themeEngine'
 import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
 import { updateCustomEmojiForInstance } from './emoji'
@@ -69,7 +69,7 @@ async function registerNewInstance (code) {
     REDIRECT_URI
   )
   let { loggedInInstances, loggedInInstancesInOrder, instanceThemes } = store.get()
-  instanceThemes[currentRegisteredInstanceName] = 'default'
+  instanceThemes[currentRegisteredInstanceName] = DEFAULT_THEME
   loggedInInstances[currentRegisteredInstanceName] = instanceData
   if (!loggedInInstancesInOrder.includes(currentRegisteredInstanceName)) {
     loggedInInstancesInOrder.push(currentRegisteredInstanceName)
@@ -84,7 +84,7 @@ async function registerNewInstance (code) {
     instanceThemes: instanceThemes
   })
   store.save()
-  switchToTheme('default')
+  switchToTheme(DEFAULT_THEME)
   // fire off these requests so they're cached
   /* no await */ updateVerifyCredentialsForInstance(currentRegisteredInstanceName)
   /* no await */ updateCustomEmojiForInstance(currentRegisteredInstanceName)

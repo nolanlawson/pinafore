@@ -75,19 +75,20 @@
   import { changeTheme } from '../../../_actions/instances'
   import { store } from '../../../_store/store'
   import { themes } from '../../../_static/themes'
+  import { DEFAULT_THEME } from '../../../_utils/themeEngine'
 
   export default {
     async oncreate () {
       let { instanceName } = this.get()
       let { instanceThemes } = this.store.get()
       this.set({
-        selectedTheme: instanceThemes[instanceName] || 'default'
+        selectedTheme: instanceThemes[instanceName] || DEFAULT_THEME
       })
     },
     store: () => store,
     data: () => ({
       themes,
-      selectedTheme: 'default'
+      selectedTheme: DEFAULT_THEME
     }),
     computed: {
       themeGroups: ({ themes }) => ([
