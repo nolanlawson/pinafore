@@ -32,4 +32,9 @@
   --compose-autosuggest-outline: #{lighten($border-color, 20%)};
 
   --file-drop-mask: #{rgba(30, 30, 30, 0.8)};
+
+  --settings-list-item-text: #{$main-text-color};
+  --settings-list-item-text-hover: #{$main-text-color};
+  --settings-list-item-bg-active: #{lighten($main-bg-color, 7%)};
+  --settings-list-item-bg-hover: #{lighten($main-bg-color, 3%)};
 }
