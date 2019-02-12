@@ -2,6 +2,8 @@ import sass from 'node-sass'
 import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
+import cssDedoupe from 'css-dedoupe'
+import { TextDecoder } from 'text-encoding'
 
 const writeFile = promisify(fs.writeFile)
 const readdir = promisify(fs.readdir)
@@ -31,9 +33,10 @@ async function compileGlobalSass () {
 async function compileThemesSass () {
   let files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
   await Promise.all(files.map(async file => {
-    let res = await render({ file: path.join(themesScssDir, file), outputStyle: 'compressed' })
+    let css = await renderCss(path.join(themesScssDir, file))
+    css = cssDedoupe(new TextDecoder('utf-8').decode(css)) // remove duplicate custom properties
     let outputFilename = 'theme-' + path.basename(file).replace(/\.scss$/, '.css')
-    await writeFile(path.join(assetsDir, outputFilename), res.css, 'utf8')
+    await writeFile(path.join(assetsDir, outputFilename), css, 'utf8')
   }))
 }
 
