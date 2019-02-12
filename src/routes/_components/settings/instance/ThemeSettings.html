@@ -2,11 +2,9 @@
   <div class="theme-groups">
     {#each themeGroups as themeGroup}
     <div class="theme-group">
-      {#if themeGroup.dark}
-        <h2>Dark Background</h2>
-      {:else}
-        <h2>Light Background</h2>
-      {/if}
+      <h3>
+        {themeGroup.dark ? 'Dark background' : 'Light background' }
+      </h3>
       {#each themeGroup.themes as theme}
       <div class="theme-picker">
         <input type="radio" id="choice-theme-{theme.name}"
@@ -65,9 +63,17 @@
     border: 2px solid #dadada;
   }
 
+  h3 {
+    font-size: 1.4em;
+  }
+
   @media (max-width: 479px) {
     .theme-groups {
       grid-template-columns: 1fr;
+    }
+
+    h3 {
+      margin-top: 0.5em;
     }
   }
 </style>
