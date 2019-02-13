@@ -12,7 +12,7 @@
     "build": "cross-env NODE_ENV=production run-s build-steps",
     "build-steps": "run-s before-build sapper-build",
     "sapper-build": "sapper build",
-    "start": "PORT=4002 node __sapper__/build",
+    "start": "node server.js",
     "build-and-start": "run-s build start",
     "build-template-html": "node -r esm ./bin/build-template-html.js",
     "build-template-html-watch": "node -r esm ./bin/build-template-html.js --watch",
