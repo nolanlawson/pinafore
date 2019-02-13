@@ -19,5 +19,7 @@ RUN yarn build
 # Expose port 4002
 EXPOSE 4002
 
-# Setting run-command
-CMD PORT=4002 yarn start
+# Setting run-command, using explicit `node` command
+# rather than `yarn` or `npm` to use less memory
+# https://github.com/nolanlawson/pinafore/issues/971
+CMD PORT=4002 node __sapper__/build

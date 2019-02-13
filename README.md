@@ -58,7 +58,7 @@ To build Pinafore for production:
 
     yarn --pure-lockfile
     yarn build
-    PORT=4002 yarn start
+    PORT=4002 node __sapper__/build
 
 ### Docker
 
