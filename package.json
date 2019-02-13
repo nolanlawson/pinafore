@@ -169,6 +169,7 @@
       "inline-script.js",
       "original-static",
       "scss",
+      "server.js",
       "src",
       "src-build",
       "static",
