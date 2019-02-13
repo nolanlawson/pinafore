@@ -64,7 +64,7 @@ Then build:
 
 Then run:
 
-    PORT=4002 node __sapper__/build
+    PORT=4002 node server.js
 
 ### Docker
 
