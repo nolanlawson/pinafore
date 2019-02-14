@@ -44,13 +44,15 @@ async function doRefreshInstanceDataAndStream (store, instanceName) {
 
 async function refreshInstanceData (instanceName) {
   // these are all low-priority
-  scheduleIdleTask(() => updateVerifyCredentialsForInstance(instanceName))
   scheduleIdleTask(() => updateCustomEmojiForInstance(instanceName))
   scheduleIdleTask(() => updateListsForInstance(instanceName))
   scheduleIdleTask(() => updatePushSubscriptionForInstance(instanceName))
 
-  // this is the only critical one
-  await updateInstanceInfo(instanceName)
+  // these are the only critical ones
+  await Promise.all([
+    updateInstanceInfo(instanceName),
+    updateVerifyCredentialsForInstance(instanceName)
+  ])
 }
 
 function stream (store, instanceName, currentInstanceInfo) {
