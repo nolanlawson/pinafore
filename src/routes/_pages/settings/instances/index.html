@@ -24,10 +24,10 @@
     </SettingsListRow>
     {/each}
   </SettingsList>
-  <p><a href="/settings/instances/add">Add another instance</a></p>
+  <p><a rel="prefetch" href="/settings/instances/add">Add another instance</a></p>
   {:else}
   <p>You're not logged in to any instances.</p>
-  <p><a href="/settings/instances/add">Log in to an instance</a> to start using Pinafore.</p>
+  <p><a rel="prefetch" href="/settings/instances/add">Log in to an instance</a> to start using Pinafore.</p>
   {/if}
 </SettingsLayout>
 <style>
