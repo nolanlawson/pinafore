@@ -1,4 +1,4 @@
-<file-drop class="file-drop {size === 'slim' ? 'slim-size' : ''}" accept={mediaAccept} ref:fileDrop >
+<file-drop class="file-drop file-drop-realm-{realm}" accept={mediaAccept} ref:fileDrop >
   <div class="file-drop-info">
     <div class="file-drop-info-text">
       <span class="file-drop-info-text-valid">Drop to upload</span>
@@ -34,7 +34,7 @@
     border-radius: 6px;
   }
 
-  .file-drop.slim-size {
+  .file-drop-realm-dialog {
     max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -42,7 +42,7 @@
     -ms-overflow-style: none;
   }
 
-  .file-drop.slim-size::-webkit-scrollbar {
+  .file-drop-realm-dialog::-webkit-scrollbar {
     display: none;
   }
 
