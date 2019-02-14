@@ -1,7 +1,7 @@
 {#if realm === 'home'}
   <h1 class="sr-only">Compose status</h1>
 {/if}
-<ComposeFileDrop {realm} >
+<ComposeFileDrop {realm} {size} >
   <div class="{computedClassName} {hideAndFadeIn}">
     <ComposeAuthor />
     {#if contentWarningShown}
@@ -10,11 +10,11 @@
         <ComposeContentWarning {realm} {contentWarning} />
       </div>
     {/if}
-    <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
+    <ComposeInput {realm} {text} {autoFocus} {size} on:postAction="doPostStatus()" />
     <ComposeLengthGauge {length} {overLimit} />
     <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
     <ComposeLengthIndicator {length} {overLimit} />
-    <ComposeMedia {realm} {media} />
+    <ComposeMedia {realm} {media} {size} />
   </div>
 </ComposeFileDrop>
 <ComposeStickyButton {showSticky}
@@ -76,6 +76,7 @@
     .compose-box.slim-size {
       width: 560px;
       max-width: calc(100vw - 40px);
+      overflow-x: hidden;
     }
   }
 </style>
