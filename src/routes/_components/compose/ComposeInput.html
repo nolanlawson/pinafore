@@ -1,6 +1,6 @@
 <textarea
   id="the-compose-box-input-{realm}"
-  class="compose-box-input { size ==='slim' ? 'slim-size' : ''}"
+  class="compose-box-input compose-box-input-realm-{realm}"
   placeholder="What's on your mind?"
   ref:textarea
   bind:value=rawText
@@ -30,19 +30,19 @@
     width: calc(100% - 5px);
   }
 
-  .compose-box-input.slim-size {
+  .compose-box-input-realm-dialog {
     max-height: 40vh;
     overflow-y: auto;
   }
 
   @media (max-width: 767px) {
-    .compose-box-input.slim-size {
+    .compose-box-input-realm-dialog {
       max-height: 30vh;
     }
   }
 
   @media (max-width: 479px) {
-    .compose-box-input.slim-size {
+    .compose-box-input-realm-dialog {
       max-height: 20vh;
     }
   }

@@ -1,7 +1,7 @@
 {#if media.length}
   <div class="compose-media-container" style="grid-template-columns: repeat({media.length}, 1fr);">
     {#each media as mediaItem, index}
-      <ComposeMediaItem {realm} {mediaItem} {index} {media} {size} />
+      <ComposeMediaItem {realm} {mediaItem} {index} {media} />
     {/each}
   </div>
 {/if}
