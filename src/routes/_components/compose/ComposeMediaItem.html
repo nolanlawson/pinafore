@@ -1,4 +1,4 @@
-<div class="compose-media">
+<div class="compose-media {size === 'slim' ? 'slim-size' : ''}">
   <img src={mediaItem.data.preview_url} {alt} />
   <div class="compose-media-delete">
     <button class="compose-media-delete-button"
@@ -77,6 +77,16 @@
     fill: var(--button-text);
     width: 18px;
     height: 18px;
+  }
+
+  .compose-media-realm.slim-size {
+    max-height: 20vh;
+  }
+
+  @media (max-width: 767px) {
+    .compose-media.slim-size {
+      max-height: 15vh;
+    }
   }
 </style>
 <script>

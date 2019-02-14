@@ -1,4 +1,4 @@
-<file-drop class="file-drop" accept={mediaAccept} ref:fileDrop >
+<file-drop class="file-drop {size === 'slim' ? 'slim-size' : ''}" accept={mediaAccept} ref:fileDrop >
   <div class="file-drop-info">
     <div class="file-drop-info-text">
       <span class="file-drop-info-text-valid">Drop to upload</span>
@@ -32,6 +32,18 @@
     padding: 10px 20px;
     border: 2px dashed var(--button-text);
     border-radius: 6px;
+  }
+
+  .file-drop.slim-size {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .file-drop.slim-size::-webkit-scrollbar {
+    display: none;
   }
 
   :global(.file-drop.drop-valid .file-drop-info, .file-drop.drop-invalid .file-drop-info) {
