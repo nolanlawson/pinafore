@@ -25,6 +25,7 @@
     {/if}
   {/if}
   <a class="status-favs-reblogs status-reblogs"
+     rel="prefetch"
      href="/statuses/{originalStatusId}/reblogs"
      aria-label={reblogsLabel}>
     <svg class="status-favs-reblogs-svg">
@@ -33,6 +34,7 @@
     <span>{numReblogs}</span>
   </a>
   <a class="status-favs-reblogs status-favs"
+     rel="prefetch"
      href="/statuses/{originalStatusId}/favorites"
      aria-label={favoritesLabel}>
     <svg class="status-favs-reblogs-svg">

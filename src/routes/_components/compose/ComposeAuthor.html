@@ -1,9 +1,10 @@
 <a href="/accounts/{verifyCredentials.id}"
+   rel="prefetch"
    class="compose-box-avatar"
    aria-label="Profile for {accessibleName}">
   <Avatar account={verifyCredentials} size="small"/>
 </a>
-<a class="compose-box-display-name" href="/accounts/{verifyCredentials.id}">
+<a class="compose-box-display-name" href="/accounts/{verifyCredentials.id}" rel="prefetch">
   <AccountDisplayName account={verifyCredentials} />
 </a>
 <span class="compose-box-handle">
