@@ -4,17 +4,19 @@
 
 import crypto from 'crypto'
 
-let scripts = [
+const baseScripts = [
   `__SAPPER__={baseUrl:"",preloaded:[{},{}]};`,
   `__SAPPER__={baseUrl:"",preloaded:[{}]};`,
   `__SAPPER__={baseUrl:"",preloaded:[{},null,null,{}]};`,
   `__SAPPER__={baseUrl:"",preloaded:[{},null,{}]};`
 ]
 
-if (process.env.NODE_ENV === 'production') {
-  // sapper adds service worker only in production
-  scripts = scripts.map(script => `${script}if('serviceWorker' in navigator)navigator.serviceWorker.register('/service-worker.js');`)
-}
+const scriptsWithSW = baseScripts.map(script => (
+  `${script}if('serviceWorker' in navigator)navigator.serviceWorker.register('/service-worker.js');`)
+)
+
+// sapper adds service worker usually, but it seems inconsistent in dev mode especially
+const scripts = [].concat(baseScripts).concat(scriptsWithSW)
 
 export const sapperInlineScriptChecksums = scripts.map(script => {
   return crypto.createHash('sha256').update(script).digest('base64')
