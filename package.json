@@ -3,6 +3,7 @@
   "description": "Alternative web client for Mastodon",
   "version": "1.1.0",
   "scripts": {
+    "prepare": "run-s build",
     "lint": "standard && standard --plugin html 'src/routes/**/*.html'",
     "lint-fix": "standard --fix && standard --fix --plugin html 'src/routes/**/*.html'",
     "dev": "run-s build-template-html build-third-party-assets serve-dev",
@@ -157,30 +158,6 @@
   "esm": {
     "mode": "auto",
     "cjs": "vars"
-  },
-  "now": {
-    "type": "npm",
-    "env": {
-      "NODE_ENV": "production"
-    },
-    "files": [
-      "bin",
-      "inline-script.js",
-      "original-static",
-      "scss",
-      "server.js",
-      "src",
-      "src-build",
-      "static",
-      "package.json",
-      "thirdparty",
-      "webpack",
-      "webpack.config.js",
-      "yarn.lock"
-    ],
-    "engines": {
-      "node": "^10.0.0"
-    }
   },
   "greenkeeper": {
     "ignore": [
