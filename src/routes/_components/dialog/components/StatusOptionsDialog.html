@@ -21,9 +21,13 @@ import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
 import { setConversationMuted } from '../../../_actions/muteConversation'
 import { copyText } from '../../../_actions/copyText'
 import { deleteAndRedraft } from '../../../_actions/deleteAndRedraft'
+import { shareStatus } from '../../../_actions/share'
 
 export default {
   oncreate,
+  data: () => ({
+    supportsWebShare: process.browser && typeof navigator.share === 'function'
+  }),
   computed: {
     relationship: ({ $currentAccountRelationship }) => $currentAccountRelationship,
     account: ({ $currentAccountProfile }) => $currentAccountProfile,
@@ -75,17 +79,18 @@ export default {
     mutingConversation: ({ status }) => !!status.muted,
     muteConversationLabel: ({ mutingConversation }) => mutingConversation ? `Unmute conversation` : `Mute conversation`,
     muteConversationIcon: ({ mutingConversation }) => mutingConversation ? '#fa-volume-up' : '#fa-volume-off',
+    isPublicOrUnlisted: ({ visibility }) => visibility === 'public' || visibility === 'unlisted',
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
       following, followRequested, pinLabel, isUser, visibility, mentionsUser, mutingConversation,
-      muteConversationLabel, muteConversationIcon
+      muteConversationLabel, muteConversationIcon, supportsWebShare, isPublicOrUnlisted
     }) => ([
       isUser && {
         key: 'delete',
         label: 'Delete',
         icon: '#fa-trash'
       },
-      visibility !== 'private' && visibility !== 'direct' && isUser && {
+      isPublicOrUnlisted && isUser && {
         key: 'pin',
         label: pinLabel,
         icon: '#fa-thumb-tack'
@@ -115,7 +120,12 @@ export default {
         label: 'Delete and redraft',
         icon: '#fa-pencil'
       },
-      {
+      isPublicOrUnlisted && supportsWebShare && {
+        key: 'share',
+        label: 'Share toot',
+        icon: '#fa-share-square-o'
+      },
+      isPublicOrUnlisted && {
         key: 'copy',
         label: 'Copy link to toot',
         icon: '#fa-link'
@@ -148,6 +158,8 @@ export default {
           return this.onMuteConversationClicked()
         case 'redraft':
           return this.onRedraft()
+        case 'share':
+          return this.onShare()
       }
     },
     async onDeleteClicked () {
@@ -189,6 +201,11 @@ export default {
     async onRedraft () {
       let { status } = this.get()
       await deleteAndRedraft(status)
+      this.close()
+    },
+    async onShare () {
+      let { status } = this.get()
+      await shareStatus(status)
       this.close()
     }
   }
