@@ -59,13 +59,19 @@ app.use(serveStatic('static', {
 app.use(express.static('__sapper__/build/client/report.html'))
 app.use(express.static('__sapper__/build/client/stats.json'))
 
-// TODO: hack to override Sapper's default max-age of 600 for HTML files
+// TODO: hack to override Sapper's default cache-control
 function overrideSetHeader (req, res, next) {
   const origSetHeader = res.setHeader
   res.setHeader = function (key, value) {
-    if (key === 'Cache-Control' && value === 'max-age=600') {
-      return origSetHeader.apply(this, ['Cache-Control', `max-age=${MAX_AGE}`])
+    if (key === 'Cache-Control') {
+      if (value === 'max-age=31536000, immutable') { // webpack assets
+        return origSetHeader.apply(this, ['Cache-Control', 'public,max-age=31536000,immutable'])
+      }
+      if (value === 'max-age=600') { // HTML files
+        return origSetHeader.apply(this, ['Cache-Control', `public,max-age=${MAX_AGE}`])
+      }
     }
+
     return origSetHeader.apply(this, arguments)
   }
   return next()
