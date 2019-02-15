@@ -3,7 +3,7 @@
 
   --button-primary-bg: #{$main-theme-color};
   --button-primary-text: #{$secondary-text-color};
-  --button-primary-border: #{darken($main-theme-color, 30%)};
+  --button-primary-border: #{darken($main-theme-color, 10%)};
   --button-primary-bg-active: #{lighten($main-theme-color, 9%)};
   --button-primary-bg-hover: #{lighten($main-theme-color, 5%)};
 
