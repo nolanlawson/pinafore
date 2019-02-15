@@ -1,17 +1,16 @@
 import * as sapper from '../__sapper__/server.js'
-const express = require('express')
-const compression = require('compression')
-const serveStatic = require('serve-static')
-const app = express()
-const helmet = require('helmet')
-const uuidv4 = require('uuid/v4')
-
-const headScriptChecksum = require('./inline-script/checksum')
+import express from 'express'
+import compression from 'compression'
+import serveStatic from 'serve-static'
+import helmet from 'helmet'
+import fetch from 'node-fetch'
+import inlineScriptChecksum from './inline-script/checksum'
+import { sapperInlineScriptChecksums } from './server/sapperInlineScriptChecksums'
 
 const { PORT = 4002 } = process.env
+const app = express()
 
 // this allows us to do e.g. `fetch('/_api/blog')` on the server
-const fetch = require('node-fetch')
 global.fetch = (url, opts) => {
   if (url[0] === '/') {
     url = `http://localhost:${PORT}${url}`
@@ -19,32 +18,23 @@ global.fetch = (url, opts) => {
   return fetch(url, opts)
 }
 
-const debugPaths = ['/report.html', '/stats.json']
-
-const debugOnly = (fn) => (req, res, next) => (
-  !~debugPaths.indexOf(req.path) ? next() : fn(req, res, next)
-)
-
-const nonDebugOnly = (fn) => (req, res, next) => (
-  ~debugPaths.indexOf(req.path) ? next() : fn(req, res, next)
-)
-
 app.use(compression({ threshold: 0 }))
 
-app.use((req, res, next) => {
-  res.locals.nonce = uuidv4()
-  next()
-})
+// CSP only needs to apply to core HTML files, not debug files
+// like report.html or the JS/CSS/JSON/image files
+const coreHtmlFilesOnly = (fn) => (req, res, next) => {
+  let coreHtml = !/\.(js|css|json|png|svg|jpe?g|map)$/.test(req.path) &&
+    !(/\/report.html/.test(req.path))
+  return coreHtml ? fn(req, res, next) : next()
+}
 
-// report.html needs to have CSP disable because it has inline scripts
-app.use(debugOnly(helmet()))
-app.use(nonDebugOnly(helmet({
+app.use(coreHtmlFilesOnly(helmet({
   contentSecurityPolicy: {
     directives: {
       scriptSrc: [
         `'self'`,
-        `'sha256-${headScriptChecksum}'`,
-        (req, res) => `'nonce-${res.locals.nonce}'`
+        `'sha256-${inlineScriptChecksum}'`,
+        ...sapperInlineScriptChecksums.map(_ => `'sha256-${_}'`)
       ],
       workerSrc: [`'self'`],
       styleSrc: [`'self'`, `'unsafe-inline'`],
@@ -60,13 +50,12 @@ app.use(nonDebugOnly(helmet({
 
 app.use(serveStatic('static', {
   setHeaders: (res) => {
-    res.setHeader('Cache-Control', 'public,max-age=600')
+    res.setHeader('Cache-Control', 'public,max-age=3600')
   }
 }))
 
-debugPaths.forEach(debugPath => {
-  app.use(debugPath, express.static(`__sapper__/build/client${debugPath}`))
-})
+app.use(express.static('__sapper__/build/client/report.html'))
+app.use(express.static('__sapper__/build/client/stats.json'))
 
 app.use(sapper.middleware())
 
