@@ -158,30 +158,6 @@
     "mode": "auto",
     "cjs": "vars"
   },
-  "now": {
-    "type": "npm",
-    "env": {
-      "NODE_ENV": "production"
-    },
-    "files": [
-      "bin",
-      "inline-script.js",
-      "original-static",
-      "scss",
-      "server.js",
-      "src",
-      "src-build",
-      "static",
-      "package.json",
-      "thirdparty",
-      "webpack",
-      "webpack.config.js",
-      "yarn.lock"
-    ],
-    "engines": {
-      "node": "^10.0.0"
-    }
-  },
   "greenkeeper": {
     "ignore": [
       "sapper"
