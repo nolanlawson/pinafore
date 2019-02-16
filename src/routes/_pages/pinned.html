@@ -1,15 +1,17 @@
 <DynamicPageBanner title="Pinned toots" icon="#fa-thumb-tack" />
-<div class="pinned-toots-page">
-  {#if loading}
-  <LoadingPage />
-  {:elseif statuses && statuses.length}
-  <ul class="pinned-toots-results">
-    {#each statuses as status, index}
-    <StatusSearchResult {status} {index} length={statuses.length} />
-    {/each}
-  </ul>
-  {/if}
-</div>
+{#if $isUserLoggedIn }
+  <div class="pinned-toots-page">
+    {#if loading}
+    <LoadingPage />
+    {:elseif statuses && statuses.length}
+    <ul class="pinned-toots-results">
+      {#each statuses as status, index}
+      <StatusSearchResult {status} {index} length={statuses.length} />
+      {/each}
+    </ul>
+    {/if}
+  </div>
+{/if}
 <style>
   .pinned-toots-page {
     padding: 20px 20px;
