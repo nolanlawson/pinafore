@@ -24,7 +24,6 @@ const assets = __assets__
 // also contains '/index.html' for some reason
 const webpackAssets = __shell__
   .filter(filename => !filename.endsWith('.map')) // don't bother with sourcemaps
-  .filter(filename => !filename.includes('$polyfill$')) // polyfills are cached on-demand
 
 // `routes` is an array of `{ pattern: RegExp }` objects that
 // match the pages in your src
@@ -99,13 +98,6 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response
         }
-      }
-      // for polyfills, cache them on-the-fly
-      if (url.pathname.includes('$polyfill$')) {
-        let response = await fetch(req)
-        // cache asynchronously, don't wait
-        caches.open(WEBPACK_ASSETS).then(cache => cache.put(req, response))
-        return response.clone()
       }
     }
 
