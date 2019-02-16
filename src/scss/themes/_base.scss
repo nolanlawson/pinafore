@@ -26,10 +26,12 @@
   --form-border: #{darken($border-color, 10%)};
 
   --nav-bg: #{$main-theme-color};
+  --nav-active-bg: #{lighten($main-theme-color, 9%)};
   --nav-border: #{darken($main-theme-color, 10%)};
   --nav-a-border: #{$main-theme-color};
   --nav-a-selected-border: #{$secondary-text-color};
   --nav-a-selected-bg: #{lighten($main-theme-color, 10%)};
+  --nav-a-selected-active-bg: #{lighten($main-theme-color, 17%)};
   --nav-svg-fill: #{$secondary-text-color};
   --nav-text-color: #{$secondary-text-color};
 

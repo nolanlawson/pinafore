@@ -124,6 +124,14 @@
     fill: var(--nav-svg-fill-hover);
   }
 
+  .main-nav-link:active {
+    background-color: var(--nav-active-bg);
+  }
+
+  .main-nav-link.selected:active {
+    background-color: var(--nav-a-selected-active-bg);
+  }
+
   .nav-link-svg {
     display: inline-block;
     fill: var(--nav-svg-fill);
@@ -220,9 +228,14 @@
         if (!selected) {
           return
         }
+        let scroller = getScrollContainer()
+        let { scrollTop } = scroller
+        if (scrollTop === 0) {
+          return
+        }
         e.preventDefault()
         e.stopPropagation()
-        smoothScroll(getScrollContainer(), 0)
+        smoothScroll(scroller, 0)
       }
     }
   }
