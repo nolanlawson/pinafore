@@ -1,5 +1,7 @@
 <DynamicPageBanner title="Blocked users" icon="#fa-ban" />
-<AccountsListPage {accountsFetcher} {accountActions} />
+{#if $isUserLoggedIn }
+  <AccountsListPage {accountsFetcher} {accountActions} />
+{/if}
 <script>
   import AccountsListPage from '../_components/AccountsListPage.html'
   import { store } from '../_store/store'

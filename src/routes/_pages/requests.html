@@ -1,5 +1,7 @@
 <DynamicPageBanner title="Follow requests" icon="#fa-user-plus" />
-<AccountsListPage {accountsFetcher} {accountActions} />
+{#if $isUserLoggedIn }
+  <AccountsListPage {accountsFetcher} {accountActions} />
+{/if}
 <script>
   import AccountsListPage from '../_components/AccountsListPage.html'
   import { store } from '../_store/store'
