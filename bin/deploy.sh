@@ -12,6 +12,8 @@ else
   rm -f static/robots.txt
 fi
 
+rm -fr __sapper__
+yarn run export
 yarn run build-now-json
 
 # if in travis, use the $NOW_TOKEN
