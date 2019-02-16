@@ -1,25 +1,69 @@
 {
-  "version": 1,
-  "type": "npm",
+  "version": 2,
   "env": {
     "NODE_ENV": "production"
   },
-  "files": [
-    "bin",
-    "inline-script.js",
-    "original-static",
-    "scss",
-    "server.js",
-    "src",
-    "src-build",
-    "static",
-    "package.json",
-    "thirdparty",
-    "webpack",
-    "webpack.config.js",
-    "yarn.lock"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "__sapper__/export"
+      }
+    }
   ],
-  "engines": {
-    "node": "^10.0.0"
-  }
+  "routes": [
+    {
+      "src": "^/service-worker\\.js$",
+      "headers": {
+        "cache-control": "public,max-age=0"
+      }
+    },
+    {
+      "src": "^/(report\\.html|stats\\.json)$",
+      "headers": {
+        "cache-control": "public,max-age=3600"
+      },
+      "dest": "client/$1"
+    },
+    {
+      "src": "^/client/.*\\.(js|css|map)$",
+      "headers": {
+        "cache-control": "public,max-age=31536000,immutable"
+      }
+    },
+    {
+      "src": "^/.*\\.(png|css|json|svg|jpe?g|map|txt)$",
+      "headers": {
+        "cache-control": "public,max-age=3600"
+      }
+    },
+    {
+      "src": "^/(accounts/[^/]+(/(follows|followers))?|statuses/[^/]+(/(reblogs|favorites))?|(lists|tags)/[^/]+|settings/instances/[^/.]+\\.[^/]+)$",
+      "headers": {
+        "cache-control": "public,max-age=3600",
+        "content-security-policy": "script-src 'self' 'sha256-EkTiuvkFbkHUWPvTnH6v0H2/i/09DGGwDOyFPJKCYnw=' 'sha256-Rv0XCoOhq4H0QyKE7rEhr+e9GI5gsmGcC04fY0HPORc=' 'sha256-28NJWgGMi7z1BsySG4SYZCjth/ys7dkElS3oIl5ZEqM=' 'sha256-nUHIts9QUqQq4nfffteH1WG3ZeWESwmxZn6bWMNWsiM=' 'sha256-MGLg9fH15qQqEcT+iTfwx/cfVp2MgjSrVt08u3NVKa8=' 'sha256-OQjxgqHHnjfZwkCEsAo2MRjd3GuPmg+RvmjrZd35TN4=' 'sha256-sS3nggZVNGyoYqI7U/PSwnwI4CymIdHNgJwW49qztWo=' 'sha256-aASq1hOJ8PP2cfK9QGXaCLdqgtkDXDb5VFXlSyrpX/M=' 'sha256-1ujkGrbsh0Yx/bquh2I9gkG1ZaZetCkjre6vciK2u7U='; worker-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; manifest-src 'self'",
+        "referrer-policy": "no-referrer",
+        "strict-transport-security": "max-age=15552000",
+        "x-content-type-options": "nosniff",
+        "x-download-options": "noopen",
+        "x-frame-options": "SAMEORIGIN",
+        "x-xss-protection": "1; mode=block"
+      },
+      "dest": "service-worker-index.html"
+    },
+    {
+      "src": "^/(.*)",
+      "headers": {
+        "cache-control": "public,max-age=3600",
+        "content-security-policy": "script-src 'self' 'sha256-EkTiuvkFbkHUWPvTnH6v0H2/i/09DGGwDOyFPJKCYnw=' 'sha256-Rv0XCoOhq4H0QyKE7rEhr+e9GI5gsmGcC04fY0HPORc=' 'sha256-28NJWgGMi7z1BsySG4SYZCjth/ys7dkElS3oIl5ZEqM=' 'sha256-nUHIts9QUqQq4nfffteH1WG3ZeWESwmxZn6bWMNWsiM=' 'sha256-MGLg9fH15qQqEcT+iTfwx/cfVp2MgjSrVt08u3NVKa8=' 'sha256-OQjxgqHHnjfZwkCEsAo2MRjd3GuPmg+RvmjrZd35TN4=' 'sha256-sS3nggZVNGyoYqI7U/PSwnwI4CymIdHNgJwW49qztWo=' 'sha256-aASq1hOJ8PP2cfK9QGXaCLdqgtkDXDb5VFXlSyrpX/M=' 'sha256-1ujkGrbsh0Yx/bquh2I9gkG1ZaZetCkjre6vciK2u7U='; worker-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; manifest-src 'self'",
+        "referrer-policy": "no-referrer",
+        "strict-transport-security": "max-age=15552000",
+        "x-content-type-options": "nosniff",
+        "x-download-options": "noopen",
+        "x-frame-options": "SAMEORIGIN",
+        "x-xss-protection": "1; mode=block"
+      }
+    }
+  ]
 }

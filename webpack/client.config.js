@@ -6,9 +6,15 @@ const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const { mode, dev, resolve } = require('./shared.config')
 
+const output = config.client.output()
+
+// Zeit does not like filenames with "$" in them, so just keep things simple
+output.filename = '[hash]/[id].js'
+output.chunkFilename = '[hash]/[id].js'
+
 module.exports = {
   entry: config.client.entry(),
-  output: Object.assign(config.client.output(), { globalObject: 'this' }), // enables HMR in workers
+  output: Object.assign(output, { globalObject: 'this' }), // enables HMR in workers
   resolve,
   mode,
   module: {
