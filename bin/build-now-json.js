@@ -1,5 +1,5 @@
 // create the now.json file
-// Unfortunately this has to be re-run periodically, as AFAICT there is no way to
+// Unfortunately this has to be re-run before deployment, as AFAICT there is no way to
 // give Zeit a script and tell them to run that, instead of using a static now.json file.
 
 import path from 'path'
@@ -9,8 +9,10 @@ import { routes } from '../__sapper__/service-worker'
 import cloneDeep from 'lodash-es/cloneDeep'
 import inlineScriptChecksum from '../src/inline-script/checksum'
 import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChecksums'
+import cheerio from 'cheerio'
 
 const writeFile = promisify(fs.writeFile)
+const readFile = promisify(fs.readFile)
 
 const JSON_TEMPLATE = {
   'version': 2,
@@ -73,7 +75,7 @@ async function main () {
 
   let exportDir = path.resolve(__dirname, '../__sapper__/export')
 
-  routes.forEach(({ pattern }) => {
+  for (let { pattern } of routes) {
     let route = {
       src: pattern.source,
       headers: cloneDeep(HTML_HEADERS)
@@ -88,12 +90,20 @@ async function main () {
       path.join(filename, 'index.html')
     ].map(_ => path.resolve(exportDir, _)).find(_ => fs.existsSync(_))
 
-    if (!filePath) { // dynamic route, e.g. /accounts/<accountId/
-      // serve calls to dynamic routes via the generic "service worker" index.html
+    if (filePath) { // static routes, e.g. /federated
+      let html = await readFile(filePath, 'utf8')
+      let $ = cheerio.load(html)
+      let preloads = $('link[rel="preload"]').map((index, el) => {
+        return { as: $(el).attr('as'), href: $(el).attr('href') }
+      }).get().map(({ as, href }) => `<${href}>;rel="preload";as=${JSON.stringify(as)}`).join(',')
+      route.headers.link = preloads
+    } else { // dynamic route, e.g. /accounts/<accountId/
+      // serve calls to dynamic routes via the generic "service worker" index.html,
+      // since we can't generate the dynamic content using Zeit's static server
       route.dest = 'service-worker-index.html'
     }
     json.routes.push(route)
-  })
+  }
 
   // push a generic route to handle everything else
   json.routes.push({

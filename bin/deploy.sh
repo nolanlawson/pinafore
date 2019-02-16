@@ -12,6 +12,8 @@ else
   rm -f static/robots.txt
 fi
 
+yarn run build-now-json
+
 # if in travis, use the $NOW_TOKEN
 NOW_COMMAND="now --team nolanlawson"
 if [[ ! -z "$NOW_TOKEN" ]]; then
