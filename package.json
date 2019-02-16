@@ -38,7 +38,8 @@
     "sapper-export": "sapper export",
     "print-export-info": "node ./bin/print-export-info.js",
     "export-steps": "run-s before-build sapper-export print-export-info",
-    "export": "cross-env NODE_ENV=production run-s export-steps"
+    "export": "cross-env NODE_ENV=production run-s export-steps",
+    "now-build": "run-s export"
   },
   "dependencies": {
     "@gamestdio/websocket": "^0.3.1",
