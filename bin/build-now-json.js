@@ -80,12 +80,12 @@ async function main () {
     }
 
     // remove all the regexy stuff in the regex
-    let filename = pattern.source.replace(/^\^\\\//, '').replace(/\\\/\?\$$/, '').replace(/\\\//g, '/')
+    let filename = pattern.source.replace(/^\^\\\//, '').replace(/(\\\/)?\?\$$/, '').replace(/\\\//g, '/')
 
     // try two different possible paths
     let filePath = [
       `${filename}.html`,
-      `${filename}/index.html`
+      path.join(filename, 'index.html')
     ].map(_ => path.resolve(exportDir, _)).find(_ => fs.existsSync(_))
 
     if (!filePath) { // dynamic route, e.g. /accounts/<accountId/

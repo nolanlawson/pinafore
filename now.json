@@ -49,8 +49,7 @@
         "x-download-options": "noopen",
         "x-frame-options": "SAMEORIGIN",
         "x-xss-protection": "1; mode=block"
-      },
-      "dest": "service-worker-index.html"
+      }
     },
     {
       "src": "^\\/notifications\\/?$",
