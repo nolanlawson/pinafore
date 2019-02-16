@@ -10,11 +10,13 @@
         <input type="radio" id="choice-theme-{theme.name}"
                value={theme.name} checked="$currentTheme === theme.name"
                bind:group="selectedTheme" on:change="onThemeChange()">
-        <div class="theme-preview theme-preview-{themeGroup.dark ? 'dark' : 'light'}"
-             style="background-color: {theme.color};" >
-        </div>
         <label class="theme-picker-label" for="choice-theme-{theme.name}">
-          {theme.label} {theme.name === DEFAULT_THEME ? '(default)' : ''}
+          <div class="theme-preview theme-preview-{themeGroup.dark ? 'dark' : 'light'}"
+               style="background-color: {theme.color};" >
+          </div>
+          <span class="theme-picker-label-span">
+            {theme.label} {theme.name === DEFAULT_THEME ? '(default)' : ''}
+          </span>
         </label>
       </div>
       {/each}
@@ -43,15 +45,18 @@
   }
   .theme-picker {
     display: flex;
-    flex-direction: row;
     align-items: center;
   }
   .theme-picker-label {
+    display: flex;
+    align-items: center;
+  }
+  .theme-picker-label-span {
     margin: 2px 10px 0;
   }
   .theme-preview {
-    width: 1.5em;
-    height: 1.5em;
+    width: 21px;
+    height: 21px;
     box-sizing: border-box;
     border-radius: 2px;
     margin: 0 2px 0 10px;
