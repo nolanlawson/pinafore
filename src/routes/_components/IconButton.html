@@ -107,6 +107,7 @@
 <script>
   import { classname } from '../_utils/classname'
   import { store } from '../_store/store'
+  import { animate } from '../_utils/animate'
 
   export default {
     data: () => ({
@@ -143,8 +144,7 @@
           return
         }
         let svg = this.refs.svg
-        let animations = animation.map(({ properties, options }) => svg.animate(properties, options))
-        animations.forEach(anim => anim.play())
+        animate(svg, animation)
       }
     }
   }
