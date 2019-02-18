@@ -1,0 +1,60 @@
+<GenericConfirmationDialog
+  {id}
+  {label}
+  {title}
+  {positiveText}
+  on:positive="doMute()"
+>
+  <div class="mute-dialog">
+    <p>
+      Mute @{account.acct} ?
+    </p>
+    <form class="mute-dialog-form">
+      <input type="checkbox"
+             id="mute-notifications"
+             name="mute-notifications"
+             bind:checked="muteNotifications">
+      <label for="mute-notifications">Mute notifications as well</label>
+    </form>
+  </div>
+</GenericConfirmationDialog>
+<style>
+  .mute-dialog {
+    padding: 20px;
+  }
+  .mute-dialog-form {
+    margin-top: 20px;
+  }
+</style>
+<script>
+  import GenericConfirmationDialog from './GenericConfirmationDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
+  import { setAccountMuted } from '../../../_actions/mute'
+
+  export default {
+    oncreate,
+    data: () => ({
+      positiveText: 'Mute',
+      title: '',
+      muteNotifications: true
+    }),
+    methods: {
+      show,
+      close,
+      async doMute () {
+        let { account, muteNotifications } = this.get()
+        this.close()
+        await setAccountMuted(
+          account.id,
+          /* mute */ true,
+          muteNotifications,
+          /* toastOnSuccess */ true)
+      }
+    },
+    components: {
+      GenericConfirmationDialog
+    }
+  }
+</script>

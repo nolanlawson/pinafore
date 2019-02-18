@@ -21,7 +21,7 @@
 </style>
 <script>
   import { store } from '../../../_store/store'
-  import { importShowConfirmationDialog } from '../../dialog/asyncDialogs'
+  import { importShowTextConfirmationDialog } from '../../dialog/asyncDialogs'
   import { switchToInstance, logOutOfInstance } from '../../../_actions/instances'
 
   export default {
@@ -36,12 +36,11 @@
         e.preventDefault()
         let { instanceName } = this.get()
 
-        let showConfirmationDialog = await importShowConfirmationDialog()
-        showConfirmationDialog({
-          text: `Log out of ${instanceName}?`,
-          onPositive () {
-            /* no await */ logOutOfInstance(instanceName)
-          }
+        let showTextConfirmationDialog = await importShowTextConfirmationDialog()
+        showTextConfirmationDialog({
+          text: `Log out of ${instanceName}?`
+        }).on('positive', () => {
+          /* no await */ logOutOfInstance(instanceName)
         })
       }
     }

@@ -8,8 +8,8 @@ export const importShowComposeDialog = () => import(
   /* webpackChunkName: 'showComposeDialog' */ './creators/showComposeDialog'
   ).then(getDefault)
 
-export const importShowConfirmationDialog = () => import(
-  /* webpackChunkName: 'showConfirmationDialog' */ './creators/showConfirmationDialog'
+export const importShowTextConfirmationDialog = () => import(
+  /* webpackChunkName: 'showTextConfirmationDialog' */ './creators/showTextConfirmationDialog'
   ).then(getDefault)
 
 export const importShowEmojiDialog = () => import(
@@ -34,4 +34,8 @@ export const importShowShortcutHelpDialog = () => import(
 
 export const importShowMediaDialog = () => import(
   /* webpackChunkName: 'showMediaDialog' */ './creators/showMediaDialog'
+  ).then(getDefault)
+
+export const importShowMuteDialog = () => import(
+  /* webpackChunkName: 'showMuteDialog' */ './creators/showMuteDialog'
   ).then(getDefault)

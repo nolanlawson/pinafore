@@ -1,7 +1,15 @@
 import {
   accountProfileFollowButton,
-  accountProfileMoreOptionsButton, communityNavButton, getNthSearchResult,
-  getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog, closeDialogButton
+  accountProfileMoreOptionsButton,
+  communityNavButton,
+  getNthSearchResult,
+  getNthStatus,
+  getNthStatusOptionsButton,
+  getNthDialogOptionsOption,
+  getUrl,
+  modalDialog,
+  closeDialogButton,
+  confirmationDialogOKButton, sleep
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { loginAsFoobar } from '../roles'
@@ -21,7 +29,12 @@ test('Can mute and unmute an account', async t => {
     .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Mute @admin')
     .click(getNthDialogOptionsOption(3))
+  await sleep(1000)
+  await t
+    .click(confirmationDialogOKButton)
     .expect(modalDialog.exists).notOk()
+  await sleep(1000)
+  await t
     .click(communityNavButton)
     .click($('a[href="/muted"]'))
     .expect(getNthSearchResult(1).innerText).contains('@admin')
@@ -33,6 +46,8 @@ test('Can mute and unmute an account', async t => {
     .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(4).innerText).contains('Unmute @admin')
     .click(getNthDialogOptionsOption(4))
+  await sleep(1000)
+  await t
     .click(accountProfileMoreOptionsButton)
     .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @admin')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Unfollow @admin')

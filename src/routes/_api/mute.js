@@ -1,9 +1,9 @@
 import { auth, basename } from './utils'
 import { post, WRITE_TIMEOUT } from '../_utils/ajax'
 
-export async function muteAccount (instanceName, accessToken, accountId) {
+export async function muteAccount (instanceName, accessToken, accountId, notifications) {
   let url = `${basename(instanceName)}/api/v1/accounts/${accountId}/mute`
-  return post(url, null, auth(accessToken), { timeout: WRITE_TIMEOUT })
+  return post(url, { notifications }, auth(accessToken), { timeout: WRITE_TIMEOUT })
 }
 
 export async function unmuteAccount (instanceName, accessToken, accountId) {

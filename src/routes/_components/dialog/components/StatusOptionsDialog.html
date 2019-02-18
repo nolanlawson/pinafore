@@ -16,12 +16,12 @@ import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
-import { setAccountMuted } from '../../../_actions/mute'
 import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
 import { setConversationMuted } from '../../../_actions/muteConversation'
 import { copyText } from '../../../_actions/copyText'
 import { deleteAndRedraft } from '../../../_actions/deleteAndRedraft'
 import { shareStatus } from '../../../_actions/share'
+import { toggleMute } from '../../../_actions/toggleMute'
 
 export default {
   oncreate,
@@ -183,9 +183,9 @@ export default {
       await setAccountBlocked(accountId, !blocking, true)
     },
     async onMuteClicked () {
-      let { accountId, muting } = this.get()
+      let { account, muting } = this.get()
       this.close()
-      await setAccountMuted(accountId, !muting, true)
+      await toggleMute(account, !muting)
     },
     async onMuteConversationClicked () {
       let { statusId, mutingConversation } = this.get()

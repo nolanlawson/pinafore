@@ -15,7 +15,10 @@
         {
           icon: '#fa-volume-up',
           label: 'Unmute',
-          onclick: (accountId) => setAccountMuted(accountId, false, true)
+          onclick: (accountId) => setAccountMuted(accountId,
+            /* mute */ false,
+            /* notifications */ false,
+            /* toastOnSuccess */ true)
         }
       ]
     }),

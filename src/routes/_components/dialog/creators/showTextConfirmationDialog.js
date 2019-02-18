@@ -1,9 +1,9 @@
-import ConfirmationDialog from '../components/ConfirmationDialog.html'
+import TextConfirmationDialog from '../components/TextConfirmationDialog.html'
 import { createDialogElement } from '../helpers/createDialogElement'
 import { createDialogId } from '../helpers/createDialogId'
 
-export default function showConfirmationDialog (options) {
-  let dialog = new ConfirmationDialog({
+export default function showTextConfirmationDialog (options) {
+  let dialog = new TextConfirmationDialog({
     target: createDialogElement(),
     data: Object.assign({
       id: createDialogId(),
@@ -11,4 +11,5 @@ export default function showConfirmationDialog (options) {
     }, options)
   })
   dialog.show()
+  return dialog
 }
