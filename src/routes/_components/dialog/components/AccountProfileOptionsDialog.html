@@ -15,12 +15,12 @@ import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
-import { setAccountMuted } from '../../../_actions/mute'
 import { setAccountFollowed } from '../../../_actions/follow'
 import { setShowReblogs } from '../../../_actions/setShowReblogs'
 import { setDomainBlocked } from '../../../_actions/setDomainBlocked'
 import { copyText } from '../../../_actions/copyText'
 import { composeNewStatusMentioning } from '../../../_actions/mention'
+import { toggleMute } from '../../../_actions/toggleMute'
 
 export default {
   oncreate,
@@ -155,9 +155,9 @@ export default {
       await setAccountBlocked(accountId, !blocking, true)
     },
     async onMuteClicked () {
-      let { accountId, muting } = this.get()
+      let { account, muting } = this.get()
       this.close()
-      await setAccountMuted(accountId, !muting, true)
+      await toggleMute(account, !muting)
     },
     async onShowReblogsClicked () {
       let { accountId, showingReblogs } = this.get()

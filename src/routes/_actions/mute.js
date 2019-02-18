@@ -4,12 +4,12 @@ import { toast } from '../_components/toast/toast'
 import { updateLocalRelationship } from './accounts'
 import { emit } from '../_utils/eventBus'
 
-export async function setAccountMuted (accountId, mute, toastOnSuccess) {
+export async function setAccountMuted (accountId, mute, notifications, toastOnSuccess) {
   let { currentInstance, accessToken } = store.get()
   try {
     let relationship
     if (mute) {
-      relationship = await muteAccount(currentInstance, accessToken, accountId)
+      relationship = await muteAccount(currentInstance, accessToken, accountId, notifications)
     } else {
       relationship = await unmuteAccount(currentInstance, accessToken, accountId)
     }

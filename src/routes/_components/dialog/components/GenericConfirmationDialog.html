@@ -5,17 +5,13 @@
   background="var(--main-bg)"
 >
   <form class="confirmation-dialog-form">
-    {#if component}
-      <svelte:component this={component} {...componentOpts} />
-    {:else}
-      <p>{text}</p>
-    {/if}
+    <slot></slot>
     <div class="confirmation-dialog-form-flex">
       <button type="button" on:click="onPositive()">
-        {positiveText}
+        {positiveText || 'OK'}
       </button>
       <button type="button" on:click="onNegative()">
-        {negativeText}
+        {negativeText || 'Cancel'}
       </button>
     </div>
   </form>
@@ -29,10 +25,6 @@
   }
   .confirmation-dialog-form-flex button {
     min-width: 125px;
-  }
-  .confirmation-dialog-form p {
-    font-size: 1.3em;
-    padding: 40px 20px;
   }
 </style>
 <script>
@@ -48,13 +40,8 @@
       onCreateDialog.call(this)
     },
     data: () => ({
-      component: void 0,
-      text: void 0,
-      onPositive: void 0,
-      onNegative: void 0,
-      title: '',
-      positiveText: 'OK',
-      negativeText: 'Cancel'
+      positiveText: void 0,
+      negativeText: void 0
     }),
     methods: {
       show,
@@ -62,23 +49,15 @@
       onDestroyDialog (thisId) {
         let {
           id,
-          positiveResult,
-          onPositive,
-          onNegative
+          positiveResult
         } = this.get()
         if (thisId !== id) {
           return
         }
         if (positiveResult) {
           this.fire('positive')
-          if (onPositive) {
-            onPositive()
-          }
         } else {
           this.fire('negative')
-          if (onNegative) {
-            onNegative()
-          }
         }
       },
       onPositive () {

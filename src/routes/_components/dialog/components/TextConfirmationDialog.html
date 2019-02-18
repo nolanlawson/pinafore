@@ -1,0 +1,38 @@
+<GenericConfirmationDialog
+  {id}
+  {label}
+  {title}
+  {positiveText}
+  {negativeText}
+  on:positive
+  on:negative>
+  <p>{text}</p>
+</GenericConfirmationDialog>
+<style>
+  p {
+    font-size: 1.3em;
+    padding: 40px 20px;
+  }
+</style>
+<script>
+  import GenericConfirmationDialog from './GenericConfirmationDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate } from '../helpers/onCreateDialog'
+
+  export default {
+    oncreate,
+    data: () => ({
+      title: void 0,
+      positiveText: void 0,
+      negativeText: void 0
+    }),
+    methods: {
+      show,
+      close
+    },
+    components: {
+      GenericConfirmationDialog
+    }
+  }
+</script>

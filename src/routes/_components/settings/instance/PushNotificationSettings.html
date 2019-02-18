@@ -36,7 +36,7 @@
 </style>
 <script>
   import { store } from '../../../_store/store'
-  import { importShowConfirmationDialog } from '../../dialog/asyncDialogs'
+  import { importShowTextConfirmationDialog } from '../../dialog/asyncDialogs'
   import { logOutOfInstance } from '../../../_actions/instances'
   import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
   import { toast } from '../../toast/toast'
@@ -76,12 +76,11 @@
 
           // TODO: Better way to detect missing authorization scope
           if (err.message.startsWith('403:')) {
-            let showConfirmationDialog = await importShowConfirmationDialog()
-            showConfirmationDialog({
-              text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`,
-              onPositive () {
-                logOutOfInstance(instanceName)
-              }
+            let showTextConfirmationDialog = await importShowTextConfirmationDialog()
+            showTextConfirmationDialog({
+              text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`
+            }).on('positive', () => {
+              /* no await */ logOutOfInstance(instanceName)
             })
           } else {
             toast.say(`Failed to update push notification settings: ${err.message}`)
