@@ -5,6 +5,8 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const { mode, dev, resolve } = require('./shared.config')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const output = Object.assign(config.client.output(), {
   // enables HMR in workers
@@ -29,9 +31,17 @@ module.exports = {
             dev,
             hydratable: true,
             store: true,
-            hotReload: dev
+            hotReload: dev,
+            emitCss: !dev
           }
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader"
+        ]
       }
     ].filter(Boolean)
   },
@@ -40,7 +50,8 @@ module.exports = {
   },
   optimization: dev ? {} : {
     minimizer: [
-      terser()
+      terser(),
+      new OptimizeCSSAssetsPlugin({})
     ],
     splitChunks: {
       chunks: 'async',
@@ -60,6 +71,10 @@ module.exports = {
       exclude: /node_modules/,
       failOnError: true,
       cwd: process.cwd()
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[id].css',
+      chunkFilename: '[id].css'
     })
   ].concat(dev ? [
     new webpack.HotModuleReplacementPlugin({
