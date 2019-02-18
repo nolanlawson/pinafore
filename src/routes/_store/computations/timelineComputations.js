@@ -27,20 +27,15 @@ export function timelineComputations (store) {
   })
 
   store.compute('numberOfNotifications',
-    [`timelineData_itemIdsToAdd`, 'currentInstance', 'currentTimeline'],
-    (root, currentInstance, currentTimeline) => {
-      return (
-        currentTimeline !== 'notifications' &&
-        root &&
-        root[currentInstance] &&
-        root[currentInstance].notifications &&
-        root[currentInstance].notifications.length
-      ) || 0
-    }
+    [`timelineData_itemIdsToAdd`, 'currentInstance'],
+    (root, currentInstance) => (
+      (root && root[currentInstance] && root[currentInstance].notifications &&
+        root[currentInstance].notifications.length) || 0
+    )
   )
 
   store.compute('hasNotifications',
-    ['numberOfNotifications'],
-    (numberOfNotifications) => !!numberOfNotifications
+    ['numberOfNotifications', 'currentPage'],
+    (numberOfNotifications, currentPage) => currentPage !== 'notifications' && !!numberOfNotifications
   )
 }
