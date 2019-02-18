@@ -99,7 +99,6 @@
     "terser-webpack-plugin": "^1.2.2",
     "text-encoding": "^0.7.0",
     "tiny-queue": "^0.2.1",
-    "web-animations-js": "^2.3.1",
     "webpack": "^4.29.3",
     "webpack-bundle-analyzer": "^3.0.4"
   },
