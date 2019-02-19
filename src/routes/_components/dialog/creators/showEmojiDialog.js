@@ -1,16 +1,10 @@
 import EmojiDialog from '../components/EmojiDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { showDialog } from './showDialog'
 
 export default function showEmojiDialog (realm) {
-  let emojiDialog = new EmojiDialog({
-    target: createDialogElement(),
-    data: {
-      id: createDialogId(),
-      label: 'Emoji dialog',
-      title: 'Emoji',
-      realm
-    }
+  return showDialog(EmojiDialog, {
+    label: 'Emoji dialog',
+    title: 'Emoji',
+    realm
   })
-  emojiDialog.show()
 }
