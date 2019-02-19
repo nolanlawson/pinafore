@@ -1,14 +1,8 @@
 import ShortcutHelpDialog from '../components/ShortcutHelpDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { showDialog } from './showDialog'
 
 export default function showShortcutHelpDialog (options) {
-  let dialog = new ShortcutHelpDialog({
-    target: createDialogElement(),
-    data: Object.assign({
-      id: createDialogId(),
-      label: 'shortcut help dialog'
-    }, options)
-  })
-  dialog.show()
+  return showDialog(ShortcutHelpDialog, Object.assign({
+    label: 'shortcut help dialog'
+  }, options))
 }

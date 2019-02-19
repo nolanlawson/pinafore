@@ -1,16 +1,10 @@
 import MediaDialog from '../components/MediaDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { showDialog } from './showDialog'
 
 export default function showMediaDialog (mediaItems, scrolledItem) {
-  let dialog = new MediaDialog({
-    target: createDialogElement(),
-    data: {
-      id: createDialogId(),
-      label: 'Media dialog',
-      mediaItems,
-      scrolledItem
-    }
+  return showDialog(MediaDialog, {
+    label: 'Media dialog',
+    mediaItems,
+    scrolledItem
   })
-  dialog.show()
 }

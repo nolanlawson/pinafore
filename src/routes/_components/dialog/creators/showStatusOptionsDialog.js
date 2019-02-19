@@ -1,16 +1,10 @@
 import StatusOptionsDialog from '../components/StatusOptionsDialog.html'
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { showDialog } from './showDialog'
 
 export default function showStatusOptionsDialog (status) {
-  let dialog = new StatusOptionsDialog({
-    target: createDialogElement(),
-    data: {
-      id: createDialogId(),
-      label: 'Status options dialog',
-      title: '',
-      status: status
-    }
+  return showDialog(StatusOptionsDialog, {
+    label: 'Status options dialog',
+    title: '',
+    status: status
   })
-  dialog.show()
 }
