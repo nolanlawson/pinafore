@@ -13,6 +13,9 @@
   --button-bg-active: #{darken($main-bg-color, 25%)};
   --button-bg-hover: #{darken($main-bg-color, 5%)};
 
+  --checkbox-bg: #{darken($main-bg-color, 5%)};
+  --checkbox-border: #{darken($border-color, 20%)};
+
   --input-border: #{$border-color};
   --input-bg: #{$main-bg-color};
   --anchor-text: #{$anchor-color};

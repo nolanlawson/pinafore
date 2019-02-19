@@ -199,6 +199,26 @@ textarea {
   box-sizing: border-box;
 }
 
+/* custom inputs - checkboxes and radios */
+
+input[type="checkbox"] {
+  height: 0.9em;
+  width: 0.9em;
+  background-color: var(--checkbox-bg);
+  border: 1px solid var(--checkbox-border);
+  box-shadow: none;
+  //-webkit-appearance: none;
+  cursor: pointer;
+  border-radius: 3px;
+  margin: auto 0.4em auto 0;
+}
+
+input[type="checkbox"]:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
