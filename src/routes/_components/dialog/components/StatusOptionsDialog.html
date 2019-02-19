@@ -22,6 +22,7 @@ import { copyText } from '../../../_actions/copyText'
 import { deleteAndRedraft } from '../../../_actions/deleteAndRedraft'
 import { shareStatus } from '../../../_actions/share'
 import { toggleMute } from '../../../_actions/toggleMute'
+import { reportStatusOrAccount } from '../../../_actions/report'
 
 export default {
   oncreate,
@@ -120,6 +121,11 @@ export default {
         label: 'Delete and redraft',
         icon: '#fa-pencil'
       },
+      !isUser && {
+        key: 'report',
+        label: 'Report toot',
+        icon: '#fa-flag'
+      },
       isPublicOrUnlisted && supportsWebShare && {
         key: 'share',
         label: 'Share toot',
@@ -160,6 +166,8 @@ export default {
           return this.onRedraft()
         case 'share':
           return this.onShare()
+        case 'report':
+          return this.onReport()
       }
     },
     async onDeleteClicked () {
@@ -195,18 +203,23 @@ export default {
     async onCopyClicked () {
       let { status } = this.get()
       let { url } = status
-      await copyText(url)
       this.close()
+      await copyText(url)
     },
     async onRedraft () {
       let { status } = this.get()
-      await deleteAndRedraft(status)
       this.close()
+      await deleteAndRedraft(status)
     },
     async onShare () {
       let { status } = this.get()
-      await shareStatus(status)
       this.close()
+      await shareStatus(status)
+    },
+    async onReport () {
+      let { status, account } = this.get()
+      this.close()
+      await reportStatusOrAccount(({ status, account }))
     }
   }
 }

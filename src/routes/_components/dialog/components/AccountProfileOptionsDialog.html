@@ -21,6 +21,7 @@ import { setDomainBlocked } from '../../../_actions/setDomainBlocked'
 import { copyText } from '../../../_actions/copyText'
 import { composeNewStatusMentioning } from '../../../_actions/mention'
 import { toggleMute } from '../../../_actions/toggleMute'
+import { reportStatusOrAccount } from '../../../_actions/report'
 
 export default {
   oncreate,
@@ -75,11 +76,12 @@ export default {
         ? `Unhide ${domain}`
         : `Hide ${domain}`
     ),
+    reportLabel: ({ acct }) => `Report @${acct}`,
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon,
       followLabel, followIcon, following, followRequested,
       accountId, verifyCredentialsId, acct, isUser, showReblogsLabel,
-      domain, blockDomainLabel
+      domain, blockDomainLabel, reportLabel
     }) => ([
       !isUser && {
         key: 'mention',
@@ -111,6 +113,11 @@ export default {
         label: blockDomainLabel,
         icon: '#fa-ban'
       },
+      !isUser && {
+        key: 'report',
+        label: reportLabel,
+        icon: '#fa-flag'
+      },
       {
         key: 'copy',
         label: 'Copy link to account',
@@ -137,12 +144,14 @@ export default {
           return this.onBlockDomainClicked()
         case 'copy':
           return this.onCopyClicked()
+        case 'report':
+          return this.onReport()
       }
     },
     async onMentionClicked () {
       let { account } = this.get()
-      await composeNewStatusMentioning(account)
       this.close()
+      await composeNewStatusMentioning(account)
     },
     async onFollowClicked () {
       let { accountId, following } = this.get()
@@ -174,6 +183,11 @@ export default {
       let { url } = account
       this.close()
       await copyText(url)
+    },
+    async onReport () {
+      let { account } = this.get()
+      this.close()
+      await reportStatusOrAccount({ account })
     }
   },
   components: {

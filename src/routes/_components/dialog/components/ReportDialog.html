@@ -1,0 +1,213 @@
+<GenericConfirmationDialog
+  {id}
+  {label}
+  {title}
+  className="report-dialog-contents"
+  {positiveText}
+  on:positive="doReport()">
+  <div class="report-dialog">
+    <div class="report-flex">
+      <div class="recent-statuses">
+        {#if loading}
+          <div class="loading-spinner-container">
+            <LoadingSpinner />
+          </div>
+        {:else}
+          <ul>
+            {#each displayStatuses as status (status.id)}
+              <li>
+                <input type="checkbox"
+                       id="status-report-{status.id}"
+                       name="status-report-{status.id}"
+                       checked={status.report}
+                       on:change="onChange(status.id, event)"
+                >
+                <label for="status-report-{status.id}">
+                  {status.text}
+                </label>
+              </li>
+            {/each}
+          </ul>
+        {/if}
+      </div>
+      <div class="report-info">
+        <p>You are reporting @{account.acct} to the moderators of {$currentInstance}.</p>
+        <label class="sr-only" id="comments-label">Additional comments</label>
+        <textarea bind:value="comments"
+                  placeholder="Additional comments"
+                  aria-labelledby="comments-label"
+                  maxlength="1000"></textarea>
+        {#if remoteInstance}
+          <p>Forward to the moderators of {remoteInstance} as well?</p>
+          <input type="checkbox"
+                 id="report-forward"
+                 name="report-forward"
+                 bind:checked="forward">
+          <label for="report-forward">
+            Forward to {remoteInstance}
+          </label>
+        {/if}
+      </div>
+    </div>
+  </div>
+</GenericConfirmationDialog>
+<style>
+  :global(.report-dialog-contents .confirmation-dialog-form) {
+    max-width: 80vw;
+  }
+  .report-dialog {
+    padding: 20px 40px;
+    overflow-y: auto;
+  }
+  .loading-spinner-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  ul {
+    list-style: none;
+    max-height: 30vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  li {
+    padding: 10px 0;
+  }
+  textarea {
+    width: 100%;
+    overflow-y: auto;
+    max-height: 40vh;
+    font-size: 1.3em;
+    min-height: 100px;
+  }
+  p {
+    margin: 20px 0;
+  }
+
+  .recent-statuses li {
+    display: flex;
+    flex-direction: row;
+  }
+  .recent-statuses label {
+    width: 0;
+    flex: 1;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+  }
+
+  .report-flex {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .report-flex > * {
+    flex: 1;
+  }
+
+  .report-info {
+    margin-left: 20px;
+  }
+
+  @media (max-width: 767px) {
+    .report-dialog {
+      padding: 20px;
+      overflow-x: hidden;
+      max-height: 65vh;
+    }
+    .report-flex {
+      flex-direction: column;
+    }
+    .report-info {
+      margin-left: 0;
+    }
+    textarea {
+      max-height: 20vh;
+    }
+    p, label {
+      word-wrap: break-word;
+    }
+    :global(.report-dialog-contents .confirmation-dialog-form) {
+      max-width: calc(100vw - 20px);
+    }
+  }
+</style>
+<script>
+  import GenericConfirmationDialog from './GenericConfirmationDialog.html'
+  import LoadingSpinner from '../../LoadingSpinner.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { getRecentStatusesForAccount } from '../../../_actions/getRecentStatusesForAccount'
+  import { statusHtmlToPlainText } from '../../../_utils/statusHtmlToPlainText'
+  import { toast } from '../../toast/toast'
+  import { store } from '../../../_store/store'
+  import { reportStatuses } from '../../../_actions/reportStatuses'
+
+  export default {
+    async oncreate () {
+      onCreateDialog.apply(this)
+      let { account, status, reportMap } = this.get()
+      if (status) {
+        reportMap[status.id] = true
+      }
+      try {
+        let recentStatuses = await getRecentStatusesForAccount(account.id)
+        console.log('recentStatuses', recentStatuses)
+        this.set({ recentStatuses })
+      } catch (err) {
+        console.error(err)
+        toast.say('Unable to load recent statuses: ' + (err.message || ''))
+      } finally {
+        this.set({ loading: false })
+      }
+    },
+    store: () => store,
+    data: () => ({
+      account: void 0,
+      status: void 0,
+      positiveText: 'Report',
+      reportMap: {},
+      recentStatuses: [],
+      loading: true,
+      forward: false,
+      comments: ''
+    }),
+    computed: {
+      displayStatuses: ({ statuses, reportMap }) => (
+        statuses.map(status => ({
+          id: status.id,
+          text: statusHtmlToPlainText(status.content, status.mentions) || '(No content)',
+          report: reportMap[status.id]
+        }))
+      ),
+      statuses: ({ status, recentStatuses }) => (
+        [status].concat((recentStatuses || []).filter(({ id }) => (!status || id !== status.id))).filter(Boolean)
+      ),
+      remoteInstance: ({ account }) => account.acct.split('@')[1]
+    },
+    methods: {
+      show,
+      close,
+      onChange (statusId, event) {
+        let report = event.target.checked
+        let { reportMap } = this.get()
+        reportMap[statusId] = report
+      },
+      async doReport () {
+        let { displayStatuses, account, comment, forward, reportMap } = this.get()
+        let statusIds = displayStatuses.map(({ id }) => id).filter(id => reportMap[id])
+        if (!statusIds.length) {
+          toast.say(`No toots to report.`)
+        } else {
+          await reportStatuses(account, statusIds, comment, forward)
+        }
+      }
+    },
+    components: {
+      GenericConfirmationDialog,
+      LoadingSpinner
+    }
+  }
+</script>

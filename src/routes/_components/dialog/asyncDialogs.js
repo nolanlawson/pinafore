@@ -39,3 +39,7 @@ export const importShowMediaDialog = () => import(
 export const importShowMuteDialog = () => import(
   /* webpackChunkName: 'showMuteDialog' */ './creators/showMuteDialog'
   ).then(getDefault)
+
+export const importShowReportDialog = () => import(
+  /* webpackChunkName: 'showReportDialog' */ './creators/showReportDialog'
+  ).then(getDefault)
