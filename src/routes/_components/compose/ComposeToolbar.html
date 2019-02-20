@@ -54,14 +54,10 @@
 
   export default {
     oncreate () {
-      // for testing
-      window.__fakeFileInput = (file) => {
-        this.onFileChange({
-          target: {
-            files: [file]
-          }
-        })
-      }
+      window.__composeToolbar = this // for testing
+    },
+    ondestroy () {
+      window.__composeToolbar = null
     },
     components: {
       IconButton,

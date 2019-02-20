@@ -131,7 +131,9 @@ export const uploadKittenImage = i => (exec(() => {
   let image = images[`kitten${i}`]
   let blob = blobUtils.base64StringToBlob(image.data, 'image/png')
   blob.name = image.name
-  window.__fakeFileInput(blob)
+  window.__composeToolbar.onFileChange({
+    target: { files: [blob] }
+  })
 }, {
   dependencies: {
     images,
