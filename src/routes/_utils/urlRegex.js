@@ -1,48 +1,49 @@
-// via https://github.com/tootsuite/mastodon/blob/5d5c0f4/app/javascript/mastodon/features/compose/util/url_regex.js
+// via https://raw.githubusercontent.com/tootsuite/mastodon/40dd19b/app/javascript/mastodon/features/compose/util/url_regex.js
 
 /* eslint-disable */
 
-const regexen = {}
+import { thunk } from './thunk'
 
-const regexSupplant = function (regex, flags) {
-  flags = flags || ''
-  if (typeof regex !== 'string') {
-    if (regex.global && flags.indexOf('g') < 0) {
-      flags += 'g'
-    }
-    if (regex.ignoreCase && flags.indexOf('i') < 0) {
-      flags += 'i'
-    }
-    if (regex.multiline && flags.indexOf('m') < 0) {
-      flags += 'm'
-    }
+export const urlRegex = thunk(() => {
+  const regexen = {};
 
-    regex = regex.source
-  }
-  return new RegExp(regex.replace(/#\{(\w+)\}/g, function (match, name) {
-    var newRegex = regexen[name] || ''
-    if (typeof newRegex !== 'string') {
-      newRegex = newRegex.source
+  const regexSupplant = function(regex, flags) {
+    flags = flags || '';
+    if (typeof regex !== 'string') {
+      if (regex.global && flags.indexOf('g') < 0) {
+        flags += 'g';
+      }
+      if (regex.ignoreCase && flags.indexOf('i') < 0) {
+        flags += 'i';
+      }
+      if (regex.multiline && flags.indexOf('m') < 0) {
+        flags += 'm';
+      }
+
+      regex = regex.source;
     }
-    return newRegex
-  }), flags)
-}
+    return new RegExp(regex.replace(/#\{(\w+)\}/g, function(match, name) {
+      var newRegex = regexen[name] || '';
+      if (typeof newRegex !== 'string') {
+        newRegex = newRegex.source;
+      }
+      return newRegex;
+    }), flags);
+  };
 
-const stringSupplant = function (str, values) {
-  return str.replace(/#\{(\w+)\}/g, function (match, name) {
-    return values[name] || ''
-  })
-}
-
-export const urlRegex = (function () {
-  regexen.spaces_group = /\x09-\x0D\x20\x85\xA0\u1680\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000/
-  regexen.invalid_chars_group = /\uFFFE\uFEFF\uFFFF\u202A-\u202E/
-  regexen.punct = /\!'#%&'\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$/
-  regexen.validUrlPrecedingChars = regexSupplant(/(?:[^A-Za-z0-9@＠$#＃#{invalid_chars_group}]|^)/)
-  regexen.invalidDomainChars = stringSupplant('#{punct}#{spaces_group}#{invalid_chars_group}', regexen)
-  regexen.validDomainChars = regexSupplant(/[^#{invalidDomainChars}]/)
-  regexen.validSubdomain = regexSupplant(/(?:(?:#{validDomainChars}(?:[_-]|#{validDomainChars})*)?#{validDomainChars}\.)/)
-  regexen.validDomainName = regexSupplant(/(?:(?:#{validDomainChars}(?:-|#{validDomainChars})*)?#{validDomainChars}\.)/)
+  const stringSupplant = function(str, values) {
+    return str.replace(/#\{(\w+)\}/g, function(match, name) {
+      return values[name] || '';
+    });
+  };
+  regexen.spaces_group = /\x09-\x0D\x20\x85\xA0\u1680\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000/;
+  regexen.invalid_chars_group = /\uFFFE\uFEFF\uFFFF\u202A-\u202E/;
+  regexen.punct = /\!'#%&'\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$/;
+  regexen.validUrlPrecedingChars = regexSupplant(/(?:[^A-Za-z0-9@＠$#＃#{invalid_chars_group}]|^)/);
+  regexen.invalidDomainChars = stringSupplant('#{punct}#{spaces_group}#{invalid_chars_group}', regexen);
+  regexen.validDomainChars = regexSupplant(/[^#{invalidDomainChars}]/);
+  regexen.validSubdomain = regexSupplant(/(?:(?:#{validDomainChars}(?:[_-]|#{validDomainChars})*)?#{validDomainChars}\.)/);
+  regexen.validDomainName = regexSupplant(/(?:(?:#{validDomainChars}(?:-|#{validDomainChars})*)?#{validDomainChars}\.)/);
   regexen.validGTLD = regexSupplant(RegExp(
     '(?:(?:' +
     '삼성|닷컴|닷넷|香格里拉|餐厅|食品|飞利浦|電訊盈科|集团|通販|购物|谷歌|诺基亚|联通|网络|网站|网店|网址|组织机构|移动|珠宝|点看|游戏|淡马锡|机构|書籍|时尚|新闻|政府|' +
@@ -128,12 +129,12 @@ export const urlRegex = (function () {
     'beats|bcn|bcg|bbva|bbt|bbc|bayern|bauhaus|basketball|baseball|bargains|barefoot|barclays|' +
     'barclaycard|barcelona|bar|bank|band|bananarepublic|banamex|baidu|baby|azure|axa|aws|avianca|' +
     'autos|auto|author|auspost|audio|audible|audi|auction|attorney|athleta|associates|asia|asda|arte|' +
-    'art|arpa|army|archi|aramco|arab|aquarelle|apple|src|apartments|aol|anz|anquan|android|analytics|' +
+    'art|arpa|army|archi|aramco|arab|aquarelle|apple|app|apartments|aol|anz|anquan|android|analytics|' +
     'amsterdam|amica|amfam|amex|americanfamily|americanexpress|alstom|alsace|ally|allstate|allfinanz|' +
     'alipay|alibaba|alfaromeo|akdn|airtel|airforce|airbus|aigo|aig|agency|agakhan|africa|afl|' +
     'afamilycompany|aetna|aero|aeg|adult|ads|adac|actor|active|aco|accountants|accountant|accenture|' +
     'academy|abudhabi|abogado|able|abc|abbvie|abbott|abb|abarth|aarp|aaa|onion' +
-    ')(?=[^0-9a-zA-Z@]|$))'))
+    ')(?=[^0-9a-zA-Z@]|$))'));
   regexen.validCCTLD = regexSupplant(RegExp(
     '(?:(?:' +
     '한국|香港|澳門|新加坡|台灣|台湾|中國|中国|გე|ไทย|ලංකා|ഭാരതം|ಭಾರತ|భారత్|சிங்கப்பூர்|இலங்கை|இந்தியா|ଭାରତ|ભારત|ਭਾਰਤ|' +
@@ -147,56 +148,56 @@ export const urlRegex = (function () {
     'gu|gt|gs|gr|gq|gp|gn|gm|gl|gi|gh|gg|gf|ge|gd|gb|ga|fr|fo|fm|fk|fj|fi|eu|et|es|er|eh|eg|ee|ec|dz|' +
     'do|dm|dk|dj|de|cz|cy|cx|cw|cv|cu|cr|co|cn|cm|cl|ck|ci|ch|cg|cf|cd|cc|ca|bz|by|bw|bv|bt|bs|br|bq|' +
     'bo|bn|bm|bl|bj|bi|bh|bg|bf|be|bd|bb|ba|az|ax|aw|au|at|as|ar|aq|ao|an|am|al|ai|ag|af|ae|ad|ac' +
-    ')(?=[^0-9a-zA-Z@]|$))'))
-  regexen.validPunycode = /(?:xn--[0-9a-z]+)/
-  regexen.validSpecialCCTLD = /(?:(?:co|tv)(?=[^0-9a-zA-Z@]|$))/
-  regexen.validDomain = regexSupplant(/(?:#{validSubdomain}*#{validDomainName}(?:#{validGTLD}|#{validCCTLD}|#{validPunycode}))/)
-  regexen.validPortNumber = /[0-9]+/
-  regexen.pd = /\u002d\u058a\u05be\u1400\u1806\u2010-\u2015\u2e17\u2e1a\u2e3a\u2e40\u301c\u3030\u30a0\ufe31\ufe58\ufe63\uff0d/
-  regexen.validGeneralUrlPathChars = regexSupplant(/[^#{spaces_group}\(\)\?]/i)
+    ')(?=[^0-9a-zA-Z@]|$))'));
+  regexen.validPunycode = /(?:xn--[0-9a-z]+)/;
+  regexen.validSpecialCCTLD = /(?:(?:co|tv)(?=[^0-9a-zA-Z@]|$))/;
+  regexen.validDomain = regexSupplant(/(?:#{validSubdomain}*#{validDomainName}(?:#{validGTLD}|#{validCCTLD}|#{validPunycode}))/);
+  regexen.validPortNumber = /[0-9]+/;
+  regexen.pd = /\u002d\u058a\u05be\u1400\u1806\u2010-\u2015\u2e17\u2e1a\u2e3a\u2e40\u301c\u3030\u30a0\ufe31\ufe58\ufe63\uff0d/;
+  regexen.validGeneralUrlPathChars = regexSupplant(/[^#{spaces_group}\(\)\?]/i);
   // Allow URL paths to contain up to two nested levels of balanced parens
   //  1. Used in Wikipedia URLs like /Primer_(film)
   //  2. Used in IIS sessions like /S(dfd346)/
   //  3. Used in Rdio URLs like /track/We_Up_(Album_Version_(Edited))/
   regexen.validUrlBalancedParens = regexSupplant(
-    '\\(' +
-    '(?:' +
-    '#{validGeneralUrlPathChars}+' +
-    '|' +
+    '\\('                                   +
+    '(?:'                                 +
+    '#{validGeneralUrlPathChars}+'      +
+    '|'                                 +
     // allow one nested level of balanced parentheses
-    '(?:' +
-    '#{validGeneralUrlPathChars}*' +
-    '\\(' +
-    '#{validGeneralUrlPathChars}+' +
-    '\\)' +
-    '#{validGeneralUrlPathChars}*' +
-    ')' +
-    ')' +
+    '(?:'                               +
+    '#{validGeneralUrlPathChars}*'    +
+    '\\('                             +
+    '#{validGeneralUrlPathChars}+'  +
+    '\\)'                             +
+    '#{validGeneralUrlPathChars}*'    +
+    ')'                                 +
+    ')'                                   +
     '\\)',
-    'i')
-  // Valid end-of-path chracters (so /foo. does not gobble the period).
+    'i');
+  // Valid end-of-path characters (so /foo. does not gobble the period).
   // 1. Allow =&# for empty URL parameters and other URL-join artifacts
-  regexen.validUrlPathEndingChars = regexSupplant(/[^#{spaces_group}\(\)\?!\*';:=\,\.\$%\[\]#{pd}~&\|@]|(?:#{validUrlBalancedParens})/i)
+  regexen.validUrlPathEndingChars = regexSupplant(/[^#{spaces_group}\(\)\?!\*';:=\,\.\$%\[\]#{pd}~&\|@]|(?:#{validUrlBalancedParens})/i);
   // Allow @ in a url, but only in the middle. Catch things like http://example.com/@user/
   regexen.validUrlPath = regexSupplant('(?:' +
     '(?:' +
     '#{validGeneralUrlPathChars}*' +
     '(?:#{validUrlBalancedParens}#{validGeneralUrlPathChars}*)*' +
-    '#{validUrlPathEndingChars}' +
-    ')|(?:@#{validGeneralUrlPathChars}+\/)' +
-    ')', 'i')
-  regexen.validUrlQueryChars = /[a-z0-9!?\*'@\(\);:&=\+\$\/%#\[\]\-_\.,~|]/i
-  regexen.validUrlQueryEndingChars = /[a-z0-9_&=#\/]/i
+    '#{validUrlPathEndingChars}'+
+    ')|(?:@#{validGeneralUrlPathChars}+\/)'+
+    ')', 'i');
+  regexen.validUrlQueryChars = /[a-z0-9!?\*'@\(\);:&=\+\$\/%#\[\]\-_\.,~|]/i;
+  regexen.validUrlQueryEndingChars = /[a-z0-9_&=#\/]/i;
   regexen.validUrl = regexSupplant(
-    '(' + // $1 URL
-    '(https?:\\/\\/)' + // $2 Protocol
-    '(#{validDomain})' + // $3 Domain(s)
-    '(?::(#{validPortNumber}))?' + // $4 Port number (optional)
-    '(\\/#{validUrlPath}*)?' + // $5 URL Path
-    '(\\?#{validUrlQueryChars}*#{validUrlQueryEndingChars})?' + // $6 Query String
+    '('                                                          + // $1 URL
+    '(https?:\\/\\/)'                                          + // $2 Protocol
+    '(#{validDomain})'                                         + // $3 Domain(s)
+    '(?::(#{validPortNumber}))?'                               + // $4 Port number (optional)
+    '(\\/#{validUrlPath}*)?'                                   + // $5 URL Path
+    '(\\?#{validUrlQueryChars}*#{validUrlQueryEndingChars})?'  + // $6 Query String
     ')',
-    'gi')
-  return regexen.validUrl
-}())
+    'gi');
+  return regexen.validUrl;
+});
 
 /* eslint-enable */

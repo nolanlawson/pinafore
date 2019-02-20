@@ -8,10 +8,13 @@ import { length } from 'stringz'
 const urlPlaceholder = 'xxxxxxxxxxxxxxxxxxxxxxx'
 
 export function measureText (inputText) {
+  if (!inputText) {
+    return 0
+  }
   mark('measureText()')
   let normalizedText = inputText
-    .replace(urlRegex, urlPlaceholder)
-    .replace(handleRegex, '$1@$3')
+    .replace(urlRegex(), urlPlaceholder)
+    .replace(handleRegex(), '$1@$3')
   let len = length(normalizedText)
   stop('measureText()')
   return len
