@@ -73,10 +73,12 @@
       mediaAccept
     }),
     methods: {
-      onFileDrop (e) {
-        let { file } = e
+      async onFileDrop (e) {
+        let { files } = e
         let { realm } = this.get()
-        /* no await */ doMediaUpload(realm, file)
+        for (let file of files) { // upload one at a time to avoid hitting limits
+          await doMediaUpload(realm, file)
+        }
       }
     }
   }

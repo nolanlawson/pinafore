@@ -53,12 +53,6 @@
   import { mediaAccept } from '../../_static/media'
 
   export default {
-    oncreate () {
-      window.__composeToolbar = this // for testing
-    },
-    ondestroy () {
-      window.__composeToolbar = null
-    },
     components: {
       IconButton,
       ComposeAutosuggest
