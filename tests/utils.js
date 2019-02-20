@@ -131,9 +131,10 @@ export const uploadKittenImage = i => (exec(() => {
   let image = images[`kitten${i}`]
   let blob = blobUtils.base64StringToBlob(image.data, 'image/png')
   blob.name = image.name
-  window.__composeToolbar.onFileChange({
-    target: { files: [blob] }
-  })
+  let fileDrop = document.querySelector('file-drop')
+  let event = new Event('filedrop', { bubbles: false })
+  event.files = [blob]
+  fileDrop.dispatchEvent(event)
 }, {
   dependencies: {
     images,
