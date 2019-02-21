@@ -3,14 +3,14 @@
   <li class="generic-dialog-list-item">
     <button class="generic-dialog-list-button" on:click="fire('click', item)">
       <svg class="generic-dialog-list-item-svg">
-        <use xlink:href={item.icon} />
+        <use xlink:href={getIconHref(item.icon)} />
       </svg>
       <span class="generic-dialog-list-button-span">
         {item.label}
       </span>
       {#if selectable}
         <svg class="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}" aria-hidden={!item.selected}>
-          <use xlink:href="#fa-check" />
+          <use xlink:href="/icons.svg#fa-check" />
         </svg>
       {/if}
     </button>
@@ -88,3 +88,12 @@
     }
   }
 </style>
+<script>
+  import { iconIsInline } from '../../../_utils/iconIsInline'
+
+  export default {
+    helpers: {
+      getIconHref: (icon) => iconIsInline(icon) ? icon : `/icons.svg${icon}`
+    }
+  }
+</script>

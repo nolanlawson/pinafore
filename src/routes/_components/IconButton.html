@@ -8,7 +8,7 @@
         ref:node
 >
   <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
-    <use xlink:href={href} />
+    <use xlink:href="{inline ? '' : '/icons.svg'}{href}" />
   </svg>
 </button>
 <style>
@@ -92,6 +92,7 @@
   import { classname } from '../_utils/classname'
   import { store } from '../_store/store'
   import { animate } from '../_utils/animate'
+  import { iconIsInline } from '../_utils/iconIsInline'
 
   export default {
     oncreate () {
@@ -135,7 +136,8 @@
           sameColorWhenPressed ? 'same-pressed' : 'not-same-pressed',
           className
         )
-      }
+      },
+      inline: ({ href }) => iconIsInline(href)
     },
     methods: {
       animate (animation) {

@@ -3,7 +3,7 @@
 >
   {#if icon}
   <svg class="dynamic-page-banner-svg">
-    <use xlink:href={icon} />
+    <use xlink:href="{inline ? '' : '/icons.svg'}{icon}" />
   </svg>
   {/if}
   <h1 class="dynamic-page-title" aria-label={ariaTitle}>{title}</h1>
@@ -64,12 +64,16 @@
 </style>
 <script>
   import Shortcut from './shortcut/Shortcut.html'
+  import { iconIsInline } from '../_utils/iconIsInline'
 
   export default {
     data: () => ({
       icon: void 0,
       ariaTitle: ''
     }),
+    computed: {
+      inline: ({ icon }) => iconIsInline(icon)
+    },
     components: { Shortcut },
     methods: {
       onGoBack () {

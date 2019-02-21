@@ -1,7 +1,7 @@
 {#if showBadge}
   <div class="nav-link-svg-wrapper">
     <svg class="nav-link-svg">
-      <use xlink:href={svg} />
+      <use xlink:href="{inline ? '' : '/icons.svg'}{svg}" />
     </svg>
     <span class="nav-link-badge nav-link-badge-digits-{badgeDigits}" aria-hidden="true">
       {badgeNumberToShow}
@@ -9,7 +9,7 @@
   </div>
 {:else}
   <svg class="nav-link-svg">
-    <use xlink:href={svg} />
+    <use xlink:href="{inline ? '' : '/icons.svg'}{svg}" />
   </svg>
 {/if}
 <style>
@@ -72,6 +72,8 @@
   }
 </style>
 <script>
+  import { iconIsInline } from '../_utils/iconIsInline'
+
   export default {
     data: () => ({
       showBadge: false,
@@ -79,7 +81,8 @@
     }),
     computed: {
       badgeDigits: ({ badgeNumber }) => Math.min(3, badgeNumber.toString().length),
-      badgeNumberToShow: ({ badgeNumber }) => (badgeNumber < 100 ? badgeNumber.toString() : '99+')
+      badgeNumberToShow: ({ badgeNumber }) => (badgeNumber < 100 ? badgeNumber.toString() : '99+'),
+      inline: ({ svg }) => iconIsInline(svg)
     }
   }
 </script>

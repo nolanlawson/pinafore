@@ -1,7 +1,7 @@
 <li class="page-list-item">
   <a {href} rel="prefetch">
     <svg class="page-list-item-svg">
-      <use xlink:href={icon} />
+      <use xlink:href="{inline ? '' : '/icons.svg'}{icon}" />
     </svg>
     <span aria-label={ariaLabel}>
       {label}
@@ -66,6 +66,7 @@
 <script>
   import { store } from '../../_store/store'
   import IconButton from '../IconButton'
+  import { iconIsInline } from '../../_utils/iconIsInline'
 
   export default {
     store: () => store,
@@ -79,7 +80,8 @@
           res += ' (' + ($pinnedPage === href ? 'Pinned page' : 'Unpinned page') + ')'
         }
         return res
-      }
+      },
+      inline: ({ icon }) => iconIsInline(icon)
     },
     components: {
       IconButton
