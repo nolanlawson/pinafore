@@ -6480,11 +6480,6 @@ require-main-filename@^1.0.1:
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
   integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
 
-require-relative@^0.8.7:
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/require-relative/-/require-relative-0.8.7.tgz#7999539fc9e047a37928fa196f8e1563dabd36de"
-  integrity sha1-eZlTn8ngR6N5KPoZb44VY9q9Nt4=
-
 require-uncached@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/require-uncached/-/require-uncached-1.0.3.tgz#4e0d56d6c9662fd31e43011c4b95aa49955421d3"
@@ -7217,13 +7212,12 @@ svelte-extras@^2.0.2:
   resolved "https://registry.yarnpkg.com/svelte-extras/-/svelte-extras-2.0.2.tgz#2b7e2826b27c9bf3c12b745494f11be835dc7f69"
   integrity sha512-yoxNehbDxGEHxJBTWq2RpIPDTHlNNy6eGR7RPSK7qsh8hoyOXbji8uF//l4+I/l2fLP+E8pQTJYrduPXrW3wsw==
 
-svelte-loader@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/svelte-loader/-/svelte-loader-2.12.0.tgz#4a5043fc6964ca438bd21cb2771e56fdb2baeda4"
-  integrity sha512-mxkjxHecbWl3KzhlwWm4C/Mid4Anhk611sEG31aa0BwdELIgLSaAxSJkxJrrFxxNgEKGKyTSeUI3blKNM+3s8Q==
+svelte-loader@^2.13.3:
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/svelte-loader/-/svelte-loader-2.13.3.tgz#866046f3ce85a2c4b884f14fb0ba0f205af8cc5c"
+  integrity sha512-ZvNWbR77lZ04nCHqnN0XFxKCQ+fynARCy+kxwogagW3k2NTJWg2QfJwN1J9d4ch+OZwcGPgGZITVr7FGB3hPmQ==
   dependencies:
     loader-utils "^1.1.0"
-    require-relative "^0.8.7"
     svelte-dev-helper "^1.1.9"
 
 svelte-transitions-draw@^1.0.0:
