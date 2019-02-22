@@ -1,4 +1,7 @@
 <h1 class="sr-only">Profile for {accountName}</h1>
+{#if moved}
+  <AccountProfileMovedBanner {account} />
+{/if}
 <div class={className}
      style="background-image: url({headerImage});">
   <div class="account-profile-grid-wrapper">
@@ -17,6 +20,10 @@
     background-size: cover;
     background-position: center;
     padding-top: 175px;
+  }
+
+  .account-profile.moved {
+    filter: grayscale(0.8);
   }
 
   .account-profile.header-image-is-missing {
@@ -74,6 +81,7 @@
   import AccountProfileNote from './AccountProfileNote.html'
   import AccountProfileMeta from './AccountProfileMeta.html'
   import AccountProfileDetails from './AccountProfileDetails.html'
+  import AccountProfileMovedBanner from './AccountProfileMovedBanner.html'
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
 
@@ -83,8 +91,10 @@
       headerImageIsMissing: ({ account }) => account.header.endsWith('missing.png'),
       headerImage: ({ $autoplayGifs, account }) => $autoplayGifs ? account.header : account.header_static,
       accountName: ({ account }) => (account && (account.display_name || account.username)) || '',
-      className: ({ headerImageIsMissing, $underlineLinks }) => (classname(
+      moved: ({ account }) => account.moved,
+      className: ({ headerImageIsMissing, $underlineLinks, moved }) => (classname(
         'account-profile',
+        moved && 'moved',
         headerImageIsMissing && 'header-image-is-missing',
         $underlineLinks && 'underline-links'
       ))
@@ -94,7 +104,8 @@
       AccountProfileFollow,
       AccountProfileNote,
       AccountProfileMeta,
-      AccountProfileDetails
+      AccountProfileDetails,
+      AccountProfileMovedBanner
     }
   }
 </script>

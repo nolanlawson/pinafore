@@ -111,10 +111,9 @@
       emojis: ({ account }) => (account.emojis || []),
       displayName: ({ account }) => account.display_name || account.username,
       accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
-        if ($omitEmojiInDisplayNames) {
-          return removeEmoji(displayName, emojis) || displayName
-        }
-        return displayName
+        return $omitEmojiInDisplayNames
+          ? removeEmoji(displayName, emojis) || displayName
+          : displayName
       },
       bot: ({ account }) => !!account.bot,
       label: ({ bot }) => bot ? 'bot' : ''
