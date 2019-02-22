@@ -18,7 +18,7 @@
     {/if}
   </div>
 </VirtualListContainer>
-<ScrollListShortcuts bind:items=$visibleItems
+<ScrollListShortcuts items={$visibleItems}
                      itemToKey={(visibleItem) => visibleItem.key} />
 <style>
   .virtual-list {
@@ -122,7 +122,9 @@
           return
         }
         mark('calculateListOffset')
-        let listOffset = node.offsetParent.offsetTop
+        let { offsetParent } = node
+        // TODO: offsetParent is null sometimes in testcafe tests
+        let listOffset = offsetParent ? offsetParent.offsetTop : 0
         this.store.setForRealm({ listOffset })
         stop('calculateListOffset')
       }

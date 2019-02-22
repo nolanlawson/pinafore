@@ -15,8 +15,10 @@
   export default {
     data: () => ({
       scope: 'global',
-      itemToKey: (item) => item,
-      keyToElement: (key) => document.getElementById('list-item-' + key),
+      itemToKey: (item) => item.key,
+      keyToElement: (key) => {
+        return document.querySelector(`[shortcut-key=${JSON.stringify(key)}]`)
+      },
       activeItemChangeTime: 0
     }),
     computed: {
@@ -94,7 +96,11 @@
         }
       },
       checkActiveItem (timeStamp) {
-        let { activeItem } = this.store.get()
+        let activeElement = document.activeElement
+        if (!activeElement) {
+          return null
+        }
+        let activeItem = activeElement.getAttribute('shortcut-key')
         if (!activeItem) {
           return null
         }
@@ -108,7 +114,14 @@
       },
       setActiveItem (key, timeStamp) {
         this.set({ activeItemChangeTime: timeStamp })
-        this.store.setForRealm({ activeItem: key })
+        let { keyToElement } = this.get()
+        try {
+          keyToElement(key).focus({
+            preventScroll: true
+          })
+        } catch (err) {
+          console.error(err)
+        }
       }
     }
   }

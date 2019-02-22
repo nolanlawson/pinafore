@@ -1,5 +1,4 @@
 <div class="virtual-list-item list-item {shown ? 'shown' : ''}"
-     id={`list-item-${key}`}
      aria-hidden={!shown}
      ref:node
      style="transform: translateY({offset}px);" >
@@ -8,7 +7,6 @@
               virtualIndex={index}
               virtualLength={$length}
               virtualKey={key}
-              active={active}
               on:recalculateHeight="doRecalculateHeight()"/>
 </div>
 <style>
@@ -52,8 +50,7 @@
     },
     store: () => virtualListStore,
     computed: {
-      'shown': ({ $itemHeights, key }) => $itemHeights[key] > 0,
-      'active': ({ $activeItem, key }) => $activeItem === key
+      'shown': ({ $itemHeights, key }) => $itemHeights[key] > 0
     },
     methods: {
       doRecalculateHeight () {
