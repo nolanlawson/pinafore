@@ -1,6 +1,6 @@
 {#if status}
   <Status {index} {length} {timelineType} {timelineValue} {focusSelector}
-          {status} {notification} {active} {shortcutScope} on:recalculateHeight
+          {status} {notification} {shortcutScope} on:recalculateHeight
   />
 {:else}
   <article class={className}
@@ -8,7 +8,8 @@
            aria-posinset={index}
            aria-setsize={length}
            aria-label={ariaLabel}
-           status-active={active}
+           focus-key={focusKey}
+           shortcut-key={shortcutScope}
   >
     <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
                   {account} {accountId} {uuid} isStatusInNotification="true" />
@@ -25,8 +26,9 @@
     padding: 10px 20px;
     border-bottom: 1px solid var(--main-border);
   }
-  .notification-article.status-active {
+  .notification-article:focus {
     background-color: var(--status-active-background);
+    outline: none;
   }
   @media (max-width: 767px) {
     .notification-article {
@@ -53,7 +55,6 @@
       Shortcut
     },
     data: () => ({
-      active: false,
       shortcutScope: null
     }),
     store: () => store,
@@ -69,11 +70,11 @@
       ariaLabel: ({ status, account, $omitEmojiInDisplayNames }) => (
         !status && `${getAccountAccessibleName(account, $omitEmojiInDisplayNames)} followed you, @${account.acct}`
       ),
-      className: ({ active, $underlineLinks }) => (classname(
+      className: ({ $underlineLinks }) => (classname(
         'notification-article',
-        active && 'status-active',
         $underlineLinks && 'underline-links'
-      ))
+      )),
+      focusKey: ({ uuid }) => `notification-follower-${uuid}`
     },
     methods: {
       openAuthorProfile () {

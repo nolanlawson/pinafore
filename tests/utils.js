@@ -88,6 +88,10 @@ export const getActiveElementInnerText = exec(() =>
   (document.activeElement && document.activeElement.innerText) || ''
 )
 
+export const getActiveElementRectTop = exec(() => (
+  (document.activeElement && document.activeElement.getBoundingClientRect().top) || -1
+))
+
 export const getActiveElementInsideNthStatus = exec(() => {
   let element = document.activeElement
   while (element) {
@@ -149,6 +153,13 @@ export const focus = (selector) => (exec(() => {
   dependencies: {
     selector
   }
+}))
+
+export const isNthStatusActive = (idx) => (exec(() => {
+  return document.activeElement &&
+    document.activeElement.getAttribute('aria-posinset') === idx.toString()
+}, {
+  dependencies: { idx }
 }))
 
 export const scrollToBottom = exec(() => {

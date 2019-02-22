@@ -3,7 +3,8 @@ import {
   composeModalInput,
   getNthFavorited,
   getNthStatus,
-  getUrl, modalDialog, notificationsNavButton
+  getUrl, modalDialog, notificationsNavButton,
+  isNthStatusActive, goBack
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
@@ -20,7 +21,7 @@ test('Shortcut f toggles favorite status in notification', async t => {
     .expect(getNthStatus(idx).exists).ok({ timeout: 30000 })
     .expect(getNthFavorited(idx)).eql('false')
     .pressKey('j '.repeat(idx + 1))
-    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .expect(isNthStatusActive(idx)()).ok()
     .pressKey('f')
     .expect(getNthFavorited(idx)).eql('true')
     .pressKey('f')
@@ -36,9 +37,12 @@ test('Shortcut p toggles profile in a follow notification', async t => {
     .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .pressKey('j '.repeat(idx + 1))
-    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .expect(isNthStatusActive(idx)()).ok()
     .pressKey('p')
     .expect(getUrl()).contains('/accounts/3')
+  await goBack()
+  await t
+    .expect(isNthStatusActive(idx)()).ok() // focus preserved
 })
 
 test('Shortcut m toggles mention in a follow notification', async t => {
@@ -50,7 +54,7 @@ test('Shortcut m toggles mention in a follow notification', async t => {
     .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .pressKey('j '.repeat(idx + 1))
-    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .expect(isNthStatusActive(idx)()).ok()
     .pressKey('m')
     .expect(composeModalInput.value).eql('@quux ')
     .click(closeDialogButton)
@@ -66,7 +70,7 @@ test('Shortcut p refers to booster in a boost notification', async t => {
     .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .pressKey('j '.repeat(idx + 1))
-    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .expect(isNthStatusActive(idx)()).ok()
     .pressKey('p')
     .expect(getUrl()).contains('/accounts/1')
 })
@@ -80,7 +84,7 @@ test('Shortcut m refers to favoriter in a favorite notification', async t => {
     .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
     .pressKey('j '.repeat(idx + 1))
-    .expect(getNthStatus(idx).hasClass('status-active')).ok()
+    .expect(isNthStatusActive(idx)()).ok()
     .pressKey('m')
     .expect(composeModalInput.value).eql('@admin ')
     .click(closeDialogButton)

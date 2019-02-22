@@ -63,7 +63,7 @@ test('Shortcut backspace goes back from favorites', async t => {
     .expect(getUrl()).contains('/federated')
     .pressKey('g f')
     .expect(getUrl()).contains('/favorites')
-    .pressKey('Backspace')
+    .pressKey('backspace')
     .expect(getUrl()).contains('/federated')
 })
 
@@ -88,7 +88,7 @@ test('Global shortcut has no effects while in modal dialog', async t => {
     .expect(modalDialogContents.exists).ok()
     .pressKey('s') // does nothing
     .expect(getUrl()).contains('/favorites')
-    .pressKey('Backspace')
+    .pressKey('backspace')
     .expect(modalDialogContents.exists).notOk()
     .pressKey('s') // now works
     .expect(getUrl()).contains('/search')

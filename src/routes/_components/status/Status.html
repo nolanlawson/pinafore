@@ -2,6 +2,7 @@
          tabindex="0"
          delegate-key={delegateKey}
          focus-key={delegateKey}
+         shortcut-key={shortcutScope}
          aria-posinset={index}
          aria-setsize={length}
          aria-label={ariaLabel}
@@ -74,8 +75,9 @@
     background-color: var(--status-direct-background);
   }
 
-  .status-article.status-active {
+  .status-article:focus {
     background-color: var(--status-active-background);
+    outline: none;
   }
 
   .status-article.status-in-own-thread {
@@ -171,7 +173,6 @@
       Shortcut
     },
     data: () => ({
-      active: false,
       notification: void 0,
       replyVisibility: void 0,
       contentPreloaded: false,
@@ -272,12 +273,11 @@
         status.reblog ||
         timelineType === 'pinned'
       ),
-      className: ({ visibility, timelineType, isStatusInOwnThread, active, $underlineLinks, $disableTapOnStatus }) => (classname(
+      className: ({ visibility, timelineType, isStatusInOwnThread, $underlineLinks, $disableTapOnStatus }) => (classname(
         'status-article',
         visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
-        active && 'status-active',
         $underlineLinks && 'underline-links',
         !$disableTapOnStatus && 'tap-on-status'
       )),
