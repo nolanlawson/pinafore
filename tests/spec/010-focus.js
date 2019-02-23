@@ -68,7 +68,7 @@ test('notification timeline preserves focus', async t => {
   await t.click($(`${getNthStatusSelector(5)} .status-header a`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
-    .expect(getUrl()).eql('http://localhost:4002/notifications')
+    .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(0).exists).ok()
     .expect(getActiveElementInnerText()).eql('quux')
     .expect(getActiveElementInsideNthStatus()).eql('5')
