@@ -15,7 +15,7 @@
   export default {
     data: () => ({
       scope: 'global',
-      itemToKey: (item) => item.key,
+      itemToKey: (item) => item,
       keyToElement: (key) => {
         return document.querySelector(`[shortcut-key=${JSON.stringify(key)}]`)
       },
