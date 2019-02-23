@@ -5,8 +5,12 @@ export async function cacheFirstUpdateAfter (networkFetcher, dbFetcher, dbUpdate
   let dbResponse
   try {
     dbResponse = await dbFetcher()
-    stateSetter(dbResponse)
+  } catch (err) {
+    console.error('ignored DB error', err)
   } finally {
+    if (dbResponse) {
+      stateSetter(dbResponse)
+    }
     let fetchAndUpdatePromise = networkPromise.then(networkResponse => {
       /* no await */ dbUpdater(networkResponse)
       stateSetter(networkResponse)
@@ -14,20 +18,5 @@ export async function cacheFirstUpdateAfter (networkFetcher, dbFetcher, dbUpdate
     if (!dbResponse) { // no cached result available, await the network
       await fetchAndUpdatePromise
     }
-  }
-}
-
-// Make a change that we optimistically show to the user as successful, but which
-// actually depends on a network operation. In the unlikely event that the network
-// operation fails, revert the changes
-export async function optimisticUpdate (doImmediately, networkUpdater, onSuccess, onFailure) {
-  let networkPromise = networkUpdater()
-  doImmediately()
-  try {
-    let response = await networkPromise
-    onSuccess(response)
-  } catch (e) {
-    console.error(e)
-    onFailure(e)
   }
 }

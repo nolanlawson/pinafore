@@ -5,6 +5,9 @@ export function fetchStatus (statusesStore, accountsStore, id, callback) {
   statusesStore.get(id).onsuccess = e => {
     let status = e.target.result
     callback(status)
+    if (!status) {
+      return
+    }
     fetchAccount(accountsStore, status[ACCOUNT_ID], account => {
       status.account = account
     })
