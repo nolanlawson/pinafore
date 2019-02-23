@@ -1,8 +1,8 @@
-<a class="status-author-name {isStatusInNotification ? 'status-in-notification' : '' } {isStatusInOwnThread ? 'status-in-own-thread' : ''}"
+<a id={elementId}
+   class="status-author-name {isStatusInNotification ? 'status-in-notification' : '' } {isStatusInOwnThread ? 'status-in-own-thread' : ''}"
    rel="prefetch"
    href="/accounts/{originalAccountId}"
    title="{'@' + originalAccount.acct}"
-   focus-key={focusKey}
 >
   <AccountDisplayName account={originalAccount} />
 </a>
@@ -39,7 +39,7 @@
 
   export default {
     computed: {
-      focusKey: ({ uuid }) => `status-author-name-${uuid}`
+      elementId: ({ uuid }) => `status-author-name-${uuid}`
     },
     components: {
       AccountDisplayName

@@ -15,7 +15,7 @@ function onEvent (e) {
   let key
   let element = target
   while (element) {
-    if ((key = element.getAttribute('delegate-key'))) {
+    if ((key = element.getAttribute('id'))) {
       break
     }
     element = element.parentElement

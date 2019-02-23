@@ -3,13 +3,12 @@
           {status} {notification} {enableShortcuts} on:recalculateHeight
   />
 {:else}
-  <article class={className}
+  <article id={elementId}
+           class={className}
            tabindex="0"
            aria-posinset={index}
            aria-setsize={length}
            aria-label={ariaLabel}
-           focus-key={uuid}
-           shortcut-key={uuid}
            on:focus="onFocus()"
            on:blur="onBlur()"
            ref:article
@@ -17,8 +16,8 @@
     <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
                   {account} {accountId} {uuid} isStatusInNotification="true" />
     {#if enableShortcuts}
-      <Shortcut scope={uuid} key="p" on:pressed="openAuthorProfile()" />
-      <Shortcut scope={uuid} key="m" on:pressed="mentionAuthor()" />
+      <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
+      <Shortcut scope={shortcutScope} key="m" on:pressed="mentionAuthor()" />
     {/if}
   </article>
 {/if}
@@ -69,6 +68,8 @@
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => {
         return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId}/${statusId || ''}`
       },
+      elementId: ({ uuid }) => `notification-${uuid}`,
+      shortcutScope: ({ elementId }) => elementId,
       ariaLabel: ({ status, account, $omitEmojiInDisplayNames }) => (
         !status && `${getAccountAccessibleName(account, $omitEmojiInDisplayNames)} followed you, @${account.acct}`
       ),

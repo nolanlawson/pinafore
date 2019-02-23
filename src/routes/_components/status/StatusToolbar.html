@@ -5,8 +5,8 @@
     pressable="true"
     pressed={replyShown}
     href={replyIcon}
-    delegateKey={replyKey}
-    focusKey={replyKey}
+    clickListener={false}
+    elementId={replyKey}
     />
   <IconButton
     label={reblogLabel}
@@ -14,7 +14,8 @@
     pressed={reblogged}
     disabled={reblogDisabled}
     href={reblogIcon}
-    delegateKey={reblogKey}
+    clickListener={false}
+    elementId={reblogKey}
     ref:reblogIcon
   />
   <IconButton
@@ -22,19 +23,21 @@
     pressable="true"
     pressed={favorited}
     href="#fa-star"
-    delegateKey={favoriteKey}
+    clickListener={false}
+    elementId={favoriteKey}
     ref:favoriteIcon
     />
   <IconButton
     label="Show more options"
     href="#fa-ellipsis-h"
-    delegateKey={optionsKey}
+    clickListener={false}
+    elementId={optionsKey}
   />
 </div>
 {#if enableShortcuts}
-  <Shortcut scope={uuid} key="f" on:pressed="toggleFavorite()"/>
-  <Shortcut scope={uuid} key="r" on:pressed="reply()"/>
-  <Shortcut scope={uuid} key="b" on:pressed="reblog()"/>
+  <Shortcut scope={shortcutScope} key="f" on:pressed="toggleFavorite()"/>
+  <Shortcut scope={shortcutScope} key="r" on:pressed="reply()"/>
+  <Shortcut scope={shortcutScope} key="b" on:pressed="reblog()"/>
 {/if}
 <style>
   .status-toolbar {

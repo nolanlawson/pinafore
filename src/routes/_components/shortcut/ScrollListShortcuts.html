@@ -12,8 +12,8 @@
 
   const VISIBILITY_CHECK_DELAY_MS = 600
 
-  const keyToElement = key => document.querySelector(`[shortcut-key=${JSON.stringify(key)}]`)
-  const elementToKey = element => element.getAttribute('shortcut-key')
+  const keyToElement = key => document.getElementById(key)
+  const elementToKey = element => element.getAttribute('id')
   const scope = 'global'
 
   export default {
@@ -90,7 +90,7 @@
         if (!activeElement) {
           return null
         }
-        let activeItem = activeElement.getAttribute('shortcut-key')
+        let activeItem = activeElement.getAttribute('id')
         if (!activeItem) {
           return null
         }

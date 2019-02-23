@@ -1,32 +1,16 @@
-{#if delegateKey}
-  <button type="button"
-          title={label}
-          aria-label={label}
-          aria-pressed={pressable ? !!pressed : void 0}
-          aria-hidden={ariaHidden}
-          class={computedClass}
-          {disabled}
-          delegate-key={delegateKey}
-          focus-key={focusKey || ''} >
-    <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
-      <use xlink:href={href} />
-    </svg>
-  </button>
-{:else}
-  <button type="button"
-          title={label}
-          aria-label={label}
-          aria-pressed={pressable ? !!pressed : void 0}
-          aria-hidden={ariaHidden}
-          class={computedClass}
-          focus-key={focusKey || ''}
-          {disabled}
-          on:click >
-    <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
-      <use xlink:href={href} />
-    </svg>
-  </button>
-{/if}
+<button type="button"
+        title={label}
+        aria-label={label}
+        aria-pressed={pressable ? !!pressed : void 0}
+        aria-hidden={ariaHidden}
+        class={computedClass}
+        {disabled}
+        ref:node
+>
+  <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
+    <use xlink:href={href} />
+  </svg>
+</button>
 <style>
   .icon-button {
     padding: 6px 10px;
@@ -110,18 +94,34 @@
   import { animate } from '../_utils/animate'
 
   export default {
+    oncreate () {
+      let { clickListener, elementId } = this.get()
+      if (clickListener) {
+        this.onClick = this.onClick.bind(this)
+        this.refs.node.addEventListener('click', this.onClick)
+      }
+      if (elementId) {
+        this.refs.node.setAttribute('id', elementId)
+      }
+    },
+    ondestroy () {
+      let { clickListener } = this.get()
+      if (clickListener) {
+        this.refs.node.removeEventListener('click', this.onClick)
+      }
+    },
     data: () => ({
       big: false,
       muted: false,
       disabled: false,
       svgClassName: void 0,
-      focusKey: void 0,
+      elementId: void 0,
       pressable: false,
       pressed: false,
       className: void 0,
-      delegateKey: void 0,
       sameColorWhenPressed: false,
-      ariaHidden: false
+      ariaHidden: false,
+      clickListener: true
     }),
     store: () => store,
     computed: {
@@ -145,6 +145,9 @@
         }
         let svg = this.refs.svg
         animate(svg, animation)
+      },
+      onClick (e) {
+        this.fire('click', e)
       }
     }
   }

@@ -1,8 +1,8 @@
 {#if type === 'video'}
-  <button type="button"
+  <button id={elementId}
+          type="button"
           class="play-video-button {$largeInlineMedia ? '' : 'fixed-size'}"
           aria-label="Play video: {description}"
-          delegate-key={delegateKey}
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
     <PlayVideoIcon />
     <LazyImage
@@ -17,11 +17,11 @@
     />
   </button>
 {:else}
-  <button type="button"
+  <button id={elementId}
+          type="button"
           class="show-image-button {$largeInlineMedia ? '' : 'fixed-size'}"
           aria-label="Show image: {description}"
           title={description}
-          delegate-key={delegateKey}
           on:mouseover="set({mouseover: event})"
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
   {#if type === 'gifv' && $autoplayGifs}
@@ -90,8 +90,8 @@
 
   export default {
     oncreate () {
-      let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.onClick())
+      let { elementId } = this.get()
+      registerClickDelegate(this, elementId, () => this.onClick())
     },
     computed: {
       focus: ({ meta }) => meta && meta.focus,
@@ -119,7 +119,7 @@
       originalWidth: ({ original }) => original && original.width,
       originalHeight: ({ original }) => original && original.height,
       noNativeWidthHeight: ({ smallWidth, smallHeight }) => typeof smallWidth !== 'number' || typeof smallHeight !== 'number',
-      delegateKey: ({ media, uuid }) => `media-${uuid}-${media.id}`,
+      elementId: ({ media, uuid }) => `media-${uuid}-${media.id}`,
       description: ({ media }) => media.description || '',
       previewUrl: ({ media }) => media.preview_url,
       url: ({ media }) => media.url,
