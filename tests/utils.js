@@ -76,8 +76,8 @@ export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeo
 
 export const getUrl = exec(() => window.location.href)
 
-export const getActiveElementClass = exec(() =>
-  (document.activeElement && document.activeElement.getAttribute('class')) || ''
+export const getActiveElementClassList = exec(() =>
+  (document.activeElement && (document.activeElement.getAttribute('class') || '').split(/\s+/)) || []
 )
 
 export const getActiveElementTagName = exec(() =>
