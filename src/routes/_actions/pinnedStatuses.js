@@ -10,7 +10,13 @@ export async function updatePinnedStatusesForAccount (accountId) {
 
   await cacheFirstUpdateAfter(
     () => getPinnedStatuses(currentInstance, accessToken, accountId),
-    () => database.getPinnedStatuses(currentInstance, accountId),
+    async () => {
+      let pinnedStatuses = await database.getPinnedStatuses(currentInstance, accountId)
+      if (!pinnedStatuses || !pinnedStatuses.every(Boolean)) {
+        throw new Error('missing pinned statuses in idb')
+      }
+      return pinnedStatuses
+    },
     statuses => database.insertPinnedStatuses(currentInstance, accountId, statuses),
     statuses => {
       let { pinnedStatuses } = store.get()
