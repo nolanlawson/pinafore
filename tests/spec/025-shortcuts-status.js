@@ -9,7 +9,7 @@ import {
   getNthStatusSpoiler,
   getUrl, modalDialog,
   scrollToStatus,
-  isNthStatusActive, getActiveElementRectTop, scrollToTop
+  isNthStatusActive, getActiveElementRectTop, scrollToTop, isActiveStatusPinned
 } from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
@@ -182,4 +182,35 @@ test('Shortcut j/k change the active status on a thread', async t => {
     .expect(isNthStatusActive(1)()).notOk()
     .expect(isNthStatusActive(2)()).notOk()
     .expect(isNthStatusActive(3)()).notOk()
+})
+
+test('Shortcut j/k change the active status on pinned statuses', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click($('a').withText('quux'))
+    .expect(getUrl()).contains('/accounts')
+  await t
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
+    .expect(isNthStatusActive(0)()).notOk()
+    .pressKey('j')
+    .expect(isNthStatusActive(0)()).ok()
+    .expect(isActiveStatusPinned()).eql(true)
+    .pressKey('j')
+    .expect(isNthStatusActive(1)()).ok()
+    .expect(isActiveStatusPinned()).eql(true)
+    .pressKey('j')
+    .expect(isNthStatusActive(0)()).ok()
+    .expect(isActiveStatusPinned()).eql(false)
+    .pressKey('j')
+    .expect(isNthStatusActive(1)()).ok()
+    .expect(isActiveStatusPinned()).eql(false)
+    .pressKey('k')
+    .expect(isNthStatusActive(0)()).ok()
+    .expect(isActiveStatusPinned()).eql(false)
+    .pressKey('k')
+    .expect(isNthStatusActive(1)()).ok()
+    .expect(isActiveStatusPinned()).eql(true)
+    .pressKey('k')
+    .expect(isNthStatusActive(0)()).ok()
+    .expect(isActiveStatusPinned()).eql(true)
 })

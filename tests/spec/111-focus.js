@@ -1,5 +1,5 @@
 import {
-  composeInput, getActiveElementClass,
+  composeInput, getActiveElementClassList,
   getNthComposeReplyButton,
   getNthComposeReplyInput, getNthReplyButton,
   getNthStatusSelector
@@ -19,5 +19,5 @@ test('replying to a toot returns focus to reply button', async t => {
     .click(getNthReplyButton(0))
     .typeText(getNthComposeReplyInput(0), 'How strange was it?', { paste: true })
     .click(getNthComposeReplyButton(0))
-    .expect(getActiveElementClass()).contains('status-toolbar-reply-button', { timeout: 20000 })
+    .expect(getActiveElementClassList()).contains('status-toolbar-reply-button', { timeout: 20000 })
 })

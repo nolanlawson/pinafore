@@ -6,8 +6,8 @@
     {spoilerShown ? 'Show less' : 'Show more'}
   </button>
 </div>
-{#if shortcutScope}
-<Shortcut scope="{shortcutScope}" key="x" on:pressed="toggleSpoilers()"/>
+{#if enableShortcuts}
+<Shortcut scope={uuid} key="x" on:pressed="toggleSpoilers()"/>
 {/if}
 <style>
   .status-spoiler {

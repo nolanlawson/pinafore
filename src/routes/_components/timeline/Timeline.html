@@ -35,11 +35,13 @@
     <div>Error: component failed to load! Try reloading. {error}</div>
   {/await}
 </div>
+<ScrollListShortcuts />
 <script>
   import { store } from '../../_store/store'
   import Status from '../status/Status.html'
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
+  import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
   import {
     importVirtualList,
     importList,
@@ -293,6 +295,9 @@
         console.log('timeline preinitialized')
         this.store.set({ timelinePreinitialized: true })
       }
+    },
+    components: {
+      ScrollListShortcuts
     }
   }
 </script>

@@ -21,15 +21,15 @@ export function isVisible (element) {
   return rect.top < offsetHeight && rect.bottom >= topOverlay
 }
 
-export function firstVisibleElementIndex (items, itemElementFunction) {
+export function firstVisibleElementIndex (elements) {
   let offsetHeight = getOffsetHeight()
   let topOverlay = getTopOverlay()
   let first = -1
   let firstComplete = -1
-  let len = items.length
+  let len = elements.length
   let i = -1
   while (++i < len) {
-    let element = itemElementFunction(items[i])
+    let element = elements[i]
     if (!element) {
       continue
     }

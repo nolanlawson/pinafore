@@ -76,8 +76,8 @@ export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeo
 
 export const getUrl = exec(() => window.location.href)
 
-export const getActiveElementClass = exec(() =>
-  (document.activeElement && document.activeElement.getAttribute('class')) || ''
+export const getActiveElementClassList = exec(() =>
+  (document.activeElement && (document.activeElement.getAttribute('class') || '').split(/\s+/)) || []
 )
 
 export const getActiveElementTagName = exec(() =>
@@ -161,6 +161,11 @@ export const isNthStatusActive = (idx) => (exec(() => {
 }, {
   dependencies: { idx }
 }))
+
+export const isActiveStatusPinned = exec(() => {
+  return document.activeElement &&
+    document.activeElement.getAttribute('delegate-key').includes('pinned')
+})
 
 export const scrollToBottom = exec(() => {
   document.scrollingElement.scrollTop = document.scrollingElement.scrollHeight

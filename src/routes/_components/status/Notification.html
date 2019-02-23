@@ -1,6 +1,6 @@
 {#if status}
   <Status {index} {length} {timelineType} {timelineValue} {focusSelector}
-          {status} {notification} {shortcutScope} on:recalculateHeight
+          {status} {notification} {enableShortcuts} on:recalculateHeight
   />
 {:else}
   <article class={className}
@@ -8,17 +8,17 @@
            aria-posinset={index}
            aria-setsize={length}
            aria-label={ariaLabel}
-           focus-key={focusKey}
-           shortcut-key={shortcutScope}
+           focus-key={uuid}
+           shortcut-key={uuid}
            on:focus="onFocus()"
            on:blur="onBlur()"
            ref:article
   >
     <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
                   {account} {accountId} {uuid} isStatusInNotification="true" />
-    {#if shortcutScope}
-      <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
-      <Shortcut scope={shortcutScope} key="m" on:pressed="mentionAuthor()" />
+    {#if enableShortcuts}
+      <Shortcut scope={uuid} key="p" on:pressed="openAuthorProfile()" />
+      <Shortcut scope={uuid} key="m" on:pressed="mentionAuthor()" />
     {/if}
   </article>
 {/if}
@@ -57,7 +57,7 @@
       Shortcut
     },
     data: () => ({
-      shortcutScope: null
+      enableShortcuts: null
     }),
     store: () => store,
     computed: {
@@ -74,9 +74,9 @@
       ),
       className: ({ $underlineLinks }) => (classname(
         'notification-article',
+        'shortcut-list-item',
         $underlineLinks && 'underline-links'
-      )),
-      focusKey: ({ uuid }) => `notification-follower-${uuid}`
+      ))
     },
     methods: {
       openAuthorProfile () {

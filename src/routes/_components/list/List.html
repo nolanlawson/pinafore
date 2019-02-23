@@ -10,7 +10,6 @@
     />
   {/each}
 </div>
-<ScrollListShortcuts bind:items=safeItems/>
 <style>
   .the-list {
     position: relative;
@@ -18,7 +17,6 @@
 </style>
 <script>
   import ListLazyItem from './ListLazyItem.html'
-  import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
   import { listStore } from './listStore'
   import { getScrollContainer } from '../../_utils/scrollContainer'
   import { getMainTopMargin } from '../../_utils/getMainTopMargin'
@@ -64,8 +62,7 @@
       length: ({ safeItems }) => safeItems.length
     },
     components: {
-      ListLazyItem,
-      ScrollListShortcuts
+      ListLazyItem
     },
     store: () => listStore
   }

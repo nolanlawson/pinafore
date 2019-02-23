@@ -31,8 +31,8 @@
   {/if}
   </div>
 </div>
-{#if shortcutScope}
-<Shortcut scope="{shortcutScope}" key="y" on:pressed="toggleSensitiveMedia()"/>
+{#if enableShortcuts}
+  <Shortcut scope={uuid} key="y" on:pressed="toggleSensitiveMedia()"/>
 {/if}
 {:else}
   <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
