@@ -49,3 +49,25 @@ export function selectionChange (node, callback) {
     }
   }
 }
+
+// in some cases we apply focus styles to parent rather
+// than the node itself because it shows up better
+export function applyFocusStylesToParent (node) {
+  function onFocus () {
+    node.parentElement.classList.toggle('focus', true)
+  }
+
+  function onBlur () {
+    node.parentElement.classList.toggle('focus', false)
+  }
+
+  node.addEventListener('focus', onFocus)
+  node.addEventListener('blur', onBlur)
+
+  return {
+    destroy () {
+      node.removeEventListener('focus', onFocus)
+      node.removeEventListener('blur', onBlur)
+    }
+  }
+}
