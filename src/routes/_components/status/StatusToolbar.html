@@ -144,7 +144,7 @@
         }
         try {
           // return status to the reply button after posting a reply
-          this.refs.node.querySelector('.status-toolbar-reply-button').focus()
+          this.refs.node.querySelector('.status-toolbar-reply-button').focus({ preventScroll: true })
         } catch (e) { /* ignore */ }
       }
     },

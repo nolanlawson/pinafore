@@ -283,7 +283,7 @@
           requestAnimationFrame(() => {
             let element = document.querySelector(lastFocusedElementSelector)
             if (element) {
-              element.focus()
+              element.focus({ preventScroll: true })
             }
           })
         })

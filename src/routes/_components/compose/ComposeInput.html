@@ -88,7 +88,7 @@
             firstTime = false
             let { autoFocus } = this.get()
             if (autoFocus) {
-              requestAnimationFrame(() => textarea.focus())
+              requestAnimationFrame(() => textarea.focus({ preventScroll: true }))
             }
           }
         })
