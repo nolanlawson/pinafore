@@ -75,9 +75,12 @@ test('notification timeline preserves focus', async t => {
 })
 
 test('thread preserves focus', async t => {
+  const timeout = 30000
+
   await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/3')
+    .expect(getNthStatus(0).exists).ok({ timeout })
     .hover(getNthStatus(0))
   await scrollToStatus(t, 2)
   await t.click(getNthStatus(2))
@@ -91,12 +94,12 @@ test('thread preserves focus', async t => {
     .expect(getActiveElementInsideNthStatus()).eql('24')
     .hover(getNthStatus(23))
     .click(getNthStatus(23))
-    .expect($(`${getNthStatusSelector(23)} .status-absolute-date`).exists).ok()
+    .expect($(`${getNthStatusSelector(23)} .status-absolute-date`).exists).ok({ timeout })
   await goBack()
-  await t.expect($(`${getNthStatusSelector(24)} .status-absolute-date`).exists).ok()
-    .expect(getActiveElementClassList()).contains('status-article')
-    .expect(getActiveElementClassList()).contains('status-in-timeline')
-    .expect(getActiveElementInsideNthStatus()).eql('23')
+  await t.expect($(`${getNthStatusSelector(24)} .status-absolute-date`).exists).ok({ timeout })
+    .expect(getActiveElementClassList()).contains('status-article', { timeout })
+    .expect(getActiveElementClassList()).contains('status-in-timeline', { timeout })
+    .expect(getActiveElementInsideNthStatus()).eql('23', { timeout })
 })
 
 test('reply preserves focus and moves focus to the text input', async t => {
