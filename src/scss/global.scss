@@ -173,7 +173,7 @@ ul, li, p {
   opacity: 0;
 }
 
-*:focus {
+*:focus, .focus {
   outline: 2px solid var(--focus-outline);
 }
 
