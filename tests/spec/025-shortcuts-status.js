@@ -9,11 +9,12 @@ import {
   getNthStatusSpoiler,
   getUrl, modalDialog,
   scrollToStatus,
-  isNthStatusActive, getActiveElementRectTop
+  isNthStatusActive, getActiveElementRectTop, scrollToTop
 } from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
 import { indexWhere } from '../../src/routes/_utils/arrays'
+import { Selector as $ } from 'testcafe'
 
 fixture`025-shortcuts-status.js`
   .page`http://localhost:4002`
@@ -149,4 +150,36 @@ test('Shortcut m toggles mention', async t => {
     .expect(composeModalInput.value).eql('@quux ')
     .click(closeDialogButton)
     .expect(modalDialog.exists).notOk()
+})
+
+test('Shortcut j/k change the active status on a thread', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click($('a').withText('quux'))
+  await scrollToStatus(t, 2)
+  await t
+    .click(getNthStatus(2))
+    .expect(getUrl()).contains('/statuses')
+  await scrollToStatus(t, 0)
+  await scrollToTop()
+  await t
+    .expect(getNthStatus(0).exists).ok({ timeout: 30000 })
+    .expect(isNthStatusActive(0)()).notOk()
+    .pressKey('j')
+    .expect(isNthStatusActive(0)()).ok()
+    .pressKey('j')
+    .expect(isNthStatusActive(1)()).ok()
+    .pressKey('j')
+    .expect(isNthStatusActive(2)()).ok()
+    .pressKey('j')
+    .expect(isNthStatusActive(3)()).ok()
+    .pressKey('k')
+    .expect(isNthStatusActive(2)()).ok()
+    .pressKey('k')
+    .expect(isNthStatusActive(1)()).ok()
+    .pressKey('k')
+    .expect(isNthStatusActive(0)()).ok()
+    .expect(isNthStatusActive(1)()).notOk()
+    .expect(isNthStatusActive(2)()).notOk()
+    .expect(isNthStatusActive(3)()).notOk()
 })

@@ -18,8 +18,7 @@
     {/if}
   </div>
 </VirtualListContainer>
-<ScrollListShortcuts items={$visibleItems}
-                     itemToKey={(visibleItem) => visibleItem.key} />
+<ScrollListShortcuts items={visibleItemKeys} />
 <style>
   .virtual-list {
     position: relative;
@@ -111,7 +110,8 @@
       },
       scrollTop: ({ $scrollTop }) => $scrollTop,
       // TODO: bug in svelte store, shouldn't need to do this
-      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight
+      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight,
+      visibleItemKeys: ({ $visibleItems }) => ($visibleItems || []).map(_ => _.key)
     },
     methods: {
       observe,
