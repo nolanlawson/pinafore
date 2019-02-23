@@ -6,7 +6,11 @@
          aria-posinset={index}
          aria-setsize={length}
          aria-label={ariaLabel}
-         on:recalculateHeight>
+         on:recalculateHeight
+         on:focus="onFocus()"
+         on:blur="onBlur()"
+         ref:article
+>
   {#if showHeader}
     <StatusHeader {...params} />
   {/if}
@@ -76,8 +80,7 @@
   }
 
   .status-article:focus {
-    background-color: var(--status-active-background);
-    outline: none;
+    outline: none; /* focus is on the parent instead */
   }
 
   .status-article.status-in-own-thread {
@@ -213,6 +216,13 @@
       async mentionAuthor () {
         let { accountForShortcut } = this.get()
         await composeNewStatusMentioning(accountForShortcut)
+      },
+      // apply focus styles to parent rather than article because it shows up better
+      onFocus () {
+        this.refs.article.parentElement.classList.toggle('focus', true)
+      },
+      onBlur () {
+        this.refs.article.parentElement.classList.toggle('focus', false)
       }
     },
     computed: {

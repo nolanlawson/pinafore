@@ -10,6 +10,9 @@
            aria-label={ariaLabel}
            focus-key={focusKey}
            shortcut-key={shortcutScope}
+           on:focus="onFocus()"
+           on:blur="onBlur()"
+           ref:article
   >
     <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
                   {account} {accountId} {uuid} isStatusInNotification="true" />
@@ -27,8 +30,7 @@
     border-bottom: 1px solid var(--main-border);
   }
   .notification-article:focus {
-    background-color: var(--status-active-background);
-    outline: none;
+    outline: none; /* focus is on the parent instead */
   }
   @media (max-width: 767px) {
     .notification-article {
@@ -84,6 +86,13 @@
       async mentionAuthor () {
         let { account } = this.get()
         await composeNewStatusMentioning(account)
+      },
+      // apply focus styles to parent rather than article because it shows up better
+      onFocus () {
+        this.refs.article.parentElement.classList.toggle('focus', true)
+      },
+      onBlur () {
+        this.refs.article.parentElement.classList.toggle('focus', false)
       }
     }
   }
