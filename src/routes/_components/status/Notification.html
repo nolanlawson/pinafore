@@ -9,9 +9,7 @@
            aria-posinset={index}
            aria-setsize={length}
            aria-label={ariaLabel}
-           on:focus="onFocus()"
-           on:blur="onBlur()"
-           ref:article
+           on:applyFocusStylesToParent="noop()"
   >
     <StatusHeader {notification} {notificationId} {status} {statusId} {timelineType}
                   {account} {accountId} {uuid} isStatusInNotification="true" />
@@ -48,6 +46,8 @@
   import { goto } from '../../../../__sapper__/client'
   import { composeNewStatusMentioning } from '../../_actions/mention'
   import { classname } from '../../_utils/classname'
+  import { applyFocusStylesToParent } from '../../_utils/events'
+  import noop from 'lodash-es/noop'
 
   export default {
     components: {
@@ -80,6 +80,7 @@
       ))
     },
     methods: {
+      noop,
       openAuthorProfile () {
         let { accountId } = this.get()
         goto(`/accounts/${accountId}`)
@@ -87,14 +88,10 @@
       async mentionAuthor () {
         let { account } = this.get()
         await composeNewStatusMentioning(account)
-      },
-      // apply focus styles to parent rather than article because it shows up better
-      onFocus () {
-        this.refs.article.parentElement.classList.toggle('focus', true)
-      },
-      onBlur () {
-        this.refs.article.parentElement.classList.toggle('focus', false)
       }
+    },
+    events: {
+      applyFocusStylesToParent
     }
   }
 </script>

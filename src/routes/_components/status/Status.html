@@ -5,9 +5,7 @@
          aria-setsize={length}
          aria-label={ariaLabel}
          on:recalculateHeight
-         on:focus="onFocus()"
-         on:blur="onBlur()"
-         ref:article
+         on:applyFocusStylesToParent="noop()"
 >
   {#if showHeader}
     <StatusHeader {...params} />
@@ -136,6 +134,8 @@
   import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
   import { absoluteDateFormatter } from '../../_utils/formatters'
   import { composeNewStatusMentioning } from '../../_actions/mention'
+  import { applyFocusStylesToParent } from '../../_utils/events'
+  import noop from 'lodash-es/noop'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -181,6 +181,7 @@
     }),
     store: () => store,
     methods: {
+      noop,
       onClickOrKeydown (e) {
         let { type, keyCode, target } = e
 
@@ -214,13 +215,6 @@
       async mentionAuthor () {
         let { accountForShortcut } = this.get()
         await composeNewStatusMentioning(accountForShortcut)
-      },
-      // apply focus styles to parent rather than article because it shows up better
-      onFocus () {
-        this.refs.article.parentElement.classList.toggle('focus', true)
-      },
-      onBlur () {
-        this.refs.article.parentElement.classList.toggle('focus', false)
       }
     },
     computed: {
@@ -324,6 +318,9 @@
         absoluteFormattedDate,
         shortcutScope
       })
+    },
+    events: {
+      applyFocusStylesToParent
     }
   }
 </script>
