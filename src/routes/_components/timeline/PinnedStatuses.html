@@ -2,15 +2,24 @@
   <h1 class="sr-only">Pinned statuses</h1>
   <div role="feed" aria-label="Pinned statuses" class="pinned-statuses">
     {#each pinnedStatuses as status, index (status.id)}
-      <Status {status}
-              timelineType="pinned"
-              timelineValue={accountId}
-              {index}
-              length={pinnedStatuses.length}
-      />
+      <div class="pinned-status-wrapper">
+        <!-- empty div used because we assume the parent of the <article> gets the focus outline -->
+        <Status {status}
+                timelineType="pinned"
+                timelineValue={accountId}
+                {index}
+                length={pinnedStatuses.length}
+                enableShortcuts={true}
+        />
+      </div>
     {/each}
   </div>
 {/if}
+<style>
+  .pinned-status-wrapper:first-child {
+    margin: 2px 0; /* gives room for the focus outline */
+  }
+</style>
 <script>
   import { store } from '../../_store/store'
   import Status from '../status/Status.html'

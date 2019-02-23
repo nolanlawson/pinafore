@@ -18,7 +18,6 @@
     {/if}
   </div>
 </VirtualListContainer>
-<ScrollListShortcuts items={visibleItemKeys} />
 <style>
   .virtual-list {
     position: relative;
@@ -29,7 +28,6 @@
   import VirtualListLazyItem from './VirtualListLazyItem'
   import VirtualListFooter from './VirtualListFooter.html'
   import VirtualListHeader from './VirtualListHeader.html'
-  import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
   import { virtualListStore } from './virtualListStore'
   import throttle from 'lodash-es/throttle'
   import { mark, stop } from '../../_utils/marks'
@@ -101,8 +99,7 @@
       VirtualListContainer,
       VirtualListLazyItem,
       VirtualListFooter,
-      VirtualListHeader,
-      ScrollListShortcuts
+      VirtualListHeader
     },
     computed: {
       distanceFromBottom: ({ $scrollHeight, $scrollTop, $offsetHeight }) => {

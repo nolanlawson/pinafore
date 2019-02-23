@@ -162,6 +162,11 @@ export const isNthStatusActive = (idx) => (exec(() => {
   dependencies: { idx }
 }))
 
+export const isActiveStatusPinned = exec(() => {
+  return document.activeElement &&
+    document.activeElement.getAttribute('delegate-key').includes('pinned')
+})
+
 export const scrollToBottom = exec(() => {
   document.scrollingElement.scrollTop = document.scrollingElement.scrollHeight
 })

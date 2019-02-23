@@ -1,8 +1,8 @@
 <article class={className}
          tabindex="0"
-         delegate-key={delegateKey}
-         focus-key={delegateKey}
-         shortcut-key={shortcutScope}
+         delegate-key={uuid}
+         focus-key={uuid}
+         shortcut-key={uuid}
          aria-posinset={index}
          aria-setsize={length}
          aria-label={ariaLabel}
@@ -40,10 +40,10 @@
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
 </article>
-{#if shortcutScope}
-  <Shortcut scope={shortcutScope} key="o" on:pressed="open()" />
-  <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
-  <Shortcut scope={shortcutScope} key="m" on:pressed="mentionAuthor()" />
+{#if enableShortcuts}
+  <Shortcut scope={uuid} key="o" on:pressed="open()" />
+  <Shortcut scope={uuid} key="p" on:pressed="openAuthorProfile()" />
+  <Shortcut scope={uuid} key="m" on:pressed="mentionAuthor()" />
 {/if}
 
 <style>
@@ -146,11 +146,11 @@
 
   export default {
     oncreate () {
-      let { delegateKey, isStatusInOwnThread, showContent } = this.get()
+      let { uuid, isStatusInOwnThread, showContent } = this.get()
       let { disableTapOnStatus } = this.store.get()
       if (!isStatusInOwnThread && !disableTapOnStatus) {
         // the whole <article> is clickable in this case
-        registerClickDelegate(this, delegateKey, (e) => this.onClickOrKeydown(e))
+        registerClickDelegate(this, uuid, (e) => this.onClickOrKeydown(e))
       }
       if (!showContent) {
         scheduleIdleTask(() => {
@@ -179,7 +179,7 @@
       notification: void 0,
       replyVisibility: void 0,
       contentPreloaded: false,
-      shortcutScope: null
+      enableShortcuts: null
     }),
     store: () => store,
     methods: {
@@ -248,7 +248,6 @@
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       ),
-      delegateKey: ({ uuid }) => `status-${uuid}`,
       isStatusInOwnThread: ({ timelineType, timelineValue, originalStatusId }) => (
         (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
       ),
@@ -285,6 +284,7 @@
       ),
       className: ({ visibility, timelineType, isStatusInOwnThread, $underlineLinks, $disableTapOnStatus }) => (classname(
         'status-article',
+        'shortcut-list-item',
         visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
@@ -297,7 +297,7 @@
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
-        createdAtDate, timeagoFormattedDate, shortcutScope, absoluteFormattedDate }) => ({
+        createdAtDate, timeagoFormattedDate, enableShortcuts, absoluteFormattedDate }) => ({
         notification,
         notificationId,
         status,
@@ -320,7 +320,7 @@
         inReplyToId,
         createdAtDate,
         timeagoFormattedDate,
-        shortcutScope,
+        enableShortcuts,
         absoluteFormattedDate
       })
     }
