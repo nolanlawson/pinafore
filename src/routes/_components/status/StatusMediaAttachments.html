@@ -2,10 +2,10 @@
 <div class={computedClass} style={customSize}>
   <div class="status-sensitive-inner-div">
   {#if sensitiveShown}
-  <button type="button"
+  <button id={elementId}
+          type="button"
           class="status-sensitive-media-button"
-          aria-label="Hide sensitive media"
-          delegate-key={delegateKey} >
+          aria-label="Hide sensitive media" >
     <div class="svg-wrapper">
       <svg class="status-sensitive-media-svg">
         <use xlink:href="#fa-eye-slash" />
@@ -14,10 +14,10 @@
   </button>
   <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
   {:else}
-    <button type="button"
+    <button id={elementId}
+            type="button"
             class="status-sensitive-media-button"
-            aria-label="Show sensitive media"
-            delegate-key={delegateKey} >
+            aria-label="Show sensitive media" >
 
       <div class="status-sensitive-media-warning">
         Sensitive content. Click to show.
@@ -32,7 +32,7 @@
   </div>
 </div>
 {#if enableShortcuts}
-  <Shortcut scope={uuid} key="y" on:pressed="toggleSensitiveMedia()"/>
+  <Shortcut scope={shortcutScope} key="y" on:pressed="toggleSensitiveMedia()"/>
 {/if}
 {:else}
   <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
@@ -158,8 +158,8 @@
 
   export default {
     oncreate () {
-      let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.toggleSensitiveMedia())
+      let { elementId } = this.get()
+      registerClickDelegate(this, elementId, () => this.toggleSensitiveMedia())
     },
     components: {
       MediaAttachments,
@@ -177,7 +177,7 @@
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
         !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
       ),
-      delegateKey: ({ uuid }) => `sensitive-${uuid}`,
+      elementId: ({ uuid }) => `sensitive-${uuid}`,
       customSize: ({ $largeInlineMedia, mediaAttachments }) => {
         if ($largeInlineMedia || !mediaAttachments || mediaAttachments.length < 5) {
           return ''

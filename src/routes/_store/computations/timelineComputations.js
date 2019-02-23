@@ -12,7 +12,7 @@ function computeForTimeline (store, key, defaultValue) {
 export function timelineComputations (store) {
   computeForTimeline(store, 'timelineItemIds', null)
   computeForTimeline(store, 'runningUpdate', false)
-  computeForTimeline(store, 'lastFocusedElementSelector', null)
+  computeForTimeline(store, 'lastFocusedElementId', null)
   computeForTimeline(store, 'ignoreBlurEvents', false)
   computeForTimeline(store, 'itemIdsToAdd', null)
   computeForTimeline(store, 'showHeader', false)

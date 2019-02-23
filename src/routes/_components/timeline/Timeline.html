@@ -241,17 +241,14 @@
         try {
           let { currentInstance } = this.store.get()
           let { timeline } = this.get()
-          let lastFocusedElementSelector
+          let lastFocusedElementId
           let activeElement = e.target
           if (activeElement) {
-            let focusKey = activeElement.getAttribute('focus-key')
-            if (focusKey) {
-              lastFocusedElementSelector = `[focus-key=${JSON.stringify(focusKey)}]`
-            }
+            lastFocusedElementId = activeElement.getAttribute('id')
           }
-          console.log('saving focus to ', lastFocusedElementSelector)
+          console.log('saving focus to ', lastFocusedElementId)
           this.store.setForTimeline(currentInstance, timeline, {
-            lastFocusedElementSelector
+            lastFocusedElementId: lastFocusedElementId
           })
         } catch (err) {
           console.error('unable to save focus', err)
@@ -267,21 +264,21 @@
           let { currentInstance } = this.store.get()
           let { timeline } = this.get()
           this.store.setForTimeline(currentInstance, timeline, {
-            lastFocusedElementSelector: null
+            lastFocusedElementId: null
           })
         } catch (err) {
           console.error('unable to clear focus', err)
         }
       },
       restoreFocus () {
-        let { lastFocusedElementSelector } = this.store.get()
-        if (!lastFocusedElementSelector) {
+        let { lastFocusedElementId } = this.store.get()
+        if (!lastFocusedElementId) {
           return
         }
-        console.log('restoreFocus', lastFocusedElementSelector)
+        console.log('restoreFocus', lastFocusedElementId)
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            let element = document.querySelector(lastFocusedElementSelector)
+            let element = document.getElementById(lastFocusedElementId)
             if (element) {
               element.focus()
             }

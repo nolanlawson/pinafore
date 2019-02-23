@@ -1,8 +1,6 @@
-<article class={className}
+<article id={elementId}
+         class={className}
          tabindex="0"
-         delegate-key={uuid}
-         focus-key={uuid}
-         shortcut-key={uuid}
          aria-posinset={index}
          aria-setsize={length}
          aria-label={ariaLabel}
@@ -41,9 +39,9 @@
   {/if}
 </article>
 {#if enableShortcuts}
-  <Shortcut scope={uuid} key="o" on:pressed="open()" />
-  <Shortcut scope={uuid} key="p" on:pressed="openAuthorProfile()" />
-  <Shortcut scope={uuid} key="m" on:pressed="mentionAuthor()" />
+  <Shortcut scope={shortcutScope} key="o" on:pressed="open()" />
+  <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
+  <Shortcut scope={shortcutScope} key="m" on:pressed="mentionAuthor()" />
 {/if}
 
 <style>
@@ -146,11 +144,11 @@
 
   export default {
     oncreate () {
-      let { uuid, isStatusInOwnThread, showContent } = this.get()
+      let { elementId, isStatusInOwnThread, showContent } = this.get()
       let { disableTapOnStatus } = this.store.get()
       if (!isStatusInOwnThread && !disableTapOnStatus) {
         // the whole <article> is clickable in this case
-        registerClickDelegate(this, uuid, (e) => this.onClickOrKeydown(e))
+        registerClickDelegate(this, elementId, (e) => this.onClickOrKeydown(e))
       }
       if (!showContent) {
         scheduleIdleTask(() => {
@@ -248,6 +246,8 @@
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
         `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
       ),
+      elementId: ({ uuid }) => `status-${uuid}`,
+      shortcutScope: ({ elementId }) => elementId,
       isStatusInOwnThread: ({ timelineType, timelineValue, originalStatusId }) => (
         (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
       ),
@@ -297,7 +297,7 @@
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
-        createdAtDate, timeagoFormattedDate, enableShortcuts, absoluteFormattedDate }) => ({
+        createdAtDate, timeagoFormattedDate, enableShortcuts, absoluteFormattedDate, shortcutScope }) => ({
         notification,
         notificationId,
         status,
@@ -321,7 +321,8 @@
         createdAtDate,
         timeagoFormattedDate,
         enableShortcuts,
-        absoluteFormattedDate
+        absoluteFormattedDate,
+        shortcutScope
       })
     }
   }

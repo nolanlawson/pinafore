@@ -2,12 +2,12 @@
   <p>{@html massagedSpoilerText}</p>
 </div>
 <div class="status-spoiler-button {isStatusInOwnThread ? 'status-in-own-thread' : ''}">
-  <button type="button" delegate-key={delegateKey}>
+  <button id={elementId} type="button" >
     {spoilerShown ? 'Show less' : 'Show more'}
   </button>
 </div>
 {#if enableShortcuts}
-<Shortcut scope={uuid} key="x" on:pressed="toggleSpoilers()"/>
+<Shortcut scope={shortcutScope} key="x" on:pressed="toggleSpoilers()"/>
 {/if}
 <style>
   .status-spoiler {
@@ -56,8 +56,8 @@
 
   export default {
     oncreate () {
-      let { delegateKey } = this.get()
-      registerClickDelegate(this, delegateKey, () => this.toggleSpoilers())
+      let { elementId } = this.get()
+      registerClickDelegate(this, elementId, () => this.toggleSpoilers())
     },
     store: () => store,
     components: {
@@ -69,7 +69,7 @@
         spoilerText = escapeHtml(spoilerText)
         return emojifyText(spoilerText, emojis, $autoplayGifs)
       },
-      delegateKey: ({ uuid }) => `spoiler-${uuid}`
+      elementId: ({ uuid }) => `spoiler-${uuid}`
     },
     methods: {
       toggleSpoilers () {

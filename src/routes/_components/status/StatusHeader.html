@@ -12,11 +12,12 @@
         Pinned toot
       </span>
     {:else}
-      <a href="/accounts/{accountId}"
+      <a id={elementId}
+         href="/accounts/{accountId}"
          rel="prefetch"
          class="status-header-author"
          title="{'@' + account.acct}"
-         focus-key={focusKey} >
+      >
         <AccountDisplayName {account} />
       </a>
     {/if}
@@ -112,7 +113,7 @@
       AccountDisplayName
     },
     computed: {
-      focusKey: ({ uuid }) => `status-header-${uuid}`,
+      elementId: ({ uuid }) => `status-header-${uuid}`,
       icon: ({ notification, status, timelineType }) => {
         if (timelineType === 'pinned') {
           return '#fa-thumb-tack'

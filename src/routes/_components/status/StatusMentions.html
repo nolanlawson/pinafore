@@ -7,10 +7,11 @@
           &nbsp;
           <!-- empty space -->
         {/if}
-        <a href="/accounts/{mention.id}"
+        <a id="status-mention-link-{uuid}-{mention.id}"
+           href="/accounts/{mention.id}"
            rel="prefetch"
            title="@{mention.acct}"
-           focus-key="status-mention-link-{uuid}-{mention.id}">
+        >
           @{mention.username}
         </a>
       {/each}

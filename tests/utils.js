@@ -163,8 +163,12 @@ export const isNthStatusActive = (idx) => (exec(() => {
 }))
 
 export const isActiveStatusPinned = exec(() => {
-  return document.activeElement &&
-    document.activeElement.getAttribute('delegate-key').includes('pinned')
+  let el = document.activeElement
+  return el &&
+    (
+      (el.parentElement.getAttribute('class') || '').includes('pinned') ||
+      (el.parentElement.parentElement.getAttribute('class') || '').includes('pinned')
+    )
 })
 
 export const scrollToBottom = exec(() => {

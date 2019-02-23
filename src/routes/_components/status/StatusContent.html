@@ -94,7 +94,7 @@
             for (let tag of tags) {
               if (anchor.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
                 anchor.setAttribute('href', `/tags/${tag.name}`)
-                anchor.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
+                anchor.setAttribute('id', `status-content-link-${uuid}-${++count}`)
                 anchor.removeAttribute('target')
                 anchor.removeAttribute('rel')
               }
@@ -105,7 +105,7 @@
               if (anchor.getAttribute('href') === mention.url) {
                 anchor.setAttribute('href', `/accounts/${mention.id}`)
                 anchor.setAttribute('title', `@${mention.acct}`)
-                anchor.setAttribute('focus-key', `status-content-link-${uuid}-${++count}`)
+                anchor.setAttribute('id', `status-content-link-${uuid}-${++count}`)
                 anchor.removeAttribute('target')
                 anchor.removeAttribute('rel')
               }

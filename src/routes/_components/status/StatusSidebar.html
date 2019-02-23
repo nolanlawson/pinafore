@@ -1,7 +1,7 @@
-<a class="status-sidebar size-{size}"
+<a id={elementId}
+   class="status-sidebar size-{size}"
    rel="prefetch"
    href="/accounts/{originalAccountId}"
-   focus-key={focusKey}
    aria-hidden="true"
 >
   <Avatar account={originalAccount}
@@ -37,7 +37,7 @@
       Avatar
     },
     computed: {
-      focusKey: ({ uuid }) => `status-author-avatar-${uuid}`,
+      elementId: ({ uuid }) => `status-author-avatar-${uuid}`,
       size: ({ isStatusInOwnThread }) => isStatusInOwnThread ? 'medium' : 'small'
     }
   }
