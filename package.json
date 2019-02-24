@@ -43,11 +43,11 @@
     "build-now-json": "node -r esm ./bin/build-now-json.js"
   },
   "dependencies": {
-    "@gamestdio/websocket": "^0.3.1",
+    "@gamestdio/websocket": "^0.3.2",
     "@webcomponents/custom-elements": "^1.2.1",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
-    "chokidar": "^2.1.1",
+    "chokidar": "^2.1.2",
     "circular-dependency-plugin": "^5.0.2",
     "clean-css": "^4.2.1",
     "compression": "^1.7.3",
@@ -58,7 +58,7 @@
     "emoji-regex": "^7.0.3",
     "encoding": "^0.1.12",
     "escape-html": "^1.0.3",
-    "esm": "^3.2.4",
+    "esm": "^3.2.6",
     "events-light": "^1.0.5",
     "express": "^4.16.4",
     "file-api": "^0.10.4",
@@ -67,7 +67,7 @@
     "glob": "^7.1.3",
     "idb-keyval": "^3.1.0",
     "indexeddb-getall-shim": "^1.3.5",
-    "inferno-compat": "^7.1.7",
+    "inferno-compat": "^7.1.9",
     "intersection-observer": "^0.5.1",
     "localstorage-memory": "^1.0.3",
     "lodash-es": "^4.17.11",
@@ -79,12 +79,12 @@
     "p-any": "^1.1.0",
     "page-lifecycle": "^0.1.1",
     "performance-now": "^2.1.0",
-    "pinch-zoom-element": "^1.1.0",
+    "pinch-zoom-element": "^1.1.1",
     "prop-types": "^15.7.2",
     "quick-lru": "^2.0.0",
-    "remount": "^0.9.3",
+    "remount": "^0.9.5",
     "requestidlecallback": "^0.3.0",
-    "rollup": "^1.1.2",
+    "rollup": "^1.2.3",
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-terser": "^4.0.4",
     "sapper": "nolanlawson/sapper#for-pinafore-10",
@@ -97,16 +97,16 @@
     "terser-webpack-plugin": "^1.2.2",
     "text-encoding": "^0.7.0",
     "tiny-queue": "^0.2.1",
-    "webpack": "^4.29.3",
+    "webpack": "^4.29.5",
     "webpack-bundle-analyzer": "^3.0.4"
   },
   "devDependencies": {
     "assert": "^1.4.1",
     "eslint-plugin-html": "^5.0.3",
-    "mocha": "^6.0.0",
+    "mocha": "^6.0.1",
     "now": "^14.0.0",
     "standard": "^12.0.1",
-    "testcafe": "^1.0.0"
+    "testcafe": "^1.0.1"
   },
   "engines": {
     "node": ">= 8"
