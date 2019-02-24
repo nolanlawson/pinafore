@@ -10,8 +10,8 @@
   />
 {:elseif type === 'gifv'}
   <video
-    class="media-fit"
-    style="background-image:url({static_url});"
+    class="media-fit media-gifv"
+    style="background-image:url({poster});"
     aria-label={description}
     src={url}
     autoplay
@@ -35,6 +35,11 @@
     object-fit: contain;
     width: 100%;
     height: 100%;
+  }
+  .media-gifv {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
   }
 </style>
 <script>
