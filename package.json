@@ -35,7 +35,7 @@
     "deploy-dev": "DEPLOY_TYPE=dev ./bin/deploy.sh",
     "deploy-all-travis": "./bin/deploy-all-travis.sh",
     "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
-    "sapper-export": "cross-env PORT=4002 sapper export",
+    "sapper-export": "cross-env PORT=22939 sapper export",
     "print-export-info": "node ./bin/print-export-info.js",
     "export-steps": "run-s before-build sapper-export print-export-info",
     "export": "cross-env NODE_ENV=production run-s export-steps",
