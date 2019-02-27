@@ -77,9 +77,11 @@ test('Logs in and logs out of localhost:3000', async t => {
 test('Logs in, refreshes, then logs out', async t => {
   await loginAsFoobar(t)
   await t
+    .expect(getNthStatus(1 + 0).exists).ok({ timeout: 30000 })
     .hover(getNthStatus(1 + 0))
   await reload()
   await t
+    .expect(getNthStatus(1 + 0).exists).ok({ timeout: 30000 })
     .hover(getNthStatus(1 + 0))
     .click(settingsButton)
     .click($('a').withText('Instances'))

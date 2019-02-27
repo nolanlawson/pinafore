@@ -26,7 +26,7 @@ test('Can put custom emoji in display name', async t => {
     .expect($('.compose-box-display-name img').getAttribute('alt')).eql(':blobpats:')
     .click(displayNameInComposeBox)
     .expect(getUrl()).contains('/accounts/2')
-    .expect($(`${getNthStatusSelector(0)} .status-author-name img`).getAttribute('alt')).eql(':blobpats:')
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-author-name img`).getAttribute('alt')).eql(':blobpats:')
 })
 
 test('Cannot XSS using display name HTML', async t => {

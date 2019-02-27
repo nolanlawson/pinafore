@@ -50,5 +50,5 @@ test('can use emoji dialog within compose dialog', async t => {
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .navigateTo('/')
-  await t.expect($(`${getNthStatusSelector(0)} img[alt=":blobpats:"]`).exists).ok({ timeout: 20000 })
+  await t.expect($(`${getNthStatusSelector(1 + 0)} img[alt=":blobpats:"]`).exists).ok({ timeout: 20000 })
 })

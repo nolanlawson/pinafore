@@ -6,7 +6,7 @@ fixture`016-external-links.js`
   .page`http://localhost:4002`
 
 function getAnchor (nthStatus, nthAnchor) {
-  return $(`${getNthStatusSelector(nthStatus)} .status-content a`).nth(nthAnchor)
+  return $(`${getNthStatusSelector(1 + nthStatus)} .status-content a`).nth(nthAnchor)
 }
 
 function getAnchorInProfile (n) {

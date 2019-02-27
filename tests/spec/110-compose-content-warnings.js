@@ -15,9 +15,9 @@ test('content warnings are posted', async t => {
     .click(contentWarningButton)
     .typeText(composeContentWarning, 'CW', { paste: true })
     .click(composeButton)
-    .expect($(`${getNthStatusSelector(0)} .status-spoiler`).innerText).contains('CW', { timeout: 30000 })
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-spoiler`).innerText).contains('CW', { timeout: 30000 })
     .click(getNthShowOrHideButton(1 + 0))
-    .expect($(`${getNthStatusSelector(0)} .status-content`).innerText).contains('hello this is a toot')
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-content`).innerText).contains('hello this is a toot')
     .click(getNthShowOrHideButton(1 + 0))
     .expect(getNthStatus(1 + 0).innerText).notContains('hello this is a toot')
 })
@@ -33,7 +33,7 @@ test('content warnings are not posted if removed', async t => {
     .click(composeButton)
     .expect(getNthStatus(1 + 0).innerText).contains('hi this is another toot', { timeout: 30000 })
     .expect(getNthStatus(1 + 0).innerText).notContains('content warning!')
-    .expect($(`${getNthStatusSelector(0)} .status-content`).innerText).contains('hi this is another toot')
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-content`).innerText).contains('hi this is another toot')
 })
 
 test('content warnings can have emoji', async t => {
@@ -44,9 +44,9 @@ test('content warnings can have emoji', async t => {
     .typeText(composeContentWarning, 'can you feel the :blobpats: tonight')
     .click(composeButton)
     .expect(getNthStatus(1 + 0).innerText).contains('can you feel the', { timeout: 30000 })
-    .expect($(`${getNthStatusSelector(0)} .status-spoiler img.inline-custom-emoji`).getAttribute('alt')).eql(':blobpats:')
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-spoiler img.inline-custom-emoji`).getAttribute('alt')).eql(':blobpats:')
     .click(getNthShowOrHideButton(1 + 0))
-    .expect($(`${getNthStatusSelector(0)} .status-content img.inline-custom-emoji`).getAttribute('alt')).eql(':blobnom:')
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-content img.inline-custom-emoji`).getAttribute('alt')).eql(':blobnom:')
 })
 
 test('no XSS in content warnings or text', async t => {
@@ -58,7 +58,7 @@ test('no XSS in content warnings or text', async t => {
     .click(contentWarningButton)
     .typeText(composeContentWarning, pwned2)
     .click(composeButton)
-    .expect($(`${getNthStatusSelector(0)} .status-spoiler`).innerText).contains(pwned2)
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-spoiler`).innerText).contains(pwned2)
     .click(getNthShowOrHideButton(1 + 0))
-    .expect($(`${getNthStatusSelector(0)} .status-content`).innerText).contains(pwned1)
+    .expect($(`${getNthStatusSelector(1 + 0)} .status-content`).innerText).contains(pwned1)
 })

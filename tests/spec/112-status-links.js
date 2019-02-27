@@ -15,7 +15,7 @@ test('External links, hashtags, and mentions have correct attributes', async t =
     'and also http://example.com and https://joinmastodon.org and ' +
     'https://mastodon.social.'
 
-  const nthAnchor = n => $(`${getNthStatusSelector(0)} .status-content a`).nth(n)
+  const nthAnchor = n => $(`${getNthStatusSelector(1 + 0)} .status-content a`).nth(n)
 
   await loginAsFoobar(t)
   await t
