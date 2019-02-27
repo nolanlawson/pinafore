@@ -366,6 +366,7 @@ export async function scrollToStatus (t, n) {
     await t.expect(getNthStatus(i).exists).ok({ timeout })
       .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk({ timeout })
+      .expect($(`${getNthStatusSelector(i)} .status-toolbar`).exists).ok({ timeout })
       .hover($(`${getNthStatusSelector(i)} .status-toolbar`))
       .expect($('.loading-footer').exist).notOk({ timeout })
   }
