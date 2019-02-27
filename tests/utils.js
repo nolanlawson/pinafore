@@ -362,13 +362,15 @@ export async function validateTimeline (t, timeline) {
 
 export async function scrollToStatus (t, n) {
   let timeout = 20000
-  for (let i = 1; i <= n; i++) {
+  for (let i = 1; i < n; i++) {
     await t.expect(getNthStatus(i).exists).ok({ timeout })
       .hover(getNthStatus(i))
       .expect($('.loading-footer').exist).notOk({ timeout })
       .hover($(`${getNthStatusSelector(i)} .status-toolbar`))
       .expect($('.loading-footer').exist).notOk({ timeout })
   }
+  await t.hover(getNthStatus(n))
+
 }
 
 export async function clickToNotificationsAndBackHome (t) {
