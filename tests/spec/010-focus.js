@@ -16,7 +16,7 @@ test('modal preserves focus', async t => {
 
   let idx = indexWhere(homeTimeline, _ => _.content === "here's a video")
 
-  await scrollToStatus(t, idx)
+  await scrollToStatus(t, 1 + idx)
   // explicitly hover-focus-click
   await t.hover($(`${getNthStatusSelector(idx)} .play-video-button`))
   await focus(`${getNthStatusSelector(idx)} .play-video-button`)()
@@ -24,54 +24,54 @@ test('modal preserves focus', async t => {
     .click(closeDialogButton)
     .expect(modalDialogContents.exists).notOk()
     .expect(getActiveElementClassList()).contains('play-video-button')
-    .expect(getActiveElementInsideNthStatus()).eql(idx.toString())
+    .expect(getActiveElementInsideNthStatus()).eql((idx + 1).toString())
 })
 
 test('timeline preserves focus', async t => {
   await loginAsFoobar(t)
   // explicitly hover-focus-click
-  await t.hover(getNthStatus(0))
+  await t.hover(getNthStatus(1 + 0))
   await focus(getNthStatusSelector(0))()
-  await t.click(getNthStatus(0))
+  await t.click(getNthStatus(1 + 0))
     .expect(getUrl()).contains('/statuses/')
 
   await goBack()
   await t.expect(getUrl()).eql('http://localhost:4002/')
     .expect(getActiveElementClassList()).contains('status-article')
     .expect(getActiveElementClassList()).contains('status-in-timeline')
-    .expect(getActiveElementInsideNthStatus()).eql('0')
+    .expect(getActiveElementInsideNthStatus()).eql('1')
 })
 
 test('timeline link preserves focus', async t => {
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatus(0).exists).ok({ timeout: 20000 })
+    .expect(getNthStatus(1 + 0).exists).ok({ timeout: 20000 })
     .click($(`${getNthStatusSelector(0)} .status-header a`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthStatus(0).exists).ok()
+    .expect(getNthStatus(1 + 0).exists).ok()
     .expect(getActiveElementInnerText()).eql('admin')
     .click($(`${getNthStatusSelector(0)} .status-sidebar`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getActiveElementClassList()).contains('status-sidebar')
-    .expect(getActiveElementInsideNthStatus()).eql('0')
+    .expect(getActiveElementInsideNthStatus()).eql('1')
 })
 
 test('notification timeline preserves focus', async t => {
   await loginAsFoobar(t)
   await t
     .navigateTo('/notifications')
-  await scrollToStatus(t, 5)
+  await scrollToStatus(t, 1 + 5)
   await t.click($(`${getNthStatusSelector(5)} .status-header a`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).contains('/notifications')
-    .expect(getNthStatus(0).exists).ok()
+    .expect(getNthStatus(1 + 0).exists).ok()
     .expect(getActiveElementInnerText()).eql('quux')
-    .expect(getActiveElementInsideNthStatus()).eql('5')
+    .expect(getActiveElementInsideNthStatus()).eql('6')
 })
 
 test('thread preserves focus', async t => {
@@ -80,33 +80,33 @@ test('thread preserves focus', async t => {
   await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/3')
-    .expect(getNthStatus(0).exists).ok({ timeout })
-    .hover(getNthStatus(0))
-  await scrollToStatus(t, 2)
-  await t.click(getNthStatus(2))
+    .expect(getNthStatus(1 + 0).exists).ok({ timeout })
+    .hover(getNthStatus(1 + 0))
+  await scrollToStatus(t, 1 + 2)
+  await t.click(getNthStatus(1 + 2))
     .expect(getUrl()).contains('/statuses/')
     .click($(`${getNthStatusSelector(24)} .status-sidebar`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).contains('/statuses/')
-    .expect(getNthStatus(24).exists).ok()
+    .expect(getNthStatus(1 + 24).exists).ok()
     .expect(getActiveElementClassList()).contains('status-sidebar')
-    .expect(getActiveElementInsideNthStatus()).eql('24')
-    .hover(getNthStatus(23))
-    .click(getNthStatus(23))
+    .expect(getActiveElementInsideNthStatus()).eql('25')
+    .hover(getNthStatus(1 + 23))
+    .click(getNthStatus(1 + 23))
     .expect($(`${getNthStatusSelector(23)} .status-absolute-date`).exists).ok({ timeout })
   await goBack()
   await t.expect($(`${getNthStatusSelector(24)} .status-absolute-date`).exists).ok({ timeout })
     .expect(getActiveElementClassList()).contains('status-article', { timeout })
     .expect(getActiveElementClassList()).contains('status-in-timeline', { timeout })
-    .expect(getActiveElementInsideNthStatus()).eql('23', { timeout })
+    .expect(getActiveElementInsideNthStatus()).eql('24', { timeout })
 })
 
 test('reply preserves focus and moves focus to the text input', async t => {
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatus(1).exists).ok({ timeout: 20000 })
-    .click(getNthReplyButton(1))
+    .expect(getNthStatus(1 + 1).exists).ok({ timeout: 20000 })
+    .click(getNthReplyButton(1 + 1))
     .expect(getActiveElementClassList()).contains('compose-box-input')
 })
 

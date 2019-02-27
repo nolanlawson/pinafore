@@ -16,7 +16,7 @@ test('replying to a toot returns focus to reply button', async t => {
     .typeText(composeInput, 'I would like, if I may, to take you on a strange journey', { paste: true })
     .pressKey('ctrl+enter')
     .expect($(`${getNthStatusSelector(0)} .status-content`).innerText).contains('I would like, if I may, to take you on a strange journey')
-    .click(getNthReplyButton(0))
+    .click(getNthReplyButton(1 + 0))
     .typeText(getNthComposeReplyInput(0), 'How strange was it?', { paste: true })
     .click(getNthComposeReplyButton(0))
     .expect(getActiveElementClassList()).contains('status-toolbar-reply-button', { timeout: 20000 })
