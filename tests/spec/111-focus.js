@@ -18,6 +18,6 @@ test('replying to a toot returns focus to reply button', async t => {
     .expect($(`${getNthStatusSelector(1 + 0)} .status-content`).innerText).contains('I would like, if I may, to take you on a strange journey')
     .click(getNthReplyButton(1 + 0))
     .typeText(getNthComposeReplyInput(1 + 0), 'How strange was it?', { paste: true })
-    .click(getNthComposeReplyButton(0))
+    .click(getNthComposeReplyButton(1 + 0))
     .expect(getActiveElementClassList()).contains('status-toolbar-reply-button', { timeout: 20000 })
 })

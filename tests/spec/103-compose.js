@@ -31,7 +31,7 @@ test('statuses in threads show up in right order', async t => {
     .expect(getUrl()).contains('/statuses')
     .click(getNthReplyButton(1 + 3))
     .typeText(getNthComposeReplyInput(1 + 3), 'my reply!', { paste: true })
-    .click(getNthComposeReplyButton(3))
+    .click(getNthComposeReplyButton(1 + 3))
     .expect(getNthComposeReplyInput(1 + 3).exists).notOk()
     .expect(getNthStatus(1 + 5).innerText).contains('@baz my reply!')
     .navigateTo('/accounts/5')

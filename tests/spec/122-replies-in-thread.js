@@ -43,7 +43,7 @@ test('reply to non-focused parent status in a thread', async t => {
     .expect(getUrl()).match(/statuses/)
     .click(getNthReplyButton(1 + 0))
     .typeText(getNthComposeReplyInput(1 + 0), 'haha I totally agree', { paste: true })
-    .click(getNthComposeReplyButton(0))
+    .click(getNthComposeReplyButton(1 + 0))
   await verifyAriaSetSize(t, '2')
 })
 
@@ -60,7 +60,7 @@ test('reply to focused status in a thread', async t => {
     .expect(getUrl()).match(/statuses/)
     .click(getNthReplyButton(1 + 0))
     .typeText(getNthComposeReplyInput(1 + 0), 'haha I totally agree', { paste: true })
-    .click(getNthComposeReplyButton(0))
+    .click(getNthComposeReplyButton(1 + 0))
   await verifyAriaSetSize(t, '3')
 })
 
@@ -81,7 +81,7 @@ test('reply to non-focused grandparent status in a thread', async t => {
     .hover(getNthStatus(1 + 0))
     .click(getNthReplyButton(1 + 0))
     .typeText(getNthComposeReplyInput(1 + 0), 'this is sweet', { paste: true })
-    .click(getNthComposeReplyButton(0))
+    .click(getNthComposeReplyButton(1 + 0))
   await verifyAriaSetSize(t, '3')
 })
 
@@ -103,6 +103,6 @@ test('reply to non-focused grandchild status in a thread', async t => {
     .hover(getNthStatus(1 + 2))
     .click(getNthReplyButton(1 + 2))
     .typeText(getNthComposeReplyInput(1 + 2), 'this is sweet', { paste: true })
-    .click(getNthComposeReplyButton(2))
+    .click(getNthComposeReplyButton(1 + 2))
   await verifyAriaSetSize(t, '4')
 })
