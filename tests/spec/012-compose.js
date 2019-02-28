@@ -95,11 +95,21 @@ test('inserts emoji without typing anything', async t => {
   await loginAsFoobar(t)
   await t
     .click(emojiButton)
-    .typeText(emojiSearchInput, 'blobpats')
+  await sleep(1000)
+  await t
+    .expect(emojiSearchInput.value).eql('')
+    .typeText(emojiSearchInput, 'blobpats', { paste: true })
+  await sleep(1000)
+  await t
     .pressKey('enter')
     .expect(composeInput.value).eql(':blobpats: ')
     .click(emojiButton)
+  await sleep(1000)
+  await t
+    .expect(emojiSearchInput.value).eql('')
     .typeText(emojiSearchInput, 'blobpeek')
+  await sleep(1000)
+  await t
     .pressKey('enter')
     .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
 })
@@ -108,11 +118,21 @@ test('inserts native emoji without typing anything', async t => {
   await loginAsFoobar(t)
   await t
     .click(emojiButton)
-    .typeText(emojiSearchInput, 'pineapple')
+  await sleep(1000)
+  await t
+    .expect(emojiSearchInput.value).eql('')
+    .typeText(emojiSearchInput, 'pineapple', { paste: true })
+  await sleep(1000)
+  await t
     .pressKey('enter')
     .expect(composeInput.value).eql('\ud83c\udf4d ')
     .click(emojiButton)
-    .typeText(emojiSearchInput, 'elephant')
+  await sleep(1000)
+  await t
+    .expect(emojiSearchInput.value).eql('')
+    .typeText(emojiSearchInput, 'elephant', { paste: true })
+  await sleep(1000)
+  await t
     .pressKey('enter')
     .expect(composeInput.value).eql('\ud83d\udc18 \ud83c\udf4d ')
 })
