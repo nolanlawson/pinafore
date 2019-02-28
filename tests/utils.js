@@ -371,7 +371,6 @@ export async function scrollToStatus (t, n) {
       .expect($('.loading-footer').exist).notOk({ timeout })
   }
   await t.hover(getNthStatus(n))
-
 }
 
 export async function clickToNotificationsAndBackHome (t) {
