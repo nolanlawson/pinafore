@@ -19,7 +19,7 @@ fixture`108-compose-dialog.js`
 
 test('can compose using a dialog', async t => {
   await loginAsFoobar(t)
-  await scrollToStatus(t, 15)
+  await scrollToStatus(t, 16)
   await t.expect(modalDialog.exists).notOk()
     .expect(composeButton.getAttribute('aria-label')).eql('Compose')
   await sleep(2000)
@@ -31,13 +31,13 @@ test('can compose using a dialog', async t => {
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .navigateTo('/')
-    .hover(getNthStatus(0))
-    .expect(getNthStatus(0).innerText).contains('hello from the modal', { timeout: 20000 })
+    .hover(getNthStatus(1))
+    .expect(getNthStatus(1).innerText).contains('hello from the modal', { timeout: 20000 })
 })
 
 test('can use emoji dialog within compose dialog', async t => {
   await loginAsFoobar(t)
-  await scrollToStatus(t, 15)
+  await scrollToStatus(t, 16)
   await t.expect(composeButton.getAttribute('aria-label')).eql('Compose')
   await sleep(2000)
   await t.click(composeButton)
@@ -50,5 +50,5 @@ test('can use emoji dialog within compose dialog', async t => {
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .navigateTo('/')
-  await t.expect($(`${getNthStatusSelector(0)} img[alt=":blobpats:"]`).exists).ok({ timeout: 20000 })
+  await t.expect($(`${getNthStatusSelector(1)} img[alt=":blobpats:"]`).exists).ok({ timeout: 20000 })
 })

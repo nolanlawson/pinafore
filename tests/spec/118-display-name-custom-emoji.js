@@ -26,7 +26,7 @@ test('Can put custom emoji in display name', async t => {
     .expect($('.compose-box-display-name img').getAttribute('alt')).eql(':blobpats:')
     .click(displayNameInComposeBox)
     .expect(getUrl()).contains('/accounts/2')
-    .expect($(`${getNthStatusSelector(0)} .status-author-name img`).getAttribute('alt')).eql(':blobpats:')
+    .expect($(`${getNthStatusSelector(1)} .status-author-name img`).getAttribute('alt')).eql(':blobpats:')
 })
 
 test('Cannot XSS using display name HTML', async t => {
@@ -97,7 +97,7 @@ test('Check status aria labels for de-emojified text', async t => {
   await loginAsFoobar(t)
   await t
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+    .expect(getNthStatus(1).getAttribute('aria-label')).match(
       new RegExp(`${rainbow} foo :blobpats: ${rainbow}, hey ho lotsa emojos, (.* ago|just now), @foobar, Public`, 'i')
     )
     .click(settingsNavButton)
@@ -106,7 +106,7 @@ test('Check status aria labels for de-emojified text', async t => {
     .expect(removeEmojiFromDisplayNamesInput.checked).ok()
     .click(homeNavButton)
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+    .expect(getNthStatus(1).getAttribute('aria-label')).match(
       new RegExp(`foo, hey ho lotsa emojos, (.* ago|just now), @foobar, Public`, 'i')
     )
     .click(settingsNavButton)
@@ -115,7 +115,7 @@ test('Check status aria labels for de-emojified text', async t => {
     .expect(removeEmojiFromDisplayNamesInput.checked).notOk()
     .click(homeNavButton)
     .click(displayNameInComposeBox)
-    .expect(getNthStatus(0).getAttribute('aria-label')).match(
+    .expect(getNthStatus(1).getAttribute('aria-label')).match(
       new RegExp(`${rainbow} foo :blobpats: ${rainbow}, hey ho lotsa emojos, (.* ago|just now), @foobar, Public`, 'i')
     )
 })

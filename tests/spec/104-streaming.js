@@ -10,23 +10,23 @@ fixture`104-streaming.js`
 test('new incoming statuses show up immediately', async t => {
   await loginAsFoobar(t)
   await t
-    .hover(getNthStatus(0))
+    .hover(getNthStatus(1))
   await postAs('admin', 'hello my baby hello my honey')
-  await t.expect(getNthStatus(0).innerText).contains('hello my baby hello my honey')
+  await t.expect(getNthStatus(1).innerText).contains('hello my baby hello my honey')
 })
 
 test('new incoming toots show a button if scrolled down', async t => {
   await loginAsFoobar(t)
   await t
-    .hover(getNthStatus(0))
-    .hover(getNthStatus(2))
-    .hover(getNthStatus(4))
+    .hover(getNthStatus(1))
+    .hover(getNthStatus(3))
+    .hover(getNthStatus(5))
   await sleep(1000)
   await postAs('admin', 'hello my ragtime gal')
   await postAs('admin', 'send me a kiss by wire')
   await sleep(4000)
-  await t.hover(getNthStatus(2))
-    .hover(getNthStatus(0))
+  await t.hover(getNthStatus(3))
+    .hover(getNthStatus(1))
   await scrollToTop()
   await sleep(1000)
   await t
@@ -36,11 +36,11 @@ test('new incoming toots show a button if scrolled down', async t => {
   await t.expect(showMoreButton.innerText).contains('Show 3 more')
     .click(showMoreButton)
   await t
-    .expect(getNthStatus(0).innerText).contains("baby my heart's on fire")
-    .expect(getNthStatus(1).innerText).contains('send me a kiss by wire')
-    .expect(getNthStatus(2).innerText).contains('hello my ragtime gal')
+    .expect(getNthStatus(1).innerText).contains("baby my heart's on fire")
+    .expect(getNthStatus(2).innerText).contains('send me a kiss by wire')
+    .expect(getNthStatus(3).innerText).contains('hello my ragtime gal')
     .navigateTo('/')
-    .expect(getNthStatus(0).innerText).contains("baby my heart's on fire")
-    .expect(getNthStatus(1).innerText).contains('send me a kiss by wire')
-    .expect(getNthStatus(2).innerText).contains('hello my ragtime gal')
+    .expect(getNthStatus(1).innerText).contains("baby my heart's on fire")
+    .expect(getNthStatus(2).innerText).contains('send me a kiss by wire')
+    .expect(getNthStatus(3).innerText).contains('hello my ragtime gal')
 })

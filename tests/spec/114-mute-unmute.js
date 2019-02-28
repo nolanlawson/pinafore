@@ -23,8 +23,8 @@ test('Can mute and unmute an account', async t => {
   let post = 'blah blah blah'
   await postAs('admin', post)
 
-  await t.expect(getNthStatus(0).innerText).contains(post, { timeout: 20000 })
-    .click(getNthStatusOptionsButton(0))
+  await t.expect(getNthStatus(1).innerText).contains(post, { timeout: 20000 })
+    .click(getNthStatusOptionsButton(1))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Mute @admin')

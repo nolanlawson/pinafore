@@ -12,7 +12,7 @@ fixture`021-followers-follows.js`
 test('shows followers and follows', async t => {
   await loginAsFoobar(t)
   await t
-    .click($(`${getNthStatusSelector(0)} .status-author-name`))
+    .click($(`${getNthStatusSelector(1)} .status-author-name`))
     .expect(getUrl()).match(/\/accounts\/3$/)
     .expect(followsButton.getAttribute('aria-label')).eql('Follows 2')
     .click(followsButton)

@@ -14,23 +14,23 @@ test('Fav stats update', async t => {
   await favoriteStatusAs('admin', statusId)
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(0).innerText).contains('hey hello look at this toot')
-    .click(getNthStatus(0))
+    .expect(getNthStatusContent(1).innerText).contains('hey hello look at this toot')
+    .click(getNthStatus(1))
     .expect(getFavoritesCount()).eql(1)
     .click(homeNavButton)
   await favoriteStatusAs('quux', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getFavoritesCount()).eql(2)
     .click(homeNavButton)
   await favoriteStatusAs('baz', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getFavoritesCount()).eql(3)
     .click(homeNavButton)
   await favoriteStatusAs('LockedAccount', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getFavoritesCount()).eql(4)
 })
 
@@ -40,23 +40,23 @@ test('Reblog stats update', async t => {
   await reblogStatusAs('admin', statusId)
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(0).innerText).contains('oh why hello it looks like another toot')
-    .click(getNthStatus(0))
+    .expect(getNthStatusContent(1).innerText).contains('oh why hello it looks like another toot')
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(1)
     .click(homeNavButton)
   await reblogStatusAs('quux', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(2)
     .click(homeNavButton)
   await reblogStatusAs('baz', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(3)
     .click(homeNavButton)
   await reblogStatusAs('LockedAccount', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(4)
 })
 
@@ -68,20 +68,20 @@ test('Fav and reblog stats update for a boosted toot', async t => {
   await favoriteStatusAs('quux', statusId)
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(0).innerText).contains('this will get boosted')
-    .click(getNthStatus(0))
+    .expect(getNthStatusContent(1).innerText).contains('this will get boosted')
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(1)
     .expect(getFavoritesCount()).eql(2)
     .click(homeNavButton)
   await favoriteStatusAs('baz', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(1)
     .expect(getFavoritesCount()).eql(3)
     .click(homeNavButton)
   await favoriteStatusAs('LockedAccount', statusId)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(1)
     .expect(getFavoritesCount()).eql(4)
 })

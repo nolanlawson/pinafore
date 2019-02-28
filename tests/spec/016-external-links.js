@@ -6,7 +6,7 @@ fixture`016-external-links.js`
   .page`http://localhost:4002`
 
 function getAnchor (nthStatus, nthAnchor) {
-  return $(`${getNthStatusSelector(nthStatus)} .status-content a`).nth(nthAnchor)
+  return $(`${getNthStatusSelector(1 + nthStatus)} .status-content a`).nth(nthAnchor)
 }
 
 function getAnchorInProfile (n) {
@@ -16,7 +16,7 @@ function getAnchorInProfile (n) {
 test('converts external links in statuses', async t => {
   await loginAsFoobar(t)
   await t
-    .hover(getNthStatus(0))
+    .hover(getNthStatus(1))
     .navigateTo('/accounts/4')
     .expect(getUrl()).contains('/accounts/4')
     .expect(getAnchor(0, 0).getAttribute('href')).eql('/accounts/1')
@@ -34,7 +34,7 @@ test('converts external links in statuses', async t => {
 test('converts external links in profiles', async t => {
   await loginAsFoobar(t)
   await t
-    .hover(getNthStatus(0))
+    .hover(getNthStatus(1))
     .navigateTo('/accounts/4')
     .expect(getUrl()).contains('/accounts/4')
     .expect($('.account-profile-name').innerText).contains('External Lonk')

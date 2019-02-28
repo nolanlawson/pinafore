@@ -15,13 +15,13 @@ test('External links, hashtags, and mentions have correct attributes', async t =
     'and also http://example.com and https://joinmastodon.org and ' +
     'https://mastodon.social.'
 
-  const nthAnchor = n => $(`${getNthStatusSelector(0)} .status-content a`).nth(n)
+  const nthAnchor = n => $(`${getNthStatusSelector(1)} .status-content a`).nth(n)
 
   await loginAsFoobar(t)
   await t
     .typeText(composeInput, text, { paste: true })
     .click(composeButton)
-    .expect(getNthStatus(0).innerText).contains('Why hello there', { timeout: 20000 })
+    .expect(getNthStatus(1).innerText).contains('Why hello there', { timeout: 20000 })
     .expect(nthAnchor(0).getAttribute('href')).eql('/accounts/1')
     .expect(nthAnchor(0).hasAttribute('rel')).notOk()
     .expect(nthAnchor(0).getAttribute('title')).eql('@admin')

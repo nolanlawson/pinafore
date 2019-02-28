@@ -14,31 +14,31 @@ test('Shows a thread', async t => {
   await t
     .click($('a').withText('quux'))
 
-  await scrollToStatus(t, 26)
+  await scrollToStatus(t, 27)
   await t
-    .hover(getNthStatus(26))
-    .click(getNthStatus(26))
+    .hover(getNthStatus(27))
+    .click(getNthStatus(27))
     .expect(getUrl()).contains('/statuses/')
 
   await validateTimeline(t, quuxThread)
 
-  await t.expect(getNthStatus(24).getAttribute('aria-setsize')).eql('25')
+  await t.expect(getNthStatus(25).getAttribute('aria-setsize')).eql('25')
 })
 
 test('Scrolls to proper point in thread', async t => {
   await loginAsFoobar(t)
   await t
     .click($('a').withText('quux'))
-    .hover(getNthStatus(0))
-    .hover(getNthStatus(2))
-    .hover(getNthStatus(4))
-    .hover(getNthStatus(6))
-    .hover(getNthStatus(8))
-    .hover(getNthStatus(10))
-    .click(getNthStatus(10))
+    .hover(getNthStatus(1))
+    .hover(getNthStatus(3))
+    .hover(getNthStatus(5))
+    .hover(getNthStatus(7))
+    .hover(getNthStatus(9))
+    .hover(getNthStatus(11))
+    .click(getNthStatus(11))
     .expect(getUrl()).contains('/statuses/')
-    .expect(getNthStatus(16).innerText).contains('unlisted thread 17')
-    .expect(Math.round(getNthStatus(16).boundingClientRect.top))
+    .expect(getNthStatus(17).innerText).contains('unlisted thread 17')
+    .expect(Math.round(getNthStatus(17).boundingClientRect.top))
     .eql(Math.round($('.main-content').boundingClientRect.top))
 })
 
@@ -52,21 +52,21 @@ async function navigateToBazAccount (t) {
 }
 
 async function validateForkedThread (t) {
-  await t.hover(getNthStatus(1))
-    .click(getNthStatus(2))
+  await t.hover(getNthStatus(2))
+    .click(getNthStatus(3))
     .expect(getUrl()).contains('/statuses')
   await validateTimeline(t, bazThreadRelativeTo2B2)
   await goBack()
-  await t.hover(getNthStatus(3))
-    .hover(getNthStatus(5))
-    .hover(getNthStatus(7))
-    .hover(getNthStatus(9))
-    .click(getNthStatus(9))
+  await t.hover(getNthStatus(4))
+    .hover(getNthStatus(6))
+    .hover(getNthStatus(8))
+    .hover(getNthStatus(10))
+    .click(getNthStatus(10))
     .expect(getUrl()).contains('/statuses')
   await validateTimeline(t, bazThreadRelativeTo2b)
   await goBack()
-  await t.hover(getNthStatus(11))
-    .click(getNthStatus(11))
+  await t.hover(getNthStatus(12))
+    .click(getNthStatus(12))
     .expect(getUrl()).contains('/statuses')
   await validateTimeline(t, bazThreadRelativeTo2)
 }

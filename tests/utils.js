@@ -216,7 +216,7 @@ export function getNthDeleteMediaButton (n) {
 }
 
 export function getAriaSetSize () {
-  return getNthStatus(0).getAttribute('aria-setsize')
+  return getNthStatus(1 + 0).getAttribute('aria-setsize')
 }
 
 export function getNthStatus (n) {
@@ -336,25 +336,25 @@ export async function validateTimeline (t, timeline) {
   for (let i = 0; i < timeline.length; i++) {
     let status = timeline[i]
     // hovering forces TestCafé to scroll to that element: https://git.io/vABV2
-    await t.hover(getNthStatus(i))
+    await t.hover(getNthStatus(1 + i))
     if (status.content) {
-      await t.expect(getNthStatusContent(i).innerText)
+      await t.expect(getNthStatusContent(1 + i).innerText)
         .contains(status.content, { timeout })
     }
     if (status.spoiler) {
-      await t.expect(getNthStatusSpoiler(i).innerText)
+      await t.expect(getNthStatusSpoiler(1 + i).innerText)
         .contains(status.spoiler, { timeout })
     }
     if (status.followedBy) {
-      await t.expect(getNthStatusHeader(i).innerText)
+      await t.expect(getNthStatusHeader(1 + i).innerText)
         .match(new RegExp(status.followedBy + '\\s+followed you'), { timeout })
     }
     if (status.rebloggedBy) {
-      await t.expect(getNthStatusHeader(i).innerText)
+      await t.expect(getNthStatusHeader(1 + i).innerText)
         .match(new RegExp(status.rebloggedBy + '\\s+boosted your status'), { timeout })
     }
     if (status.favoritedBy) {
-      await t.expect(getNthStatusHeader(i).innerText)
+      await t.expect(getNthStatusHeader(1 + i).innerText)
         .match(new RegExp(status.favoritedBy + '\\s+favorited your status'), { timeout })
     }
   }
@@ -362,14 +362,13 @@ export async function validateTimeline (t, timeline) {
 
 export async function scrollToStatus (t, n) {
   let timeout = 20000
-  for (let i = 0; i <= n; i++) {
+  for (let i = 1; i < n; i++) {
     await t.expect(getNthStatus(i).exists).ok({ timeout })
       .hover(getNthStatus(i))
-      .expect($('.loading-footer').exist).notOk()
-    if (i < n) {
-      await t.hover($(`${getNthStatusSelector(i)} .status-toolbar`))
-        .expect($('.loading-footer').exist).notOk()
-    }
+      .expect($('.loading-footer').exist).notOk({ timeout })
+      .expect($(`${getNthStatusSelector(i)} .status-toolbar`).exists).ok({ timeout })
+      .hover($(`${getNthStatusSelector(i)} .status-toolbar`))
+      .expect($('.loading-footer').exist).notOk({ timeout })
   }
   await t.hover(getNthStatus(n))
 }

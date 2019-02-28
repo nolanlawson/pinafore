@@ -11,7 +11,7 @@ fixture`011-reblog-favorites-count.js`
 test('shows favorites', async t => {
   await loginAsFoobar(t)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getUrl()).contains('/statuses/')
     .expect(getFavoritesCount()).eql(2)
     .expect(favoritesCountElement.getAttribute('aria-label')).eql('Favorited 2 times')
@@ -27,7 +27,7 @@ test('shows favorites', async t => {
 test('shows boosts', async t => {
   await loginAsFoobar(t)
   await t
-    .click(getNthStatus(0))
+    .click(getNthStatus(1))
     .expect(getUrl()).contains('/statuses/')
     .expect(getReblogsCount()).eql(1)
     .expect(reblogsCountElement.getAttribute('aria-label')).eql('Boosted 1 time')

@@ -13,12 +13,12 @@ fixture`023-mark-media-as-sensitive.js`
 async function checkSensitivityForStatus (t, idx, sensitive) {
   if (sensitive) {
     await t
-      .expect(getNthStatusSensitiveMediaButton(idx).exists).ok()
-      .expect(getNthStatusMedia(idx).exists).notOk()
+      .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).ok()
+      .expect(getNthStatusMedia(1 + idx).exists).notOk()
   } else {
     await t
-      .expect(getNthStatusSensitiveMediaButton(idx).exists).notOk()
-      .expect(getNthStatusMedia(idx).exists).ok()
+      .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).notOk()
+      .expect(getNthStatusMedia(1 + idx).exists).ok()
   }
 }
 
@@ -29,7 +29,7 @@ async function checkSensitivity (t, shouldBeSensitive) {
   let sensitiveAnimatedKittenIdx = indexWhere(homeTimeline, _ => _.content === "here's a secret animated kitten gif")
   let animatedKittenIdx = indexWhere(homeTimeline, _ => _.content === "here's an animated kitten gif")
 
-  await t.hover(getNthStatus(0))
+  await t.hover(getNthStatus(1))
 
   let expected = [
     [ sensitiveKittenIdx, shouldBeSensitive(true) ],
@@ -40,7 +40,7 @@ async function checkSensitivity (t, shouldBeSensitive) {
   ]
 
   for (let [ idx, sensitive ] of expected) {
-    await scrollToStatus(t, sensitiveKittenIdx)
+    await scrollToStatus(t, 1 + sensitiveKittenIdx)
     await checkSensitivityForStatus(t, idx, sensitive)
   }
 }

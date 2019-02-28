@@ -120,9 +120,9 @@ test('inserts native emoji without typing anything', async t => {
 test('cannot post an empty status', async t => {
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(0).innerText).contains('pinned toot 1')
+    .expect(getNthStatusContent(1).innerText).contains('pinned toot 1')
     .click(composeButton)
   await sleep(2)
   await t
-    .expect(getNthStatusContent(0).innerText).contains('pinned toot 1')
+    .expect(getNthStatusContent(1).innerText).contains('pinned toot 1')
 })

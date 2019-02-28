@@ -30,7 +30,7 @@ test('can request to follow an account', async t => {
 
   await t.navigateTo('/accounts/6')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
-    .expect(getNthStatus(0).innerText).contains('This account is locked')
+    .expect(getNthStatus(1).innerText).contains('This account is locked')
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
 })

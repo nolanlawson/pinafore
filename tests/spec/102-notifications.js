@@ -13,7 +13,7 @@ test('shows unread notification', async t => {
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
     .expect(getTitleText()).eql('localhost:3000 · Home')
-    .expect(getNthStatusContent(0).innerText).contains('somebody please favorite this to validate me', {
+    .expect(getNthStatusContent(1).innerText).contains('somebody please favorite this to validate me', {
       timeout: 20000
     })
   await favoriteStatusAs('admin', id)
@@ -26,8 +26,8 @@ test('shows unread notification', async t => {
     .expect(getUrl()).contains('/notifications')
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (current page)')
     .expect(getTitleText()).eql('localhost:3000 · Notifications')
-    .expect(getNthStatus(0).innerText).contains('somebody please favorite this to validate me')
-    .expect(getNthStatus(0).innerText).match(/admin\s+favorited your status/)
+    .expect(getNthStatus(1).innerText).contains('somebody please favorite this to validate me')
+    .expect(getNthStatus(1).innerText).match(/admin\s+favorited your status/)
   await t
     .click(homeNavButton)
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
@@ -40,7 +40,7 @@ test('shows unread notifications, more than one', async t => {
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
     .expect(getTitleText()).eql('localhost:3000 · Home')
-    .expect(getNthStatusContent(0).innerText).contains('I need lots of favorites on this one', {
+    .expect(getNthStatusContent(1).innerText).contains('I need lots of favorites on this one', {
       timeout: 20000
     })
   await favoriteStatusAs('admin', id)
@@ -54,7 +54,7 @@ test('shows unread notifications, more than one', async t => {
     .expect(getUrl()).contains('/notifications')
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (current page)')
     .expect(getTitleText()).eql('localhost:3000 · Notifications')
-    .expect(getNthStatus(0).innerText).contains('I need lots of favorites on this one')
+    .expect(getNthStatus(1).innerText).contains('I need lots of favorites on this one')
   await t
     .click(homeNavButton)
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')

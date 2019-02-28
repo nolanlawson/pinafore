@@ -8,28 +8,28 @@ fixture`006-tabindex.js`
 test('shows correct tabindex in home timeline', async t => {
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatus(0).getAttribute('tabindex')).eql('0')
     .expect(getNthStatus(1).getAttribute('tabindex')).eql('0')
     .expect(getNthStatus(2).getAttribute('tabindex')).eql('0')
     .expect(getNthStatus(3).getAttribute('tabindex')).eql('0')
+    .expect(getNthStatus(4).getAttribute('tabindex')).eql('0')
 })
 
 test('shows correct tabindex in notifications', async t => {
   await loginAsFoobar(t)
   await t
     .navigateTo('/notifications')
-    .expect(getNthStatus(0).getAttribute('tabindex')).eql('0')
     .expect(getNthStatus(1).getAttribute('tabindex')).eql('0')
     .expect(getNthStatus(2).getAttribute('tabindex')).eql('0')
-    .hover(getNthStatus(2))
     .expect(getNthStatus(3).getAttribute('tabindex')).eql('0')
+    .hover(getNthStatus(3))
     .expect(getNthStatus(4).getAttribute('tabindex')).eql('0')
-    .hover(getNthStatus(4))
     .expect(getNthStatus(5).getAttribute('tabindex')).eql('0')
+    .hover(getNthStatus(5))
     .expect(getNthStatus(6).getAttribute('tabindex')).eql('0')
-    .hover(getNthStatus(6))
     .expect(getNthStatus(7).getAttribute('tabindex')).eql('0')
-    .expect(getNthStatus(7).getAttribute('aria-setsize')).eql('8')
+    .hover(getNthStatus(7))
+    .expect(getNthStatus(8).getAttribute('tabindex')).eql('0')
+    .expect(getNthStatus(8).getAttribute('aria-setsize')).eql('8')
 })
 
 test('shows correct tabindex in pinned statuses', async t => {
@@ -37,6 +37,6 @@ test('shows correct tabindex in pinned statuses', async t => {
   await t
     .navigateTo('/pinned')
     .expect($('.status-article').getAttribute('tabindex')).eql('0')
-    .expect($('.status-article').getAttribute('aria-posinset')).eql('0')
+    .expect($('.status-article').getAttribute('aria-posinset')).eql('1')
     .expect($('.status-article').getAttribute('aria-setsize')).eql('1')
 })
