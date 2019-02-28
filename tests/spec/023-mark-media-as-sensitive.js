@@ -29,7 +29,7 @@ async function checkSensitivity (t, shouldBeSensitive) {
   let sensitiveAnimatedKittenIdx = indexWhere(homeTimeline, _ => _.content === "here's a secret animated kitten gif")
   let animatedKittenIdx = indexWhere(homeTimeline, _ => _.content === "here's an animated kitten gif")
 
-  await t.hover(getNthStatus(1 + 0))
+  await t.hover(getNthStatus(1))
 
   let expected = [
     [ sensitiveKittenIdx, shouldBeSensitive(true) ],

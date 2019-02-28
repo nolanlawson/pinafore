@@ -21,18 +21,18 @@ test("shows pinned statuses on a user's account page", async t => {
   await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/2')
-    .expect(getNthPinnedStatus(1 + 0).getAttribute('aria-posinset')).eql('1')
-    .expect(getNthPinnedStatus(1 + 0).getAttribute('aria-setsize')).eql('1')
-    .expect(getNthPinnedStatus(1 + 0).innerText).contains('this is unlisted')
+    .expect(getNthPinnedStatus(1).getAttribute('aria-posinset')).eql('1')
+    .expect(getNthPinnedStatus(1).getAttribute('aria-setsize')).eql('1')
+    .expect(getNthPinnedStatus(1).innerText).contains('this is unlisted')
 })
 
 test("shows pinned statuses on a user's account page 2", async t => {
   await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/3')
-    .expect(getNthPinnedStatus(1 + 0).getAttribute('aria-posinset')).eql('1')
-    .expect(getNthPinnedStatus(1 + 0).getAttribute('aria-setsize')).eql('2')
-    .expect(getNthPinnedStatus(1 + 0).innerText).contains('pinned toot 1')
-    .expect(getNthPinnedStatus(1 + 1).getAttribute('aria-setsize')).eql('2')
-    .expect(getNthPinnedStatus(1 + 1).innerText).contains('pinned toot 2')
+    .expect(getNthPinnedStatus(1).getAttribute('aria-posinset')).eql('1')
+    .expect(getNthPinnedStatus(1).getAttribute('aria-setsize')).eql('2')
+    .expect(getNthPinnedStatus(1).innerText).contains('pinned toot 1')
+    .expect(getNthPinnedStatus(2).getAttribute('aria-setsize')).eql('2')
+    .expect(getNthPinnedStatus(2).innerText).contains('pinned toot 2')
 })
