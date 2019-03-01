@@ -10,7 +10,6 @@
 import ModalDialog from './ModalDialog.html'
 import { store } from '../../../_store/store'
 import GenericDialogList from './GenericDialogList.html'
-import { createDialogId } from '../helpers/createDialogId'
 import { show } from '../helpers/showDialog'
 import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
@@ -26,9 +25,6 @@ import { reportStatusOrAccount } from '../../../_actions/report'
 export default {
   oncreate,
   store: () => store,
-  data: () => ({
-    id: createDialogId()
-  }),
   computed: {
     //
     // begin copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
