@@ -1,5 +1,11 @@
 # Contributing to Pinafore
 
+## Installing
+
+To install with dev dependencies, run:
+
+    yarn
+
 ## Dev server
 
 To run a dev server with hot reloading:
