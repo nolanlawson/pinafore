@@ -56,7 +56,7 @@ Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and [Yarn](https://yarnp
 
 To build Pinafore for production, first install dependencies:
 
-    yarn --pure-lockfile
+    yarn --production --pure-lockfile
 
 Then build:
 

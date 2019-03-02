@@ -12,7 +12,7 @@ RUN apk add --update --no-cache --virtual build-dependencies git python build-ba
 # Install yarn
  && npm i yarn -g \
 # Install Pinafore
- && yarn --pure-lockfile \
+ && yarn --production --pure-lockfile \
  && yarn build \
  && rm -rf ./src \
 # Cleanup
