@@ -1,6 +1,7 @@
+const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
-const { mode, dev, resolve } = require('./shared.config')
+const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 
 module.exports = {
   entry: config.server.entry(),
@@ -28,5 +29,10 @@ module.exports = {
   mode,
   performance: {
     hints: false // it doesn't matter if server.js is large
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs)
+    })
+  ]
 }
