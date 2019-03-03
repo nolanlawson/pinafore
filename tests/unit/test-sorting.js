@@ -2,13 +2,14 @@
 
 import { toPaddedBigInt, toReversePaddedBigInt } from '../../src/routes/_utils/sorting'
 import assert from 'assert'
+import times from 'lodash-es/times'
 
 function lt(a, b) {
   assert(a < b, `Failed: ${a} < ${b}`)
 }
 
 function gt(a, b) {
-  assert(a > b, `Failed: ${a} < ${b}`)
+  assert(a > b, `Failed: ${a} > ${b}`)
 }
 
 describe('test-sorting.js', () => {
@@ -40,5 +41,25 @@ describe('test-sorting.js', () => {
     assert.deepStrictEqual(toReversePaddedBigInt(id3), toReversePaddedBigInt(id3))
     assert.deepStrictEqual(toReversePaddedBigInt(id4), toReversePaddedBigInt(id4))
     assert.deepStrictEqual(toReversePaddedBigInt(id5), toReversePaddedBigInt(id5))
+  })
+
+  it('can sort mastodon IDs correctly - more examples', () => {
+    let ids = times(1000, i => i.toString())
+
+    for (let i = 1; i < ids.length; i++) {
+      let prev = ids[i - 1]
+      let next = ids[i]
+      lt(toPaddedBigInt(prev), toPaddedBigInt(next))
+      gt(toReversePaddedBigInt(prev), toReversePaddedBigInt(next))
+    }
+  })
+
+  it('can sort Pleroma IDs correctly', () => {
+    let id1 = 'a'
+    let id2 = 't'
+
+    lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
+    gt(toReversePaddedBigInt(id1), toReversePaddedBigInt(id2))
+
   })
 })
