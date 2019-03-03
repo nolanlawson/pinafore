@@ -1,4 +1,7 @@
 <div class="shortcut-help-info {inDialog ? 'in-dialog' : ''}">
+  <!-- Svelte makes this file kind of ridiculously large for a static page (~17kB),
+       so just use raw HTML here to make it smaller -->
+{@html `
   <h2>Global</h2>
   <div class="hotkey-group">
     <ul>
@@ -35,6 +38,7 @@
       <li><kbd>&#8592;</kbd> - <kbd>&#8594;</kbd> to go to next or previous</li>
     </ul>
   </div>
+`}
 </div>
 <style>
   .shortcut-help-info {
@@ -45,23 +49,23 @@
   .shortcut-help-info::-webkit-scrollbar {
     display: none;
   }
-  li {
+  :global(.shortcut-help-info li) {
     list-style-type: none;
   }
-  .in-dialog li {
+  :global(.shortcut-help-info.in-dialog li) {
     color: var(--muted-modal-text);
     font-size: 0.9em;
   }
-  .in-dialog h2 {
+  :global(.shortcut-help-info.in-dialog h2) {
     color: var(--muted-modal-text);
   }
-  .hotkey-group {
+  :global(.shortcut-help-info.hotkey-group) {
     margin: 0 0 10px 10px;
   }
-  .shortcut-help-info h2 {
+  :global(.shortcut-help-info h2) {
     margin: 10px 0;
   }
-  kbd {
+  :global(.shortcut-help-info kbd) {
     color: #333;
     display: inline-block;
     border: 1px solid #333;
