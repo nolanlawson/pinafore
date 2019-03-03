@@ -9,6 +9,7 @@ import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 import { mark, stop } from '../../_utils/marks'
 import { store } from '../store'
+import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
 
 // stream to watch for home timeline updates and notifications
 let currentInstanceStream
@@ -56,12 +57,12 @@ async function refreshInstanceData (instanceName) {
 }
 
 function stream (store, instanceName, currentInstanceInfo) {
-  let homeTimelineItemIds = store.getForTimeline(instanceName,
-    'home', 'timelineItemIds')
-  let firstHomeTimelineItemId = homeTimelineItemIds && homeTimelineItemIds[0]
-  let notificationItemIds = store.getForTimeline(instanceName,
-    'notifications', 'timelineItemIds')
-  let firstNotificationTimelineItemId = notificationItemIds && notificationItemIds[0]
+  let homeTimelineItemSummaries = store.getForTimeline(instanceName,
+    'home', 'timelineItemSummaries')
+  let firstHomeTimelineItemId = getFirstIdFromItemSummaries(homeTimelineItemSummaries)
+  let notificationItemSummaries = store.getForTimeline(instanceName,
+    'notifications', 'timelineItemSummaries')
+  let firstNotificationTimelineItemId = getFirstIdFromItemSummaries(notificationItemSummaries)
 
   let { accessToken } = store.get()
   let streamingApi = currentInstanceInfo.urls.streaming_api

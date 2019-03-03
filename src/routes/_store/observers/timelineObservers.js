@@ -4,6 +4,7 @@ import { getTimeline } from '../../_api/timelines'
 import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
 import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 import { store } from '../store'
+import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
 
 export function timelineObservers () {
   // stream to watch for local/federated/etc. updates. home and notification
@@ -58,9 +59,9 @@ export function timelineObservers () {
       return
     }
 
-    let timelineItemIds = store.getForTimeline(currentInstance,
-      currentTimeline, 'timelineItemIds')
-    let firstTimelineItemId = timelineItemIds && timelineItemIds[0]
+    let timelineItemSummaries = store.getForTimeline(currentInstance,
+      currentTimeline, 'timelineItemSummaries')
+    let firstTimelineItemId = getFirstIdFromItemSummaries(timelineItemSummaries)
 
     let onOpenStream = async () => {
       if (!firstTimelineItemId || !currentTimelineIsUnchanged()) {

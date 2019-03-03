@@ -17,8 +17,8 @@ export function toReversePaddedBigInt (id) {
   return res
 }
 
-export function byItemIds (a, b) {
-  let aPadded = toPaddedBigInt(a)
-  let bPadded = toPaddedBigInt(b)
-  return aPadded < bPadded ? -1 : aPadded === bPadded ? 0 : 1
+export function compareTimelineItemSummaries (left, right) {
+  let leftPadded = toPaddedBigInt(left.id)
+  let rightPadded = toPaddedBigInt(right.id)
+  return leftPadded < rightPadded ? -1 : leftPadded === rightPadded ? 0 : 1
 }

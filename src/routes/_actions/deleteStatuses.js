@@ -5,20 +5,21 @@ import { database } from '../_database/database'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
-  let keys = ['timelineItemIds', 'itemIdsToAdd']
+  let keys = ['timelineItemSummaries', 'timelineItemSummariesToAdd']
+  let summaryFilter = _ => idFilter(_.id)
 
   keys.forEach(key => {
     let timelineData = store.getAllTimelineData(instanceName, key)
     Object.keys(timelineData).forEach(timelineName => {
-      let ids = timelineData[timelineName]
+      let summaries = timelineData[timelineName]
       if (!timelineFilter(timelineName)) {
         return
       }
-      let filteredIds = ids.filter(idFilter)
-      if (!isEqual(ids, filteredIds)) {
+      let filteredSummaries = summaries.filter(summaryFilter)
+      if (!isEqual(summaries, filteredSummaries)) {
         console.log('deleting an item from timelineName', timelineName, 'for key', key)
         store.setForTimeline(instanceName, timelineName, {
-          [key]: filteredIds
+          [key]: filteredSummaries
         })
       }
     })
