@@ -21,3 +21,10 @@ export function pickBy (obj, predicate) {
   }
   return res
 }
+
+export function padStart (string, length, chars) {
+  while (string.length < length) {
+    string = chars + string
+  }
+  return string
+}
