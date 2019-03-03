@@ -1,4 +1,5 @@
 import { get } from '../../_utils/lodash-lite'
+import { getFirstIdFromItemSummaries, getLastIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
 
 function computeForTimeline (store, key, defaultValue) {
   store.compute(key,
@@ -10,24 +11,24 @@ function computeForTimeline (store, key, defaultValue) {
 }
 
 export function timelineComputations (store) {
-  computeForTimeline(store, 'timelineItemIds', null)
+  computeForTimeline(store, 'timelineItemSummaries', null)
+  computeForTimeline(store, 'timelineItemSummariesToAdd', null)
   computeForTimeline(store, 'runningUpdate', false)
   computeForTimeline(store, 'lastFocusedElementId', null)
   computeForTimeline(store, 'ignoreBlurEvents', false)
-  computeForTimeline(store, 'itemIdsToAdd', null)
   computeForTimeline(store, 'showHeader', false)
   computeForTimeline(store, 'shouldShowHeader', false)
-  computeForTimeline(store, 'timelineItemIdsAreStale', false)
+  computeForTimeline(store, 'timelineItemSummariesAreStale', false)
 
-  store.compute('firstTimelineItemId', ['timelineItemIds'], (timelineItemIds) => {
-    return timelineItemIds && timelineItemIds[0]
-  })
-  store.compute('lastTimelineItemId', ['timelineItemIds'], (timelineItemIds) => {
-    return timelineItemIds && timelineItemIds[timelineItemIds.length - 1]
-  })
+  store.compute('firstTimelineItemId', ['timelineItemSummaries'], (timelineItemSummaries) => (
+    getFirstIdFromItemSummaries(timelineItemSummaries)
+  ))
+  store.compute('lastTimelineItemId', ['timelineItemSummaries'], (timelineItemSummaries) => (
+    getLastIdFromItemSummaries(timelineItemSummaries)
+  ))
 
   store.compute('numberOfNotifications',
-    [`timelineData_itemIdsToAdd`, 'currentInstance'],
+    [`timelineData_timelineItemSummariesToAdd`, 'currentInstance'],
     (root, currentInstance) => (
       (root && root[currentInstance] && root[currentInstance].notifications &&
         root[currentInstance].notifications.length) || 0

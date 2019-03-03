@@ -1,11 +1,4 @@
 <h1 class="sr-only">{label}</h1>
-<!-- for debugging
-<div style="padding:5px;position:fixed;left:0;top:0;z-index:999999999;font-size:0.9em;width: 75vw;background:rgba(0, 0, 0, 0.8);color:white;pointer-events:none;">
-  <p>$timelineItemIds: {JSON.stringify(($timelineItemIds || []).map(_ => '...' + _.slice(-6)), null, '  ')}</p>
-  <p>$itemIdsToAdd: {JSON.stringify(($itemIdsToAdd || []).map(_ => '...' + _.slice(-6)), null, '  ')}</p>
-  <p>$runningUpdate: {$runningUpdate}</p>
-</div>
--->
 <div class="timeline"
      role="feed"
      on:focusWithCapture="saveFocus(event)"
@@ -18,7 +11,7 @@
                 component={result.listItemComponent}
                 realm="{$currentInstance + '/' + timeline}"
                 {makeProps}
-                items={$timelineItemIds}
+                items={itemIds}
                 showFooter={true}
                 footerComponent={LoadingFooter}
                 showHeader={$showHeader}
@@ -130,10 +123,19 @@
       // Scroll to the first item if this is a "status in own thread" timeline.
       // Don't scroll to the first item because it obscures the "back" button.
       scrollToItem: ({ timelineType, timelineValue, $firstTimelineItemId }) => (
-        timelineType === 'status' && $firstTimelineItemId &&
-        timelineValue !== $firstTimelineItemId && timelineValue
+        timelineType === 'status' &&
+        $firstTimelineItemId &&
+        timelineValue !== $firstTimelineItemId &&
+        timelineValue
       ),
-      itemIdsToAdd: ({ $itemIdsToAdd }) => $itemIdsToAdd,
+      itemIds: ({ $timelineItemSummaries }) => (
+        // TODO: filter
+        $timelineItemSummaries && $timelineItemSummaries.map(_ => _.id)
+      ),
+      itemIdsToAdd: ({ $timelineItemSummariesToAdd }) => (
+        // TODO: filter
+        $timelineItemSummariesToAdd && $timelineItemSummariesToAdd.map(_ => _.id)
+      ),
       headerProps: ({ itemIdsToAdd }) => {
         return {
           count: itemIdsToAdd ? itemIdsToAdd.length : 0,

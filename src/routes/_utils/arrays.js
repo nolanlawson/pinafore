@@ -1,6 +1,5 @@
-// Merge two arrays, assuming both input arrays have the same order
-// and items are comparable
-export function mergeArrays (leftArray, rightArray) {
+// Merge two arrays, using the given comparator
+export function mergeArrays (leftArray, rightArray, comparator) {
   let leftIndex = 0
   let rightIndex = 0
   let merged = []
@@ -17,11 +16,12 @@ export function mergeArrays (leftArray, rightArray) {
     }
     let left = leftArray[leftIndex]
     let right = rightArray[rightIndex]
-    if (right === left) {
+    let comparison = comparator(right, left)
+    if (comparison === 0) {
       merged.push(left)
       rightIndex++
       leftIndex++
-    } else if (parseInt(right, 10) > parseInt(left, 10)) {
+    } else if (comparison > 0) {
       merged.push(right)
       rightIndex++
     } else {

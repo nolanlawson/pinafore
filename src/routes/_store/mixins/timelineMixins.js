@@ -31,7 +31,7 @@ export function timelineMixins (Store) {
   }
 
   Store.prototype.getThreads = function (instanceName) {
-    let instanceData = this.getAllTimelineData(instanceName, 'timelineItemIds')
+    let instanceData = this.getAllTimelineData(instanceName, 'timelineItemSummaries')
 
     return pickBy(instanceData, (value, key) => {
       return key.startsWith('status/')

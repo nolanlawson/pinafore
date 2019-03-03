@@ -1,15 +1,15 @@
 import { mark, stop } from '../_utils/marks'
 import { store } from '../_store/store'
 import uniqBy from 'lodash-es/uniqBy'
-import uniq from 'lodash-es/uniq'
 import isEqual from 'lodash-es/isEqual'
 import { database } from '../_database/database'
-import { concat } from '../_utils/arrays'
+import { concat, indexWhere } from '../_utils/arrays'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
 
 function getExistingItemIdsSet (instanceName, timelineName) {
-  let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
-  return new Set(timelineItemIds)
+  let timelineItemSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
+  return new Set(timelineItemSummaries.map(_ => _.id))
 }
 
 function removeDuplicates (instanceName, timelineName, updates) {
@@ -27,28 +27,37 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
 
   await database.insertTimelineItems(instanceName, timelineName, updates)
 
-  let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-  let newItemIdsToAdd = uniq(concat(itemIdsToAdd, updates.map(_ => _.id)))
-  if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
-    console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
-      'items to itemIdsToAdd for timeline', timelineName)
-    store.setForTimeline(instanceName, timelineName, { itemIdsToAdd: newItemIdsToAdd })
+  let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
+  console.log('itemSummariesToAdd', JSON.parse(JSON.stringify(itemSummariesToAdd)))
+  console.log('updates.map(timelineItemToSummary)', JSON.parse(JSON.stringify(updates.map(timelineItemToSummary))))
+  console.log('concat(itemSummariesToAdd, updates.map(timelineItemToSummary))',
+    JSON.parse(JSON.stringify(concat(itemSummariesToAdd, updates.map(timelineItemToSummary)))))
+  let newItemSummariesToAdd = uniqBy(
+    concat(itemSummariesToAdd, updates.map(timelineItemToSummary)),
+    _ => _.id
+  )
+  if (!isEqual(itemSummariesToAdd, newItemSummariesToAdd)) {
+    console.log('adding ', (newItemSummariesToAdd.length - itemSummariesToAdd.length),
+      'items to timelineItemSummariesToAdd for timeline', timelineName)
+    store.setForTimeline(instanceName, timelineName, { timelineItemSummariesToAdd: newItemSummariesToAdd })
   }
 }
 
-function isValidStatusForThread (thread, timelineName, itemIdsToAdd) {
+function isValidStatusForThread (thread, timelineName, itemSummariesToAdd) {
+  let itemSummariesToAddIdSet = new Set(itemSummariesToAdd.map(_ => _.id))
+  let threadIdSet = new Set(thread.map(_ => _.id))
   let focusedStatusId = timelineName.split('/')[1] // e.g. "status/123456"
-  let focusedStatusIdx = thread.indexOf(focusedStatusId)
+  let focusedStatusIdx = indexWhere(thread, _ => _.id === focusedStatusId)
   return status => {
-    let repliedToStatusIdx = thread.indexOf(status.in_reply_to_id)
+    let repliedToStatusIdx = indexWhere(thread, _ => _.id === status.in_reply_to_id)
     return (
       // A reply to an ancestor status is not valid for this thread, but for the focused status
       // itself or any of its descendents, it is valid.
       repliedToStatusIdx >= focusedStatusIdx &&
       // Not a duplicate
-      !thread.includes(status.id) &&
+      !threadIdSet.has(status.id) &&
       // Not already about to be added
-      !itemIdsToAdd.includes(status.id)
+      !itemSummariesToAddIdSet.has(status.id)
     )
   }
 }
@@ -63,16 +72,19 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
   for (let timelineName of timelineNames) {
     let thread = threads[timelineName]
 
-    let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
-    let validUpdates = updates.filter(isValidStatusForThread(thread, timelineName, itemIdsToAdd))
+    let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
+    let validUpdates = updates.filter(isValidStatusForThread(thread, timelineName, itemSummariesToAdd))
     if (!validUpdates.length) {
       continue
     }
-    let newItemIdsToAdd = uniq(concat(itemIdsToAdd, validUpdates.map(_ => _.id)))
-    if (!isEqual(itemIdsToAdd, newItemIdsToAdd)) {
-      console.log('adding ', (newItemIdsToAdd.length - itemIdsToAdd.length),
-        'items to itemIdsToAdd for thread', timelineName)
-      store.setForTimeline(instanceName, timelineName, { itemIdsToAdd: newItemIdsToAdd })
+    let newItemSummariesToAdd = uniqBy(
+      concat(itemSummariesToAdd, validUpdates.map(timelineItemToSummary)),
+      _ => _.id
+    )
+    if (!isEqual(itemSummariesToAdd, newItemSummariesToAdd)) {
+      console.log('adding ', (newItemSummariesToAdd.length - itemSummariesToAdd.length),
+        'items to timelineItemSummariesToAdd for thread', timelineName)
+      store.setForTimeline(instanceName, timelineName, { timelineItemSummariesToAdd: newItemSummariesToAdd })
     }
   }
 }
