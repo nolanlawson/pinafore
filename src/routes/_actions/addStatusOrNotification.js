@@ -9,7 +9,8 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 function getExistingItemIdsSet (instanceName, timelineName) {
   let timelineItemIds = store.getForTimeline(instanceName, timelineName, 'timelineItemIds') || []
-  return new Set(timelineItemIds)
+  let itemIdsToAdd = store.getForTimeline(instanceName, timelineName, 'itemIdsToAdd') || []
+  return new Set(concat(timelineItemIds, itemIdsToAdd))
 }
 
 function removeDuplicates (instanceName, timelineName, updates) {
