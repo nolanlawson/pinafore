@@ -1,0 +1,37 @@
+<svg
+  class={className}
+  {style}
+  aria-hidden={!ariaLabel}
+  aria-label={ariaLabel}
+  ref:svg>
+  <use xlink:href="{inline ? '' : '/icons.svg'}{href}" />
+</svg>
+<script>
+  import { animate } from '../_utils/animate'
+  import { store } from '../_store/store'
+
+  export default {
+    data: () => ({
+      className: '',
+      style: '',
+      ariaLabel: ''
+    }),
+    store: () => store,
+    computed: {
+      inline: ({ href }) => {
+        // filled in during build
+        return process.env.INLINE_SVGS.includes(href)
+      }
+    },
+    methods: {
+      animate (animation) {
+        let { reduceMotion } = this.store.get()
+        if (!animation || reduceMotion) {
+          return
+        }
+        let svg = this.refs.svg
+        animate(svg, animation)
+      }
+    }
+  }
+</script>

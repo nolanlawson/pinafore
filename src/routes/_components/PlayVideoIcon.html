@@ -1,7 +1,5 @@
 <div class="play-video-icon {className || ''}">
-  <svg class="play-video-icon-svg">
-    <use xlink:href="#fa-play-circle" />
-  </svg>
+  <SvgIcon className="play-video-icon-svg" href="#fa-play-circle" />
 </div>
 <style>
   .play-video-icon {
@@ -16,7 +14,7 @@
     z-index: 40;
     pointer-events: none;
   }
-  .play-video-icon-svg {
+  :global(.play-video-icon-svg) {
     width: 72px;
     height: 72px;
     fill: var(--mask-svg-fill);
@@ -25,9 +23,14 @@
   }
 </style>
 <script>
+  import SvgIcon from './SvgIcon.html'
+
   export default {
     data: () => ({
       className: void 0
-    })
+    }),
+    components: {
+      SvgIcon
+    }
   }
 </script>

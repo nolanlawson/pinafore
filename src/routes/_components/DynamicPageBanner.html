@@ -2,9 +2,7 @@
      role="navigation" aria-label="Page header"
 >
   {#if icon}
-  <svg class="dynamic-page-banner-svg">
-    <use xlink:href={icon} />
-  </svg>
+  <SvgIcon className="dynamic-page-banner-svg" href={icon} />
   {/if}
   <h1 class="dynamic-page-title" aria-label={ariaTitle}>{title}</h1>
   <button type="button"
@@ -24,7 +22,7 @@
   .dynamic-page-banner.dynamic-page-with-icon {
     grid-template-columns: min-content 1fr min-content;
   }
-  .dynamic-page-banner-svg {
+  :global(.dynamic-page-banner-svg) {
     width: 24px;
     height: 24px;
     fill: var(--body-text-color);
@@ -64,13 +62,17 @@
 </style>
 <script>
   import Shortcut from './shortcut/Shortcut.html'
+  import SvgIcon from './SvgIcon.html'
 
   export default {
     data: () => ({
       icon: void 0,
       ariaTitle: ''
     }),
-    components: { Shortcut },
+    components: {
+      Shortcut,
+      SvgIcon
+    },
     methods: {
       onGoBack () {
         window.history.back()

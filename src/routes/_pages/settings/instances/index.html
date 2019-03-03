@@ -16,9 +16,8 @@
                 title={instance.switchLabel}
                 aria-pressed={instance.current}
                 on:click="onSwitchToThisInstance(event, instance.name)">
-          <svg class="instance-switcher-button-svg">
-            <use xlink:href="{instance.current ? '#fa-star' : '#fa-star-o'}" />
-          </svg>
+          <SvgIcon className="instance-switcher-button-svg"
+                   href={instance.current ? '#fa-star' : '#fa-star-o'} />
         </button>
       </div>
     </SettingsListRow>
@@ -55,7 +54,7 @@
     justify-content: center;
     margin: 1px;
   }
-  .instance-switcher-button-svg {
+  :global(.instance-switcher-button-svg) {
     width: 24px;
     height: 24px;
     display: inline-block;
@@ -69,13 +68,15 @@
   import SettingsList from '../../../_components/settings/SettingsList.html'
   import SettingsListRow from '../../../_components/settings/SettingsListRow.html'
   import SettingsListButton from '../../../_components/settings/SettingsListButton.html'
+  import SvgIcon from '../../../_components/SvgIcon.html'
 
   export default {
     components: {
       SettingsLayout,
       SettingsList,
       SettingsListRow,
-      SettingsListButton
+      SettingsListButton,
+      SvgIcon
     },
     methods: {
       onSwitchToThisInstance (e, instanceName) {

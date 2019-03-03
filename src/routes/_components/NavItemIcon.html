@@ -1,16 +1,12 @@
 {#if showBadge}
   <div class="nav-link-svg-wrapper">
-    <svg class="nav-link-svg">
-      <use xlink:href={svg} />
-    </svg>
+    <SvgIcon className="nav-link-svg" href={svg} />
     <span class="nav-link-badge nav-link-badge-digits-{badgeDigits}" aria-hidden="true">
       {badgeNumberToShow}
     </span>
   </div>
 {:else}
-  <svg class="nav-link-svg">
-    <use xlink:href={svg} />
-  </svg>
+  <SvgIcon className="nav-link-svg" href={svg} />
 {/if}
 <style>
   .nav-link-svg-wrapper {
@@ -18,7 +14,7 @@
     display: inline-block;
   }
 
-  .nav-link-svg-wrapper, .nav-link-svg {
+  :global(.nav-link-svg-wrapper, .nav-link-svg) {
     width: 20px;
     height: 20px;
   }
@@ -51,7 +47,7 @@
     font-size: 0.6em;
   }
 
-  .nav-link-svg {
+  :global(.nav-link-svg) {
     display: inline-block;
     fill: var(--nav-svg-fill);
   }
@@ -61,7 +57,7 @@
   }
 
   @media (max-width: 991px) {
-    .nav-link-svg-wrapper, .nav-link-svg {
+    :global(.nav-link-svg-wrapper, .nav-link-svg) {
       width: 25px;
       height: 25px;
     }
@@ -72,6 +68,8 @@
   }
 </style>
 <script>
+  import SvgIcon from './SvgIcon.html'
+
   export default {
     data: () => ({
       showBadge: false,
@@ -80,6 +78,9 @@
     computed: {
       badgeDigits: ({ badgeNumber }) => Math.min(3, badgeNumber.toString().length),
       badgeNumberToShow: ({ badgeNumber }) => (badgeNumber < 100 ? badgeNumber.toString() : '99+')
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>

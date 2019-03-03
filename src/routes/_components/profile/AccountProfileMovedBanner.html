@@ -1,9 +1,7 @@
 <div class="account-profile-moved-banner">
   <Avatar className="from-avatar" size="extra-small" {account} />
   <div class="moved-label">
-    <svg class="moved-svg">
-      <use xlink:href="#fa-suitcase"/>
-    </svg>
+    <SvgIcon className="moved-svg" href="#fa-suitcase" />
     {accessibleName} has moved:
   </div>
   <a class="moved-avatar" href="/accounts/{moved.id}">
@@ -27,7 +25,7 @@
     grid-area: from-avatar;
     justify-self: flex-end;
   }
-  .moved-svg {
+  :global(.moved-svg) {
     width: 18px;
     height: 18px;
     fill: var(--deemphasized-text-color);
@@ -64,6 +62,7 @@
 <script>
   import { removeEmoji } from '../../_utils/removeEmoji'
   import Avatar from '../Avatar.html'
+  import SvgIcon from '../SvgIcon.html'
 
   export default {
     computed: {
@@ -84,7 +83,8 @@
       }
     },
     components: {
-      Avatar
+      Avatar,
+      SvgIcon
     }
   }
 </script>

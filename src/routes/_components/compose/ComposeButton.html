@@ -8,16 +8,14 @@
     </span>
     <div class="compose-box-button-spinner"
          aria-hidden="true">
-      <svg class="compose-box-button-svg {$postingStatus ? 'spin' : 'hidden'}">
-        <use xlink:href="#fa-spinner" />
-      </svg>
+      <SvgIcon className="compose-box-button-svg {$postingStatus ? 'spin' : 'hidden'}"
+               href="#fa-spinner" />
     </div>
 
     <div class="compose-box-button-compose {sticky ? '' : 'hidden'}"
          aria-hidden="true">
-      <svg class="compose-box-button-svg">
-        <use xlink:href="#fa-pencil" />
-      </svg>
+      <SvgIcon className="compose-box-button-svg"
+               href="#fa-pencil" />
     </div>
   </button>
 </div>
@@ -49,7 +47,7 @@
     left: 0;
     right: 0;
   }
-  .compose-box-button-svg {
+  :global(.compose-box-button-svg) {
     width: 24px;
     height: 24px;
     fill: var(--button-primary-text);
@@ -65,12 +63,16 @@
   }
 </style>
 <script>
+  import SvgIcon from '../SvgIcon.html'
   import { store } from '../../_store/store'
 
   export default {
     store: () => store,
     computed: {
       disabled: ({ $postingStatus, overLimit }) => $postingStatus || overLimit
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>

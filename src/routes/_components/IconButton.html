@@ -7,9 +7,7 @@
         {disabled}
         ref:node
 >
-  <svg class="icon-button-svg {svgClassName || ''}" ref:svg>
-    <use xlink:href={href} />
-  </svg>
+  <SvgIcon className="icon-button-svg {svgClassName || ''}" ref:svg {href} />
 </button>
 <style>
   .icon-button {
@@ -21,14 +19,14 @@
     justify-content: center;
   }
 
-  .icon-button-svg {
+  :global(.icon-button-svg) {
     width: 24px;
     height: 24px;
     fill: var(--action-button-fill-color);
     pointer-events: none; /* hack for Edge */
   }
 
-  .icon-button.big-icon .icon-button-svg {
+  :global(.icon-button.big-icon .icon-button-svg) {
     width: 32px;
     height: 32px;
   }
@@ -37,24 +35,24 @@
    * regular styles
    */
 
-  .icon-button:hover .icon-button-svg {
+  :global(.icon-button:hover .icon-button-svg) {
     fill: var(--action-button-fill-color-hover);
   }
 
-  .icon-button.not-pressable:active .icon-button-svg,
-  .icon-button.same-pressed:active .icon-button-svg {
+  :global(.icon-button.not-pressable:active .icon-button-svg,
+  .icon-button.same-pressed:active .icon-button-svg) {
     fill: var(--action-button-fill-color-active);
   }
 
-  .icon-button.pressed.not-same-pressed .icon-button-svg {
+  :global(.icon-button.pressed.not-same-pressed .icon-button-svg) {
     fill: var(--action-button-fill-color-pressed);
   }
 
-  .icon-button.pressed.not-same-pressed:hover .icon-button-svg {
+  :global(.icon-button.pressed.not-same-pressed:hover .icon-button-svg) {
     fill: var(--action-button-fill-color-pressed-hover);
   }
 
-  .icon-button.pressed.not-same-pressed:active .icon-button-svg {
+  :global(.icon-button.pressed.not-same-pressed:active .icon-button-svg) {
     fill: var(--action-button-fill-color-pressed-active);
   }
 
@@ -62,28 +60,28 @@
    * muted
    */
 
-  .icon-button.muted-style .icon-button-svg {
+  :global(.icon-button.muted-style .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color);
   }
 
-  .icon-button.muted-style:hover .icon-button-svg {
+  :global(.icon-button.muted-style:hover .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color-hover);
   }
 
-  .icon-button.muted-style.not-pressable:active .icon-button-svg,
-  .icon-button.muted-style.same-pressed:active .icon-button-svg {
+  :global(.icon-button.muted-style.not-pressable:active .icon-button-svg,
+  .icon-button.muted-style.same-pressed:active .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color-active);
   }
 
-  .icon-button.muted-style.pressed.not-same-pressed .icon-button-svg {
+  :global(.icon-button.muted-style.pressed.not-same-pressed .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color-pressed);
   }
 
-  .icon-button.muted-style.pressed.not-same-pressed:hover .icon-button-svg {
+  :global(.icon-button.muted-style.pressed.not-same-pressed:hover .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color-pressed-hover);
   }
 
-  .icon-button.muted-style.pressed.not-same-pressed:active .icon-button-svg {
+  :global(.icon-button.muted-style.pressed.not-same-pressed:active .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color-pressed-active);
   }
 
@@ -91,7 +89,7 @@
 <script>
   import { classname } from '../_utils/classname'
   import { store } from '../_store/store'
-  import { animate } from '../_utils/animate'
+  import SvgIcon from './SvgIcon.html'
 
   export default {
     oncreate () {
@@ -139,16 +137,14 @@
     },
     methods: {
       animate (animation) {
-        let { reduceMotion } = this.store.get()
-        if (!animation || reduceMotion) {
-          return
-        }
-        let svg = this.refs.svg
-        animate(svg, animation)
+        this.refs.svg.animate(animation)
       },
       onClick (e) {
         this.fire('click', e)
       }
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>

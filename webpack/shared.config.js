@@ -1,4 +1,7 @@
-const mode = process.env.NODE_ENV
+const svgs = require('../bin/svgs')
+
+const inlineSvgs = svgs.filter(_ => _.inline).map(_ => `#${_.id}`)
+const mode = process.env.NODE_ENV || 'production'
 const dev = mode === 'development'
 
 const resolve = {
@@ -14,5 +17,6 @@ const resolve = {
 module.exports = {
   mode,
   dev,
-  resolve
+  resolve,
+  inlineSvgs
 }

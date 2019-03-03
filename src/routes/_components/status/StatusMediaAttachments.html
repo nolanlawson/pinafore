@@ -7,9 +7,7 @@
           class="status-sensitive-media-button"
           aria-label="Hide sensitive media" >
     <div class="svg-wrapper">
-      <svg class="status-sensitive-media-svg">
-        <use xlink:href="#fa-eye-slash" />
-      </svg>
+      <SvgIcon className="status-sensitive-media-svg" href="#fa-eye-slash" />
     </div>
   </button>
   <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
@@ -23,9 +21,7 @@
         Sensitive content. Click to show.
       </div>
       <div class="svg-wrapper">
-        <svg class="status-sensitive-media-svg">
-          <use xlink:href="#fa-eye" />
-        </svg>
+        <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
       </div>
     </button>
   {/if}
@@ -135,7 +131,7 @@
   .status-sensitive-media-container.status-sensitive-media-shown .svg-wrapper {
     background: none;
   }
-  .status-sensitive-media-svg {
+  :global(.status-sensitive-media-svg) {
     width: 24px;
     height: 24px;
     fill: var(--mask-svg-fill);
@@ -144,7 +140,7 @@
     margin: 5px;
     padding: 6px 10px;
   }
-  .status-sensitive-media-container.status-sensitive-media-hidden .status-sensitive-media-svg {
+  :global(.status-sensitive-media-container.status-sensitive-media-hidden .status-sensitive-media-svg) {
     fill: var(--deemphasized-text-color);
     background: var(--mask-opaque-bg);
   }
@@ -152,6 +148,7 @@
 <script>
   import MediaAttachments from './MediaAttachments.html'
   import Shortcut from '../shortcut/Shortcut.html'
+  import SvgIcon from '../SvgIcon.html'
   import { store } from '../../_store/store'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
@@ -163,7 +160,8 @@
     },
     components: {
       MediaAttachments,
-      Shortcut
+      Shortcut,
+      SvgIcon
     },
     store: () => store,
     computed: {

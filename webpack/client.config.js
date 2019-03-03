@@ -4,7 +4,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
-const { mode, dev, resolve } = require('./shared.config')
+const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 
 const output = Object.assign(config.client.output(), {
   // enables HMR in workers
@@ -51,6 +51,11 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.browser': true,
+      'process.env.NODE_ENV': JSON.stringify(mode),
+      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs)
+    }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs
       './database.prod.js'
@@ -66,10 +71,6 @@ module.exports = {
       requestTimeout: 120000
     })
   ] : [
-    new webpack.DefinePlugin({
-      'process.browser': true,
-      'process.env.NODE_ENV': JSON.stringify(mode)
-    }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
       generateStatsFile: true,

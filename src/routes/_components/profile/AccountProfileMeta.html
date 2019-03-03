@@ -19,9 +19,7 @@
       </div>
       <div class="account-profile-meta-cell account-profile-meta-verified">
         {#if field.verified}
-          <svg class="account-profile-meta-verified-svg">
-            <use xlink:href='#fa-check' />
-          </svg>
+          <SvgIcon className="account-profile-meta-verified-svg" href="#fa-check" />
         {/if}
       </div>
     {/each}
@@ -54,7 +52,7 @@
     font-size: 1.1em;
   }
 
-  .account-profile-meta-verified-svg {
+  :global(.account-profile-meta-verified-svg) {
     width: 24px;
     height: 24px;
     fill: var(--svg-fill);
@@ -102,6 +100,7 @@
   }
 </style>
 <script>
+  import SvgIcon from '../SvgIcon.html'
   import { emojifyText } from '../../_utils/emojifyText'
   import { store } from '../../_store/store'
 
@@ -115,6 +114,9 @@
         value: emojifyText(field.value, emojis, $autoplayGifs),
         verified: !!field.verified_at
       })))
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>

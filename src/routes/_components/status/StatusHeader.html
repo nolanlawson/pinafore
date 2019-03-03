@@ -2,9 +2,7 @@
   <div class="status-header-avatar {timelineType === 'pinned' ? 'hidden' : ''}">
     <Avatar {account} size="extra-small"/>
   </div>
-  <svg class="status-header-svg">
-    <use xlink:href={icon}/>
-  </svg>
+  <SvgIcon className="status-header-svg" href={icon} />
 
   <div class="status-header-content">
     {#if timelineType === 'pinned'}
@@ -50,7 +48,7 @@
     margin-left: 19px; /* offset for avatar, 48px - 24px - 5px */
   }
 
-  .status-header-svg {
+  :global(.status-header-svg) {
     min-width: 18px;
     margin-left: 20px;
     width: 18px;
@@ -58,7 +56,7 @@
     fill: var(--deemphasized-text-color);
   }
 
-  .status-header.status-in-notification .status-header-svg {
+  :global(.status-header.status-in-notification .status-header-svg) {
     fill: var(--body-text-color);
   }
 
@@ -98,7 +96,7 @@
   }
 
   @media (max-width: 767px) {
-    .status-header-svg {
+    :global(.status-header-svg) {
       margin-left: 10px;
     }
   }
@@ -106,11 +104,13 @@
 <script>
   import Avatar from '../Avatar.html'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
+  import SvgIcon from '../SvgIcon.html'
 
   export default {
     components: {
       Avatar,
-      AccountDisplayName
+      AccountDisplayName,
+      SvgIcon
     },
     computed: {
       elementId: ({ uuid }) => `status-header-${uuid}`,

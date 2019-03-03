@@ -2,16 +2,13 @@
   {#each items as item (item.key)}
   <li class="generic-dialog-list-item">
     <button class="generic-dialog-list-button" on:click="fire('click', item)">
-      <svg class="generic-dialog-list-item-svg">
-        <use xlink:href={item.icon} />
-      </svg>
+      <SvgIcon className="generic-dialog-list-item-svg" href={item.icon} />
       <span class="generic-dialog-list-button-span">
         {item.label}
       </span>
       {#if selectable}
-        <svg class="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}" aria-hidden={!item.selected}>
-          <use xlink:href="#fa-check" />
-        </svg>
+        <SvgIcon className="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}"
+                 href="#fa-check" />
       {/if}
     </button>
   </li>
@@ -31,7 +28,7 @@
     font-size: 1.2em;
     display: flex;
   }
-  .generic-dialog-list-item-svg {
+  :global(.generic-dialog-list-item-svg) {
     width: 24px;
     height: 24px;
     fill: var(--svg-fill);
@@ -88,3 +85,12 @@
     }
   }
 </style>
+<script>
+  import SvgIcon from '../../SvgIcon.html'
+
+  export default {
+    components: {
+      SvgIcon
+    }
+  }
+</script>

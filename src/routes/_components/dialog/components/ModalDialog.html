@@ -15,9 +15,7 @@
       <div class="close-dialog-button-wrapper">
         <button class="close-dialog-button"
                 data-a11y-dialog-hide aria-label="Close dialog">
-          <svg class="close-dialog-button-svg">
-            <use xlink:href="#fa-times" />
-          </svg>
+          <SvgIcon className="close-dialog-button-svg" href="#fa-times" />
         </button>
       </div>
     </div>
@@ -102,7 +100,7 @@
     justify-content: center;
     align-items: center;
   }
-  .close-dialog-button-svg {
+  :global(.close-dialog-button-svg) {
     padding: 10px;
     fill: var(--button-primary-text);
     width: 24px;
@@ -129,7 +127,7 @@
     .modal-dialog-title {
       font-size: 1.3em;
     }
-    .close-dialog-button-svg {
+    :global(.close-dialog-button-svg) {
       padding: 7px;
       width: 18px;
       height: 18px;
@@ -138,6 +136,7 @@
 </style>
 <script>
   import Shortcut from '../../shortcut/Shortcut.html'
+  import SvgIcon from '../../SvgIcon.html'
   import { A11yDialog } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
   import { classname } from '../../../_utils/classname'
   import { on, emit } from '../../../_utils/eventBus'
@@ -164,7 +163,7 @@
     ondestroy () {
       popShortcutScope('modal')
     },
-    components: { Shortcut },
+    components: { Shortcut, SvgIcon },
     data: () => ({
       // don't animate if we're showing a modal dialog on top of another modal dialog. it looks ugly
       shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2,
