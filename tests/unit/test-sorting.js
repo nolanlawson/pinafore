@@ -4,21 +4,21 @@ import { toPaddedBigInt, toReversePaddedBigInt } from '../../src/routes/_utils/s
 import assert from 'assert'
 import times from 'lodash-es/times'
 
-function lt(a, b) {
+function lt (a, b) {
   assert(a < b, `Failed: ${a} < ${b}`)
 }
 
-function gt(a, b) {
+function gt (a, b) {
   assert(a > b, `Failed: ${a} > ${b}`)
 }
 
 describe('test-sorting.js', () => {
   it('can sort mastodon IDs correctly', () => {
-    let id1 = "1"
-    let id2 = "2"
-    let id3 = "101687554574502736"
-    let id4 = "101688993168288745"
-    let id5 = "101689076270570796"
+    let id1 = '1'
+    let id2 = '2'
+    let id3 = '101687554574502736'
+    let id4 = '101688993168288745'
+    let id5 = '101689076270570796'
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     lt(toPaddedBigInt(id2), toPaddedBigInt(id3))
@@ -60,6 +60,5 @@ describe('test-sorting.js', () => {
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     gt(toReversePaddedBigInt(id1), toReversePaddedBigInt(id2))
-
   })
 })
