@@ -14,6 +14,7 @@ RUN apk add --update --no-cache --virtual build-dependencies git python build-ba
 # Install Pinafore
  && yarn --production --pure-lockfile \
  && yarn build \
+ && yarn cache clean \
  && rm -rf ./src \
 # Cleanup
  && apk del build-dependencies
