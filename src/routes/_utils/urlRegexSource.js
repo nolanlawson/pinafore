@@ -1,4 +1,4 @@
-// via https://raw.githubusercontent.com/tootsuite/mastodon/40dd19b/app/javascript/mastodon/features/compose/util/url_regex.js
+// via https://github.com/tootsuite/mastodon/blob/995f8b3/app/javascript/mastodon/features/compose/util/url_regex.js
 
 /* eslint-disable */
 
