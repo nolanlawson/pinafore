@@ -1,26 +1,9 @@
-import {
-  META_STORE,
-  STATUS_TIMELINES_STORE,
-  STATUSES_STORE,
-  ACCOUNTS_STORE,
-  RELATIONSHIPS_STORE,
-  NOTIFICATIONS_STORE,
-  NOTIFICATION_TIMELINES_STORE,
-  PINNED_STATUSES_STORE,
-  TIMESTAMP,
-  REBLOG_ID,
-  THREADS_STORE,
-  STATUS_ID,
-  USERNAME_LOWERCASE
-} from './constants'
+import { DB_VERSION_CURRENT } from './constants'
 import { addKnownInstance, deleteKnownInstance } from './knownInstances'
+import { migrations } from './migrations'
 
 const openReqs = {}
 const databaseCache = {}
-
-const DB_VERSION_INITIAL = 9
-const DB_VERSION_SEARCH_ACCOUNTS = 10
-const DB_VERSION_CURRENT = 10
 
 function createDatabase (instanceName) {
   return new Promise((resolve, reject) => {
@@ -33,50 +16,10 @@ function createDatabase (instanceName) {
     req.onupgradeneeded = (e) => {
       let db = req.result
       let tx = e.currentTarget.transaction
-
-      function createObjectStore (name, init, indexes) {
-        let store = init
-          ? db.createObjectStore(name, init)
-          : db.createObjectStore(name)
-        if (indexes) {
-          Object.keys(indexes).forEach(indexKey => {
-            store.createIndex(indexKey, indexes[indexKey])
-          })
+      for (let { version, migration } of migrations) {
+        if (e.oldVersion < version) {
+          migration(db, tx)
         }
-      }
-
-      if (e.oldVersion < DB_VERSION_INITIAL) {
-        createObjectStore(STATUSES_STORE, { keyPath: 'id' }, {
-          [TIMESTAMP]: TIMESTAMP,
-          [REBLOG_ID]: REBLOG_ID
-        })
-        createObjectStore(STATUS_TIMELINES_STORE, null, {
-          'statusId': ''
-        })
-        createObjectStore(NOTIFICATIONS_STORE, { keyPath: 'id' }, {
-          [TIMESTAMP]: TIMESTAMP,
-          [STATUS_ID]: STATUS_ID
-        })
-        createObjectStore(NOTIFICATION_TIMELINES_STORE, null, {
-          'notificationId': ''
-        })
-        createObjectStore(ACCOUNTS_STORE, { keyPath: 'id' }, {
-          [TIMESTAMP]: TIMESTAMP
-        })
-        createObjectStore(RELATIONSHIPS_STORE, { keyPath: 'id' }, {
-          [TIMESTAMP]: TIMESTAMP
-        })
-        createObjectStore(THREADS_STORE, null, {
-          'statusId': ''
-        })
-        createObjectStore(PINNED_STATUSES_STORE, null, {
-          'statusId': ''
-        })
-        createObjectStore(META_STORE)
-      }
-      if (e.oldVersion < DB_VERSION_SEARCH_ACCOUNTS) {
-        tx.objectStore(ACCOUNTS_STORE)
-          .createIndex(USERNAME_LOWERCASE, USERNAME_LOWERCASE)
       }
     }
     req.onsuccess = () => resolve(req.result)
