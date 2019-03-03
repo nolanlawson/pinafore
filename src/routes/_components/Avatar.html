@@ -1,7 +1,5 @@
 {#if error}
-<svg class={computedClass} style={svgStyle} aria-hidden="true">
-  <use xlink:href="/icons.svg#fa-user" />
-</svg>
+<SvgIcon className={computedClass} style={svgStyle} href="#fa-user" />
 {:elseif $autoplayGifs}
   <LazyImage
     className={computedClass}
@@ -37,7 +35,7 @@
     background: none;
   }
 
-  svg.avatar {
+  :global(svg.avatar) {
     fill: var(--deemphasized-text-color);
   }
 </style>
@@ -46,6 +44,7 @@
   import NonAutoplayImg from './NonAutoplayImg.html'
   import { classname } from '../_utils/classname'
   import LazyImage from './LazyImage.html'
+  import SvgIcon from './SvgIcon.html'
 
   export default {
     data: () => ({
@@ -80,7 +79,8 @@
     },
     components: {
       NonAutoplayImg,
-      LazyImage
+      LazyImage,
+      SvgIcon
     }
   }
 </script>

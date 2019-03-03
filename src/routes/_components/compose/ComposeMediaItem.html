@@ -4,9 +4,7 @@
     <button class="compose-media-delete-button"
             aria-label="Delete {shortName}"
             on:click="onDeleteMedia()" >
-      <svg class="compose-media-delete-button-svg">
-        <use xlink:href="/icons.svg#fa-times" />
-      </svg>
+      <SvgIcon className="compose-media-delete-button-svg" href="#fa-times" />
     </button>
   </div>
   <div class="compose-media-alt">
@@ -73,7 +71,7 @@
   .compose-media-delete-button:hover {
     background: var(--toast-border);
   }
-  .compose-media-delete-button-svg {
+  :global(.compose-media-delete-button-svg) {
     fill: var(--button-text);
     width: 18px;
     height: 18px;
@@ -95,6 +93,7 @@
   import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { observe } from 'svelte-extras'
+  import SvgIcon from '../SvgIcon.html'
 
   export default {
     oncreate () {
@@ -147,6 +146,9 @@
         } = this.get()
         deleteMedia(realm, index)
       }
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>

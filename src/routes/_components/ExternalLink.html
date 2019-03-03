@@ -4,27 +4,26 @@
    aria-label={ariaLabel}
    class={computedClass}>
   <slot></slot>{#if showIcon}
-    <svg class="external-link-svg">
-      <use xlink:href="/icons.svg#fa-external-link" />
-    </svg>
+    <SvgIcon className="external-link-svg" href="#fa-external-link" />
   {/if}</a>
 <style>
   .external-link-with-icon {
     display: inline-flex;
     align-items: center;
   }
-  .external-link-with-icon .external-link-svg {
+  :global(.external-link-with-icon .external-link-svg) {
     margin-left: 4px;
     width: 14px;
     height: 14px;
     fill: var(--deemphasized-text-color);
   }
-  .external-link-with-icon.normal-icon-color .external-link-svg {
+  :global(.external-link-with-icon.normal-icon-color .external-link-svg) {
     fill: var(--body-text-color);
   }
 </style>
 <script>
   import { classname } from '../_utils/classname'
+  import SvgIcon from './SvgIcon.html'
 
   export default {
     data: () => ({
@@ -40,6 +39,9 @@
         showIcon && 'external-link-with-icon',
         normalIconColor && 'normal-icon-color'
       ))
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>

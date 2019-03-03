@@ -8,9 +8,7 @@
            bind:value="$queryInSearch">
   </div>
   <button type="submit" class="primary search-button" aria-label="Search" disabled={$searchLoading}>
-    <svg class="search-button-svg">
-      <use xlink:href="#fa-search" />
-    </svg>
+    <SvgIcon className="search-button-svg" href="#fa-search" />
   </button>
 </form>
 {#if $searchLoading}
@@ -39,7 +37,7 @@
     border-radius: 10px;
     flex: 1;
   }
-  .search-button-svg {
+  :global(.search-button-svg) {
     fill: var(--button-primary-text);
     width: 18px;
     height: 18px;
@@ -60,12 +58,14 @@
   import LoadingPage from '../LoadingPage.html'
   import { doSearch } from '../../_actions/search'
   import SearchResults from './SearchResults.html'
+  import SvgIcon from '../SvgIcon.html'
 
   export default {
     store: () => store,
     components: {
       LoadingPage,
-      SearchResults
+      SearchResults,
+      SvgIcon
     },
     methods: {
       async onSubmit (e) {

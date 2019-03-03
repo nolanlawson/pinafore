@@ -2,9 +2,7 @@
   <FreeTextLayout>
     <div class="not-logged-in-home">
       <div class="banner">
-        <svg aria-hidden="true" class="not-logged-in-home-svg">
-          <use xlink:href="#pinafore-logo" />
-        </svg>
+        <SvgIcon className="not-logged-in-home-svg" href="#pinafore-logo" />
         <h1>Pinafore</h1>
       </div>
       <p>Pinafore is a web client for <ExternalLink href="https://joinmastodon.org">Mastodon</ExternalLink>, designed for speed and simplicity.</p>
@@ -24,7 +22,7 @@
     align-items: center;
     margin: 0 0 30px;
   }
-  .not-logged-in-home-svg {
+  :global(.not-logged-in-home-svg) {
     width: 70px;
     height: 70px;
     fill: var(--banner-fill);
@@ -47,12 +45,14 @@
   import FreeTextLayout from './FreeTextLayout.html'
   import HiddenFromSSR from './HiddenFromSSR.html'
   import ExternalLink from './ExternalLink.html'
+  import SvgIcon from './SvgIcon.html'
 
   export default {
     components: {
       FreeTextLayout,
       HiddenFromSSR,
-      ExternalLink
+      ExternalLink,
+      SvgIcon
     }
   }
 </script>

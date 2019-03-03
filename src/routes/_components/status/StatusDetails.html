@@ -28,18 +28,14 @@
      rel="prefetch"
      href="/statuses/{originalStatusId}/reblogs"
      aria-label={reblogsLabel}>
-    <svg class="status-favs-reblogs-svg">
-      <use xlink:href="/icons.svg#fa-retweet"/>
-    </svg>
+    <SvgIcon className="status-favs-reblogs-svg" href="#fa-retweet" />
     <span>{numReblogs}</span>
   </a>
   <a class="status-favs-reblogs status-favs"
      rel="prefetch"
      href="/statuses/{originalStatusId}/favorites"
      aria-label={favoritesLabel}>
-    <svg class="status-favs-reblogs-svg">
-      <use xlink:href="/icons.svg#fa-star" />
-    </svg>
+    <SvgIcon className="status-favs-reblogs-svg" href="#fa-star" />
     <span>{numFavs}</span>
   </a>
 </div>
@@ -105,7 +101,7 @@
     color: var(--deemphasized-text-color);
   }
 
-  .status-favs-reblogs-svg {
+  :global(.status-favs-reblogs-svg) {
     fill: var(--deemphasized-text-color);
     width: 18px;
     height: 18px;
@@ -137,6 +133,7 @@
   import ExternalLink from '../ExternalLink.html'
   import { store } from '../../_store/store'
   import { absoluteDateFormatter, shortAbsoluteDateFormatter } from '../../_utils/formatters'
+  import SvgIcon from '../SvgIcon.html'
   import { on } from '../../_utils/eventBus'
 
   export default {
@@ -191,7 +188,8 @@
       }
     },
     components: {
-      ExternalLink
+      ExternalLink,
+      SvgIcon
     }
   }
 </script>

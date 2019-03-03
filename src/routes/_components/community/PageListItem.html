@@ -1,8 +1,6 @@
 <li class="page-list-item">
   <a {href} rel="prefetch">
-    <svg class="page-list-item-svg">
-      <use xlink:href="{inline ? '' : '/icons.svg'}{icon}" />
-    </svg>
+    <SvgIcon className="page-list-item-svg" href={icon} />
     <span aria-label={ariaLabel}>
       {label}
     </span>
@@ -40,7 +38,7 @@
   .page-list-item a:active {
     background: var(--settings-list-item-bg-active);
   }
-  .page-list-item-svg {
+  :global(.page-list-item-svg) {
     width: 24px;
     height: 24px;
     display: inline-block;
@@ -57,7 +55,7 @@
     .page-list-item a {
       padding: 20px 10px;
     }
-    .page-list-item-svg {
+    :global(.page-list-item-svg) {
       margin-right: 10px;
     }
   }
@@ -66,7 +64,7 @@
 <script>
   import { store } from '../../_store/store'
   import IconButton from '../IconButton'
-  import { iconIsInline } from '../../_utils/iconIsInline'
+  import SvgIcon from '../SvgIcon.html'
 
   export default {
     store: () => store,
@@ -80,11 +78,11 @@
           res += ' (' + ($pinnedPage === href ? 'Pinned page' : 'Unpinned page') + ')'
         }
         return res
-      },
-      inline: ({ icon }) => iconIsInline(icon)
+      }
     },
     components: {
-      IconButton
+      IconButton,
+      SvgIcon
     },
     methods: {
       onPinClick (e) {
