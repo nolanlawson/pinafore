@@ -6,6 +6,8 @@ const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 
+const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
+
 const output = Object.assign(config.client.output(), {
   // enables HMR in workers
   globalObject: 'this',
@@ -54,7 +56,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
-      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs)
+      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
+      'process.env.URL_REGEX': `new RegExp(${JSON.stringify(urlRegex.source)},${JSON.stringify(urlRegex.flags)})`
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs
