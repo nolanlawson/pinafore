@@ -42,6 +42,12 @@ function getOrCreateInstanceCache (cache, instanceName) {
 export function clearCache (cache, instanceName) {
   delete cache.caches[instanceName]
 }
+export function clearAllCaches (instanceName) {
+  let allCaches = [statusesCache, accountsCache, relationshipsCache, metaCache, notificationsCache]
+  for (let cache of allCaches) {
+    clearCache(cache, instanceName)
+  }
+}
 export function setInCache (cache, instanceName, key, value) {
   let instanceCache = getOrCreateInstanceCache(cache, instanceName)
   return instanceCache.set(key, value)
