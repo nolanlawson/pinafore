@@ -98,8 +98,7 @@
     "text-encoding": "^0.7.0",
     "tiny-queue": "^0.2.1",
     "webpack": "^4.29.6",
-    "webpack-bundle-analyzer": "^3.0.4",
-    "wtfnode": "^0.8.0"
+    "webpack-bundle-analyzer": "^3.0.4"
   },
   "devDependencies": {
     "assert": "^1.4.1",
