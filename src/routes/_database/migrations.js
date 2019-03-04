@@ -1,5 +1,5 @@
 import {
-  ACCOUNTS_STORE, DB_VERSION_BASE62_IDS, DB_VERSION_INITIAL,
+  ACCOUNTS_STORE, DB_VERSION_SNOWFLAKE_IDS, DB_VERSION_INITIAL,
   DB_VERSION_SEARCH_ACCOUNTS, META_STORE,
   NOTIFICATION_TIMELINES_STORE,
   NOTIFICATIONS_STORE, PINNED_STATUSES_STORE,
@@ -99,7 +99,7 @@ export const migrations = [
     migration: addSearchAccountsMigration
   },
   {
-    version: DB_VERSION_BASE62_IDS,
+    version: DB_VERSION_SNOWFLAKE_IDS,
     migration: snowflakeIdsMigration
   }
 ]

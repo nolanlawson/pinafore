@@ -16,5 +16,5 @@ export const USERNAME_LOWERCASE = '__pinafore_acct_lc'
 
 export const DB_VERSION_INITIAL = 9
 export const DB_VERSION_SEARCH_ACCOUNTS = 10
-export const DB_VERSION_BASE62_IDS = 11
+export const DB_VERSION_SNOWFLAKE_IDS = 11
 export const DB_VERSION_CURRENT = 11
