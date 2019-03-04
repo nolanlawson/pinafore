@@ -9,7 +9,7 @@ import {
   STATUSES_STORE, THREADS_STORE,
   TIMESTAMP, USERNAME_LOWERCASE
 } from './constants'
-import { toPaddedBigInt } from '../_utils/statusIdSorting'
+import { toReversePaddedBigInt } from '../_utils/statusIdSorting'
 
 function initialMigration (db, tx, done) {
   function createObjectStore (name, init, indexes) {
@@ -72,7 +72,8 @@ function snowflakeIdsMigration (db, tx, done) {
       let { result } = e.target
       if (result) {
         let { key, value } = result
-        let newKey = key.split('\u0000')[0] + '\u0000' + toPaddedBigInt(value)
+        // key is timeline name plus delimiter plus reverse padded big int
+        let newKey = key.split('\u0000')[0] + '\u0000' + toReversePaddedBigInt(value)
 
         objectStore.delete(key).onsuccess = () => {
           objectStore.add(value, newKey).onsuccess = () => {
