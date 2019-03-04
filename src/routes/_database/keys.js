@@ -1,4 +1,4 @@
-import { toReversePaddedBigInt, zeroPad } from '../_utils/sorting'
+import { toReversePaddedBigInt, zeroPad } from '../_utils/statusIdSorting'
 
 //
 // timelines
