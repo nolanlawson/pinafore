@@ -75,7 +75,7 @@ function snowflakeIdsMigration (db, tx, done) {
         let newKey = key.split('\u0000')[0] + toPaddedBigInt(value)
         objectStore.delete(key).onsuccess = () => {
           objectStore.add(value, newKey).onsuccess = () => {
-            cursor.continue()
+            result.continue()
           }
         }
       } else {
