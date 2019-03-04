@@ -20,6 +20,9 @@ function createDatabase (instanceName) {
       let migrationsToDo = migrations.filter(({ version }) => e.oldVersion < version)
 
       function doNextMigration () {
+        if (!migrationsToDo.length) {
+          return
+        }
         let { migration } = migrationsToDo.shift()
         migration(db, tx, doNextMigration)
       }
