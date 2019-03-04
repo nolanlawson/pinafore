@@ -1,6 +1,8 @@
 import { dbPromise, getDatabase } from './databaseLifecycle'
 import { getInCache, hasInCache, setInCache } from './cache'
-import { ACCOUNT_ID, REBLOG_ID, STATUS_ID, TIMESTAMP, USERNAME_LOWERCASE } from './constants'
+import {
+  ACCOUNT_ID, REBLOG_ID, STATUS_ID, TIMESTAMP, USERNAME_LOWERCASE, CURRENT_TIME
+} from './constants'
 
 export async function getGenericEntityWithId (store, cache, instanceName, id) {
   if (hasInCache(cache, instanceName, id)) {
@@ -50,6 +52,6 @@ export function cloneForStorage (obj) {
         break
     }
   }
-  res[TIMESTAMP] = Date.now()
+  res[TIMESTAMP] = CURRENT_TIME.now()
   return res
 }

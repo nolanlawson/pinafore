@@ -15,9 +15,10 @@ import { mark, stop } from '../_utils/marks'
 import { deleteAll } from './utils'
 import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 import { getKnownInstances } from './knownInstances'
+import noop from 'lodash-es/noop'
 
 const BATCH_SIZE = 20
-const TIME_AGO = 5 * 24 * 60 * 60 * 1000 // five days ago
+export const TIME_AGO = 5 * 24 * 60 * 60 * 1000 // five days ago
 const DELAY = 5 * 60 * 1000 // five minutes
 
 function batchedGetAll (callGetAll, callback) {
@@ -97,7 +98,7 @@ function cleanupRelationships (relationshipsStore, cutoff) {
   )
 }
 
-async function cleanup (instanceName) {
+export async function cleanup (instanceName) {
   console.log('cleanup', instanceName)
   mark(`cleanup:${instanceName}`)
   let db = await getDatabase(instanceName)
@@ -146,4 +147,5 @@ async function scheduledCleanup () {
   }
 }
 
-export const scheduleCleanup = debounce(scheduledCleanup, DELAY)
+// we have unit tests that test indexedDB; we don't want this thing to run forever
+export const scheduleCleanup = process.browser ? debounce(scheduledCleanup, DELAY) : noop

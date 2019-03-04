@@ -1,13 +1,14 @@
 import { DB_VERSION_CURRENT } from './constants'
 import { addKnownInstance, deleteKnownInstance } from './knownInstances'
 import { migrations } from './migrations'
+import { clearAllCaches } from './cache'
 
 const openReqs = {}
 const databaseCache = {}
 
 function createDatabase (instanceName) {
   return new Promise((resolve, reject) => {
-    let req = indexedDB.open(instanceName, DB_VERSION_CURRENT)
+    let req = indexedDB.open(instanceName, DB_VERSION_CURRENT.version)
     openReqs[instanceName] = req
     req.onerror = reject
     req.onblocked = () => {
@@ -73,4 +74,17 @@ export function deleteDatabase (instanceName) {
     req.onerror = () => reject(req.error)
     req.onblocked = () => console.error(`database ${instanceName} blocked`)
   }).then(() => deleteKnownInstance(instanceName))
+    .then(() => clearAllCaches(instanceName))
+}
+
+// this should probably only be used in unit tests
+export function closeDatabase (instanceName) {
+  // close any open requests
+  let openReq = openReqs[instanceName]
+  if (openReq && openReq.result) {
+    openReq.result.close()
+  }
+  delete openReqs[instanceName]
+  delete databaseCache[instanceName]
+  clearAllCaches(instanceName)
 }
