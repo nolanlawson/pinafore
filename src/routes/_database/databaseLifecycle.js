@@ -16,11 +16,14 @@ function createDatabase (instanceName) {
     req.onupgradeneeded = (e) => {
       let db = req.result
       let tx = e.currentTarget.transaction
-      for (let { version, migration } of migrations) {
-        if (e.oldVersion < version) {
-          migration(db, tx)
-        }
+
+      let migrationsToDo = migrations.filter(({ version }) => e.oldVersion < version)
+
+      function doNextMigration () {
+        let { migration } = migrationsToDo.shift()
+        migration(db, tx, doNextMigration)
       }
+      doNextMigration()
     }
     req.onsuccess = () => resolve(req.result)
   })

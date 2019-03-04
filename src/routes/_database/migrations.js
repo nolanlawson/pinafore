@@ -9,8 +9,9 @@ import {
   STATUSES_STORE, THREADS_STORE,
   TIMESTAMP, USERNAME_LOWERCASE
 } from './constants'
+import { toPaddedBigInt } from '../_utils/statusIdSorting'
 
-function initialMigration (db) {
+function initialMigration (db, tx, done) {
   function createObjectStore (name, init, indexes) {
     let store = init
       ? db.createObjectStore(name, init)
@@ -49,15 +50,41 @@ function initialMigration (db) {
     'statusId': ''
   })
   createObjectStore(META_STORE)
+  done()
 }
 
-function addSearchAccountsMigration (db, tx) {
+function addSearchAccountsMigration (db, tx, done) {
   tx.objectStore(ACCOUNTS_STORE)
     .createIndex(USERNAME_LOWERCASE, USERNAME_LOWERCASE)
+  done()
 }
 
-function useBase62IdsMigration (db, tx) {
+function snowflakeIdsMigration (db, tx, done) {
+  let stores = [STATUS_TIMELINES_STORE, NOTIFICATION_TIMELINES_STORE]
+  let storeDoneCount = 0
 
+  // Here we have to convert the old "reversePaddedBigInt" format to the new
+  // one which is compatible with Pleroma-style snowflake IDs.
+  stores.forEach(store => {
+    let objectStore = tx.objectStore(store)
+    let cursor = objectStore.openCursor()
+    cursor.onsuccess = e => {
+      let { result } = e.target
+      if (result) {
+        let { key, value } = result
+        let newKey = key.split('\u0000')[0] + toPaddedBigInt(value)
+        objectStore.delete(key).onsuccess = () => {
+          objectStore.add(value, newKey).onsuccess = () => {
+            cursor.continue()
+          }
+        }
+      } else {
+        if (++storeDoneCount === stores.length) {
+          done()
+        }
+      }
+    }
+  })
 }
 
 export const migrations = [
@@ -71,6 +98,6 @@ export const migrations = [
   },
   {
     version: DB_VERSION_BASE62_IDS,
-    migration: useBase62IdsMigration
+    migration: snowflakeIdsMigration
   }
 ]

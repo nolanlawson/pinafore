@@ -8,8 +8,9 @@ import { padStart } from './lodash-lite'
 // used both for JS string comparisons as well as IndexedDB ordering.
 const BASE62_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const ASCII_ORDERING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-
 const MAX_ID_LENGTH = 30 // assume that Mastodon/Pleroma IDs won't get any bigger than this
+
+const BASE62_LOOKUP = new Map(BASE62_ALPHABET.split('').map((char, i) => ([char, i])))
 
 export function zeroPad (str, toSize) {
   return padStart(str, toSize, '0')
@@ -19,7 +20,7 @@ export function toPaddedBigInt (id) {
   let asciiOrdered = ''
   for (let i = 0; i < id.length; i++) {
     let char = id.charAt(i)
-    let idx = BASE62_ALPHABET.indexOf(char)
+    let idx = BASE62_LOOKUP.get(char)
     let asciiChar = ASCII_ORDERING[idx]
     asciiOrdered += asciiChar
   }
@@ -31,7 +32,7 @@ export function toReversePaddedBigInt (id) {
   let reversed = ''
   for (let i = 0; i < padded.length; i++) {
     let char = padded.charAt(i)
-    let idx = BASE62_ALPHABET.indexOf(char)
+    let idx = BASE62_LOOKUP.get(char)
     let reverseIdx = BASE62_ALPHABET.length - 1 - idx
     reversed += ASCII_ORDERING[reverseIdx]
   }
