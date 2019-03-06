@@ -162,7 +162,7 @@ describe('test-database.js', function () {
       let allStatuses = times(40, createStatus)
       await dbApi.insertTimelineItems(INSTANCE_NAME, 'local', allStatuses)
 
-      let statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 40)
+      let statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 1000)
       let expected = allStatuses.slice().reverse()
       assert.deepStrictEqual(statuses.map(stripDBFields), expected)
 
@@ -174,7 +174,7 @@ describe('test-database.js', function () {
       await getDatabase(INSTANCE_NAME)
 
       // check that the old statuses are correct
-      statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 40)
+      statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 1000)
       expected = allStatuses.slice().reverse()
       assert.deepStrictEqual(statuses.map(stripDBFields), expected)
 
@@ -183,7 +183,7 @@ describe('test-database.js', function () {
 
       await dbApi.insertTimelineItems(INSTANCE_NAME, 'local', moreStatuses)
 
-      statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 60)
+      statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 1000)
       expected = moreStatuses.slice().reverse().concat(allStatuses.reverse())
 
       assert.deepStrictEqual(statuses.map(stripDBFields), expected)
