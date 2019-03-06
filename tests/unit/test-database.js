@@ -153,7 +153,7 @@ describe('test-database.js', function () {
       await deleteDatabase(INSTANCE_NAME)
     })
 
-    it('migrates from v10 to v11', async () => {
+    it('migrates to snowflake IDs', async () => {
       // open the db using the old version
       DB_VERSION_CURRENT.version = DB_VERSION_SEARCH_ACCOUNTS
       await getDatabase(INSTANCE_NAME)
