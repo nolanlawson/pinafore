@@ -12,7 +12,7 @@ function createDatabase (instanceName) {
     openReqs[instanceName] = req
     req.onerror = reject
     req.onblocked = () => {
-      console.log('idb blocked')
+      console.error('idb blocked')
     }
     req.onupgradeneeded = (e) => {
       let db = req.result
