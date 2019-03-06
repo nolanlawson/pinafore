@@ -56,10 +56,10 @@ describe('test-id-sorting.js', () => {
 
   it('can sort base62 IDs correctly', () => {
     let id1 = '0'
-    let id2 = 'a'
-    let id3 = 't'
-    let id4 = 'A'
-    let id5 = 'Z'
+    let id2 = 'A'
+    let id3 = 'Z'
+    let id4 = 'a'
+    let id5 = 't'
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     lt(toPaddedBigInt(id2), toPaddedBigInt(id3))
@@ -99,17 +99,17 @@ describe('test-id-sorting.js', () => {
     let ids = [
       '9gP7cpqqJWyp93GxRw',
       '9gP7p4Ng7RdTgOSsro',
-      '9gP8eQQFvdZgoQ9tw0',
       '9gP8XTjVDpsT3Iqgb2',
+      '9gP8eQQFvdZgoQ9tw0',
       '9gP99enEY6IAMJnaXA',
       '9gP9WIcp8QCIGbj6ES',
       '9gPA897muEuxo0FxCa',
+      '9gPAG1uvaSBblj05Y0',
       '9gPAaSqTB8Rv4nev0C',
       '9gPAhfTCdeRCG5D9IO',
-      '9gPAG1uvaSBblj05Y0',
-      '9gPBatpwvN76kABf7Y',
       '9gPBA9SYjPFVNUUZTU',
       '9gPBOzteZJZO3wFCQy',
+      '9gPBatpwvN76kABf7Y',
       '9gPC7jAtaS1vEQdcnY',
       '9gPC9Ps4KQMLwRdZWy',
       '9gPCF0G8SvCKFHYg52',
