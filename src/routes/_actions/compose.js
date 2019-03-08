@@ -11,7 +11,7 @@ export async function insertHandleForReply (statusId) {
   let status = await database.getStatus(currentInstance, statusId)
   let { currentVerifyCredentials } = store.get()
   let originalStatus = status.reblog || status
-  let accounts = [originalStatus.account].concat(originalStatus.mentions || [])
+  let accounts = [originalStatus.account].concat(originalStatus.mentions.filter((mention) => mention.id !== originalStatus.account.id) || [])
     .filter(account => account.id !== currentVerifyCredentials.id)
   if (!store.getComposeData(statusId, 'text') && accounts.length) {
     store.setComposeData(statusId, {

@@ -38,7 +38,7 @@
 <script>
   export default {
     computed: {
-      mentions: ({ originalStatus }) => originalStatus.mentions || []
+      mentions: ({ originalStatus }) => originalStatus.mentions.filter((mention) => mention.id === originalStatus.in_reply_to_account_id || mention.id !== originalStatus.account.id) || []
     }
   }
 </script>
