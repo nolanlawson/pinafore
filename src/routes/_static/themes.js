@@ -78,6 +78,12 @@ const themes = [
     color: '#4ab92f'
   },
   {
+    name: 'mastodon',
+    label: 'Mastodon',
+    dark: true,
+    color: '#282C37'
+  },
+  {
     name: 'pitchblack',
     label: 'Pitch Black',
     dark: true,
