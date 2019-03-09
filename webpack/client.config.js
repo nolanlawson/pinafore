@@ -34,6 +34,25 @@ module.exports = {
             hotReload: dev
           }
         }
+      },
+      {
+        test: /node_modules\/emoji-mart/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              [
+                'transform-react-remove-prop-types',
+                {
+                  removeImport: true,
+                  additionalLibraries: [
+                    '../../utils/shared-props'
+                  ]
+                }
+              ]
+            ]
+          }
+        }
       }
     ].filter(Boolean)
   },
@@ -74,6 +93,7 @@ module.exports = {
       requestTimeout: 120000
     })
   ] : [
+
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
       analyzerMode: 'static',
       generateStatsFile: true,
