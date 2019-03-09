@@ -43,8 +43,11 @@
     "build-now-json": "node -r esm ./bin/build-now-json.js"
   },
   "dependencies": {
+    "@babel/core": "^7.3.4",
     "@gamestdio/websocket": "^0.3.2",
     "@webcomponents/custom-elements": "^1.2.1",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
     "chokidar": "^2.1.2",
@@ -54,7 +57,7 @@
     "cross-env": "^5.2.0",
     "css-dedoupe": "^0.1.1",
     "css-loader": "^2.1.0",
-    "emoji-mart": "github:nolanlawson/emoji-mart#for-pinafore-1",
+    "emoji-mart": "github:nolanlawson/emoji-mart#for-pinafore-4",
     "emoji-regex": "^8.0.0",
     "encoding": "^0.1.12",
     "escape-html": "^1.0.3",
