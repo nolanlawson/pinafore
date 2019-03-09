@@ -1,0 +1,28 @@
+$main-theme-color: #313543;
+$body-bg-color: #17191F;
+$main-bg-color: #282C37;
+$anchor-color: #d9e1e8;
+$main-text-color: #ffffff;
+$border-color: #393f4f;
+$secondary-text-color: #f6f6ff;
+$toast-border: $main-theme-color;
+$toast-bg: lighten($body-bg-color, 4%);
+$focus-outline: darken($main-theme-color, 10%);
+$compose-background: darken($main-theme-color, 12%);
+
+@import "_base.scss";
+@import "_dark.scss";
+@import "_dark_scrollbars.scss";
+
+:root {
+  --settings-list-item-text: #9baec8;
+  --settings-list-item-text-hover: #{$main-text-color};
+
+  --compose-button-halo: transparent;
+  --button-primary-bg: #2b90d9;
+  --button-primary-bg-hover: #56a7e1;
+  --button-primary-border: transparent;
+
+  --action-button-fill-color-pressed: #2b90d9;
+  --action-button-fill-color-pressed-hover: #2b90d9;
+}
