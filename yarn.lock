@@ -2676,9 +2676,11 @@ emittery@^0.4.1:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
   integrity sha512-r4eRSeStEGf6M5SKdrQhhLK5bOwOBxQhIE3YSTnZE3GpKiLfnnhE+tPtrJE79+eDJgm39BM6LSoI8SCx4HbwlQ==
 
-"emoji-mart@github:nolanlawson/emoji-mart#for-pinafore-4":
+"emoji-mart@github:nolanlawson/emoji-mart#803351d":
   version "2.9.2"
-  resolved "https://codeload.github.com/nolanlawson/emoji-mart/tar.gz/7cb2cabcf54b53728258d652d45fe06d052605c2"
+  resolved "https://codeload.github.com/nolanlawson/emoji-mart/tar.gz/803351dcafad02c22e59eb57454903681bb4a91c"
+  dependencies:
+    prop-types "^15.6.0"
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -3935,6 +3937,13 @@ ignore@^4.0.2:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
+immutability-helper@^2.7.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-2.9.1.tgz#71c423ba387e67b6c6ceba0650572f2a2a6727df"
+  integrity sha512-r/RmRG8xO06s/k+PIaif2r5rGc3j4Yhc01jSBfwPCXDLYZwp/yxralI37Df1mwmuzcCsen/E/ITKcTEvc1PQmQ==
+  dependencies:
+    invariant "^2.2.0"
+
 import-lazy@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/import-lazy/-/import-lazy-3.1.0.tgz#891279202c8a2280fdbd6674dbd8da1a1dfc67cc"
@@ -3980,64 +3989,6 @@ indexof@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
   integrity sha1-gtwzbSMrkGIXnQWrMpOmYFn9Q10=
-
-inferno-clone-vnode@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-clone-vnode/-/inferno-clone-vnode-7.1.9.tgz#7ff791e983c4205d39e4ad5e46c35369c1c99577"
-  integrity sha512-AWDR1DjCsmH8T67+4nANL4DSpuZLOS0zphDadzKbbm5eatQyc67LEfzmNYcgPQR217Dvu/haSEi02ElafzgfuA==
-  dependencies:
-    inferno "7.1.9"
-
-inferno-compat@^7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-compat/-/inferno-compat-7.1.9.tgz#efbd1a975af4de813b3db2bbf84f0b634bdbf2da"
-  integrity sha512-dlRptbni5iaxEQsrPyLsGT6YZYrxHcOCEImp6vDPI4NN/gqMe4x1+lhQJvSWmGLVP8zjFswE/llcg4ncWvTqGg==
-  dependencies:
-    inferno "7.1.9"
-    inferno-clone-vnode "7.1.9"
-    inferno-create-class "7.1.9"
-    inferno-create-element "7.1.9"
-    inferno-extras "7.1.9"
-
-inferno-create-class@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-create-class/-/inferno-create-class-7.1.9.tgz#e3671cb5b8289272006ba541f37f17822dd5d988"
-  integrity sha512-iNNCuJSOEfjrFKGl+9Wz7WRdjEZopo5xN3MdJCFnd+A9tR9g2Gb2WC3S+rvwzD9qpuC3sHDA16KCoTje7YjsaQ==
-  dependencies:
-    inferno "7.1.9"
-
-inferno-create-element@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-create-element/-/inferno-create-element-7.1.9.tgz#b2fe8f085ee9388fb88f693db16b786a60027f5b"
-  integrity sha512-JwRdEBrP9kE4aV1OSMNoBek7WEc7La2XpUL+P3p/H7P4exyrQ7628bnDMlc/piTeMMEdmYmipVv8O4pfPdH0dQ==
-  dependencies:
-    inferno "7.1.9"
-
-inferno-extras@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-extras/-/inferno-extras-7.1.9.tgz#3d382e05c7d9fb8a65bd778563d39e98bd51a18a"
-  integrity sha512-NxkiXr6LOUP8XnQYOROWcs2u4BDC/IL7ivDYYMKA8GUIzFYIH73ldBsRjukbpyGHm0lOtfN0xv3en0s6oN6juA==
-  dependencies:
-    inferno "7.1.9"
-
-inferno-shared@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-shared/-/inferno-shared-7.1.9.tgz#bba330e96e07a5ad5f8a3a26ea88f8aae44d7d23"
-  integrity sha512-uOtvDq82+mJH8fZ+7Lof83gkLtvU/xyUW3LiNijQov2odQ1iy06i69OgmaI5IZn46/AzZACqIZBVxrlKu2lD6A==
-
-inferno-vnode-flags@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno-vnode-flags/-/inferno-vnode-flags-7.1.9.tgz#a03ef2fa027a280aa7e3da295b634e087d881525"
-  integrity sha512-hAE09h6Nh1qKVfRordJBAV7GifskRskGVqqOCkHD3+01y7K3X7RnjXuwzqHPg30gsZqn/kkHFksgSmcnUrBytQ==
-
-inferno@7.1.9:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/inferno/-/inferno-7.1.9.tgz#53caca7376a839376516986f7bfb2291f339ca84"
-  integrity sha512-eEc2jrrKUnKQPH/TzrqPvpgL3kjIbebNomb2Ak6UIeakf2q+8u2SsVh/ojEpTpJy1KVlIkZJd6uoMMQZ5dSNNw==
-  dependencies:
-    inferno-shared "7.1.9"
-    inferno-vnode-flags "7.1.9"
-    opencollective-postinstall "^2.0.2"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -4086,7 +4037,7 @@ intersection-observer@^0.5.1:
   resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.5.1.tgz#e340fc56ce74290fe2b2394d1ce88c4353ac6dfa"
   integrity sha512-Zd7Plneq82kiXFixs7bX62YnuZ0BMRci9br7io88LwDyF3V43cQMI+G5IiTlTNTt+LsDUppl19J/M2Fp9UkH6g==
 
-invariant@^2.2.2:
+invariant@^2.2.0, invariant@^2.2.2:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -5501,11 +5452,6 @@ onetime@^2.0.0, onetime@^2.0.1:
   dependencies:
     mimic-fn "^1.0.0"
 
-opencollective-postinstall@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
-  integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
-
 opener@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/opener/-/opener-1.5.1.tgz#6d2f0e77f1a0af0032aca716c2c1fbb8e7e8abed"
@@ -5979,6 +5925,34 @@ postcss@^7.0.5, postcss@^7.0.6:
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+preact-compat@^3.18.4:
+  version "3.18.4"
+  resolved "https://registry.yarnpkg.com/preact-compat/-/preact-compat-3.18.4.tgz#fbe76ddd30356c68e3ccde608107104946f2cf8d"
+  integrity sha512-aR5CvCIDerE2Y201ERVkWQdTAQKhKGNYujEk4tbyfQDInFTrnCCa3KCeGtULZrwy0PNRBjdQa2/Za7qv7ALNFg==
+  dependencies:
+    immutability-helper "^2.7.1"
+    preact-render-to-string "^3.8.2"
+    preact-transition-group "^1.1.1"
+    prop-types "^15.6.2"
+    standalone-react-addons-pure-render-mixin "^0.1.1"
+
+preact-render-to-string@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-3.8.2.tgz#bd72964d705a57da3a9e72098acaa073dd3ceff9"
+  integrity sha512-przuZPajiurStGgxMoJP0EJeC4xj5CgHv+M7GfF3YxAdhGgEWAkhOSE0xympAFN20uMayntBZpttIZqqLl77fw==
+  dependencies:
+    pretty-format "^3.5.1"
+
+preact-transition-group@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/preact-transition-group/-/preact-transition-group-1.1.1.tgz#f0a49327ea515ece34ea2be864c4a7d29e5d6e10"
+  integrity sha1-8KSTJ+pRXs406ivoZMSn0p5dbhA=
+
+preact@^8.4.2:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-8.4.2.tgz#1263b974a17d1ea80b66590e41ef786ced5d6a23"
+  integrity sha512-TsINETWiisfB6RTk0wh3/mvxbGRvx+ljeBccZ4Z6MPFKgu/KFGyf2Bmw3Z/jlXhL5JlNKY6QAbA9PVyzIy9//A==
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -5988,6 +5962,11 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
   integrity sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
+
+pretty-format@^3.5.1:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
+  integrity sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=
 
 private@^0.1.6, private@^0.1.8:
   version "0.1.8"
@@ -6026,15 +6005,7 @@ promisify-event@^1.0.0:
   dependencies:
     pinkie-promise "^2.0.0"
 
-prop-types@^15.6.2:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
-  integrity sha512-3pboPvLiWD7dkI3qf3KbUe6hKFKa52w+AE0VCqECtf+QHAKgOL37tTaNCnuX1nAAQ4ZhyP+kYVKf8rLmJ/feDQ==
-  dependencies:
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
-prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -6042,6 +6013,14 @@ prop-types@^15.7.2:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.8.1"
+
+prop-types@^15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
+  integrity sha512-3pboPvLiWD7dkI3qf3KbUe6hKFKa52w+AE0VCqECtf+QHAKgOL37tTaNCnuX1nAAQ4ZhyP+kYVKf8rLmJ/feDQ==
+  dependencies:
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
 
 proxy-addr@~2.0.4:
   version "2.0.4"
@@ -6975,6 +6954,11 @@ stackframe@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-0.3.1.tgz#33aa84f1177a5548c8935533cbfeb3420975f5a4"
   integrity sha1-M6qE8Rd6VUjIk1Uzy/6zQgl19aQ=
+
+standalone-react-addons-pure-render-mixin@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/standalone-react-addons-pure-render-mixin/-/standalone-react-addons-pure-render-mixin-0.1.1.tgz#3c7409f4c79c40de9ac72c616cf679a994f37551"
+  integrity sha1-PHQJ9MecQN6axyxhbPZ5qZTzdVE=
 
 standard-engine@~9.0.0:
   version "9.0.0"
