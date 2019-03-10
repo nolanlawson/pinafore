@@ -8,8 +8,9 @@ const resolve = {
   extensions: ['.js', '.json', '.html'],
   mainFields: ['svelte', 'module', 'browser', 'main'],
   alias: {
-    'react': 'preact-compat',
-    'react-dom': 'preact-compat'
+    'react': 'preact/compat/dist/compat.js',
+    'react-dom': 'preact/compat/dist/compat.js',
+    'preact/hooks': 'preact/hooks/dist/hooks.js'
   }
 }
 
