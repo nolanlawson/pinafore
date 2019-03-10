@@ -8,9 +8,9 @@ const resolve = {
   extensions: ['.js', '.json', '.html'],
   mainFields: ['svelte', 'module', 'browser', 'main'],
   alias: {
-    'react': 'inferno-compat',
-    'react-dom': 'inferno-compat',
-    'inferno': dev ? 'inferno/dist/index.dev.esm.js' : 'inferno'
+    'react': 'preact/compat/dist/compat.js',
+    'react-dom': 'preact/compat/dist/compat.js',
+    'preact/hooks': 'preact/hooks/dist/hooks.js'
   }
 }
 
