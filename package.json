@@ -84,7 +84,7 @@
     "performance-now": "^2.1.0",
     "pinch-zoom-element": "^1.1.1",
     "prop-types": "^15.7.2",
-    "quick-lru": "^2.0.0",
+    "quick-lru": "^3.0.0",
     "remount": "^0.9.5",
     "requestidlecallback": "^0.3.0",
     "rollup": "^1.5.0",
