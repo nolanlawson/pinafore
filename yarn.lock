@@ -2676,9 +2676,9 @@ emittery@^0.4.1:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
   integrity sha512-r4eRSeStEGf6M5SKdrQhhLK5bOwOBxQhIE3YSTnZE3GpKiLfnnhE+tPtrJE79+eDJgm39BM6LSoI8SCx4HbwlQ==
 
-"emoji-mart@github:nolanlawson/emoji-mart#803351d":
+"emoji-mart@github:nolanlawson/emoji-mart#fbbf080":
   version "2.9.2"
-  resolved "https://codeload.github.com/nolanlawson/emoji-mart/tar.gz/803351dcafad02c22e59eb57454903681bb4a91c"
+  resolved "https://codeload.github.com/nolanlawson/emoji-mart/tar.gz/fbbf08052148f98eb1e47156a7adf0067aa0e96d"
   dependencies:
     prop-types "^15.6.0"
 
