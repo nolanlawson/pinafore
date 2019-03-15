@@ -57,7 +57,7 @@
     "cross-env": "^5.2.0",
     "css-dedoupe": "^0.1.1",
     "css-loader": "^2.1.0",
-    "emoji-mart": "github:nolanlawson/emoji-mart#fbbf080",
+    "emoji-mart": "^2.10.0",
     "emoji-regex": "^8.0.0",
     "encoding": "^0.1.12",
     "escape-html": "^1.0.3",
