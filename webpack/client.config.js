@@ -36,7 +36,8 @@ module.exports = {
         }
       },
       {
-        test: /node_modules\/emoji-mart/,
+        test: /\.m?js$/,
+        include: /node_modules\/emoji-mart/,
         use: {
           loader: 'babel-loader',
           options: {
