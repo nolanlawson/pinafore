@@ -73,6 +73,21 @@
     position: relative;
   }
 
+  /* the actual focus outline is not very visible, so use an ::after pseudo-element */
+  .play-video-button:focus, .show-image-button:focus {
+    outline: none;
+  }
+
+  .play-video-button:focus::after, .show-image-button:focus::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    border: 2px solid var(--focus-outline);
+  }
+
   .show-image-button {
     cursor: zoom-in;
   }
