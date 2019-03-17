@@ -48,6 +48,7 @@
   import { classname } from '../../_utils/classname'
   import { applyFocusStylesToParent } from '../../_utils/events'
   import noop from 'lodash-es/noop'
+  import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
 
   export default {
     components: {
@@ -65,10 +66,10 @@
       notificationId: ({ notification }) => notification.id,
       status: ({ notification }) => notification.status,
       statusId: ({ status }) => status && status.id,
-      uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => {
-        return `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId}/${statusId || ''}`
-      },
-      elementId: ({ uuid }) => `notification-${uuid}`,
+      uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
+        createStatusOrNotificationUuid($currentInstance, timelineType, timelineValue, notificationId, statusId)
+      ),
+      elementId: ({ uuid }) => uuid,
       shortcutScope: ({ elementId }) => elementId,
       ariaLabel: ({ status, account, $omitEmojiInDisplayNames }) => (
         !status && `${getAccountAccessibleName(account, $omitEmojiInDisplayNames)} followed you, @${account.acct}`

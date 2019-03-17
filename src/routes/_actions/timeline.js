@@ -124,7 +124,7 @@ export async function fetchTimelineItemsOnScrollToBottom (instanceName, timeline
 
 export async function showMoreItemsForTimeline (instanceName, timelineName) {
   mark('showMoreItemsForTimeline')
-  let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd')
+  let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
   itemSummariesToAdd = itemSummariesToAdd.sort(compareTimelineItemSummaries).reverse()
   addTimelineItemSummaries(instanceName, timelineName, itemSummariesToAdd, false)
   store.setForTimeline(instanceName, timelineName, {
@@ -135,7 +135,7 @@ export async function showMoreItemsForTimeline (instanceName, timelineName) {
   stop('showMoreItemsForTimeline')
 }
 
-export async function showMoreItemsForCurrentTimeline () {
+export function showMoreItemsForCurrentTimeline () {
   let { currentInstance, currentTimeline } = store.get()
   return showMoreItemsForTimeline(
     currentInstance,

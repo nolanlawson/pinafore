@@ -105,11 +105,10 @@
 <script>
   import NavItemIcon from './NavItemIcon.html'
   import { store } from '../_store/store'
-  import { smoothScroll } from '../_utils/smoothScroll'
   import { on, emit } from '../_utils/eventBus'
   import { mark, stop } from '../_utils/marks'
   import { doubleRAF } from '../_utils/doubleRAF'
-  import { getScrollContainer } from '../_utils/scrollContainer'
+  import { scrollToTop } from '../_utils/scrollToTop'
 
   export default {
     oncreate () {
@@ -167,14 +166,10 @@
         if (!selected) {
           return
         }
-        let scroller = getScrollContainer()
-        let { scrollTop } = scroller
-        if (scrollTop === 0) {
-          return
+        if (scrollToTop(/* smooth */ true)) {
+          e.preventDefault()
+          e.stopPropagation()
         }
-        e.preventDefault()
-        e.stopPropagation()
-        smoothScroll(scroller, 0)
       }
     },
     components: {

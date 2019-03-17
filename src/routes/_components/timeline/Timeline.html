@@ -28,6 +28,7 @@
     <div>Error: component failed to load! Try reloading. {error}</div>
   {/await}
 </div>
+<Shortcut scope="global" key="." on:pressed="showMoreAndScrollToTop()" />
 <ScrollListShortcuts />
 <script>
   import { store } from '../../_store/store'
@@ -35,6 +36,7 @@
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
   import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
+  import Shortcut from '../shortcut/Shortcut.html'
   import {
     importVirtualList,
     importList,
@@ -56,6 +58,7 @@
   import { doubleRAF } from '../../_utils/doubleRAF'
   import { observe } from 'svelte-extras'
   import { createMakeProps } from '../../_actions/createMakeProps'
+  import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
 
   export default {
     oncreate () {
@@ -114,12 +117,8 @@
             return `Notifications on ${$currentInstance}`
         }
       },
-      timelineType: ({ timeline }) => {
-        return timeline.split('/')[0]
-      },
-      timelineValue: ({ timeline }) => {
-        return timeline.split('/').slice(-1)[0]
-      },
+      timelineType: ({ $currentTimelineType }) => $currentTimelineType,
+      timelineValue: ({ $currentTimelineValue }) => $currentTimelineValue,
       // Scroll to the first item if this is a "status in own thread" timeline.
       // Don't scroll to the first item because it obscures the "back" button.
       scrollToItem: ({ timelineType, timelineValue, $firstTimelineItemId }) => (
@@ -293,10 +292,12 @@
         // where the scrollable content appears to jump around if we need to scroll it.
         console.log('timeline preinitialized')
         this.store.set({ timelinePreinitialized: true })
-      }
+      },
+      showMoreAndScrollToTop
     },
     components: {
-      ScrollListShortcuts
+      ScrollListShortcuts,
+      Shortcut
     }
   }
 </script>

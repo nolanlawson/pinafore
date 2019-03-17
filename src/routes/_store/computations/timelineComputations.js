@@ -20,6 +20,12 @@ export function timelineComputations (store) {
   computeForTimeline(store, 'shouldShowHeader', false)
   computeForTimeline(store, 'timelineItemSummariesAreStale', false)
 
+  store.compute('currentTimelineType', ['currentTimeline'], currentTimeline => (
+    currentTimeline && currentTimeline.split('/')[0])
+  )
+  store.compute('currentTimelineValue', ['currentTimeline'], currentTimeline => (
+    currentTimeline && currentTimeline.split('/').slice(-1)[0])
+  )
   store.compute('firstTimelineItemId', ['timelineItemSummaries'], (timelineItemSummaries) => (
     getFirstIdFromItemSummaries(timelineItemSummaries)
   ))

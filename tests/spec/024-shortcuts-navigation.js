@@ -1,7 +1,9 @@
 import {
-  getUrl,
+  getNthStatus,
+  getUrl, isNthStatusActive,
   modalDialogContents,
-  notificationsNavButton } from '../utils'
+  notificationsNavButton, scrollToStatus
+} from '../utils'
 import { loginAsFoobar } from '../roles'
 
 fixture`024-shortcuts-navigation.js`
@@ -108,4 +110,15 @@ test('Shortcut 6 goes to the settings', async t => {
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('6')
     .expect(getUrl()).contains('/settings')
+})
+
+test('Shortcut . scrolls to top and focuses', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .hover(getNthStatus(1))
+  await scrollToStatus(t, 10)
+  await t
+    .pressKey('.')
+    .expect(isNthStatusActive(1)).ok()
 })
