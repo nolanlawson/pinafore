@@ -38,7 +38,7 @@ running on `localhost:3000`.
 ### Running integration tests
 
 The integration tests require running Mastodon itself,
-meaning the[Mastodon development guide](https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Development-guide.md)
+meaning the [Mastodon development guide](https://docs.joinmastodon.org/development/overview/)
 is relevant here. In particular, you'll need a recent 
 version of Ruby, Redis, and Postgres running. For a full list of deps, see `bin/setup-mastodon-in-travis.sh`.
 
@@ -160,10 +160,10 @@ preprocessor.
 Highly modular, highly functional, lots of single-function files. Tends to help with tree-shaking and
 code-splitting, as well as avoiding circular dependencies.
 
-### Inferno is loaded dynamically
+### Preact is loaded dynamically
 
 This is a Svelte project, but `emoji-mart` is used for the emoji picker, and it's written in React. So we
-lazy-load the React-compatible Inferno library when we load `emoji-mart`.
+lazy-load the React-compatible Preact library when we load `emoji-mart`.
 
 ### Some third-party code is bundled
 
