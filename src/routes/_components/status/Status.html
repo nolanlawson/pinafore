@@ -136,6 +136,7 @@
   import { composeNewStatusMentioning } from '../../_actions/mention'
   import { applyFocusStylesToParent } from '../../_utils/events'
   import noop from 'lodash-es/noop'
+  import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -238,9 +239,9 @@
       ),
       inReplyToId: ({ originalStatus }) => originalStatus.in_reply_to_id,
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
-        `${$currentInstance}/${timelineType}/${timelineValue}/${notificationId || ''}/${statusId}`
+        createStatusOrNotificationUuid($currentInstance, timelineType, timelineValue, notificationId, statusId)
       ),
-      elementId: ({ uuid }) => `status-${uuid}`,
+      elementId: ({ uuid }) => uuid,
       shortcutScope: ({ elementId }) => elementId,
       isStatusInOwnThread: ({ timelineType, timelineValue, originalStatusId }) => (
         (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
