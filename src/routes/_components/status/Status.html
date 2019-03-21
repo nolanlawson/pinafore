@@ -129,7 +129,6 @@
   import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
   import { getAccessibleLabelForStatus } from '../../_a11y/getAccessibleLabelForStatus'
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
-  import { htmlToPlainText } from '../../_utils/htmlToPlainText'
   import { measureText } from '../../_utils/measureText'
   import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
   import { absoluteDateFormatter } from '../../_utils/formatters'
@@ -137,6 +136,7 @@
   import { applyFocusStylesToParent } from '../../_utils/events'
   import noop from 'lodash-es/noop'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
+  import { statusHtmlToPlainText } from '../../_utils/statusHtmlToPlainText'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -231,7 +231,8 @@
       originalAccountId: ({ originalAccount }) => originalAccount.id,
       accountForShortcut: ({ originalAccount, notification }) => notification ? notification.account : originalAccount,
       visibility: ({ originalStatus }) => originalStatus.visibility,
-      plainTextContent: ({ content }) => htmlToPlainText(content),
+      mentions: ({ originalStatus }) => originalStatus.mentions || [],
+      plainTextContent: ({ content, mentions }) => statusHtmlToPlainText(content, mentions),
       plainTextContentLength: ({ plainTextContent }) => measureText(plainTextContent),
       plainTextContentOverLength: ({ plainTextContentLength }) => plainTextContentLength > LONG_POST_LENGTH,
       spoilerText: ({ originalStatus, plainTextContentOverLength }) => (
