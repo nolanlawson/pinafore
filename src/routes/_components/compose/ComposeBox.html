@@ -155,7 +155,9 @@
       media: ({ composeData }) => composeData.media || [],
       inReplyToId: ({ composeData }) => composeData.inReplyToId,
       postPrivacy: ({ postPrivacyKey }) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
-      defaultPostPrivacyKey: ({ $currentVerifyCredentials }) => $currentVerifyCredentials.source.privacy,
+      defaultPostPrivacyKey: ({ $currentVerifyCredentials }) => (
+        ($currentVerifyCredentials && $currentVerifyCredentials.source.privacy) || 'public'
+      ),
       postPrivacyKey: ({ composeData, defaultPostPrivacyKey }) => composeData.postPrivacy || defaultPostPrivacyKey,
       textLength: ({ text }) => measureText(text),
       contentWarningLength: ({ contentWarning }) => measureText(contentWarning),

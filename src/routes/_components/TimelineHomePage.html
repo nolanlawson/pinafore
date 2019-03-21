@@ -7,9 +7,7 @@
   {#if hidePage}
     <LoadingPage />
   {/if}
-  {#if $currentVerifyCredentials }
-    <ComposeBox realm="home" hidden={hidePage}/>
-  {/if}
+  <ComposeBox realm="home" hidden={hidePage}/>
   <div class="timeline-home-anchor-container">
     {#if !hidePage && hideTimeline}
       <LoadingPage />
