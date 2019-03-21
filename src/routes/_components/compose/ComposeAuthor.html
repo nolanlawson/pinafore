@@ -1,13 +1,18 @@
 <a {href}
    rel="prefetch"
-   class="compose-box-avatar"
+   class="compose-box-avatar {loaded ? 'loaded' : 'not-loaded'}"
+   aria-hidden={!loaded}
    aria-label="Profile for {accessibleName}">
   <Avatar account={verifyCredentials} size="small"/>
 </a>
-<a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}" {href} rel="prefetch">
+<a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
+   {href}
+   aria-hidden={!loaded}
+   rel="prefetch">
   <AccountDisplayName account={verifyCredentials} />
 </a>
-<span class="compose-box-handle {loaded ? 'loaded' : 'not-loaded'}">
+<span class="compose-box-handle {loaded ? 'loaded' : 'not-loaded'}"
+      aria-hidden={!loaded} >
   {'@' + verifyCredentials.acct}
 </span>
 <style>
@@ -86,9 +91,9 @@
       displayName: ({ verifyCredentials }) => verifyCredentials.display_name || verifyCredentials.username,
       accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
         if ($omitEmojiInDisplayNames) {
-          return removeEmoji(displayName, emojis) || displayName
+          return removeEmoji(displayName, emojis) || displayName || ''
         }
-        return displayName
+        return displayName || ''
       }
     }
   }
