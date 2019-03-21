@@ -13,7 +13,7 @@ else
 fi
 
 # if in travis, use the $NOW_TOKEN
-NOW_COMMAND="now --team nolanlawson"
+NOW_COMMAND="now --scope nolanlawson"
 if [[ ! -z "$NOW_TOKEN" ]]; then
   NOW_COMMAND="$NOW_COMMAND --token $NOW_TOKEN"
 fi
