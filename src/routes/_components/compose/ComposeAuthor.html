@@ -88,12 +88,12 @@
       id: ({ verifyCredentials }) => (verifyCredentials && verifyCredentials.id),
       href: ({ id }) => (id ? `/accounts/${id}` : '#'),
       emojis: ({ verifyCredentials }) => (verifyCredentials.emojis || []),
-      displayName: ({ verifyCredentials }) => verifyCredentials.display_name || verifyCredentials.username,
+      displayName: ({ verifyCredentials }) => verifyCredentials.display_name || verifyCredentials.username || '',
       accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
         if ($omitEmojiInDisplayNames) {
-          return removeEmoji(displayName, emojis) || displayName || ''
+          return removeEmoji(displayName, emojis) || displayName
         }
-        return displayName || ''
+        return displayName
       }
     }
   }
