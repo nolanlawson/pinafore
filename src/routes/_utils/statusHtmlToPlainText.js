@@ -37,6 +37,10 @@ export function statusHtmlToPlainText (html, mentions) {
     return ''
   }
   mark('statusHtmlToPlainText')
+  // GNU Social and Pleroma don't add <p> tags
+  if (!html.startsWith('<p>')) {
+    html = `<p>${html}</p>`
+  }
   let doc = domParser.parseFromString(html, 'text/html')
   massageMentions(doc, mentions)
   let res = innerTextRetainingNewlines(doc)
