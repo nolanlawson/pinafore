@@ -1,6 +1,6 @@
 import {
   accountProfileMoreOptionsButton,
-  confirmationDialogCancelButton,
+  confirmationDialogCancelButton, getNthStatus,
   getNthStatusOptionsButton,
   modalDialog
 } from '../utils'
@@ -13,10 +13,13 @@ fixture`028-report-ui.js`
 test('Can open a report UI from a status', async t => {
   await loginAsFoobar(t)
   await t
+    .hover(getNthStatus(1))
     .click(getNthStatusOptionsButton(1))
     .click($('.modal-dialog button').withText('Report'))
     .expect(modalDialog.innerText).contains('You are reporting @quux')
-    .expect(modalDialog.find('.recent-statuses').innerText).contains('pinned toot 2')
+    .expect(modalDialog.find('.recent-statuses').innerText).contains('pinned toot 2', {
+      timeout: 30000
+    })
     .click(confirmationDialogCancelButton)
     .expect(modalDialog.exists).notOk()
 })
@@ -28,7 +31,9 @@ test('Can open a report UI from an account', async t => {
     .click(accountProfileMoreOptionsButton)
     .click($('.modal-dialog button').withText('Report'))
     .expect(modalDialog.innerText).contains('You are reporting @quux')
-    .expect(modalDialog.find('.recent-statuses').innerText).contains('pinned toot 2')
+    .expect(modalDialog.find('.recent-statuses').innerText).contains('pinned toot 2', {
+      timeout: 30000
+    })
     .click(confirmationDialogCancelButton)
     .expect(modalDialog.exists).notOk()
 })
