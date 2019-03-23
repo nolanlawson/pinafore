@@ -1,7 +1,7 @@
 import {
   composeButton, composeInput, composeLengthIndicator, emojiButton, emojiSearchInput, getComposeSelectionStart,
   getNthStatusContent, getUrl,
-  homeNavButton,
+  homeNavButton, modalDialog,
   notificationsNavButton, sleep,
   times
 } from '../utils'
@@ -93,24 +93,15 @@ test('inserts custom emoji correctly', async t => {
 
 test('inserts emoji without typing anything', async t => {
   await loginAsFoobar(t)
+  await sleep(1000)
   await t
     .click(emojiButton)
-  await sleep(1000)
-  await t
-    .expect(emojiSearchInput.value).eql('')
-    .typeText(emojiSearchInput, 'blobpats', { paste: true })
-  await sleep(1000)
-  await t
-    .pressKey('enter')
+    .click(modalDialog.find('button[aria-label="blobpats"]'))
     .expect(composeInput.value).eql(':blobpats: ')
+  await sleep(1000)
+  await t
     .click(emojiButton)
-  await sleep(1000)
-  await t
-    .expect(emojiSearchInput.value).eql('')
-    .typeText(emojiSearchInput, 'blobpeek')
-  await sleep(1000)
-  await t
-    .pressKey('enter')
+    .click(modalDialog.find('button[aria-label="blobpeek"]'))
     .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
 })
 
