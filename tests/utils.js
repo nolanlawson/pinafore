@@ -5,6 +5,7 @@ import * as blobUtils from './blobUtils'
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
 export const modalDialog = $('.modal-dialog')
+export const visibleModalDialog = $('.modal-dialog:not([aria-hidden="true"])')
 export const modalDialogContents = $('.modal-dialog-contents')
 export const closeDialogButton = $('.close-dialog-button')
 export const notificationsNavButton = $('nav a[href="/notifications"]')
@@ -75,6 +76,8 @@ export const reblogsCountElement = $('.status-reblogs').addCustomDOMProperties({
 export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeout))
 
 export const getUrl = exec(() => window.location.href)
+
+export const getMediaScrollLeft = exec(() => document.querySelector('.media-scroll').scrollLeft || 0)
 
 export const getActiveElementClassList = exec(() =>
   (document.activeElement && (document.activeElement.getAttribute('class') || '').split(/\s+/)) || []
@@ -241,6 +244,10 @@ export function getNthStatusSensitiveMediaButton (n) {
 
 export function getNthStatusMedia (n) {
   return $(`${getNthStatusSelector(n)} .status-media`)
+}
+
+export function getNthStatusMediaButton (n) {
+  return $(`${getNthStatusSelector(n)} .status-media button`)
 }
 
 export function getNthStatusRelativeDate (n) {

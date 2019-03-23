@@ -22,7 +22,7 @@
     <slot></slot>
   </div>
 </div>
-<Shortcut scope="modal" key="Backspace" on:pressed="closeDialog(id)"/>
+<Shortcut scope="modal-{id}" key="Backspace" on:pressed="closeDialog(id)"/>
 <style>
   :global(.modal-dialog[aria-hidden='true']) {
     display: none;
@@ -146,10 +146,10 @@
 
   export default {
     oncreate () {
+      let { id } = this.get()
       let dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
-        let { id } = this.get()
         document.body.classList.toggle('modal-open', false)
         this.fire('close')
         this._a11yDialog.destroy()
@@ -158,10 +158,11 @@
       })
       on('showDialog', this, this.showDialog)
       on('closeDialog', this, this.closeDialog)
-      pushShortcutScope('modal')
+      pushShortcutScope(`modal-${id}`)
     },
     ondestroy () {
-      popShortcutScope('modal')
+      let { id } = this.get()
+      popShortcutScope(`modal-${id}`)
     },
     components: { Shortcut, SvgIcon },
     data: () => ({
