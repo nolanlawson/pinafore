@@ -155,8 +155,8 @@
         document.body.classList.toggle('modal-open', false)
         this.fire('close')
         this._a11yDialog.destroy()
-        requestAnimationFrame(() => document.body.removeChild(dialogElement))
         emit('destroyDialog', id)
+        requestAnimationFrame(() => document.body.removeChild(dialogElement))
       })
       on('showDialog', this, this.showDialog)
       on('closeDialog', this, this.closeDialog)
@@ -164,11 +164,11 @@
     },
     ondestroy () {
       window.removeEventListener('popstate', this.onPopState)
-      if (!this.get().statePopped) {
+      let { statePopped, statePushed, id } = this.get()
+      if (statePushed && !statePopped) {
         // If we weren't closed due to popstate, then pop state to ensure the correct history.
         window.history.back()
       }
-      let { id } = this.get()
       popShortcutScope(`modal-${id}`)
     },
     components: { Shortcut, SvgIcon },
@@ -205,6 +205,7 @@
           return
         }
         window.addEventListener('popstate', this.onPopState)
+        this.set({ statePushed: true })
         window.history.pushState({ modal: id }, null, location.href)
         document.body.classList.toggle('modal-open', true)
         this._a11yDialog.show()
