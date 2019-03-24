@@ -40,7 +40,10 @@
         showTextConfirmationDialog({
           text: `Log out of ${instanceName}?`
         }).on('positive', () => {
-          /* no await */ logOutOfInstance(instanceName)
+          // TODO: dumb timing hack because the modal navigates back while we're trying to navigate forward
+          setTimeout(() => {
+            /* no await */logOutOfInstance(instanceName)
+          }, 200)
         })
       }
     }
