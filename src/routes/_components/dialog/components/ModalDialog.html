@@ -226,9 +226,7 @@
         if (id !== otherId) {
           return
         }
-        setTimeout(() => { // use setTimeout to workaround svelte timing issue
-          this._a11yDialog.hide()
-        }, 0)
+        this._a11yDialog.hide()
       }
     }
   }
