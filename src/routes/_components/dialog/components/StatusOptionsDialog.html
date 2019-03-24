@@ -193,8 +193,7 @@ export default {
     async onMuteClicked () {
       let { account, muting } = this.get()
       this.close()
-      // TODO: timing hack because this opens another modal
-      setTimeout(() => toggleMute(account, !muting), 200)
+      await toggleMute(account, !muting)
     },
     async onMuteConversationClicked () {
       let { statusId, mutingConversation } = this.get()
