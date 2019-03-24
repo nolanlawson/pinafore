@@ -143,10 +143,14 @@
   import {
     pushShortcutScope,
     popShortcutScope } from '../../../_utils/shortcuts'
+  import { store } from '../../../_store/store'
 
   export default {
     oncreate () {
       let { id } = this.get()
+      let modalStack = this.store.get().modalStack || []
+      modalStack.push(id)
+      this.store.set({ modalStack })
       this.onPopState = this.onPopState.bind(this)
       let dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
@@ -154,11 +158,11 @@
         document.body.classList.toggle('modal-open', false)
         this.fire('close')
         this._a11yDialog.destroy()
-        emit('destroyDialog', id)
         if (!this.get().statePopped) {
           window.history.back()
         }
         requestAnimationFrame(() => document.body.removeChild(dialogElement))
+        emit('destroyDialog', id)
       })
       on('showDialog', this, this.showDialog)
       on('closeDialog', this, this.closeDialog)
@@ -167,8 +171,13 @@
     ondestroy () {
       let { id } = this.get()
       popShortcutScope(`modal-${id}`)
+      let { modalStack } = this.store.get()
+      modalStack.pop()
+      this.store.set({ modalStack })
+      window.removeEventListener('popstate', this.onPopState)
     },
     components: { Shortcut, SvgIcon },
+    store: () => store,
     data: () => ({
       // don't animate if we're showing a modal dialog on top of another modal dialog. it looks ugly
       shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2,
@@ -209,13 +218,13 @@
           this.set({ fadedIn: true })
         })
       },
-      ondestroy () {
-        window.removeEventListener('popstate', this.onPopState)
-      },
       onPopState () {
         let { id } = this.get()
-        this.set({ statePopped: true })
-        this.closeDialog(id)
+        let { modalStack } = this.store.get()
+        if (id === modalStack[modalStack.length - 1]) {
+          this.set({ statePopped: true })
+          this.closeDialog(id)
+        }
       },
       closeDialog (thisId) {
         let { id } = this.get()
