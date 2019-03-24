@@ -1,5 +1,5 @@
 import MuteDialog from '../components/MuteDialog.html'
-import { showDialog } from './showDialog'
+import { showDialog } from '../lifecycle/showDialog'
 
 export default function showMuteDialog (account) {
   return showDialog(MuteDialog, {
