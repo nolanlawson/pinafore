@@ -1,9 +1,23 @@
 import {
   closeDialogButton,
+  composeButton,
+  composeModalInput,
+  composeModalPostPrivacyButton,
   dialogOptionsOption,
-  getNthStatus, getNthStatusMediaButton, getNthStatusOptionsButton,
-  getUrl, goBack, goForward,
-  modalDialog, modalDialogBackdrop, scrollToStatus, sleep
+  getNthStatus,
+  getNthStatusMediaButton,
+  getNthStatusOptionsButton,
+  getUrl,
+  goBack,
+  goForward,
+  homeNavButton,
+  modalDialog,
+  modalDialogBackdrop,
+  notificationsNavButton,
+  postPrivacyDialogButtonUnlisted,
+  scrollToStatus,
+  sleep,
+  visibleModalDialog
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { indexWhere } from '../../src/routes/_utils/arrays'
@@ -156,4 +170,90 @@ test('Closing nested modal pops history state', async t => {
   await goBack()
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
+})
+
+test('History works correctly for nested modal', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(notificationsNavButton)
+    .click(homeNavButton)
+  await scrollToStatus(t, 10)
+  await t
+    .click(composeButton)
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.exists).ok()
+    .click(composeModalPostPrivacyButton)
+    .expect(visibleModalDialog.textContent).contains('Post privacy')
+  await sleep(1000)
+  await t
+    .pressKey('backspace')
+  await t
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.exists).ok()
+  await sleep(1000)
+  await t
+    .pressKey('backspace')
+    .expect(modalDialog.exists).notOk()
+    .expect(getUrl()).eql('http://localhost:4002/')
+  await goBack()
+  await t
+    .expect(getUrl()).contains('/notifications')
+})
+
+test('History works correctly for nested modal 2', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(notificationsNavButton)
+    .click(homeNavButton)
+  await scrollToStatus(t, 10)
+  await t
+    .click(composeButton)
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.exists).ok()
+    .click(composeModalPostPrivacyButton)
+    .expect(visibleModalDialog.textContent).contains('Post privacy')
+  await sleep(1000)
+  await t
+    .click(postPrivacyDialogButtonUnlisted)
+  await t
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.exists).ok()
+    .expect(composeModalPostPrivacyButton.getAttribute('aria-label')).eql('Adjust privacy (currently Unlisted)')
+  await sleep(1000)
+  await goBack()
+  await t
+    .expect(modalDialog.exists).notOk()
+    .expect(getUrl()).eql('http://localhost:4002/')
+  await goBack()
+  await t
+    .expect(getUrl()).contains('/notifications')
+})
+
+test('History works correctly for nested modal 3', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(notificationsNavButton)
+    .click(homeNavButton)
+  await scrollToStatus(t, 10)
+  await t
+    .click(composeButton)
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.exists).ok()
+    .click(composeModalPostPrivacyButton)
+    .expect(visibleModalDialog.textContent).contains('Post privacy')
+  await sleep(1000)
+  await t
+    .click(closeDialogButton)
+  await t
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalInput.exists).ok()
+  await sleep(1000)
+  await t
+    .click(closeDialogButton)
+    .expect(modalDialog.exists).notOk()
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+  await goBack()
+  await t
+    .expect(getUrl()).contains('/notifications')
 })

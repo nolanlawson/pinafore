@@ -142,15 +142,12 @@
   import { on, emit } from '../../../_utils/eventBus'
   import {
     pushShortcutScope,
-    popShortcutScope } from '../../../_utils/shortcuts'
-  import { store } from '../../../_store/store'
+    popShortcutScope
+  } from '../../../_utils/shortcuts'
 
   export default {
     oncreate () {
       let { id } = this.get()
-      let modalStack = this.store.get().modalStack || []
-      modalStack.push(id)
-      this.store.set({ modalStack })
       this.onPopState = this.onPopState.bind(this)
       let dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
@@ -158,9 +155,6 @@
         document.body.classList.toggle('modal-open', false)
         this.fire('close')
         this._a11yDialog.destroy()
-        if (!this.get().statePopped) {
-          window.history.back()
-        }
         requestAnimationFrame(() => document.body.removeChild(dialogElement))
         emit('destroyDialog', id)
       })
@@ -169,15 +163,15 @@
       pushShortcutScope(`modal-${id}`)
     },
     ondestroy () {
+      window.removeEventListener('popstate', this.onPopState)
+      if (!this.get().statePopped) {
+        // If we weren't closed due to popstate, then pop state to ensure the correct history.
+        window.history.back()
+      }
       let { id } = this.get()
       popShortcutScope(`modal-${id}`)
-      let { modalStack } = this.store.get()
-      modalStack.pop()
-      this.store.set({ modalStack })
-      window.removeEventListener('popstate', this.onPopState)
     },
     components: { Shortcut, SvgIcon },
-    store: () => store,
     data: () => ({
       // don't animate if we're showing a modal dialog on top of another modal dialog. it looks ugly
       shouldAnimate: !process.browser || document.getElementsByClassName('modal-dialog').length < 2,
@@ -205,9 +199,9 @@
       }
     },
     methods: {
-      showDialog (thisId) {
+      showDialog (otherId) {
         let { id } = this.get()
-        if (id !== thisId) {
+        if (otherId !== id) {
           return
         }
         window.addEventListener('popstate', this.onPopState)
@@ -218,17 +212,18 @@
           this.set({ fadedIn: true })
         })
       },
-      onPopState () {
+      onPopState (event) {
         let { id } = this.get()
-        let { modalStack } = this.store.get()
-        if (id === modalStack[modalStack.length - 1]) {
+        if (!(event.state && event.state.modal === id)) {
+          // If the new state is not us, just assume that we need to be closed.
+          // This will only fail if modals are ever nested more than 2 levels deep.
           this.set({ statePopped: true })
           this.closeDialog(id)
         }
       },
-      closeDialog (thisId) {
+      closeDialog (otherId) {
         let { id } = this.get()
-        if (id !== thisId) {
+        if (id !== otherId) {
           return
         }
         setTimeout(() => { // use setTimeout to workaround svelte timing issue

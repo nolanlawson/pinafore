@@ -8,7 +8,7 @@ export const modalDialog = $('.modal-dialog')
 export const visibleModalDialog = $('.modal-dialog:not([aria-hidden="true"])')
 export const modalDialogContents = $('.modal-dialog-contents')
 export const modalDialogBackdrop = $('.modal-dialog-backdrop')
-export const closeDialogButton = $('.close-dialog-button')
+export const closeDialogButton = $('.modal-dialog:not([aria-hidden="true"]) .close-dialog-button')
 export const notificationsNavButton = $('nav a[href="/notifications"]')
 export const homeNavButton = $('nav a[href="/"]')
 export const localTimelineNavButton = $('nav a[href="/local"]')
@@ -57,6 +57,8 @@ export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
 export const composeModalContentWarningInput = $('.modal-dialog .content-warning-input')
 export const composeModalEmojiButton = $('.modal-dialog .compose-box-toolbar button:nth-child(1)')
 export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolbar button:nth-child(3)')
+
+export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
 
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
