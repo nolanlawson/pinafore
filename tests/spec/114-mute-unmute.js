@@ -28,6 +28,8 @@ test('Can mute and unmute an account', async t => {
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Mute @admin')
+  await sleep(1000)
+  await t
     .click(getNthDialogOptionsOption(3))
   await sleep(1000)
   await t
@@ -45,6 +47,8 @@ test('Can mute and unmute an account', async t => {
     .expect(getNthDialogOptionsOption(2).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(4).innerText).contains('Unmute @admin')
+  await sleep(1000)
+  await t
     .click(getNthDialogOptionsOption(4))
   await sleep(1000)
   await t
@@ -53,6 +57,8 @@ test('Can mute and unmute an account', async t => {
     .expect(getNthDialogOptionsOption(2).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
     .expect(getNthDialogOptionsOption(4).innerText).contains('Mute @admin')
+  await sleep(1000)
+  await t
     .click(closeDialogButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
 })
