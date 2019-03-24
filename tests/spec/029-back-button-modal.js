@@ -161,6 +161,8 @@ test('Closing nested modal pops history state', async t => {
     .click(getNthStatusOptionsButton(1))
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
     .expect(getUrl()).contains('/status')
+  await sleep(1000)
+  await t
     .click(dialogOptionsOption.withText('Report'))
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
     .expect(modalDialog.innerText).contains('Report')
