@@ -11,6 +11,7 @@
       <AccountProfileNote {account} />
       <AccountProfileMeta {account} />
       <AccountProfileDetails {account} {relationship} {verifyCredentials} />
+      <AccountProfileFilters {account} />
     </div>
   </div>
 </div>
@@ -37,7 +38,8 @@
                          "avatar     username    username  username      follow"
                          "avatar     note        note      note          follow"
                          "meta       meta        meta      meta          meta"
-                         "details    details     details   details       details";
+                         "details    details     details   details       details"
+                         "filters    filters     filters   filters       filters";
     grid-template-columns: min-content auto 1fr 1fr min-content;
     grid-column-gap: 10px;
     grid-row-gap: 5px;
@@ -68,7 +70,8 @@
                            "avatar     followed-by   follow"
                            "note       note          note"
                            "meta       meta          meta"
-                           "details    details       details";
+                           "details    details       details"
+                           "filters    filters       filters";
       grid-template-columns: min-content minmax(auto, 1fr) min-content;
       grid-template-rows: min-content min-content 1fr min-content;
       padding: 10px;
@@ -82,6 +85,7 @@
   import AccountProfileMeta from './AccountProfileMeta.html'
   import AccountProfileDetails from './AccountProfileDetails.html'
   import AccountProfileMovedBanner from './AccountProfileMovedBanner.html'
+  import AccountProfileFilters from './AccountProfileFilters.html'
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
 
@@ -105,7 +109,8 @@
       AccountProfileNote,
       AccountProfileMeta,
       AccountProfileDetails,
-      AccountProfileMovedBanner
+      AccountProfileMovedBanner,
+      AccountProfileFilters
     }
   }
 </script>

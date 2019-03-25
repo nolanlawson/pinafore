@@ -1,0 +1,28 @@
+<div class="account-profile-filters">
+  <div class="account-profile-filter">
+    <a href="/accounts/{account.id}" rel="prefetch">
+      Toots
+    </a>
+  </div>
+  <div class="account-profile-filter">
+    <a href="/accounts/{account.id}/with_replies" rel="prefetch">
+      Toots and replies
+    </a>
+  </div>
+  <div class="account-profile-filter">
+    <a href="/accounts/{account.id}/media" rel="prefetch">
+      Media
+    </a>
+  </div>
+</div>
+<style>
+  .account-profile-filters {
+    grid-area: filters;
+    display: flex;
+  }
+  .account-profile-filter {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+  }
+</style>
