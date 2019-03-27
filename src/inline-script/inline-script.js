@@ -50,9 +50,3 @@ if (hasLocalStorage && localStorage.store_disableCustomScrollbars === 'true') {
 if (/mac/i.test(navigator.platform)) {
   document.documentElement.style.setProperty('--scrollbar-border-radius', '50px')
 }
-
-// TODO: remove this hack when Safari works with cross-origin window.open()
-// in a PWA: https://github.com/nolanlawson/pinafore/issues/45
-if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
-  document.head.removeChild(document.getElementById('theManifest'))
-}
