@@ -1,0 +1,107 @@
+<nav aria-label="Filters" class="account-profile-filters">
+  <ul>
+    {#each filterTabs as filterTab (filterTab.href)}
+      <li class="{filter === filterTab.filter ? 'current-filter' : 'not-current-filter'}">
+        <a aria-label="{filterTab.label} { filter === filterTab.filter ? '(Current)' : ''}"
+           href={filterTab.href}
+           rel="prefetch">
+          {filterTab.label}
+        </a>
+      </li>
+    {/each}
+  </ul>
+</nav>
+<style>
+  li {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* reset */
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    margin: 5px 0;
+    box-sizing: border-box;
+  }
+
+  li {
+    border: 1px solid var(--main-border);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: var(--tab-bg);
+  }
+
+  li:not(:first-child) {
+    border-left: none;
+  }
+
+  li:hover {
+    background: var(--button-bg-hover);
+  }
+
+  li.not-current-filter {
+    background: var(--tab-bg-non-selected);
+  }
+
+  li.current-filter {
+    border-bottom: none;
+  }
+
+  li.current-filter:hover {
+    background: var(--tab-bg-hover);
+  }
+
+  li.not-current-filter:hover {
+    background: var(--tab-bg-hover-non-selected);
+  }
+
+  li:active {
+    background: var(--tab-bg-active);
+  }
+
+  a {
+    padding: 10px;
+    color: var(--body-text-color);
+    font-size: 1.1em;
+    flex: 1;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+</style>
+<script>
+  export default {
+    computed: {
+      filterTabs: ({ account }) => (
+        [
+          {
+            filter: '',
+            label: 'Toots',
+            href: `/accounts/${account.id}`
+          },
+          {
+            filter: 'with_replies',
+            label: 'Toots and replies',
+            href: `/accounts/${account.id}/with_replies`
+          },
+          {
+            filter: 'media',
+            label: 'Media',
+            href: `/accounts/${account.id}/media`
+          }
+        ]
+      )
+    }
+  }
+</script>

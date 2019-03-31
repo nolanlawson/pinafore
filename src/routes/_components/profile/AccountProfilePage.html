@@ -1,0 +1,66 @@
+{#if $isUserLoggedIn}
+<TimelinePage {timeline} >
+  <DynamicPageBanner title="" ariaTitle="Profile page for {accountName}"/>
+  {#if $currentAccountProfile && $currentVerifyCredentials}
+  <AccountProfile account={$currentAccountProfile}
+                  relationship={$currentAccountRelationship}
+                  verifyCredentials={$currentVerifyCredentials}
+  />
+  <AccountProfileFilters account={$currentAccountProfile} {filter} />
+  {/if}
+  {#if !filter}
+    <PinnedStatuses {accountId} />
+  {/if}
+</TimelinePage>
+{:else}
+<HiddenFromSSR>
+  <FreeTextLayout>
+    <h1>Profile</h1>
+
+    <p>A user timeline will appear here when logged in.</p>
+  </FreeTextLayout>
+</HiddenFromSSR>
+{/if}
+<script>
+  import TimelinePage from '../TimelinePage.html'
+  import FreeTextLayout from '../FreeTextLayout.html'
+  import { store } from '../../_store/store.js'
+  import HiddenFromSSR from '../HiddenFromSSR'
+  import DynamicPageBanner from '../DynamicPageBanner.html'
+  import { updateProfileAndRelationship, clearProfileAndRelationship } from '../../_actions/accounts'
+  import AccountProfile from './AccountProfile.html'
+  import PinnedStatuses from '../timeline/PinnedStatuses.html'
+  import AccountProfileFilters from './AccountProfileFilters.html'
+
+  export default {
+    oncreate () {
+      let { accountId } = this.get()
+      clearProfileAndRelationship()
+      updateProfileAndRelationship(accountId)
+    },
+    store: () => store,
+    computed: {
+      profileName: ({ $currentAccountProfile }) => {
+        return ($currentAccountProfile && ('@' + $currentAccountProfile.acct)) || ''
+      },
+      shortProfileName: ({ $currentAccountProfile }) => {
+        return ($currentAccountProfile && ('@' + $currentAccountProfile.username)) || ''
+      },
+      accountName: ({ $currentAccountProfile }) => {
+        return ($currentAccountProfile && ($currentAccountProfile.display_name || $currentAccountProfile.username)) || ''
+      },
+      timeline: ({ accountId, filter }) => (
+        `account/${accountId}` + (filter ? `/${filter}` : '')
+      )
+    },
+    components: {
+      TimelinePage,
+      FreeTextLayout,
+      HiddenFromSSR,
+      DynamicPageBanner,
+      AccountProfile,
+      PinnedStatuses,
+      AccountProfileFilters
+    }
+  }
+</script>

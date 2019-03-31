@@ -38,4 +38,10 @@
   --settings-list-item-bg-hover: #{lighten($main-bg-color, 3%)};
 
   --banner-fill: #{lighten($main-theme-color, 10%)};
+
+  --tab-bg: #{$main-bg-color};
+  --tab-bg-non-selected: #{darken($main-bg-color, 2%)};
+  --tab-bg-active: #{lighten($main-bg-color, 15%)};
+  --tab-bg-hover: #{lighten($main-bg-color, 1%)};
+  --tab-bg-hover-non-selected: #{darken($main-bg-color, 1%)};
 }
