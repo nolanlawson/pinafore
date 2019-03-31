@@ -5,8 +5,8 @@ set -x
 
 PATH="$PATH:./node_modules/.bin"
 
-# update now.json
-yarn run build-now-json
+# need to build to update now.json
+yarn run build
 
 # set up robots.txt
 if [[ "$DEPLOY_TYPE" == "dev" ]]; then
