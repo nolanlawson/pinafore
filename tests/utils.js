@@ -60,6 +60,10 @@ export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolb
 
 export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
 
+export const accountProfileFilterStatuses = $('.account-profile-filters li:nth-child(1)')
+export const accountProfileFilterStatusesAndReplies = $('.account-profile-filters li:nth-child(2)')
+export const accountProfileFilterMedia = $('.account-profile-filters li:nth-child(3)')
+
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
 }

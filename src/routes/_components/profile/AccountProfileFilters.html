@@ -1,8 +1,7 @@
-<h2 class="sr-only">Filters</h2>
-<nav aria-label="Account filters" class="account-profile-filters">
+<nav aria-label="Filters" class="account-profile-filters">
   <ul>
     {#each filterTabs as filterTab (filterTab.href)}
-      <li class="account-profile-filter">
+      <li class="{filter === filterTab.filter ? 'current-filter' : 'not-current-filter'}">
         <a aria-label="{filterTab.label} { filter === filterTab.filter ? '(Current)' : ''}"
            href={filterTab.href}
            rel="prefetch">
@@ -13,10 +12,7 @@
   </ul>
 </nav>
 <style>
-  .account-profile-filters {
-  }
-
-  .account-profile-filter {
+  li {
     flex: 1;
     text-align: center;
   }
@@ -32,7 +28,6 @@
     display: flex;
     margin: 5px 0;
     box-sizing: border-box;
-    border-bottom: 1px solid var(--main-border)
   }
 
   li {
@@ -41,9 +36,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: none;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    background: var(--tab-bg);
+  }
+
+  li:not(:first-child) {
+    border-left: none;
+  }
+
+  li:hover {
+    background: var(--button-bg-hover);
+  }
+
+  li.not-current-filter {
+    background: var(--tab-bg-non-selected);
+  }
+
+  li.current-filter {
+    border-bottom: none;
+  }
+
+  li.current-filter:hover {
+    background: var(--tab-bg-hover);
+  }
+
+  li.not-current-filter:hover {
+    background: var(--tab-bg-hover-non-selected);
+  }
+
+  li:active {
+    background: var(--tab-bg-active);
   }
 
   a {
@@ -51,10 +74,6 @@
     color: var(--body-text-color);
     font-size: 1.1em;
     flex: 1;
-  }
-
-  li:hover {
-    background: var(--button-bg-hover);
   }
 
   a:hover {

@@ -100,4 +100,10 @@
   --file-drop-mask: #{rgba(255, 255, 255, 0.8)};
 
   --banner-fill: #{$main-theme-color};
+
+  --tab-bg: #{$main-bg-color};
+  --tab-bg-non-selected: #{darken($main-bg-color, 3%)};
+  --tab-bg-active: #{darken($main-bg-color, 25%)};
+  --tab-bg-hover: #{darken($main-bg-color, 4%)};
+  --tab-bg-hover-non-selected: #{darken($main-bg-color, 7%)};
 }
