@@ -13,7 +13,7 @@ import {
 } from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { Selector as $ } from 'testcafe'
 
 fixture`025-shortcuts-status.js`
@@ -80,7 +80,7 @@ test('Shortcut o opens active status, backspace goes back', async t => {
 })
 
 test('Shortcut x shows/hides spoilers', async t => {
-  let idx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  let idx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -96,7 +96,7 @@ test('Shortcut x shows/hides spoilers', async t => {
 })
 
 test('Shortcut y shows/hides sensitive image', async t => {
-  let idx = indexWhere(homeTimeline, _ => _.content === "here's a secret kitten")
+  let idx = homeTimeline.findIndex(_ => _.content === "here's a secret kitten")
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -112,7 +112,7 @@ test('Shortcut y shows/hides sensitive image', async t => {
 })
 
 test('Shortcut f toggles favorite status', async t => {
-  let idx = indexWhere(homeTimeline, _ => _.content === 'this is unlisted')
+  let idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -127,7 +127,7 @@ test('Shortcut f toggles favorite status', async t => {
 })
 
 test('Shortcut p toggles profile', async t => {
-  let idx = indexWhere(homeTimeline, _ => _.content === 'pinned toot 1')
+  let idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -139,7 +139,7 @@ test('Shortcut p toggles profile', async t => {
 })
 
 test('Shortcut m toggles mention', async t => {
-  let idx = indexWhere(homeTimeline, _ => _.content === 'pinned toot 1')
+  let idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')

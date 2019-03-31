@@ -2,7 +2,6 @@ import { closeDialogButton, getNthStatus, getNthStatusSelector, modalDialogConte
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
-import { indexWhere } from '../../src/routes/_utils/arrays'
 
 fixture`008-status-media.js`
   .page`http://localhost:4002`
@@ -10,8 +9,8 @@ fixture`008-status-media.js`
 test('shows sensitive images and videos', async t => {
   await loginAsFoobar(t)
 
-  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
-  let videoIdx = indexWhere(homeTimeline, _ => _.content === 'secret video')
+  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  let videoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
 
   await scrollToStatus(t, 1 + kittenIdx)
   await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).exists).notOk()
@@ -27,8 +26,8 @@ test('shows sensitive images and videos', async t => {
 test('click and close image and video modals', async t => {
   await loginAsFoobar(t)
 
-  let videoIdx = indexWhere(homeTimeline, _ => _.content === "here's a video")
-  let kittenIdx = indexWhere(homeTimeline, _ => _.content === "here's an animated kitten gif")
+  let videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
+  let kittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
 
   await scrollToStatus(t, 1 + videoIdx)
   await t.expect(modalDialogContents.exists).notOk()

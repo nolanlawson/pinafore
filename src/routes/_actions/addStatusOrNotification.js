@@ -3,7 +3,7 @@ import { store } from '../_store/store'
 import uniqBy from 'lodash-es/uniqBy'
 import isEqual from 'lodash-es/isEqual'
 import { database } from '../_database/database'
-import { concat, indexWhere } from '../_utils/arrays'
+import { concat } from '../_utils/arrays'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
 
@@ -47,9 +47,9 @@ function isValidStatusForThread (thread, timelineName, itemSummariesToAdd) {
   let itemSummariesToAddIdSet = new Set(itemSummariesToAdd.map(_ => _.id))
   let threadIdSet = new Set(thread.map(_ => _.id))
   let focusedStatusId = timelineName.split('/')[1] // e.g. "status/123456"
-  let focusedStatusIdx = indexWhere(thread, _ => _.id === focusedStatusId)
+  let focusedStatusIdx = thread.findIndex(_ => _.id === focusedStatusId)
   return status => {
-    let repliedToStatusIdx = indexWhere(thread, _ => _.id === status.in_reply_to_id)
+    let repliedToStatusIdx = thread.findIndex(_ => _.id === status.in_reply_to_id)
     return (
       // A reply to an ancestor status is not valid for this thread, but for the focused status
       // itself or any of its descendents, it is valid.

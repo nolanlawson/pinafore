@@ -7,7 +7,6 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { homeTimeline } from '../fixtures'
-import { indexWhere } from '../../src/routes/_utils/arrays'
 
 fixture`017-compose-reply.js`
   .page`http://localhost:4002`
@@ -63,7 +62,7 @@ test('replies have same privacy as replied-to status by default', async t => {
 
 test('replies have same CW as replied-to status', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')
@@ -75,7 +74,7 @@ test('replies have same CW as replied-to status', async t => {
 
 test('replies save deletions of CW', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')
@@ -89,7 +88,7 @@ test('replies save deletions of CW', async t => {
 
 test('replies save changes to CW', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')
