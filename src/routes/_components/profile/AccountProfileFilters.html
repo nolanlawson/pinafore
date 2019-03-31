@@ -1,29 +1,88 @@
 <h2 class="sr-only">Filters</h2>
-<div class="account-profile-filters">
-  <div class="account-profile-filter">
-    <a href="/accounts/{account.id}" rel="prefetch">
-      Toots
-    </a>
-  </div>
-  <div class="account-profile-filter">
-    <a href="/accounts/{account.id}/with_replies" rel="prefetch">
-      Toots and replies
-    </a>
-  </div>
-  <div class="account-profile-filter">
-    <a href="/accounts/{account.id}/media" rel="prefetch">
-      Media
-    </a>
-  </div>
-</div>
+<nav aria-label="Account filters" class="account-profile-filters">
+  <ul>
+    {#each filterTabs as filterTab (filterTab.href)}
+      <li class="account-profile-filter">
+        <a aria-label="{filterTab.label} { filter === filterTab.filter ? '(Current)' : ''}"
+           href={filterTab.href}
+           rel="prefetch">
+          {filterTab.label}
+        </a>
+      </li>
+    {/each}
+  </ul>
+</nav>
 <style>
   .account-profile-filters {
-    grid-area: filters;
-    display: flex;
   }
+
   .account-profile-filter {
     flex: 1;
     text-align: center;
-    padding: 5px;
+  }
+
+  /* reset */
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--main-border)
+  }
+
+  li {
+    border: 1px solid var(--main-border);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  a {
+    padding: 10px;
+    color: var(--body-text-color);
+    font-size: 1.1em;
+    flex: 1;
+  }
+
+  li:hover {
+    background: var(--button-bg-hover);
+  }
+
+  a:hover {
+    text-decoration: none;
   }
 </style>
+<script>
+  export default {
+    computed: {
+      filterTabs: ({ account }) => (
+        [
+          {
+            filter: '',
+            label: 'Toots',
+            href: `/accounts/${account.id}`
+          },
+          {
+            filter: 'with_replies',
+            label: 'Toots and replies',
+            href: `/accounts/${account.id}/with_replies`
+          },
+          {
+            filter: 'media',
+            label: 'Media',
+            href: `/accounts/${account.id}/media`
+          },
+        ]
+      )
+    }
+  }
+</script>

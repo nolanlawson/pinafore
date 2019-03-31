@@ -6,6 +6,7 @@
                   relationship={$currentAccountRelationship}
                   verifyCredentials={$currentVerifyCredentials}
   />
+  <AccountProfileFilters account={$currentAccountProfile} {filter} />
   {/if}
   {#if !filter}
     <PinnedStatuses {accountId} />
@@ -21,14 +22,15 @@
 </HiddenFromSSR>
 {/if}
 <script>
-  import TimelinePage from './TimelinePage.html'
-  import FreeTextLayout from './FreeTextLayout.html'
-  import { store } from '../_store/store.js'
-  import HiddenFromSSR from './HiddenFromSSR'
-  import DynamicPageBanner from './DynamicPageBanner.html'
-  import { updateProfileAndRelationship, clearProfileAndRelationship } from '../_actions/accounts'
-  import AccountProfile from './profile/AccountProfile.html'
-  import PinnedStatuses from './timeline/PinnedStatuses.html'
+  import TimelinePage from '../TimelinePage.html'
+  import FreeTextLayout from '../FreeTextLayout.html'
+  import { store } from '../../_store/store.js'
+  import HiddenFromSSR from '../HiddenFromSSR'
+  import DynamicPageBanner from '../DynamicPageBanner.html'
+  import { updateProfileAndRelationship, clearProfileAndRelationship } from '../../_actions/accounts'
+  import AccountProfile from './AccountProfile.html'
+  import PinnedStatuses from '../timeline/PinnedStatuses.html'
+  import AccountProfileFilters from './AccountProfileFilters.html'
 
   export default {
     oncreate () {
@@ -57,7 +59,8 @@
       HiddenFromSSR,
       DynamicPageBanner,
       AccountProfile,
-      PinnedStatuses
+      PinnedStatuses,
+      AccountProfileFilters
     }
   }
 </script>
