@@ -50,8 +50,7 @@
   }
 
   .card-title {
-    font-weight: 500;
-
+    font-weight: 600;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -81,10 +80,11 @@
       LazyImage
     },
     computed: {
-      title: ({ originalStatus }) => originalStatus.card.title,
-      url: ({ originalStatus }) => originalStatus.card.url,
-      description: ({ originalStatus }) => originalStatus.card.description,
-      imageUrl: ({ originalStatus }) => originalStatus.card.image,
+      card: ({ originalStatus }) => originalStatus.card,
+      title: ({ card }) => card.title,
+      url: ({ card }) => card.url,
+      description: ({ card }) => card.description || card.provider_name,
+      imageUrl: ({ card }) => card.image,
       hasBody: ({ description, imageUrl }) => description && imageUrl
     }
   }
