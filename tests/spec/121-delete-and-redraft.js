@@ -13,7 +13,7 @@ import {
   getNthStatusSpoiler,
   composeModalContentWarningInput,
   dialogOptionsOption,
-  getNthReplyButton, getNthComposeReplyInput, getNthComposeReplyButton, getUrl
+  getNthReplyButton, getNthComposeReplyInput, getNthComposeReplyButton, getUrl, sleep
 } from '../utils'
 import { postAs, postEmptyStatusWithMediaAs, postWithSpoilerAndPrivacyAs } from '../serverActions'
 
@@ -129,21 +129,34 @@ test('delete and redraft reply within thread', async t => {
     .expect(getNthStatusContent(1).innerText).contains('this is a thread')
     .click(getNthStatus(1))
     .expect(getUrl()).match(/statuses/)
+  await sleep(1000)
+  await t
     .expect(getNthStatusContent(1).innerText).contains('this is a thread')
     .click(getNthReplyButton(1))
+  await sleep(1000)
+  await t
     .typeText(getNthComposeReplyInput(1), 'heyo', { paste: true })
     .click(getNthComposeReplyButton(1))
+  await sleep(1000)
+  await t
     .expect(getNthStatus(2).innerText).contains('@admin heyo')
     .click(getNthStatusOptionsButton(2))
+  await sleep(500)
+  await t
     .click(dialogOptionsOption.withText('Delete and redraft'))
+  await sleep(500)
+  await t
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
     .typeText(composeModalInput, ' update!', { paste: true })
+  await sleep(1000)
+  await t
     .click(composeModalComposeButton)
+  await sleep(1000)
+  await t
     .expect(modalDialog.exists).notOk()
     .expect(getNthStatusContent(2).innerText).match(/@admin heyo\s+update!/, {
       timeout: 30000
     })
-    .expect(getNthStatus(3).exists).notOk()
 })
 
 test('multiple paragraphs', async t => {
