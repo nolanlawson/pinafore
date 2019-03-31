@@ -8,7 +8,7 @@ import {
   settingsNavButton
 } from '../utils'
 import { Selector as $ } from 'testcafe'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { homeTimeline } from '../fixtures'
 
 fixture`022-status-aria-label.js`
@@ -29,7 +29,7 @@ test('basic aria-labels for statuses', async t => {
 
 test('aria-labels for CWed statuses', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
+  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t
     .hover(getNthStatus(1 + kittenIdx))

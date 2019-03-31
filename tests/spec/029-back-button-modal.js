@@ -20,7 +20,7 @@ import {
   visibleModalDialog
 } from '../utils'
 import { loginAsFoobar } from '../roles'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { homeTimeline } from '../fixtures'
 
 fixture`029-back-button-modal.js`
@@ -28,7 +28,7 @@ fixture`029-back-button-modal.js`
 
 test('Back button dismisses the modal', async t => {
   await loginAsFoobar(t)
-  let idx = indexWhere(homeTimeline, _ => (_.content || '').includes('2 kitten photos'))
+  let idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')

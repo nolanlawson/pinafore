@@ -4,7 +4,7 @@ import {
   scrollToBottom, scrollToTop, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { homeTimeline } from '../fixtures'
 
 fixture`100-favorite-unfavorite.js`
@@ -63,7 +63,7 @@ test('unfavorites a status', async t => {
 
 test('Keeps the correct favorites count', async t => {
   await loginAsFoobar(t)
-  let idx = indexWhere(homeTimeline, _ => _.content === 'this is unlisted')
+  let idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
   await t
     .hover(getNthStatus(1 + idx))
     .click(getNthFavoriteButton(1 + idx))

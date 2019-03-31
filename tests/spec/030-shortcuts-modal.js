@@ -4,7 +4,7 @@ import {
   modalDialog, scrollToStatus, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { homeTimeline } from '../fixtures'
 
 fixture`030-shortcuts-modal.js`
@@ -23,7 +23,7 @@ test('Backspace dismisses modal', async t => {
 
 test('Backspace dismisses media modal', async t => {
   await loginAsFoobar(t)
-  let idx = indexWhere(homeTimeline, _ => (_.content || '').includes('2 kitten photos'))
+  let idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
     .click(getNthStatusMediaButton(idx + 1))
@@ -36,7 +36,7 @@ test('Backspace dismisses media modal', async t => {
 
 test('Left/right changes active media in modal', async t => {
   await loginAsFoobar(t)
-  let idx = indexWhere(homeTimeline, _ => (_.content || '').includes('2 kitten photos'))
+  let idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
     .click(getNthStatusMediaButton(idx + 1))

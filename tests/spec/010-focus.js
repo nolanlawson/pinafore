@@ -5,7 +5,7 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { homeTimeline } from '../fixtures'
 
 fixture`010-focus.js`
@@ -14,7 +14,7 @@ fixture`010-focus.js`
 test('modal preserves focus', async t => {
   await loginAsFoobar(t)
 
-  let idx = indexWhere(homeTimeline, _ => _.content === "here's a video")
+  let idx = homeTimeline.findIndex(_ => _.content === "here's a video")
 
   await scrollToStatus(t, 1 + idx)
   // explicitly hover-focus-click

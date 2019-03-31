@@ -4,7 +4,7 @@ import {
   getNthStatus, getNthStatusMedia, getNthStatusSensitiveMediaButton, homeNavButton, markMediaSensitiveInput,
   scrollToStatus, settingsNavButton, neverMarkMediaSensitiveInput
 } from '../utils'
-import { indexWhere } from '../../src/routes/_utils/arrays'
+
 import { homeTimeline } from '../fixtures'
 
 fixture`023-mark-media-as-sensitive.js`
@@ -23,11 +23,11 @@ async function checkSensitivityForStatus (t, idx, sensitive) {
 }
 
 async function checkSensitivity (t, shouldBeSensitive) {
-  let sensitiveKittenIdx = indexWhere(homeTimeline, _ => _.spoiler === 'kitten CW')
-  let sensitiveVideoIdx = indexWhere(homeTimeline, _ => _.content === 'secret video')
-  let videoIdx = indexWhere(homeTimeline, _ => _.content === "here's a video")
-  let sensitiveAnimatedKittenIdx = indexWhere(homeTimeline, _ => _.content === "here's a secret animated kitten gif")
-  let animatedKittenIdx = indexWhere(homeTimeline, _ => _.content === "here's an animated kitten gif")
+  let sensitiveKittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  let sensitiveVideoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
+  let videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
+  let sensitiveAnimatedKittenIdx = homeTimeline.findIndex(_ => _.content === "here's a secret animated kitten gif")
+  let animatedKittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
 
   await t.hover(getNthStatus(1))
 
