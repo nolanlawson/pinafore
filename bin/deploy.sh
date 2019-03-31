@@ -5,6 +5,9 @@ set -x
 
 PATH="$PATH:./node_modules/.bin"
 
+# need to build to update now.json
+yarn run build
+
 # set up robots.txt
 if [[ "$DEPLOY_TYPE" == "dev" ]]; then
   printf 'User-agent: *\nDisallow: /' > static/robots.txt
