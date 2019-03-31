@@ -27,11 +27,11 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since, 
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
   if (timeline.startsWith('tag/')) {
-    url += '/' + timeline.split('/').slice(-1)[0]
+    url += '/' + timeline.split('/')[1]
   } else if (timeline.startsWith('account/')) {
-    url += '/' + timeline.split('/').slice(-1)[0] + '/statuses'
+    url += '/' + timeline.split('/')[1] + '/statuses'
   } else if (timeline.startsWith('list/')) {
-    url += '/' + timeline.split('/').slice(-1)[0]
+    url += '/' + timeline.split('/')[1]
   }
 
   let params = {}
@@ -49,6 +49,14 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since, 
 
   if (timeline === 'local') {
     params.local = true
+  }
+
+  if (timeline.startsWith('account/')) {
+    if (timeline.endsWith('media')) {
+      params.only_media = true
+    } else {
+      params.exclude_replies = !timeline.endsWith('/with_replies')
+    }
   }
 
   url += '?' + paramsString(params)

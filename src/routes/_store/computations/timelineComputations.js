@@ -23,9 +23,17 @@ export function timelineComputations (store) {
   store.compute('currentTimelineType', ['currentTimeline'], currentTimeline => (
     currentTimeline && currentTimeline.split('/')[0])
   )
-  store.compute('currentTimelineValue', ['currentTimeline'], currentTimeline => (
-    currentTimeline && currentTimeline.split('/').slice(-1)[0])
-  )
+  store.compute('currentTimelineValue', ['currentTimeline'], currentTimeline => {
+    if (!currentTimeline) {
+      return void 0
+    }
+    let split = currentTimeline.split('/')
+    let len = split.length
+    if (split[len - 1] === 'with_replies' || split[len - 1] === 'media') {
+      return split[len - 2]
+    }
+    return split[len - 1]
+  })
   store.compute('firstTimelineItemId', ['timelineItemSummaries'], (timelineItemSummaries) => (
     getFirstIdFromItemSummaries(timelineItemSummaries)
   ))
