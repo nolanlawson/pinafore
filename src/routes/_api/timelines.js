@@ -12,6 +12,8 @@ function getTimelineUrlPath (timeline) {
       return 'notifications'
     case 'favorites':
       return 'favourites'
+    case 'conversations':
+      return 'conversations'
   }
   if (timeline.startsWith('tag/')) {
     return 'timelines/tag'
@@ -61,5 +63,8 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since, 
 
   url += '?' + paramsString(params)
 
-  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
+  const timelineRequest = get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
+
+  if (timeline !== 'conversations') return timelineRequest
+  return timelineRequest.then(items => items.map(item => item.last_status))
 }
