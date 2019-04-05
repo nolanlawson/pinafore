@@ -84,7 +84,7 @@
     "pinch-zoom-element": "^1.1.1",
     "preact": "^10.0.0-alpha.2",
     "prop-types": "^15.7.2",
-    "quick-lru": "^3.0.0",
+    "quick-lru": "^4.0.0",
     "remount": "^0.9.5",
     "requestidlecallback": "^0.3.0",
     "rollup": "^1.7.4",
