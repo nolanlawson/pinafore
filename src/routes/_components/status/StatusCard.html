@@ -1,4 +1,4 @@
-<a ref:cardlink href="{url}" class="status-card" target="_blank" rel="noopener noreferrer">
+<a ref:cardlink href={url} class="status-card" target="_blank" rel="noopener noreferrer">
     <strong class="card-title">
      {title}
     </strong>
@@ -76,7 +76,7 @@
 <script>
   import LazyImage from '../LazyImage.html'
   import Shortcut from '../shortcut/Shortcut.html'
-  
+
   export default {
     components: {
       Shortcut,
@@ -90,7 +90,7 @@
       imageUrl: ({ card }) => card.image
     },
     methods: {
-      open (url) {
+      open () {
         if (this.refs.cardlink) {
           this.refs.cardlink.click()
         }
