@@ -6,15 +6,10 @@
     <div class="card-content">
   {#if imageUrl}
     <LazyImage forceSize={true} height="50" width="50" src={imageUrl} ariaHidden={true} />
-  {:else}
-    <SvgIcon style="width: 30px; height: 30px; padding: 10px; fill: var(--action-button-deemphasized-fill-color);"
-             href="#fa-file-text" />
   {/if}
-  {#if description}
     <span class="card-description">
       {description}
     </span>
-  {/if}
   </div>
   {/if}
 </a>
@@ -41,7 +36,7 @@
     background: transparent;
   }
 
-  .status-card :first-child {
+  .status-card :first-child:not(span) {
     flex-shrink: 0;
   }
 
@@ -77,11 +72,9 @@
 </style>
 <script>
   import LazyImage from '../LazyImage.html'
-  import SvgIcon from '../SvgIcon.html'
 
   export default {
     components: {
-      SvgIcon,
       LazyImage
     },
     computed: {
