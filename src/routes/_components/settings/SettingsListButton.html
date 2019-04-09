@@ -1,4 +1,4 @@
-<a {href} rel="prefetch" aria-label={ariaLabel || label} class="settings-list-button {className ? className : ''}">
+<a {href} on:click="fire('click', event)" rel="prefetch" aria-label={ariaLabel || label} class="settings-list-button {className ? className : ''}">
   <span>
     {label}
   </span>

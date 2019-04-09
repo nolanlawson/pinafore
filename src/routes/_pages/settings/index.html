@@ -12,6 +12,9 @@
       <SettingsListButton href="/settings/hotkeys" label="Hotkeys"/>
     </SettingsListRow>
     <SettingsListRow>
+    <SettingsListButton href="#" on:click="reload(event)" label="Reload"/>
+    </SettingsListRow>
+    <SettingsListRow>
       <SettingsListButton href="/settings/about" label="About Pinafore"/>
     </SettingsListRow>
   </SettingsList>
@@ -29,6 +32,12 @@
       SettingsList,
       SettingsListRow,
       SettingsListButton
+    },
+    methods: {
+      reload (event) {
+        event.preventDefault()
+        document.location.reload(true)
+      }
     }
   }
 </script>
