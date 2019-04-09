@@ -81,7 +81,8 @@
       card: ({ originalStatus }) => originalStatus.card,
       title: ({ card }) => card.title,
       url: ({ card }) => card.url,
-      description: ({ card }) => card.description || card.provider_name,
+      hostname: ({ url }) => window.URL ? new window.URL(url).hostname : '',
+      description: ({ card, hostname }) => card.description || card.provider_name || hostname,
       imageUrl: ({ card }) => card.image
     }
   }
