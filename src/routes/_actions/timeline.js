@@ -80,7 +80,7 @@ export async function addTimelineItemSummaries (instanceName, timelineName, newS
   }
 }
 
-async function fetchTimelineItemsAndPossiblyFallBack () {
+export async function fetchTimelineItemsAndPossiblyFallBack () {
   mark('fetchTimelineItemsAndPossiblyFallBack')
   let {
     currentTimeline,

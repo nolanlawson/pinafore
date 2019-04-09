@@ -2,7 +2,7 @@
   {#await importTimeline}
     <!-- awaiting promise -->
   {:then constructor}
-    <svelte:component this={constructor} {timeline} />
+  <svelte:component this={constructor} {timeline} {withPtr} />
   {:catch error}
     <div>Component failed to load. Try refreshing! {error}</div>
   {/await}

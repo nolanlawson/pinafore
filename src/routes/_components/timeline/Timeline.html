@@ -49,7 +49,8 @@
     setupTimeline,
     showMoreItemsForTimeline,
     showMoreItemsForThread,
-    showMoreItemsForCurrentTimeline
+    showMoreItemsForCurrentTimeline,
+    fetchTimelineItemsAndPossiblyFallBack
   } from '../../_actions/timeline'
   import { focusWithCapture, blurWithCapture } from '../../_utils/events'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
@@ -60,6 +61,10 @@
   import { createMakeProps } from '../../_actions/createMakeProps'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
 
+  import PullToRefresh from 'pulltorefreshjs'
+import ptrStyles from '../../_utils/ptrStyles.js'
+  import { refreshStream } from '../../_store/observers/instanceObservers.js'
+
   export default {
     oncreate () {
       console.log('timeline oncreate()')
@@ -67,10 +72,27 @@
       setupTimeline()
       this.restoreFocus()
       this.setupStreaming()
+
+      const { withPtr = '' } = this.get()
+      if (withPtr) {
+        this.ptr = PullToRefresh.init({
+          mainElement: withPtr,
+          getStyles: () => ptrStyles,
+          onRefresh () {
+            refreshStream()
+            return fetchTimelineItemsAndPossiblyFallBack()
+          }
+        })
+      }
     },
     ondestroy () {
       console.log('ondestroy')
       this.teardownFocus()
+
+      if (this.ptr) {
+        this.ptr.destroy()
+        this.ptr = null
+      }
     },
     data: () => ({
       LoadingFooter,
