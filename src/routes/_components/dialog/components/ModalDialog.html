@@ -59,6 +59,8 @@
     display: flex;
     flex-direction: row;
     max-height: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    flex: 0 1 580px;
   }
   .modal-dialog-contents.should-animate {
     transition: opacity 0.2s linear;
@@ -69,7 +71,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: calc(100vw - 20px);
+    width: 100%;
+    max-width: 100%;
     flex: 1;
   }
   .modal-dialog-header {
