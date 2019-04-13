@@ -12,7 +12,7 @@ function getTimelineUrlPath (timeline) {
       return 'notifications'
     case 'favorites':
       return 'favourites'
-    case 'conversations':
+    case 'direct':
       return 'conversations'
   }
   if (timeline.startsWith('tag/')) {
@@ -24,7 +24,7 @@ function getTimelineUrlPath (timeline) {
   }
 }
 
-export function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
+export async function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
   let timelineUrlName = getTimelineUrlPath(timeline)
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
@@ -63,8 +63,10 @@ export function getTimeline (instanceName, accessToken, timeline, maxId, since, 
 
   url += '?' + paramsString(params)
 
-  const timelineRequest = get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
+  const items = await get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 
-  if (timeline !== 'conversations') return timelineRequest
-  return timelineRequest.then(items => items.map(item => item.last_status))
+  if (timeline === 'direct') {
+    return items.map(item => item.last_status)
+  }
+  return items
 }

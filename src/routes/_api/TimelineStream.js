@@ -12,7 +12,7 @@ function getStreamName (timeline) {
       return 'user'
     case 'notifications':
       return 'user:notification'
-    case 'conversations':
+    case 'direct':
       return 'direct'
   }
   if (timeline.startsWith('tag/')) {
