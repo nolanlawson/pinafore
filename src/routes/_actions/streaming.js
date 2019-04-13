@@ -21,7 +21,7 @@ function processMessage (instanceName, timelineName, message) {
       // a timeline of statuses. To have a clean implementation we would need to
       // reproduce what is done for statuses for the conversation.
       //
-      // It will add new DMs as new conversations intead of updating existing threads
+      // It will add new DMs as new conversations instead of updating existing threads
       addStatusOrNotification(instanceName, timelineName, JSON.parse(payload).last_status)
       break
   }

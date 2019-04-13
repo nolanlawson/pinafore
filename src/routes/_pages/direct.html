@@ -1,7 +1,7 @@
 {#if $isUserLoggedIn}
-  <TimelinePage timeline="conversations">
-    {#if $pinnedPage !== '/conversations'}
-      <DynamicPageBanner title="Conversations" icon="#fa-envelope"/>
+  <TimelinePage timeline="direct">
+    {#if $pinnedPage !== '/direct'}
+      <DynamicPageBanner title="Direct messages" icon="#fa-envelope"/>
     {/if}
   </TimelinePage>
 {:else}

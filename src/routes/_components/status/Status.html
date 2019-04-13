@@ -73,6 +73,10 @@
     border-bottom: 1px solid var(--main-border);
   }
 
+  .status-article.status-direct {
+    background-color: var(--status-direct-background);
+  }
+
   .status-article:focus {
     outline: none; /* focus is on the parent instead */
   }
@@ -284,6 +288,7 @@
       className: ({ visibility, timelineType, isStatusInOwnThread, $underlineLinks, $disableTapOnStatus }) => (classname(
         'status-article',
         'shortcut-list-item',
+        timelineType !== 'direct' && visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
         $underlineLinks && 'underline-links',

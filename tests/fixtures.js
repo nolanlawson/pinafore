@@ -51,6 +51,11 @@ export const favorites = [
   { content: 'pinned toot 1' }
 ]
 
+export const directMessages = [
+  { content: 'notification of direct message' },
+  { content: 'direct' }
+]
+
 export const quuxStatuses = [
   { content: 'pinned toot 2' },
   { content: 'pinned toot 1' }
