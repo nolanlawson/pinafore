@@ -4,7 +4,7 @@ import {
   getFirstVisibleStatus, getNthStatus, getUrl, localTimelineNavButton, notificationsNavButton,
   validateTimeline
 } from '../utils'
-import { homeTimeline, notifications, localTimeline, favorites } from '../fixtures'
+import { homeTimeline, notifications, localTimeline, favorites, directMessages } from '../fixtures'
 import { loginAsFoobar } from '../roles'
 
 fixture`003-basic-timeline-spec.js`
@@ -71,4 +71,16 @@ test('Shows favorites', async t => {
     .expect(getUrl()).contains('/favorites')
 
   await validateTimeline(t, favorites)
+})
+
+test('Shows direct messages', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
+    .click(communityNavButton)
+    .click($('a').withText('Direct messages'))
+    .expect(getUrl()).contains('/direct')
+
+  await validateTimeline(t, directMessages)
 })
