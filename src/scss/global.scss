@@ -52,7 +52,9 @@ body {
 main {
   position: relative;
   width: 602px;
-  max-width: 100vw;
+  // take into account scrollbars;
+  // https://stackoverflow.com/a/34884924
+  max-width: 100%;
   padding: 0;
   box-sizing: border-box;
   margin: 30px auto 15px;
