@@ -136,6 +136,14 @@
       height: 18px;
     }
   }
+
+  @media(min-width: 768px) {
+    /* On desktop, some dialogs look bad if they expand to fit all the way. So we shrink
+       them to fit if shrinkWidthToFit is true.*/
+    .modal-dialog-contents.shrink-width-to-fit {
+      flex: none;
+    }
+  }
 </style>
 <script>
   import Shortcut from '../../shortcut/Shortcut.html'
@@ -181,7 +189,8 @@
       fadedIn: false,
       muted: false,
       className: void 0,
-      title: void 0
+      title: void 0,
+      shrinkWidthToFit: false
     }),
     computed: {
       backdropClass: ({ fadedIn, shouldAnimate }) => {
@@ -191,12 +200,13 @@
           shouldAnimate && 'should-animate'
         )
       },
-      contentsClass: ({ fadedIn, muted, shouldAnimate, className }) => {
+      contentsClass: ({ fadedIn, muted, shouldAnimate, shrinkWidthToFit, className }) => {
         return classname(
           'modal-dialog-contents',
           !fadedIn && 'hidden',
           muted && 'muted-style',
           shouldAnimate && 'should-animate',
+          shrinkWidthToFit && 'shrink-width-to-fit',
           className
         )
       }
