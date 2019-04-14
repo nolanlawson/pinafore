@@ -174,9 +174,11 @@
       pushShortcutScope(`modal-${id}`)
     },
     ondestroy () {
+      console.log('ondestroy', this.get().id)
       window.removeEventListener('popstate', this.onPopState)
       let { statePopped, statePushed, id } = this.get()
       if (statePushed && !statePopped) {
+        console.log('ondestroy - window.history.back()', this.get().id)
         // If we weren't closed due to popstate, then pop state to ensure the correct history.
         window.history.back()
       }
@@ -217,20 +219,27 @@
         if (otherId !== id) {
           return
         }
-        window.addEventListener('popstate', this.onPopState)
-        this.set({ statePushed: true })
-        window.history.pushState({ modal: id }, null, location.href)
-        document.body.classList.toggle('modal-open', true)
-        this._a11yDialog.show()
-        requestAnimationFrame(() => {
-          this.set({ fadedIn: true })
+        // This setTimeout is dumb, but it fixes issues with modals opening other modals
+        // due to the popstate/pushstate dance.
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            window.addEventListener('popstate', this.onPopState)
+            this.set({ statePushed: true })
+            console.log('pushState', id)
+            window.history.pushState({ modal: id }, null, location.href)
+            document.body.classList.toggle('modal-open', true)
+            this._a11yDialog.show()
+            this.set({ fadedIn: true })
+          })
         })
       },
       onPopState (event) {
         let { id } = this.get()
+        console.log('onPopState', id, 'event.state', JSON.stringify(event.state))
         if (!(event.state && event.state.modal === id)) {
           // If the new state is not us, just assume that we need to be closed.
           // This will only fail if modals are ever nested more than 2 levels deep.
+          console.log('onPopState - statePopped: true', id)
           this.set({ statePopped: true })
           this.closeDialog(id)
         }
