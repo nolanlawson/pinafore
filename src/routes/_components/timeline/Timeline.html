@@ -61,8 +61,8 @@
   import { createMakeProps } from '../../_actions/createMakeProps'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
 
-  import PullToRefresh from 'pulltorefreshjs'
-import ptrStyles from '../../_utils/ptrStyles.js'
+  import PullToRefresh from '../../_thirdparty/pulltorefreshjs'
+  import ptrStyles from '../../_utils/ptrStyles.js'
   import { refreshStream } from '../../_store/observers/instanceObservers.js'
 
   export default {
@@ -81,6 +81,9 @@ import ptrStyles from '../../_utils/ptrStyles.js'
           onRefresh () {
             refreshStream()
             return fetchTimelineItemsAndPossiblyFallBack()
+          },
+          shouldPullToRefresh () {
+            return !window.scrollY
           }
         })
       }
