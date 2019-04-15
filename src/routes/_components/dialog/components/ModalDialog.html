@@ -217,13 +217,17 @@
         if (otherId !== id) {
           return
         }
-        window.addEventListener('popstate', this.onPopState)
-        this.set({ statePushed: true })
-        window.history.pushState({ modal: id }, null, location.href)
-        document.body.classList.toggle('modal-open', true)
-        this._a11yDialog.show()
-        requestAnimationFrame(() => {
-          this.set({ fadedIn: true })
+        // This setTimeout is dumb, but it fixes issues with modals opening other modals
+        // due to the popstate/pushstate dance.
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            window.addEventListener('popstate', this.onPopState)
+            this.set({ statePushed: true })
+            window.history.pushState({ modal: id }, null, location.href)
+            document.body.classList.toggle('modal-open', true)
+            this._a11yDialog.show()
+            this.set({ fadedIn: true })
+          })
         })
       },
       onPopState (event) {
