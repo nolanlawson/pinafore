@@ -5,7 +5,9 @@
   {#if description}
     <div class="card-content">
   {#if imageUrl}
-    <LazyImage forceSize={true} height="50" width="50" src={imageUrl} ariaHidden={true} />
+    <div class="status-card-image-container">
+      <LazyImage src={imageUrl} ariaHidden={true} />
+    </div>
   {/if}
     <span class="card-description">
       {description}
@@ -47,6 +49,16 @@
     align-items: center;
     margin-top: 5px;
     opacity: 0.8;
+  }
+
+  .status-card-image-container {
+    position: relative;
+    width: 50px;
+    height: 50px;
+  }
+
+  :global(.status-card-image-container img) {
+    object-fit: cover;
   }
 
   .card-title {
