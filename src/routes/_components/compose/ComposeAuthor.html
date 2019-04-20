@@ -1,28 +1,19 @@
-{#if realm === 'dialog'}
-  <!-- no links to profiles within dialogs -->
-  <span
-     class="compose-box-avatar {loaded ? 'loaded' : 'not-loaded'}"
-     aria-hidden={true} >
-    <Avatar account={verifyCredentials} size="small"/>
-  </span>
-  <span class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
-     aria-hidden={!loaded} >
-    <AccountDisplayName account={verifyCredentials} />
-  </span>
-{:else}
-  <a {href}
-     rel="prefetch"
-     class="compose-box-avatar {loaded ? 'loaded' : 'not-loaded'}"
-     aria-hidden={true} >
-    <Avatar account={verifyCredentials} size="small"/>
-  </a>
-  <a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
-     {href}
-     aria-hidden={!loaded}
-     rel="prefetch">
-    <AccountDisplayName account={verifyCredentials} />
-  </a>
-{/if}
+<a {href}
+   rel="prefetch"
+   class="compose-box-avatar {loaded ? 'loaded' : 'not-loaded'}"
+   aria-hidden={true}
+   on:click="onClick(event)"
+>
+  <Avatar account={verifyCredentials} size="small"/>
+</a>
+<a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
+   {href}
+   aria-hidden={!loaded}
+   rel="prefetch"
+   on:click="onClick(event)"
+>
+  <AccountDisplayName account={verifyCredentials} />
+</a>
 
 <span class="compose-box-handle {loaded ? 'loaded' : 'not-loaded'}"
       aria-hidden={!loaded} >
@@ -78,6 +69,8 @@
   import { store } from '../../_store/store'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
+  import { emit } from '../../_utils/eventBus'
+  import { goto } from '../../../../__sapper__/client'
 
   export default {
     components: {
@@ -99,6 +92,20 @@
       },
       id: ({ verifyCredentials }) => (verifyCredentials && verifyCredentials.id),
       href: ({ id }) => (id ? `/accounts/${id}` : '#')
+    },
+    methods: {
+      onClick (e) {
+        let { realm, dialogId, href } = this.get()
+        if (realm === 'dialog') {
+          e.preventDefault()
+          e.stopPropagation()
+          // in dialog mode, we have to close the dialog and then navigate to the profile
+          emit('closeDialog', dialogId)
+          setTimeout(() => { // setTimeout to work around dialog navigation issues
+            goto(href)
+          })
+        }
+      }
     }
   }
 </script>

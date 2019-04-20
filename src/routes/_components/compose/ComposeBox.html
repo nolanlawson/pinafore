@@ -3,7 +3,7 @@
 {/if}
 <ComposeFileDrop {realm} >
   <div class="{computedClassName} {hideAndFadeIn}">
-    <ComposeAuthor {realm} />
+    <ComposeAuthor {realm} {dialogId} />
     {#if contentWarningShown}
       <div class="compose-content-warning-wrapper"
            transition:slide="{duration: 333}">
@@ -120,7 +120,8 @@
       isReply: false,
       autoFocus: false,
       hideBottomBorder: false,
-      hidden: false
+      hidden: false,
+      dialogId: void 0
     }),
     store: () => store,
     computed: {
