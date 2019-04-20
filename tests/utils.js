@@ -189,6 +189,10 @@ export const scrollToTop = exec(() => {
   document.scrollingElement.scrollTop = 0
 })
 
+export const getScrollTop = exec(() => {
+  return document.scrollingElement.scrollTop || 0
+})
+
 export function getNthMediaAltInput (n) {
   return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt input`)
 }

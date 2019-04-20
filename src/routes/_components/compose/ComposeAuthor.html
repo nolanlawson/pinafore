@@ -1,16 +1,20 @@
 <a {href}
    rel="prefetch"
    class="compose-box-avatar {loaded ? 'loaded' : 'not-loaded'}"
-   aria-hidden={!loaded}
-   aria-label="Profile for {accessibleName}">
+   aria-hidden={true}
+   on:click="onClick(event)"
+>
   <Avatar account={verifyCredentials} size="small"/>
 </a>
 <a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
    {href}
    aria-hidden={!loaded}
-   rel="prefetch">
+   rel="prefetch"
+   on:click="onClick(event)"
+>
   <AccountDisplayName account={verifyCredentials} />
 </a>
+
 <span class="compose-box-handle {loaded ? 'loaded' : 'not-loaded'}"
       aria-hidden={!loaded} >
   {'@' + verifyCredentials.acct}
@@ -64,8 +68,9 @@
   import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
-  import { removeEmoji } from '../../_utils/removeEmoji'
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
+  import { emit } from '../../_utils/eventBus'
+  import { goto } from '../../../../__sapper__/client'
 
   export default {
     components: {
@@ -86,14 +91,20 @@
         }
       },
       id: ({ verifyCredentials }) => (verifyCredentials && verifyCredentials.id),
-      href: ({ id }) => (id ? `/accounts/${id}` : '#'),
-      emojis: ({ verifyCredentials }) => (verifyCredentials.emojis || []),
-      displayName: ({ verifyCredentials }) => verifyCredentials.display_name || verifyCredentials.username || '',
-      accessibleName: ({ displayName, emojis, $omitEmojiInDisplayNames }) => {
-        if ($omitEmojiInDisplayNames) {
-          return removeEmoji(displayName, emojis) || displayName
+      href: ({ id }) => (id ? `/accounts/${id}` : '#')
+    },
+    methods: {
+      onClick (e) {
+        let { realm, dialogId, href } = this.get()
+        if (realm === 'dialog') {
+          e.preventDefault()
+          e.stopPropagation()
+          // in dialog mode, we have to close the dialog and then navigate to the profile
+          emit('closeDialog', dialogId)
+          setTimeout(() => { // setTimeout to work around dialog navigation issues
+            goto(href)
+          })
         }
-        return displayName
       }
     }
   }
