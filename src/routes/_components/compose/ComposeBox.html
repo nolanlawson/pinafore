@@ -3,7 +3,7 @@
 {/if}
 <ComposeFileDrop {realm} >
   <div class="{computedClassName} {hideAndFadeIn}">
-    <ComposeAuthor />
+    <ComposeAuthor {realm} />
     {#if contentWarningShown}
       <div class="compose-content-warning-wrapper"
            transition:slide="{duration: 333}">
