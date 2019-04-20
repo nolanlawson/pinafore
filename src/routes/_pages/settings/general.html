@@ -33,6 +33,11 @@
       <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
     </div>
     <div class="setting-group">
+      <input type="checkbox" id="choice-hide-cards"
+             bind:checked="$hideCards" on:change="onChange(event)">
+      <label for="choice-hide-cards">Hide link preview cards</label>
+    </div>
+    <div class="setting-group">
       <input type="checkbox" id="choice-underline-links"
              bind:checked="$underlineLinks" on:change="onChange(event)">
       <label for="choice-underline-links">Underline links in toots and profiles</label>
