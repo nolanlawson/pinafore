@@ -15,6 +15,7 @@ const persistedState = {
   disableHotkeys: false,
   disableLongAriaLabels: false,
   disableTapOnStatus: false,
+  hideCards: false,
   largeInlineMedia: false,
   instanceNameInSearch: '',
   instanceThemes: {},

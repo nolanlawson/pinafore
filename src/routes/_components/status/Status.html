@@ -254,7 +254,8 @@
       ),
       spoilerShown: ({ $spoilersShown, uuid }) => !!$spoilersShown[uuid],
       replyShown: ({ $repliesShown, uuid }) => !!$repliesShown[uuid],
-      showCard: ({ originalStatus, isStatusInNotification, showMedia }) => (
+      showCard: ({ originalStatus, isStatusInNotification, showMedia, $hideCards }) => (
+        !$hideCards &&
         !isStatusInNotification &&
         !showMedia &&
         originalStatus.card &&
