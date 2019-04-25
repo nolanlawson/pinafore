@@ -92,7 +92,7 @@
     "rollup-plugin-terser": "^4.0.4",
     "sapper": "nolanlawson/sapper#for-pinafore-14",
     "stringz": "^1.0.0",
-    "svelte": "^2.16.1",
+    "svelte": "^3.0.1",
     "svelte-extras": "^2.0.2",
     "svelte-loader": "^2.13.3",
     "svelte-transitions": "^1.2.0",
