@@ -7037,10 +7037,10 @@ svelte-transitions@^1.2.0:
     svelte-transitions-fly "^1.0.1"
     svelte-transitions-slide "^1.0.0"
 
-svelte@^2.16.1:
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-2.16.1.tgz#559a68452029e72280311ccc8dfd2ff10d0a5f18"
-  integrity sha512-TpXdfukSkmWkMnH6PPVm7FRW8SSFcTyqBiP+6VN8rtZJ7Lp1Xbf/e3oz73eQBxF0UPZw1aAn1b91lX2XTeD3zg==
+svelte@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.0.1.tgz#a2db3c383b9bab9cf195f91a265ee64d873c5a18"
+  integrity sha512-JqbUSVC/8fCmZcqeNs4yR6XjJduRhH973n5g6Pvu7lYoP9NPxPqAmJxQ8UUF5FTxRHeijZSkxLatE8DCVR9z1w==
 
 svgo@^1.2.1:
   version "1.2.1"
