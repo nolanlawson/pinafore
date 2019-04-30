@@ -50,7 +50,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
-    "chokidar": "^2.1.5",
+    "chokidar": "^3.0.0",
     "circular-dependency-plugin": "^5.0.2",
     "clean-css": "^4.2.1",
     "compression": "^1.7.4",
