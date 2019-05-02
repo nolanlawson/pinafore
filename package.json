@@ -163,7 +163,8 @@
   },
   "greenkeeper": {
     "ignore": [
-      "sapper"
+      "sapper",
+      "svelte"
     ]
   },
   "repository": {
