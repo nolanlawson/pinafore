@@ -9,15 +9,20 @@
 <script>
   import VirtualListItem from './VirtualListItem'
   import { mark, stop } from '../../_utils/marks'
+  import { scheduleIdlePriorityTask } from '../../_utils/scheduleIdlePriorityTask'
 
   export default {
     async oncreate () {
-      let { makeProps, key } = this.get()
+      let { makeProps, key, index } = this.get()
       if (makeProps) {
         let props = await makeProps(key)
-        mark('VirtualListLazyItem set props')
-        this.set({ props: props })
-        stop('VirtualListLazyItem set props')
+        // render virtual list items lazily, by index, so that
+        // the earlier ones are rendered first
+        scheduleIdlePriorityTask(index, () => {
+          mark('VirtualListLazyItem set props')
+          this.set({ props: props })
+          stop('VirtualListLazyItem set props')
+        })
       }
     },
     data: () => ({
