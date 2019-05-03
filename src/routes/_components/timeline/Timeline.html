@@ -59,6 +59,7 @@
   import { observe } from 'svelte-extras'
   import { createMakeProps } from '../../_actions/createMakeProps'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
+  import { tryToFocusElement } from '../../_utils/tryToFocusElement'
 
   export default {
     oncreate () {
@@ -277,14 +278,7 @@
           return
         }
         console.log('restoreFocus', lastFocusedElementId)
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            let element = document.getElementById(lastFocusedElementId)
-            if (element) {
-              element.focus({ preventScroll: true })
-            }
-          })
-        })
+        tryToFocusElement(() => document.getElementById(lastFocusedElementId))
       },
       onNoNeedToScroll () {
         // If the timeline doesn't need to scroll, then we can safely "preinitialize,"

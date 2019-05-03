@@ -2,6 +2,8 @@
 // around a Chrome bug with sticky positioning (https://github.com/nolanlawson/pinafore/issues/671)
 // Original: https://unpkg.com/a11y-dialog@4.0.1/a11y-dialog.js
 
+import { tryToFocusElement } from '../../_utils/tryToFocusElement'
+
 var FOCUSABLE_ELEMENTS = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabindex]:not([tabindex^="-"])']
 var TAB_KEY = 9
 var ESCAPE_KEY = 27
@@ -149,9 +151,7 @@ A11yDialog.prototype.hide = function (event) {
   // If their was a focused element before the dialog was opened, restore the
   // focus back to it
   if (focusedBeforeDialog) {
-    // This double rAF is to work around a bug in Chrome when focusing sticky-positioned
-    // elements. See https://github.com/nolanlawson/pinafore/issues/671
-    requestAnimationFrame(() => requestAnimationFrame(() => focusedBeforeDialog.focus()))
+    tryToFocusElement(() => focusedBeforeDialog)
   }
 
   // Remove the focus event listener to the body element and stop listening
