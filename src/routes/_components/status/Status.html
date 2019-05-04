@@ -34,7 +34,7 @@
   {#if isStatusInOwnThread}
     <StatusDetails {...params} />
   {/if}
-  <StatusToolbar {...params} on:recalculateHeight />
+  <PooledStatusToolbar {...params} on:recalculateHeight />
   {#if replyShown}
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
@@ -113,7 +113,7 @@
   import StatusRelativeDate from './StatusRelativeDate.html'
   import StatusDetails from './StatusDetails.html'
   import StatusCard from './StatusCard.html'
-  import StatusToolbar from './StatusToolbar.html'
+  import PooledStatusToolbar from './PooledStatusToolbar.html'
   import StatusMediaAttachments from './StatusMediaAttachments.html'
   import StatusContent from './StatusContent.html'
   import StatusSpoiler from './StatusSpoiler.html'
@@ -166,7 +166,7 @@
       StatusAuthorHandle,
       StatusRelativeDate,
       StatusDetails,
-      StatusToolbar,
+      PooledStatusToolbar,
       StatusMediaAttachments,
       StatusContent,
       StatusCard,

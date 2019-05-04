@@ -1,0 +1,66 @@
+<PooledComponent
+  {parentClassName}
+  {className}
+  {componentConstructor}
+  {componentData}
+  {events}
+  on:recalculateHeight
+/>
+<style>
+  :global(.status-toolbar) {
+    grid-area: toolbar;
+    display: flex;
+  }
+  :global(.status-toolbar-inner) {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+
+  }
+  :global(.status-toolbar.status-in-own-thread) {
+    margin-left: 63px; /* offset to align all toolbar items: 48px avatar + 15px margin-right */
+  }
+
+  @media (max-width: 767px) {
+    :global(.status-toolbar.status-in-own-thread) {
+      margin-left: 53px; /* offset to align all toolbar items: 48px avatar + 5px margin-right */
+    }
+  }
+</style>
+<script>
+  import StatusToolbar from './StatusToolbar.html'
+  import PooledComponent from '../PooledComponent.html'
+
+  export default {
+    data: () => ({
+      componentConstructor: StatusToolbar,
+      events: ['recalculateHeight'],
+      className: 'status-toolbar-inner'
+    }),
+    computed: {
+      parentClassName: ({ isStatusInOwnThread }) => (
+        `status-toolbar ${isStatusInOwnThread ? 'status-in-own-thread' : ''}`
+      ),
+      componentData: ({ enableShortcuts,
+                        inReplyToId,
+                        originalStatusId,
+                        originalStatus,
+                        replyShown,
+                        shortcutScope,
+                        visibility,
+                        uuid }) => ({
+        enableShortcuts,
+        inReplyToId,
+        originalStatusId,
+        originalStatus,
+        replyShown,
+        shortcutScope,
+        visibility,
+        uuid
+      })
+    },
+    components: {
+      PooledComponent
+    }
+  }
+</script>

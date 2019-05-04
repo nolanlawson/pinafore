@@ -1,61 +1,42 @@
-<div class="status-toolbar {isStatusInOwnThread ? 'status-in-own-thread' : ''}" ref:node>
-  <IconButton
-    className="status-toolbar-reply-button"
-    label={replyLabel}
-    pressable="true"
-    pressed={replyShown}
-    href={replyIcon}
-    clickListener={false}
-    elementId={replyKey}
-    />
-  <IconButton
-    label={reblogLabel}
-    pressable={!reblogDisabled}
-    pressed={reblogged}
-    disabled={reblogDisabled}
-    href={reblogIcon}
-    clickListener={false}
-    elementId={reblogKey}
-    ref:reblogIcon
+<IconButton
+  className="status-toolbar-reply-button"
+  label={replyLabel}
+  pressable="true"
+  pressed={replyShown}
+  href={replyIcon}
+  clickListener={false}
+  elementId={replyKey}
   />
-  <IconButton
-    label="Favorite"
-    pressable="true"
-    pressed={favorited}
-    href="#fa-star"
-    clickListener={false}
-    elementId={favoriteKey}
-    ref:favoriteIcon
-    />
-  <IconButton
-    label="Show more options"
-    href="#fa-ellipsis-h"
-    clickListener={false}
-    elementId={optionsKey}
+<IconButton
+  label={reblogLabel}
+  pressable={!reblogDisabled}
+  pressed={reblogged}
+  disabled={reblogDisabled}
+  href={reblogIcon}
+  clickListener={false}
+  elementId={reblogKey}
+  ref:reblogIcon
+/>
+<IconButton
+  label="Favorite"
+  pressable="true"
+  pressed={favorited}
+  href="#fa-star"
+  clickListener={false}
+  elementId={favoriteKey}
+  ref:favoriteIcon
   />
-</div>
+<IconButton
+  label="Show more options"
+  href="#fa-ellipsis-h"
+  clickListener={false}
+  elementId={optionsKey}
+/>
 {#if enableShortcuts}
   <Shortcut scope={shortcutScope} key="f" on:pressed="toggleFavorite()"/>
   <Shortcut scope={shortcutScope} key="r" on:pressed="reply()"/>
   <Shortcut scope={shortcutScope} key="b" on:pressed="reblog()"/>
 {/if}
-<style>
-  .status-toolbar {
-    grid-area: toolbar;
-    display: flex;
-    justify-content: space-between;
-  }
-  .status-toolbar.status-in-own-thread {
-    margin-left: 63px; /* offset to align all toolbar items: 48px avatar + 15px margin-right */
-  }
-
-  @media (max-width: 767px) {
-    .status-toolbar.status-in-own-thread {
-      margin-left: 53px; /* offset to align all toolbar items: 48px avatar + 5px margin-right */
-    }
-  }
-
-</style>
 <script>
   import IconButton from '../IconButton.html'
   import Shortcut from '../shortcut/Shortcut.html'
@@ -137,18 +118,18 @@
         showStatusOptionsDialog(originalStatus)
       },
       onPostedStatus (realm, inReplyToUuid) {
-        let {
-          originalStatusId,
-          uuid
-        } = this.get()
-        if (realm !== originalStatusId ||
-            inReplyToUuid !== uuid) {
-          return
-        }
-        try {
-          // return status to the reply button after posting a reply
-          this.refs.node.querySelector('.status-toolbar-reply-button').focus({ preventScroll: true })
-        } catch (e) { /* ignore */ }
+        // let {
+        //   originalStatusId,
+        //   uuid
+        // } = this.get()
+        // if (realm !== originalStatusId ||
+        //     inReplyToUuid !== uuid) {
+        //   return
+        // }
+        // try {
+        //   // return status to the reply button after posting a reply
+        //   this.refs.node.querySelector('.status-toolbar-reply-button').focus({ preventScroll: true })
+        // } catch (e) { /* ignore */ }
       }
     },
     data: () => ({

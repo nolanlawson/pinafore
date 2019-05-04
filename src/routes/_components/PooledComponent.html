@@ -1,0 +1,60 @@
+<!-- Component that uses a pool of sub-components under the hood, to avoid
+     the cost of re-creating the component over and over again -->
+<div class={parentClassName} ref:parent></div>
+<script>
+  import Queue from 'tiny-queue'
+  import { store } from '../_store/store'
+  const poolsById = new Map()
+
+  export default {
+    oncreate () {
+      let { componentConstructor, componentData, id, events, className } = this.get()
+      let { parent } = this.refs
+
+      let pool = poolsById.get(id)
+      if (!pool) {
+        pool = new Queue()
+        poolsById.set(id, pool)
+      }
+
+      let poolItem = pool.shift()
+      let component
+      let node
+      if (poolItem) {
+        node = poolItem.node
+        component = poolItem.component
+        component.set(componentData)
+      } else {
+        node = document.createElement('div')
+        component = new componentConstructor({
+          data: componentData,
+          store,
+          target: node
+        })
+      }
+      node.setAttribute('class', className)
+      parent.appendChild(node)
+      this.set({ component, node })
+
+      // add event listeners to component
+      // if (events && events.length) {
+      //   for (let event of events) {
+      //     component.
+      //   }
+      // }
+    },
+    ondestroy () {
+      let { id, component, node } = this.get()
+      let { parent } = this.refs
+      parent.removeChild(node)
+      let pool = poolsById.get(id)
+      // remove event listeners on component
+      pool.push({ component, node })
+    },
+    data: () => ({
+      className: '',
+      parentClassName: '',
+      events: void 0
+    })
+  }
+</script>
