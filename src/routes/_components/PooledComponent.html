@@ -4,6 +4,7 @@
 <script>
   import Queue from 'tiny-queue'
   import { store } from '../_store/store'
+  import { mark, stop } from '../_utils/marks'
   const poolsById = new Map()
 
   export default {
@@ -21,16 +22,20 @@
       let component
       let node
       if (poolItem) {
+        mark('reusePooledComponent')
         node = poolItem.node
         component = poolItem.component
         component.set(componentData)
+        stop('reusePooledComponent')
       } else {
+        mark('createPooledComponent')
         node = document.createElement('div')
         component = new componentConstructor({
           data: componentData,
           store,
           target: node
         })
+        stop('createPooledComponent')
       }
       node.setAttribute('class', className)
       parent.appendChild(node)
