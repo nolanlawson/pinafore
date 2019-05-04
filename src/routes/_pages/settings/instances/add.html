@@ -34,7 +34,15 @@
   </form>
 
   {#if !$isUserLoggedIn}
-  <p>Don't have an instance? <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink></p>
+  <p>
+    Don't have an
+    <Tooltip
+      text="instance"
+      tooltipText="An instance is your Mastodon home server, such as mastodon.social or cybre.space."
+    />
+    ?
+    <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink>
+  </p>
   {/if}
 </SettingsLayout>
 <style>
@@ -78,6 +86,7 @@
   import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
   import ExternalLink from '../../../_components/ExternalLink.html'
   import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
+  import Tooltip from '../../../_components/Tooltip.html'
 
   export default {
     async oncreate () {
@@ -92,7 +101,8 @@
     },
     components: {
       SettingsLayout,
-      ExternalLink
+      ExternalLink,
+      Tooltip
     },
     store: () => store,
     data: () => ({
