@@ -173,7 +173,9 @@
         if (!autoFocus) {
           return
         }
-        requestAnimationFrame(() => {
+        // The setTimeout is to work around timing issues where
+        // sometimes the search input isn't rendered yet.
+        setTimeout(() => requestAnimationFrame(() => {
           let container = this.refs.container
           if (container) {
             let searchInput = container.querySelector('emoji-mart .emoji-mart-search input')
@@ -182,7 +184,7 @@
               searchInput.focus()
             }
           }
-        })
+        }), 50)
       }
     }
   }
