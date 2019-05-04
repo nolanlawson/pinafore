@@ -152,6 +152,7 @@
   import { store } from '../../_store/store'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
+  import { emit } from '../../_utils/eventBus'
 
   export default {
     oncreate () {
@@ -189,7 +190,7 @@
         let { sensitivesShown } = this.store.get()
         sensitivesShown[uuid] = !sensitivesShown[uuid]
         this.store.set({ sensitivesShown })
-        this.fire('recalculateHeight')
+        emit('recalculateHeight', uuid)
       }
     }
   }

@@ -1,10 +1,8 @@
 <PooledComponent
   {parentClassName}
   {className}
-  {componentConstructor}
+  {Component}
   {componentData}
-  {events}
-  on:recalculateHeight
 />
 <style>
   :global(.status-toolbar) {
@@ -33,8 +31,7 @@
 
   export default {
     data: () => ({
-      componentConstructor: StatusToolbar,
-      events: ['recalculateHeight'],
+      Component: StatusToolbar,
       className: 'status-toolbar-inner'
     }),
     computed: {
@@ -42,13 +39,13 @@
         `status-toolbar ${isStatusInOwnThread ? 'status-in-own-thread' : ''}`
       ),
       componentData: ({ enableShortcuts,
-                        inReplyToId,
-                        originalStatusId,
-                        originalStatus,
-                        replyShown,
-                        shortcutScope,
-                        visibility,
-                        uuid }) => ({
+        inReplyToId,
+        originalStatusId,
+        originalStatus,
+        replyShown,
+        shortcutScope,
+        visibility,
+        uuid }) => ({
         enableShortcuts,
         inReplyToId,
         originalStatusId,

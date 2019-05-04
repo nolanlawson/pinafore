@@ -5,17 +5,21 @@
   import Queue from 'tiny-queue'
   import { store } from '../_store/store'
   import { mark, stop } from '../_utils/marks'
-  const poolsById = new Map()
+  const poolsByConstructor = new Map()
+
+  if (process.browser && process.env.NODE_ENV !== 'production') {
+    window.poolsByConstructor = poolsByConstructor
+  }
 
   export default {
     oncreate () {
-      let { componentConstructor, componentData, id, events, className } = this.get()
+      let { Component, componentData, className } = this.get()
       let { parent } = this.refs
 
-      let pool = poolsById.get(id)
+      let pool = poolsByConstructor.get(Component)
       if (!pool) {
         pool = new Queue()
-        poolsById.set(id, pool)
+        poolsByConstructor.set(Component, pool)
       }
 
       let poolItem = pool.shift()
@@ -30,36 +34,29 @@
       } else {
         mark('createPooledComponent')
         node = document.createElement('div')
-        component = new componentConstructor({
+        component = new Component({
           data: componentData,
           store,
           target: node
         })
         stop('createPooledComponent')
       }
-      node.setAttribute('class', className)
+      if (className) {
+        node.setAttribute('class', className)
+      }
       parent.appendChild(node)
       this.set({ component, node })
-
-      // add event listeners to component
-      // if (events && events.length) {
-      //   for (let event of events) {
-      //     component.
-      //   }
-      // }
     },
     ondestroy () {
-      let { id, component, node } = this.get()
+      let { Component, component, node } = this.get()
       let { parent } = this.refs
       parent.removeChild(node)
-      let pool = poolsById.get(id)
-      // remove event listeners on component
+      let pool = poolsByConstructor.get(Component)
       pool.push({ component, node })
     },
     data: () => ({
       className: '',
-      parentClassName: '',
-      events: void 0
+      parentClassName: ''
     })
   }
 </script>

@@ -4,8 +4,8 @@
          aria-posinset={index + 1}
          aria-setsize={length}
          aria-label={ariaLabel}
-         on:recalculateHeight
          on:applyFocusStylesToParent="noop()"
+         ref:node
 >
   {#if showHeader}
     <StatusHeader {...params} />
@@ -17,7 +17,7 @@
   {/if}
   <StatusSidebar {...params} />
   {#if spoilerText}
-    <StatusSpoiler {...params} on:recalculateHeight />
+    <StatusSpoiler {...params} />
   {/if}
   {#if !showContent}
     <StatusMentions {...params} />
@@ -29,14 +29,14 @@
     <StatusCard {...params} />
   {/if}
   {#if showMedia }
-    <StatusMediaAttachments {...params} on:recalculateHeight />
+    <StatusMediaAttachments {...params} />
   {/if}
   {#if isStatusInOwnThread}
     <StatusDetails {...params} />
   {/if}
-  <PooledStatusToolbar {...params} on:recalculateHeight />
+  <PooledStatusToolbar {...params} />
   {#if replyShown}
-    <StatusComposeBox {...params} on:recalculateHeight />
+    <StatusComposeBox {...params} />
   {/if}
 </article>
 {#if enableShortcuts}
@@ -137,6 +137,7 @@
   import noop from 'lodash-es/noop'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
   import { statusHtmlToPlainText } from '../../_utils/statusHtmlToPlainText'
+  import { on } from '../../_utils/eventBus'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -158,6 +159,10 @@
           this.set({ contentPreloaded: true })
         })
       }
+      this.onPostedStatus = this.onPostedStatus.bind(this)
+      this.onRecalculateHeight = this.onRecalculateHeight.bind(this)
+      on('postedStatus', this, this.onPostedStatus)
+      on('recalculateHeight', this, this.onRecalculateHeight)
     },
     components: {
       StatusSidebar,
@@ -205,6 +210,25 @@
         e.preventDefault()
         e.stopPropagation()
         this.open()
+      },
+      onPostedStatus (realm, inReplyToUuid) {
+        let { originalStatusId, uuid } = this.get()
+        if (realm !== originalStatusId || inReplyToUuid !== uuid) {
+          return
+        }
+        try {
+          // return status to the reply button after posting a reply
+          this.refs.node.querySelector('.status-toolbar-reply-button').focus({
+            preventScroll: true
+          })
+        } catch (e) { /* ignore */ }
+      },
+      onRecalculateHeight (otherUuid) {
+        let { uuid } = this.get()
+        if (uuid !== otherUuid) {
+          return
+        }
+        this.fire('recalculateHeight')
       },
       open () {
         let { originalStatusId } = this.get()

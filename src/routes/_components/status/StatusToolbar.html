@@ -47,7 +47,7 @@
   import { importShowStatusOptionsDialog } from '../dialog/asyncDialogs'
   import { updateProfileAndRelationship } from '../../_actions/accounts'
   import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
-  import { on } from '../../_utils/eventBus'
+  import { emit } from '../../_utils/eventBus'
 
   export default {
     oncreate () {
@@ -75,7 +75,6 @@
         },
         [optionsKey]: (e) => this.onOptionsClick(e)
       })
-      on('postedStatus', this, this.onPostedStatus)
     },
     components: {
       IconButton,
@@ -105,7 +104,7 @@
           let { repliesShown } = this.store.get()
           repliesShown[uuid] = !repliesShown[uuid]
           this.store.set({ repliesShown })
-          this.fire('recalculateHeight')
+          emit('recalculateHeight', uuid)
         })
       },
       async onOptionsClick (e) {
@@ -116,20 +115,6 @@
         let showStatusOptionsDialog = await importShowStatusOptionsDialog()
         await updateRelationshipPromise
         showStatusOptionsDialog(originalStatus)
-      },
-      onPostedStatus (realm, inReplyToUuid) {
-        // let {
-        //   originalStatusId,
-        //   uuid
-        // } = this.get()
-        // if (realm !== originalStatusId ||
-        //     inReplyToUuid !== uuid) {
-        //   return
-        // }
-        // try {
-        //   // return status to the reply button after posting a reply
-        //   this.refs.node.querySelector('.status-toolbar-reply-button').focus({ preventScroll: true })
-        // } catch (e) { /* ignore */ }
       }
     },
     data: () => ({

@@ -19,7 +19,7 @@
   import { store } from '../../_store/store'
   import debounce from 'lodash-es/debounce'
   import throttle from 'lodash-es/throttle'
-  import { on } from '../../_utils/eventBus'
+  import { on, emit } from '../../_utils/eventBus'
   import { observe } from 'svelte-extras'
 
   const DEBOUNCE_DELAY = 400
@@ -46,11 +46,12 @@
           let { repliesShown } = this.store.get()
           repliesShown[uuid] = false
           this.store.set({ repliesShown })
-          this.fire('recalculateHeight')
+          emit('recalculateHeight', uuid)
         })
       },
       setupRecalculateHeightListener () {
-        const recalc = () => requestAnimationFrame(() => this.fire('recalculateHeight'))
+        let { uuid } = this.get()
+        const recalc = () => requestAnimationFrame(() => emit('recalculateHeight', uuid))
         // debounce AND throttle due to 333ms content warning animation
         const debounced = debounce(recalc, DEBOUNCE_DELAY)
         const throttled = throttle(() => {
