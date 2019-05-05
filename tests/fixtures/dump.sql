@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.6 (Ubuntu 10.6-0ubuntu0.18.04.1)
--- Dumped by pg_dump version 10.6 (Ubuntu 10.6-0ubuntu0.18.04.1)
+-- Dumped from database version 10.7 (Ubuntu 10.7-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.7 (Ubuntu 10.7-0ubuntu0.18.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -155,6 +155,46 @@ ALTER TABLE public.account_domain_blocks_id_seq OWNER TO pinafore;
 --
 
 ALTER SEQUENCE public.account_domain_blocks_id_seq OWNED BY public.account_domain_blocks.id;
+
+
+--
+-- Name: account_identity_proofs; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.account_identity_proofs (
+    id bigint NOT NULL,
+    account_id bigint,
+    provider character varying DEFAULT ''::character varying NOT NULL,
+    provider_username character varying DEFAULT ''::character varying NOT NULL,
+    token text DEFAULT ''::text NOT NULL,
+    verified boolean DEFAULT false NOT NULL,
+    live boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.account_identity_proofs OWNER TO pinafore;
+
+--
+-- Name: account_identity_proofs_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.account_identity_proofs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_identity_proofs_id_seq OWNER TO pinafore;
+
+--
+-- Name: account_identity_proofs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.account_identity_proofs_id_seq OWNED BY public.account_identity_proofs.id;
 
 
 --
@@ -857,6 +897,44 @@ ALTER SEQUENCE public.favourites_id_seq OWNED BY public.favourites.id;
 
 
 --
+-- Name: featured_tags; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.featured_tags (
+    id bigint NOT NULL,
+    account_id bigint,
+    tag_id bigint,
+    statuses_count bigint DEFAULT 0 NOT NULL,
+    last_status_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.featured_tags OWNER TO pinafore;
+
+--
+-- Name: featured_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.featured_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.featured_tags_id_seq OWNER TO pinafore;
+
+--
+-- Name: featured_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.featured_tags_id_seq OWNED BY public.featured_tags.id;
+
+
+--
 -- Name: follow_requests; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -984,7 +1062,8 @@ CREATE TABLE public.imports (
     data_content_type character varying,
     data_file_size integer,
     data_updated_at timestamp without time zone,
-    account_id bigint NOT NULL
+    account_id bigint NOT NULL,
+    overwrite boolean DEFAULT false NOT NULL
 );
 
 
@@ -1141,7 +1220,8 @@ CREATE TABLE public.media_attachments (
     file_meta json,
     account_id bigint,
     description text,
-    scheduled_status_id bigint
+    scheduled_status_id bigint,
+    blurhash character varying
 );
 
 
@@ -1442,6 +1522,88 @@ ALTER SEQUENCE public.pghero_space_stats_id_seq OWNED BY public.pghero_space_sta
 
 
 --
+-- Name: poll_votes; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.poll_votes (
+    id bigint NOT NULL,
+    account_id bigint,
+    poll_id bigint,
+    choice integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    uri character varying
+);
+
+
+ALTER TABLE public.poll_votes OWNER TO pinafore;
+
+--
+-- Name: poll_votes_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.poll_votes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.poll_votes_id_seq OWNER TO pinafore;
+
+--
+-- Name: poll_votes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.poll_votes_id_seq OWNED BY public.poll_votes.id;
+
+
+--
+-- Name: polls; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.polls (
+    id bigint NOT NULL,
+    account_id bigint,
+    status_id bigint,
+    expires_at timestamp without time zone,
+    options character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    cached_tallies bigint[] DEFAULT '{}'::bigint[] NOT NULL,
+    multiple boolean DEFAULT false NOT NULL,
+    hide_totals boolean DEFAULT false NOT NULL,
+    votes_count bigint DEFAULT 0 NOT NULL,
+    last_fetched_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    lock_version integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.polls OWNER TO pinafore;
+
+--
+-- Name: polls_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.polls_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.polls_id_seq OWNER TO pinafore;
+
+--
+-- Name: polls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.polls_id_seq OWNED BY public.polls.id;
+
+
+--
 -- Name: preview_cards; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -1591,7 +1753,8 @@ CREATE TABLE public.reports (
     account_id bigint NOT NULL,
     action_taken_by_account_id bigint,
     target_account_id bigint NOT NULL,
-    assigned_account_id bigint
+    assigned_account_id bigint,
+    uri character varying
 );
 
 
@@ -1878,7 +2041,8 @@ CREATE TABLE public.statuses (
     local boolean,
     account_id bigint NOT NULL,
     application_id bigint,
-    in_reply_to_account_id bigint
+    in_reply_to_account_id bigint,
+    poll_id bigint
 );
 
 
@@ -2061,6 +2225,42 @@ ALTER SEQUENCE public.tombstones_id_seq OWNED BY public.tombstones.id;
 
 
 --
+-- Name: user_invite_requests; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.user_invite_requests (
+    id bigint NOT NULL,
+    user_id bigint,
+    text text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.user_invite_requests OWNER TO pinafore;
+
+--
+-- Name: user_invite_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.user_invite_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_invite_requests_id_seq OWNER TO pinafore;
+
+--
+-- Name: user_invite_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.user_invite_requests_id_seq OWNED BY public.user_invite_requests.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -2098,7 +2298,8 @@ CREATE TABLE public.users (
     invite_id bigint,
     remember_token character varying,
     chosen_languages character varying[],
-    created_by_application_id bigint
+    created_by_application_id bigint,
+    approved boolean DEFAULT true NOT NULL
 );
 
 
@@ -2213,6 +2414,13 @@ ALTER TABLE ONLY public.account_conversations ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.account_domain_blocks ALTER COLUMN id SET DEFAULT nextval('public.account_domain_blocks_id_seq'::regclass);
+
+
+--
+-- Name: account_identity_proofs id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_identity_proofs ALTER COLUMN id SET DEFAULT nextval('public.account_identity_proofs_id_seq'::regclass);
 
 
 --
@@ -2335,6 +2543,13 @@ ALTER TABLE ONLY public.favourites ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
+-- Name: featured_tags id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.featured_tags ALTER COLUMN id SET DEFAULT nextval('public.featured_tags_id_seq'::regclass);
+
+
+--
 -- Name: follow_requests id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2440,6 +2655,20 @@ ALTER TABLE ONLY public.pghero_space_stats ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: poll_votes id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.poll_votes ALTER COLUMN id SET DEFAULT nextval('public.poll_votes_id_seq'::regclass);
+
+
+--
+-- Name: polls id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.polls ALTER COLUMN id SET DEFAULT nextval('public.polls_id_seq'::regclass);
+
+
+--
 -- Name: preview_cards id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2538,6 +2767,13 @@ ALTER TABLE ONLY public.tombstones ALTER COLUMN id SET DEFAULT nextval('public.t
 
 
 --
+-- Name: user_invite_requests id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.user_invite_requests ALTER COLUMN id SET DEFAULT nextval('public.user_invite_requests_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2571,6 +2807,14 @@ COPY public.account_conversations (id, account_id, conversation_id, participant_
 --
 
 COPY public.account_domain_blocks (id, domain, created_at, updated_at, account_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: account_identity_proofs; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.account_identity_proofs (id, account_id, provider, provider_username, token, verified, live, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -2746,6 +2990,14 @@ COPY public.favourites (id, created_at, updated_at, account_id, status_id) FROM 
 
 
 --
+-- Data for Name: featured_tags; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.featured_tags (id, account_id, tag_id, statuses_count, last_status_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: follow_requests; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
@@ -2778,7 +3030,7 @@ COPY public.identities (provider, uid, created_at, updated_at, id, user_id) FROM
 -- Data for Name: imports; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.imports (id, type, approved, created_at, updated_at, data_file_name, data_content_type, data_file_size, data_updated_at, account_id) FROM stdin;
+COPY public.imports (id, type, approved, created_at, updated_at, data_file_name, data_content_type, data_file_size, data_updated_at, account_id, overwrite) FROM stdin;
 \.
 
 
@@ -2810,7 +3062,7 @@ COPY public.lists (id, account_id, title, created_at, updated_at) FROM stdin;
 -- Data for Name: media_attachments; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.media_attachments (id, status_id, file_file_name, file_content_type, file_file_size, file_updated_at, remote_url, created_at, updated_at, shortcode, type, file_meta, account_id, description, scheduled_status_id) FROM stdin;
+COPY public.media_attachments (id, status_id, file_file_name, file_content_type, file_file_size, file_updated_at, remote_url, created_at, updated_at, shortcode, type, file_meta, account_id, description, scheduled_status_id, blurhash) FROM stdin;
 \.
 
 
@@ -2885,6 +3137,22 @@ COPY public.pghero_space_stats (id, database, schema, relation, size, captured_a
 
 
 --
+-- Data for Name: poll_votes; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.poll_votes (id, account_id, poll_id, choice, created_at, updated_at, uri) FROM stdin;
+\.
+
+
+--
+-- Data for Name: polls; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.polls (id, account_id, status_id, expires_at, options, cached_tallies, multiple, hide_totals, votes_count, last_fetched_at, created_at, updated_at, lock_version) FROM stdin;
+\.
+
+
+--
 -- Data for Name: preview_cards; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
@@ -2920,7 +3188,7 @@ COPY public.report_notes (id, content, report_id, account_id, created_at, update
 -- Data for Name: reports; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.reports (id, status_ids, comment, action_taken, created_at, updated_at, account_id, action_taken_by_account_id, target_account_id, assigned_account_id) FROM stdin;
+COPY public.reports (id, status_ids, comment, action_taken, created_at, updated_at, account_id, action_taken_by_account_id, target_account_id, assigned_account_id, uri) FROM stdin;
 \.
 
 
@@ -3138,6 +3406,19 @@ COPY public.schema_migrations (version) FROM stdin;
 20190103124649
 20190103124754
 20190117114553
+20190201012802
+20190203180359
+20190225031541
+20190225031625
+20190226003449
+20190304152020
+20190306145741
+20190307234537
+20190314181829
+20190316190352
+20190317135723
+20190409054914
+20190420025523
 \.
 
 
@@ -3195,7 +3476,7 @@ COPY public.status_stats (id, status_id, replies_count, reblogs_count, favourite
 -- Data for Name: statuses; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.statuses (id, uri, text, created_at, updated_at, in_reply_to_id, reblog_of_id, url, sensitive, visibility, spoiler_text, reply, language, conversation_id, local, account_id, application_id, in_reply_to_account_id) FROM stdin;
+COPY public.statuses (id, uri, text, created_at, updated_at, in_reply_to_id, reblog_of_id, url, sensitive, visibility, spoiler_text, reply, language, conversation_id, local, account_id, application_id, in_reply_to_account_id, poll_id) FROM stdin;
 \.
 
 
@@ -3240,16 +3521,24 @@ COPY public.tombstones (id, account_id, uri, created_at, updated_at) FROM stdin;
 
 
 --
+-- Data for Name: user_invite_requests; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.user_invite_requests (id, user_id, text, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, admin, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, locale, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, consumed_timestep, otp_required_for_login, last_emailed_at, otp_backup_codes, filtered_languages, account_id, disabled, moderator, invite_id, remember_token, chosen_languages, created_by_application_id) FROM stdin;
-4	externallinks@localhost:3000	2018-03-06 03:53:52.59743	2018-03-06 03:54:07.597338	$2a$10$j6UVhj3pm2ZivOrm9sGbcuPtw49kqvpggbyt.IcCX/sm9Mqr2W2lW	\N	\N	2018-03-06 03:54:07.592013	1	2018-03-06 03:54:07.569021	2018-03-06 03:54:07.569021	127.0.0.1	127.0.0.1	f	1wHx7PBsMfgkwz36yVSq	2018-03-06 03:53:56.002257	2018-03-06 03:53:52.597832	\N	en	\N	\N	\N	\N	f	\N	\N	{}	4	f	f	\N	\N	\N	\N
-2	foobar@localhost:3000	2018-03-06 03:52:21.15566	2018-03-06 04:57:40.899388	$2a$10$uOJGEfYP4JcR6cdKASsuAe3EYc44ClEjY3IsL9cwupgAsKXNvsMB6	\N	\N	2018-03-06 04:57:40.898036	1	2018-03-06 04:57:40.87839	2018-03-06 04:57:40.87839	127.0.0.1	127.0.0.1	f	9tZRP_PZyyQ6hQmx88hX	2018-03-06 03:52:26.359	2018-03-06 03:52:21.156096	\N	en	\N	\N	\N	\N	f	\N	\N	{}	2	f	f	\N	\N	\N	\N
-3	quux@localhost:3000	2018-03-06 03:52:52.825436	2018-03-06 04:58:05.758893	$2a$10$nSVOaz2ACr7hizj57HbbCOnBgaj20teuuSBHYFQdKboPAE8o8AWtu	\N	\N	2018-03-06 04:58:05.757671	1	2018-03-06 04:58:05.7443	2018-03-06 04:58:05.7443	127.0.0.1	127.0.0.1	f	LZkd9hZPQby-DJR7q2xK	2018-03-06 03:52:56.722007	2018-03-06 03:52:52.825895	\N	en	\N	\N	\N	\N	f	\N	\N	{}	3	f	f	\N	\N	\N	\N
-1	admin@localhost:3000	2018-03-06 03:50:49.649613	2018-03-06 17:03:26.537681	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	\N	2	2018-03-06 16:53:21.708118	2018-03-06 04:56:52.178652	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	\N	\N	\N
-5	baz@localhost:3000	2018-03-08 17:13:19.88529	2018-03-08 17:13:40.093697	$2a$10$eqGdrqmSUEfA4q.7qxjp1eFdMxSUGlNJMpnOG.zxE6ogyDUj9t8GO	\N	\N	2018-03-08 17:13:40.092268	1	2018-03-08 17:13:40.06976	2018-03-08 17:13:40.06976	127.0.0.1	127.0.0.1	f	K5TLBFADUUD-51oaCMfL	2018-03-08 17:13:29.253941	2018-03-08 17:13:19.885632	\N	en	\N	\N	\N	\N	f	\N	\N	{}	5	f	f	\N	\N	\N	\N
-6	lockedaccount@localhost:3000	2018-03-15 04:07:24.10397	2018-03-15 04:58:42.615377	$2a$10$PGDn6VtjTR0BSbK4MY/aR.T0qJZ/wtziTXH0ySJr7x3.3XsZ/1qwm	\N	\N	2018-03-15 04:07:55.142233	3	2018-03-15 04:58:42.60349	2018-03-15 04:33:25.042573	127.0.0.1	127.0.0.1	f	spRH4F8MUisS5i_uzTiS	2018-03-15 04:07:34.297881	2018-03-15 04:07:24.105731	\N	en	\N	\N	\N	\N	f	\N	\N	{}	6	f	f	\N	\N	\N	\N
+COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, admin, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, locale, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, consumed_timestep, otp_required_for_login, last_emailed_at, otp_backup_codes, filtered_languages, account_id, disabled, moderator, invite_id, remember_token, chosen_languages, created_by_application_id, approved) FROM stdin;
+1	admin@localhost:3000	2018-03-06 03:50:49.649613	2018-03-06 17:03:26.537681	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	\N	2	2018-03-06 16:53:21.708118	2018-03-06 04:56:52.178652	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	\N	\N	\N	t
+2	foobar@localhost:3000	2018-03-06 03:52:21.15566	2018-03-06 04:57:40.899388	$2a$10$uOJGEfYP4JcR6cdKASsuAe3EYc44ClEjY3IsL9cwupgAsKXNvsMB6	\N	\N	2018-03-06 04:57:40.898036	1	2018-03-06 04:57:40.87839	2018-03-06 04:57:40.87839	127.0.0.1	127.0.0.1	f	9tZRP_PZyyQ6hQmx88hX	2018-03-06 03:52:26.359	2018-03-06 03:52:21.156096	\N	en	\N	\N	\N	\N	f	\N	\N	{}	2	f	f	\N	\N	\N	\N	t
+3	quux@localhost:3000	2018-03-06 03:52:52.825436	2018-03-06 04:58:05.758893	$2a$10$nSVOaz2ACr7hizj57HbbCOnBgaj20teuuSBHYFQdKboPAE8o8AWtu	\N	\N	2018-03-06 04:58:05.757671	1	2018-03-06 04:58:05.7443	2018-03-06 04:58:05.7443	127.0.0.1	127.0.0.1	f	LZkd9hZPQby-DJR7q2xK	2018-03-06 03:52:56.722007	2018-03-06 03:52:52.825895	\N	en	\N	\N	\N	\N	f	\N	\N	{}	3	f	f	\N	\N	\N	\N	t
+4	externallinks@localhost:3000	2018-03-06 03:53:52.59743	2018-03-06 03:54:07.597338	$2a$10$j6UVhj3pm2ZivOrm9sGbcuPtw49kqvpggbyt.IcCX/sm9Mqr2W2lW	\N	\N	2018-03-06 03:54:07.592013	1	2018-03-06 03:54:07.569021	2018-03-06 03:54:07.569021	127.0.0.1	127.0.0.1	f	1wHx7PBsMfgkwz36yVSq	2018-03-06 03:53:56.002257	2018-03-06 03:53:52.597832	\N	en	\N	\N	\N	\N	f	\N	\N	{}	4	f	f	\N	\N	\N	\N	t
+5	baz@localhost:3000	2018-03-08 17:13:19.88529	2018-03-08 17:13:40.093697	$2a$10$eqGdrqmSUEfA4q.7qxjp1eFdMxSUGlNJMpnOG.zxE6ogyDUj9t8GO	\N	\N	2018-03-08 17:13:40.092268	1	2018-03-08 17:13:40.06976	2018-03-08 17:13:40.06976	127.0.0.1	127.0.0.1	f	K5TLBFADUUD-51oaCMfL	2018-03-08 17:13:29.253941	2018-03-08 17:13:19.885632	\N	en	\N	\N	\N	\N	f	\N	\N	{}	5	f	f	\N	\N	\N	\N	t
+6	lockedaccount@localhost:3000	2018-03-15 04:07:24.10397	2018-03-15 04:58:42.615377	$2a$10$PGDn6VtjTR0BSbK4MY/aR.T0qJZ/wtziTXH0ySJr7x3.3XsZ/1qwm	\N	\N	2018-03-15 04:07:55.142233	3	2018-03-15 04:58:42.60349	2018-03-15 04:33:25.042573	127.0.0.1	127.0.0.1	f	spRH4F8MUisS5i_uzTiS	2018-03-15 04:07:34.297881	2018-03-15 04:07:24.105731	\N	en	\N	\N	\N	\N	f	\N	\N	{}	6	f	f	\N	\N	\N	\N	t
 \.
 
 
@@ -3285,6 +3574,13 @@ SELECT pg_catalog.setval('public.account_conversations_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.account_domain_blocks_id_seq', 1, false);
+
+
+--
+-- Name: account_identity_proofs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.account_identity_proofs_id_seq', 1, false);
 
 
 --
@@ -3407,6 +3703,13 @@ SELECT pg_catalog.setval('public.favourites_id_seq', 1, false);
 
 
 --
+-- Name: featured_tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.featured_tags_id_seq', 1, false);
+
+
+--
 -- Name: follow_requests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3509,6 +3812,20 @@ SELECT pg_catalog.setval('public.oauth_applications_id_seq', 1, true);
 --
 
 SELECT pg_catalog.setval('public.pghero_space_stats_id_seq', 1, false);
+
+
+--
+-- Name: poll_votes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.poll_votes_id_seq', 1, false);
+
+
+--
+-- Name: polls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.polls_id_seq', 1, false);
 
 
 --
@@ -3617,6 +3934,13 @@ SELECT pg_catalog.setval('public.tombstones_id_seq', 1, false);
 
 
 --
+-- Name: user_invite_requests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.user_invite_requests_id_seq', 1, false);
+
+
+--
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3651,6 +3975,14 @@ ALTER TABLE ONLY public.account_conversations
 
 ALTER TABLE ONLY public.account_domain_blocks
     ADD CONSTRAINT account_domain_blocks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account_identity_proofs account_identity_proofs_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_identity_proofs
+    ADD CONSTRAINT account_identity_proofs_pkey PRIMARY KEY (id);
 
 
 --
@@ -3798,6 +4130,14 @@ ALTER TABLE ONLY public.favourites
 
 
 --
+-- Name: featured_tags featured_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.featured_tags
+    ADD CONSTRAINT featured_tags_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: follow_requests follow_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -3915,6 +4255,22 @@ ALTER TABLE ONLY public.oauth_applications
 
 ALTER TABLE ONLY public.pghero_space_stats
     ADD CONSTRAINT pghero_space_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: poll_votes poll_votes_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.poll_votes
+    ADD CONSTRAINT poll_votes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: polls polls_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.polls
+    ADD CONSTRAINT polls_pkey PRIMARY KEY (id);
 
 
 --
@@ -4046,6 +4402,14 @@ ALTER TABLE ONLY public.tombstones
 
 
 --
+-- Name: user_invite_requests user_invite_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.user_invite_requests
+    ADD CONSTRAINT user_invite_requests_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4105,6 +4469,13 @@ CREATE UNIQUE INDEX index_account_domain_blocks_on_account_id_and_domain ON publ
 
 
 --
+-- Name: index_account_identity_proofs_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_identity_proofs_on_account_id ON public.account_identity_proofs USING btree (account_id);
+
+
+--
 -- Name: index_account_moderation_notes_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -4137,6 +4508,13 @@ CREATE UNIQUE INDEX index_account_pins_on_account_id_and_target_account_id ON pu
 --
 
 CREATE INDEX index_account_pins_on_target_account_id ON public.account_pins USING btree (target_account_id);
+
+
+--
+-- Name: index_account_proofs_on_account_and_provider_and_username; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_account_proofs_on_account_and_provider_and_username ON public.account_identity_proofs USING btree (account_id, provider, provider_username);
 
 
 --
@@ -4298,6 +4676,20 @@ CREATE UNIQUE INDEX index_favourites_on_account_id_and_status_id ON public.favou
 --
 
 CREATE INDEX index_favourites_on_status_id ON public.favourites USING btree (status_id);
+
+
+--
+-- Name: index_featured_tags_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_featured_tags_on_account_id ON public.featured_tags USING btree (account_id);
+
+
+--
+-- Name: index_featured_tags_on_tag_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_featured_tags_on_tag_id ON public.featured_tags USING btree (tag_id);
 
 
 --
@@ -4504,6 +4896,34 @@ CREATE INDEX index_pghero_space_stats_on_database_and_captured_at ON public.pghe
 
 
 --
+-- Name: index_poll_votes_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_poll_votes_on_account_id ON public.poll_votes USING btree (account_id);
+
+
+--
+-- Name: index_poll_votes_on_poll_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_poll_votes_on_poll_id ON public.poll_votes USING btree (poll_id);
+
+
+--
+-- Name: index_polls_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_polls_on_account_id ON public.polls USING btree (account_id);
+
+
+--
+-- Name: index_polls_on_status_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_polls_on_status_id ON public.polls USING btree (status_id);
+
+
+--
 -- Name: index_preview_cards_on_url; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -4704,6 +5124,13 @@ CREATE INDEX index_tombstones_on_uri ON public.tombstones USING btree (uri);
 --
 
 CREATE UNIQUE INDEX index_unique_conversations ON public.account_conversations USING btree (account_id, conversation_id, participant_account_ids);
+
+
+--
+-- Name: index_user_invite_requests_on_user_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_user_invite_requests_on_user_id ON public.user_invite_requests USING btree (user_id);
 
 
 --
@@ -5074,6 +5501,14 @@ ALTER TABLE ONLY public.account_conversations
 
 
 --
+-- Name: featured_tags fk_rails_174efcf15f; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.featured_tags
+    ADD CONSTRAINT fk_rails_174efcf15f FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: account_tag_stats fk_rails_1fa34bab2d; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5095,6 +5530,14 @@ ALTER TABLE ONLY public.account_stats
 
 ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT fk_rails_2320833084 FOREIGN KEY (moved_to_account_id) REFERENCES public.accounts(id) ON DELETE SET NULL;
+
+
+--
+-- Name: featured_tags fk_rails_23a9055c7c; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.featured_tags
+    ADD CONSTRAINT fk_rails_23a9055c7c FOREIGN KEY (tag_id) REFERENCES public.tags(id) ON DELETE CASCADE;
 
 
 --
@@ -5122,11 +5565,27 @@ ALTER TABLE ONLY public.media_attachments
 
 
 --
+-- Name: user_invite_requests fk_rails_3773f15361; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.user_invite_requests
+    ADD CONSTRAINT fk_rails_3773f15361 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: lists fk_rails_3853b78dac; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
 ALTER TABLE ONLY public.lists
     ADD CONSTRAINT fk_rails_3853b78dac FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: polls fk_rails_3e0d9f1115; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.polls
+    ADD CONSTRAINT fk_rails_3e0d9f1115 FOREIGN KEY (status_id) REFERENCES public.statuses(id) ON DELETE CASCADE;
 
 
 --
@@ -5186,11 +5645,27 @@ ALTER TABLE ONLY public.conversation_mutes
 
 
 --
+-- Name: polls fk_rails_5b19a0c011; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.polls
+    ADD CONSTRAINT fk_rails_5b19a0c011 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: status_pins fk_rails_65c05552f1; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
 ALTER TABLE ONLY public.status_pins
     ADD CONSTRAINT fk_rails_65c05552f1 FOREIGN KEY (status_id) REFERENCES public.statuses(id) ON DELETE CASCADE;
+
+
+--
+-- Name: account_identity_proofs fk_rails_6a219ca385; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_identity_proofs
+    ADD CONSTRAINT fk_rails_6a219ca385 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -5266,6 +5741,14 @@ ALTER TABLE ONLY public.account_warnings
 
 
 --
+-- Name: poll_votes fk_rails_a6e6974b7e; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.poll_votes
+    ADD CONSTRAINT fk_rails_a6e6974b7e FOREIGN KEY (poll_id) REFERENCES public.polls(id) ON DELETE CASCADE;
+
+
+--
 -- Name: admin_action_logs fk_rails_a7667297fa; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5287,6 +5770,14 @@ ALTER TABLE ONLY public.account_warnings
 
 ALTER TABLE ONLY public.web_push_subscriptions
     ADD CONSTRAINT fk_rails_b006f28dac FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: poll_votes fk_rails_b6c18cf44a; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.poll_votes
+    ADD CONSTRAINT fk_rails_b6c18cf44a FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
