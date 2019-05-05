@@ -8,8 +8,8 @@ fi
 
 # install ruby
 source "$HOME/.rvm/scripts/rvm"
-rvm install 2.6.0
-rvm use 2.6.0
+rvm install 2.6.1
+rvm use 2.6.1
 
 # fix for redis IPv6 issue
 # https://travis-ci.community/t/trusty-environment-redis-server-not-starting-with-redis-tools-installed/650/2

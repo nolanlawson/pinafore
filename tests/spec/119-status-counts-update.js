@@ -54,7 +54,7 @@ test('Reblog stats update', async t => {
     .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(3)
     .click(homeNavButton)
-  await reblogStatusAs('LockedAccount', statusId)
+  await reblogStatusAs('ExternalLinks', statusId)
   await t
     .click(getNthStatus(1))
     .expect(getReblogsCount()).eql(4)

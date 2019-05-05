@@ -14,7 +14,7 @@ const writeFile = promisify(fs.writeFile)
 const dir = __dirname
 
 const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
-const GIT_TAG = 'v2.7.0'
+const GIT_TAG = 'v2.8.2'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'

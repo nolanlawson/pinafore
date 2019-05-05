@@ -129,6 +129,9 @@ or
 
 Check `mastodon.log` if you have any issues.
 
+Note that we also run `db:migrate` just to play it safe, but
+updating the `fixtures/` should make that a no-op.
+
 ## Unit tests
 
 There are also some unit tests that run in Node using Mocha. You can find them in `tests/unit` and
