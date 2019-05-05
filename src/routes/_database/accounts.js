@@ -18,19 +18,7 @@ export async function searchAccountsByUsername (instanceName, usernamePrefix, li
   return dbPromise(db, ACCOUNTS_STORE, 'readonly', (accountsStore, callback) => {
     let keyRange = createAccountUsernamePrefixKeyRange(usernamePrefix.toLowerCase())
     accountsStore.index(USERNAME_LOWERCASE).getAll(keyRange, limit).onsuccess = e => {
-      let results = e.target.result
-      results = results.sort((a, b) => {
-        // accounts you're following go first
-        if (a.following !== b.following) {
-          return a.following ? -1 : 1
-        }
-        // after that, just sort by username
-        if (a[USERNAME_LOWERCASE] !== b[USERNAME_LOWERCASE]) {
-          return a[USERNAME_LOWERCASE] < b[USERNAME_LOWERCASE] ? -1 : 1
-        }
-        return 0 // eslint-disable-line
-      })
-      callback(results)
+      callback(e.target.result)
     }
   })
 }
