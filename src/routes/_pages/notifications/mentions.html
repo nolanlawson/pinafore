@@ -1,0 +1,29 @@
+{#if $isUserLoggedIn}
+  <NotificationFilters filter="mentions" />
+  <TimelinePage timeline="notifications/mentions" />
+{:else}
+<HiddenFromSSR>
+  <FreeTextLayout>
+    <h1>Notification mentions</h1>
+
+    <p>Your notification mentions will appear here when logged in.</p>
+  </FreeTextLayout>
+</HiddenFromSSR>
+{/if}
+<script>
+  import FreeTextLayout from '../../_components/FreeTextLayout.html'
+  import { store } from '../../_store/store.js'
+  import HiddenFromSSR from '../../_components/HiddenFromSSR'
+  import TimelinePage from '../../_components/TimelinePage.html'
+  import NotificationFilters from '../../_components/NotificationFilters.html'
+
+  export default {
+    store: () => store,
+    components: {
+      FreeTextLayout,
+      HiddenFromSSR,
+      TimelinePage,
+      NotificationFilters
+    }
+  }
+</script>

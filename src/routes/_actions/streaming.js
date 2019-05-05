@@ -6,15 +6,22 @@ import { addStatusOrNotification } from './addStatusOrNotification'
 function processMessage (instanceName, timelineName, message) {
   mark('processMessage')
   let { event, payload } = message
+  if (['update', 'notification', 'conversation'].includes(event)) {
+    payload = JSON.parse(payload) // only these payloads are JSON-encoded for some reason
+  }
+
   switch (event) {
     case 'delete':
       deleteStatus(instanceName, payload)
       break
     case 'update':
-      addStatusOrNotification(instanceName, timelineName, JSON.parse(payload))
+      addStatusOrNotification(instanceName, timelineName, payload)
       break
     case 'notification':
-      addStatusOrNotification(instanceName, 'notifications', JSON.parse(payload))
+      addStatusOrNotification(instanceName, 'notifications', payload)
+      if (payload.type === 'mention') {
+        addStatusOrNotification(instanceName, 'notifications/mentions', payload)
+      }
       break
     case 'conversation':
       // This is a hack in order to mostly fit the conversation model into
@@ -22,7 +29,7 @@ function processMessage (instanceName, timelineName, message) {
       // reproduce what is done for statuses for the conversation.
       //
       // It will add new DMs as new conversations instead of updating existing threads
-      addStatusOrNotification(instanceName, timelineName, JSON.parse(payload).last_status)
+      addStatusOrNotification(instanceName, timelineName, payload.last_status)
       break
   }
   stop('processMessage')

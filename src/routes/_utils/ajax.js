@@ -74,11 +74,16 @@ export async function del (url, headers, options) {
 
 export function paramsString (paramsObject) {
   let res = ''
-  Object.keys(paramsObject).forEach((key, i) => {
-    if (i > 0) {
-      res += '&'
+  let count = -1
+  Object.keys(paramsObject).forEach(key => {
+    let value = paramsObject[key]
+    if (Array.isArray(value)) { // rails convention for encoding multiple values
+      for (let item of value) {
+        res += (++count > 0 ? '&' : '') + encodeURIComponent(key) + '[]=' + encodeURIComponent(item)
+      }
+    } else {
+      res += (++count > 0 ? '&' : '') + encodeURIComponent(key) + '=' + encodeURIComponent(value)
     }
-    res += encodeURIComponent(key) + '=' + encodeURIComponent(paramsObject[key])
   })
   return res
 }

@@ -111,7 +111,7 @@ async function insertStatusThread (instanceName, statusId, statuses) {
 
 export async function insertTimelineItems (instanceName, timeline, timelineItems) {
   /* no await */ scheduleCleanup()
-  if (timeline === 'notifications') {
+  if (timeline === 'notifications' || timeline === 'notifications/mentions') {
     return insertTimelineNotifications(instanceName, timeline, timelineItems)
   } else if (timeline.startsWith('status/')) {
     let statusId = timeline.split('/').slice(-1)[0]

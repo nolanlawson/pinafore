@@ -9,6 +9,7 @@ function getTimelineUrlPath (timeline) {
     case 'home':
       return 'timelines/home'
     case 'notifications':
+    case 'notifications/mentions':
       return 'notifications'
     case 'favorites':
       return 'favourites'
@@ -59,6 +60,10 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
     } else {
       params.exclude_replies = !timeline.endsWith('/with_replies')
     }
+  }
+
+  if (timeline === 'notifications/mentions') {
+    params.exclude_types = ['follow', 'favourite', 'reblog', 'poll']
   }
 
   url += '?' + paramsString(params)

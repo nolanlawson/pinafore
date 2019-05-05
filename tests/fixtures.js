@@ -44,6 +44,13 @@ export const notifications = [
   { followedBy: 'admin' }
 ]
 
+export const notificationsMentions = [
+  { content: 'notification of unlisted message' },
+  { content: 'notification of followers-only message' },
+  { content: 'notification of direct message' },
+  { content: 'hello foobar' }
+]
+
 export const favorites = [
   { content: 'notification of direct message' },
   { content: 'notification of followers-only message' },
