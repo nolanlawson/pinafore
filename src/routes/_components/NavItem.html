@@ -146,7 +146,11 @@
     },
     store: () => store,
     computed: {
-      selected: ({ page, name }) => page === name,
+      selected: ({ page, name }) => {
+        return page === name ||
+          // special case – these should both highlight the notifications tab icon
+          (name === 'notifications' && page === 'notifications/mentions')
+      },
       ariaLabel: ({ selected, name, label, $numberOfNotifications }) => {
         let res = label
         if (selected) {

@@ -64,6 +64,9 @@ export const accountProfileFilterStatuses = $('.account-profile-filters li:nth-c
 export const accountProfileFilterStatusesAndReplies = $('.account-profile-filters li:nth-child(2)')
 export const accountProfileFilterMedia = $('.account-profile-filters li:nth-child(3)')
 
+export const notificationFiltersAll = $('.notification-filters li:nth-child(1)')
+export const notificationFiltersMention = $('.notification-filters li:nth-child(2)')
+
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
 }

@@ -1,0 +1,29 @@
+<TabSet
+  label="Filters"
+  currentTabName={filter}
+  {tabs}
+  className="notification-filters"
+/>
+<script>
+  import TabSet from './TabSet.html'
+
+  export default {
+    data: () => ({
+      tabs: [
+        {
+          name: '',
+          label: 'All',
+          href: `/notifications`
+        },
+        {
+          name: 'mentions',
+          label: 'Mentions',
+          href: `/notifications/mentions`
+        }
+      ]
+    }),
+    components: {
+      TabSet
+    }
+  }
+</script>

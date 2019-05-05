@@ -84,7 +84,7 @@ async function getStatusThread (instanceName, statusId) {
 export async function getTimeline (instanceName, timeline, maxId, limit) {
   maxId = maxId || null
   limit = limit || TIMELINE_BATCH_SIZE
-  if (timeline === 'notifications') {
+  if (timeline === 'notifications' || timeline === 'notifications/mentions') {
     return getNotificationTimeline(instanceName, timeline, maxId, limit)
   } else if (timeline.startsWith('status/')) {
     let statusId = timeline.split('/').slice(-1)[0]
