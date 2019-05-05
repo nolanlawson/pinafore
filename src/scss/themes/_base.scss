@@ -104,8 +104,8 @@
   --tab-bg: #{$main-bg-color};
   --tab-bg-non-selected: #{darken($main-bg-color, 3%)};
   --tab-bg-active: #{darken($main-bg-color, 25%)};
-  --tab-bg-hover: #{darken($main-bg-color, 4%)};
-  --tab-bg-hover-non-selected: #{darken($main-bg-color, 7%)};
+  --tab-bg-hover: #{darken($main-bg-color, 2%)};
+  --tab-bg-hover-non-selected: #{darken($main-bg-color, 5%)};
 
   --tooltip-bg: rgba(30, 30, 30, 0.9);
   --tooltip-color: white;
