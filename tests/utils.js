@@ -213,7 +213,7 @@ export function getNthPostPrivacyButton (n) {
 }
 
 export function getNthAutosuggestionResult (n) {
-  return $(`.compose-autosuggest-list-item:nth-child(${n}) button`)
+  return $(`.compose-autosuggest-list-item:nth-child(${n})`)
 }
 
 export function getSearchResultByHref (href) {

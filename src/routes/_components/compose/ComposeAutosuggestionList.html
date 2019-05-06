@@ -1,10 +1,17 @@
-<ul class="compose-autosuggest-list">
+<!-- accessible autocomplete, based on https://haltersweb.github.io/Accessibility/autocomplete.html -->
+<ul id="compose-autosuggest-list-{realm}"
+    class="compose-autosuggest-list"
+    role="listbox"
+>
   {#each items as item, i (item.shortcode ? `emoji-${item.shortcode}` : `account-${item.id}`)}
-  <li class="compose-autosuggest-list-item">
-    <button class="compose-autosuggest-list-button {i === selected ? 'selected' : ''}"
-            tabindex="0"
-            on:click="onClick(event, item)">
-      <div class="compose-autosuggest-list-grid">
+  <li id="{i === selected ? `compose-autosuggest-active-item-${realm}` : ''}"
+      class="compose-autosuggest-list-item {i === selected ? 'selected' : ''}"
+      role="option"
+      aria-selected="{i === selected}"
+      aria-label="{ariaLabels[i]}"
+      on:click="onClick(event, item)"
+  >
+      <div class="compose-autosuggest-list-grid" aria-hidden="true">
         {#if type === 'account'}
         <div class="compose-autosuggest-list-item-avatar">
           <Avatar
@@ -28,7 +35,6 @@
           </span>
         {/if}
       </div>
-    </button>
   </li>
   {/each}
 </ul>
@@ -43,16 +49,14 @@
   .compose-autosuggest-list-item {
     border-bottom: 1px solid var(--compose-autosuggest-outline);
     display: flex;
+    padding: 10px;
+    background: var(--settings-list-item-bg);
+    margin: 0;
+    flex: 1;
+    cursor: pointer;
   }
   .compose-autosuggest-list-item:last-child {
     border-bottom: none;
-  }
-  .compose-autosuggest-list-button {
-    padding: 10px;
-    background: var(--settings-list-item-bg);
-    border: none;
-    margin: 0;
-    flex: 1;
   }
   .compose-autosuggest-list-grid {
     display: grid;
@@ -90,10 +94,10 @@
     text-overflow: ellipsis;
     text-align: left;
   }
-  .compose-autosuggest-list-button:hover, .compose-autosuggest-list-button.selected {
+  .compose-autosuggest-list-item:hover, .compose-autosuggest-list-item.selected {
     background: var(--compose-autosuggest-item-hover);
   }
-  .compose-autosuggest-list-button:active {
+  .compose-autosuggest-list-item:active {
     background: var(--compose-autosuggest-item-active);
   }
 </style>
@@ -101,9 +105,17 @@
   import Avatar from '../Avatar.html'
   import { store } from '../../_store/store'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
+  import { createAutosuggestAccessibleLabel } from '../../_utils/createAutosuggestAccessibleLabel'
 
   export default {
     store: () => store,
+    computed: {
+      ariaLabels: ({ items, type, $omitEmojiInDisplayNames }) => {
+        return items.map((item, i) => {
+          return createAutosuggestAccessibleLabel(type, $omitEmojiInDisplayNames, i, items)
+        })
+      }
+    },
     methods: {
       onClick (event, item) {
         event.preventDefault()

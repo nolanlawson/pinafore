@@ -2,6 +2,11 @@
   id="the-compose-box-input-{realm}"
   class="compose-box-input compose-box-input-realm-{realm}"
   placeholder="What's on your mind?"
+  aria-describedby="compose-box-input-description-{realm}"
+  aria-owns="compose-autosuggest-list-{realm}"
+  aria-expanded={autosuggestShownForThisInput}
+  aria-autocomplete="both"
+  aria-activedescendant="{autosuggestShownForThisInput ? `compose-autosuggest-active-item-${realm}` : ''}"
   ref:textarea
   bind:value=rawText
   on:blur="onBlur()"
@@ -12,6 +17,9 @@
 <label for="the-compose-box-input-{realm}" class="sr-only">
   What's on your mind?
 </label>
+<span id="compose-box-input-description-{realm}" class="sr-only">
+  When autocomplete results are available, press up or down arrows and enter to select.
+</span>
 <style>
   .compose-box-input {
     grid-area: input;
@@ -59,6 +67,7 @@
     clickSelectedAutosuggestionEmoji
   } from '../../_actions/autosuggest'
   import { observe } from 'svelte-extras'
+  import { get } from '../../_utils/lodash-lite'
 
   export default {
     oncreate () {
@@ -214,6 +223,16 @@
     data: () => ({
       rawText: ''
     }),
+    computed: {
+      /* eslint-disable camelcase */
+      composeFocused: ({ $autosuggestData_composeFocused, $currentInstance, realm }) => (
+        get($autosuggestData_composeFocused, [$currentInstance, realm], false)
+      ),
+      /* eslint-enable camelcase */
+      autosuggestShownForThisInput: ({ realm, $autosuggestShown, composeFocused }) => (
+        !!($autosuggestShown && composeFocused)
+      )
+    },
     events: {
       selectionChange
     }

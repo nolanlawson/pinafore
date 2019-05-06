@@ -1,6 +1,6 @@
 import { get } from '../../_utils/lodash-lite'
 
-const MIN_PREFIX_LENGTH = 1
+const MIN_PREFIX_LENGTH = 2
 const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
 const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`)
 
