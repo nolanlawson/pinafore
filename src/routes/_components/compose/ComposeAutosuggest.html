@@ -66,6 +66,7 @@
           }
         }).then(() => {
           this.set({ shown: shouldBeShown })
+          this.store.setForCurrentAutosuggest({ autosuggestSelecting: false })
         })
       })
     },
@@ -73,6 +74,8 @@
       observe,
       once,
       onClick (item) {
+        /* autosuggestSelecting prevents a flash of searched content */
+        this.store.setForCurrentAutosuggest({ autosuggestSelecting: true })
         this.fire('autosuggestItemSelected')
         selectAutosuggestItem(item)
       }

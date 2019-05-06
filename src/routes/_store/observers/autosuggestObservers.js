@@ -10,6 +10,19 @@ export function autosuggestObservers () {
     if (!composeFocused || !autosuggestSearchText) {
       return
     }
+    /* autosuggestSelecting indicates that the user has pressed Enter or clicked on an item
+       and the results are being processed. Returning early avoids a flash of searched content.
+       We can also cancel any inflight XHRs here.
+     */
+    let autosuggestSelecting = store.getForCurrentAutosuggest('autosuggestSelecting')
+    if (autosuggestSelecting) {
+      if (lastSearch) {
+        lastSearch.cancel()
+        lastSearch = null
+      }
+      return
+    }
+
     let autosuggestType = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
 
     if (lastSearch) {

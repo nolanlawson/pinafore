@@ -1,3 +1,5 @@
+import { get } from '../../_utils/lodash-lite'
+
 export function autosuggestMixins (Store) {
   Store.prototype.setForAutosuggest = function (instanceName, realm, obj) {
     let valuesToSet = {}
@@ -15,5 +17,10 @@ export function autosuggestMixins (Store) {
   Store.prototype.setForCurrentAutosuggest = function (obj) {
     let { currentInstance, currentComposeRealm } = this.get()
     this.setForAutosuggest(currentInstance, currentComposeRealm, obj)
+  }
+
+  Store.prototype.getForCurrentAutosuggest = function (key) {
+    let { currentInstance, currentComposeRealm } = this.get()
+    return get(this.get()[`autosuggestData_${key}`], [currentInstance, currentComposeRealm])
   }
 }
