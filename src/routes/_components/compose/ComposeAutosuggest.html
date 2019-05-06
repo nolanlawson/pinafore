@@ -14,14 +14,13 @@
 </div>
 <style>
   .compose-autosuggest {
+    grid-area: autosuggest;
     position: absolute;
     left: 5px;
     top: 0;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.1s linear;
-    min-width: 400px;
-    max-width: calc(100% - 20px);
     z-index: 7000;
   }
   .compose-autosuggest.is-dialog {
@@ -32,12 +31,21 @@
     opacity: 1;
   }
 
+  @media (min-width: 480px) {
+    .compose-autosuggest {
+      min-width: 400px;
+      max-width: calc(100% - 20px);
+    }
+  }
+
   @media (max-width: 479px) {
     .compose-autosuggest {
-      /* hack: move this over to the left on mobile so it's easier to see */
+      /* on mobile, move it to the left and make it fill the viewport width */
       transform: translateX(-58px); /* avatar size 48px + 10px padding */
-      min-width: 0;
       width: calc(100vw - 20px);
+    }
+    .compose-autosuggest.is-dialog {
+      width: calc(100vw - 40px); /* extra padding when within the dialog */
     }
   }
 
