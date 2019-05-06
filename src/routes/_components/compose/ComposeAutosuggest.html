@@ -1,11 +1,14 @@
-<div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}"
-       aria-hidden="true" >
+<div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}" >
   <ComposeAutosuggestionList
     items={autosuggestSearchResults}
     on:click="onClick(event)"
     type={autosuggestType}
     selected={autosuggestSelected}
+    {realm}
   />
+  <div class="sr-only" aria-live="assertive">
+    {assertiveAriaText}
+  </div>
 </div>
 <style>
   .compose-autosuggest {
@@ -44,6 +47,7 @@
   import { selectAutosuggestItem } from '../../_actions/autosuggest'
   import { observe } from 'svelte-extras'
   import { once } from '../../_utils/once'
+  import { createAutosuggestAccessibleLabel } from '../../_utils/createAutosuggestAccessibleLabel'
 
   export default {
     oncreate () {
@@ -94,7 +98,19 @@
       /* eslint-enable camelcase */
       shouldBeShown: ({ realm, $autosuggestShown, composeFocused }) => (
         !!($autosuggestShown && composeFocused)
-      )
+      ),
+      // text that is read to screen readers. based on https://haltersweb.github.io/Accessibility/autocomplete.html
+      assertiveAriaText: ({ shouldBeShown,
+        autosuggestSearchResults,
+        autosuggestSelected,
+        autosuggestType,
+        $omitEmojiInDisplayNames }) => {
+        if (!shouldBeShown || !autosuggestSearchResults || !autosuggestSearchResults.length) {
+          return ''
+        }
+        return createAutosuggestAccessibleLabel(autosuggestType, $omitEmojiInDisplayNames,
+          autosuggestSelected, autosuggestSearchResults)
+      }
     },
     data: () => ({
       shown: false
