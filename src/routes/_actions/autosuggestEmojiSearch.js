@@ -18,15 +18,11 @@ export function doEmojiSearch (searchText) {
     if (canceled) {
       return
     }
-    searchEmoji(searchText).then(results => {
-      if (canceled) {
-        return
-      }
-      store.setForCurrentAutosuggest({
-        autosuggestType: 'emoji',
-        autosuggestSelected: 0,
-        autosuggestSearchResults: results
-      })
+    let results = searchEmoji(searchText)
+    store.setForCurrentAutosuggest({
+      autosuggestType: 'emoji',
+      autosuggestSelected: 0,
+      autosuggestSearchResults: results
     })
   })
 
