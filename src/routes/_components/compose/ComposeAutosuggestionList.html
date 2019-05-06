@@ -2,12 +2,10 @@
 <ul id="compose-autosuggest-list-{realm}"
     class="compose-autosuggest-list"
     role="listbox"
-    tabindex="0"
 >
   {#each items as item, i (item.shortcode ? `emoji-${item.shortcode}` : `account-${item.id}`)}
   <li id="{i === selected ? `compose-autosuggest-active-item-${realm}` : ''}"
       class="compose-autosuggest-list-item {i === selected ? 'selected' : ''}"
-      tabindex="-1"
       role="option"
       aria-selected="{i === selected}"
       aria-label="{ariaLabels[i]}"

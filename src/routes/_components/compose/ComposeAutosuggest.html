@@ -1,4 +1,6 @@
-<div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}" >
+<div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}"
+     aria-hidden={!shown}
+>
   <ComposeAutosuggestionList
     items={autosuggestSearchResults}
     on:click="onClick(event)"
