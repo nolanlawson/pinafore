@@ -30,12 +30,10 @@
          style="display: none;"
          type="file"
          accept={mediaAccept} >
-  <ComposeAutosuggest {realm} {text} />
 </div>
 <style>
   .compose-box-toolbar {
     grid-area: toolbar;
-    position: relative;
     align-self: center;
   }
   .compose-box-toolbar-items {
@@ -49,13 +47,11 @@
   import { importShowEmojiDialog, importShowPostPrivacyDialog } from '../dialog/asyncDialogs'
   import { doMediaUpload } from '../../_actions/media'
   import { toggleContentWarningShown } from '../../_actions/contentWarnings'
-  import ComposeAutosuggest from './ComposeAutosuggest.html'
   import { mediaAccept } from '../../_static/media'
 
   export default {
     components: {
-      IconButton,
-      ComposeAutosuggest
+      IconButton
     },
     data: () => ({
       mediaAccept

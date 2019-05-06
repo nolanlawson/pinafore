@@ -12,6 +12,7 @@
     {/if}
     <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
     <ComposeLengthGauge {length} {overLimit} />
+    <ComposeAutosuggest {realm} {text} />
     <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
     <ComposeLengthIndicator {length} {overLimit} />
     <ComposeMedia {realm} {media} />
@@ -32,13 +33,15 @@
     display: grid;
     align-items: flex-start;
     grid-template-areas:
-      "avatar name       handle    handle"
-      "avatar cw         cw        cw"
-      "avatar input      input     input"
-      "avatar gauge      gauge     gauge"
-      "avatar toolbar    toolbar   length"
-      "avatar media      media     media";
+      "avatar name        handle      handle"
+      "avatar cw          cw          cw"
+      "avatar input       input       input"
+      "avatar gauge       gauge       gauge"
+      "avatar autosuggest autosuggest autosuggest"
+      "avatar toolbar     toolbar     length"
+      "avatar media       media       media";
     grid-template-columns: min-content minmax(0, max-content) 1fr 1fr;
+    position: relative;
   }
 
   .compose-box.direct-reply {
@@ -79,6 +82,7 @@
   import ComposeMedia from './ComposeMedia.html'
   import ComposeContentWarning from './ComposeContentWarning.html'
   import ComposeFileDrop from './ComposeFileDrop.html'
+  import ComposeAutosuggest from './ComposeAutosuggest.html'
   import { measureText } from '../../_utils/measureText'
   import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
@@ -113,7 +117,8 @@
       ComposeStickyButton,
       ComposeMedia,
       ComposeContentWarning,
-      ComposeFileDrop
+      ComposeFileDrop,
+      ComposeAutosuggest
     },
     data: () => ({
       size: void 0,
