@@ -31,6 +31,11 @@ export function doAccountSearch (searchText) {
   }
 
   async function searchAccountsRemotely (searchText) {
+    // Throttle our XHRs to be a good citizen and not spam the server with one XHR per keystroke
+    await new Promise(resolve => setTimeout(resolve, 150))
+    if (canceled) {
+      return
+    }
     remoteResults = (await search(currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT)).accounts
   }
 
