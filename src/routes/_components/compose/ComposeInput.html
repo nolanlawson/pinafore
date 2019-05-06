@@ -127,7 +127,7 @@
         stop('autosize.destroy()')
       },
       onBlur () {
-        scheduleIdleTask(() => {
+        requestAnimationFrame(() => {
           this.store.setForCurrentAutosuggest({ composeFocused: false })
         })
       },
@@ -177,14 +177,22 @@
         if (!autosuggestShown) {
           return false
         }
-        let { realm } = this.get()
-        if (autosuggestType === 'account') {
-          /* no await */ clickSelectedAutosuggestionUsername(realm)
-        } else { // emoji
-          /* no await */ clickSelectedAutosuggestionEmoji(realm)
-        }
         event.preventDefault()
         event.stopPropagation()
+
+        const clickAutosuggestedItem = async () => {
+          let { realm } = this.get()
+          /* autosuggestSelecting prevents a flash of searched content */
+          this.store.setForCurrentAutosuggest({ autosuggestSelecting: true })
+          if (autosuggestType === 'account') {
+            await clickSelectedAutosuggestionUsername(realm)
+          } else { // emoji
+            await clickSelectedAutosuggestionEmoji(realm)
+          }
+          this.store.setForCurrentAutosuggest({ autosuggestSelecting: false })
+        }
+
+        /* no await */ clickAutosuggestedItem()
         return true
       },
       incrementAutosuggestSelected (increment, event) {
