@@ -8,7 +8,7 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { PromiseThrottler } from '../_utils/PromiseThrottler'
 
 const DATABASE_SEARCH_RESULTS_LIMIT = 30
-const promiseThrottler = new PromiseThrottler(200)
+const promiseThrottler = new PromiseThrottler(200) // Mastodon FE also uses 200ms
 
 function byUsername (a, b) {
   let usernameA = a.acct.toLowerCase()
