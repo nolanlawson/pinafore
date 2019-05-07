@@ -16,7 +16,7 @@ function makeFetchOptions (method, headers, options) {
       'Accept': 'application/json'
     })
   }
-  if (options.signal) {
+  if (options && options.signal) {
     res.signal = options.signal
   }
   return res
