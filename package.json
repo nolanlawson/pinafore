@@ -148,7 +148,8 @@
       "NodeList",
       "DOMParser",
       "CSS",
-      "customElements"
+      "customElements",
+      "AbortController"
     ],
     "ignore": [
       "dist",

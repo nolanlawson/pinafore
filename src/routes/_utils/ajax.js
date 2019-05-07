@@ -9,13 +9,17 @@ function fetchWithTimeout (url, fetchOptions, timeout) {
   })
 }
 
-function makeFetchOptions (method, headers) {
-  return {
+function makeFetchOptions (method, headers, options) {
+  let res = {
     method,
     headers: Object.assign(headers || {}, {
       'Accept': 'application/json'
     })
   }
+  if (options.signal) {
+    res.signal = options.signal
+  }
+  return res
 }
 
 async function throwErrorIfInvalidResponse (response) {
@@ -40,7 +44,7 @@ async function _fetch (url, fetchOptions, options) {
 }
 
 async function _putOrPostOrPatch (method, url, body, headers, options) {
-  let fetchOptions = makeFetchOptions(method, headers)
+  let fetchOptions = makeFetchOptions(method, headers, options)
   if (body) {
     if (body instanceof FormData) {
       fetchOptions.body = body
@@ -65,11 +69,11 @@ export async function patch (url, body, headers, options) {
 }
 
 export async function get (url, headers, options) {
-  return _fetch(url, makeFetchOptions('GET', headers), options)
+  return _fetch(url, makeFetchOptions('GET', headers, options), options)
 }
 
 export async function del (url, headers, options) {
-  return _fetch(url, makeFetchOptions('DELETE', headers), options)
+  return _fetch(url, makeFetchOptions('DELETE', headers, options), options)
 }
 
 export function paramsString (paramsObject) {
