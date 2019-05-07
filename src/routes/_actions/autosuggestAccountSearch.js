@@ -5,8 +5,10 @@ import { SEARCH_RESULTS_LIMIT } from '../_static/autosuggest'
 import { concat } from '../_utils/arrays'
 import uniqBy from 'lodash-es/uniqBy'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { PromiseThrottler } from '../_utils/PromiseThrottler'
 
 const DATABASE_SEARCH_RESULTS_LIMIT = 30
+const promiseThrottler = new PromiseThrottler(200) // Mastodon FE also uses 200ms
 
 function byUsername (a, b) {
   let usernameA = a.acct.toLowerCase()
@@ -24,6 +26,14 @@ export function doAccountSearch (searchText) {
   let localResults
   let remoteResults
   let { currentInstance, accessToken } = store.get()
+  let controller = typeof AbortController === 'function' && new AbortController()
+
+  function abortFetch () {
+    if (controller) {
+      controller.abort()
+      controller = null
+    }
+  }
 
   async function searchAccountsLocally (searchText) {
     localResults = await database.searchAccountsByUsername(
@@ -31,7 +41,14 @@ export function doAccountSearch (searchText) {
   }
 
   async function searchAccountsRemotely (searchText) {
-    remoteResults = (await search(currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT)).accounts
+    // Throttle our XHRs to be a good citizen and not spam the server with one XHR per keystroke
+    await promiseThrottler.next()
+    if (canceled) {
+      return
+    }
+    remoteResults = (await search(
+      currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT, controller && controller.signal
+    )).accounts
   }
 
   function mergeAndTruncateResults () {
@@ -81,6 +98,7 @@ export function doAccountSearch (searchText) {
   return {
     cancel: () => {
       canceled = true
+      abortFetch()
     }
   }
 }

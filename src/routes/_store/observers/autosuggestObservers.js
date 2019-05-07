@@ -6,28 +6,20 @@ export function autosuggestObservers () {
   let lastSearch
 
   store.observe('autosuggestSearchText', async autosuggestSearchText => {
-    let { composeFocused } = store.get()
-    if (!composeFocused || !autosuggestSearchText) {
-      return
+    // cancel any inflight XHRs or other operations
+    if (lastSearch) {
+      lastSearch.cancel()
+      lastSearch = null
     }
-    /* autosuggestSelecting indicates that the user has pressed Enter or clicked on an item
-       and the results are being processed. Returning early avoids a flash of searched content.
-       We can also cancel any inflight XHRs here.
-     */
+    // autosuggestSelecting indicates that the user has pressed Enter or clicked on an item
+    // and the results are being processed. Returning early avoids a flash of searched content.
+    let { composeFocused } = store.get()
     let autosuggestSelecting = store.getForCurrentAutosuggest('autosuggestSelecting')
-    if (autosuggestSelecting) {
-      if (lastSearch) {
-        lastSearch.cancel()
-        lastSearch = null
-      }
+    if (!composeFocused || !autosuggestSearchText || autosuggestSelecting) {
       return
     }
 
     let autosuggestType = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
-
-    if (lastSearch) {
-      lastSearch.cancel()
-    }
 
     if (autosuggestType === 'emoji') {
       lastSearch = doEmojiSearch(autosuggestSearchText)
