@@ -47,3 +47,7 @@ export const importEmojiMart = () => import(
 export const importToast = () => import(
   /* webpackChunkName: 'Toast.html' */ '../_components/toast/Toast.html'
   ).then(getDefault)
+
+export const importSnackbar = () => import(
+  /* webpackChunkName: 'Snackbar.html' */ '../_components/snackbar/Snackbar.html'
+  ).then(getDefault)

@@ -44,4 +44,6 @@
   --tab-bg-active: #{lighten($main-bg-color, 15%)};
   --tab-bg-hover: #{lighten($main-bg-color, 1%)};
   --tab-bg-hover-non-selected: #{darken($main-bg-color, 1%)};
+
+  --toast-anchor-color: #{$anchor-color};
 }

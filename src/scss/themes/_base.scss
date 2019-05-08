@@ -66,6 +66,9 @@
   --toast-bg: #{$toast-bg};
   --toast-border: #{$toast-border};
   --toast-text: #{$secondary-text-color};
+  --toast-button-hover: #{lighten($toast-bg, 5%)};
+  --toast-button-active: #{lighten($toast-bg, 10%)};
+  --toast-anchor-color: #{lighten($anchor-color, 20%)};
 
   --mask-bg: #{$toast-bg};
   --mask-svg-fill: #{$secondary-text-color};
