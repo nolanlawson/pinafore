@@ -1,11 +1,11 @@
-import { toast } from '../_components/toast/toast'
+import { snackbar } from '../_components/snackbar/snackbar'
 
 function onUpdateFound (registration) {
   const newWorker = registration.installing
 
   newWorker.addEventListener('statechange', async () => {
     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-      toast.say('App update available. Reload to update.')
+      snackbar.announce('App update available.', 'Reload', () => document.location.reload(true))
     }
   })
 }

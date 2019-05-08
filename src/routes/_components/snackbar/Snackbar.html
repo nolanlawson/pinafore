@@ -1,0 +1,137 @@
+<section class="snackbar-modal {shown ? 'shown' : ''}"
+     aria-live="assertive"
+     aria-atomic="true"
+     aria-hidden={!shown}
+     aria-label="Alert"
+>
+  <div class="snackbar-container">
+    <span class="text">
+      {text}
+    </span>
+    <div class="button-wrapper">
+      <button class="button" on:click="onClick(event)">
+        {buttonText}
+      </button>
+      <button class="button" aria-label="Close" on:click="close(event)">
+        <SvgIcon className="close-snackbar-button" href="#fa-times" />
+      </button>
+    </div>
+  </div>
+</section>
+<style>
+  .snackbar-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: transform 333ms ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 99000;
+    transform: translateY(100%);
+  }
+
+  .snackbar-container {
+    width: 562px; /* same as .main, minus 20px padding */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background: var(--toast-bg);
+    padding: 10px 20px;
+    font-size: 1.3em;
+    color: var(--toast-text);
+    border-radius: 4px 4px 0 0;
+    border: 1px solid var(--toast-border);
+    border-bottom: none;
+  }
+
+  .button-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .text {
+    flex: 1;
+  }
+
+  button {
+    font-size: 1em;
+    border: none;
+    color: var(--toast-anchor-color);
+    text-transform: uppercase;
+    font-weight: 500;
+    background: var(--toast-bg);
+    margin-left: 5px;
+  }
+
+  button:active {
+    background: var(--toast-button-active);
+  }
+
+  button:hover {
+    background: var(--toast-button-hover);
+  }
+
+  .snackbar-modal.shown {
+    transform: translateY(0);
+  }
+
+  :global(.close-snackbar-button) {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    fill: var(--toast-text);
+  }
+
+  @media (max-width: 767px) {
+    .snackbar-container {
+      width: 100%;
+    }
+  }
+</style>
+<script>
+  import { doubleRAF } from '../../_utils/doubleRAF'
+  import SvgIcon from '../SvgIcon.html'
+
+  export default {
+    data: () => ({
+      shown: false,
+      text: '',
+      buttonText: '',
+      buttonAction: null
+    }),
+    methods: {
+      announce (text, buttonText, buttonAction) {
+        this.set({ text, buttonText, buttonAction })
+        doubleRAF(() => {
+          this.set({ shown: true })
+        })
+      },
+      onClick (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let { buttonAction } = this.get()
+        if (buttonAction) {
+          buttonAction()
+        }
+        this.close()
+      },
+      close (e) {
+        if (e) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+        requestAnimationFrame(() => {
+          this.set({
+            buttonAction: null, // avoid memory leaks from the closure
+            shown: false
+          })
+        })
+      }
+    },
+    components: {
+      SvgIcon
+    }
+  }
+</script>
