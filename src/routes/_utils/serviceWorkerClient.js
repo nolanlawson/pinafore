@@ -5,7 +5,7 @@ function onUpdateFound (registration) {
 
   newWorker.addEventListener('statechange', async () => {
     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-      snackbar.announce('App update available.', 'Refresh', () => document.location.reload(true))
+      snackbar.announce('App update available.', 'Reload', () => document.location.reload(true))
     }
   })
 }
