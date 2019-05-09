@@ -32,13 +32,27 @@
     transform: translateY(100%);
   }
 
+  /* For iOS < 11.2 */
+  @supports (padding-bottom: constant(safe-area-inset-bottom)) {
+    .snackbar-container {
+      --safe-area-inset-bottom: constant(safe-area-inset-bottom);
+    }
+  }
+
+  /* For iOS >= 11.2 */
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .snackbar-container {
+      --safe-area-inset-bottom: env(safe-area-inset-bottom);
+    }
+  }
+
   .snackbar-container {
     width: 562px; /* same as .main, minus 20px padding */
     overflow: hidden;
     display: flex;
     align-items: center;
     background: var(--toast-bg);
-    padding: 10px 20px;
+    padding: 10px 20px calc(10px + var(--safe-area-inset-bottom)) 20px;
     font-size: 1.3em;
     color: var(--toast-text);
     border-radius: 4px 4px 0 0;
