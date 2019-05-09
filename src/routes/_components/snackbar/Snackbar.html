@@ -86,7 +86,24 @@
 
   @media (max-width: 767px) {
     .snackbar-container {
-      width: 100%;
+      width: calc(100% - 20px);
+    }
+    button {
+      margin-left: 0;
+      padding: 7px 10px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    button {
+      font-size: 0.9em;
+    }
+    :global(.close-snackbar-button) {
+      width: 14px;
+      height: 14px;
+    }
+    .text {
+      font-size: 0.9em;
     }
   }
 </style>
