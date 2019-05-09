@@ -3,11 +3,14 @@ const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
 const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 
+const serverResolve = JSON.parse(JSON.stringify(resolve))
+serverResolve.alias['page-lifecycle/dist/lifecycle.mjs'] = 'lodash-es/noop' // page lifecycle fails in Node
+
 module.exports = {
   entry: config.server.entry(),
   output: config.server.output(),
   target: 'node',
-  resolve,
+  resolve: serverResolve,
   externals: Object.keys(pkg.dependencies),
   module: {
     rules: [

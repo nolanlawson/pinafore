@@ -28,7 +28,7 @@
     "testcafe": "run-s testcafe-suite0 testcafe-suite1",
     "testcafe-suite0": "cross-env-shell testcafe --hostname localhost --skip-js-errors -c 4 $BROWSER tests/spec/0*",
     "testcafe-suite1": "cross-env-shell testcafe --hostname localhost --skip-js-errors $BROWSER tests/spec/1*",
-    "test-unit": "mocha -r esm tests/unit/",
+    "test-unit": "mocha -r esm -r bin/browser-shim.js tests/unit/",
     "wait-for-mastodon-to-start": "node -r esm bin/wait-for-mastodon-to-start.js",
     "wait-for-mastodon-data": "node -r esm bin/wait-for-mastodon-data.js",
     "deploy-prod": "DEPLOY_TYPE=prod ./bin/deploy.sh",

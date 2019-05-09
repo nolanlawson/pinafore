@@ -4,14 +4,6 @@ export const importTimeline = () => import(
   /* webpackChunkName: 'Timeline' */ '../_components/timeline/Timeline.html'
   ).then(getDefault)
 
-export const importPageLifecycle = () => import(
-  /* webpackChunkName: 'page-lifecycle' */ 'page-lifecycle/dist/lifecycle.mjs'
-  ).then(getDefault)
-
-export const importWebSocketClient = () => import(
-  /* webpackChunkName: '@gamestdio/websocket' */ '@gamestdio/websocket'
-  ).then(getDefault)
-
 export const importVirtualList = () => import(
   /* webpackChunkName: 'VirtualList.html' */ '../_components/virtualList/VirtualList.html'
   ).then(getDefault)

@@ -1,6 +1,6 @@
 import { Store } from 'svelte/store'
 import { safeLocalStorage as LS } from '../_utils/safeLocalStorage'
-import { importPageLifecycle } from '../_utils/asyncModules'
+import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
 
 function safeParse (str) {
   return !str ? undefined : (str === 'undefined' ? undefined : JSON.parse(str))
@@ -31,13 +31,11 @@ export class LocalStorageStore extends Store {
       })
     })
     if (process.browser) {
-      importPageLifecycle().then(lifecycle => {
-        lifecycle.addEventListener('statechange', e => {
-          if (e.newState === 'passive') {
-            console.log('saving LocalStorageStore...')
-            this.save()
-          }
-        })
+      lifecycle.addEventListener('statechange', e => {
+        if (e.newState === 'passive') {
+          console.log('saving LocalStorageStore...')
+          this.save()
+        }
       })
     }
   }
