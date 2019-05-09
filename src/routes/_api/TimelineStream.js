@@ -1,6 +1,7 @@
 import { paramsString } from '../_utils/ajax'
 import noop from 'lodash-es/noop'
-import { importWebSocketClient } from '../_utils/asyncModules'
+import WebSocketClient from '@gamestdio/websocket'
+import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
 
 function getStreamName (timeline) {
   switch (timeline) {
@@ -46,27 +47,60 @@ function getUrl (streamingApi, accessToken, timeline) {
 
 export class TimelineStream {
   constructor (streamingApi, accessToken, timeline, opts) {
-    let url = getUrl(streamingApi, accessToken, timeline)
-    importWebSocketClient().then(WebSocketClient => {
-      if (this.__closed) {
-        return
-      }
-      const ws = new WebSocketClient(url, null, { backoff: 'exponential' })
-      const onMessage = opts.onMessage || noop
-
-      ws.onopen = opts.onOpen || noop
-      ws.onmessage = e => onMessage(JSON.parse(e.data))
-      ws.onclose = opts.onClose || noop
-      ws.onreconnect = opts.onReconnect || noop
-
-      this._ws = ws
-    })
+    this._streamingApi = streamingApi
+    this._accessToken = accessToken
+    this._timeline = timeline
+    this._opts = opts
+    this._onStateChange = this._onStateChange.bind(this)
+    this._setupWebSocket()
+    this._setupLifecycle()
   }
 
   close () {
-    this.__closed = true
+    this._closed = true
+    this._closeWebSocket()
+    this._teardownLifecycle()
+  }
+
+  _closeWebSocket () {
     if (this._ws) {
       this._ws.close()
+      this._ws = null
+    }
+  }
+
+  _setupWebSocket () {
+    const url = getUrl(this._streamingApi, this._accessToken, this._timeline)
+    const ws = new WebSocketClient(url, null, { backoff: 'exponential' })
+
+    ws.onopen = this._opts.onOpen || noop
+    ws.onmessage = this._opts.onMessage ? e => this._opts.onMessage(JSON.parse(e.data)) : noop
+    ws.onclose = this._opts.onClose || noop
+    ws.onreconnect = this._opts.onReconnect || noop
+
+    this._ws = ws
+  }
+
+  _setupLifecycle () {
+    lifecycle.addEventListener('statechange', this._onStateChange)
+  }
+
+  _teardownLifecycle () {
+    lifecycle.removeEventListener('statechange', this._onStateChange)
+  }
+
+  _onStateChange (event) {
+    if (this._closed) {
+      return
+    }
+    // when the page enters or exits a frozen state, pause or resume websocket polling
+    if (event.newState === 'frozen') { // page is frozen
+      console.log('frozen')
+      this._closeWebSocket()
+    } else if (event.oldState === 'frozen') { // page is unfrozen
+      console.log('unfrozen')
+      this._closeWebSocket()
+      this._setupWebSocket()
     }
   }
 }
