@@ -2,6 +2,7 @@ import { DB_VERSION_CURRENT } from './constants'
 import { addKnownInstance, deleteKnownInstance } from './knownInstances'
 import { migrations } from './migrations'
 import { clearAllCaches } from './cache'
+import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
 
 const openReqs = {}
 const databaseCache = {}
@@ -77,7 +78,6 @@ export function deleteDatabase (instanceName) {
     .then(() => clearAllCaches(instanceName))
 }
 
-// this should probably only be used in unit tests
 export function closeDatabase (instanceName) {
   // close any open requests
   let openReq = openReqs[instanceName]
@@ -87,4 +87,15 @@ export function closeDatabase (instanceName) {
   delete openReqs[instanceName]
   delete databaseCache[instanceName]
   clearAllCaches(instanceName)
+}
+
+if (process.browser) {
+  lifecycle.addEventListener('statechange', event => {
+    if (event.newState === 'frozen') { // page is frozen, close IDB connections
+      Object.keys(openReqs).forEach(instanceName => {
+        closeDatabase(instanceName)
+        console.log('closed instance DBs')
+      })
+    }
+  })
 }
