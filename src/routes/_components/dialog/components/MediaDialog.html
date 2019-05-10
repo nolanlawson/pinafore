@@ -280,7 +280,6 @@
         let { scrolledItem } = this.get()
         if (scrolledItem) {
           requestAnimationFrame(() => {
-            console.log('scrolling to item', scrolledItem)
             this.scrollToItem(scrolledItem, false)
             this.setupScroll()
           })
@@ -293,7 +292,6 @@
         let { length } = this.get()
         let { scroller } = this.refs
         let { scrollWidth } = scroller
-        console.log('scrollWidth', scrollWidth)
         let scrollLeft = Math.floor(scrollWidth * (scrolledItem / length))
         if (smooth) {
           if (!hasNativeSmoothScroll && 'StyleMedia' in window) {
