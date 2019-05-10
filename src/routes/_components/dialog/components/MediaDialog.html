@@ -4,6 +4,7 @@
   background="var(--muted-modal-bg)"
   muted="true"
   className="media-modal-dialog"
+  on:show="onShow()"
 >
   <div class="media-container">
     <ul class="media-scroll" ref:scroller>
@@ -199,24 +200,12 @@
   import debounce from 'lodash-es/debounce'
   import times from 'lodash-es/times'
   import { smoothScroll, hasNativeSmoothScroll } from '../../../_utils/smoothScroll'
-  import { doubleRAF } from '../../../_utils/doubleRAF'
   import { store } from '../../../_store/store'
 
   export default {
     oncreate () {
       onCreateDialog.call(this)
-
       this.onScroll = debounce(this.onScroll.bind(this), 50, { leading: false, trailing: true })
-
-      let { scrolledItem } = this.get()
-      if (scrolledItem) {
-        doubleRAF(() => {
-          this.scrollToItem(scrolledItem, false)
-          this.setupScroll()
-        })
-      } else {
-        this.setupScroll()
-      }
     },
     ondestroy () {
       this.teardownScroll()
@@ -287,6 +276,17 @@
           this.scrollToItem(scrolledItem - 1, true)
         }
       },
+      onShow () {
+        let { scrolledItem } = this.get()
+        if (scrolledItem) {
+          requestAnimationFrame(() => {
+            this.scrollToItem(scrolledItem, false)
+            this.setupScroll()
+          })
+        } else {
+          this.setupScroll()
+        }
+      },
       scrollToItem (scrolledItem, smooth) {
         this.set({ scrolledItem: scrolledItem })
         let { length } = this.get()
@@ -302,6 +302,7 @@
             smoothScroll(scroller, scrollLeft, true)
           }
         } else {
+          console.log('setting scrollLeft', scrollLeft)
           scroller.scrollLeft = scrollLeft
         }
       },
