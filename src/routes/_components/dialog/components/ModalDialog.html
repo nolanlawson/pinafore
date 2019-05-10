@@ -227,6 +227,7 @@
             document.body.classList.toggle('modal-open', true)
             this._a11yDialog.show()
             this.set({ fadedIn: true })
+            this.fire('show')
           })
         })
       },

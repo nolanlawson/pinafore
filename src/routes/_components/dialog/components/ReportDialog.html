@@ -147,7 +147,7 @@
 
   export default {
     async oncreate () {
-      onCreateDialog.apply(this)
+      onCreateDialog.call(this)
       let { account, status, reportMap } = this.get()
       if (status) {
         reportMap[status.id] = true

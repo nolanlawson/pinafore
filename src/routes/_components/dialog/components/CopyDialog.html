@@ -4,6 +4,7 @@
   {title}
   shrinkWidthToFit={true}
   background="var(--main-bg)"
+  on:show="onShow()"
 >
   <form class="copy-dialog-form">
     <input value={text}
@@ -47,13 +48,6 @@
   export default {
     oncreate () {
       onCreateDialog.call(this)
-      let { text } = this.get()
-      let { input } = this.refs
-      // double raf is to work around a11y-dialog trying to set the input
-      doubleRAF(() => {
-        input.focus()
-        input.setSelectionRange(0, text.length)
-      })
     },
     methods: {
       show,
@@ -63,6 +57,15 @@
         copyFromInput(input)
         toast.say('Copied to clipboard')
         this.close()
+      },
+      onShow () {
+        let { text } = this.get()
+        let { input } = this.refs
+        // double raf is to work around a11y-dialog trying to set the input
+        doubleRAF(() => {
+          input.focus()
+          input.setSelectionRange(0, text.length)
+        })
       }
     },
     data: () => ({
