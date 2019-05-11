@@ -635,11 +635,19 @@ assert-plus@1.0.0, assert-plus@^1.0.0:
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
   integrity sha1-8S4PPF13sLHN2RRpQuTpbB5N1SU=
 
-assert@^1.1.1, assert@^1.4.1:
+assert@^1.1.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/assert/-/assert-1.4.1.tgz#99912d591836b5a6f5b345c0f07eefc08fc65d91"
   integrity sha1-mZEtWRg2tab1s0XA8H7vwI/GXZE=
   dependencies:
+    util "0.10.3"
+
+assert@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/assert/-/assert-1.5.0.tgz#55c109aaf6e0aefdb3dc4b71240c70bf574b18eb"
+  integrity sha512-EDsgawzwoun2CZkCgtxJbv392v4nbk9XDD06zI+kQYoBM/3RBWLlEyJARDOmhAAosBjWACEkKL6S+lIZtcAubA==
+  dependencies:
+    object-assign "^4.1.1"
     util "0.10.3"
 
 assertion-error@^1.0.1, assertion-error@^1.1.0:
@@ -2685,10 +2693,10 @@ emittery@^0.4.1:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
   integrity sha512-r4eRSeStEGf6M5SKdrQhhLK5bOwOBxQhIE3YSTnZE3GpKiLfnnhE+tPtrJE79+eDJgm39BM6LSoI8SCx4HbwlQ==
 
-emoji-mart@^2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-2.11.0.tgz#fed7c44d3a642b5de08848e8833d65a656ea8414"
-  integrity sha512-ol1ABg0xfDwCeKVu0Mmr/iTRHUMvqlyLZJFRQy+e6aWV83/Y+TEbJpBbtk7NxaW3BLAOyJ8r0NWthRQwxTtT1A==
+emoji-mart@^2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-2.11.1.tgz#fc9330b513803c17b98c9ad289c12ab61ff05f8f"
+  integrity sha512-Hr4N56YEkaPtmojO2dfgnMLLE/d5HpnhH0+M8cw9LRHpG2EgQQaCelRad3d5qQAPHI5+K0wMc/rwM0eRo0FnUA==
   dependencies:
     prop-types "^15.6.0"
 
@@ -2957,10 +2965,10 @@ esm@^3.2.22:
   resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.22.tgz#5062c2e22fee3ccfee4e8f20da768330da90d6e3"
   integrity sha512-z8YG7U44L82j1XrdEJcqZOLUnjxco8pO453gKOlaMD1/md1n/5QrscAmYG+oKUspsmDLuBFZrpbxI6aQ67yRxA==
 
-esotope-hammerhead@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/esotope-hammerhead/-/esotope-hammerhead-0.2.0.tgz#0748de6926f9fa9ede30270f9e3eb2e27708fa4c"
-  integrity sha512-oe6l4c5tUjPDPxA0lWPjTsULJtkzwmQceQ6BXpwutZ1JqgLXSatFCZYnY34fD5OnWZDkXa1N9XNm3VJDZ+AbGg==
+esotope-hammerhead@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/esotope-hammerhead/-/esotope-hammerhead-0.2.1.tgz#c7afdb624d9125b07f0555dd88ae2dcffc70def6"
+  integrity sha512-IicdvCt1BIFTIM4nbjxGp98whIakOYZ4lA0UaDXnXpJpB11jYBX11Uv3x2f5ncSlFmxyZRdrN5skH5wK4TCWFQ==
   dependencies:
     "@types/estree" "^0.0.39"
 
@@ -3532,6 +3540,18 @@ glob@^5.0.3:
     inflight "^1.0.4"
     inherits "2"
     minimatch "2 || 3"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
+glob@^7.1.4:
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
+  integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
@@ -5140,10 +5160,10 @@ normalize-path@^3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-now@^15.0.11:
-  version "15.0.11"
-  resolved "https://registry.yarnpkg.com/now/-/now-15.0.11.tgz#0c06227d0be16cdc5b388c6bacc6a5297e273956"
-  integrity sha512-ABNSy28mCgz6BQgNQy6ettSI1e0L647xN7fthsMlcA0mienDxPpUpxc8XfprjSdwCLD8kj7Zfp3z7WP33JHBVw==
+now@^15.2.0:
+  version "15.2.0"
+  resolved "https://registry.yarnpkg.com/now/-/now-15.2.0.tgz#3a66859d548a81d222140544a1d84f070a22573a"
+  integrity sha512-NAHziNTs2ptFizCvKHjSt69ixl7wG39Zf+hjnetM1ulMFc2jc++bDPPL1m62aQkCPbFwRmuxQtggW1i0/WRU7g==
 
 npm-bundled@^1.0.1:
   version "1.0.5"
@@ -7164,17 +7184,17 @@ testcafe-browser-tools@1.6.8:
     read-file-relative "^1.2.0"
     which-promise "^1.0.0"
 
-testcafe-hammerhead@14.6.2:
-  version "14.6.2"
-  resolved "https://registry.yarnpkg.com/testcafe-hammerhead/-/testcafe-hammerhead-14.6.2.tgz#ef88fcbd8b541a2391fe247c31f0e9c22ae8e363"
-  integrity sha512-07ay6koiLYOMDfJ/kfMwwiNGmWkXRuqNFoK8q+HmOl1AWN0C/hqV70ZIqaGuzUVa2Izn/nKslZ2sWLU0sST6bA==
+testcafe-hammerhead@14.6.3:
+  version "14.6.3"
+  resolved "https://registry.yarnpkg.com/testcafe-hammerhead/-/testcafe-hammerhead-14.6.3.tgz#61d22650a4fe3b6ee7af721acff5d4f78afcb1af"
+  integrity sha512-vMQGfO7d6Vy0wkyzAdBUQ4Rin7vLqJGrBvgjlvBaj2ec1oH+RX0IlOwCB3HFMA/JljM7BpVD7y97Jq9Ebcgs4g==
   dependencies:
     acorn-hammerhead "^0.2.0"
     bowser "1.6.0"
     brotli "^1.3.1"
     crypto-md5 "^1.0.0"
     css "2.2.3"
-    esotope-hammerhead "^0.2.0"
+    esotope-hammerhead "^0.2.1"
     iconv-lite "0.4.11"
     lodash "4.17.11"
     lru-cache "2.6.3"
@@ -7237,10 +7257,10 @@ testcafe-reporter-xunit@^2.1.0:
   resolved "https://registry.yarnpkg.com/testcafe-reporter-xunit/-/testcafe-reporter-xunit-2.1.0.tgz#e6d66c572ce15af266706af0fd610b2a841dd443"
   integrity sha1-5tZsVyzhWvJmcGrw/WELKoQd1EM=
 
-testcafe@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/testcafe/-/testcafe-1.1.3.tgz#5440cac32ec571760d7fa43482d058beb946cac2"
-  integrity sha512-AnwNHaJJPG5JrIB0UcPgQ/TjdraADGamh63D8m+4l0DLhgBUr/u7TYocucSDSq1tciR0HhE8Mgh5N4wriHH4Yw==
+testcafe@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/testcafe/-/testcafe-1.1.4.tgz#8c03542b3790d91e47af3439f4c77ff67d1d32ad"
+  integrity sha512-2c0erAxmRd8o018e0sQ1SVVyX1JlTXwUHlRIITF3u7bPAe40IFINhPGBA8KhDYwWDSaOUZp4ft6bxDef2g8Zgg==
   dependencies:
     "@types/node" "^10.12.19"
     async-exit-hook "^1.1.2"
@@ -7302,7 +7322,7 @@ testcafe@^1.1.3:
     source-map-support "^0.5.5"
     strip-bom "^2.0.0"
     testcafe-browser-tools "1.6.8"
-    testcafe-hammerhead "14.6.2"
+    testcafe-hammerhead "14.6.3"
     testcafe-legacy-api "3.1.11"
     testcafe-reporter-json "^2.1.0"
     testcafe-reporter-list "^2.1.0"
@@ -7779,10 +7799,10 @@ webpack-sources@^1.1.0, webpack-sources@^1.3.0:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^4.30.0:
-  version "4.30.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.30.0.tgz#aca76ef75630a22c49fcc235b39b4c57591d33a9"
-  integrity sha512-4hgvO2YbAFUhyTdlR4FNyt2+YaYBYHavyzjCMbZzgglo02rlKi/pcsEzwCuCpsn1ryzIl1cq/u8ArIKu8JBYMg==
+webpack@^4.31.0:
+  version "4.31.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.31.0.tgz#ae201d45f0571336e42d1c2b5c8ab56c4d3b0c63"
+  integrity sha512-n6RVO3X0LbbipoE62akME9K/JI7qYrwwufs20VvgNNpqUoH4860KkaxJTbGq5bgkVZF9FqyyTG/0WPLH3PVNJA==
   dependencies:
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/helper-module-context" "1.8.5"
