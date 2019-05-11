@@ -3,7 +3,7 @@ Configuration
 
 This guide is for those who self-host Pinafore and who would like to change the default settings.
 
-First, copy `config.sample.js` to `config.js`. Then change the options however you desire.
+First, copy `config.sample.json` to `config.json`. Then edit `config.json` to change the options.
 
 Here are the options:
 
