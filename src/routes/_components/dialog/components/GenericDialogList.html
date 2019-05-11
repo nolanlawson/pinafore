@@ -1,7 +1,10 @@
 <ul class="generic-dialog-list">
   {#each items as item (item.key)}
   <li class="generic-dialog-list-item">
-    <button class="generic-dialog-list-button" on:click="fire('click', item)">
+    <button
+        class="generic-dialog-list-button"
+        on:applyFocusStylesToParent="noop()"
+        on:click="fire('click', item)">
       <SvgIcon className="generic-dialog-list-item-svg" href={item.icon} />
       <span class="generic-dialog-list-button-span">
         {item.label}
@@ -26,6 +29,7 @@
     border: 1px solid var(--settings-list-item-border);
     font-size: 1.2em;
     display: flex;
+    outline-width: 4px;
   }
   :global(.generic-dialog-list-item-svg) {
     width: 24px;
@@ -40,6 +44,9 @@
     margin: 0;
     display: flex;
     flex-direction: row;
+  }
+  .generic-dialog-list-button:focus {
+    outline: none; /* focus style is on parent instead */
   }
   .generic-dialog-list-button-span {
     flex: 1;
@@ -86,8 +93,16 @@
 </style>
 <script>
   import SvgIcon from '../../SvgIcon.html'
+  import { applyFocusStylesToParent } from '../../../_utils/events'
+  import noop from 'lodash-es/noop'
 
   export default {
+    events: {
+      applyFocusStylesToParent
+    },
+    methods: {
+      noop
+    },
     components: {
       SvgIcon
     }
