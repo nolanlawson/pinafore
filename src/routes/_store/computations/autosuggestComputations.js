@@ -1,8 +1,11 @@
 import { get } from '../../_utils/lodash-lite'
 
 const MIN_PREFIX_LENGTH = 2
-const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@\\S{${MIN_PREFIX_LENGTH},})$`)
-const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:[^:]{${MIN_PREFIX_LENGTH},})$`)
+// Technically mastodon accounts allow dots, but it would be weird to do an autosuggest search if it ends with a dot.
+// Also this is rare. https://github.com/tootsuite/mastodon/pull/6844
+const VALID_ACCOUNT_AND_EMOJI_CHAR = '\\w'
+const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@${VALID_ACCOUNT_AND_EMOJI_CHAR}{${MIN_PREFIX_LENGTH},})$`)
+const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:${VALID_ACCOUNT_AND_EMOJI_CHAR}{${MIN_PREFIX_LENGTH},})$`)
 
 function computeForAutosuggest (store, key, defaultValue) {
   store.compute(key,
