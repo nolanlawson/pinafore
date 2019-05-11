@@ -4,7 +4,7 @@
 // the build process and write it to checksum.js.
 
 import { testHasLocalStorageOnce } from '../routes/_utils/testStorage'
-import { DEFAULT_LIGHT_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
+import { DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
 import { basename } from '../routes/_api/utils'
 import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
 import { INLINE_THEME } from '../routes/_static/themes'
