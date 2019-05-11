@@ -3,9 +3,11 @@
 const path = require('path')
 const express = require('express')
 const compression = require('compression')
+const config = require('./src/config/config.node.js')
+
 const { routes: nowRoutes } = require('./now.json')
 
-const { PORT = 4002 } = process.env
+const { PORT = config.port } = process.env
 const app = express()
 const exportDir = path.resolve(__dirname, '__sapper__/export')
 

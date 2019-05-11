@@ -1,4 +1,5 @@
 import config from '../../config/config.js'
+import { INLINE_THEME } from '../_static/themes'
 
 let meta = process.browser && document.getElementById('theThemeColor')
 let offlineStyle = process.browser && document.getElementById('theOfflineStyle')
@@ -40,7 +41,7 @@ function loadCSS (href) {
 export function switchToTheme (themeName = DEFAULT_THEME) {
   let themeColor = window.__themeColors[themeName]
   meta.content = themeColor || window.__themeColors[DEFAULT_THEME]
-  if (themeName !== DEFAULT_LIGHT_THEME) {
+  if (themeName !== INLINE_THEME) {
     loadCSS(`/theme-${themeName}.css`)
   } else {
     resetExistingTheme()

@@ -1,4 +1,4 @@
-const themes = [
+export const themes = [
   {
     name: 'default',
     label: 'Royal',
@@ -91,4 +91,4 @@ const themes = [
   }
 ]
 
-export { themes }
+export const INLINE_THEME = 'default' // the theme that requires no external CSS
