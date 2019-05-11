@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
-const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
+const { mode, dev, resolve, define } = require('./shared.config')
 
 const serverResolve = JSON.parse(JSON.stringify(resolve))
 serverResolve.alias['page-lifecycle/dist/lifecycle.mjs'] = 'lodash-es/noop' // page lifecycle fails in Node
@@ -34,8 +34,6 @@ module.exports = {
     hints: false // it doesn't matter if server.js is large
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs)
-    })
+    new webpack.DefinePlugin(define)
   ]
 }

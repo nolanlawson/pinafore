@@ -2,9 +2,9 @@
 
 import * as sapper from '../__sapper__/server.js'
 import express from 'express'
-import { port } from '../config.json'
+import config from './config/config.js'
 
-const { PORT = port } = process.env
+const { PORT = config.port } = process.env
 const app = express()
 
 app.use(express.static('static'))

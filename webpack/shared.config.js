@@ -1,4 +1,6 @@
 const svgs = require('../bin/svgs')
+const configJson = require('../src/config/config.sanitized.js')
+const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
 
 const inlineSvgs = svgs.filter(_ => _.inline).map(_ => `#${_.id}`)
 const mode = process.env.NODE_ENV || 'production'
@@ -13,9 +15,16 @@ const resolve = {
   }
 }
 
+const define = {
+  'process.env.CONFIG_JSON': JSON.stringify(configJson),
+  'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
+  'process.env.URL_REGEX': urlRegex.toString(),
+  'process.env.IS_WEBPACK': true
+}
+
 module.exports = {
   mode,
   dev,
   resolve,
-  inlineSvgs
+  define
 }

@@ -75,6 +75,10 @@ To build a Docker image for production:
 
 Now Pinafore is running at `localhost:4002`.
 
+### Configuration
+
+See [Configuration.md](https://github.com/nolanlawson/pinafore/blob/master/docs/Configuration.md)
+
 ### Updating
 
 To keep your version of Pinafore up to date, you can use `git` to check out the latest tag:

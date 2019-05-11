@@ -7,6 +7,7 @@ import { terser } from 'rollup-plugin-terser'
 import replace from 'rollup-plugin-replace'
 import fromPairs from 'lodash-es/fromPairs'
 import { themes } from '../src/routes/_static/themes'
+import configJson from '../src/config/config.sanitized.js'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -20,7 +21,8 @@ export async function buildInlineScript () {
     plugins: [
       replace({
         'process.browser': true,
-        'process.env.THEME_COLORS': JSON.stringify(themeColors)
+        'process.env.THEME_COLORS': JSON.stringify(themeColors),
+        'process.env.CONFIG_JSON': JSON.stringify(configJson)
       }),
       terser({
         mangle: true,

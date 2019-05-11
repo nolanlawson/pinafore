@@ -1,10 +1,10 @@
 import { post, paramsString, WRITE_TIMEOUT } from '../_utils/ajax'
 import { basename } from './utils'
-import { appName, appUrl } from '../../../config.json'
+import config from '../../config/config.js'
 
-const WEBSITE = appUrl
+const WEBSITE = config.appUrl
 const SCOPES = 'read write follow push'
-const CLIENT_NAME = appName
+const CLIENT_NAME = config.appName
 
 export function registerApplication (instanceName, redirectUri) {
   const url = `${basename(instanceName)}/api/v1/apps`

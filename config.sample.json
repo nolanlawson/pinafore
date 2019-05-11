@@ -1,0 +1,7 @@
+{
+  "port": 4002,
+  "defaultLightTheme": "default",
+  "defaultDarkTheme": "ozark",
+  "appName": "Pinafore",
+  "appUrl": "https://pinafore.social"
+}
