@@ -71,7 +71,7 @@ export class TimelineStream {
 
   _setupWebSocket () {
     const url = getUrl(this._streamingApi, this._accessToken, this._timeline)
-    const ws = new WebSocketClient(url, null, { backoff: 'exponential' })
+    const ws = new WebSocketClient(url, null, { backoff: 'fibonacci' })
 
     ws.onopen = this._opts.onOpen || noop
     ws.onmessage = this._opts.onMessage ? e => this._opts.onMessage(JSON.parse(e.data)) : noop
