@@ -18,3 +18,5 @@ Here are the options:
 | `appUrl` | `"https://pinafore.social"` | When the user registers Pinafore with their Mastodon instance, this is the URL provided. |
 
 No option is required. If omitted, then the default is assumed.
+
+Note that any time you change the config, you will need to rebuild and restart Pinafore.
