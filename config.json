@@ -1,0 +1,14 @@
+{
+  "// This can be overridden by the environment variable PORT": "",
+  "port": 4002,
+
+  "// The 'default' theme is the Royal (light blue) theme": "",
+  "defaultLightTheme": "default",
+
+  "// If the user has set their browser to a dark theme, it will default to this one": "",
+  "defaultDarkTheme": "ozark",
+
+  "// When the user registers Pinafore with their Mastodon instance, it will report this name and URL":  "",
+  "appName": "Pinafore",
+  "appUrl": "https://pinafore.social"
+}

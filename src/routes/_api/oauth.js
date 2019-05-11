@@ -1,9 +1,10 @@
 import { post, paramsString, WRITE_TIMEOUT } from '../_utils/ajax'
 import { basename } from './utils'
+import { appName, appUrl } from '../../../config.json'
 
-const WEBSITE = 'https://pinafore.social'
+const WEBSITE = appUrl
 const SCOPES = 'read write follow push'
-const CLIENT_NAME = 'Pinafore'
+const CLIENT_NAME = appName
 
 export function registerApplication (instanceName, redirectUri) {
   const url = `${basename(instanceName)}/api/v1/apps`

@@ -1,9 +1,11 @@
+import { defaultLightTheme, defaultDarkTheme } from '../../../config.json'
+
 let meta = process.browser && document.getElementById('theThemeColor')
 let offlineStyle = process.browser && document.getElementById('theOfflineStyle')
 let prefersDarkTheme = process.browser && window.matchMedia('(prefers-color-scheme: dark)').matches
 
-export const DEFAULT_LIGHT_THEME = 'default'
-export const DEFAULT_DARK_THEME = 'ozark'
+export const DEFAULT_LIGHT_THEME = defaultLightTheme
+export const DEFAULT_DARK_THEME = defaultDarkTheme
 export const DEFAULT_THEME = prefersDarkTheme ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME
 
 function getExistingThemeLink () {
