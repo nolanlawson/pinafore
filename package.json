@@ -61,7 +61,7 @@
     "emoji-regex": "^8.0.0",
     "encoding": "^0.1.12",
     "escape-html": "^1.0.3",
-    "esm": "^3.2.22",
+    "esm": "^3.2.25",
     "events-light": "^1.0.5",
     "express": "^4.16.4",
     "file-api": "^0.10.4",
