@@ -1,0 +1,42 @@
+<div class="poll" >
+  {#each options as option}
+  <div class="option">
+    <div>{option.title} ({option.share}%)</div>
+    <svg height="2px" width="100%">
+      <line x1="0" y1="0" x2="{option.share}%" y2="0" />
+    </svg>
+  </div>
+  {/each}
+
+</div>
+<style>
+  .poll {
+    grid-area: poll;
+    margin: 10px 10px 10px 5px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
+  .option {
+    display: flex;
+    flex-direction: column;
+    stroke: var(--svg-fill);
+    stroke-width:2;
+  }
+
+  .option:not(:last-child) {
+    margin-bottom: 3px;
+  }
+
+</style>
+<script>
+  export default {
+    computed: {
+      poll: ({ originalStatus }) => originalStatus.poll,
+      options: ({ poll }) => poll.options.map(({ title, votes_count: votesCount }) => ({
+        title,
+        share: poll.votes_count ? Math.round(votesCount / poll.votes_count * 100) : 0
+      }))
+    }
+  }
+</script>
