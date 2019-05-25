@@ -9,7 +9,7 @@
     <label for="push-notifications-follow">New followers</label>
     <br>
     <input type="checkbox" id="push-notifications-favourite" name="favourite" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-    <label for="push-notifications-favourite">Favourites</label>
+    <label for="push-notifications-favourite">Favorites</label>
     <br>
     <input type="checkbox" id="push-notifications-reblog" name="reblog" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
     <label for="push-notifications-reblog">Boosts</label>
@@ -40,6 +40,7 @@
   import { logOutOfInstance } from '../../../_actions/instances'
   import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
   import { toast } from '../../toast/toast'
+  import { get } from '../../../_utils/lodash-lite'
 
   export default {
     async oncreate () {
@@ -49,10 +50,10 @@
       const form = this.refs.pushNotificationsForm
       const { pushSubscription } = this.store.get()
 
-      form.elements.follow.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.follow
-      form.elements.favourite.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.favourite
-      form.elements.reblog.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.reblog
-      form.elements.mention.checked = pushSubscription && pushSubscription.alerts && pushSubscription.alerts.mention
+      form.elements.follow.checked = get(pushSubscription, ['alerts', 'follow'])
+      form.elements.favourite.checked = get(pushSubscription, ['alerts', 'favourite'])
+      form.elements.reblog.checked = get(pushSubscription, ['alerts', 'reblog'])
+      form.elements.mention.checked = get(pushSubscription, ['alerts', 'mention'])
     },
     store: () => store,
     computed: {
