@@ -64,8 +64,14 @@ export const accountProfileFilterStatuses = $('.account-profile-filters li:nth-c
 export const accountProfileFilterStatusesAndReplies = $('.account-profile-filters li:nth-child(2)')
 export const accountProfileFilterMedia = $('.account-profile-filters li:nth-child(3)')
 
-export const notificationFiltersAll = $('.notification-filters li:nth-child(1)')
-export const notificationFiltersMention = $('.notification-filters li:nth-child(2)')
+export const notificationsTabAll = $('.notification-filters li:nth-child(1)')
+export const notificationsTabMentions = $('.notification-filters li:nth-child(2)')
+
+export const instanceSettingHomeReblogs = $('#instance-option-homeReblogs')
+export const instanceSettingNotificationFollows = $('#instance-option-notificationFollows')
+export const instanceSettingNotificationFavs = $('#instance-option-notificationFavs')
+export const instanceSettingNotificationReblogs = $('#instance-option-notificationReblogs')
+export const instanceSettingNotificationMentions = $('#instance-option-notificationMentions')
 
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
