@@ -4,14 +4,14 @@
   <h2>Media</h2>
   <form class="ui-settings">
     <div class="setting-group">
-      <input type="checkbox" id="choice-mark-media-sensitive"
-             bind:checked="$markMediaAsSensitive" on:change="onChange(event)">
-      <label for="choice-mark-media-sensitive">Always mark media as sensitive</label>
-    </div>
-    <div class="setting-group">
       <input type="checkbox" id="choice-never-mark-media-sensitive"
              bind:checked="$neverMarkMediaAsSensitive" on:change="onChange(event)">
-      <label for="choice-never-mark-media-sensitive">Never mark media as sensitive</label>
+      <label for="choice-never-mark-media-sensitive">Show sensitive media by default</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-mark-media-sensitive"
+             bind:checked="$markMediaAsSensitive" on:change="onChange(event)">
+      <label for="choice-mark-media-sensitive">Hide all media by default</label>
     </div>
     <div class="setting-group">
       <input type="checkbox" id="choice-large-inline-media"
