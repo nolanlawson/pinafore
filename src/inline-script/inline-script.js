@@ -4,7 +4,7 @@
 // the build process and write it to checksum.js.
 
 import { testHasLocalStorageOnce } from '../routes/_utils/testStorage'
-import { DEFAULT_LIGHT_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
+import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
 import { basename } from '../routes/_api/utils'
 import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
 
@@ -30,7 +30,7 @@ let theme = (currentInstance &&
   localStorage.store_instanceThemes &&
   safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]) ||
   DEFAULT_THEME
-if (theme !== DEFAULT_LIGHT_THEME) {
+if (theme !== INLINE_THEME) {
   // switch theme ASAP to minimize flash of default theme
   switchToTheme(theme)
 }
