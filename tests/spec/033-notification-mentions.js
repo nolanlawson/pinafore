@@ -1,22 +1,22 @@
 import {
-  getUrl, notificationFiltersAll, notificationFiltersMention,
+  getUrl, notificationsTabAll, notificationsTabMentions,
   notificationsNavButton, validateTimeline
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { notificationsMentions, notifications } from '../fixtures'
 
-fixture`033-notification-filters.js`
+fixture`033-notification-mentions.js`
   .page`http://localhost:4002`
 
-test('Shows notification filters', async t => {
+test('Shows notification mentions', async t => {
   await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .expect(getUrl()).match(/\/notifications$/)
-    .click(notificationFiltersMention)
+    .click(notificationsTabMentions)
     .expect(getUrl()).match(/\/notifications\/mentions$/)
   await validateTimeline(t, notificationsMentions)
-  await t.click(notificationFiltersAll)
+  await t.click(notificationsTabAll)
     .expect(getUrl()).match(/\/notifications$/)
   await validateTimeline(t, notifications)
 })
