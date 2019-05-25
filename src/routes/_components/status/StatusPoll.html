@@ -1,31 +1,50 @@
 <div class="poll" >
-  {#each options as option}
-  <div class="option">
-    <div>{option.title} ({option.share}%)</div>
-    <svg height="2px" width="100%">
-      <line x1="0" y1="0" x2="{option.share}%" y2="0" />
-    </svg>
-  </div>
-  {/each}
-
+  <ul class="options" aria-label="Poll results">
+    {#each options as option}
+      <li class="option">
+        <div class="option-text">{option.title} ({option.share}%)</div>
+        <svg aria-hidden="true">
+          <line x1="0" y1="0" x2="{option.share}%" y2="0" />
+        </svg>
+      </li>
+    {/each}
+  </ul>
 </div>
 <style>
   .poll {
     grid-area: poll;
     margin: 10px 10px 10px 5px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
   }
 
-  .option {
+  ul.options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li.option {
+    margin: 0 0 10px 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     stroke: var(--svg-fill);
-    stroke-width:2;
+    stroke-width: 5px;
   }
 
-  .option:not(:last-child) {
-    margin-bottom: 3px;
+  li.option:last-child {
+    margin: 0;
+  }
+
+  .option-text {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    font-size: 1.1em;
+  }
+
+  svg {
+    height: 2px;
+    width: 100%;
+    margin-top: 5px;
   }
 
 </style>
