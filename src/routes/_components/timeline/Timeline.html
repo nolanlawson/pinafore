@@ -59,6 +59,22 @@
   import { observe } from 'svelte-extras'
   import { createMakeProps } from '../../_actions/createMakeProps'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
+  import { get } from '../../_utils/lodash-lite'
+  import {
+    HOME_REBLOGS,
+    HOME_REPLIES,
+    NOTIFICATION_REBLOGS,
+    NOTIFICATION_FOLLOWS,
+    NOTIFICATION_FAVORITES,
+    NOTIFICATION_POLLS,
+    NOTIFICATION_MENTIONS,
+    FILTER_FAVORITE,
+    FILTER_FOLLOW,
+    FILTER_MENTION,
+    FILTER_POLL,
+    FILTER_REBLOG,
+    FILTER_REPLY
+  } from '../../_static/instanceSettings'
 
   export default {
     oncreate () {
@@ -127,9 +143,56 @@
         timelineValue !== $firstTimelineItemId &&
         timelineValue
       ),
-      itemIds: ({ $timelineItemSummaries }) => (
-        // TODO: filter
-        $timelineItemSummaries && $timelineItemSummaries.map(_ => _.id)
+      currentInstanceSettings: ({ $currentInstance, $instanceSettings }) => (
+        $instanceSettings[$currentInstance] || {}
+      ),
+      timelineFilters: ({ currentInstanceSettings, timeline }) => {
+        if (timeline === 'home') {
+          return {
+            [FILTER_REBLOG]: get(currentInstanceSettings, [HOME_REBLOGS], true),
+            [FILTER_REPLY]: get(currentInstanceSettings, [HOME_REPLIES], true)
+          }
+        } else if (timeline === 'notifications') {
+          return {
+            [FILTER_REBLOG]: get(currentInstanceSettings, [NOTIFICATION_REBLOGS], true),
+            [FILTER_FOLLOW]: get(currentInstanceSettings, [NOTIFICATION_FOLLOWS], true),
+            [FILTER_FAVORITE]: get(currentInstanceSettings, [NOTIFICATION_FAVORITES], true),
+            [FILTER_MENTION]: get(currentInstanceSettings, [NOTIFICATION_MENTIONS], true),
+            [FILTER_POLL]: get(currentInstanceSettings, [NOTIFICATION_POLLS], true)
+          }
+        }
+      },
+      showReblogs: ({ timelineFilters }) => get(timelineFilters, [FILTER_REBLOG], true),
+      showReplies: ({ timelineFilters }) => get(timelineFilters, [FILTER_REPLY], true),
+      showFollows: ({ timelineFilters }) => get(timelineFilters, [FILTER_FOLLOW], true),
+      showMentions: ({ timelineFilters }) => get(timelineFilters, [FILTER_MENTION], true),
+      showPolls: ({ timelineFilters }) => get(timelineFilters, [FILTER_POLL], true),
+      showFavs: ({ timelineFilters }) => get(timelineFilters, [FILTER_FAVORITE], true),
+      itemIds: ({
+        $timelineItemSummaries, showReblogs, showReplies, showFollows, showMentions,
+        showPolls, showFavs
+      }) => (
+        $timelineItemSummaries && $timelineItemSummaries.filter(item => {
+          switch (item.type) {
+            case 'poll':
+              return showPolls
+            case 'favourite':
+              return showFavs
+            case 'reblog':
+              return showReblogs
+            case 'mention':
+              return showMentions
+            case 'follow':
+              return showFollows
+          }
+          if (item.reblogId) {
+            return showReblogs
+          } else if (item.replyId) {
+            return showReplies
+          } else {
+            return true
+          }
+        }).map(_ => _.id)
       ),
       itemIdsToAdd: ({ $timelineItemSummariesToAdd }) => (
         // TODO: filter

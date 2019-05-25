@@ -1,7 +1,15 @@
-export const SHOW_REBLOGS = 'showReblogs'
-export const SHOW_REPLIES = 'showReplies'
+export const HOME_REBLOGS = 'homeReblogs'
+export const HOME_REPLIES = 'homeReplies'
+
 export const NOTIFICATION_REBLOGS = 'notificationReblogs'
 export const NOTIFICATION_FAVORITES = 'notificationFavs'
 export const NOTIFICATION_FOLLOWS = 'notificationFollows'
 export const NOTIFICATION_MENTIONS = 'notificationMentions'
 export const NOTIFICATION_POLLS = 'notificationPolls'
+
+export const FILTER_REBLOG = 'reblog'
+export const FILTER_REPLY = 'reply'
+export const FILTER_MENTION = 'mention'
+export const FILTER_FOLLOW = 'follow'
+export const FILTER_FAVORITE = 'fav'
+export const FILTER_POLL = 'poll'
