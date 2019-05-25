@@ -19,6 +19,7 @@ const persistedState = {
   largeInlineMedia: false,
   instanceNameInSearch: '',
   instanceThemes: {},
+  instanceSettings: {},
   loggedInInstances: {},
   loggedInInstancesInOrder: [],
   markMediaAsSensitive: false,

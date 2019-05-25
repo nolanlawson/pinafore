@@ -1,0 +1,50 @@
+<GenericInstanceSettings
+  {instanceName}
+  {options}
+  label="Notification filter settings"
+/>
+<script>
+  import GenericInstanceSettings from './GenericInstanceSettings.html'
+  import {
+    NOTIFICATION_REBLOGS,
+    NOTIFICATION_FAVORITES,
+    NOTIFICATION_FOLLOWS,
+    NOTIFICATION_MENTIONS,
+    NOTIFICATION_POLLS
+  } from '../../../_static/instanceSettings'
+
+  export default {
+    data: () => ({
+      options: [
+        {
+          key: NOTIFICATION_FOLLOWS,
+          label: 'New followers',
+          defaultValue: true
+        },
+        {
+          key: NOTIFICATION_FAVORITES,
+          label: 'Favorites',
+          defaultValue: true
+        },
+        {
+          key: NOTIFICATION_REBLOGS,
+          label: 'Boosts',
+          defaultValue: true
+        },
+        {
+          key: NOTIFICATION_MENTIONS,
+          label: 'Mentions',
+          defaultValue: true
+        },
+        {
+          key: NOTIFICATION_POLLS,
+          label: 'Poll results',
+          defaultValue: true
+        }
+      ]
+    }),
+    components: {
+      GenericInstanceSettings
+    }
+  }
+</script>

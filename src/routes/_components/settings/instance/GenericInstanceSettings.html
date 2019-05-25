@@ -1,0 +1,48 @@
+<div class="generic-instance-settings">
+  <form aria-label={label} ref:form>
+    {#each options as option, i (option.key) }
+      {#if i > 0}
+        <br>
+      {/if}
+      <input type="checkbox"
+             id="instance-option-{option.key}"
+             name="{option.key}"
+             on:change="onChange(event)"
+      >
+      <label for="instance-option-{option.key}">
+        {option.label}
+      </label>
+    {/each}
+  </form>
+</div>
+<style>
+  .generic-instance-settings {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    display: block;
+    padding: 20px;
+    line-height: 2em;
+  }
+</style>
+<script>
+  import { store } from '../../../_store/store'
+
+  export default {
+    oncreate () {
+      let { instanceName, options } = this.get()
+      let { form } = this.refs
+      for (let { key, defaultValue } of options) {
+        form.elements[key].checked = this.store.getInstanceSetting(instanceName, key, defaultValue)
+      }
+    },
+    methods: {
+      onChange (event) {
+        let { instanceName } = this.get()
+        let { target } = event
+        this.store.setInstanceSetting(instanceName, target.name, target.checked)
+      }
+    },
+    store: () => store
+  }
+</script>

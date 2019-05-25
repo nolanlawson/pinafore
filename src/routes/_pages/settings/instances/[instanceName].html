@@ -4,9 +4,13 @@
   {#if verifyCredentials}
     <h2>Logged in as:</h2>
     <InstanceUserProfile {verifyCredentials} />
-    <h2>Push notifications:</h2>
+    <h2>Home timeline filters</h2>
+    <HomeTimelineFilterSettings {instanceName} />
+    <h2>Notification filters</h2>
+    <NotificationFilterSettings {instanceName} />
+    <h2>Push notifications</h2>
     <PushNotificationSettings {instanceName} />
-    <h2>Theme:</h2>
+    <h2>Theme</h2>
     <ThemeSettings {instanceName} />
 
     <InstanceActions {instanceName} />
@@ -23,6 +27,8 @@
   import { store } from '../../../_store/store'
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import InstanceUserProfile from '../../../_components/settings/instance/InstanceUserProfile.html'
+  import HomeTimelineFilterSettings from '../../../_components/settings/instance/HomeTimelineFilterSettings.html'
+  import NotificationFilterSettings from '../../../_components/settings/instance/NotificationFilterSettings.html'
   import PushNotificationSettings from '../../../_components/settings/instance/PushNotificationSettings.html'
   import ThemeSettings from '../../../_components/settings/instance/ThemeSettings.html'
   import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
@@ -43,7 +49,9 @@
       InstanceUserProfile,
       PushNotificationSettings,
       ThemeSettings,
-      InstanceActions
+      InstanceActions,
+      HomeTimelineFilterSettings,
+      NotificationFilterSettings
     }
   }
 </script>
