@@ -1,0 +1,29 @@
+<GenericInstanceSettings
+  {instanceName}
+  {options}
+  label="Home timeline filter settings"
+/>
+<script>
+  import GenericInstanceSettings from './GenericInstanceSettings.html'
+  import { SHOW_REBLOGS, SHOW_REPLIES } from '../../../_static/instanceSettings'
+
+  export default {
+    data: () => ({
+      options: [
+        {
+          key: SHOW_REBLOGS,
+          label: 'Show boosts',
+          defaultValue: true
+        },
+        {
+          key: SHOW_REPLIES,
+          label: 'Show replies',
+          defaultValue: true
+        }
+      ]
+    }),
+    components: {
+      GenericInstanceSettings
+    }
+  }
+</script>

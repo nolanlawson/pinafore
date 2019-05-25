@@ -1,3 +1,5 @@
+import { get } from '../../_utils/lodash-lite'
+
 export function instanceMixins (Store) {
   Store.prototype.setComposeData = function (realm, obj) {
     let { composeData, currentInstance } = this.get()
@@ -19,5 +21,19 @@ export function instanceMixins (Store) {
       delete composeData[currentInstance][realm]
     }
     this.set({ composeData })
+  }
+
+  Store.prototype.getInstanceSetting = function (instanceName, settingName, defaultValue) {
+    let { instanceSettings } = this.get()
+    return get(instanceSettings, [instanceName, settingName], defaultValue)
+  }
+
+  Store.prototype.setInstanceSetting = function (instanceName, settingName, value) {
+    let { instanceSettings } = this.get()
+    if (!instanceSettings[instanceName]) {
+      instanceSettings[instanceName] = {}
+    }
+    instanceSettings[instanceName][settingName] = value
+    this.set({ instanceSettings })
   }
 }
