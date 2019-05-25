@@ -4,18 +4,21 @@
   {:elseif $notificationPermission === "denied"}
   <p role="alert">You have denied permission to show notifications.</p>
   {/if}
-  <form id="push-notification-settings" disabled="{!pushNotificationsSupport}" ref:pushNotificationsForm aria-label="Push notification settings">
-    <input type="checkbox" id="push-notifications-follow" name="follow" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-    <label for="push-notifications-follow">New followers</label>
-    <br>
-    <input type="checkbox" id="push-notifications-favourite" name="favourite" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-    <label for="push-notifications-favourite">Favorites</label>
-    <br>
-    <input type="checkbox" id="push-notifications-reblog" name="reblog" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-    <label for="push-notifications-reblog">Boosts</label>
-    <br>
-    <input type="checkbox" id="push-notifications-mention" name="mention" disabled="{!pushNotificationsSupport}" on:change="onPushSettingsChange(event)">
-    <label for="push-notifications-mention">Mentions</label>
+  <form id="push-notification-settings"
+        disabled="{!pushNotificationsSupport}"
+        ref:form
+        aria-label="Push notification settings">
+    {#each options as option, i (option.key)}
+      {#if i > 0}
+        <br>
+      {/if}
+      <input type="checkbox"
+             id="push-notifications-{option.key}"
+             name="{option.key}"
+             disabled="{!pushNotificationsSupport}"
+             on:change="onPushSettingsChange(event)">
+      <label for="push-notifications-{option.key}">{option.label}</label>
+    {/each}
   </form>
 </div>
 <style>
@@ -27,11 +30,11 @@
     padding: 20px;
     line-height: 2em;
   }
-  .push-notifications form[disabled="true"] {
+  form[disabled="true"] {
     opacity: 0.5;
   }
-  .push-notifications p {
-    margin: 0;
+  p {
+    margin: 0 0 10px 0;
   }
 </style>
 <script>
@@ -44,30 +47,52 @@
 
   export default {
     async oncreate () {
-      let { instanceName } = this.get()
+      let { instanceName, options } = this.get()
       await updatePushSubscriptionForInstance(instanceName)
 
-      const form = this.refs.pushNotificationsForm
+      const { form } = this.refs
       const { pushSubscription } = this.store.get()
 
-      form.elements.follow.checked = get(pushSubscription, ['alerts', 'follow'])
-      form.elements.favourite.checked = get(pushSubscription, ['alerts', 'favourite'])
-      form.elements.reblog.checked = get(pushSubscription, ['alerts', 'reblog'])
-      form.elements.mention.checked = get(pushSubscription, ['alerts', 'mention'])
+      for (let { key } of options) {
+        form.elements[key].checked = get(pushSubscription, ['alerts', key])
+      }
     },
     store: () => store,
+    data: () => ({
+      options: [
+        {
+          key: 'follow',
+          label: 'New Followers'
+        },
+        {
+          key: 'favourite',
+          label: 'Favorites'
+        },
+        {
+          key: 'reblog',
+          label: 'Boosts'
+        },
+        {
+          key: 'mention',
+          label: 'Mentions'
+        },
+        {
+          key: 'poll',
+          label: 'Poll results'
+        }
+      ]
+    }),
     computed: {
       pushNotificationsSupport: ({ $pushNotificationsSupport }) => $pushNotificationsSupport
     },
     methods: {
       async onPushSettingsChange (e) {
-        const { instanceName } = this.get()
-        const form = this.refs.pushNotificationsForm
-        const alerts = {
-          follow: form.elements.follow.checked,
-          favourite: form.elements.favourite.checked,
-          reblog: form.elements.reblog.checked,
-          mention: form.elements.mention.checked
+        const { instanceName, options } = this.get()
+        const { form } = this.refs
+        const alerts = {}
+
+        for (let { key } of options) {
+          alerts[key] = form.elements[key].checked
         }
 
         try {

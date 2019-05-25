@@ -46,7 +46,7 @@ self.addEventListener('activate', event => {
     // delete old asset/ondemand caches
     for (let key of keys) {
       if (key !== ASSETS &&
-          !key.startsWith('webpack_assets_')) {
+        !key.startsWith('webpack_assets_')) {
         await caches.delete(key)
       }
     }
@@ -131,86 +131,71 @@ async function showSimpleNotification (data) {
 }
 
 async function showRichNotification (data, notification) {
-  const { origin } = new URL(data.icon)
+  const { icon, body } = data
+  const tag = notification.id
+  const { origin } = self.location
 
   switch (notification.type) {
     case 'follow': {
       await self.registration.showNotification(data.title, {
-        icon: data.icon,
-        body: data.body,
-        tag: notification.id,
+        icon,
+        body,
+        tag,
         data: {
-          url: `${self.location.origin}/accounts/${notification.account.id}`
+          url: `${origin}/accounts/${notification.account.id}`
         }
       })
       break
     }
-    case 'mention': {
-      const actions = [{
-        action: 'favourite',
-        title: 'Favourite'
-      }]
-
-      if ('reply' in NotificationEvent.prototype) {
-        actions.splice(0, 0, {
-          action: 'reply',
-          type: 'text',
-          title: 'Reply'
-        })
-      }
-
-      if (['public', 'unlisted'].includes(notification.status.visibility)) {
-        actions.push({
+    case 'reblog':
+    case 'favourite':
+    case 'poll':
+      await self.registration.showNotification(data.title, {
+        icon,
+        body,
+        tag,
+        data: {
+          url: `${origin}/statuses/${notification.status.id}`
+        }
+      })
+      break
+    case 'mention':
+      const isPublic = ['public', 'unlisted'].includes(notification.status.visibility)
+      const actions = [
+        {
+          action: 'favourite',
+          title: 'Favorite'
+        },
+        isPublic && {
           action: 'reblog',
           title: 'Boost'
-        })
-      }
+        }
+      ].filter(Boolean)
 
       await self.registration.showNotification(data.title, {
-        icon: data.icon,
-        body: data.body,
-        tag: notification.id,
+        icon,
+        body,
+        tag,
         data: {
-          instance: origin,
+          instance: new URL(data.icon).origin,
           status_id: notification.status.id,
           access_token: data.access_token,
-          url: `${self.location.origin}/statuses/${notification.status.id}`
+          url: `${origin}/statuses/${notification.status.id}`
         },
         actions
       })
       break
-    }
-    case 'reblog': {
-      await self.registration.showNotification(data.title, {
-        icon: data.icon,
-        body: data.body,
-        tag: notification.id,
-        data: {
-          url: `${self.location.origin}/statuses/${notification.status.id}`
-        }
-      })
-      break
-    }
-    case 'favourite': {
-      await self.registration.showNotification(data.title, {
-        icon: data.icon,
-        body: data.body,
-        tag: notification.id,
-        data: {
-          url: `${self.location.origin}/statuses/${notification.status.id}`
-        }
-      })
-      break
-    }
   }
 }
 
 const cloneNotification = notification => {
-  const clone = { }
+  const clone = {}
 
   // Object.assign() does not work with notifications
   for (let k in notification) {
-    clone[k] = notification[k]
+    if (notification.hasOwnProperty(k)) {
+      clone[k] = notification[k]
+    }
   }
 
   return clone
@@ -227,21 +212,19 @@ const updateNotificationWithoutAction = (notification, action) => {
 self.addEventListener('notificationclick', event => {
   event.waitUntil((async () => {
     switch (event.action) {
-      case 'reply': {
-        await post(`${event.notification.data.instance}/api/v1/statuses/`, {
-          status: event.reply,
-          in_reply_to_id: event.notification.data.status_id
-        }, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
-        await updateNotificationWithoutAction(event.notification, 'reply')
-        break
-      }
       case 'reblog': {
-        await post(`${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/reblog`, null, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        const url = `${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/reblog`
+        await post(url, null, {
+          'Authorization': `Bearer ${event.notification.data.access_token}`
+        })
         await updateNotificationWithoutAction(event.notification, 'reblog')
         break
       }
       case 'favourite': {
-        await post(`${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/favourite`, null, { 'Authorization': `Bearer ${event.notification.data.access_token}` })
+        const url = `${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/favourite`
+        await post(url, null, {
+          'Authorization': `Bearer ${event.notification.data.access_token}`
+        })
         await updateNotificationWithoutAction(event.notification, 'favourite')
         break
       }
