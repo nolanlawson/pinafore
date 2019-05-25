@@ -31,6 +31,9 @@
   {#if showMedia }
     <StatusMediaAttachments {...params} on:recalculateHeight />
   {/if}
+  {#if showPoll}
+    <StatusPoll {...params} />
+  {/if}
   {#if isStatusInOwnThread}
     <StatusDetails {...params} />
   {/if}
@@ -58,6 +61,7 @@
         "sidebar content      content       content"
         "sidebar card         card          card"
         "sidebar media-grp    media-grp     media-grp"
+        "sidebar poll         poll          poll"
         "media   media        media         media"
         "....... toolbar      toolbar       toolbar"
         "compose compose      compose       compose";
@@ -92,6 +96,7 @@
       "card        card"
       "media-grp   media-grp"
       "media       media"
+      "poll        poll"
       "details     details"
       "toolbar     toolbar"
       "compose     compose";
@@ -119,6 +124,7 @@
   import StatusSpoiler from './StatusSpoiler.html'
   import StatusComposeBox from './StatusComposeBox.html'
   import StatusMentions from './StatusMentions.html'
+  import StatusPoll from './StatusPoll.html'
   import Shortcut from '../shortcut/Shortcut.html'
   import { store } from '../../_store/store'
   import { goto } from '../../../../__sapper__/client'
@@ -170,6 +176,7 @@
       StatusMediaAttachments,
       StatusContent,
       StatusCard,
+      StatusPoll,
       StatusSpoiler,
       StatusComposeBox,
       StatusMentions,
@@ -260,6 +267,9 @@
         !showMedia &&
         originalStatus.card &&
         originalStatus.card.title
+      ),
+      showPoll: ({ originalStatus, isStatusInNotification }) => (
+        !isStatusInNotification && originalStatus.poll
       ),
       showMedia: ({ originalStatus, isStatusInNotification }) => (
         !isStatusInNotification &&
