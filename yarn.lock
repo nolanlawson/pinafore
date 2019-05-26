@@ -5913,10 +5913,10 @@ public-encrypt@^4.0.0:
     randombytes "^2.0.1"
     safe-buffer "^5.1.2"
 
-pulltorefreshjs@^0.1.16:
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/pulltorefreshjs/-/pulltorefreshjs-0.1.16.tgz#42cadcfb6bd139dc0d9f362be2bcd8bc87328613"
-  integrity sha512-F3K+LhEzpkrajVEG6p6tU+QTmNihhzl0vzOnw46iTZM5gXTfvrv9VGsi8xVC+g5VE5is0ObGPdICk7j0ffv2pw==
+pulltorefreshjs@^0.1.17:
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/pulltorefreshjs/-/pulltorefreshjs-0.1.17.tgz#cc39faae17acd57a0888fba65aaafded09c681cf"
+  integrity sha512-XHTMYleeboJrSr8u+7fidY+DdSIBeKYHtBJH4N6w1C3HR/VD9L2/LFcnDBGKEjcHaFJAYjPTJcxQPCxYYTTHow==
 
 pump@^2.0.0:
   version "2.0.1"
