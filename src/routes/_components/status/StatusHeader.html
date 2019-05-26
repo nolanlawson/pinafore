@@ -1,5 +1,5 @@
-<div class="status-header {isStatusInNotification ? 'status-in-notification' : ''} {notification && notification.type === 'follow' ? 'header-is-follow' : ''}">
-  <div class="status-header-avatar {timelineType === 'pinned' ? 'hidden' : ''}">
+<div class="status-header {isStatusInNotification ? 'status-in-notification' : ''} {notificationType === 'follow' ? 'header-is-follow' : ''}">
+  <div class="status-header-avatar {timelineType === 'pinned' || notificationType === 'poll' ? 'hidden' : ''}">
     <Avatar {account} size="extra-small"/>
   </div>
   <SvgIcon className="status-header-svg" href={icon} />
@@ -9,7 +9,7 @@
       <span class="status-header-author">
         Pinned toot
       </span>
-    {:else}
+    {:elseif notificationType !== 'poll'}
       <a id={elementId}
          href="/accounts/{accountId}"
          rel="prefetch"
@@ -20,17 +20,7 @@
       </a>
     {/if}
 
-    <span class="status-header-action">
-        {#if notification && notification.type === 'reblog'}
-          boosted your status
-        {:elseif notification && notification.type === 'favourite'}
-          favorited your status
-        {:elseif notification && notification.type === 'follow'}
-          followed you
-        {:elseif status && status.reblog}
-          boosted
-        {/if}
-    </span>
+    <span class="status-header-action">{actionText}</span>
   </div>
 </div>
 <style>
@@ -105,6 +95,7 @@
   import Avatar from '../Avatar.html'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
   import SvgIcon from '../SvgIcon.html'
+  import { store } from '../../_store/store'
 
   export default {
     components: {
@@ -112,17 +103,40 @@
       AccountDisplayName,
       SvgIcon
     },
+    store: () => store,
     computed: {
       elementId: ({ uuid }) => `status-header-${uuid}`,
-      icon: ({ notification, status, timelineType }) => {
+      notificationType: ({ notification }) => notification && notification.type,
+      icon: ({ notificationType, status, timelineType }) => {
         if (timelineType === 'pinned') {
           return '#fa-thumb-tack'
-        } else if ((notification && notification.type === 'reblog') || (status && status.reblog)) {
+        } else if ((notificationType === 'reblog') || (status && status.reblog)) {
           return '#fa-retweet'
-        } else if (notification && notification.type === 'follow') {
+        } else if (notificationType === 'follow') {
           return '#fa-user-plus'
+        } else if (notificationType === 'poll') {
+          return '#fa-bar-chart'
         }
         return '#fa-star'
+      },
+      actionText: ({ notificationType, status, $currentVerifyCredentials }) => {
+        if (notificationType === 'reblog') {
+          return 'boosted your status'
+        } else if (notificationType === 'favourite') {
+          return 'favorited your status'
+        } else if (notificationType === 'follow') {
+          return 'followed you'
+        } else if (notificationType === 'poll') {
+          if ($currentVerifyCredentials && status && $currentVerifyCredentials.id === status.account.id) {
+            return 'A poll you created has ended'
+          } else {
+            return 'A poll you voted on has ended'
+          }
+        } else if (status && status.reblog) {
+          return 'boosted'
+        } else {
+          return ''
+        }
       }
     }
   }
