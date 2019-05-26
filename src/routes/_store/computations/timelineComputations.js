@@ -1,5 +1,14 @@
 import { get } from '../../_utils/lodash-lite'
 import { getFirstIdFromItemSummaries, getLastIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
+import {
+  HOME_REBLOGS,
+  HOME_REPLIES,
+  NOTIFICATION_REBLOGS,
+  NOTIFICATION_FOLLOWS,
+  NOTIFICATION_FAVORITES,
+  NOTIFICATION_POLLS,
+  NOTIFICATION_MENTIONS
+} from '../../_static/instanceSettings'
 
 function computeForTimeline (store, key, defaultValue) {
   store.compute(key,
@@ -7,6 +16,31 @@ function computeForTimeline (store, key, defaultValue) {
     (currentInstance, currentTimeline, root) => (
       get(root, [currentInstance, currentTimeline], defaultValue)
     )
+  )
+}
+
+// Compute just the boolean, e.g. 'showPolls', so that we can use that boolean as
+// the input to the timelineFilterFunction computations. This should reduce the need to
+// re-compute the timelineFilterFunction over and over.
+function computeTimelineFilter (store, computationName, timelinesToSettingsKeys) {
+  store.compute(
+    computationName,
+    ['currentInstance', 'instanceSettings', 'currentTimeline'],
+    (currentInstance, instanceSettings, currentTimeline) => {
+      let settingsKey = timelinesToSettingsKeys[currentTimeline]
+      return settingsKey ? get(instanceSettings, [currentInstance, settingsKey], true) : true
+    }
+  )
+}
+
+// Ditto for notifications, which we always have to keep track of due to the notification count.
+function computeNotificationFilter (store, computationName, key) {
+  store.compute(
+    computationName,
+    ['currentInstance', 'instanceSettings'],
+    (currentInstance, instanceSettings) => {
+      return get(instanceSettings, [currentInstance, key], true)
+    }
   )
 }
 
@@ -41,11 +75,93 @@ export function timelineComputations (store) {
     getLastIdFromItemSummaries(timelineItemSummaries)
   ))
 
+  computeTimelineFilter(store, 'timelineShowReblogs', { home: HOME_REBLOGS, notifications: NOTIFICATION_REBLOGS })
+  computeTimelineFilter(store, 'timelineShowReplies', { home: HOME_REPLIES })
+  computeTimelineFilter(store, 'timelineShowFollows', { notifications: NOTIFICATION_FOLLOWS })
+  computeTimelineFilter(store, 'timelineShowFavs', { notifications: NOTIFICATION_FAVORITES })
+  computeTimelineFilter(store, 'timelineShowMentions', { notifications: NOTIFICATION_MENTIONS })
+  computeTimelineFilter(store, 'timelineShowPolls', { notifications: NOTIFICATION_POLLS })
+
+  computeNotificationFilter(store, 'timelineNotificationShowReblogs', NOTIFICATION_REBLOGS)
+  computeNotificationFilter(store, 'timelineNotificationShowFollows', NOTIFICATION_FOLLOWS)
+  computeNotificationFilter(store, 'timelineNotificationShowFavs', NOTIFICATION_FAVORITES)
+  computeNotificationFilter(store, 'timelineNotificationShowMentions', NOTIFICATION_MENTIONS)
+  computeNotificationFilter(store, 'timelineNotificationShowPolls', NOTIFICATION_POLLS)
+
+  function createFilterFunction (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls) {
+    return item => {
+      switch (item.type) {
+        case 'poll':
+          return showPolls
+        case 'favourite':
+          return showFavs
+        case 'reblog':
+          return showReblogs
+        case 'mention':
+          return showMentions
+        case 'follow':
+          return showFollows
+      }
+      if (item.reblogId) {
+        return showReblogs
+      } else if (item.replyId) {
+        return showReplies
+      } else {
+        return true
+      }
+    }
+  }
+
+  store.compute(
+    'timelineFilterFunction',
+    [
+      'timelineShowReblogs', 'timelineShowReplies', 'timelineShowFollows',
+      'timelineShowFavs', 'timelineShowMentions', 'timelineShowPolls'
+    ],
+    (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls) => (
+      createFilterFunction(showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls)
+    )
+  )
+
+  store.compute(
+    'timelineNotificationFilterFunction',
+    [
+      'timelineNotificationShowReblogs', 'timelineNotificationShowFollows',
+      'timelineNotificationShowFavs', 'timelineNotificationShowMentions',
+      'timelineNotificationShowPolls'
+    ],
+    (showReblogs, showFollows, showFavs, showMentions, showPolls) => (
+      createFilterFunction(showReblogs, true, showFollows, showFavs, showMentions, showPolls)
+    )
+  )
+
+  store.compute(
+    'filteredTimelineItemSummaries',
+    ['timelineItemSummaries', 'timelineFilterFunction'],
+    (timelineItemSummaries, timelineFilterFunction) => {
+      return timelineItemSummaries && timelineItemSummaries.filter(timelineFilterFunction)
+    }
+  )
+
+  store.compute('timelineNotificationItemSummaries',
+    [`timelineData_timelineItemSummariesToAdd`, 'timelineFilterFunction', 'currentInstance'],
+    (root, timelineFilterFunction, currentInstance) => (
+      get(root, [currentInstance, 'notifications'])
+    )
+  )
+
+  store.compute(
+    'filteredTimelineNotificationItemSummaries',
+    ['timelineNotificationItemSummaries', 'timelineNotificationFilterFunction'],
+    (timelineNotificationItemSummaries, timelineNotificationFilterFunction) => (
+      timelineNotificationItemSummaries && timelineNotificationItemSummaries.filter(timelineNotificationFilterFunction)
+    )
+  )
+
   store.compute('numberOfNotifications',
-    [`timelineData_timelineItemSummariesToAdd`, 'currentInstance'],
-    (root, currentInstance) => (
-      (root && root[currentInstance] && root[currentInstance].notifications &&
-        root[currentInstance].notifications.length) || 0
+    ['filteredTimelineNotificationItemSummaries'],
+    (filteredTimelineNotificationItemSummaries) => (
+      filteredTimelineNotificationItemSummaries ? filteredTimelineNotificationItemSummaries.length : 0
     )
   )
 

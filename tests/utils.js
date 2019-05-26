@@ -73,6 +73,8 @@ export const instanceSettingNotificationFavs = $('#instance-option-notificationF
 export const instanceSettingNotificationReblogs = $('#instance-option-notificationReblogs')
 export const instanceSettingNotificationMentions = $('#instance-option-notificationMentions')
 
+export const notificationBadge = $('#main-nav li:nth-child(2) .nav-link-badge')
+
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
 }
