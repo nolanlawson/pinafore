@@ -268,8 +268,8 @@
         originalStatus.card &&
         originalStatus.card.title
       ),
-      showPoll: ({ originalStatus, isStatusInNotification }) => (
-        !isStatusInNotification && originalStatus.poll
+      showPoll: ({ originalStatus }) => (
+        originalStatus.poll
       ),
       showMedia: ({ originalStatus, isStatusInNotification }) => (
         !isStatusInNotification &&
@@ -292,7 +292,7 @@
           reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
       ),
       showHeader: ({ notification, status, timelineType }) => (
-        (notification && (notification.type === 'reblog' || notification.type === 'favourite')) ||
+        (notification && ['reblog', 'favourite', 'poll'].includes(notification.type)) ||
         status.reblog ||
         timelineType === 'pinned'
       ),
