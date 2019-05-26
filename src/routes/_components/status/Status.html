@@ -282,8 +282,9 @@
         return getAccountAccessibleName(originalAccount, $omitEmojiInDisplayNames)
       },
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
-      absoluteFormattedDate: ({ createdAtDate }) => absoluteDateFormatter.format(new Date(createdAtDate)),
-      timeagoFormattedDate: ({ createdAtDate }) => formatTimeagoDate(createdAtDate),
+      createdAtDateTS: ({ createdAtDate }) => new Date(createdAtDate).getTime(),
+      absoluteFormattedDate: ({ createdAtDateTS }) => absoluteDateFormatter.format(createdAtDateTS),
+      timeagoFormattedDate: ({ createdAtDateTS, $now }) => formatTimeagoDate(createdAtDateTS, $now),
       reblog: ({ status }) => status.reblog,
       ariaLabel: ({ originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
         showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels }) => (
