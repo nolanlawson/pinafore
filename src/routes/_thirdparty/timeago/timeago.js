@@ -4,7 +4,7 @@
  * Contract: i@hust.cc
  */
 
-var IndexMapEn = 'second_minute_hour_day_week_month_year'.split('_')
+var IndexMapEn = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year']
 var SEC_ARRAY = [60, 60, 24, 7, 365 / 7 / 12, 12]
 
 /**
@@ -63,16 +63,14 @@ function formatDiff (diff) {
  * @param nowDate
  * @returns {number}
  */
-function diffSec (date) {
-  var nowDate = new Date()
-  var otherDate = new Date(date)
-  return (nowDate - otherDate) / 1000
+function diffSec (date, now) {
+  return (now - date) / 1000
 }
 
 /**
  * Created by hustcc on 18/5/20.
  * Contract: i@hust.cc
  */
-export function format (date) {
-  return formatDiff(diffSec(date))
+export function format (date, now) {
+  return formatDiff(diffSec(date, now))
 }

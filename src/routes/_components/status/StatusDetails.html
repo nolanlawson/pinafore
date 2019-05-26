@@ -158,7 +158,6 @@
       application: ({ originalStatus }) => originalStatus.application,
       applicationName: ({ application }) => (application && application.name),
       applicationWebsite: ({ application }) => (application && application.website),
-      createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       numReblogs: ({ overrideNumReblogs, originalStatus }) => {
         if (typeof overrideNumReblogs === 'number') {
           return overrideNumReblogs
@@ -171,8 +170,8 @@
         }
         return originalStatus.favourites_count || 0
       },
-      displayAbsoluteFormattedDate: ({ createdAtDate, $isMobileSize }) => (
-        $isMobileSize ? shortAbsoluteDateFormatter : absoluteDateFormatter).format(new Date(createdAtDate)
+      displayAbsoluteFormattedDate: ({ createdAtDateTS, $isMobileSize }) => (
+        ($isMobileSize ? shortAbsoluteDateFormatter : absoluteDateFormatter).format(createdAtDateTS)
       ),
       reblogsLabel: ({ numReblogs }) => {
         // TODO: intl

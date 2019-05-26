@@ -76,8 +76,9 @@
         )
       },
       content: ({ originalStatus }) => (originalStatus.content || ''),
-      emojis: ({ originalStatus }) => originalStatus.emojis,
-      massagedContent: ({ content, emojis, $autoplayGifs }) => massageUserText(content, emojis, $autoplayGifs)
+      massagedContent: ({ content, originalStatusEmojis, $autoplayGifs }) => (
+        massageUserText(content, originalStatusEmojis, $autoplayGifs)
+      )
     },
     methods: {
       hydrateContent () {

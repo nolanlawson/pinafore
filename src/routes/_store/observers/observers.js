@@ -1,4 +1,5 @@
 import { onlineObservers } from './onlineObservers'
+import { nowObservers } from './nowObservers'
 import { navObservers } from './navObservers'
 import { pageVisibilityObservers } from './pageVisibilityObservers'
 import { resizeObservers } from './resizeObservers'
@@ -8,6 +9,7 @@ import { touchObservers } from './touchObservers'
 
 export function observers (store) {
   onlineObservers(store)
+  nowObservers(store)
   navObservers(store)
   pageVisibilityObservers(store)
   resizeObservers(store)
