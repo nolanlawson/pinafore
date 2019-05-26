@@ -277,6 +277,7 @@
         originalStatus.media_attachments.length
       ),
       originalAccountEmojis: ({ originalAccount }) => (originalAccount.emojis || []),
+      originalStatusEmojis: ({ originalStatus }) => (originalStatus.emojis || []),
       originalAccountDisplayName: ({ originalAccount }) => (originalAccount.display_name || originalAccount.username),
       originalAccountAccessibleName: ({ originalAccount, $omitEmojiInDisplayNames }) => {
         return getAccountAccessibleName(originalAccount, $omitEmojiInDisplayNames)
@@ -313,7 +314,7 @@
         originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
         createdAtDate, createdAtDateTS, timeagoFormattedDate, enableShortcuts,
-        absoluteFormattedDate, shortcutScope }) => ({
+        absoluteFormattedDate, shortcutScope, originalStatusEmojis }) => ({
         notification,
         notificationId,
         status,
@@ -339,7 +340,8 @@
         timeagoFormattedDate,
         enableShortcuts,
         absoluteFormattedDate,
-        shortcutScope
+        shortcutScope,
+        originalStatusEmojis
       })
     },
     events: {
