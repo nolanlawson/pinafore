@@ -13,11 +13,11 @@
   <StatusAuthorName {...params} />
   <StatusAuthorHandle {...params} />
   {#if !isStatusInOwnThread}
-    <StatusRelativeDate {...params} />
+    <StatusRelativeDate {...params} {...timestampParams} />
   {/if}
   <StatusSidebar {...params} />
   {#if spoilerText}
-    <StatusSpoiler {...params} on:recalculateHeight />
+    <StatusSpoiler {...params} {spoilerShown} on:recalculateHeight />
   {/if}
   {#if !showContent}
     <StatusMentions {...params} />
@@ -35,9 +35,9 @@
     <StatusPoll {...params} />
   {/if}
   {#if isStatusInOwnThread}
-    <StatusDetails {...params} />
+    <StatusDetails {...params} {...timestampParams} />
   {/if}
-  <StatusToolbar {...params} on:recalculateHeight />
+  <StatusToolbar {...params} {replyShown} on:recalculateHeight />
   {#if replyShown}
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
@@ -309,12 +309,22 @@
       )),
       content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
+      // These timestamp params may change every 10 seconds due to now() polling, so keep them
+      // separate from the generic `params` list to avoid costly recomputes.
+      timestampParams: ({ createdAtDate, createdAtDateTS, timeagoFormattedDate, absoluteFormattedDate }) => ({
+        createdAtDate,
+        createdAtDateTS,
+        timeagoFormattedDate,
+        absoluteFormattedDate
+      }),
+      // This params list deliberately does *not* include `spoilersShown` or `replyShown`, because these
+      // change frequently and would therefore cause costly recomputes if included here.
+      // The main goal here is to avoid typing by passing as many params as possible to child components.
       params: ({ notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
-        originalAccount, originalAccountId, spoilerShown, visibility, replyShown,
+        originalAccount, originalAccountId, visibility,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
-        createdAtDate, createdAtDateTS, timeagoFormattedDate, enableShortcuts,
-        absoluteFormattedDate, shortcutScope, originalStatusEmojis }) => ({
+        enableShortcuts, shortcutScope, originalStatusEmojis }) => ({
         notification,
         notificationId,
         status,
@@ -327,19 +337,13 @@
         isStatusInOwnThread,
         originalAccount,
         originalAccountId,
-        spoilerShown,
         visibility,
-        replyShown,
         replyVisibility,
         spoilerText,
         originalStatus,
         originalStatusId,
         inReplyToId,
-        createdAtDate,
-        createdAtDateTS,
-        timeagoFormattedDate,
         enableShortcuts,
-        absoluteFormattedDate,
         shortcutScope,
         originalStatusEmojis
       })
