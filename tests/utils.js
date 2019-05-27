@@ -76,7 +76,7 @@ export const instanceSettingNotificationMentions = $('#instance-option-notificat
 export const notificationBadge = $('#main-nav li:nth-child(2) .nav-link-badge')
 
 export function getComposeModalNthMediaAltInput (n) {
-  return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt input`)
+  return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt textarea`)
 }
 
 export function getComposeModalNthMediaImg (n) {
@@ -205,7 +205,7 @@ export const getScrollTop = exec(() => {
 })
 
 export function getNthMediaAltInput (n) {
-  return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt input`)
+  return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt textarea`)
 }
 
 export function getNthComposeReplyInput (n) {
