@@ -1,16 +1,35 @@
-<div class={computedClass} aria-busy={refreshing} >
-  <ul class="options" aria-label="Poll results">
-    {#each options as option}
-      <li class="option">
-        <div class="option-text">
-          <strong>{option.share}%</strong> {option.title}
+<div class={computedClass} aria-busy={loading} >
+  {#if voted || expired }
+    <ul class="options" aria-label="Poll results">
+      {#each options as option}
+        <li class="option">
+          <div class="option-text">
+            <strong>{option.share}%</strong> {option.title}
+          </div>
+          <svg aria-hidden="true">
+            <line x1="0" y1="0" x2="{option.share}%" y2="0" />
+          </svg>
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <form class="poll-form" aria-label="Vote on poll" on:submit="onSubmit(event)" ref:form>
+      {#each options as option, i}
+        <div class="poll-form-option">
+          <input type="{multiple ? 'checkbox' : 'radio'}"
+                 id="poll-choice-{uuid}-{i}"
+                 name="poll-choice-{uuid}"
+                 value="{i}"
+                 on:change="onChange()"
+          >
+          <label for="poll-choice-{uuid}-{i}">
+            {option.title}
+          </label>
         </div>
-        <svg aria-hidden="true">
-          <line x1="0" y1="0" x2="{option.share}%" y2="0" />
-        </svg>
-      </li>
-    {/each}
-  </ul>
+      {/each}
+      <button disabled={formDisabled} type="submit">Vote</button>
+    </form>
+  {/if}
   <div class="poll-details">
     <div class="poll-stat">
       <SvgIcon className="poll-icon" href="#fa-bar-chart" />
@@ -37,7 +56,7 @@
   .poll {
     grid-area: poll;
     margin: 10px 10px 10px 5px;
-    padding: 10px 20px;
+    padding: 20px;
     border: 1px solid var(--main-border);
     border-radius: 2px;
     transition: opacity 0.2s linear;
@@ -47,7 +66,7 @@
     padding: 20px;
   }
 
-  .poll.poll-refreshing {
+  .poll.poll-loading {
     opacity: 0.5;
     pointer-events: none;
   }
@@ -152,9 +171,24 @@
     min-width: 18px;
   }
 
+  .poll-form-option {
+    padding-bottom: 10px;
+  }
+
+  .poll-form button {
+  }
+
+  .poll-form label {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: pre-wrap;
+    padding-left: 5px;
+  }
+
   @media (max-width: 479px) {
     .poll {
-      padding: 5px;
+      padding: 10px 5px;
     }
     .poll.status-in-own-thread {
       padding: 10px;
@@ -173,9 +207,31 @@
   import { absoluteDateFormatter } from '../../_utils/formatters'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
-  import { getPoll } from '../../_actions/polls'
+  import { getPoll, voteOnPoll } from '../../_actions/polls'
 
   const REFRESH_MIN_DELAY = 1000
+
+  async function doAsyncActionWithDelay (func) {
+    let start = Date.now()
+    let res = await func()
+    let timeElapsed = Date.now() - start
+    if (timeElapsed < REFRESH_MIN_DELAY) {
+      // If less than five seconds, then continue to show the loading animation
+      // so it's clear that something happened.
+      await new Promise(resolve => setTimeout(resolve, REFRESH_MIN_DELAY - timeElapsed))
+    }
+    return res
+  }
+
+  function getChoices (form, options) {
+    let res = []
+    for (let i = 0; i < options.length; i++) {
+      if (form.elements[i].checked) {
+        res.push(i)
+      }
+    }
+    return res
+  }
 
   export default {
     oncreate () {
@@ -184,18 +240,20 @@
       registerClickDelegate(this, refreshElementId, this.onRefreshClick)
     },
     data: () => ({
-      refreshedPoll: null,
-      refreshing: false
+      loading: false,
+      choices: []
     }),
     store: () => store,
     computed: {
-      poll: ({ originalStatus, refreshedPoll }) => refreshedPoll || originalStatus.poll,
-      pollId: ({ poll }) => poll.id,
+      pollId: ({ originalStatus }) => originalStatus.poll.id,
+      poll: ({ originalStatus, $polls, pollId }) => $polls[pollId] || originalStatus.poll,
       options: ({ poll }) => poll.options.map(({ title, votes_count: votesCount }) => ({
         title,
         share: poll.votes_count ? Math.round(votesCount / poll.votes_count * 100) : 0
       })),
       votesCount: ({ poll }) => poll.votes_count,
+      voted: ({ poll }) => poll.voted,
+      multiple: ({ poll }) => poll.multiple,
       expired: ({ poll }) => poll.expired,
       expiresAt: ({ poll }) => poll.expires_at,
       expiresAtTS: ({ expiresAt }) => new Date(expiresAt).getTime(),
@@ -206,12 +264,13 @@
       expiryText: ({ expired }) => expired ? 'Ended' : 'Ends',
       refreshElementId: ({ uuid }) => `poll-refresh-${uuid}`,
       useNarrowSize: ({ $isMobileSize, expired }) => $isMobileSize && !expired,
-      computedClass: ({ isStatusInNotification, isStatusInOwnThread, refreshing }) => (
+      formDisabled: ({ choices }) => !choices.length,
+      computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading }) => (
         classname(
           'poll',
           isStatusInNotification && 'status-in-notification',
           isStatusInOwnThread && 'status-in-own-thread',
-          refreshing && 'poll-refreshing'
+          loading && 'poll-loading'
         )
       )
     },
@@ -220,22 +279,42 @@
         e.preventDefault()
         e.stopPropagation()
         let { pollId } = this.get()
-        this.set({ refreshing: true })
+        this.set({ loading: true })
         try {
-          let start = Date.now()
-          let poll = await getPoll(pollId)
-          let timeElapsed = Date.now() - start
-          if (timeElapsed < REFRESH_MIN_DELAY) {
-            // If less than five seconds, then continue to show the refreshing animation
-            // so it's clear that something happened.
-            await new Promise(resolve => setTimeout(resolve, REFRESH_MIN_DELAY - timeElapsed))
-          }
+          let poll = await doAsyncActionWithDelay(() => getPoll(pollId))
           if (poll) {
-            this.set({ refreshedPoll: poll })
+            let { polls } = this.store.get()
+            polls[pollId] = poll
+            this.store.set({ polls })
           }
         } finally {
-          this.set({ refreshing: false })
+          this.set({ loading: false })
         }
+      },
+      async onSubmit (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let { pollId, options, formDisabled } = this.get()
+        if (formDisabled) {
+          return
+        }
+        let choices = getChoices(this.refs.form, options)
+        this.set({ loading: true })
+        try {
+          let poll = await doAsyncActionWithDelay(() => voteOnPoll(pollId, choices))
+          if (poll) {
+            let { polls } = this.store.get()
+            polls[pollId] = poll
+            this.store.set({ polls })
+          }
+        } finally {
+          this.set({ loading: false })
+        }
+      },
+      onChange () {
+        let { options } = this.get()
+        let choices = getChoices(this.refs.form, options)
+        this.set({ choices: choices })
       }
     },
     components: {
