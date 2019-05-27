@@ -1,4 +1,4 @@
-<div class="compose-media compose-media-realm-{realm}">
+<li class="compose-media compose-media-realm-{realm}">
   <img src={mediaItem.data.preview_url} {alt} />
   <div class="compose-media-delete">
     <button class="compose-media-delete-button"
@@ -18,9 +18,11 @@
       Describe {shortName} for the visually impaired
     </label>
   </div>
-</div>
+</li>
 <style>
   .compose-media {
+    margin: 0;
+    padding: 0;
     height: 200px;
     overflow: hidden;
     flex-direction: column;
