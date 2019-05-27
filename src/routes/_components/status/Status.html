@@ -144,7 +144,7 @@
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
   import { statusHtmlToPlainText } from '../../_utils/statusHtmlToPlainText'
 
-  const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea'])
+  const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea', 'label'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
   const isToolbar = node => node.classList.contains('status-toolbar')
   const isStatusArticle = node => node.classList.contains('status-article')

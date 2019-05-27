@@ -39,6 +39,7 @@ const nonPersistedState = {
   instanceLists: {},
   online: !process.browser || navigator.onLine,
   pinnedStatuses: {},
+  polls: {},
   pushNotificationsSupport:
     process.browser &&
     ('serviceWorker' in navigator &&
