@@ -1,5 +1,5 @@
 <div class="select-wrapper {className || ''}">
-  <select on:change>
+  <select on:change aria-label={label}>
     {#each options as option (option.value)}
       <option value="{option.value}" selected="{option.value === defaultValue ? 'selected' : ''}">
         {option.label}

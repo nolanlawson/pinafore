@@ -5,7 +5,6 @@
              maxlength="25"
              on:change="onChange(i)"
              placeholder="Choice {i + 1}"
-             aria-labelledby="poll-option-label-{realm}-{i}"
 
       >
       <IconButton
@@ -28,6 +27,7 @@
             options={pollExpiryOptions}
             defaultValue={pollExpiryDefaultValue}
             on:change="onExpiryChange(event)"
+            label="Poll duration"
     />
   </div>
   <IconButton
