@@ -193,9 +193,8 @@ const cloneNotification = notification => {
 
   // Object.assign() does not work with notifications
   for (let k in notification) {
-    if (notification.hasOwnProperty(k)) {
-      clone[k] = notification[k]
-    }
+    // intentionally not doing a hasOwnProperty check
+    clone[k] = notification[k]
   }
 
   return clone
