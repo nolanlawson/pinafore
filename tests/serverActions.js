@@ -9,6 +9,8 @@ import { followAccount, unfollowAccount } from '../src/routes/_api/follow'
 import { updateCredentials } from '../src/routes/_api/updateCredentials'
 import { reblogStatus } from '../src/routes/_api/reblog'
 import { submitMedia } from './submitMedia'
+import { voteOnPoll } from '../src/routes/_api/polls'
+import { POLL_EXPIRY_DEFAULT } from '../src/routes/_static/polls'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -67,4 +69,16 @@ export async function unfollowAs (username, userToFollow) {
 
 export async function updateUserDisplayNameAs (username, displayName) {
   return updateCredentials(instanceName, users[username].accessToken, { display_name: displayName })
+}
+
+export async function createPollAs (username, content, options, multiple) {
+  return postStatus(instanceName, users[username].accessToken, content, null, null, false, null, 'public', {
+    options,
+    multiple,
+    expires_in: POLL_EXPIRY_DEFAULT
+  })
+}
+
+export async function voteOnPollAs (username, pollId, choices) {
+  return voteOnPoll(instanceName, users[username].accessToken, pollId, choices.map(_ => _.toString()))
 }
