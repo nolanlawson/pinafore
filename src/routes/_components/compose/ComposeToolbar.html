@@ -13,7 +13,7 @@
       disabled={$uploadingMedia || (media.length === 4)}
     />
     <IconButton
-      label="{poll && poll.options && poll.options.length ? 'Add poll' : 'Remove poll'}"
+      label="{poll && poll.options && poll.options.length ? 'Remove poll' : 'Add poll'}"
       href="#fa-bar-chart"
       on:click="onPollClick()"
       pressable="true"
