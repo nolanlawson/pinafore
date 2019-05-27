@@ -162,13 +162,15 @@ async function showRichNotification (data, notification) {
     case 'mention':
       const isPublic = ['public', 'unlisted'].includes(notification.status.visibility)
       const actions = [
-        {
-          action: 'favourite',
-          title: 'Favorite'
-        },
         isPublic && {
           action: 'reblog',
+          icon: '/icon-push-fa-retweet.png', // generated manually from font-awesome-svg
           title: 'Boost'
+        },
+        {
+          action: 'favourite',
+          icon: '/icon-push-fa-star.png', // generated manually from font-awesome-svg
+          title: 'Favorite'
         }
       ].filter(Boolean)
 
@@ -191,10 +193,12 @@ async function showRichNotification (data, notification) {
 const cloneNotification = notification => {
   const clone = {}
 
-  // Object.assign() does not work with notifications
   for (let k in notification) {
-    // intentionally not doing a hasOwnProperty check
-    clone[k] = notification[k]
+    // deliberately not doing a hasOwnProperty check, but skipping
+    // functions and null props like onclick and onshow and showTrigger
+    if (typeof notification[k] !== 'function' && notification[k] !== null) {
+      clone[k] = notification[k]
+    }
   }
 
   return clone
