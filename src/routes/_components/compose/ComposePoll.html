@@ -81,14 +81,18 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { POLL_EXPIRY_DEFAULT, POLL_EXPIRY_OPTIONS } from '../../_static/polls'
 
+  function flushPollOptionsToDom (poll, realm) {
+    for (let i = 0; i < poll.options.length; i++) {
+      let element = document.getElementById(`poll-option-${realm}-${i}`)
+      element.value = poll.options[i]
+    }
+  }
+
   export default {
     oncreate () {
       let { realm } = this.get()
       let poll = this.store.getComposeData(realm, 'poll')
-      for (let i = 0; i < poll.options.length; i++) {
-        let element = document.getElementById(`poll-option-${realm}-${i}`)
-        element.value = poll.options[i]
-      }
+      flushPollOptionsToDom(poll, realm)
       document.getElementById(`poll-option-multiple-${realm}`).checked = !!poll.multiple
       this.set({ pollExpiryDefaultValue: poll.expiry || POLL_EXPIRY_DEFAULT })
     },
@@ -122,13 +126,16 @@
           let poll = this.store.getComposeData(realm, 'poll')
           poll.options.splice(i, 1)
           this.store.setComposeData(realm, { poll })
+          flushPollOptionsToDom(poll, realm)
         })
       },
       onAddClick () {
         requestAnimationFrame(() => {
           let { realm } = this.get()
           let poll = this.store.getComposeData(realm, 'poll')
-          poll.options.push('')
+          if (!poll.options.length !== 4) {
+            poll.options.push('')
+          }
           this.store.setComposeData(realm, { poll })
         })
       },
