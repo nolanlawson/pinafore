@@ -1,19 +1,55 @@
-<div class="poll" >
+<div class={computedClass} aria-busy={refreshing} >
   <ul class="options" aria-label="Poll results">
     {#each options as option}
       <li class="option">
-        <div class="option-text">{option.title} ({option.share}%)</div>
+        <div class="option-text">
+          <strong>{option.share}%</strong> {option.title}
+        </div>
         <svg aria-hidden="true">
           <line x1="0" y1="0" x2="{option.share}%" y2="0" />
         </svg>
       </li>
     {/each}
   </ul>
+  <div class="poll-details">
+    <div class="poll-stat">
+      <SvgIcon className="poll-icon" href="#fa-bar-chart" />
+      <span class="poll-stat-text">{votesCount} {votesCount === 1 ? 'vote' : 'votes'}</span>
+    </div>
+    <div class="poll-stat">
+      <SvgIcon className="poll-icon" href="#fa-clock" />
+      <span class="poll-stat-text poll-stat-expiry">
+        <span class="{useNarrowSize ? 'sr-only' : ''}">{expiryText}</span>
+        <time datetime={expiresAt} title={expiresAtAbsoluteFormatted}>
+          {expiresAtTimeagoFormatted}
+        </time>
+      </span>
+    </div>
+    <button class="poll-stat {expired ? 'poll-expired' : ''}" id={refreshElementId}>
+      <SvgIcon className="poll-icon" href="#fa-refresh" />
+      <span class="poll-stat-text">
+        Refresh
+      </span>
+    </button>
+  </div>
 </div>
 <style>
   .poll {
     grid-area: poll;
     margin: 10px 10px 10px 5px;
+    padding: 10px 20px;
+    border: 1px solid var(--main-border);
+    border-radius: 2px;
+    transition: opacity 0.2s linear;
+  }
+
+  .poll.status-in-own-thread {
+    padding: 20px;
+  }
+
+  .poll.poll-refreshing {
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   ul.options {
@@ -28,7 +64,7 @@
     display: flex;
     flex-direction: column;
     stroke: var(--svg-fill);
-    stroke-width: 5px;
+    stroke-width: 10px;
   }
 
   li.option:last-child {
@@ -42,20 +78,168 @@
   }
 
   svg {
-    height: 2px;
+    height: 10px;
     width: 100%;
     margin-top: 5px;
   }
 
+  .status-in-notification .option-text {
+    color: var(--very-deemphasized-text-color);
+  }
+
+  .status-in-notification svg {
+    opacity: 0.5;
+  }
+
+  .status-in-own-thread .option-text {
+    font-size: 1.2em;
+  }
+
+  .poll-details {
+    display: grid;
+    grid-template-columns: max-content minmax(0, max-content) max-content;
+    grid-gap: 20px;
+    align-items: center;
+    justify-content: left;
+    margin-top: 10px;
+  }
+
+  button.poll-stat {
+    /* reset button styles */
+    background: none;
+    box-shadow: none;
+    border: none;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    font-weight: normal;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+  }
+
+  button.poll-stat:hover {
+    text-decoration: underline;
+  }
+
+  .poll-stat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--deemphasized-text-color);
+  }
+
+  .poll-stat.poll-expired {
+    display: none;
+  }
+
+  .poll-stat-text {
+    margin-left: 5px;
+  }
+
+  .poll-stat-expiry {
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  :global(.poll-icon) {
+    fill: var(--deemphasized-text-color);
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+  }
+
+  @media (max-width: 479px) {
+    .poll {
+      padding: 5px;
+    }
+    .poll.status-in-own-thread {
+      padding: 10px;
+    }
+    .poll-details {
+      grid-gap: 5px;
+      justify-content: space-between;
+    }
+  }
+
 </style>
 <script>
+  import SvgIcon from '../SvgIcon.html'
+  import { store } from '../../_store/store'
+  import { formatTimeagoFutureDate, formatTimeagoDate } from '../../_intl/formatTimeagoDate'
+  import { absoluteDateFormatter } from '../../_utils/formatters'
+  import { registerClickDelegate } from '../../_utils/delegate'
+  import { classname } from '../../_utils/classname'
+  import { getPoll } from '../../_actions/polls'
+
+  const REFRESH_MIN_DELAY = 1000
+
   export default {
+    oncreate () {
+      this.onRefreshClick = this.onRefreshClick.bind(this)
+      let { refreshElementId } = this.get()
+      registerClickDelegate(this, refreshElementId, this.onRefreshClick)
+    },
+    data: () => ({
+      refreshedPoll: null,
+      refreshing: false
+    }),
+    store: () => store,
     computed: {
-      poll: ({ originalStatus }) => originalStatus.poll,
+      poll: ({ originalStatus, refreshedPoll }) => refreshedPoll || originalStatus.poll,
+      pollId: ({ poll }) => poll.id,
       options: ({ poll }) => poll.options.map(({ title, votes_count: votesCount }) => ({
         title,
         share: poll.votes_count ? Math.round(votesCount / poll.votes_count * 100) : 0
-      }))
+      })),
+      votesCount: ({ poll }) => poll.votes_count,
+      expired: ({ poll }) => poll.expired,
+      expiresAt: ({ poll }) => poll.expires_at,
+      expiresAtTS: ({ expiresAt }) => new Date(expiresAt).getTime(),
+      expiresAtTimeagoFormatted: ({ expiresAtTS, expired, $now }) => (
+        expired ? formatTimeagoDate(expiresAtTS, $now) : formatTimeagoFutureDate(expiresAtTS, $now)
+      ),
+      expiresAtAbsoluteFormatted: ({ expiresAtTS }) => absoluteDateFormatter.format(expiresAtTS),
+      expiryText: ({ expired }) => expired ? 'Ended' : 'Ends',
+      refreshElementId: ({ uuid }) => `poll-refresh-${uuid}`,
+      useNarrowSize: ({ $isMobileSize, expired }) => $isMobileSize && !expired,
+      computedClass: ({ isStatusInNotification, isStatusInOwnThread, refreshing }) => (
+        classname(
+          'poll',
+          isStatusInNotification && 'status-in-notification',
+          isStatusInOwnThread && 'status-in-own-thread',
+          refreshing && 'poll-refreshing'
+        )
+      )
+    },
+    methods: {
+      async onRefreshClick (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let { pollId } = this.get()
+        this.set({ refreshing: true })
+        try {
+          let start = Date.now()
+          let poll = await getPoll(pollId)
+          let timeElapsed = Date.now() - start
+          if (timeElapsed < REFRESH_MIN_DELAY) {
+            // If less than five seconds, then continue to show the refreshing animation
+            // so it's clear that something happened.
+            await new Promise(resolve => setTimeout(resolve, REFRESH_MIN_DELAY - timeElapsed))
+          }
+          if (poll) {
+            this.set({ refreshedPoll: poll })
+          }
+        } finally {
+          this.set({ refreshing: false })
+        }
+      }
+    },
+    components: {
+      SvgIcon
     }
   }
 </script>
