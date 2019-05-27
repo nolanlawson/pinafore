@@ -1,0 +1,150 @@
+<section class="compose-poll" aria-label="Create poll">
+    {#each poll.options as option, i}
+      <input id="poll-option-{realm}-{i}"
+             type="text"
+             maxlength="25"
+             on:change="onChange(i)"
+             placeholder="Choice {i + 1}"
+             aria-labelledby="poll-option-label-{realm}-{i}"
+
+      >
+      <IconButton
+        label="Remove choice {i + 1}"
+        href="#fa-times"
+        muted={true}
+        on:click="onDeleteClick(i)"
+      />
+    {/each}
+  <div>
+    <input type="checkbox"
+           id="poll-option-multiple-{realm}"
+           on:change="onMultipleChange()"
+    >
+    <label class="multiple-choice-label"
+           for="poll-option-multiple-{realm}">
+      Multiple choice
+    </label>
+    <Select className="poll-expiry-select"
+            options={pollExpiryOptions}
+            defaultValue={pollExpiryDefaultValue}
+            on:change="onExpiryChange(event)"
+    />
+  </div>
+  <IconButton
+    className="add-poll-choice-button"
+    label="Add choice"
+    href="#fa-plus"
+    muted={true}
+    disabled={poll.options.length === 4}
+    on:click="onAddClick()"
+  />
+  {#each poll.options as option, i}
+    <label id="poll-option-label-{realm}-{i}"
+           class="sr-only"
+           for="poll-option-{realm}-{i}">
+      Choice {i + 1}
+    </label>
+  {/each}
+</section>
+<style>
+  .compose-poll {
+    margin: 10px 0 10px 5px;
+    display: grid;
+    grid-template-columns: minmax(0, max-content) max-content;
+    grid-row-gap: 10px;
+    align-items: center;
+  }
+
+  :global(.poll-expiry-select) {
+    margin-left: 10px;
+  }
+
+  .multiple-choice-label {
+    margin-left: 5px;
+  }
+
+  @media (max-width: 767px) {
+    :global(.poll-expiry-select) {
+      display: block;
+      margin-left: 0;
+      margin-top: 10px;
+    }
+    :global(.add-poll-choice-button) {
+      align-self: flex-start;
+    }
+  }
+</style>
+<script>
+  import IconButton from '../IconButton.html'
+  import Select from '../Select.html'
+  import { store } from '../../_store/store'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { POLL_EXPIRY_DEFAULT, POLL_EXPIRY_OPTIONS } from '../../_static/polls'
+
+  export default {
+    oncreate () {
+      let { realm } = this.get()
+      let poll = this.store.getComposeData(realm, 'poll')
+      for (let i = 0; i < poll.options.length; i++) {
+        let element = document.getElementById(`poll-option-${realm}-${i}`)
+        element.value = poll.options[i]
+      }
+      document.getElementById(`poll-option-multiple-${realm}`).checked = !!poll.multiple
+      this.set({ pollExpiryDefaultValue: poll.expiry || POLL_EXPIRY_DEFAULT })
+    },
+    data: () => ({
+      pollExpiryOptions: POLL_EXPIRY_OPTIONS,
+      pollExpiryDefaultValue: POLL_EXPIRY_DEFAULT
+    }),
+    store: () => store,
+    methods: {
+      onChange (i) {
+        scheduleIdleTask(() => {
+          let { realm } = this.get()
+          let element = document.getElementById(`poll-option-${realm}-${i}`)
+          let poll = this.store.getComposeData(realm, 'poll')
+          poll.options[i] = element.value
+          this.store.setComposeData(realm, { poll })
+        })
+      },
+      onMultipleChange () {
+        requestAnimationFrame(() => {
+          let { realm } = this.get()
+          let element = document.getElementById(`poll-option-multiple-${realm}`)
+          let poll = this.store.getComposeData(realm, 'poll')
+          poll.multiple = !!element.checked
+          this.store.setComposeData(realm, { poll })
+        })
+      },
+      onDeleteClick (i) {
+        requestAnimationFrame(() => {
+          let { realm } = this.get()
+          let poll = this.store.getComposeData(realm, 'poll')
+          poll.options.splice(i, 1)
+          this.store.setComposeData(realm, { poll })
+        })
+      },
+      onAddClick () {
+        requestAnimationFrame(() => {
+          let { realm } = this.get()
+          let poll = this.store.getComposeData(realm, 'poll')
+          poll.options.push('')
+          this.store.setComposeData(realm, { poll })
+        })
+      },
+      onExpiryChange (e) {
+        requestAnimationFrame(() => {
+          let { realm } = this.get()
+          let { value } = e.target
+          let poll = this.store.getComposeData(realm, 'poll')
+          poll.expiry = parseInt(value, 10)
+          this.store.setComposeData(realm, { poll })
+        })
+      }
+    },
+    components: {
+      IconButton,
+      Select
+    }
+  }
+</script>
