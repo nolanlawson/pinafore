@@ -22,8 +22,8 @@ export const composeButton = $('.compose-box-button')
 export const composeLengthIndicator = $('.compose-box-length')
 export const emojiButton = $('.compose-box-toolbar button:first-child')
 export const mediaButton = $('.compose-box-toolbar button:nth-child(2)')
-export const postPrivacyButton = $('.compose-box-toolbar button:nth-child(3)')
-export const contentWarningButton = $('.compose-box-toolbar button:nth-child(4)')
+export const postPrivacyButton = $('.compose-box-toolbar button:nth-child(4)')
+export const contentWarningButton = $('.compose-box-toolbar button:nth-child(5)')
 export const emailInput = $('input#user_email')
 export const passwordInput = $('input#user_password')
 export const authorizeInput = $('button[type=submit]:not(.negative)')
@@ -56,7 +56,7 @@ export const composeModalInput = $('.modal-dialog .compose-box-input')
 export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
 export const composeModalContentWarningInput = $('.modal-dialog .content-warning-input')
 export const composeModalEmojiButton = $('.modal-dialog .compose-box-toolbar button:nth-child(1)')
-export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolbar button:nth-child(3)')
+export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolbar button:nth-child(4)')
 
 export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
 
@@ -217,7 +217,7 @@ export function getNthComposeReplyButton (n) {
 }
 
 export function getNthPostPrivacyButton (n) {
-  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(3)`)
+  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(4)`)
 }
 
 export function getNthAutosuggestionResult (n) {
@@ -301,11 +301,11 @@ export function getNthReplyContentWarningInput (n) {
 }
 
 export function getNthReplyContentWarningButton (n) {
-  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(4)`)
+  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(5)`)
 }
 
 export function getNthReplyPostPrivacyButton (n) {
-  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(3)`)
+  return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(4)`)
 }
 
 export function getNthPostPrivacyOptionInDialog (n) {

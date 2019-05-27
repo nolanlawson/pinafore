@@ -13,7 +13,13 @@
     <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
     <ComposeLengthGauge {length} {overLimit} />
     <ComposeAutosuggest {realm} {text} />
-    <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} />
+    {#if poll && poll.options && poll.options.length}
+      <div class="compose-poll-wrapper"
+           transition:slide="{duration: 333}">
+        <ComposePoll {realm} {poll} />
+      </div>
+    {/if}
+    <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} {poll} />
     <ComposeLengthIndicator {length} {overLimit} />
     <ComposeMedia {realm} {media} />
   </div>
@@ -38,6 +44,7 @@
       "avatar input       input       input"
       "avatar gauge       gauge       gauge"
       "avatar autosuggest autosuggest autosuggest"
+      "avatar poll        poll        poll"
       "avatar toolbar     toolbar     length"
       "avatar media       media       media";
     grid-template-columns: min-content minmax(0, max-content) 1fr 1fr;
@@ -62,6 +69,10 @@
     grid-area: cw;
   }
 
+  .compose-poll-wrapper {
+    grid-area: poll;
+  }
+
   @media (max-width: 767px) {
     .compose-box {
       padding: 10px 10px 0 10px;
@@ -83,12 +94,14 @@
   import ComposeContentWarning from './ComposeContentWarning.html'
   import ComposeFileDrop from './ComposeFileDrop.html'
   import ComposeAutosuggest from './ComposeAutosuggest.html'
+  import ComposePoll from './ComposePoll.html'
   import { measureText } from '../../_utils/measureText'
   import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
   import { slide } from 'svelte-transitions'
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
   import { classname } from '../../_utils/classname'
+  import { POLL_EXPIRY_DEFAULT } from '../../_static/polls'
 
   export default {
     oncreate () {
@@ -118,7 +131,8 @@
       ComposeMedia,
       ComposeContentWarning,
       ComposeFileDrop,
-      ComposeAutosuggest
+      ComposeAutosuggest,
+      ComposePoll
     },
     data: () => ({
       size: void 0,
@@ -144,6 +158,7 @@
       composeData: ({ $currentComposeData, realm }) => $currentComposeData[realm] || {},
       text: ({ composeData }) => composeData.text || '',
       media: ({ composeData }) => composeData.media || [],
+      poll: ({ composeData }) => composeData.poll,
       inReplyToId: ({ composeData }) => composeData.inReplyToId,
       postPrivacy: ({ postPrivacyKey }) => POST_PRIVACY_OPTIONS.find(_ => _.key === postPrivacyKey),
       defaultPostPrivacyKey: ({ $currentVerifyCredentials }) => (
@@ -172,7 +187,8 @@
           realm,
           overLimit,
           inReplyToUuid, // typical replies, using Pinafore-specific uuid
-          inReplyToId // delete-and-redraft replies, using standard id
+          inReplyToId, // delete-and-redraft replies, using standard id
+          poll
         } = this.get()
         let sensitive = media.length && !!contentWarning
         let mediaIds = media.map(_ => _.data.id)
@@ -183,10 +199,25 @@
           return // do nothing if invalid
         }
 
+        let hasPoll = poll && poll.options && poll.options.length
+        if (hasPoll) {
+          // validate poll
+          if (poll.options.length < 2 || !poll.options.every(Boolean)) {
+            return
+          }
+        }
+
+        // convert internal poll format to the format Mastodon's REST API uses
+        let pollToPost = hasPoll && {
+          expires_in: (poll.expiry || POLL_EXPIRY_DEFAULT).toString(),
+          multiple: !!poll.multiple,
+          options: poll.options
+        }
+
         /* no await */
         postStatus(realm, text, inReplyTo, mediaIds,
           sensitive, contentWarning, postPrivacyKey,
-          mediaDescriptions, inReplyToUuid)
+          mediaDescriptions, inReplyToUuid, pollToPost)
       }
     }
   }

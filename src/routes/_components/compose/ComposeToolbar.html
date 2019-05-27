@@ -13,6 +13,13 @@
       disabled={$uploadingMedia || (media.length === 4)}
     />
     <IconButton
+      label="{poll && poll.options && poll.options.length ? 'Add poll' : 'Remove poll'}"
+      href="#fa-bar-chart"
+      on:click="onPollClick()"
+      pressable="true"
+      pressed={poll && poll.options && poll.options.length}
+    />
+    <IconButton
       label="Adjust privacy (currently {postPrivacy.label})"
       href={postPrivacy.icon}
       on:click="onPostPrivacyClick()"
@@ -48,6 +55,7 @@
   import { doMediaUpload } from '../../_actions/media'
   import { toggleContentWarningShown } from '../../_actions/contentWarnings'
   import { mediaAccept } from '../../_static/media'
+  import { enablePoll, disablePoll } from '../../_actions/composePoll'
 
   export default {
     components: {
@@ -79,6 +87,14 @@
       onContentWarningClick () {
         let { realm } = this.get()
         toggleContentWarningShown(realm)
+      },
+      onPollClick () {
+        let { poll, realm } = this.get()
+        if (poll && poll.options && poll.options.length) {
+          disablePoll(realm)
+        } else {
+          enablePoll(realm)
+        }
       }
     }
   }

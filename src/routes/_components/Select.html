@@ -1,0 +1,76 @@
+<div class="select-wrapper {className || ''}">
+  <select on:change>
+    {#each options as option (option.value)}
+      <option value="{option.value}" selected="{option.value === defaultValue ? 'selected' : ''}">
+        {option.label}
+      </option>
+    {/each}
+  </select>
+  <div class="select-dropdown-icon-wrapper">
+    <SvgIcon href="#fa-angle-down" className="select-dropdown-icon"/>
+  </div>
+</div>
+<style>
+  .select-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  .select-dropdown-icon-wrapper {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+  :global(.select-dropdown-icon) {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    fill: var(--action-button-deemphasized-fill-color);
+  }
+  select {
+    display: inline-block;
+    padding: 5px 35px 5px 15px;
+    margin: 0;
+    font-size: 1.3em;
+    color: var(--body-text-color);
+    line-height: 1.1;
+    box-sizing: border-box;
+    border: 1px solid var(--main-border);
+    border-radius: 10px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--input-bg);
+    cursor: pointer;
+  }
+  select:hover {
+    background-color: var(--button-bg-hover);
+  }
+  select:active {
+    background-color: var(--button-bg-active);
+  }
+  select::-ms-expand {
+    display: none;
+  }
+  select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 var(--body-text-color);
+  }
+  select option {
+    font-weight:normal;
+  }
+</style>
+<script>
+  import SvgIcon from './SvgIcon.html'
+  export default {
+    data: () => ({
+      defaultValue: '',
+      className: ''
+    }),
+    components: {
+      SvgIcon
+    }
+  }
+</script>
