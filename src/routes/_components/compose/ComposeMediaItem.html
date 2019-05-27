@@ -8,12 +8,12 @@
     </button>
   </div>
   <div class="compose-media-alt">
-    <input id="compose-media-input-{uuid}"
-           type="text"
+    <textarea id="compose-media-input-{uuid}"
            class="compose-media-alt-input"
-           placeholder="Description"
+           placeholder="Describe for the visually impaired"
+           ref:textarea
            bind:value=rawText
-    >
+    ></textarea>
     <label for="compose-media-input-{uuid}" class="sr-only">
       Describe {shortName} for the visually impaired
     </label>
@@ -51,6 +51,9 @@
     font-size: 1.2em;
     background: var(--alt-input-bg);
     color: var(--body-text-color);
+    max-height: 100px;
+    border: 1px solid var(--input-border);
+    resize: none;
   }
   .compose-media-alt-input:focus {
     background: var(--main-bg);
@@ -66,12 +69,15 @@
     margin: 2px;
   }
   .compose-media-delete-button {
-    padding: 10px;
-    background: none;
-    border: none;
+    padding: 7px 10px 5px;
+    background: var(--floating-button-bg);
+    border: 1px solid var(--button-border);
   }
   .compose-media-delete-button:hover {
-    background: var(--toast-border);
+    background: var(--floating-button-bg-hover);
+  }
+  .compose-media-delete-button:active {
+    background: var(--floating-button-bg-active);
   }
   :global(.compose-media-delete-button-svg) {
     fill: var(--button-text);
@@ -87,6 +93,9 @@
     .compose-media-realm-dialog {
       max-height: 15vh;
     }
+    .compose-media-alt-input {
+      max-height: 7vh;
+    }
   }
 </style>
 <script>
@@ -96,11 +105,16 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { observe } from 'svelte-extras'
   import SvgIcon from '../SvgIcon.html'
+  import { autosize } from '../../_thirdparty/autosize/autosize'
 
   export default {
     oncreate () {
       this.setupSyncFromStore()
       this.setupSyncToStore()
+      this.setupAutosize()
+    },
+    ondestroy () {
+      this.teardownAutosize()
     },
     data: () => ({
       rawText: ''
@@ -140,6 +154,12 @@
           this.store.setComposeData(realm, { media })
           saveStore()
         }, { init: false })
+      },
+      setupAutosize () {
+        autosize(this.refs.textarea)
+      },
+      teardownAutosize () {
+        autosize.destroy(this.refs.textarea)
       },
       onDeleteMedia () {
         let {

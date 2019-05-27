@@ -87,7 +87,7 @@
   --status-direct-background: #{darken($body-bg-color, 5%)};
   --main-theme-color: #{$main-theme-color};
   --warning-color: #{#e01f19};
-  --alt-input-bg: #{rgba($main-bg-color, 0.7)};
+  --alt-input-bg: #{rgba($main-bg-color, 0.9)};
 
   --muted-modal-text: #{$secondary-text-color};
   --muted-modal-bg: #{transparent};
@@ -112,4 +112,8 @@
 
   --tooltip-bg: rgba(30, 30, 30, 0.9);
   --tooltip-color: white;
+
+  --floating-button-bg: #{rgba($main-bg-color, 0.8)};
+  --floating-button-bg-hover: #{darken(rgba($main-bg-color, 0.9), 5%)};
+  --floating-button-bg-active: #{darken(rgba($main-bg-color, 0.9), 10%)};
 }
