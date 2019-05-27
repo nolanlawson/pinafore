@@ -1,6 +1,6 @@
 <div class={computedClass} aria-busy={loading} >
   {#if voted || expired }
-    <ul class="options" aria-label="Poll results">
+    <ul aria-label="Poll results">
       {#each options as option}
         <li class="option">
           <div class="option-text">
@@ -14,19 +14,21 @@
     </ul>
   {:else}
     <form class="poll-form" aria-label="Vote on poll" on:submit="onSubmit(event)" ref:form>
-      {#each options as option, i}
-        <div class="poll-form-option">
-          <input type="{multiple ? 'checkbox' : 'radio'}"
-                 id="poll-choice-{uuid}-{i}"
-                 name="poll-choice-{uuid}"
-                 value="{i}"
-                 on:change="onChange()"
-          >
-          <label for="poll-choice-{uuid}-{i}">
-            {option.title}
-          </label>
-        </div>
-      {/each}
+      <ul aria-label="Poll choices">
+        {#each options as option, i}
+          <li class="poll-form-option">
+            <input type="{multiple ? 'checkbox' : 'radio'}"
+                   id="poll-choice-{uuid}-{i}"
+                   name="poll-choice-{uuid}"
+                   value="{i}"
+                   on:change="onChange()"
+            >
+            <label for="poll-choice-{uuid}-{i}">
+              {option.title}
+            </label>
+          </li>
+        {/each}
+      </ul>
       <button disabled={formDisabled} type="submit">Vote</button>
     </form>
   {/if}
@@ -71,23 +73,24 @@
     pointer-events: none;
   }
 
-  ul.options {
+  ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  li.option {
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .option {
     margin: 0 0 10px 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     stroke: var(--svg-fill);
     stroke-width: 10px;
-  }
-
-  li.option:last-child {
-    margin: 0;
   }
 
   .option-text {

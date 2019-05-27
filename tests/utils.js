@@ -22,6 +22,7 @@ export const composeButton = $('.compose-box-button')
 export const composeLengthIndicator = $('.compose-box-length')
 export const emojiButton = $('.compose-box-toolbar button:first-child')
 export const mediaButton = $('.compose-box-toolbar button:nth-child(2)')
+export const pollButton = $('.compose-box-toolbar button:nth-child(3)')
 export const postPrivacyButton = $('.compose-box-toolbar button:nth-child(4)')
 export const contentWarningButton = $('.compose-box-toolbar button:nth-child(5)')
 export const emailInput = $('input#user_email')
@@ -57,6 +58,11 @@ export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
 export const composeModalContentWarningInput = $('.modal-dialog .content-warning-input')
 export const composeModalEmojiButton = $('.modal-dialog .compose-box-toolbar button:nth-child(1)')
 export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolbar button:nth-child(4)')
+
+export const composePoll = $('.compose-poll')
+export const composePollMultipleChoice = $('.compose-poll input[type="checkbox"]')
+export const composePollExpiry = $('.compose-poll select')
+export const composePollAddButton = $('.compose-poll button:last-of-type')
 
 export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
 
@@ -218,6 +224,38 @@ export function getNthComposeReplyButton (n) {
 
 export function getNthPostPrivacyButton (n) {
   return $(`${getNthStatusSelector(n)} .compose-box-toolbar button:nth-child(4)`)
+}
+
+export function getNthStatusPollOption (n, i) {
+  return $(`${getNthStatusSelector(n)} .poll li:nth-child(${i}) input`)
+}
+
+export function getNthStatusPollVoteButton (n) {
+  return $(`${getNthStatusSelector(n)} .poll button`)
+}
+
+export function getNthStatusPollForm (n) {
+  return $(`${getNthStatusSelector(n)} .poll form`)
+}
+
+export function getNthStatusPollResult (n, i) {
+  return $(`${getNthStatusSelector(n)} .poll li:nth-child(${i})`)
+}
+
+export function getNthStatusPollRefreshButton (n) {
+  return $(`${getNthStatusSelector(n)} button.poll-stat`)
+}
+
+export function getNthStatusPollVoteCount (n) {
+  return $(`${getNthStatusSelector(n)} .poll .poll-stat:nth-child(1) .poll-stat-text`)
+}
+
+export function getComposePollNthInput (n) {
+  return $(`.compose-poll input[type="text"]:nth-of-type(${n})`)
+}
+
+export function getComposePollRemoveNthButton (n) {
+  return $(`.compose-poll button:nth-of-type(${n})`)
 }
 
 export function getNthAutosuggestionResult (n) {
