@@ -134,10 +134,12 @@ async function showRichNotification (data, notification) {
   const { icon, body } = data
   const tag = notification.id
   const { origin } = self.location
+  const badge = '/icon-push-badge.png'
 
   switch (notification.type) {
     case 'follow': {
       await self.registration.showNotification(data.title, {
+        badge,
         icon,
         body,
         tag,
@@ -151,6 +153,7 @@ async function showRichNotification (data, notification) {
     case 'favourite':
     case 'poll':
       await self.registration.showNotification(data.title, {
+        badge,
         icon,
         body,
         tag,
@@ -175,6 +178,7 @@ async function showRichNotification (data, notification) {
       ].filter(Boolean)
 
       await self.registration.showNotification(data.title, {
+        badge,
         icon,
         body,
         tag,
