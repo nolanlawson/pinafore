@@ -305,7 +305,7 @@
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
         $underlineLinks && 'underline-links',
-        !$disableTapOnStatus && 'tap-on-status'
+        !$disableTapOnStatus && !isStatusInOwnThread && 'tap-on-status'
       )),
       content: ({ originalStatus }) => originalStatus.content || '',
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
