@@ -35,7 +35,6 @@ self.addEventListener('install', event => {
       caches.open(WEBPACK_ASSETS).then(cache => cache.addAll(webpackAssets)),
       caches.open(ASSETS).then(cache => cache.addAll(assets))
     ])
-    self.skipWaiting()
   })())
 })
 
@@ -242,4 +241,12 @@ self.addEventListener('notificationclick', event => {
       }
     }
   })())
+})
+
+self.addEventListener('message', (event) => {
+  switch (event.data) {
+    case 'skip-waiting':
+      self.skipWaiting()
+      break
+  }
 })
