@@ -17,7 +17,11 @@ $compose-background: lighten($main-theme-color, 32%);
 :root {
   --settings-list-item-text: #{$main-text-color};
   --settings-list-item-text-hover: #{$main-text-color};
-  
+
+  --action-button-fill-color: #{lighten($main-theme-color, 30%)};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 35%)};
+  --action-button-fill-color-active: #{lighten($main-theme-color, 40%)};
+
   --action-button-fill-color-pressed: #{$anchor-color};
   --action-button-fill-color-pressed-hover: #{darken($anchor-color, 2%)};
   --action-button-fill-color-pressed-active: #{darken($anchor-color, 15%)};
@@ -30,4 +34,4 @@ $compose-background: lighten($main-theme-color, 32%);
   --nav-text-color-hover: #{$main-text-color};
   --nav-a-selected-border: #{$anchor-color};
   --nav-a-selected-border-hover: #{$anchor-color};
-} 
+}
