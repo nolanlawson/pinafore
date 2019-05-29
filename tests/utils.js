@@ -447,7 +447,7 @@ export async function scrollFromStatusToStatus (t, start, end) {
       .hover($(`${getNthStatusSelector(i)} .status-toolbar`))
   }
   await t
-    .expect(getNthStatusContent(end).exists).ok({ timeout })
+    .expect(getNthStatus(end).exists).ok({ timeout })
     .hover(getNthStatus(end))
 }
 
