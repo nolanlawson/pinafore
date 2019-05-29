@@ -48,10 +48,13 @@ export const generalSettingsButton = $('a[href="/settings/general"]')
 export const markMediaSensitiveInput = $('#choice-mark-media-sensitive')
 export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitive')
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
+export const disableInfiniteScroll = $('#choice-disable-infinite-scroll')
 export const dialogOptionsOption = $(`.modal-dialog button`)
 export const emojiSearchInput = $('.emoji-mart-search input')
 export const confirmationDialogOKButton = $('.confirmation-dialog-form-flex button:nth-child(1)')
 export const confirmationDialogCancelButton = $('.confirmation-dialog-form-flex button:nth-child(2)')
+
+export const loadMoreButton = $('.loading-footer button')
 
 export const composeModalInput = $('.modal-dialog .compose-box-input')
 export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
@@ -117,6 +120,10 @@ export const getActiveElementInnerText = exec(() =>
 
 export const getActiveElementRectTop = exec(() => (
   (document.activeElement && document.activeElement.getBoundingClientRect().top) || -1
+))
+
+export const getActiveElementAriaPosInSet = exec(() => (
+  (document.activeElement && document.activeElement.getAttribute('aria-posinset')) || ''
 ))
 
 export const getActiveElementInsideNthStatus = exec(() => {
@@ -428,16 +435,20 @@ export async function validateTimeline (t, timeline) {
 }
 
 export async function scrollToStatus (t, n) {
+  return scrollFromStatusToStatus(t, 1, n)
+}
+
+export async function scrollFromStatusToStatus (t, start, end) {
   let timeout = 20000
-  for (let i = 1; i < n; i++) {
+  for (let i = start; i < end; i++) {
     await t.expect(getNthStatus(i).exists).ok({ timeout })
       .hover(getNthStatus(i))
-      .expect($('.loading-footer').exist).notOk({ timeout })
       .expect($(`${getNthStatusSelector(i)} .status-toolbar`).exists).ok({ timeout })
       .hover($(`${getNthStatusSelector(i)} .status-toolbar`))
-      .expect($('.loading-footer').exist).notOk({ timeout })
   }
-  await t.hover(getNthStatus(n))
+  await t
+    .expect(getNthStatus(end).exists).ok({ timeout })
+    .hover(getNthStatus(end))
 }
 
 export async function clickToNotificationsAndBackHome (t) {

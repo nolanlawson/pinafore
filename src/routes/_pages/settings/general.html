@@ -33,6 +33,19 @@
       <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
     </div>
     <div class="setting-group">
+      <input type="checkbox" id="choice-disable-infinite-scroll"
+             bind:checked="$disableInfiniteScroll" on:change="onChange(event)">
+      <label for="choice-disable-infinite-scroll">Disable
+        <Tooltip
+          text="infinite scroll"
+          tooltipText={
+            "When infinite scroll is disabled, new toots will not automatically appear at the bottom " +
+            "or top of the timeline. Instead, buttons will allow you to load more content on demand."
+          }
+        />
+      </label>
+    </div>
+    <div class="setting-group">
       <input type="checkbox" id="choice-hide-cards"
              bind:checked="$hideCards" on:change="onChange(event)">
       <label for="choice-hide-cards">Hide link preview cards</label>
@@ -89,11 +102,13 @@
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import ThemeSettings from '../../_components/settings/instance/ThemeSettings.html'
   import { store } from '../../_store/store'
+  import Tooltip from '../../_components/Tooltip.html'
 
   export default {
     components: {
       SettingsLayout,
-      ThemeSettings
+      ThemeSettings,
+      Tooltip
     },
     methods: {
       onChange (event) {

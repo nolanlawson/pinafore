@@ -114,7 +114,7 @@ export async function setupTimeline () {
   stop('setupTimeline')
 }
 
-export async function fetchTimelineItemsOnScrollToBottom (instanceName, timelineName) {
+export async function fetchMoreItemsAtBottomOfTimeline (instanceName, timelineName) {
   console.log('setting runningUpdate: true')
   store.setForTimeline(instanceName, timelineName, { runningUpdate: true })
   await fetchTimelineItemsAndPossiblyFallBack()
