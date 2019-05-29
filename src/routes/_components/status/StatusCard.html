@@ -1,6 +1,6 @@
 <a ref:cardlink href={url} class="status-card" target="_blank" rel="noopener noreferrer">
     <strong class="card-title">
-     {title}
+     {unescapedTitle}
     </strong>
   {#if description}
     <div class="card-content">
@@ -10,7 +10,7 @@
     </div>
   {/if}
     <span class="card-description">
-      {description}
+      {unescapedDescription}
     </span>
   </div>
   {/if}
@@ -87,6 +87,7 @@
 <script>
   import LazyImage from '../LazyImage.html'
   import Shortcut from '../shortcut/Shortcut.html'
+  import { unescape } from '../../_thirdparty/unescape/unescape'
 
   export default {
     components: {
@@ -96,9 +97,11 @@
     computed: {
       card: ({ originalStatus }) => originalStatus.card,
       title: ({ card }) => card.title,
+      unescapedTitle: ({ title }) => title && unescape(title),
       url: ({ card }) => card.url,
       hostname: ({ url }) => window.URL ? new window.URL(url).hostname : '',
       description: ({ card, hostname }) => card.description || card.provider_name || hostname,
+      unescapedDescription: ({ description }) => description && unescape(description),
       imageUrl: ({ card }) => card.image
     },
     methods: {
