@@ -1,11 +1,13 @@
 <div class="compose-box-toolbar">
   <div class="compose-box-toolbar-items">
     <IconButton
+      className="compose-toolbar-button"
       label="Insert emoji"
       href="#fa-smile"
       on:click="onEmojiClick()"
     />
     <IconButton
+      className="compose-toolbar-button"
       svgClassName={$uploadingMedia ? 'spin' : ''}
       label="Add media"
       href={$uploadingMedia ? '#fa-spinner' : '#fa-camera'}
@@ -13,6 +15,7 @@
       disabled={$uploadingMedia || (media.length === 4)}
     />
     <IconButton
+      className="compose-toolbar-button"
       label="{poll && poll.options && poll.options.length ? 'Remove poll' : 'Add poll'}"
       href="#fa-bar-chart"
       on:click="onPollClick()"
@@ -20,11 +23,13 @@
       pressed={poll && poll.options && poll.options.length}
     />
     <IconButton
+      className="compose-toolbar-button"
       label="Adjust privacy (currently {postPrivacy.label})"
       href={postPrivacy.icon}
       on:click="onPostPrivacyClick()"
     />
     <IconButton
+      className="compose-toolbar-button"
       label={contentWarningShown ? 'Remove content warning' : 'Add content warning'}
       href="#fa-exclamation-triangle"
       on:click="onContentWarningClick()"
@@ -46,6 +51,13 @@
   .compose-box-toolbar-items {
     display: flex;
     align-items: center;
+  }
+
+  @media (max-width: 320px) {
+    :global(button.icon-button.compose-toolbar-button) {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
   }
 </style>
 <script>
