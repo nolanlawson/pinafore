@@ -1,29 +1,97 @@
 <div class="loading-footer {shown ? '' : 'hidden'}">
-  <LoadingSpinner size={48} />
-  <span class="loading-footer-info">
-    Loading more...
-  </span>
+  <div class="loading-wrapper {showLoading ? 'shown' : ''}"
+       aria-hidden={!showLoading}
+       role="alert"
+  >
+    <LoadingSpinner size={48} />
+    <span class="loading-footer-info">
+      Loading more...
+    </span>
+  </div>
+  <div class="button-wrapper {showLoadButton ? 'shown' : ''}"
+       aria-hidden={!showLoadButton}
+  >
+    <button type="button"
+            class="primary"
+            on:click="onClickLoadMore(event)">
+      Load more
+    </button>
+  </div>
 </div>
 <style>
   .loading-footer {
-    padding: 20px 0 10px;
+    padding: 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+  }
+  .loading-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s linear;
+  }
+  .loading-wrapper.shown {
+    opacity: 1;
+    pointer-events: auto;
   }
   .loading-footer-info {
     margin-left: 20px;
     font-size: 1.3em;
   }
+  .button-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+  }
+  .button-wrapper.shown {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.2s linear 0.2s;
+  }
 </style>
 <script>
   import LoadingSpinner from '../LoadingSpinner.html'
   import { store } from '../../_store/store'
+  import { fetchMoreItemsAtBottomOfTimeline } from '../../_actions/timeline'
 
   export default {
     store: () => store,
     computed: {
-      shown: ({ $timelineInitialized, $runningUpdate }) => ($timelineInitialized && $runningUpdate)
+      shown: ({ $timelineInitialized, $runningUpdate, $disableInfiniteScroll }) => (
+        $timelineInitialized && ($disableInfiniteScroll || $runningUpdate)
+      ),
+      showLoading: ({ $runningUpdate }) => $runningUpdate,
+      showLoadButton: ({ $runningUpdate, $disableInfiniteScroll }) => !$runningUpdate && $disableInfiniteScroll
+    },
+    methods: {
+      onClickLoadMore (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let { currentInstance, currentTimeline } = this.store.get()
+        /* no await */ fetchMoreItemsAtBottomOfTimeline(currentInstance, currentTimeline)
+        // focus the last item in the timeline; it makes the most sense to me since the button disappears
+        try {
+          // TODO: should probably expose this as an API on the virtual list instead of reaching into the DOM
+          let virtualListItems = document.querySelector('.virtual-list').children
+          let lastItem = virtualListItems[virtualListItems.length - 2] // -2 because the footer is last
+          lastItem.querySelector('article').focus()
+        } catch (e) {
+          console.error(e)
+        }
+      }
     },
     components: {
       LoadingSpinner
