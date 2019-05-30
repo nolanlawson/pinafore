@@ -1,5 +1,4 @@
 let meta = process.browser && document.getElementById('theThemeColor')
-let offlineStyle = process.browser && document.getElementById('theOfflineStyle')
 let prefersDarkTheme = process.browser && window.matchMedia('(prefers-color-scheme: dark)').matches
 
 export const INLINE_THEME = 'default' // theme that does not require external CSS
@@ -32,8 +31,7 @@ function loadCSS (href) {
     }
   })
 
-  // inserting before the offline <style> ensures that the offline style wins when offline
-  document.head.insertBefore(link, offlineStyle)
+  document.head.appendChild(link)
 }
 
 export function switchToTheme (themeName = DEFAULT_THEME) {

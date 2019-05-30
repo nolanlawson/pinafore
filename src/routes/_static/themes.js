@@ -42,6 +42,12 @@ const themes = [
     color: '#4ab92f'
   },
   {
+    name: 'grayscale',
+    label: 'Grayscale',
+    dark: false,
+    color: '#999999'
+  },
+  {
     name: 'ozark',
     label: 'Ozark',
     dark: true,
@@ -88,6 +94,12 @@ const themes = [
     label: 'Pitch Black',
     dark: true,
     color: '#000'
+  },
+  {
+    name: 'dark-grayscale',
+    label: 'Dark Grayscale',
+    dark: true,
+    color: '#666'
   }
 ]
 

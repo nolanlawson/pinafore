@@ -1,0 +1,114 @@
+<SettingsLayout page='settings/general' label="General">
+  <h1>Wellness Settings</h1>
+
+  <p>
+    Wellness settings are designed to reduce the addictive or anxiety-inducing aspects of social media.
+    Choose any or all that work well for you.
+  </p>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-check-all"
+             on:change="onCheckAll(event)">
+      <label for="choice-check-all">Enable all</label>
+    </div>
+  </form>
+
+  <h2>Notifications</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-unread-notification-counts"
+             bind:checked="$disableNotificationBadges" on:change="onChange(event)">
+      <label for="choice-disable-unread-notification-counts">Hide unread notification counts</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-reblog-favorite-follow"
+             bind:checked="$disableNotificationBadges" on:change="onChange(event)">
+      <label for="choice-disable-reblog-favorite-follow">Hide boost/favorite/follow notifications</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-push"
+             bind:checked="$disablePushNotifications" on:change="onChange(event)">
+      <label for="choice-disable-push">Disable push notifications</label>
+    </div>
+  </form>
+
+  <h2>Virality</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-reblog-home"
+             bind:checked="$disableReblogsHome" on:change="onChange(event)">
+      <label for="choice-disable-reblog-home">Hide reblogs from home timeline</label>
+    </div>
+  </form>
+
+  <h2>Metrics</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-follower-counts"
+             bind:checked="$disableFollowerCounts" on:change="onChange(event)">
+      <label for="choice-disable-follower-counts">Hide follower counts</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-fav-reblog-counts"
+             bind:checked="$disableFavReblogCounts" on:change="onChange(event)">
+      <label for="choice-disable-fav-reblog-counts">Hide boost counts</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-fav-counts"
+             bind:checked="$disableFavReblogCounts" on:change="onChange(event)">
+      <label for="choice-disable-fav-counts">Hide favorite counts</label>
+    </div>
+  </form>
+
+  <h2>UI</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-grayscale"
+             bind:checked="$enableGrayscale" on:change="onChange(event)">
+      <label for="choice-grayscale">Grayscale mode</label>
+    </div>
+  </form>
+  <p>
+    These settings are partially based on guidelines from the
+    <ExternalLink href="https://humanetech.com">Center for Humane Technology</ExternalLink>.
+  </p>
+
+</SettingsLayout>
+<style>
+  .ui-settings {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .setting-group {
+    padding: 5px 0;
+  }
+</style>
+<script>
+  import SettingsLayout from '../../_components/settings/SettingsLayout.html'
+  import { store } from '../../_store/store'
+  import ExternalLink from '../../_components/ExternalLink.html'
+
+  export default {
+    components: {
+      SettingsLayout,
+      ExternalLink
+    },
+    methods: {
+      onCheckAll (event) {
+
+      },
+      onChange () {
+        this.store.save()
+      }
+    },
+    store: () => store
+  }
+</script>
