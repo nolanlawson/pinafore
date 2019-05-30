@@ -1,10 +1,7 @@
 import { Store } from 'svelte/store'
 import { safeLocalStorage as LS } from '../_utils/safeLocalStorage'
 import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
-
-function safeParse (str) {
-  return !str ? undefined : (str === 'undefined' ? undefined : JSON.parse(str))
-}
+import { safeParse } from './safeParse'
 
 export class LocalStorageStore extends Store {
   constructor (state, keysToWatch) {

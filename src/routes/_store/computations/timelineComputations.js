@@ -174,7 +174,9 @@ export function timelineComputations (store) {
   )
 
   store.compute('hasNotifications',
-    ['numberOfNotifications', 'currentPage'],
-    (numberOfNotifications, currentPage) => currentPage !== 'notifications' && !!numberOfNotifications
+    ['numberOfNotifications', 'currentPage', 'disableNotificationBadge'],
+    (numberOfNotifications, currentPage, $disableNotificationBadge) => (
+      !$disableNotificationBadge && currentPage !== 'notifications' && !!numberOfNotifications
+    )
   )
 }

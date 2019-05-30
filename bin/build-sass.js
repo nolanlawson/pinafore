@@ -11,7 +11,6 @@ const render = promisify(sass.render.bind(sass))
 
 const globalScss = path.join(__dirname, '../src/scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../src/scss/themes/_default.scss')
-const offlineThemeScss = path.join(__dirname, '../src/scss/themes/_offline.scss')
 const customScrollbarScss = path.join(__dirname, '../src/scss/custom-scrollbars.scss')
 const themesScssDir = path.join(__dirname, '../src/scss/themes')
 const assetsDir = path.join(__dirname, '../static')
@@ -22,11 +21,9 @@ async function renderCss (file) {
 
 async function compileGlobalSass () {
   let mainStyle = (await Promise.all([defaultThemeScss, globalScss].map(renderCss))).join('')
-  let offlineStyle = (await renderCss(offlineThemeScss))
   let scrollbarStyle = (await renderCss(customScrollbarScss))
 
   return `<style>\n${mainStyle}</style>\n` +
-    `<style media="only x" id="theOfflineStyle">\n${offlineStyle}</style>\n` +
     `<style media="all" id="theScrollbarStyle">\n${scrollbarStyle}</style>\n`
 }
 
