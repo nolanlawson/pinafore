@@ -143,6 +143,14 @@ export function timelineComputations (store) {
     }
   )
 
+  store.compute(
+    'filteredTimelineItemSummariesToAdd',
+    ['timelineItemSummariesToAdd', 'timelineFilterFunction'],
+    (timelineItemSummariesToAdd, timelineFilterFunction) => {
+      return timelineItemSummariesToAdd && timelineItemSummariesToAdd.filter(timelineFilterFunction)
+    }
+  )
+
   store.compute('timelineNotificationItemSummaries',
     [`timelineData_timelineItemSummariesToAdd`, 'timelineFilterFunction', 'currentInstance'],
     (root, timelineFilterFunction, currentInstance) => (

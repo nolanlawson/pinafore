@@ -130,8 +130,8 @@
       itemIds: ({ $filteredTimelineItemSummaries }) => (
         $filteredTimelineItemSummaries && $filteredTimelineItemSummaries.map(_ => _.id)
       ),
-      itemIdsToAdd: ({ $timelineItemSummariesToAdd }) => (
-        $timelineItemSummariesToAdd && $timelineItemSummariesToAdd.map(_ => _.id)
+      itemIdsToAdd: ({ $filteredTimelineItemSummariesToAdd }) => (
+        $filteredTimelineItemSummariesToAdd && $filteredTimelineItemSummariesToAdd.map(_ => _.id)
       ),
       headerProps: ({ itemIdsToAdd }) => {
         return {

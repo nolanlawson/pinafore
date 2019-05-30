@@ -4,7 +4,11 @@ import {
   instanceSettingNotificationReblogs,
   notificationBadge,
   instanceSettingNotificationFavs,
-  instanceSettingNotificationMentions, instanceSettingNotificationFollows
+  instanceSettingNotificationMentions,
+  instanceSettingNotificationFollows,
+  notificationsNavButton,
+  getUrl,
+  sleep, showMoreButton, scrollToBottom, scrollToTop
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -89,5 +93,35 @@ test('Notification timeline filters correctly affect counts - follows', async t 
     .click(instanceSettingNotificationFollows)
     .expect(instanceSettingNotificationMentions.checked).ok()
     .expect(notificationBadge.innerText).eql('1', { timeout })
+  await unfollowAs('ExternalLinks', 'foobar')
+})
+
+test('Notification timeline filters correctly show "show more" button', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(settingsNavButton)
+    .click($('a').withText('Instances'))
+    .click($('a').withText('localhost:3000'))
+    .click(instanceSettingNotificationMentions)
+    .expect(instanceSettingNotificationMentions.checked).notOk()
+    .click(notificationsNavButton)
+    .expect(getUrl()).contains('/notifications')
+    .expect(getNthStatusContent(1).exists).ok()
+  await scrollToBottom()
+  await sleep(1000)
+  await postAs('admin', 'hey @foobar you should ignore this')
+  await sleep(1000)
+  await scrollToTop()
+  await sleep(1000)
+  await t
+    .expect(showMoreButton.innerText).contains('Show 0 more') // not shown
+  await scrollToBottom()
+  await sleep(1000)
+  await followAs('ExternalLinks', 'foobar')
+  await sleep(1000)
+  await scrollToTop()
+  await sleep(1000)
+  await t
+    .expect(showMoreButton.innerText).contains('Show 1 more', { timeout: 20000 })
   await unfollowAs('ExternalLinks', 'foobar')
 })
