@@ -16,6 +16,7 @@ const persistedState = {
   disableInfiniteScroll: false,
   disableLongAriaLabels: false,
   disableTapOnStatus: false,
+  enableGrayscale: false,
   hideCards: false,
   largeInlineMedia: false,
   instanceNameInSearch: '',

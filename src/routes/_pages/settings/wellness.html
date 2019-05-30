@@ -22,26 +22,6 @@
              bind:checked="$disableNotificationBadges" on:change="onChange(event)">
       <label for="choice-disable-unread-notification-counts">Hide unread notification counts</label>
     </div>
-    <div class="setting-group">
-      <input type="checkbox" id="choice-disable-reblog-favorite-follow"
-             bind:checked="$disableNotificationBadges" on:change="onChange(event)">
-      <label for="choice-disable-reblog-favorite-follow">Hide boost/favorite/follow notifications</label>
-    </div>
-    <div class="setting-group">
-      <input type="checkbox" id="choice-disable-push"
-             bind:checked="$disablePushNotifications" on:change="onChange(event)">
-      <label for="choice-disable-push">Disable push notifications</label>
-    </div>
-  </form>
-
-  <h2>Virality</h2>
-
-  <form class="ui-settings">
-    <div class="setting-group">
-      <input type="checkbox" id="choice-disable-reblog-home"
-             bind:checked="$disableReblogsHome" on:change="onChange(event)">
-      <label for="choice-disable-reblog-home">Hide reblogs from home timeline</label>
-    </div>
   </form>
 
   <h2>Metrics</h2>
