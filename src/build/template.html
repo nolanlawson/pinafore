@@ -17,6 +17,17 @@
 
   <!-- inline CSS -->
 
+  <style id="theGrayscaleStyle" media="only x">
+    /* Firefox doesn't seem to like applying filter: grayscale() to
+     * the entire body, so we apply individually.
+     */
+    img, svg, video,
+    input[type="checkbox"], input[type="radio"],
+    .inline-emoji, .theme-preview, .emoji-mart-emoji, .emoji-mart-skin {
+      filter: grayscale(100%);
+    }
+  </style>
+
   <noscript>
     <style>
       .hidden-from-ssr {

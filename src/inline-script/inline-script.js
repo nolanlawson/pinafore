@@ -37,7 +37,8 @@ if (theme !== INLINE_THEME) {
 }
 
 if (enableGrayscale) {
-  document.body.classList.add('grayscale')
+  document.getElementById('theGrayscaleStyle')
+    .setAttribute('media', 'all') // enables the style
 }
 
 if (!currentInstance) {
