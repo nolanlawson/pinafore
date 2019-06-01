@@ -43,3 +43,7 @@ export const importToast = () => import(
 export const importSnackbar = () => import(
   /* webpackChunkName: 'Snackbar.html' */ '../_components/snackbar/Snackbar.html'
   ).then(getDefault)
+
+export const importComposeBox = () => import(
+  /* webpackChunkName: 'ComposeBox.html' */ '../_components/compose/ComposeBox.html'
+  ).then(getDefault)
