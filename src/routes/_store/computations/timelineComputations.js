@@ -167,16 +167,18 @@ export function timelineComputations (store) {
   )
 
   store.compute('numberOfNotifications',
-    ['filteredTimelineNotificationItemSummaries'],
-    (filteredTimelineNotificationItemSummaries) => (
-      filteredTimelineNotificationItemSummaries ? filteredTimelineNotificationItemSummaries.length : 0
+    ['filteredTimelineNotificationItemSummaries', 'disableNotificationBadge'],
+    (filteredTimelineNotificationItemSummaries, disableNotificationBadge) => (
+      (!disableNotificationBadge && filteredTimelineNotificationItemSummaries)
+        ? filteredTimelineNotificationItemSummaries.length
+        : 0
     )
   )
 
   store.compute('hasNotifications',
-    ['numberOfNotifications', 'currentPage', 'disableNotificationBadge'],
-    (numberOfNotifications, currentPage, $disableNotificationBadge) => (
-      !$disableNotificationBadge && currentPage !== 'notifications' && !!numberOfNotifications
+    ['numberOfNotifications', 'currentPage'],
+    (numberOfNotifications, currentPage) => (
+      currentPage !== 'notifications' && !!numberOfNotifications
     )
   )
 }
