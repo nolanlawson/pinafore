@@ -35,6 +35,9 @@ self.addEventListener('install', event => {
       caches.open(WEBPACK_ASSETS).then(cache => cache.addAll(webpackAssets)),
       caches.open(ASSETS).then(cache => cache.addAll(assets))
     ])
+    // We shouldn't have to do this, but the previous page could be an old one,
+    // which would not send us a postMessage to skipWaiting().
+    // See https://github.com/nolanlawson/pinafore/issues/1243
     self.skipWaiting()
   })())
 })
@@ -242,4 +245,12 @@ self.addEventListener('notificationclick', event => {
       }
     }
   })())
+})
+
+self.addEventListener('message', (event) => {
+  switch (event.data) {
+    case 'skip-waiting':
+      self.skipWaiting()
+      break
+  }
 })
