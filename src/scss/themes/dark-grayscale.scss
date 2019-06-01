@@ -1,0 +1,16 @@
+$main-theme-color: #444;
+$main-bg-color: #202020;
+$body-bg-color: darken($main-bg-color, 5%);
+$anchor-color: #999;
+$main-text-color: #FFF;
+$border-color: lighten($body-bg-color, 10%);
+$secondary-text-color: white;
+$toast-border: #fafafa;
+$toast-bg: #333;
+$focus-outline: lighten($main-theme-color, 50%);
+$compose-background: lighten($main-theme-color, 52%);
+
+@import "_base.scss";
+@import "_dark.scss";
+@import "_dark_navbar.scss";
+@import "_dark_scrollbars.scss";

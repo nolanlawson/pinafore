@@ -3,16 +3,21 @@
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to checksum.js.
 
-import { testHasLocalStorageOnce } from '../routes/_utils/testStorage'
 import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
 import { basename } from '../routes/_api/utils'
 import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
+import { storeLite } from '../routes/_store/storeLite'
 
 window.__themeColors = process.env.THEME_COLORS
 
-const safeParse = str => (typeof str === 'undefined' || str === 'undefined') ? undefined : JSON.parse(str)
-const hasLocalStorage = testHasLocalStorageOnce()
-const currentInstance = hasLocalStorage && safeParse(localStorage.store_currentInstance)
+const {
+  currentInstance,
+  instanceThemes,
+  disableCustomScrollbars,
+  enableGrayscale
+} = storeLite.get()
+
+const theme = (instanceThemes && instanceThemes[currentInstance]) || DEFAULT_THEME
 
 if (currentInstance) {
   // Do prefetch if we're logged in, so we can connect faster to the other origin.
@@ -26,24 +31,23 @@ if (currentInstance) {
   document.head.appendChild(link)
 }
 
-let theme = (currentInstance &&
-  localStorage.store_instanceThemes &&
-  safeParse(localStorage.store_instanceThemes)[safeParse(localStorage.store_currentInstance)]) ||
-  DEFAULT_THEME
 if (theme !== INLINE_THEME) {
   // switch theme ASAP to minimize flash of default theme
-  switchToTheme(theme)
+  switchToTheme(theme, enableGrayscale)
 }
 
-if (!hasLocalStorage || !currentInstance) {
+if (enableGrayscale) {
+  document.body.classList.add('grayscale')
+}
+
+if (!currentInstance) {
   // if not logged in, show all these 'hidden-from-ssr' elements
   onUserIsLoggedOut()
 }
 
-if (hasLocalStorage && localStorage.store_disableCustomScrollbars === 'true') {
-  // if user has disabled custom scrollbars, remove this style
-  let theScrollbarStyle = document.getElementById('theScrollbarStyle')
-  theScrollbarStyle.setAttribute('media', 'only x') // disables the style
+if (disableCustomScrollbars) {
+  document.getElementById('theScrollbarStyle')
+    .setAttribute('media', 'only x') // disables the style
 }
 
 // hack to make the scrollbars rounded only on macOS

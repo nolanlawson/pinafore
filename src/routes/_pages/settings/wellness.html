@@ -1,0 +1,154 @@
+<SettingsLayout page='settings/general' label="General">
+  <h1>Wellness Settings</h1>
+
+  <p>
+    Wellness settings are designed to reduce the addictive or anxiety-inducing aspects of social media.
+    Choose any options that work well for you.
+  </p>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-check-all"
+             on:change="onCheckAllChange(event)">
+      <label for="choice-check-all">Enable all</label>
+    </div>
+  </form>
+
+  <h2>Metrics</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-follower-counts"
+             bind:checked="$disableFollowerCounts" on:change="onChange(event)">
+      <label for="choice-disable-follower-counts">
+        Hide follower counts (capped at 10)
+      </label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-reblog-counts"
+             bind:checked="$disableReblogCounts" on:change="onChange(event)">
+      <label for="choice-disable-reblog-counts">Hide boost counts</label>
+    </div>
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-fav-counts"
+             bind:checked="$disableFavCounts" on:change="onChange(event)">
+      <label for="choice-disable-fav-counts">Hide favorite counts</label>
+    </div>
+  </form>
+
+  <h2>Notifications</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-disable-unread-notification-counts"
+             bind:checked="$disableNotificationBadge" on:change="onChange(event)">
+      <label for="choice-disable-unread-notification-counts">
+        Hide unread notifications count (i.e. the red dot)
+      </label>
+    </div>
+  </form>
+
+  <aside>
+    <SvgIcon href="#fa-info-circle" className="aside-icon" />
+    <span>
+      You can filter or disable notifications in the
+      <a rel="prefetch" href="/settings/instances{$currentInstance ? '/' + $currentInstance : ''}">instance settings</a>.
+    </span>
+  </aside>
+
+  <h2>UI</h2>
+
+  <form class="ui-settings">
+    <div class="setting-group">
+      <input type="checkbox" id="choice-grayscale"
+             bind:checked="$enableGrayscale" on:change="onChange(event)">
+      <label for="choice-grayscale">Grayscale mode</label>
+    </div>
+  </form>
+  <p>
+    These settings are partly based on guidelines from the
+    <ExternalLink href="https://humanetech.com">Center for Humane Technology</ExternalLink>.
+  </p>
+</SettingsLayout>
+<style>
+  .ui-settings {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .setting-group {
+    padding: 5px 0;
+  }
+  aside {
+    font-size: 1.2em;
+    margin: 20px 10px 0px 10px;
+    color: var(--deemphasized-text-color);
+    display: flex;
+    align-items: center;
+  }
+  aside a {
+    text-decoration: underline;
+    color: var(--deemphasized-text-color);
+  }
+  aside span {
+    flex: 1;
+  }
+  :global(.aside-icon) {
+    fill: var(--deemphasized-text-color);
+    width: 18px;
+    height: 18px;
+    margin: 0 10px 0 5px;
+    min-width: 18px;
+  }
+</style>
+<script>
+  import SettingsLayout from '../../_components/settings/SettingsLayout.html'
+  import { store } from '../../_store/store'
+  import ExternalLink from '../../_components/ExternalLink.html'
+  import SvgIcon from '../../_components/SvgIcon.html'
+
+  export default {
+    oncreate () {
+      this.flushChangesToCheckAll()
+    },
+    components: {
+      SettingsLayout,
+      ExternalLink,
+      SvgIcon
+    },
+    methods: {
+      flushChangesToCheckAll () {
+        const {
+          disableFollowerCounts,
+          disableReblogCounts,
+          disableFavCounts,
+          disableNotificationBadge,
+          enableGrayscale
+        } = this.store.get()
+        document.querySelector('#choice-check-all').checked = disableFollowerCounts &&
+          disableReblogCounts &&
+          disableFavCounts &&
+          disableNotificationBadge &&
+          enableGrayscale
+      },
+      onCheckAllChange (e) {
+        let { checked } = e.target
+        this.store.set({
+          disableFollowerCounts: checked,
+          disableReblogCounts: checked,
+          disableFavCounts: checked,
+          disableNotificationBadge: checked,
+          enableGrayscale: checked
+        })
+        this.store.save()
+      },
+      onChange () {
+        this.flushChangesToCheckAll()
+        this.store.save()
+      }
+    },
+    store: () => store
+  }
+</script>

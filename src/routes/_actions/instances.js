@@ -1,6 +1,6 @@
 import { getVerifyCredentials } from '../_api/user'
 import { store } from '../_store/store'
-import { DEFAULT_THEME, switchToTheme } from '../_utils/themeEngine'
+import { switchToTheme } from '../_utils/themeEngine'
 import { toast } from '../_components/toast/toast'
 import { goto } from '../../../__sapper__/client'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
@@ -14,7 +14,8 @@ export function changeTheme (instanceName, newTheme) {
   store.save()
   let { currentInstance } = store.get()
   if (instanceName === currentInstance) {
-    switchToTheme(newTheme)
+    let { enableGrayscale } = store.get()
+    switchToTheme(newTheme, enableGrayscale)
   }
 }
 
@@ -26,7 +27,8 @@ export function switchToInstance (instanceName) {
     queryInSearch: ''
   })
   store.save()
-  switchToTheme(instanceThemes[instanceName])
+  let { enableGrayscale } = store.get()
+  switchToTheme(instanceThemes[instanceName], enableGrayscale)
 }
 
 export async function logOutOfInstance (instanceName) {
@@ -55,7 +57,8 @@ export async function logOutOfInstance (instanceName) {
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)
-  switchToTheme(instanceThemes[newInstance] || DEFAULT_THEME)
+  let { enableGrayscale } = store.get()
+  switchToTheme(instanceThemes[newInstance], enableGrayscale)
   /* no await */ database.clearDatabaseForInstance(instanceName)
   goto('/settings/instances')
 }

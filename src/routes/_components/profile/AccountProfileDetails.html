@@ -127,7 +127,12 @@
       numFollowers: ({ account }) => account.followers_count || 0,
       numStatusesDisplay: ({ numStatuses }) => numberFormat.format(numStatuses),
       numFollowingDisplay: ({ numFollowing }) => numberFormat.format(numFollowing),
-      numFollowersDisplay: ({ numFollowers }) => numberFormat.format(numFollowers),
+      numFollowersDisplay: ({ numFollowers, $disableFollowerCounts }) => {
+        if ($disableFollowerCounts && numFollowers >= 10) {
+          return '10+'
+        }
+        return numberFormat.format(numFollowers)
+      },
       followersLabel: ({ numFollowers }) => `Followed by ${numFollowers}`,
       followingLabel: ({ numFollowing }) => `Follows ${numFollowing}`
     },
