@@ -52,7 +52,7 @@
     <SvgIcon href="#fa-info-circle" className="aside-icon" />
     <span>
       You can filter or disable notifications in the
-      <a rel="prefetch" href="/settings/instances/{$currentInstance}">instance settings</a>.
+      <a rel="prefetch" href="/settings/instances{$currentInstance ? '/' + $currentInstance : ''}">instance settings</a>.
     </span>
   </aside>
 
