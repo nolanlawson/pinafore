@@ -1,5 +1,7 @@
 import { switchToTheme } from '../../_utils/themeEngine'
 
+const style = process.browser && document.getElementById('theGrayscaleStyle')
+
 export function grayscaleObservers (store) {
   if (!process.browser) {
     return
@@ -8,7 +10,7 @@ export function grayscaleObservers (store) {
   store.observe('enableGrayscale', enableGrayscale => {
     const { instanceThemes, currentInstance } = store.get()
     const theme = instanceThemes && instanceThemes[currentInstance]
-    document.body.classList.toggle('grayscale', enableGrayscale)
+    style.setAttribute('media', enableGrayscale ? 'all' : 'only x') // disable or enable the style
     switchToTheme(theme, enableGrayscale)
   })
 }
