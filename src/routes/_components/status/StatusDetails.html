@@ -158,13 +158,19 @@
       application: ({ originalStatus }) => originalStatus.application,
       applicationName: ({ application }) => (application && application.name),
       applicationWebsite: ({ application }) => (application && application.website),
-      numReblogs: ({ overrideNumReblogs, originalStatus }) => {
+      numReblogs: ({ $disableReblogCounts, overrideNumReblogs, originalStatus }) => {
+        if ($disableReblogCounts) {
+          return 0
+        }
         if (typeof overrideNumReblogs === 'number') {
           return overrideNumReblogs
         }
         return originalStatus.reblogs_count || 0
       },
-      numFavs: ({ overrideNumFavs, originalStatus }) => {
+      numFavs: ({ $disableFavCounts, overrideNumFavs, originalStatus }) => {
+        if ($disableFavCounts) {
+          return 0
+        }
         if (typeof overrideNumFavs === 'number') {
           return overrideNumFavs
         }
@@ -173,13 +179,19 @@
       displayAbsoluteFormattedDate: ({ createdAtDateTS, $isMobileSize }) => (
         ($isMobileSize ? shortAbsoluteDateFormatter : absoluteDateFormatter).format(createdAtDateTS)
       ),
-      reblogsLabel: ({ numReblogs }) => {
+      reblogsLabel: ({ $disableReblogCounts, numReblogs }) => {
+        if ($disableReblogCounts) {
+          return 'Boost counts hidden'
+        }
         // TODO: intl
         return numReblogs === 1
           ? `Boosted ${numReblogs} time`
           : `Boosted ${numReblogs} times`
       },
-      favoritesLabel: ({ numFavs }) => {
+      favoritesLabel: ({ $disableFavCounts, numFavs }) => {
+        if ($disableFavCounts) {
+          return 'Favorite counts hidden'
+        }
         // TODO: intl
         return numFavs === 1
           ? `Favorited ${numFavs} time`

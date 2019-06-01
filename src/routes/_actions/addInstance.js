@@ -84,7 +84,8 @@ async function registerNewInstance (code) {
     instanceThemes: instanceThemes
   })
   store.save()
-  switchToTheme(DEFAULT_THEME)
+  let { enableGrayscale } = store.get()
+  switchToTheme(DEFAULT_THEME, enableGrayscale)
   // fire off these requests so they're cached
   /* no await */ updateVerifyCredentialsForInstance(currentRegisteredInstanceName)
   /* no await */ updateCustomEmojiForInstance(currentRegisteredInstanceName)
