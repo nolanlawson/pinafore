@@ -1,0 +1,16 @@
+{#await importComposeBox}
+<!-- awaiting promise -->
+{:then ComposeBox}
+<svelte:component this={ComposeBox} {realm} {hidden} />
+{:catch error}
+<div>Component failed to load. Try refreshing! {error}</div>
+{/await}
+<script>
+  import { importComposeBox } from '../../_utils/asyncModules'
+
+  export default {
+    data: () => ({
+      importComposeBox: importComposeBox()
+    })
+  }
+</script>
