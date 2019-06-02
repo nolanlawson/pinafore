@@ -8,19 +8,13 @@ const hasLocalStorage = testHasLocalStorageOnce()
 
 export const storeLite = {
   get () {
-    if (!hasLocalStorage) {
-      return {}
-    }
-    const res = {}
-    const LS = localStorage
-    for (let i = 0, len = LS.length; i < len; i++) {
-      let key = LS.key(i)
-      if (key.startsWith('store_')) {
-        let item = LS.getItem(key)
-        let value = safeParse(item)
-        res[key] = value
+    return new Proxy({}, {
+      get: function (obj, prop) {
+        if (!(prop in obj)) {
+          obj[prop] = hasLocalStorage && safeParse(localStorage.getItem(`store_${prop}`))
+        }
+        return obj[prop]
       }
-    }
-    return res
+    })
   }
 }
