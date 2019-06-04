@@ -19,6 +19,7 @@
 >
   {tooltipText}
 </span>
+<Shortcut scope="global" key="Escape" on:pressed="dismiss()" />
 <style>
   .tooltip-button {
     border-bottom: 1px dotted;
@@ -45,6 +46,8 @@
 
 </style>
 <script>
+  import Shortcut from './shortcut/Shortcut.html'
+
   let counter = 0
 
   export default {
@@ -66,7 +69,13 @@
         if (e.keyCode === 32 || e.keyCode === 13) { // enter or space
           this.toggle(e)
         }
+      },
+      dismiss () {
+        this.set({ shown: false })
       }
+    },
+    components: {
+      Shortcut
     }
   }
 </script>
