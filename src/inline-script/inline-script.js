@@ -14,7 +14,9 @@ const {
   currentInstance,
   instanceThemes,
   disableCustomScrollbars,
-  enableGrayscale
+  enableGrayscale,
+  pushSubscription,
+  loggedInInstancesInOrder
 } = storeLite.get()
 
 const theme = (instanceThemes && instanceThemes[currentInstance]) || DEFAULT_THEME
@@ -64,4 +66,19 @@ if (/iP(?:hone|ad|od)/.test(navigator.userAgent) &&
   !(typeof IntersectionObserver === 'function' &&
     IntersectionObserver.toString().includes('[native code]'))) {
   document.head.removeChild(document.getElementById('theManifest'))
+}
+
+if (pushSubscription) {
+  // Fix a bug in Pinafore <=v1.9.0 if we only have one instance we're logged in to
+  // (https://github.com/nolanlawson/pinafore/issues/1274)
+  if (loggedInInstancesInOrder && loggedInInstancesInOrder.length === 1) {
+    storeLite.set({
+      pushSubscriptions: {
+        [currentInstance]: pushSubscription
+      }
+    })
+  }
+  storeLite.set({
+    pushSubscription: undefined
+  })
 }

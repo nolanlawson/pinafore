@@ -5,10 +5,10 @@ import { urlBase64ToUint8Array } from '../_utils/base64'
 const dummyApplicationServerKey = 'BImgAz4cF_yvNFp8uoBJCaGpCX4d0atNIFMHfBvAAXCyrnn9IMAFQ10DW_ZvBCzGeR4fZI5FnEi2JVcRE-L88jY='
 
 export async function updatePushSubscriptionForInstance (instanceName) {
-  const { loggedInInstances, pushSubscription } = store.get()
+  const { loggedInInstances, currentPushSubscription } = store.get()
   const accessToken = loggedInInstances[instanceName].access_token
 
-  if (pushSubscription === null) {
+  if (currentPushSubscription === null) {
     return
   }
 
@@ -16,7 +16,7 @@ export async function updatePushSubscriptionForInstance (instanceName) {
   const subscription = await registration.pushManager.getSubscription()
 
   if (subscription === null) {
-    store.set({ pushSubscription: null })
+    store.setInstanceData(instanceName, 'pushSubscriptions', null)
     store.save()
     return
   }
@@ -28,16 +28,16 @@ export async function updatePushSubscriptionForInstance (instanceName) {
     if (btoa(urlBase64ToUint8Array(backendSubscription.server_key).buffer) !== btoa(subscription.options.applicationServerKey)) {
       await subscription.unsubscribe()
       await deleteSubscription(instanceName, accessToken)
-      await updateAlerts(instanceName, pushSubscription.alerts)
+      await updateAlerts(instanceName, currentPushSubscription.alerts)
     } else {
-      store.set({ pushSubscription: backendSubscription })
+      store.setInstanceData(instanceName, 'pushSubscriptions', backendSubscription)
       store.save()
     }
   } catch (e) {
     // TODO: Better way to detect 404
     if (e.message.startsWith('404:')) {
       await subscription.unsubscribe()
-      store.set({ pushSubscription: null })
+      store.setInstanceData(instanceName, 'pushSubscriptions', null)
       store.save()
     }
   }
@@ -73,16 +73,16 @@ export async function updateAlerts (instanceName, alerts) {
 
     backendSubscription = await postSubscription(instanceName, accessToken, subscription, alerts)
 
-    store.set({ pushSubscription: backendSubscription })
+    store.setInstanceData(instanceName, 'pushSubscriptions', backendSubscription)
     store.save()
   } else {
     try {
       const backendSubscription = await putSubscription(instanceName, accessToken, alerts)
-      store.set({ pushSubscription: backendSubscription })
+      store.setInstanceData(instanceName, 'pushSubscriptions', backendSubscription)
       store.save()
     } catch (e) {
       const backendSubscription = await postSubscription(instanceName, accessToken, subscription, alerts)
-      store.set({ pushSubscription: backendSubscription })
+      store.setInstanceData(instanceName, 'pushSubscriptions', backendSubscription)
       store.save()
     }
   }

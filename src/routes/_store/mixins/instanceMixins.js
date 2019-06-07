@@ -36,4 +36,15 @@ export function instanceMixins (Store) {
     instanceSettings[instanceName][settingName] = value
     this.set({ instanceSettings })
   }
+
+  Store.prototype.setInstanceData = function (instanceName, key, value) {
+    let instanceData = this.get()[key] || {}
+    instanceData[instanceName] = value
+    this.set({ [key]: instanceData })
+  }
+
+  Store.prototype.getInstanceData = function (instanceName, key) {
+    let instanceData = this.get()[key] || {}
+    return instanceData[instanceName]
+  }
 }
