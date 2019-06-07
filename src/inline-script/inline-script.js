@@ -79,6 +79,6 @@ if (pushSubscription) {
     })
   }
   storeLite.set({
-    pushSubscription: undefined
+    pushSubscription: null
   })
 }

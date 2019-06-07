@@ -51,7 +51,7 @@
       await updatePushSubscriptionForInstance(instanceName)
 
       const { form } = this.refs
-      const pushSubscription = this.store.getInstanceData('instanceName', 'pushSubscriptions')
+      const pushSubscription = this.store.getInstanceData(instanceName, 'pushSubscriptions')
 
       for (let { key } of options) {
         form.elements[key].checked = get(pushSubscription, ['alerts', key])
