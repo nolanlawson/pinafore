@@ -86,7 +86,7 @@
     "quick-lru": "^4.0.0",
     "remount": "^0.11.0",
     "requestidlecallback": "^0.3.0",
-    "rollup": "^1.12.4",
+    "rollup": "^1.15.6",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.0.0",
     "sapper": "nolanlawson/sapper#for-pinafore-14",
