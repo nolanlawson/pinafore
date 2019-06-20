@@ -33,7 +33,7 @@
       <div class="report-info">
         <p>You are reporting @{account.acct} to the moderators of {$currentInstance}.</p>
         <label class="sr-only" id="comments-label">Additional comments</label>
-        <textarea bind:value="comments"
+        <textarea bind:value="comment"
                   placeholder="Additional comments"
                   aria-labelledby="comments-label"
                   maxlength="1000"></textarea>
@@ -172,7 +172,7 @@
       recentStatuses: [],
       loading: true,
       forward: false,
-      comments: ''
+      comment: ''
     }),
     computed: {
       displayStatuses: ({ statuses, reportMap }) => (
