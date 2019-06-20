@@ -32,7 +32,7 @@ const persistedState = {
   neverMarkMediaAsSensitive: false,
   omitEmojiInDisplayNames: undefined,
   pinnedPages: {},
-  pushSubscription: null,
+  pushSubscriptions: {},
   reduceMotion:
     !process.browser ||
     window.matchMedia('(prefers-reduced-motion: reduce)').matches,

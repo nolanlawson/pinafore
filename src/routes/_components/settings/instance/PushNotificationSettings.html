@@ -1,8 +1,10 @@
 <div class="push-notifications">
   {#if pushNotificationsSupport === false}
-  <p>Your browser doesn't support push notifications.</p>
+    <p>Your browser doesn't support push notifications.</p>
   {:elseif $notificationPermission === "denied"}
-  <p role="alert">You have denied permission to show notifications.</p>
+    <p role="alert">You have denied permission to show notifications.</p>
+  {:elseif $loggedInInstancesInOrder.length > 1}
+    <p>Note that you can only have push notifications for one instance at a time.</p>
   {/if}
   <form id="push-notification-settings"
         disabled="{!pushNotificationsSupport}"
@@ -51,7 +53,7 @@
       await updatePushSubscriptionForInstance(instanceName)
 
       const { form } = this.refs
-      const { pushSubscription } = this.store.get()
+      const pushSubscription = this.store.getInstanceData(instanceName, 'pushSubscriptions')
 
       for (let { key } of options) {
         form.elements[key].checked = get(pushSubscription, ['alerts', key])

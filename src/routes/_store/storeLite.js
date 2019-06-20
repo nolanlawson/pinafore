@@ -1,5 +1,4 @@
-// "lite" version of the store used in the inline script. Purely read-only,
-// does not implement non-LocalStorage store features.
+// "lite" version of the store used in the inline script.
 
 import { safeParse } from './safeParse'
 import { testHasLocalStorageOnce } from '../_utils/testStorage'
@@ -16,5 +15,13 @@ export const storeLite = {
         return obj[prop]
       }
     })
+  },
+
+  set (obj) {
+    if (hasLocalStorage) {
+      for (let [key, value] of Object.entries(obj)) {
+        localStorage.setItem(`store_${key}`, JSON.stringify(value))
+      }
+    }
   }
 }
