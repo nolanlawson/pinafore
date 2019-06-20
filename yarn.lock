@@ -167,7 +167,7 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.132.tgz#8ce45ca8745ff2e004fac0de0ab46f61e390ffa0"
   integrity sha512-RNUU1rrh85NgUJcjOOr96YXr+RHwInGbaQCZmlitqOaCKXffj8bh+Zxwuq5rjDy5OgzFldDVoqk4pyLEDiwxIw==
 
-"@types/node@*", "@types/node@^12.0.2":
+"@types/node@*":
   version "12.0.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.2.tgz#3452a24edf9fea138b48fad4a0a028a683da1e40"
   integrity sha512-5tabW/i+9mhrfEOUcLDu2xBPsHJ+X5Orqy9FKpale3SjDA17j5AEpYq5vfy3oAeAHGcvANRCO3NV3d2D6q3NiA==
@@ -176,6 +176,11 @@
   version "10.14.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.7.tgz#1854f0a9aa8d2cd6818d607b3d091346c6730362"
   integrity sha512-on4MmIDgHXiuJDELPk1NFaKVUxxCFr37tm8E9yN6rAiF5Pzp/9bBfBHkoexqRiY+hk/Z04EJU9kKEb59YqJ82A==
+
+"@types/node@^12.0.8":
+  version "12.0.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.8.tgz#551466be11b2adc3f3d47156758f610bd9f6b1d8"
+  integrity sha512-b8bbUOTwzIY3V5vDTY1fIJ+ePKDUBqt2hC2woVGotdQQhG/2Sh62HOKHrT7ab+VerXAcPyAiTEipPu/FsreUtg==
 
 "@types/q@^1.5.1":
   version "1.5.2"
@@ -6336,13 +6341,13 @@ rollup-pluginutils@^2.6.0:
     estree-walker "^0.6.0"
     micromatch "^3.1.10"
 
-rollup@^1.12.4:
-  version "1.12.4"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.12.4.tgz#f2cb825300cea6601f12a4c3d2f3918807b27403"
-  integrity sha512-sHg0F05oTMJzM592MWU8irsPx8LIFMKSCnEkcp6vp/gnj+oJ9GJEBW9hl8jUqy2L6Q2uUxFzPgvoExLbfuSODA==
+rollup@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.15.6.tgz#caf0ed28d2d78e3a59c1398e5a3695fb600a0ef0"
+  integrity sha512-s3Vn3QJQ5YVFfIG4nXoG9VdL1I37IZsft+4ZyeBhxE0df1kCFz9e+4bEAbR4mKH3pvBO9e9xjdxWPhhIp0r9ow==
   dependencies:
     "@types/estree" "0.0.39"
-    "@types/node" "^12.0.2"
+    "@types/node" "^12.0.8"
     acorn "^6.1.1"
 
 run-async@^2.2.0:
