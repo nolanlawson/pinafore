@@ -129,31 +129,27 @@ test('delete and redraft reply within thread', async t => {
     .expect(getNthStatusContent(1).innerText).contains('this is a thread')
     .click(getNthStatus(1))
     .expect(getUrl()).match(/statuses/)
-  await sleep(1000)
   await t
-    .expect(getNthStatusContent(1).innerText).contains('this is a thread')
+    .expect(getNthStatusContent(1).innerText).contains('this is a thread', { timeout: 30000 })
     .click(getNthReplyButton(1))
-  await sleep(1000)
+  await sleep(2000)
   await t
     .typeText(getNthComposeReplyInput(1), 'heyo', { paste: true })
     .click(getNthComposeReplyButton(1))
-  await sleep(1000)
   await t
-    .expect(getNthStatus(2).innerText).contains('@admin heyo')
+    .expect(getNthStatus(2).innerText).contains('@admin heyo', { timeout: 30000 })
     .click(getNthStatusOptionsButton(2))
-  await sleep(500)
+  await sleep(2000)
   await t
     .click(dialogOptionsOption.withText('Delete and redraft'))
-  await sleep(500)
   await t
-    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk({ timeout: 30000 })
     .typeText(composeModalInput, ' update!', { paste: true })
-  await sleep(1000)
+  await sleep(2000)
   await t
     .click(composeModalComposeButton)
-  await sleep(1000)
   await t
-    .expect(modalDialog.exists).notOk()
+    .expect(modalDialog.exists).notOk({ timeout: 20000 })
     .expect(getNthStatusContent(2).innerText).match(/@admin heyo\s+update!/, {
       timeout: 30000
     })

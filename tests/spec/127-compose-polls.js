@@ -7,7 +7,7 @@ import {
   getComposePollNthInput,
   composePoll,
   composePollMultipleChoice,
-  composePollExpiry, composePollAddButton, getComposePollRemoveNthButton, postStatusButton, composeInput
+  composePollExpiry, composePollAddButton, getComposePollRemoveNthButton, postStatusButton, composeInput, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { POLL_EXPIRY_DEFAULT } from '../../src/routes/_static/polls'
@@ -42,20 +42,28 @@ test('Can add and remove poll options', async t => {
     .expect(composePoll.exists).ok()
     .typeText(getComposePollNthInput(1), 'first', { paste: true })
     .typeText(getComposePollNthInput(2), 'second', { paste: true })
+  await sleep(1000)
+  await t
     .click(composePollAddButton)
     .typeText(getComposePollNthInput(3), 'third', { paste: true })
     .expect(getComposePollNthInput(1).value).eql('first')
     .expect(getComposePollNthInput(2).value).eql('second')
     .expect(getComposePollNthInput(3).value).eql('third')
     .expect(getComposePollNthInput(4).exists).notOk()
+  await sleep(1000)
+  await t
     .click(getComposePollRemoveNthButton(2))
     .expect(getComposePollNthInput(1).value).eql('first')
     .expect(getComposePollNthInput(2).value).eql('third')
     .expect(getComposePollNthInput(3).exists).notOk()
     .expect(getComposePollNthInput(4).exists).notOk()
+  await sleep(1000)
+  await t
     .click(composePollAddButton)
     .typeText(getComposePollNthInput(3), 'fourth', { paste: true })
     .typeText(composeInput, 'Vote on my poll!!!', { paste: true })
+  await sleep(1000)
+  await t
     .click(postStatusButton)
     .expect(getNthStatusContent(1).innerText).contains('Vote on my poll!!!')
     .expect(getNthStatusPollForm(1).exists).notOk()
