@@ -50,7 +50,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cheerio": "^1.0.0-rc.2",
     "child-process-promise": "^2.2.1",
-    "chokidar": "^3.0.0",
+    "chokidar": "^3.0.1",
     "circular-dependency-plugin": "^5.0.2",
     "clean-css": "^4.2.1",
     "compression": "^1.7.4",
@@ -66,7 +66,7 @@
     "express": "^4.17.1",
     "file-api": "^0.10.4",
     "file-drop-element": "0.2.0",
-    "form-data": "^2.3.3",
+    "form-data": "^2.4.0",
     "glob": "^7.1.4",
     "indexeddb-getall-shim": "^1.3.5",
     "intersection-observer": "^0.7.0",
@@ -83,10 +83,10 @@
     "pinch-zoom-element": "^1.1.1",
     "preact": "^10.0.0-beta.1",
     "prop-types": "^15.7.2",
-    "quick-lru": "^4.0.0",
+    "quick-lru": "^4.0.1",
     "remount": "^0.11.0",
     "requestidlecallback": "^0.3.0",
-    "rollup": "^1.15.6",
+    "rollup": "^1.16.2",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.0.0",
     "sapper": "nolanlawson/sapper#for-pinafore-14",
@@ -99,17 +99,17 @@
     "terser-webpack-plugin": "^1.3.0",
     "text-encoding": "^0.7.0",
     "tiny-queue": "^0.2.1",
-    "webpack": "^4.34.0",
+    "webpack": "^4.35.0",
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "devDependencies": {
     "assert": "^2.0.0",
     "eslint-plugin-html": "^5.0.5",
-    "fake-indexeddb": "^2.1.0",
+    "fake-indexeddb": "^2.1.1",
     "mocha": "^6.1.4",
-    "now": "^15.3.0",
+    "now": "^15.6.0",
     "standard": "^12.0.1",
-    "testcafe": "^1.1.4"
+    "testcafe": "^1.2.1"
   },
   "engines": {
     "node": ">= 8"
