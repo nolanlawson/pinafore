@@ -71,8 +71,9 @@ test('Can update poll results', async t => {
 })
 
 test('Poll results refresh everywhere', async t => {
-  await loginAsFoobar(t)
   await createPollAs('admin', 'another poll', ['yes', 'no'], false)
+  await sleep(2000)
+  await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).innerText).contains('another poll')
     .click(getNthStatusRelativeDate(1))
