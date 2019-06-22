@@ -83,15 +83,15 @@ To keep your version of Pinafore up to date, you can use `git` to check out the 
 
 ### Exporting
 
-You can export Pinafore as a static site. Run:
+Pinafore is a static site. When you run `yarn build`, static files will be 
+written to `__sapper__/export`.
 
-    yarn run export
+In theory you could host these static files yourself (e.g. using nginx or Apache), but 
+it's not recommended, because:
 
-Static files will be written to `__sapper__/export`.
-
-Note that this is not the recommended method, because
-[CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) headers are not 
-currently supported for the exported version.
+- You'd have to set the [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) headers yourself,
+which are an important security feature.
+- Some routes are dynamic and need to be routed to the correct static file.
 
 ## Developing and testing
 
