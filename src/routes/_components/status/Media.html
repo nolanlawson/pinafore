@@ -1,20 +1,22 @@
-{#if type === 'video'}
+{#if type === 'video' || type === 'audio'}
   <button id={elementId}
           type="button"
-          class="play-video-button {$largeInlineMedia ? '' : 'fixed-size'}"
+          class="play-video-button {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
           aria-label="Play video: {description}"
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
     <PlayVideoIcon />
-    <LazyImage
-      alt={description}
-      title={description}
-      src={previewUrl}
-      fallback={oneTransparentPixel}
-      width={inlineWidth}
-      height={inlineHeight}
-      background="var(--loading-bg)"
-      {focus}
-    />
+    {#if type === 'video'}
+      <LazyImage
+        alt={description}
+        title={description}
+        src={previewUrl}
+        fallback={oneTransparentPixel}
+        width={inlineWidth}
+        height={inlineHeight}
+        background="var(--loading-bg)"
+        {focus}
+      />
+    {/if}
   </button>
 {:else}
   <button id={elementId}
@@ -71,6 +73,9 @@
     border: none;
     background: none;
     position: relative;
+  }
+  .play-audio-button {
+    background: var(--audio-bg);
   }
 
   /* the actual focus outline is not very visible, so use an ::after pseudo-element */

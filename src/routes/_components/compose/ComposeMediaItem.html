@@ -1,5 +1,9 @@
 <li class="compose-media compose-media-realm-{realm}">
-  <img src={mediaItem.data.preview_url} {alt} />
+  <img
+    class="{type === 'audio' ? 'audio-preview' : ''}"
+    src={previewSrc}
+    {alt}
+  />
   <div class="compose-media-delete">
     <button class="compose-media-delete-button"
             aria-label="Delete {shortName}"
@@ -10,13 +14,11 @@
   <div class="compose-media-alt">
     <textarea id="compose-media-input-{uuid}"
            class="compose-media-alt-input"
-           placeholder="Describe for the visually impaired"
+           placeholder="Description"
            ref:textarea
            bind:value=rawText
     ></textarea>
-    <label for="compose-media-input-{uuid}" class="sr-only">
-      Describe {shortName} for the visually impaired
-    </label>
+    <label for="compose-media-input-{uuid}" class="sr-only">{label}</label>
   </div>
 </li>
 <style>
@@ -85,6 +87,10 @@
     height: 18px;
   }
 
+  .audio-preview {
+    background: var(--audio-bg);
+  }
+
   .compose-media-realm-dialog {
     max-height: 20vh;
   }
@@ -106,6 +112,7 @@
   import { observe } from 'svelte-extras'
   import SvgIcon from '../SvgIcon.html'
   import { autosize } from '../../_thirdparty/autosize/autosize'
+  import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
 
   export default {
     oncreate () {
@@ -126,7 +133,14 @@
         // so fall back to the description if it was provided
         filename || mediaItem.description || ''
       ),
+      type: ({ mediaItem }) => mediaItem.data.type,
       shortName: ({ filename }) => filename || 'media',
+      previewSrc: ({ mediaItem, type }) => (
+        type === 'audio' ? ONE_TRANSPARENT_PIXEL : mediaItem.data.preview_url
+      ),
+      label: ({ shortName }) => (
+        `Describe ${shortName} for the visually impaired (image, video) or auditorily impaired (audio, video)`
+      ),
       uuid: ({ realm, mediaItem }) => `${realm}-${mediaItem.data.id}`
     },
     store: () => store,
