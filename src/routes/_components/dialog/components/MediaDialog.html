@@ -217,7 +217,7 @@
     computed: {
       length: ({ mediaItems }) => mediaItems.length,
       dots: ({ length }) => times(length, i => ({ i })),
-      canPinchZoom: ({ mediaItems }) => !mediaItems.some(media => media.type === 'video')
+      canPinchZoom: ({ mediaItems }) => !mediaItems.some(media => ['video', 'audio'].includes(media.type))
     },
     components: {
       ModalDialog,
