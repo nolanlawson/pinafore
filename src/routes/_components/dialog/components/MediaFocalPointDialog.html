@@ -1,0 +1,258 @@
+<ModalDialog
+  {id}
+  {label}
+  {title}
+  background="var(--main-bg)"
+  className="media-focal-point-dialog"
+  on:show="measure()"
+>
+  <form class="media-focal-point-container"
+        aria-label="Enter the focal point (X, Y) for this media"
+        on:resize="measure()"
+  >
+    <div class="media-focal-point-image-container" ref:container>
+      <img
+        class="media-focal-point-image"
+        src={previewSrc}
+        alt={shortName}
+      />
+      <div class="media-focal-point-backdrop"></div>
+       <SvgIcon
+         className="media-focal-point-indicator-svg"
+         style="top: {indicatorY}; left: {indicatorX};"
+         href="#fa-crosshairs"
+       />
+    </div>
+    <div class="media-focal-point-inputs">
+      <div class="media-focal-point-input-pair">
+        <label for="media-focal-point-x-input-{realm}">
+          X coordinate
+        </label>
+        <input type="number"
+               step="0.01"
+               min="-1"
+               max="1"
+               inputmode="decimal"
+               placeholder="0"
+               id="media-focal-point-x-input-{realm}"
+               bind:value="rawFocusX"
+         />
+      </div>
+      <div class="media-focal-point-input-pair">
+        <label for="media-focal-point-y-input-{realm}">
+          Y coordinate
+        </label>
+        <input type="number"
+               step="0.01"
+               min="-1"
+               max="1"
+               inputmode="decimal"
+               placeholder="0"
+               id="media-focal-point-y-input-{realm}"
+               bind:value="rawFocusY"
+      />
+      </div>
+    </div>
+  </form>
+</ModalDialog>
+<style>
+  :global(.media-focal-point-dialog) {
+    max-width: calc(100%);
+  }
+  .media-focal-point-container {
+    height: calc(100% - 44px); /* 44px X button height */
+    width: calc(100vw - 20px);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .media-focal-point-image-container {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    min-height: 0;
+  }
+  .media-focal-point-image {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-focal-point-backdrop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
+
+  @supports (-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%)) {
+    .media-focal-point-backdrop {
+      -webkit-backdrop-filter: blur(7px) saturate(110%);
+      backdrop-filter: blur(7px) saturate(110%);
+      background-color: var(--focal-img-backdrop-filter);
+    }
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%))) {
+    .media-focal-point-backdrop {
+      background-color: var(--focal-img-bg);
+    }
+  }
+
+  .media-focal-point-inputs {
+    display: flex;
+    padding: 20px 40px;
+    justify-content: space-around;
+  }
+
+  .media-focal-point-input-pair input {
+    margin-left: 20px;
+  }
+
+  :global(.media-focal-point-indicator-svg) {
+    position: absolute;
+    fill: var(--focal-color);
+    background: var(--focal-bg);
+    width: 32px;
+    height: 32px;
+    padding: 10px;
+    border-radius: 100%;
+  }
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { store } from '../../../_store/store'
+  import { get } from '../../../_utils/lodash-lite'
+  import { observe } from 'svelte-extras'
+  import debounce from 'lodash-es/debounce'
+  import { scheduleIdleTask } from '../../../_utils/scheduleIdleTask'
+  import { coordsToPercent } from '../../../_utils/coordsToPercent'
+  import SvgIcon from '../../SvgIcon.html'
+  import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
+  import { resize } from '../../../_utils/events'
+
+  const parseAndValidateFloat = rawText => {
+    let float = parseFloat(rawText)
+    if (Number.isNaN(float)) {
+      float = 0
+    }
+    float = Math.min(1, float)
+    float = Math.max(-1, float)
+    float = Math.round(float * 100) / 100
+    return float
+  }
+
+  const INDICATOR_OFFSET = 26 // 32px icon width / 2 + 10px padding
+
+  export default {
+    oncreate () {
+      onCreateDialog.call(this)
+      this.setupSyncFromStore()
+      this.setupSyncToStore()
+    },
+    components: {
+      ModalDialog,
+      SvgIcon
+    },
+    data: () => ({
+      rawFocusX: '0',
+      rawFocusY: '0',
+      containerWidth: 0,
+      containerHeight: 0
+    }),
+    store: () => store,
+    computed: {
+      media: ({ $currentInstance, $composeData, realm }) => (
+        get($composeData, [$currentInstance, realm, 'media'])
+      ),
+      mediaItem: ({ media, index }) => (
+        get(media, [index])
+      ),
+      focusX: ({ mediaItem }) => get(mediaItem, ['focusX'], 0),
+      focusY: ({ mediaItem }) => get(mediaItem, ['focusY'], 0),
+      previewSrc: ({ mediaItem }) => (
+        mediaItem.data.preview_url
+      ),
+      nativeWidth: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'width'], 300),
+      nativeHeight: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'height'], 200),
+      shortName: ({ mediaItem }) => (
+        // sometimes we no longer have the file, e.g. in a delete and redraft situation,
+        // so fall back to the description if it was provided
+        get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
+      ),
+      imageScale: ({ nativeWidth, nativeHeight, containerWidth, containerHeight }) => {
+        if (!containerWidth || !containerHeight) {
+          return [0, 0]
+        }
+        return intrinsicScale(containerWidth, containerHeight, nativeWidth, nativeHeight)
+      },
+      imageScaleX: ({ imageScale }) => imageScale[0],
+      imageScaleY: ({ imageScale }) => imageScale[1],
+      indicatorX: ({ imageScaleX, focusX }) => (
+        `calc(${coordsToPercent(imageScaleX * focusX)}% - ${INDICATOR_OFFSET}px)`
+      ),
+      indicatorY: ({ imageScaleY, focusY }) => (
+        `calc(${100 - coordsToPercent(imageScaleY * focusY)}% - ${INDICATOR_OFFSET}px)`
+      )
+    },
+    methods: {
+      observe,
+      show,
+      close,
+      setupSyncFromStore () {
+        this.observe('mediaItem', mediaItem => {
+          let { rawFocusX, rawFocusY } = this.get()
+
+          const syncFromStore = (rawKey, rawFocus, key) => {
+            let focus = get(mediaItem, [key], 0) || 0
+            let focusAsString = focus.toString()
+            console.log('focus', focus, 'rawFocus', rawFocus)
+            if (focusAsString !== rawFocus) {
+              this.set({ [rawKey]: focusAsString })
+            }
+          }
+
+          syncFromStore('rawFocusX', rawFocusX, 'focusX')
+          syncFromStore('rawFocusY', rawFocusY, 'focusY')
+        })
+      },
+      setupSyncToStore () {
+        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+        const observeAndSync = (rawKey, key) => {
+          this.observe(rawKey, rawFocus => {
+            let { realm, index, media } = this.get()
+            let rawFocusDecimal = parseAndValidateFloat(rawFocus)
+            if (media[index][key] !== rawFocusDecimal) {
+              media[index][key] = rawFocusDecimal
+              this.store.setComposeData(realm, { media })
+              saveStore()
+            }
+          }, { init: false })
+        }
+
+        observeAndSync('rawFocusX', 'focusX')
+        observeAndSync('rawFocusY', 'focusY')
+      },
+      measure () {
+        requestAnimationFrame(() => {
+          if (!this.refs.container) {
+            return
+          }
+          let rect = this.refs.container.getBoundingClientRect()
+          this.set({
+            containerWidth: rect.width,
+            containerHeight: rect.height
+          })
+        })
+      }
+    },
+    events: {
+      resize
+    }
+  }
+</script>
