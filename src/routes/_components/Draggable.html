@@ -1,0 +1,102 @@
+<div class="draggable-area {draggableClass}"
+     on:pointermove="onPointerMove(event)"
+     on:pointerleave="onPointerLeave(event)"
+     on:click="onClick(event)"
+     ref:area
+>
+  <div class="draggable-indicator {indicatorClass}"
+       style={indicatorStyle}
+       on:pointerdown="onPointerDown(event)"
+       on:pointerup="onPointerUp(event)"
+       ref:indicator
+  >
+    <div class="draggable-indicator-inner">
+      <slot></slot>
+    </div>
+  </div>
+</div>
+<style>
+  .draggable-area {
+    position: relative;
+    touch-action: none;
+  }
+  .draggable-indicator {
+    position: absolute;
+    cursor: pointer;
+  }
+  .draggable-indicator-inner {
+    pointer-events: none;
+    display: flex;
+  }
+</style>
+<script>
+  import { throttleRaf } from '../_utils/throttleRaf'
+
+  const clamp = x => Math.max(0, Math.min(1, x))
+  const throttledRaf = throttleRaf()
+
+  export default {
+    data: () => ({
+      draggableClass: '',
+      indicatorClass: '',
+      x: 0,
+      y: 0,
+      indicatorWidth: 0,
+      indicatorHeight: 0
+    }),
+    computed: {
+      indicatorStyle: ({ x, y, indicatorWidth, indicatorHeight }) => (
+        `left: calc(${x * 100}% - ${indicatorWidth / 2}px); top: calc(${y * 100}% - ${indicatorHeight / 2}px);`
+      )
+    },
+    methods: {
+      onPointerDown (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let rect = this.refs.indicator.getBoundingClientRect()
+        this.set({
+          dragging: true,
+          dragOffsetX: e.clientX - rect.left,
+          dragOffsetY: e.clientY - rect.top
+        })
+      },
+      onPointerMove (e) {
+        if (this.get().dragging) {
+          e.preventDefault()
+          e.stopPropagation()
+          let { indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
+          throttledRaf(() => {
+            let rect = this.refs.area.getBoundingClientRect()
+            let offsetX = dragOffsetX - (indicatorWidth / 2)
+            let offsetY = dragOffsetY - (indicatorHeight / 2)
+            let x = clamp((e.clientX - rect.left - offsetX) / rect.width)
+            let y = clamp((e.clientY - rect.top - offsetY) / rect.height)
+            this.set({ x, y })
+            this.fire('change', { x, y })
+          })
+        }
+      },
+      onPointerUp (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.set({ dragging: false })
+      },
+      onPointerLeave (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.set({ dragging: false })
+      },
+      onClick (e) {
+        if (!e.target.classList.contains('draggable-indicator')) {
+          e.preventDefault()
+          e.stopPropagation()
+          let rect = this.refs.area.getBoundingClientRect()
+          let x = clamp((e.clientX - rect.left) / rect.width)
+          let y = clamp((e.clientY - rect.top) / rect.height)
+          this.set({ x, y })
+          this.fire('change', { x, y })
+        }
+      }
+    }
+  }
+</script>

@@ -13,3 +13,7 @@ export const importIndexedDBGetAllShim = () => import(
 export const importCustomElementsPolyfill = () => import(
   /* webpackChunkName: '$polyfill$-@webcomponents/custom-elements' */ '@webcomponents/custom-elements'
   )
+
+export const importPointerEventsPolyfill = () => import(
+  /* webpackChunkName: '$polyfill$-@wessberg/pointer-events' */ '@wessberg/pointer-events'
+  )

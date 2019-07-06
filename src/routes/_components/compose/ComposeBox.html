@@ -193,6 +193,7 @@
         let sensitive = media.length && !!contentWarning
         let mediaIds = media.map(_ => _.data.id)
         let mediaDescriptions = media.map(_ => _.description)
+        let mediaFocalPoints = media.map(_ => [_.focusX, _.focusY])
         let inReplyTo = inReplyToId || ((realm === 'home' || realm === 'dialog') ? null : realm)
 
         if (overLimit || (!text && !media.length)) {
@@ -217,7 +218,8 @@
         /* no await */
         postStatus(realm, text, inReplyTo, mediaIds,
           sensitive, contentWarning, postPrivacyKey,
-          mediaDescriptions, inReplyToUuid, pollToPost)
+          mediaDescriptions, inReplyToUuid, pollToPost,
+          mediaFocalPoints)
       }
     }
   }

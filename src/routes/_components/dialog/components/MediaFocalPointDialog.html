@@ -1,0 +1,326 @@
+<ModalDialog
+  {id}
+  {label}
+  {title}
+  background="var(--main-bg)"
+  className="media-focal-point-dialog"
+  on:show="measure()"
+>
+  <form class="media-focal-point-container"
+        aria-label="Enter the focal point (X, Y) for this media"
+        on:resize="measure()"
+  >
+    <div class="media-focal-point-image-container" ref:container>
+      <img
+        {intrinsicsize}
+        class="media-focal-point-image"
+        src={previewSrc}
+        alt={shortName}
+        on:load="onImageLoad()"
+      />
+      <div class="media-focal-point-backdrop"></div>
+      <div class="media-draggable-area"
+           style={draggableAreaStyle}
+      >
+        <!-- 52px == 32px icon width + 10px padding -->
+        <Draggable
+          draggableClass="media-draggable-area-inner"
+          indicatorClass="media-focal-point-indicator {imageLoaded ? '': 'hidden'}"
+          indicatorWidth={52}
+          indicatorHeight={52}
+          x={indicatorX}
+          y={indicatorY}
+          on:change="onDraggableChange(event)"
+        >
+          <SvgIcon
+            className="media-focal-point-indicator-svg"
+            href="#fa-crosshairs"
+          />
+        </Draggable>
+      </div>
+    </div>
+    <div class="media-focal-point-inputs">
+      <div class="media-focal-point-input-pair">
+        <label for="media-focal-point-x-input-{realm}">
+          X coordinate
+        </label>
+        <input type="number"
+               step="0.01"
+               min="-1"
+               max="1"
+               inputmode="decimal"
+               placeholder="0"
+               id="media-focal-point-x-input-{realm}"
+               bind:value="rawFocusX"
+         />
+      </div>
+      <div class="media-focal-point-input-pair">
+        <label for="media-focal-point-y-input-{realm}">
+          Y coordinate
+        </label>
+        <input type="number"
+               step="0.01"
+               min="-1"
+               max="1"
+               inputmode="decimal"
+               placeholder="0"
+               id="media-focal-point-y-input-{realm}"
+               bind:value="rawFocusY"
+      />
+      </div>
+    </div>
+  </form>
+</ModalDialog>
+<style>
+  :global(.media-focal-point-dialog) {
+    max-width: calc(100%);
+  }
+  .media-focal-point-container {
+    height: calc(100% - 44px); /* 44px X button height */
+    width: calc(100vw - 40px);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .media-focal-point-image-container {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    min-height: 0;
+  }
+  .media-focal-point-image {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-focal-point-backdrop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
+
+  @supports (-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%)) {
+    .media-focal-point-backdrop {
+      -webkit-backdrop-filter: blur(2px) saturate(110%);
+      backdrop-filter: blur(2px) saturate(110%);
+      background-color: var(--focal-img-backdrop-filter);
+    }
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%))) {
+    .media-focal-point-backdrop {
+      background-color: var(--focal-img-bg);
+    }
+  }
+
+  .media-focal-point-inputs {
+    display: flex;
+    padding: 20px 40px;
+    justify-content: space-around;
+    width: auto;
+  }
+
+  .media-focal-point-input-pair {
+    display: flex;
+    align-items: center;
+  }
+
+  .media-focal-point-input-pair input {
+    margin-left: 20px;
+  }
+
+  .media-draggable-area {
+    position: absolute;
+  }
+
+  :global(.media-focal-point-indicator) {
+    background: var(--focal-bg);
+    border-radius: 100%;
+    display: flex;
+  }
+
+  :global(.media-draggable-area-inner) {
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.media-focal-point-indicator-svg) {
+    width: 32px;
+    height: 32px;
+    padding: 10px;
+    fill: var(--focal-color);
+  }
+
+  @media (max-width: 767px) {
+    .media-focal-point-inputs {
+      padding: 10px 20px;
+    }
+    .media-focal-point-input-pair {
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 5px;
+    }
+    .media-focal-point-input-pair input {
+      margin-left: 0;
+      width: 100px;
+    }
+  }
+</style>
+<script>
+  import ModalDialog from './ModalDialog.html'
+  import { show } from '../helpers/showDialog'
+  import { close } from '../helpers/closeDialog'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { store } from '../../../_store/store'
+  import { get } from '../../../_utils/lodash-lite'
+  import { observe } from 'svelte-extras'
+  import debounce from 'lodash-es/debounce'
+  import { scheduleIdleTask } from '../../../_utils/scheduleIdleTask'
+  import { coordsToPercent, percentToCoords } from '../../../_utils/coordsToPercent'
+  import SvgIcon from '../../SvgIcon.html'
+  import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
+  import { resize } from '../../../_utils/events'
+  import Draggable from '../../Draggable.html'
+
+  const parseAndValidateFloat = rawText => {
+    let float = parseFloat(rawText)
+    if (Number.isNaN(float)) {
+      float = 0
+    }
+    float = Math.min(1, float)
+    float = Math.max(-1, float)
+    float = Math.round(float * 100) / 100
+    return float
+  }
+
+  export default {
+    oncreate () {
+      onCreateDialog.call(this)
+      this.setupSyncFromStore()
+      this.setupSyncToStore()
+    },
+    components: {
+      ModalDialog,
+      SvgIcon,
+      Draggable
+    },
+    data: () => ({
+      rawFocusX: '0',
+      rawFocusY: '0',
+      containerWidth: 0,
+      containerHeight: 0,
+      imageLoaded: false
+    }),
+    store: () => store,
+    computed: {
+      media: ({ $currentInstance, $composeData, realm }) => (
+        get($composeData, [$currentInstance, realm, 'media'])
+      ),
+      mediaItem: ({ media, index }) => get(media, [index]),
+      focusX: ({ mediaItem }) => get(mediaItem, ['focusX'], 0),
+      focusY: ({ mediaItem }) => get(mediaItem, ['focusY'], 0),
+      previewSrc: ({ mediaItem }) => mediaItem.data.preview_url,
+      nativeWidth: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'width'], 300),
+      nativeHeight: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'height'], 200),
+      shortName: ({ mediaItem }) => (
+        // sometimes we no longer have the file, e.g. in a delete and redraft situation,
+        // so fall back to the description if it was provided
+        get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
+      ),
+      intrinsicsize: ({ mediaItem }) => {
+        let width = get(mediaItem, ['data', 'meta', 'original', 'width'])
+        let height = get(mediaItem, ['data', 'meta', 'original', 'height'])
+        if (width && height) {
+          return `${width} x ${height}`
+        }
+        return '' // pleroma does not give us original width/height
+      },
+      scale: ({ nativeWidth, nativeHeight, containerWidth, containerHeight }) => (
+        intrinsicScale(containerWidth, containerHeight, nativeWidth, nativeHeight)
+      ),
+      scaleWidth: ({ scale }) => scale.width,
+      scaleHeight: ({ scale }) => scale.height,
+      scaleX: ({ scale }) => scale.x,
+      scaleY: ({ scale }) => scale.y,
+      indicatorX: ({ focusX }) => (coordsToPercent(focusX) / 100),
+      indicatorY: ({ focusY }) => ((100 - coordsToPercent(focusY)) / 100),
+      draggableAreaStyle: ({ scaleWidth, scaleHeight, scaleX, scaleY }) => (
+        `top: ${scaleY}px; left: ${scaleX}px; width: ${scaleWidth}px; height: ${scaleHeight}px;`
+      )
+    },
+    methods: {
+      observe,
+      show,
+      close,
+      setupSyncFromStore () {
+        this.observe('mediaItem', mediaItem => {
+          let { rawFocusX, rawFocusY } = this.get()
+
+          const syncFromStore = (rawKey, rawFocus, key) => {
+            let focus = get(mediaItem, [key], 0) || 0
+            let focusAsString = focus.toString()
+            if (focusAsString !== rawFocus) {
+              this.set({ [rawKey]: focusAsString })
+            }
+          }
+
+          syncFromStore('rawFocusX', rawFocusX, 'focusX')
+          syncFromStore('rawFocusY', rawFocusY, 'focusY')
+        })
+      },
+      setupSyncToStore () {
+        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+        const observeAndSync = (rawKey, key) => {
+          this.observe(rawKey, rawFocus => {
+            let { realm, index, media } = this.get()
+            let rawFocusDecimal = parseAndValidateFloat(rawFocus)
+            if (media[index][key] !== rawFocusDecimal) {
+              media[index][key] = rawFocusDecimal
+              this.store.setComposeData(realm, { media })
+              saveStore()
+            }
+          }, { init: false })
+        }
+
+        observeAndSync('rawFocusX', 'focusX')
+        observeAndSync('rawFocusY', 'focusY')
+      },
+      onDraggableChange ({ x, y }) {
+        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+        scheduleIdleTask(() => {
+          let focusX = percentToCoords(x * 100)
+          let focusY = percentToCoords(100 - (y * 100))
+          let { realm, index, media } = this.get()
+          media[index].focusX = parseAndValidateFloat(focusX)
+          media[index].focusY = parseAndValidateFloat(focusY)
+          this.store.setComposeData(realm, { media })
+          saveStore()
+        })
+      },
+      measure () {
+        requestAnimationFrame(() => {
+          if (!this.refs.container) {
+            return
+          }
+          let rect = this.refs.container.getBoundingClientRect()
+          this.set({
+            containerWidth: rect.width,
+            containerHeight: rect.height
+          })
+        })
+      },
+      onImageLoad () {
+        this.measure()
+        this.set({ imageLoaded: true })
+      }
+    },
+    events: {
+      resize
+    }
+  }
+</script>
