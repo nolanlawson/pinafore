@@ -1,3 +1,5 @@
+import { registerResizeListener, unregisterResizeListener } from './resize'
+
 export function mouseover (node, callback) {
   function onMouseEnter () {
     callback(true) // eslint-disable-line
@@ -68,6 +70,16 @@ export function applyFocusStylesToParent (node) {
     destroy () {
       node.removeEventListener('focus', onFocus)
       node.removeEventListener('blur', onBlur)
+    }
+  }
+}
+
+export function resize (node, callback) {
+  registerResizeListener(callback)
+
+  return {
+    destroy () {
+      unregisterResizeListener(callback)
     }
   }
 }

@@ -1,14 +1,23 @@
-<li class="compose-media compose-media-realm-{realm}">
+<li class="compose-media compose-media-realm-{realm}" aria-label={shortName}>
   <img
     class="{type === 'audio' ? 'audio-preview' : ''}"
+    style="object-position: {objectPosition};"
     src={previewSrc}
-    {alt}
+    aria-hidden="true"
   />
-  <div class="compose-media-delete">
-    <button class="compose-media-delete-button"
-            aria-label="Delete {shortName}"
+  <div class="compose-media-buttons">
+    <button class="compose-media-button {type === 'audio' ? 'compose-media-hidden-button' : ''}"
+            aria-hidden={type === 'audio'}
+            aria-label="Change preview"
+            title="Change preview"
+            on:click="onSetFocalPoint()" >
+      <SvgIcon className="compose-media-button-svg" href="#fa-crosshairs" />
+    </button>
+    <button class="compose-media-button"
+            aria-label="Delete"
+            title="Delete"
             on:click="onDeleteMedia()" >
-      <SvgIcon className="compose-media-delete-button-svg" href="#fa-times" />
+      <SvgIcon className="compose-media-button-svg" href="#fa-times" />
     </button>
   </div>
   <div class="compose-media-alt">
@@ -18,7 +27,9 @@
            ref:textarea
            bind:value=rawText
     ></textarea>
-    <label for="compose-media-input-{uuid}" class="sr-only">{label}</label>
+    <label for="compose-media-input-{uuid}" class="sr-only">
+      Describe for the visually impaired (image, video) or auditorily impaired (audio, video)
+    </label>
   </div>
 </li>
 <style>
@@ -34,7 +45,6 @@
   }
   .compose-media img {
     object-fit: contain;
-    object-position: center center;
     flex: 1;
     height: 100%;
     width: 100%;
@@ -60,31 +70,36 @@
   .compose-media-alt-input:focus {
     background: var(--main-bg);
   }
-  .compose-media-delete {
+  .compose-media-buttons {
     position: absolute;
     z-index: 10;
     top: 0;
     right: 0;
     left: 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin: 2px;
   }
-  .compose-media-delete-button {
+  .compose-media-button {
     padding: 7px 10px 5px;
     background: var(--floating-button-bg);
     border: 1px solid var(--button-border);
   }
-  .compose-media-delete-button:hover {
+  .compose-media-button:hover {
     background: var(--floating-button-bg-hover);
   }
-  .compose-media-delete-button:active {
+  .compose-media-button:active {
     background: var(--floating-button-bg-active);
   }
-  :global(.compose-media-delete-button-svg) {
+  :global(.compose-media-button-svg) {
     fill: var(--button-text);
     width: 18px;
     height: 18px;
+  }
+
+  .compose-media-hidden-button {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .audio-preview {
@@ -113,6 +128,9 @@
   import SvgIcon from '../SvgIcon.html'
   import { autosize } from '../../_thirdparty/autosize/autosize'
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
+  import { get } from '../../_utils/lodash-lite'
+  import { coordsToPercent } from '../../_utils/coordsToPercent'
+  import { importMediaFocalPointDialog } from '../dialog/asyncDialogs'
 
   export default {
     oncreate () {
@@ -124,24 +142,27 @@
       this.teardownAutosize()
     },
     data: () => ({
-      rawText: ''
+      rawText: '',
+      focusX: 0,
+      focusY: 0
     }),
     computed: {
-      filename: ({ mediaItem }) => mediaItem.file && mediaItem.file.name,
-      alt: ({ filename, mediaItem }) => (
+      type: ({ mediaItem }) => mediaItem.data.type,
+      shortName: ({ mediaItem }) => (
         // sometimes we no longer have the file, e.g. in a delete and redraft situation,
         // so fall back to the description if it was provided
-        filename || mediaItem.description || ''
+        get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
       ),
-      type: ({ mediaItem }) => mediaItem.data.type,
-      shortName: ({ filename }) => filename || 'media',
       previewSrc: ({ mediaItem, type }) => (
         type === 'audio' ? ONE_TRANSPARENT_PIXEL : mediaItem.data.preview_url
       ),
-      label: ({ shortName }) => (
-        `Describe ${shortName} for the visually impaired (image, video) or auditorily impaired (audio, video)`
-      ),
-      uuid: ({ realm, mediaItem }) => `${realm}-${mediaItem.data.id}`
+      uuid: ({ realm, mediaItem }) => `${realm}-${mediaItem.data.id}`,
+      objectPosition: ({ focusX, focusY }) => {
+        if (!focusX && !focusY) {
+          return 'center center'
+        }
+        return `${coordsToPercent(focusX)}% ${100 - coordsToPercent(focusY)}%`
+      }
     },
     store: () => store,
     methods: {
@@ -150,10 +171,13 @@
         this.observe('media', media => {
           media = media || []
           let { index, rawText } = this.get()
-          let text = (media[index] && media[index].description) || ''
+          let text = get(media, [index, 'description'], '')
           if (rawText !== text) {
             this.set({ rawText: text })
           }
+          let focusX = get(media, [index, 'focusX'], 0)
+          let focusY = get(media, [index, 'focusY'], 0)
+          this.set({ focusX, focusY })
         })
       },
       setupSyncToStore () {
@@ -161,12 +185,11 @@
 
         this.observe('rawText', rawText => {
           let { realm, index, media } = this.get()
-          if (media[index].description === rawText) {
-            return
+          if (media[index].description !== rawText) {
+            media[index].description = rawText
+            this.store.setComposeData(realm, { media })
+            saveStore()
           }
-          media[index].description = rawText
-          this.store.setComposeData(realm, { media })
-          saveStore()
         }, { init: false })
       },
       setupAutosize () {
@@ -176,11 +199,13 @@
         autosize.destroy(this.refs.textarea)
       },
       onDeleteMedia () {
-        let {
-          realm,
-          index
-        } = this.get()
+        let { realm, index } = this.get()
         deleteMedia(realm, index)
+      },
+      async onSetFocalPoint () {
+        let { realm, index } = this.get()
+        let showMediaFocalPointDialog = await importMediaFocalPointDialog()
+        showMediaFocalPointDialog(realm, index)
       }
     },
     components: {
