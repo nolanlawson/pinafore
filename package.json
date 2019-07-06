@@ -43,7 +43,7 @@
     "build-now-json": "node -r esm ./bin/build-now-json.js"
   },
   "dependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.5.0",
     "@gamestdio/websocket": "^0.3.2",
     "@webcomponents/custom-elements": "^1.2.4",
     "babel-loader": "^8.0.6",
