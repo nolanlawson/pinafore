@@ -1,8 +1,8 @@
 <h1 class="sr-only">{label}</h1>
 <div class="timeline"
      role="feed"
-     on:focusWithCapture="saveFocus(event)"
-     on:blurWithCapture="clearFocus(event)"
+     on:focusWithCapture="saveFocus()"
+     on:blurWithCapture="clearFocus()"
 >
   {#await componentsPromise}
     <!-- awaiting promise -->
@@ -238,7 +238,7 @@
       onPushState () {
         this.store.setForCurrentTimeline({ ignoreBlurEvents: true })
       },
-      saveFocus (e) {
+      saveFocus () {
         try {
           let { currentInstance } = this.store.get()
           let { timeline } = this.get()
