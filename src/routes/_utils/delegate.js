@@ -28,6 +28,8 @@ function onEvent (e) {
         return // ignore if the user is selecting text inside the clickable area
       }
     }
+    e.preventDefault()
+    e.stopPropagation()
     callbacks[key](e)
   }
 }
