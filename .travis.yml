@@ -1,8 +1,12 @@
 language: node_js
 node_js:
   - "10"
-dist: trusty   # needed for chrome headless
-sudo: required # needed for various sudo operations
+dist: xenial
+sudo: false
+services:
+  - redis-server
+  - postgresql
+  - xvfb
 addons:
   chrome: stable
   postgresql: "10"
