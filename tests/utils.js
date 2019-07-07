@@ -92,8 +92,8 @@ export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt textarea`)
 }
 
-export function getComposeModalNthMediaImg (n) {
-  return $(`.modal-dialog .compose-media:nth-child(${n}) img`)
+export function getComposeModalNthMediaListItem (n) {
+  return $(`.modal-dialog .compose-media:nth-child(${n})`)
 }
 
 export const favoritesCountElement = $('.status-favs').addCustomDOMProperties({

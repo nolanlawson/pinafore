@@ -8,12 +8,11 @@ import {
   composeModalInput,
   getNthStatusMediaImg,
   composeModalPostPrivacyButton,
-  getComposeModalNthMediaImg,
   getComposeModalNthMediaAltInput,
   getNthStatusSpoiler,
   composeModalContentWarningInput,
   dialogOptionsOption,
-  getNthReplyButton, getNthComposeReplyInput, getNthComposeReplyButton, getUrl, sleep
+  getNthReplyButton, getNthComposeReplyInput, getNthComposeReplyButton, getUrl, sleep, getComposeModalNthMediaListItem
 } from '../utils'
 import { postAs, postEmptyStatusWithMediaAs, postWithSpoilerAndPrivacyAs } from '../serverActions'
 
@@ -48,13 +47,13 @@ test('image with empty text delete and redraft', async t => {
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
     .expect(composeModalInput.value).eql('')
     .expect(composeModalPostPrivacyButton.getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
-    .expect(getComposeModalNthMediaImg(1).getAttribute('alt')).eql('what a kitteh')
+    .expect(getComposeModalNthMediaListItem(1).getAttribute('aria-label')).eql('what a kitteh')
     .expect(getComposeModalNthMediaAltInput(1).value).eql('what a kitteh')
     .typeText(composeModalInput, 'I love this kitteh', { replace: true, paste: true })
     .click(composeModalComposeButton)
     .expect(modalDialog.exists).notOk()
     .expect(getNthStatusContent(1).innerText).contains('I love this kitteh')
-    .expect(getNthStatusMediaImg(1).getAttribute('alt')).eql('what a kitteh')
+    .expect(getComposeModalNthMediaListItem(1).getAttribute('aria-label')).eql('what a kitteh')
 })
 
 test('image with no alt delete and redraft', async t => {
@@ -68,7 +67,7 @@ test('image with no alt delete and redraft', async t => {
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
     .expect(composeModalInput.value).eql('')
     .expect(composeModalPostPrivacyButton.getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
-    .expect(getComposeModalNthMediaImg(1).getAttribute('alt')).eql('')
+    .expect(getComposeModalNthMediaListItem(1).getAttribute('aria-label')).eql('')
     .expect(getComposeModalNthMediaAltInput(1).value).eql('')
     .typeText(composeModalInput, 'oops forgot an alt', { replace: true, paste: true })
     .typeText(getComposeModalNthMediaAltInput(1), 'lovely kitteh', { replace: true, paste: true })
