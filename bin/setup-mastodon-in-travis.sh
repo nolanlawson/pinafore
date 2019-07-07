@@ -12,7 +12,7 @@ rvm install 2.6.1
 rvm use 2.6.1
 
 # setup postgres user in Travis
-psql -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;" -U postgres
+psql -d template1 -h 127.0.0.1 -p 5433 -c -U postgres "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
 
 echo PING | nc localhost 6379 # check redis running
 
