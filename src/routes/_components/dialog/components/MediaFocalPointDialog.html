@@ -17,11 +17,24 @@
         alt={shortName}
       />
       <div class="media-focal-point-backdrop"></div>
-       <SvgIcon
-         className="media-focal-point-indicator-svg"
-         style="top: {indicatorY}; left: {indicatorX};"
-         href="#fa-crosshairs"
-       />
+      <div class="media-draggable-area"
+           style={draggableAreaStyle}
+      >
+        <!-- 52px == 32px icon width + 10px padding -->
+        <Draggable
+          draggableClass="media-draggable-area-inner"
+          indicatorClass="media-focal-point-indicator"
+          indicatorWidth={52}
+          indicatorHeight={52}
+          x={indicatorX}
+          y={indicatorY}
+        >
+          <SvgIcon
+            className="media-focal-point-indicator-svg"
+            href="#fa-crosshairs"
+          />
+        </Draggable>
+      </div>
     </div>
     <div class="media-focal-point-inputs">
       <div class="media-focal-point-input-pair">
@@ -110,14 +123,26 @@
     margin-left: 20px;
   }
 
-  :global(.media-focal-point-indicator-svg) {
+  .media-draggable-area {
     position: absolute;
-    fill: var(--focal-color);
+  }
+
+  :global(.media-focal-point-indicator) {
     background: var(--focal-bg);
+    border-radius: 100%;
+    display: flex;
+  }
+
+  :global(.media-draggable-area-inner) {
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.media-focal-point-indicator-svg) {
     width: 32px;
     height: 32px;
     padding: 10px;
-    border-radius: 100%;
+    fill: var(--focal-color);
   }
 </style>
 <script>
@@ -134,6 +159,7 @@
   import SvgIcon from '../../SvgIcon.html'
   import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
   import { resize } from '../../../_utils/events'
+  import Draggable from '../../Draggable.html'
 
   const parseAndValidateFloat = rawText => {
     let float = parseFloat(rawText)
@@ -146,8 +172,6 @@
     return float
   }
 
-  const INDICATOR_OFFSET = 26 // 32px icon width / 2 + 10px padding
-
   export default {
     oncreate () {
       onCreateDialog.call(this)
@@ -156,7 +180,8 @@
     },
     components: {
       ModalDialog,
-      SvgIcon
+      SvgIcon,
+      Draggable
     },
     data: () => ({
       rawFocusX: '0',
@@ -169,14 +194,10 @@
       media: ({ $currentInstance, $composeData, realm }) => (
         get($composeData, [$currentInstance, realm, 'media'])
       ),
-      mediaItem: ({ media, index }) => (
-        get(media, [index])
-      ),
+      mediaItem: ({ media, index }) => get(media, [index]),
       focusX: ({ mediaItem }) => get(mediaItem, ['focusX'], 0),
       focusY: ({ mediaItem }) => get(mediaItem, ['focusY'], 0),
-      previewSrc: ({ mediaItem }) => (
-        mediaItem.data.preview_url
-      ),
+      previewSrc: ({ mediaItem }) => mediaItem.data.preview_url,
       nativeWidth: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'width'], 300),
       nativeHeight: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'height'], 200),
       shortName: ({ mediaItem }) => (
@@ -184,19 +205,17 @@
         // so fall back to the description if it was provided
         get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
       ),
-      imageScale: ({ nativeWidth, nativeHeight, containerWidth, containerHeight }) => {
-        if (!containerWidth || !containerHeight) {
-          return [0, 0]
-        }
-        return intrinsicScale(containerWidth, containerHeight, nativeWidth, nativeHeight)
-      },
-      imageScaleX: ({ imageScale }) => imageScale[0],
-      imageScaleY: ({ imageScale }) => imageScale[1],
-      indicatorX: ({ imageScaleX, focusX }) => (
-        `calc(${coordsToPercent(imageScaleX * focusX)}% - ${INDICATOR_OFFSET}px)`
+      scale: ({ nativeWidth, nativeHeight, containerWidth, containerHeight }) => (
+        intrinsicScale(containerWidth, containerHeight, nativeWidth, nativeHeight)
       ),
-      indicatorY: ({ imageScaleY, focusY }) => (
-        `calc(${100 - coordsToPercent(imageScaleY * focusY)}% - ${INDICATOR_OFFSET}px)`
+      scaleWidth: ({ scale }) => scale.width,
+      scaleHeight: ({ scale }) => scale.height,
+      scaleX: ({ scale }) => scale.x,
+      scaleY: ({ scale }) => scale.y,
+      indicatorX: ({ focusX }) => (coordsToPercent(focusX) / 100),
+      indicatorY: ({ focusY }) => ((100 - coordsToPercent(focusY)) / 100),
+      draggableAreaStyle: ({ scaleWidth, scaleHeight, scaleX, scaleY }) => (
+        `top: ${scaleY}px; left: ${scaleX}px; width: ${scaleWidth}px; height: ${scaleHeight}px;`
       )
     },
     methods: {

@@ -1,0 +1,36 @@
+<div class="draggable-area {draggableClass}">
+  <div class="draggable-indicator {indicatorClass}"
+       style={indicatorStyle}
+       ref:draggable
+  >
+    <slot></slot>
+  </div>
+</div>
+<style>
+  .draggable-area {
+    position: relative;
+  }
+  .draggable-indicator {
+    position: absolute;
+  }
+</style>
+<script>
+  export default {
+    oncreate () {
+      this.refs.draggable.getBoundingClientRect()
+    },
+    data: () => ({
+      draggableClass: '',
+      indicatorClass: '',
+      x: 0,
+      y: 0,
+      indicatorWidth: 0,
+      indicatorHeight: 0
+    }),
+    computed: {
+      indicatorStyle: ({ x, y, indicatorWidth, indicatorHeight }) => (
+        `left: calc(${x * 100}% - ${indicatorWidth / 2}px); top: calc(${y * 100}% - ${indicatorHeight / 2}px);`
+      )
+    }
+  }
+</script>

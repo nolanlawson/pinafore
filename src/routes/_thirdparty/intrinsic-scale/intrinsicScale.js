@@ -12,8 +12,10 @@ export const intrinsicScale = (parentWidth, parentHeight, childWidth, childHeigh
     width = height * doRatio
   }
 
-  return [
-    width / parentWidth,
-    height / parentHeight
-  ]
+  return {
+    width,
+    height,
+    x: (parentWidth - width) / 2,
+    y: (parentHeight - height) / 2
+  }
 }
