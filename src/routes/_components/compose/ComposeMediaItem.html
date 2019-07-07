@@ -7,8 +7,8 @@
     aria-hidden="true"
   />
   <div class="compose-media-buttons">
-    <button class="compose-media-button compose-media-focal-button {type === 'audio' ? 'compose-media-hidden' : ''}"
-            aria-hidden={type === 'audio'}
+    <button class="compose-media-button compose-media-focal-button {focalHidden ? 'compose-media-hidden' : ''}"
+            aria-hidden={focalHidden}
             aria-label="Change preview"
             title="Change preview"
             on:click="onSetFocalPoint()" >
@@ -163,7 +163,8 @@
           return 'center center'
         }
         return `${coordsToPercent(focusX)}% ${100 - coordsToPercent(focusY)}%`
-      }
+      },
+      focalHidden: ({ type }) => type !== 'image'
     },
     store: () => store,
     methods: {
