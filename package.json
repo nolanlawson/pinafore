@@ -104,7 +104,7 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "eslint-plugin-html": "^5.0.5",
+    "eslint-plugin-html": "^6.0.0",
     "fake-indexeddb": "^2.1.1",
     "mocha": "^6.1.4",
     "now": "^15.6.0",
