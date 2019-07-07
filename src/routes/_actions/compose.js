@@ -4,7 +4,7 @@ import { postStatus as postStatusToServer } from '../_api/statuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
 import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
-import { putMediaDescription } from '../_api/media'
+import { putMediaMetadata } from '../_api/media'
 
 export async function insertHandleForReply (statusId) {
   let { currentInstance } = store.get()
@@ -22,7 +22,7 @@ export async function insertHandleForReply (statusId) {
 
 export async function postStatus (realm, text, inReplyToId, mediaIds,
   sensitive, spoilerText, visibility,
-  mediaDescriptions, inReplyToUuid, poll) {
+  mediaDescriptions, inReplyToUuid, poll, mediaFocalPoints) {
   let { currentInstance, accessToken, online } = store.get()
 
   if (!online) {
@@ -31,17 +31,27 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
   }
 
   text = text || ''
-  mediaDescriptions = mediaDescriptions || []
 
-  store.set({
-    postingStatus: true
+  let mediaMetadata = (mediaIds || []).map((mediaId, idx) => {
+    return {
+      description: mediaDescriptions && mediaDescriptions[idx],
+      focalPoint: mediaFocalPoints && mediaFocalPoints[idx]
+    }
   })
+
+  store.set({ postingStatus: true })
   try {
-    await Promise.all(mediaDescriptions.map(async (description, i) => {
-      return description && putMediaDescription(currentInstance, accessToken, mediaIds[i], description)
+    await Promise.all(mediaMetadata.map(async ({ description, focalPoint }, i) => {
+      description = description || ''
+      focalPoint = focalPoint || [0, 0]
+      focalPoint[0] = focalPoint[0] || 0
+      focalPoint[1] = focalPoint[1] || 0
+      if (description || focalPoint[0] || focalPoint[1]) {
+        return putMediaMetadata(currentInstance, accessToken, mediaIds[i], description, focalPoint)
+      }
     }))
     let status = await postStatusToServer(currentInstance, accessToken, text,
-      inReplyToId, mediaIds, sensitive, spoilerText, visibility, poll)
+      inReplyToId, mediaIds, sensitive, spoilerText, visibility, poll, mediaFocalPoints)
     addStatusOrNotification(currentInstance, 'home', status)
     store.clearComposeData(realm)
     emit('postedStatus', realm, inReplyToUuid)

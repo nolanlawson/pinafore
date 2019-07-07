@@ -30,6 +30,7 @@
           indicatorHeight={52}
           x={indicatorX}
           y={indicatorY}
+          on:change="onDraggableChange(event)"
         >
           <SvgIcon
             className="media-focal-point-indicator-svg"
@@ -178,7 +179,7 @@
   import { observe } from 'svelte-extras'
   import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../../_utils/scheduleIdleTask'
-  import { coordsToPercent } from '../../../_utils/coordsToPercent'
+  import { coordsToPercent, percentToCoords } from '../../../_utils/coordsToPercent'
   import SvgIcon from '../../SvgIcon.html'
   import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
   import { resize } from '../../../_utils/events'
@@ -261,7 +262,6 @@
           const syncFromStore = (rawKey, rawFocus, key) => {
             let focus = get(mediaItem, [key], 0) || 0
             let focusAsString = focus.toString()
-            console.log('focus', focus, 'rawFocus', rawFocus)
             if (focusAsString !== rawFocus) {
               this.set({ [rawKey]: focusAsString })
             }
@@ -288,6 +288,19 @@
 
         observeAndSync('rawFocusX', 'focusX')
         observeAndSync('rawFocusY', 'focusY')
+      },
+      onDraggableChange ({ x, y }) {
+        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
+
+        scheduleIdleTask(() => {
+          let focusX = percentToCoords(x * 100)
+          let focusY = percentToCoords(100 - (y * 100))
+          let { realm, index, media } = this.get()
+          media[index].focusX = parseAndValidateFloat(focusX)
+          media[index].focusY = parseAndValidateFloat(focusY)
+          this.store.setComposeData(realm, { media })
+          saveStore()
+        })
       },
       measure () {
         requestAnimationFrame(() => {

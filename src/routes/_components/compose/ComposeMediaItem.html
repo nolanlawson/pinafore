@@ -7,14 +7,14 @@
     aria-hidden="true"
   />
   <div class="compose-media-buttons">
-    <button class="compose-media-button {type === 'audio' ? 'compose-media-hidden-button' : ''}"
+    <button class="compose-media-button compose-media-focal-button {type === 'audio' ? 'compose-media-hidden' : ''}"
             aria-hidden={type === 'audio'}
             aria-label="Change preview"
             title="Change preview"
             on:click="onSetFocalPoint()" >
       <SvgIcon className="compose-media-button-svg" href="#fa-crosshairs" />
     </button>
-    <button class="compose-media-button"
+    <button class="compose-media-button compose-media-delete-button"
             aria-label="Delete"
             title="Delete"
             on:click="onDeleteMedia()" >
@@ -98,7 +98,7 @@
     height: 18px;
   }
 
-  .compose-media-hidden-button {
+  .compose-media-hidden {
     visibility: hidden;
     pointer-events: none;
   }

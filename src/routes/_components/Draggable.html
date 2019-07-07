@@ -1,5 +1,6 @@
 <div class="draggable-area {draggableClass}"
      on:pointermove="onPointerMove(event)"
+     on:pointerleave="onPointerLeave(event)"
      on:click="onClick(event)"
      ref:area
 >
@@ -29,7 +30,10 @@
   }
 </style>
 <script>
+  import { throttleRaf } from '../_utils/throttleRaf'
+
   const clamp = x => Math.max(0, Math.min(1, x))
+  const throttledRaf = throttleRaf()
 
   export default {
     data: () => ({
@@ -49,7 +53,6 @@
       onPointerDown (e) {
         e.preventDefault()
         e.stopPropagation()
-        console.log('pointerdown', e)
         let rect = this.refs.indicator.getBoundingClientRect()
         this.set({
           dragging: true,
@@ -62,7 +65,7 @@
           e.preventDefault()
           e.stopPropagation()
           let { indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
-          requestAnimationFrame(() => {
+          throttledRaf(() => {
             let rect = this.refs.area.getBoundingClientRect()
             let offsetX = dragOffsetX - (indicatorWidth / 2)
             let offsetY = dragOffsetY - (indicatorHeight / 2)
@@ -74,6 +77,11 @@
         }
       },
       onPointerUp (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.set({ dragging: false })
+      },
+      onPointerLeave (e) {
         e.preventDefault()
         e.stopPropagation()
         this.set({ dragging: false })
