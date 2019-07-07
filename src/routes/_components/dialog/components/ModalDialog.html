@@ -8,7 +8,7 @@
      ref:node
 >
   <div class="modal-dialog-document" role="document" style="background: {background || '#000'};">
-    <div class="modal-dialog-header">
+    <div class="modal-dialog-header" on:click="onClickHeader(event)">
       {#if title}
         <h1 class="modal-dialog-title">{title}</h1>
       {/if}
@@ -190,7 +190,8 @@
       muted: false,
       className: void 0,
       title: void 0,
-      shrinkWidthToFit: false
+      shrinkWidthToFit: false,
+      clickHeaderToClose: false
     }),
     computed: {
       backdropClass: ({ fadedIn, shouldAnimate }) => {
@@ -246,6 +247,13 @@
           return
         }
         this._a11yDialog.hide()
+      },
+      onClickHeader (e) {
+        if (this.get().clickHeaderToClose) {
+          e.preventDefault()
+          e.stopPropagation()
+          this._a11yDialog.hide()
+        }
       }
     }
   }
