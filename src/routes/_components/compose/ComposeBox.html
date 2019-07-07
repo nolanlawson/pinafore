@@ -2,7 +2,7 @@
   <h1 class="sr-only">Compose status</h1>
 {/if}
 <ComposeFileDrop {realm} >
-  <div class="{computedClassName} {hideAndFadeIn}">
+  <div class="{computedClassName} {hideAndFadeIn}" on:focusin="onFocus()" on:focusout="onBlur()">
     <ComposeAuthor {realm} {dialogId} />
     {#if contentWarningShown}
       <div class="compose-content-warning-wrapper"
@@ -220,6 +220,14 @@
           sensitive, contentWarning, postPrivacyKey,
           mediaDescriptions, inReplyToUuid, pollToPost,
           mediaFocalPoints)
+      },
+      onFocus () {
+        let { realm } = this.get()
+        console.log('composingRealm', realm)
+        this.store.set({ composingRealm: realm })
+      },
+      onBlur () {
+        this.store.set({ composingRealm: null })
       }
     }
   }

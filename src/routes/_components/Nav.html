@@ -1,4 +1,4 @@
-<nav id="main-nav" class="main-nav">
+<nav id="main-nav" class="main-nav {$composeFocused ? 'compose-focused' : ''}">
 	<ul class="main-nav-ul">
     {#each $navPages as navPage (navPage.href)}
       <li class="main-nav-li">
@@ -13,12 +13,13 @@
     {/each}
 	</ul>
 </nav>
+<NavComposeEffect />
 {#await importNavShortcuts}
-<!-- awaiting nav shortcuts promise -->
+  <!-- awaiting nav shortcuts promise -->
 {:then component}
-<svelte:component this={component}/>
+  <svelte:component this={component} />
 {:catch error}
-<!-- nav shortcuts {error} -->
+  <!-- nav shortcuts {error} -->
 {/await}
 
 <style>
@@ -56,11 +57,13 @@
   import NavItem from './NavItem'
   import { importNavShortcuts } from '../_utils/asyncModules'
   import { store } from '../_store/store'
+  import NavComposeEffect from './NavComposeEffect.html'
 
   export default {
     store: () => store,
     components: {
-      NavItem
+      NavItem,
+      NavComposeEffect
     },
     data: () => ({
       importNavShortcuts: importNavShortcuts()

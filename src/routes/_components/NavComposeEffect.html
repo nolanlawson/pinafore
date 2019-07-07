@@ -1,0 +1,49 @@
+<style>
+  /* Styles for mobile devices when the keyboard is open.
+     Based on https://github.com/tootsuite/mastodon/pull/4282
+   */
+  @media screen and (max-width: 767px) and (max-height: 600px) {
+    :global(.main-nav) {
+      transition: transform 0.333s ease-in-out;
+      transform: translateY(0);
+      transform-origin: center top;
+    }
+
+    :global(.show-compose-effect .main-nav) {
+      transform: translateY(-100%);
+    }
+
+    :global(.main-content) {
+      transition: padding-top 0.333s ease-in-out;
+    }
+
+    :global(.show-compose-effect .main-content) {
+      padding-top: 0;
+    }
+
+    :global(.show-compose-effect .compose-box-button-sticky, .show-compose-effect .compose-box-button-fixed) {
+      top: 0;
+    }
+  }
+</style>
+<script>
+  import { observe } from 'svelte-extras'
+  import { store } from '../_store/store'
+
+  export default {
+    oncreate () {
+      this.observe('showComposeEffect', showComposeEffect => {
+        document.body.classList.toggle('show-compose-effect', !!showComposeEffect)
+      })
+    },
+    methods: {
+      observe
+    },
+    store: () => store,
+    computed: {
+      showComposeEffect: ({ $composingRealm }) => (
+        $composingRealm && $composingRealm !== 'dialog'
+      )
+    }
+  }
+</script>
