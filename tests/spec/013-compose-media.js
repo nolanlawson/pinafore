@@ -1,8 +1,13 @@
 import {
-  composeInput, getNthDeleteMediaButton, getNthMedia,
-  getNthMediaAltInput, homeNavButton, mediaButton,
-  settingsNavButton, sleep,
+  composeInput,
+  getNthDeleteMediaButton,
+  getNthMedia,
+  getNthMediaAltInput,
   getNthMediaListItem,
+  homeNavButton,
+  mediaButton,
+  settingsNavButton,
+  sleep,
   uploadKittenImage
 } from '../utils'
 import { loginAsFoobar } from '../roles'
