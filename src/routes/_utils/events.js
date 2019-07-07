@@ -17,24 +17,6 @@ export function mouseover (node, callback) {
   }
 }
 
-export function focusWithCapture (node, callback) {
-  node.addEventListener('focus', callback, true)
-  return {
-    destroy () {
-      node.removeEventListener('focus', callback, true)
-    }
-  }
-}
-
-export function blurWithCapture (node, callback) {
-  node.addEventListener('blur', callback, true)
-  return {
-    destroy () {
-      node.removeEventListener('blur', callback, true)
-    }
-  }
-}
-
 export function selectionChange (node, callback) {
   let events = ['keyup', 'click', 'focus', 'blur']
   let listener = () => {

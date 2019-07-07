@@ -1,8 +1,8 @@
 <h1 class="sr-only">{label}</h1>
 <div class="timeline"
      role="feed"
-     on:focusWithCapture="saveFocus(event)"
-     on:blurWithCapture="clearFocus(event)"
+     on:focusin="saveFocus(event)"
+     on:focusout="clearFocus()"
 >
   {#await componentsPromise}
     <!-- awaiting promise -->
@@ -51,7 +51,6 @@
     showMoreItemsForThread,
     showMoreItemsForCurrentTimeline
   } from '../../_actions/timeline'
-  import { focusWithCapture, blurWithCapture } from '../../_utils/events'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { mark, stop } from '../../_utils/marks'
   import isEqual from 'lodash-es/isEqual'
@@ -141,10 +140,6 @@
       }
     },
     store: () => store,
-    events: {
-      focusWithCapture,
-      blurWithCapture
-    },
     methods: {
       observe,
       initialize () {
