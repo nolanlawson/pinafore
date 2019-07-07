@@ -12,9 +12,11 @@
   >
     <div class="media-focal-point-image-container" ref:container>
       <img
+        {intrinsicsize}
         class="media-focal-point-image"
         src={previewSrc}
         alt={shortName}
+        on:load="onImageLoad()"
       />
       <div class="media-focal-point-backdrop"></div>
       <div class="media-draggable-area"
@@ -23,7 +25,7 @@
         <!-- 52px == 32px icon width + 10px padding -->
         <Draggable
           draggableClass="media-draggable-area-inner"
-          indicatorClass="media-focal-point-indicator"
+          indicatorClass="media-focal-point-indicator {imageLoaded ? '': 'hidden'}"
           indicatorWidth={52}
           indicatorHeight={52}
           x={indicatorX}
@@ -74,7 +76,7 @@
   }
   .media-focal-point-container {
     height: calc(100% - 44px); /* 44px X button height */
-    width: calc(100vw - 20px);
+    width: calc(100vw - 40px);
     padding-top: 10px;
     display: flex;
     flex-direction: column;
@@ -101,8 +103,8 @@
 
   @supports (-webkit-backdrop-filter: blur(1px) saturate(1%)) or (backdrop-filter: blur(1px) saturate(1%)) {
     .media-focal-point-backdrop {
-      -webkit-backdrop-filter: blur(7px) saturate(110%);
-      backdrop-filter: blur(7px) saturate(110%);
+      -webkit-backdrop-filter: blur(2px) saturate(110%);
+      backdrop-filter: blur(2px) saturate(110%);
       background-color: var(--focal-img-backdrop-filter);
     }
   }
@@ -117,6 +119,12 @@
     display: flex;
     padding: 20px 40px;
     justify-content: space-around;
+    width: auto;
+  }
+
+  .media-focal-point-input-pair {
+    display: flex;
+    align-items: center;
   }
 
   .media-focal-point-input-pair input {
@@ -143,6 +151,21 @@
     height: 32px;
     padding: 10px;
     fill: var(--focal-color);
+  }
+
+  @media (max-width: 767px) {
+    .media-focal-point-inputs {
+      padding: 10px 20px;
+    }
+    .media-focal-point-input-pair {
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 5px;
+    }
+    .media-focal-point-input-pair input {
+      margin-left: 0;
+      width: 100px;
+    }
   }
 </style>
 <script>
@@ -187,7 +210,8 @@
       rawFocusX: '0',
       rawFocusY: '0',
       containerWidth: 0,
-      containerHeight: 0
+      containerHeight: 0,
+      imageLoaded: false
     }),
     store: () => store,
     computed: {
@@ -205,6 +229,14 @@
         // so fall back to the description if it was provided
         get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
       ),
+      intrinsicsize: ({ mediaItem }) => {
+        let width = get(mediaItem, ['data', 'meta', 'original', 'width'])
+        let height = get(mediaItem, ['data', 'meta', 'original', 'height'])
+        if (width && height) {
+          return `${width} x ${height}`
+        }
+        return '' // pleroma does not give us original width/height
+      },
       scale: ({ nativeWidth, nativeHeight, containerWidth, containerHeight }) => (
         intrinsicScale(containerWidth, containerHeight, nativeWidth, nativeHeight)
       ),
@@ -268,6 +300,10 @@
             containerHeight: rect.height
           })
         })
+      },
+      onImageLoad () {
+        this.measure()
+        this.set({ imageLoaded: true })
       }
     },
     events: {
