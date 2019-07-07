@@ -33,11 +33,11 @@
     </form>
   {/if}
   <div class="poll-details">
-    <div class="poll-stat">
+    <div class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-bar-chart" />
       <span class="poll-stat-text">{votesCount} {votesCount === 1 ? 'vote' : 'votes'}</span>
     </div>
-    <div class="poll-stat">
+    <div class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-clock" />
       <span class="poll-stat-text poll-stat-expiry">
         <span class="{useNarrowSize ? 'sr-only' : ''}">{expiryText}</span>
@@ -46,7 +46,8 @@
         </time>
       </span>
     </div>
-    <button class="poll-stat {expired ? 'poll-expired' : ''}" id={refreshElementId}>
+    <button class="poll-stat {notification ? 'is-notification' : ''} {expired ? 'poll-expired' : ''}"
+            id={refreshElementId}>
       <SvgIcon className="poll-icon" href="#fa-refresh" />
       <span class="poll-stat-text">
         Refresh
@@ -150,6 +151,14 @@
     flex-direction: row;
     align-items: center;
     color: var(--deemphasized-text-color);
+  }
+
+  .poll-stat.is-notification {
+    color: var(--very-deemphasized-text-color);
+  }
+
+  :global(.poll-stat.is-notification .poll-icon) {
+    fill: var(--very-deemphasized-text-color);
   }
 
   .poll-stat.poll-expired {
