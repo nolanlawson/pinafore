@@ -85,12 +85,15 @@ export const instanceSettingNotificationMentions = $('#instance-option-notificat
 
 export const notificationBadge = $('#main-nav li:nth-child(2) .nav-link-badge')
 
+export const focalPointXInput = $('.media-focal-point-inputs *:nth-child(1) input')
+export const focalPointYInput = $('.media-focal-point-inputs *:nth-child(2) input')
+
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt textarea`)
 }
 
-export function getComposeModalNthMediaImg (n) {
-  return $(`.modal-dialog .compose-media:nth-child(${n}) img`)
+export function getComposeModalNthMediaListItem (n) {
+  return $(`.modal-dialog .compose-media:nth-child(${n})`)
 }
 
 export const favoritesCountElement = $('.status-favs').addCustomDOMProperties({
@@ -278,12 +281,20 @@ export function getNthSearchResult (n) {
   return $(`.search-result:nth-child(${n}) a`)
 }
 
+export function getNthMediaListItem (n) {
+  return $(`.compose-media:nth-child(${n})`)
+}
+
 export function getNthMedia (n) {
   return $(`.compose-media:nth-child(${n}) img`)
 }
 
 export function getNthDeleteMediaButton (n) {
   return $(`.compose-media:nth-child(${n}) .compose-media-delete-button`)
+}
+
+export function getNthMediaFocalPointButton (n) {
+  return $(`.compose-media:nth-child(${n}) .compose-media-focal-button`)
 }
 
 export function getAriaSetSize () {
@@ -331,7 +342,7 @@ export function getNthStatusHeader (n) {
 }
 
 export function getNthStatusAndImage (nStatus, nImage) {
-  return $(`${getNthStatusSelector(nStatus)} .status-media .show-image-button:nth-child(${nImage + 1}) img`)
+  return $(`${getNthStatusSelector(nStatus)} .status-media .show-image-button:nth-child(${nImage}) img`)
 }
 
 export function getFirstVisibleStatus () {

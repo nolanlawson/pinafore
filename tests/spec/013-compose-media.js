@@ -1,6 +1,13 @@
 import {
-  composeInput, getNthDeleteMediaButton, getNthMedia, getNthMediaAltInput, homeNavButton, mediaButton,
-  settingsNavButton, sleep,
+  composeInput,
+  getNthDeleteMediaButton,
+  getNthMedia,
+  getNthMediaAltInput,
+  getNthMediaListItem,
+  homeNavButton,
+  mediaButton,
+  settingsNavButton,
+  sleep,
   uploadKittenImage
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -13,21 +20,21 @@ test('inserts media', async t => {
   await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await (uploadKittenImage(1)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
   await (uploadKittenImage(2)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await (uploadKittenImage(3)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
-    .expect(getNthMedia(3).getAttribute('alt')).eql('kitten3.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(3).getAttribute('aria-label')).eql('kitten3.jpg')
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await (uploadKittenImage(4)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
-    .expect(getNthMedia(3).getAttribute('alt')).eql('kitten3.jpg')
-    .expect(getNthMedia(4).getAttribute('alt')).eql('kitten4.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(3).getAttribute('aria-label')).eql('kitten3.jpg')
+    .expect(getNthMediaListItem(4).getAttribute('aria-label')).eql('kitten4.jpg')
     .expect(mediaButton.getAttribute('disabled')).eql('')
     .click(getNthDeleteMediaButton(4))
     .click(getNthDeleteMediaButton(3))
@@ -41,10 +48,10 @@ test('removes media', async t => {
   await t
     .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
   await (uploadKittenImage(2)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
     .click(getNthDeleteMediaButton(2))
     .expect(getNthMedia(2).exists).notOk()
     .expect(getNthMedia(1).exists).ok()
@@ -79,11 +86,11 @@ test('keeps media descriptions as media is removed', async t => {
     .typeText(getNthMediaAltInput(2), 'kitten numero dos')
     .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
     .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
     .click(getNthDeleteMediaButton(1))
     .expect(getNthMediaAltInput(1).value).eql('kitten numero dos')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten2.jpg')
 })
 
 test('keeps media in local storage', async t => {
@@ -101,8 +108,8 @@ test('keeps media in local storage', async t => {
     .expect(composeInput.value).eql('hello hello')
     .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
     .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
   await sleep(1)
   await t
     .click(settingsNavButton)
@@ -110,12 +117,12 @@ test('keeps media in local storage', async t => {
     .expect(composeInput.value).eql('hello hello')
     .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
     .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
     .navigateTo('/')
     .expect(composeInput.value).eql('hello hello')
     .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
     .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
 })

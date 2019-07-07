@@ -65,7 +65,9 @@
         // Here we do a pure css version instead of using
         // https://github.com/jonom/jquery-focuspoint#1-calculate-your-images-focus-point
 
-        if (!focus) return 'background-position: center;'
+        if (!focus) {
+          return 'background-position: center;'
+        }
         return `object-position: ${coordsToPercent(focus.x)}% ${100 - coordsToPercent(focus.y)}%;`
       },
       fillFixSize: ({ forceSize, $largeInlineMedia }) => !$largeInlineMedia && !forceSize,

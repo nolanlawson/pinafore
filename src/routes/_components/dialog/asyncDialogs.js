@@ -43,3 +43,7 @@ export const importShowMuteDialog = () => import(
 export const importShowReportDialog = () => import(
   /* webpackChunkName: 'showReportDialog' */ './creators/showReportDialog'
   ).then(getDefault)
+
+export const importMediaFocalPointDialog = () => import(
+  /* webpackChunkName: 'mediaFocalPointDialog' */ './creators/mediaFocalPointDialog'
+  ).then(getDefault)

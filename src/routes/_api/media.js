@@ -11,7 +11,7 @@ export async function uploadMedia (instanceName, accessToken, file, description)
   return post(url, formData, auth(accessToken), { timeout: MEDIA_WRITE_TIMEOUT })
 }
 
-export async function putMediaDescription (instanceName, accessToken, mediaId, description) {
+export async function putMediaMetadata (instanceName, accessToken, mediaId, description, focus) {
   let url = `${basename(instanceName)}/api/v1/media/${mediaId}`
-  return put(url, { description }, auth(accessToken), { timeout: WRITE_TIMEOUT })
+  return put(url, { description, focus: (focus && focus.join(',')) }, auth(accessToken), { timeout: WRITE_TIMEOUT })
 }

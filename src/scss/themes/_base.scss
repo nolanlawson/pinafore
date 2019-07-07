@@ -120,4 +120,9 @@
   --length-indicator-color: #{$main-theme-color};
 
   --audio-bg: #{rgba(30, 30, 30, 0.8)};
+
+  --focal-img-backdrop-filter: #{rgba($main-bg-color, 0.5)};
+  --focal-img-bg: #{rgba($main-bg-color, 0.3)};
+  --focal-bg: #{rgba($toast-bg, 0.8)};
+  --focal-color: #{$secondary-text-color};
 }
