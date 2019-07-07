@@ -281,6 +281,10 @@ export function getNthSearchResult (n) {
   return $(`.search-result:nth-child(${n}) a`)
 }
 
+export function getNthMediaListItem (n) {
+  return $(`.compose-media:nth-child(${n})`)
+}
+
 export function getNthMedia (n) {
   return $(`.compose-media:nth-child(${n}) img`)
 }

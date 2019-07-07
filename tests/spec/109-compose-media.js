@@ -11,10 +11,10 @@ fixture`109-compose-media.js`
 
 async function uploadTwoKittens (t) {
   await (uploadKittenImage(1)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
   await (uploadKittenImage(2)())
-  await t.expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+  await t.expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
 }
 
 test('uploads alts for media', async t => {
@@ -41,7 +41,7 @@ test('uploads alts when deleting and re-uploading media', async t => {
     .expect(getNthMedia(1).exists).notOk()
   await (uploadKittenImage(2)())
   await t.expect(getNthMediaAltInput(1).value).eql('')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten2.jpg')
     .typeText(getNthMediaAltInput(1), 'this will not be deleted')
     .click(composeButton)
     .expect(getNthStatusAndImage(1, 1).getAttribute('alt')).eql('this will not be deleted')
@@ -69,8 +69,8 @@ test('saves alts to local storage', async t => {
     .expect(getUrl()).contains('/notifications')
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthMedia(1).getAttribute('alt')).eql('kitten1.jpg')
-    .expect(getNthMedia(2).getAttribute('alt')).eql('kitten2.jpg')
+    .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
+    .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
     .expect(getNthMediaAltInput(1).value).eql('kitten numero uno')
     .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
     .click(composeButton)
