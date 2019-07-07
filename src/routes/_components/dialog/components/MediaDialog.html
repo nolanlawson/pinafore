@@ -3,15 +3,16 @@
   {label}
   background="var(--muted-modal-bg)"
   muted="true"
+  clickHeaderToClose={true}
   className="media-modal-dialog"
   on:show="onShow()"
 >
   <div class="media-container">
-    <ul class="media-scroll" ref:scroller>
+    <ul class="media-scroll" ref:scroller  on:click="onImageClick(event)">
       {#each mediaItems as media (media.id)}
         <li class="media-scroll-item">
           <div class="media-scroll-item-inner">
-            <div class="media-scroll-item-inner-inner">
+            <div class="media-scroll-item-image-area">
                 {#if canPinchZoom && pinchZoomMode}
                   <PinchZoomable className='media-pinch-zoom' >
                     <MediaInDialog {media} />
@@ -24,10 +25,11 @@
         </li>
       {/each}
     </ul>
-    <div class="media-controls-outside">
+    <div class="media-controls-outside" on:click="onMediaControlsClick(event)">
       {#if canPinchZoom}
         <IconButton
           className="media-control-button media-control-button-dummy-spacer"
+          svgClassName="media-control-button-svg"
           href="#fa-search"
           label=""
           ariaHidden={true}
@@ -37,6 +39,7 @@
         <div class="media-controls">
             <IconButton
               className="media-control-button"
+              svgClassName="media-control-button-svg"
               disabled={scrolledItem === 0}
               label="Show previous media"
               href="#fa-angle-left"
@@ -45,16 +48,18 @@
             {#each dots as dot, i (dot.i)}
               <IconButton
                 className="media-control-button"
+                svgClassName="media-control-button-svg"
                 pressable={true}
                 label="Show {nth(i)} media"
                 pressed={i === scrolledItem}
                 href={i === scrolledItem ? '#fa-circle' : '#fa-circle-o'}
                 sameColorWhenPressed={true}
-                on:click="onClick(i)"
+                on:click="onButtonClick(i)"
               />
             {/each}
             <IconButton
               className="media-control-button"
+              svgClassName="media-control-button-svg"
               disabled={scrolledItem === length - 1}
               label="Show next media"
               href="#fa-angle-right"
@@ -65,6 +70,7 @@
       {#if canPinchZoom}
         <IconButton
           className="media-control-button"
+          svgClassName="media-control-button-svg"
           pressable={true}
           pressed={pinchZoomMode}
           label={pinchZoomMode ? 'Disable pinch-zoom mode' : 'Enable pinch-zoom mode'}
@@ -85,7 +91,6 @@
   .media-container {
     height: calc(100% - 64px); /* 44px X button height + 20px padding */
     width: calc(100vw);
-    padding-top: 10px;
     display: flex;
     flex-direction: column;
   }
@@ -118,16 +123,16 @@
     height: 100%;
     overflow: hidden;
   }
-  .media-scroll-item-inner-inner {
-    height: calc(100% - 10px);
-    width: calc(100% - 10px);
-    padding: 5px;
+  .media-scroll-item-image-area {
+    height: calc(100% - 20px); /* 15px padding top + 5px padding bottom */
+    width: calc(100% - 10px); /* 5px padding left + 5px padding right */
+    padding: 15px 5px 5px 5px;
   }
 
   .media-controls-outside {
     display: flex;
     justify-content: space-between;
-    margin: 10px;
+    padding: 10px;
   }
 
   .media-controls {
@@ -146,6 +151,11 @@
 
   :global(.icon-button.media-control-button) {
     margin: 0 5px;
+  }
+
+  :global(.media-control-button-svg) {
+    /* ensure that click events do not fall on these svgs */
+    pointer-events: none;
   }
 
   @media (max-width: 767px) {
@@ -197,10 +207,21 @@
   import PinchZoomable from './PinchZoomable.html'
   import { show } from '../helpers/showDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
+  import { close } from '../helpers/closeDialog'
   import debounce from 'lodash-es/debounce'
   import times from 'lodash-es/times'
   import { smoothScroll, hasNativeSmoothScroll } from '../../../_utils/smoothScroll'
   import { store } from '../../../_store/store'
+  import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
+  import { get } from '../../../_utils/lodash-lite'
+
+  // padding for .media-scroll-item-image-area
+  const IMAGE_AREA_PADDING = {
+    top: 15,
+    left: 5,
+    right: 5,
+    bottom: 5
+  }
 
   export default {
     oncreate () {
@@ -217,7 +238,10 @@
     computed: {
       length: ({ mediaItems }) => mediaItems.length,
       dots: ({ length }) => times(length, i => ({ i })),
-      canPinchZoom: ({ mediaItems }) => !mediaItems.some(media => ['video', 'audio'].includes(media.type))
+      canPinchZoom: ({ mediaItems }) => !mediaItems.some(media => ['video', 'audio'].includes(media.type)),
+      mediaItem: ({ mediaItems, scrolledItem }) => mediaItems[scrolledItem],
+      nativeWidth: ({ mediaItem }) => get(mediaItem, ['meta', 'original', 'width'], 300), // TODO: Pleroma placeholder
+      nativeHeight: ({ mediaItem }) => get(mediaItem, ['meta', 'original', 'height'], 200) // TODO: Pleroma placeholder
     },
     components: {
       ModalDialog,
@@ -242,6 +266,7 @@
     },
     methods: {
       show,
+      close,
       setupScroll () {
         this.refs.scroller.addEventListener('scroll', this.onScroll)
       },
@@ -258,7 +283,7 @@
         let scrolledItem = Math.round((scrollLeft / scrollWidth) * length)
         this.set({ scrolledItem })
       },
-      onClick (i) {
+      onButtonClick (i) {
         let { scrolledItem } = this.get()
         if (scrolledItem !== i) {
           this.scrollToItem(i, true)
@@ -308,6 +333,44 @@
       },
       togglePinchZoomMode () {
         this.set({ pinchZoomMode: !this.get().pinchZoomMode })
+      },
+      onImageClick (e) {
+        let { nativeWidth, nativeHeight, pinchZoomMode } = this.get()
+        if (pinchZoomMode) {
+          return
+        }
+        let rect = this.refs.scroller.getBoundingClientRect()
+        // apply padding
+        rect = {
+          width: rect.width - IMAGE_AREA_PADDING.left - IMAGE_AREA_PADDING.right,
+          height: rect.height - IMAGE_AREA_PADDING.top - IMAGE_AREA_PADDING.bottom,
+          left: rect.left + IMAGE_AREA_PADDING.left,
+          top: rect.top + IMAGE_AREA_PADDING.top
+        }
+        let scale = intrinsicScale(rect.width, rect.height, nativeWidth, nativeHeight)
+        let x = e.clientX - rect.left
+        let y = e.clientY - rect.top
+        let insideImage = x >= scale.x && x <= (scale.x + scale.width) && y >= scale.y && y <= (scale.y + scale.height)
+        if (!insideImage) {
+          // close dialog when clicking outside of image
+          e.preventDefault()
+          e.stopPropagation()
+          this.close()
+        }
+      },
+      onMediaControlsClick (e) {
+        let { pinchZoomMode } = this.get()
+        if (pinchZoomMode) {
+          return
+        }
+        let { target } = e
+        if (target.tagName !== 'BUTTON' && !target.classList.contains('media-controls')) {
+          e.preventDefault()
+          e.stopPropagation()
+          // close dialog when clicking on the controls but not on a button inside the controls,
+          // or between the buttons
+          this.close()
+        }
       }
     }
   }

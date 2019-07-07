@@ -223,8 +223,12 @@
       focusX: ({ mediaItem }) => get(mediaItem, ['focusX'], 0),
       focusY: ({ mediaItem }) => get(mediaItem, ['focusY'], 0),
       previewSrc: ({ mediaItem }) => mediaItem.data.preview_url,
-      nativeWidth: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'width'], 300),
-      nativeHeight: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'height'], 200),
+      nativeWidth: ({ mediaItem }) => (
+        get(mediaItem, ['data', 'meta', 'original', 'width'], 300) // TODO: Pleroma placeholder
+      ),
+      nativeHeight: ({ mediaItem }) => (
+        get(mediaItem, ['data', 'meta', 'original', 'height'], 200) // TODO: Pleroma placeholder
+      ),
       shortName: ({ mediaItem }) => (
         // sometimes we no longer have the file, e.g. in a delete and redraft situation,
         // so fall back to the description if it was provided
