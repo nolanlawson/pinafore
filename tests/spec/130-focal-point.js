@@ -18,7 +18,7 @@ import { loginAsFoobar } from '../roles'
 fixture`130-focal-point.js`
   .page`http://localhost:4002`
 
-test.skip('Can set a focal point', async t => { // TODO: flaky test
+test('Can set a focal point', async t => {
   await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'here is a focal point')
