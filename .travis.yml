@@ -41,6 +41,10 @@ before_install:
   # install yarn
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s
   - export PATH="$HOME/.yarn/bin:$PATH"
+  # install ffmpeg
+  - sudo add-apt-repository -y ppa:mc3man/trusty-media
+  - sudo apt-get update
+  - sudo apt-get install -y ffmpeg
   - ./bin/setup-mastodon-in-travis.sh
 before_script:
   - yarn run lint
@@ -70,4 +74,3 @@ cache:
   bundler: true
   directories:
   - /home/travis/.rvm/
-  - /home/travis/ffmpeg-static/
