@@ -251,3 +251,24 @@ textarea {
 .inline-emoji {
   font-family: PinaforeEmoji, sans-serif;
 }
+
+/* Special class to make focus outlines easier to see in some odd
+ * cases where the outline would be clipped. */
+.focus-after {
+  position: relative;
+}
+
+.focus-after:focus {
+  outline: none;
+}
+
+.focus-after:focus::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  content: '';
+  border: 2px solid var(--focus-outline);
+  pointer-events: none;
+}
