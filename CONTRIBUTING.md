@@ -120,7 +120,7 @@ or
 
 1. Run `rm -fr mastodon` to clear out all Mastodon data
 1. Comment out `await restoreMastodonData()` in `run-mastodon.js` to avoid actually populating the database with statuses/favorites/etc.
-2. Update the `GIT_TAG` in `run-mastodon.js` to whatever you want
+2. Update the `GIT_TAG_OR_BRANCH` in `run-mastodon.js` to whatever you want
 3. Run `yarn run run-mastodon`
 4. Run `yarn run backup-mastodon-data` to overwrite the data in `fixtures/`
 5. Uncomment `await restoreMastodonData()` in `run-mastodon.js`
