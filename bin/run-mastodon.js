@@ -13,8 +13,9 @@ const stat = promisify(fs.stat)
 const writeFile = promisify(fs.writeFile)
 const dir = __dirname
 
-const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
-const GIT_TAG = 'v2.9.2'
+const GIT_URL = 'https://github.com/nolanlawson/mastodon.git'
+const GIT_TAG_OR_COMMIT = '824ddcdbe'
+const GIT_BRANCH = 'v2.9.2-with-fuubar-fix'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'
@@ -42,9 +43,9 @@ async function cloneMastodon () {
     await stat(mastodonDir)
   } catch (e) {
     console.log('Cloning mastodon...')
-    await exec(`git clone --single-branch --branch master ${GIT_URL} "${mastodonDir}"`)
+    await exec(`git clone --single-branch --branch ${GIT_BRANCH} ${GIT_URL} "${mastodonDir}"`)
     await exec(`git fetch origin --tags`, { cwd: mastodonDir }) // may already be cloned, e.g. in CI
-    await exec(`git checkout ${GIT_TAG}`, { cwd: mastodonDir })
+    await exec(`git checkout ${GIT_TAG_OR_COMMIT}`, { cwd: mastodonDir })
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }
 }
