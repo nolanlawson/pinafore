@@ -197,21 +197,20 @@
         let isClick = type === 'click'
         let isEnter = type === 'keydown' && keyCode === 13
         if (!isClick && !isEnter) {
-          return
+          return false
         }
         if (checkDomAncestors(target, isUserInputElement, isStatusArticle)) {
           // this element or any ancestors up to the status-article element is
           // a user input element
-          return
+          return false
         }
         if (checkDomAncestors(target, isToolbar, isStatusArticle)) {
           // this element or any of its ancestors is the toolbar
-          return
+          return false
         }
 
-        e.preventDefault()
-        e.stopPropagation()
         this.open()
+        return true
       },
       open () {
         let { originalStatusId } = this.get()

@@ -77,22 +77,22 @@
         optionsKey
       } = this.get()
       registerClickDelegates(this, {
-        [favoriteKey]: (e) => {
-          e.preventDefault()
-          e.stopPropagation()
+        [favoriteKey]: () => {
           this.toggleFavorite()
+          return true
         },
-        [reblogKey]: (e) => {
-          e.preventDefault()
-          e.stopPropagation()
+        [reblogKey]: () => {
           this.reblog()
+          return true
         },
-        [replyKey]: (e) => {
-          e.preventDefault()
-          e.stopPropagation()
+        [replyKey]: () => {
           this.reply()
+          return true
         },
-        [optionsKey]: (e) => this.onOptionsClick(e)
+        [optionsKey]: () => {
+          this.onOptionsClick()
+          return true
+        }
       })
       on('postedStatus', this, this.onPostedStatus)
     },
@@ -127,9 +127,7 @@
           this.fire('recalculateHeight')
         })
       },
-      async onOptionsClick (e) {
-        e.preventDefault()
-        e.stopPropagation()
+      async onOptionsClick () {
         let { originalStatus, originalAccountId } = this.get()
         let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
         let showStatusOptionsDialog = await importShowStatusOptionsDialog()

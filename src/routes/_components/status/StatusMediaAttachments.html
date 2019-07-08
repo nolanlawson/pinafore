@@ -190,6 +190,7 @@
         sensitivesShown[uuid] = !sensitivesShown[uuid]
         this.store.set({ sensitivesShown })
         this.fire('recalculateHeight')
+        return true
       }
     }
   }

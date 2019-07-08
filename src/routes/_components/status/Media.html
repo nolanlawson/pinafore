@@ -146,10 +146,13 @@
       type: ({ media }) => media.type
     },
     methods: {
-      async onClick () {
-        let { mediaAttachments, index } = this.get()
-        let showMediaDialog = await importShowMediaDialog()
-        showMediaDialog(mediaAttachments, index)
+      onClick () {
+        (async () => {
+          let { mediaAttachments, index } = this.get()
+          let showMediaDialog = await importShowMediaDialog()
+          showMediaDialog(mediaAttachments, index)
+        })()
+        return true
       }
     },
     data: () => ({

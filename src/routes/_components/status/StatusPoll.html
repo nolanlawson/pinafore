@@ -287,21 +287,22 @@
       )
     },
     methods: {
-      async onRefreshClick (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        let { pollId } = this.get()
-        this.set({ loading: true })
-        try {
-          let poll = await doAsyncActionWithDelay(() => getPoll(pollId))
-          if (poll) {
-            let { polls } = this.store.get()
-            polls[pollId] = poll
-            this.store.set({ polls })
+      onRefreshClick () {
+        (async () => {
+          let { pollId } = this.get()
+          this.set({ loading: true })
+          try {
+            let poll = await doAsyncActionWithDelay(() => getPoll(pollId))
+            if (poll) {
+              let { polls } = this.store.get()
+              polls[pollId] = poll
+              this.store.set({ polls })
+            }
+          } finally {
+            this.set({ loading: false })
           }
-        } finally {
-          this.set({ loading: false })
-        }
+        })()
+        return true
       },
       async onSubmit (e) {
         e.preventDefault()
