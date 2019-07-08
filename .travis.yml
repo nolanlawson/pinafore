@@ -8,6 +8,7 @@ services:
   - postgresql
   - xvfb
 addons:
+  postgresql: 10
   chrome: stable
   apt:
     packages:
@@ -52,6 +53,8 @@ before_install:
 before_script:
   - yarn run lint
   - greenkeeper-lockfile-update
+  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
+  - cp config/database.yml.travis config/database.yml
 after_script:
   - greenkeeper-lockfile-upload
 script: travis_retry yarn run $COMMAND
