@@ -49,6 +49,7 @@ before_install:
   # ensure only postgres 10 is running
   - sudo service postgresql stop
   - sudo service postgresql start 10
+  - psql -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;" -U postgres
   - ./bin/setup-mastodon-in-travis.sh
 before_script:
   - yarn run lint
