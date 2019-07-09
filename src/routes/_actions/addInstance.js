@@ -23,7 +23,8 @@ async function redirectToOauth () {
   if (Object.keys(loggedInInstances).includes(instanceNameInSearch)) {
     throw createKnownError(`You've already logged in to ${instanceNameInSearch}`)
   }
-  if (DOMAIN_BLOCKS.some(domain => new RegExp(`(?:\\.|^)${domain}$`, 'i').test(instanceNameInSearch))) {
+  let instanceHostname = new URL(`http://${instanceNameInSearch}`).hostname
+  if (DOMAIN_BLOCKS.some(domain => new RegExp(`(?:\\.|^)${domain}$`, 'i').test(instanceHostname))) {
     throw createKnownError('This service is blocked')
   }
   let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
