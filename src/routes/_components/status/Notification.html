@@ -42,7 +42,6 @@
   import { goto } from '../../../../__sapper__/client'
   import { composeNewStatusMentioning } from '../../_actions/mention'
   import { classname } from '../../_utils/classname'
-  import noop from 'lodash-es/noop'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
 
   export default {
@@ -77,7 +76,6 @@
       ))
     },
     methods: {
-      noop,
       openAuthorProfile () {
         let { accountId } = this.get()
         goto(`/accounts/${accountId}`)

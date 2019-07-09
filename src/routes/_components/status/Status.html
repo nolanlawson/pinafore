@@ -134,7 +134,6 @@
   import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
   import { absoluteDateFormatter } from '../../_utils/formatters'
   import { composeNewStatusMentioning } from '../../_actions/mention'
-  import noop from 'lodash-es/noop'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
   import { statusHtmlToPlainText } from '../../_utils/statusHtmlToPlainText'
 
@@ -184,7 +183,6 @@
     }),
     store: () => store,
     methods: {
-      noop,
       onClickOrKeydown (e) {
         let { type, keyCode, target } = e
 
