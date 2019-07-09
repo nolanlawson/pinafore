@@ -120,7 +120,7 @@ test('delete and redraft reply', async t => {
     .expect(getNthStatusContent(2).innerText).match(/@admin hello there admin\s+oops forgot to say thank you/)
 })
 
-test.skip('delete and redraft reply within thread', async t => { // TODO: flaky test
+test('delete and redraft reply within thread', async t => {
   await postAs('admin', 'this is a thread')
   await loginAsFoobar(t)
   await t
