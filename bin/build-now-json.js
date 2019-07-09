@@ -88,7 +88,9 @@ async function main () {
       path.join(filename, 'index.html')
     ].map(_ => path.resolve(exportDir, _)).find(_ => fs.existsSync(_))
 
-    if (!filePath) { // dynamic route, e.g. /accounts/<accountId/
+    if (filePath) {
+      // add <preload> tags to HTTP headers
+    } else { // dynamic route, e.g. /accounts/<accountId/
       // serve calls to dynamic routes via the generic "service worker" index.html,
       // since we can't generate the dynamic content using Zeit's static server
       route.dest = 'service-worker-index.html'
