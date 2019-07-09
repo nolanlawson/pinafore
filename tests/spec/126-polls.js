@@ -15,7 +15,7 @@ import { createPollAs, voteOnPollAs } from '../serverActions'
 fixture`126-polls.js`
   .page`http://localhost:4002`
 
-test.skip('Can vote on polls', async t => { // TODO: flaky test
+test('Can vote on polls', async t => {
   await createPollAs('admin', 'vote on my cool poll', ['yes', 'no'], false)
   await sleep(2000)
   await loginAsFoobar(t)
@@ -34,7 +34,7 @@ test.skip('Can vote on polls', async t => { // TODO: flaky test
     .expect(getNthStatusPollVoteCount(1).innerText).eql('1 vote')
 })
 
-test.skip('Can vote on multiple-choice polls', async t => { // TODO: flaky test
+test('Can vote on multiple-choice polls', async t => {
   await createPollAs('admin', 'vote on my other poll', ['yes', 'no', 'maybe'], true)
   await sleep(2000)
   await loginAsFoobar(t)
