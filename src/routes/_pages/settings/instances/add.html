@@ -112,6 +112,7 @@
     methods: {
       onSubmit (event) {
         event.preventDefault()
+        event.stopPropagation()
         logInToInstance()
       }
     }
