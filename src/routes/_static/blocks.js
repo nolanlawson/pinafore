@@ -1,4 +1,4 @@
-export const INSTANCE_BLOCKS = [
+export const DOMAIN_BLOCKS = [
   'gab.com',
   'gab.ai'
 ]

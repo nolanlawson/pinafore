@@ -6,7 +6,7 @@ import { store } from '../_store/store'
 import { updateVerifyCredentialsForInstance } from './instances'
 import { updateCustomEmojiForInstance } from './emoji'
 import { database } from '../_database/database'
-import { INSTANCE_BLOCKS } from '../_static/blocks'
+import { DOMAIN_BLOCKS } from '../_static/blocks'
 
 const REDIRECT_URI = (typeof location !== 'undefined'
   ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
@@ -23,7 +23,7 @@ async function redirectToOauth () {
   if (Object.keys(loggedInInstances).includes(instanceNameInSearch)) {
     throw createKnownError(`You've already logged in to ${instanceNameInSearch}`)
   }
-  if (INSTANCE_BLOCKS.includes(instanceNameInSearch)) {
+  if (DOMAIN_BLOCKS.some(domain => new RegExp(`(?:\\.|^)${domain}$`, 'i').test(instanceNameInSearch))) {
     throw createKnownError('This service is blocked')
   }
   let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
