@@ -10,7 +10,7 @@ fixture`112-status-links.js`
   .page`http://localhost:4002`
 
 test('External links, hashtags, and mentions have correct attributes', async t => {
-  let text = 'Why hello there @admin and @baz and @quux ' +
+  const text = 'Why hello there @admin and @baz and @quux ' +
     'and also #tag and #anotherTag and #yetAnotherTag ' +
     'and also http://example.com and https://joinmastodon.org and ' +
     'https://mastodon.social.'

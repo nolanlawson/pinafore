@@ -9,8 +9,8 @@ fixture`119-status-counts-update.js`
   .page`http://localhost:4002`
 
 test('Fav stats update', async t => {
-  let status = await postAs('foobar', 'hey hello look at this toot')
-  let statusId = status.id
+  const status = await postAs('foobar', 'hey hello look at this toot')
+  const statusId = status.id
   await favoriteStatusAs('admin', statusId)
   await loginAsFoobar(t)
   await t
@@ -35,8 +35,8 @@ test('Fav stats update', async t => {
 })
 
 test('Reblog stats update', async t => {
-  let status = await postAs('foobar', 'oh why hello it looks like another toot')
-  let statusId = status.id
+  const status = await postAs('foobar', 'oh why hello it looks like another toot')
+  const statusId = status.id
   await reblogStatusAs('admin', statusId)
   await loginAsFoobar(t)
   await t
@@ -61,8 +61,8 @@ test('Reblog stats update', async t => {
 })
 
 test('Fav and reblog stats update for a boosted toot', async t => {
-  let status = await postAs('ExternalLinks', 'this will get boosted')
-  let statusId = status.id
+  const status = await postAs('ExternalLinks', 'this will get boosted')
+  const statusId = status.id
   await reblogStatusAs('admin', statusId)
   await favoriteStatusAs('admin', statusId)
   await favoriteStatusAs('quux', statusId)

@@ -12,7 +12,7 @@ function hashCode (s) {
 }
 
 function generateCss (id, animations) {
-  let keyframes = animations.map(({ properties }, i) => (
+  const keyframes = animations.map(({ properties }, i) => (
     `@keyframes keyframe-${id}-${i} {
       ${properties.map((obj, i) => (`${Math.round(100 * i / (properties.length - 1))}% {
           ${Object.keys(obj).map(key => `${key}: ${obj[key]};`).join('')}
@@ -21,7 +21,7 @@ function generateCss (id, animations) {
     }`
   ))
 
-  let animationCss = `.${id} {
+  const animationCss = `.${id} {
     animation: ${animations.map(({ options }, i) => {
     return `keyframe-${id}-${i} ${options.duration}ms ${options.easing}`
   }).join(',')};
@@ -37,11 +37,11 @@ export function animate (el, animations) {
       .map(anim => anim.play())
   }
 
-  let hash = hashCode(JSON.stringify(animations))
-  let id = `anim-${hash}`
+  const hash = hashCode(JSON.stringify(animations))
+  const id = `anim-${hash}`
 
   if (!document.getElementById(id)) {
-    let style = document.createElement('style')
+    const style = document.createElement('style')
     style.id = id
     style.textContent = generateCss(id, animations)
     document.head.appendChild(style)
@@ -49,7 +49,7 @@ export function animate (el, animations) {
 
   requestAnimationFrame(() => {
     el.classList.add(id)
-    let wait = Math.max.apply(Math, animations.map(({ options }) => options.duration))
+    const wait = Math.max.apply(Math, animations.map(({ options }) => options.duration))
     setTimeout(() => {
       requestAnimationFrame(() => {
         el.classList.remove(id)

@@ -14,7 +14,7 @@ fixture`010-focus.js`
 test('modal preserves focus', async t => {
   await loginAsFoobar(t)
 
-  let idx = homeTimeline.findIndex(_ => _.content === "here's a video")
+  const idx = homeTimeline.findIndex(_ => _.content === "here's a video")
 
   await scrollToStatus(t, 1 + idx)
   // explicitly hover-focus-click

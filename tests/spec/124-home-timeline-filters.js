@@ -11,7 +11,7 @@ fixture`124-home-timeline-filters.js`
 test('Filters favs from home timeline', async t => {
   await postAs('foobar', 'Nobody should boost this')
   await sleep(1000)
-  let { id: statusId } = await postAs('quux', 'I hope someone cool boosts this')
+  const { id: statusId } = await postAs('quux', 'I hope someone cool boosts this')
   await reblogStatusAs('admin', statusId)
   await sleep(2000)
   await loginAsFoobar(t)

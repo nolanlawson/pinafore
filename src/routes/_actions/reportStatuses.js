@@ -3,7 +3,7 @@ import { toast } from '../_components/toast/toast'
 import { report } from '../_api/report'
 
 export async function reportStatuses (account, statusIds, comment, forward) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     await report(currentInstance, accessToken, account.id, statusIds, comment, forward)
     toast.say('Submitted report')

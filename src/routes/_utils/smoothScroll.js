@@ -49,7 +49,7 @@ function smoothScrollPolyfill (node, key, target) {
 function testSupportsSmoothScroll () {
   let supports = false
   try {
-    let div = document.createElement('div')
+    const div = document.createElement('div')
     div.scrollTo({
       top: 0,
       get behavior () {

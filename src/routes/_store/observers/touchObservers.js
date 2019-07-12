@@ -3,7 +3,7 @@ export function touchObservers (store) {
     return
   }
 
-  let onTouch = () => {
+  const onTouch = () => {
     store.set({ isUserTouching: true })
     window.removeEventListener('touchstart', onTouch)
   }

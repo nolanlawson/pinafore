@@ -10,7 +10,7 @@ const numStatuses = actions
 async function waitForMastodonData () {
   while (true) {
     try {
-      let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
+      const json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
       if (json.stats.status_count === numStatuses) {
         break
       } else {

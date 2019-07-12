@@ -4,7 +4,7 @@ import { toast } from '../_components/toast/toast'
 import { deleteStatus as deleteStatusLocally } from './deleteStatuses'
 
 export async function doDeleteStatus (statusId) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     await deleteStatus(currentInstance, accessToken, statusId)
     deleteStatusLocally(currentInstance, statusId)

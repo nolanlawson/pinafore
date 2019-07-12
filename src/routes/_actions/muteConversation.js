@@ -4,7 +4,7 @@ import { toast } from '../_components/toast/toast'
 import { database } from '../_database/database'
 
 export async function setConversationMuted (statusId, mute, toastOnSuccess) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     if (mute) {
       await muteConversation(currentInstance, accessToken, statusId)

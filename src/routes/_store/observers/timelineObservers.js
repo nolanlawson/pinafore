@@ -43,12 +43,12 @@ export function timelineObservers () {
       return
     }
 
-    let { currentInstance } = store.get()
-    let { accessToken } = store.get()
+    const { currentInstance } = store.get()
+    const { accessToken } = store.get()
     await updateInstanceInfo(currentInstance)
 
-    let currentTimelineIsUnchanged = () => {
-      let {
+    const currentTimelineIsUnchanged = () => {
+      const {
         currentInstance: newCurrentInstance,
         currentTimeline: newCurrentTimeline
       } = store.get()
@@ -60,25 +60,25 @@ export function timelineObservers () {
       return
     }
 
-    let timelineItemSummaries = store.getForTimeline(currentInstance,
+    const timelineItemSummaries = store.getForTimeline(currentInstance,
       currentTimeline, 'timelineItemSummaries')
-    let firstTimelineItemId = getFirstIdFromItemSummaries(timelineItemSummaries)
+    const firstTimelineItemId = getFirstIdFromItemSummaries(timelineItemSummaries)
 
-    let onOpenStream = async () => {
+    const onOpenStream = async () => {
       if (!firstTimelineItemId || !currentTimelineIsUnchanged()) {
         return
       }
       // fill in the "streaming gap" – i.e. fetch the most recent 20 items so that there isn't
       // a big gap in the timeline if you haven't looked at it in awhile
-      let newTimelineItems = await getTimeline(currentInstance, accessToken,
+      const newTimelineItems = await getTimeline(currentInstance, accessToken,
         currentTimeline, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
       if (newTimelineItems.length) {
         addStatusesOrNotifications(currentInstance, currentTimeline, newTimelineItems)
       }
     }
 
-    let { currentInstanceInfo } = store.get()
-    let streamingApi = currentInstanceInfo.urls.streaming_api
+    const { currentInstanceInfo } = store.get()
+    const streamingApi = currentInstanceInfo.urls.streaming_api
     currentTimelineStream = createStream(streamingApi, currentInstance, accessToken,
       currentTimeline, onOpenStream)
 

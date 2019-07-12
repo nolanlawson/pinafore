@@ -20,24 +20,24 @@ async function renderCss (file) {
 }
 
 async function compileGlobalSass () {
-  let mainStyle = (await Promise.all([defaultThemeScss, globalScss].map(renderCss))).join('')
-  let scrollbarStyle = (await renderCss(customScrollbarScss))
+  const mainStyle = (await Promise.all([defaultThemeScss, globalScss].map(renderCss))).join('')
+  const scrollbarStyle = (await renderCss(customScrollbarScss))
 
   return `<style>\n${mainStyle}</style>\n` +
     `<style media="all" id="theScrollbarStyle">\n${scrollbarStyle}</style>\n`
 }
 
 async function compileThemesSass () {
-  let files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
+  const files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
   await Promise.all(files.map(async file => {
     let css = await renderCss(path.join(themesScssDir, file))
     css = cssDedoupe(new TextDecoder('utf-8').decode(css)) // remove duplicate custom properties
-    let outputFilename = 'theme-' + path.basename(file).replace(/\.scss$/, '.css')
+    const outputFilename = 'theme-' + path.basename(file).replace(/\.scss$/, '.css')
     await writeFile(path.join(assetsDir, outputFilename), css, 'utf8')
   }))
 }
 
 export async function buildSass () {
-  let [ result ] = await Promise.all([compileGlobalSass(), compileThemesSass()])
+  const [result] = await Promise.all([compileGlobalSass(), compileThemesSass()])
   return result
 }

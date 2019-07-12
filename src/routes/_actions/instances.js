@@ -8,31 +8,31 @@ import { getInstanceInfo } from '../_api/instance'
 import { database } from '../_database/database'
 
 export function changeTheme (instanceName, newTheme) {
-  let { instanceThemes } = store.get()
+  const { instanceThemes } = store.get()
   instanceThemes[instanceName] = newTheme
   store.set({ instanceThemes: instanceThemes })
   store.save()
-  let { currentInstance } = store.get()
+  const { currentInstance } = store.get()
   if (instanceName === currentInstance) {
-    let { enableGrayscale } = store.get()
+    const { enableGrayscale } = store.get()
     switchToTheme(newTheme, enableGrayscale)
   }
 }
 
 export function switchToInstance (instanceName) {
-  let { instanceThemes } = store.get()
+  const { instanceThemes } = store.get()
   store.set({
     currentInstance: instanceName,
     searchResults: null,
     queryInSearch: ''
   })
   store.save()
-  let { enableGrayscale } = store.get()
+  const { enableGrayscale } = store.get()
   switchToTheme(instanceThemes[instanceName], enableGrayscale)
 }
 
 export async function logOutOfInstance (instanceName) {
-  let {
+  const {
     loggedInInstances,
     instanceThemes,
     loggedInInstancesInOrder,
@@ -40,7 +40,7 @@ export async function logOutOfInstance (instanceName) {
     currentInstance
   } = store.get()
   loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
-  let newInstance = instanceName === currentInstance
+  const newInstance = instanceName === currentInstance
     ? loggedInInstancesInOrder[0]
     : currentInstance
   delete loggedInInstances[instanceName]
@@ -57,21 +57,21 @@ export async function logOutOfInstance (instanceName) {
   })
   store.save()
   toast.say(`Logged out of ${instanceName}`)
-  let { enableGrayscale } = store.get()
+  const { enableGrayscale } = store.get()
   switchToTheme(instanceThemes[newInstance], enableGrayscale)
   /* no await */ database.clearDatabaseForInstance(instanceName)
   goto('/settings/instances')
 }
 
 function setStoreVerifyCredentials (instanceName, thisVerifyCredentials) {
-  let { verifyCredentials } = store.get()
+  const { verifyCredentials } = store.get()
   verifyCredentials[instanceName] = thisVerifyCredentials
   store.set({ verifyCredentials: verifyCredentials })
 }
 
 export async function updateVerifyCredentialsForInstance (instanceName) {
-  let { loggedInInstances } = store.get()
-  let accessToken = loggedInInstances[instanceName].access_token
+  const { loggedInInstances } = store.get()
+  const accessToken = loggedInInstances[instanceName].access_token
   await cacheFirstUpdateAfter(
     () => getVerifyCredentials(instanceName, accessToken),
     () => database.getInstanceVerifyCredentials(instanceName),
@@ -81,7 +81,7 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
 }
 
 export async function updateVerifyCredentialsForCurrentInstance () {
-  let { currentInstance } = store.get()
+  const { currentInstance } = store.get()
   await updateVerifyCredentialsForInstance(currentInstance)
 }
 
@@ -91,7 +91,7 @@ export async function updateInstanceInfo (instanceName) {
     () => database.getInstanceInfo(instanceName),
     info => database.setInstanceInfo(instanceName, info),
     info => {
-      let { instanceInfos } = store.get()
+      const { instanceInfos } = store.get()
       instanceInfos[instanceName] = info
       store.set({ instanceInfos: instanceInfos })
     }

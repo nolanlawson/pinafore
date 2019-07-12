@@ -13,7 +13,7 @@ import { toReversePaddedBigInt } from '../_utils/statusIdSorting'
 
 function initialMigration (db, tx, done) {
   function createObjectStore (name, init, indexes) {
-    let store = init
+    const store = init
       ? db.createObjectStore(name, init)
       : db.createObjectStore(name)
     if (indexes) {
@@ -28,14 +28,14 @@ function initialMigration (db, tx, done) {
     [REBLOG_ID]: REBLOG_ID
   })
   createObjectStore(STATUS_TIMELINES_STORE, null, {
-    'statusId': ''
+    statusId: ''
   })
   createObjectStore(NOTIFICATIONS_STORE, { keyPath: 'id' }, {
     [TIMESTAMP]: TIMESTAMP,
     [STATUS_ID]: STATUS_ID
   })
   createObjectStore(NOTIFICATION_TIMELINES_STORE, null, {
-    'notificationId': ''
+    notificationId: ''
   })
   createObjectStore(ACCOUNTS_STORE, { keyPath: 'id' }, {
     [TIMESTAMP]: TIMESTAMP
@@ -44,10 +44,10 @@ function initialMigration (db, tx, done) {
     [TIMESTAMP]: TIMESTAMP
   })
   createObjectStore(THREADS_STORE, null, {
-    'statusId': ''
+    statusId: ''
   })
   createObjectStore(PINNED_STATUSES_STORE, null, {
-    'statusId': ''
+    statusId: ''
   })
   createObjectStore(META_STORE)
   done()
@@ -60,20 +60,20 @@ function addSearchAccountsMigration (db, tx, done) {
 }
 
 function snowflakeIdsMigration (db, tx, done) {
-  let stores = [STATUS_TIMELINES_STORE, NOTIFICATION_TIMELINES_STORE]
+  const stores = [STATUS_TIMELINES_STORE, NOTIFICATION_TIMELINES_STORE]
   let storeDoneCount = 0
 
   // Here we have to convert the old "reversePaddedBigInt" format to the new
   // one which is compatible with Pleroma-style snowflake IDs.
   stores.forEach(store => {
-    let objectStore = tx.objectStore(store)
-    let cursor = objectStore.openCursor()
+    const objectStore = tx.objectStore(store)
+    const cursor = objectStore.openCursor()
     cursor.onsuccess = e => {
-      let { result } = e.target
+      const { result } = e.target
       if (result) {
-        let { key, value } = result
+        const { key, value } = result
         // key is timeline name plus delimiter plus reverse padded big int
-        let newKey = key.split('\u0000')[0] + '\u0000' + toReversePaddedBigInt(value)
+        const newKey = key.split('\u0000')[0] + '\u0000' + toReversePaddedBigInt(value)
 
         objectStore.delete(key).onsuccess = () => {
           objectStore.add(value, newKey).onsuccess = () => {

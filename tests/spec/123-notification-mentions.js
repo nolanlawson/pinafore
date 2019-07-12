@@ -33,7 +33,7 @@ test('Handles incoming notifications that are mentions', async t => {
 
 test('Handles incoming notifications that are not mentions', async t => {
   const timeout = 20000
-  let { id: statusId } = await postAs('foobar', 'this is a post that I hope somebody will favorite')
+  const { id: statusId } = await postAs('foobar', 'this is a post that I hope somebody will favorite')
   await sleep(2000)
   await loginAsFoobar(t)
   await t

@@ -44,10 +44,10 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
-    let keys = await caches.keys()
+    const keys = await caches.keys()
 
     // delete old asset/ondemand caches
-    for (let key of keys) {
+    for (const key of keys) {
       if (key !== ASSETS &&
         !key.startsWith('webpack_assets_')) {
         await caches.delete(key)
@@ -58,16 +58,16 @@ self.addEventListener('activate', event => {
     // them when the service worker has installed but the page has not
     // yet reloaded (e.g. when it gives the toast saying "please reload"
     // but then you don't refresh and instead load an async chunk)
-    let webpackKeysToDelete = keys
+    const webpackKeysToDelete = keys
       .filter(key => key.startsWith('webpack_assets_'))
       .sort((a, b) => {
-        let aTimestamp = parseInt(a.substring(15), 10)
-        let bTimestamp = parseInt(b.substring(15), 10)
+        const aTimestamp = parseInt(a.substring(15), 10)
+        const bTimestamp = parseInt(b.substring(15), 10)
         return bTimestamp < aTimestamp ? -1 : 1
       })
       .slice(2)
 
-    for (let key of webpackKeysToDelete) {
+    for (const key of webpackKeysToDelete) {
       await caches.delete(key)
     }
 
@@ -85,19 +85,19 @@ self.addEventListener('fetch', event => {
   }
 
   event.respondWith((async () => {
-    let sameOrigin = url.origin === self.origin
+    const sameOrigin = url.origin === self.origin
 
     if (sameOrigin) {
       // always serve webpack-generated resources and
       // static from the cache if possible
-      let response = await caches.match(req)
+      const response = await caches.match(req)
       if (response) {
         return response
       }
       // for routes, serve the /service-worker-index.html file from the most recent
       // static cache
       if (routes.find(route => route.pattern.test(url.pathname))) {
-        let response = await caches.match('/service-worker-index.html')
+        const response = await caches.match('/service-worker-index.html')
         if (response) {
           return response
         }
@@ -116,7 +116,7 @@ self.addEventListener('push', event => {
 
     try {
       const notification = await get(`${origin}/api/v1/notifications/${data.notification_id}`, {
-        'Authorization': `Bearer ${data.access_token}`
+        Authorization: `Bearer ${data.access_token}`
       }, { timeout: 2000 })
 
       await showRichNotification(data, notification)
@@ -200,7 +200,7 @@ async function showRichNotification (data, notification) {
 const cloneNotification = notification => {
   const clone = {}
 
-  for (let k in notification) {
+  for (const k in notification) {
     // deliberately not doing a hasOwnProperty check, but skipping
     // functions and null props like onclick and onshow and showTrigger
     if (typeof notification[k] !== 'function' && notification[k] !== null) {
@@ -225,7 +225,7 @@ self.addEventListener('notificationclick', event => {
       case 'reblog': {
         const url = `${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/reblog`
         await post(url, null, {
-          'Authorization': `Bearer ${event.notification.data.access_token}`
+          Authorization: `Bearer ${event.notification.data.access_token}`
         })
         await updateNotificationWithoutAction(event.notification, 'reblog')
         break
@@ -233,7 +233,7 @@ self.addEventListener('notificationclick', event => {
       case 'favourite': {
         const url = `${event.notification.data.instance}/api/v1/statuses/${event.notification.data.status_id}/favourite`
         await post(url, null, {
-          'Authorization': `Bearer ${event.notification.data.access_token}`
+          Authorization: `Bearer ${event.notification.data.access_token}`
         })
         await updateNotificationWithoutAction(event.notification, 'favourite')
         break

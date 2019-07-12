@@ -4,8 +4,8 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 function searchEmoji (searchText) {
   searchText = searchText.toLowerCase().substring(1)
-  let { currentCustomEmoji } = store.get()
-  let results = currentCustomEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))
+  const { currentCustomEmoji } = store.get()
+  const results = currentCustomEmoji.filter(emoji => emoji.shortcode.toLowerCase().startsWith(searchText))
     .sort((a, b) => a.shortcode.toLowerCase() < b.shortcode.toLowerCase() ? -1 : 1)
     .slice(0, SEARCH_RESULTS_LIMIT)
   return results
@@ -18,7 +18,7 @@ export function doEmojiSearch (searchText) {
     if (canceled) {
       return
     }
-    let results = searchEmoji(searchText)
+    const results = searchEmoji(searchText)
     store.setForCurrentAutosuggest({
       autosuggestType: 'emoji',
       autosuggestSelected: 0,

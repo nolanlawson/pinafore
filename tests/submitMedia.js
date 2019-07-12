@@ -4,7 +4,7 @@ import path from 'path'
 import { auth } from '../src/routes/_api/utils'
 
 export async function submitMedia (accessToken, filename, alt) {
-  let form = new FormData()
+  const form = new FormData()
   form.append('file', fs.createReadStream(path.join(__dirname, 'images', filename)))
   form.append('description', alt)
   return new Promise((resolve, reject) => {

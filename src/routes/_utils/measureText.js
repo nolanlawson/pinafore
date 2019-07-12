@@ -12,10 +12,10 @@ export function measureText (inputText) {
     return 0
   }
   mark('measureText()')
-  let normalizedText = inputText
+  const normalizedText = inputText
     .replace(urlRegex(), urlPlaceholder)
     .replace(handleRegex(), '$1@$3')
-  let len = length(normalizedText)
+  const len = length(normalizedText)
   stop('measureText()')
   return len
 }

@@ -11,27 +11,27 @@ export function showMoreAndScrollToTop () {
   // Similar to Twitter, pressing "." will click the "show more" button and select
   // the first toot.
   showMoreItemsForCurrentTimeline()
-  let {
+  const {
     currentInstance,
     timelineItemSummaries,
     currentTimelineType,
     currentTimelineValue
   } = store.get()
-  let firstItemSummary = timelineItemSummaries && timelineItemSummaries[0]
+  const firstItemSummary = timelineItemSummaries && timelineItemSummaries[0]
   if (!firstItemSummary) {
     return
   }
-  let notificationId = currentTimelineType === 'notifications' && firstItemSummary.id
-  let statusId = currentTimelineType !== 'notifications' && firstItemSummary.id
+  const notificationId = currentTimelineType === 'notifications' && firstItemSummary.id
+  const statusId = currentTimelineType !== 'notifications' && firstItemSummary.id
   scrollToTop(/* smooth */ false)
   // try 5 times to wait for the element to be rendered and then focus it
   let count = 0
   const tryToFocusElement = () => {
-    let uuid = createStatusOrNotificationUuid(
+    const uuid = createStatusOrNotificationUuid(
       currentInstance, currentTimelineType,
       currentTimelineValue, notificationId, statusId
     )
-    let element = document.getElementById(uuid)
+    const element = document.getElementById(uuid)
     if (element) {
       try {
         element.focus({ preventScroll: true })

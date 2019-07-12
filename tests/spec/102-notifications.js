@@ -8,7 +8,7 @@ fixture`102-notifications.js`
   .page`http://localhost:4002`
 
 test('shows unread notification', async t => {
-  let { id } = await postAs('foobar', 'somebody please favorite this to validate me')
+  const { id } = await postAs('foobar', 'somebody please favorite this to validate me')
   await loginAsFoobar(t)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
@@ -35,7 +35,7 @@ test('shows unread notification', async t => {
 })
 
 test('shows unread notifications, more than one', async t => {
-  let { id } = await postAs('foobar', 'I need lots of favorites on this one')
+  const { id } = await postAs('foobar', 'I need lots of favorites on this one')
   await loginAsFoobar(t)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')

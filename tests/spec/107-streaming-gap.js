@@ -10,7 +10,7 @@ fixture`107-streaming-gap.js`
   .page`http://localhost:4002`
 
 test('fills in a status posted while away from timeline', async t => {
-  let timeout = 30000
+  const timeout = 30000
 
   await loginAsFoobar(t)
   await t

@@ -20,7 +20,7 @@ fixture`114-mute-unmute.js`
 
 test('Can mute and unmute an account', async t => {
   await loginAsFoobar(t)
-  let post = 'blah blah blah'
+  const post = 'blah blah blah'
   await postAs('admin', post)
 
   await t.expect(getNthStatus(1).innerText).contains(post, { timeout: 20000 })

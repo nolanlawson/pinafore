@@ -309,6 +309,7 @@ function $$ (selector, context) {
    * @return {Array<Element>}
    */
 function collect (target) {
+  /* eslint-disable no-prototype-builtins */
   if (NodeList.prototype.isPrototypeOf(target)) {
     return toArray(target)
   }
@@ -316,6 +317,7 @@ function collect (target) {
   if (Element.prototype.isPrototypeOf(target)) {
     return [target]
   }
+  /* eslint-enable no-prototype-builtins */
 
   if (typeof target === 'string') {
     return $$(target)

@@ -9,7 +9,7 @@ export async function getGenericEntityWithId (store, cache, instanceName, id) {
     return getInCache(cache, instanceName, id)
   }
   const db = await getDatabase(instanceName)
-  let result = await dbPromise(db, store, 'readonly', (store, callback) => {
+  const result = await dbPromise(db, store, 'readonly', (store, callback) => {
     store.get(id).onsuccess = (e) => callback(e.target.result)
   })
   setInCache(cache, instanceName, id, result)
@@ -25,10 +25,10 @@ export async function setGenericEntityWithId (store, cache, instanceName, entity
 }
 
 export function cloneForStorage (obj) {
-  let res = {}
-  let keys = Object.keys(obj)
-  for (let key of keys) {
-    let value = obj[key]
+  const res = {}
+  const keys = Object.keys(obj)
+  for (const key of keys) {
+    const value = obj[key]
     // save storage space by skipping nulls, 0s, falses, empty strings, and empty arrays
     if (!value || (Array.isArray(value) && value.length === 0)) {
       continue

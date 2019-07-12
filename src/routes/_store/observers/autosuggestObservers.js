@@ -13,13 +13,13 @@ export function autosuggestObservers () {
     }
     // autosuggestSelecting indicates that the user has pressed Enter or clicked on an item
     // and the results are being processed. Returning early avoids a flash of searched content.
-    let { composeFocused } = store.get()
-    let autosuggestSelecting = store.getForCurrentAutosuggest('autosuggestSelecting')
+    const { composeFocused } = store.get()
+    const autosuggestSelecting = store.getForCurrentAutosuggest('autosuggestSelecting')
     if (!composeFocused || !autosuggestSearchText || autosuggestSelecting) {
       return
     }
 
-    let autosuggestType = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
+    const autosuggestType = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
 
     if (autosuggestType === 'emoji') {
       lastSearch = doEmojiSearch(autosuggestSearchText)

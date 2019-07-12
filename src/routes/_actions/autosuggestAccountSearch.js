@@ -11,8 +11,8 @@ const DATABASE_SEARCH_RESULTS_LIMIT = 30
 const promiseThrottler = new PromiseThrottler(200) // Mastodon FE also uses 200ms
 
 function byUsername (a, b) {
-  let usernameA = a.acct.toLowerCase()
-  let usernameB = b.acct.toLowerCase()
+  const usernameA = a.acct.toLowerCase()
+  const usernameB = b.acct.toLowerCase()
 
   return usernameA < usernameB ? -1 : usernameA === usernameB ? 0 : 1
 }
@@ -25,7 +25,7 @@ export function doAccountSearch (searchText) {
   let canceled = false
   let localResults
   let remoteResults
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   let controller = typeof AbortController === 'function' && new AbortController()
 
   function abortFetch () {
@@ -60,7 +60,7 @@ export function doAccountSearch (searchText) {
       .slice(0, SEARCH_RESULTS_LIMIT)
 
     if (results.length < SEARCH_RESULTS_LIMIT) {
-      let topRemoteResults = (remoteResults || [])
+      const topRemoteResults = (remoteResults || [])
         .sort(byUsername)
         .slice(0, SEARCH_RESULTS_LIMIT - results.length)
       results = concat(results, topRemoteResults)
@@ -74,7 +74,7 @@ export function doAccountSearch (searchText) {
     if (canceled) {
       return
     }
-    let results = mergeAndTruncateResults()
+    const results = mergeAndTruncateResults()
     store.setForCurrentAutosuggest({
       autosuggestType: 'account',
       autosuggestSelected: 0,

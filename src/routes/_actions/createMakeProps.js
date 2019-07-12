@@ -36,7 +36,7 @@ export function createMakeProps (instanceName, timelineType, timelineValue) {
 
   return (itemId) => {
     taskCount++
-    let promise = timelineType === 'notifications'
+    const promise = timelineType === 'notifications'
       ? getNotification(instanceName, timelineType, timelineValue, itemId)
       : getStatus(instanceName, timelineType, timelineValue, itemId)
 

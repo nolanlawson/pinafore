@@ -11,11 +11,11 @@ export class LocalStorageStore extends Store {
     }
     this._keysToWatch = keysToWatch
     this._keysToSave = {}
-    let newState = {}
+    const newState = {}
     for (let i = 0, len = LS.length; i < len; i++) {
-      let key = LS.key(i)
+      const key = LS.key(i)
       if (key.startsWith('store_')) {
-        let item = LS.getItem(key)
+        const item = LS.getItem(key)
         newState[key.substring(6)] = safeParse(item)
       }
     }

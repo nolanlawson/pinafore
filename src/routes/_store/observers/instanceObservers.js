@@ -35,7 +35,7 @@ async function doRefreshInstanceDataAndStream (store, instanceName) {
     return
   }
 
-  let { currentInstanceInfo } = store.get()
+  const { currentInstanceInfo } = store.get()
   if (!currentInstanceInfo) {
     return
   }
@@ -57,15 +57,15 @@ async function refreshInstanceData (instanceName) {
 }
 
 function stream (store, instanceName, currentInstanceInfo) {
-  let homeTimelineItemSummaries = store.getForTimeline(instanceName,
+  const homeTimelineItemSummaries = store.getForTimeline(instanceName,
     'home', 'timelineItemSummaries')
-  let firstHomeTimelineItemId = getFirstIdFromItemSummaries(homeTimelineItemSummaries)
-  let notificationItemSummaries = store.getForTimeline(instanceName,
+  const firstHomeTimelineItemId = getFirstIdFromItemSummaries(homeTimelineItemSummaries)
+  const notificationItemSummaries = store.getForTimeline(instanceName,
     'notifications', 'timelineItemSummaries')
-  let firstNotificationTimelineItemId = getFirstIdFromItemSummaries(notificationItemSummaries)
+  const firstNotificationTimelineItemId = getFirstIdFromItemSummaries(notificationItemSummaries)
 
-  let { accessToken } = store.get()
-  let streamingApi = currentInstanceInfo.urls.streaming_api
+  const { accessToken } = store.get()
+  const streamingApi = currentInstanceInfo.urls.streaming_api
 
   function onOpenStream () {
     if (currentInstanceChanged(store, instanceName)) {
@@ -89,7 +89,7 @@ async function fillGap (instanceName, accessToken, timelineName, firstTimelineIt
   if (!firstTimelineItemId) {
     return
   }
-  let newTimelineItems = await getTimeline(instanceName, accessToken,
+  const newTimelineItems = await getTimeline(instanceName, accessToken,
     timelineName, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
   if (newTimelineItems.length) {
     addStatusesOrNotifications(instanceName, timelineName, newTimelineItems)

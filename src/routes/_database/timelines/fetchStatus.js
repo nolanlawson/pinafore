@@ -3,7 +3,7 @@ import { ACCOUNT_ID, REBLOG_ID } from '../constants'
 
 export function fetchStatus (statusesStore, accountsStore, id, callback) {
   statusesStore.get(id).onsuccess = e => {
-    let status = e.target.result
+    const status = e.target.result
     callback(status)
     if (!status) {
       return

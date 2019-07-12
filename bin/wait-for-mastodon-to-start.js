@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 export async function waitForMastodonUiToStart () {
   while (true) {
     try {
-      let html = await ((await fetch('http://127.0.0.1:3035/packs/common.js')).text())
+      const html = await ((await fetch('http://127.0.0.1:3035/packs/common.js')).text())
       if (html) {
         break
       }
@@ -18,7 +18,7 @@ export async function waitForMastodonUiToStart () {
 export async function waitForMastodonApiToStart () {
   while (true) {
     try {
-      let json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
+      const json = await ((await fetch('http://127.0.0.1:3000/api/v1/instance')).json())
       if (json.uri) {
         break
       }

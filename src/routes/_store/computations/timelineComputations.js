@@ -27,7 +27,7 @@ function computeTimelineFilter (store, computationName, timelinesToSettingsKeys)
     computationName,
     ['currentInstance', 'instanceSettings', 'currentTimeline'],
     (currentInstance, instanceSettings, currentTimeline) => {
-      let settingsKey = timelinesToSettingsKeys[currentTimeline]
+      const settingsKey = timelinesToSettingsKeys[currentTimeline]
       return settingsKey ? get(instanceSettings, [currentInstance, settingsKey], true) : true
     }
   )
@@ -61,8 +61,8 @@ export function timelineComputations (store) {
     if (!currentTimeline) {
       return void 0
     }
-    let split = currentTimeline.split('/')
-    let len = split.length
+    const split = currentTimeline.split('/')
+    const len = split.length
     if (split[len - 1] === 'with_replies' || split[len - 1] === 'media') {
       return split[len - 2]
     }

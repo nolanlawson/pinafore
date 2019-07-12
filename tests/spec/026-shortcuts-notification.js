@@ -12,7 +12,7 @@ fixture`026-shortcuts-notification.js`
   .page`http://localhost:4002`
 
 test('Shortcut f toggles favorite status in notification', async t => {
-  let idx = 0
+  const idx = 0
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -29,7 +29,7 @@ test('Shortcut f toggles favorite status in notification', async t => {
 })
 
 test('Shortcut p toggles profile in a follow notification', async t => {
-  let idx = 5 // "@quux followed you"
+  const idx = 5 // "@quux followed you"
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -46,7 +46,7 @@ test('Shortcut p toggles profile in a follow notification', async t => {
 })
 
 test('Shortcut m toggles mention in a follow notification', async t => {
-  let idx = 5 // "@quux followed you"
+  const idx = 5 // "@quux followed you"
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -62,7 +62,7 @@ test('Shortcut m toggles mention in a follow notification', async t => {
 })
 
 test('Shortcut p refers to booster in a boost notification', async t => {
-  let idx = 1 // "@admin boosted your status"
+  const idx = 1 // "@admin boosted your status"
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -76,7 +76,7 @@ test('Shortcut p refers to booster in a boost notification', async t => {
 })
 
 test('Shortcut m refers to favoriter in a favorite notification', async t => {
-  let idx = 0 // "@admin favorited your status"
+  const idx = 0 // "@admin favorited your status"
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')

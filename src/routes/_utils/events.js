@@ -18,16 +18,16 @@ export function mouseover (node, callback) {
 }
 
 export function selectionChange (node, callback) {
-  let events = ['keyup', 'click', 'focus', 'blur']
-  let listener = () => {
+  const events = ['keyup', 'click', 'focus', 'blur']
+  const listener = () => {
     callback(node.selectionStart)
   }
-  for (let event of events) {
+  for (const event of events) {
     node.addEventListener(event, listener)
   }
   return {
     destroy () {
-      for (let event of events) {
+      for (const event of events) {
         node.removeEventListener(event, listener)
       }
     }

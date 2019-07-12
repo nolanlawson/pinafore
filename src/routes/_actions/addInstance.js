@@ -12,7 +12,7 @@ const REDIRECT_URI = (typeof location !== 'undefined'
   ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
 
 function createKnownError (message) {
-  let err = new Error(message)
+  const err = new Error(message)
   err.knownError = true
   return err
 }
@@ -23,20 +23,20 @@ async function redirectToOauth () {
   if (Object.keys(loggedInInstances).includes(instanceNameInSearch)) {
     throw createKnownError(`You've already logged in to ${instanceNameInSearch}`)
   }
-  let instanceHostname = new URL(`http://${instanceNameInSearch}`).hostname
+  const instanceHostname = new URL(`http://${instanceNameInSearch}`).hostname
   if (DOMAIN_BLOCKS.some(domain => new RegExp(`(?:\\.|^)${domain}$`, 'i').test(instanceHostname))) {
     throw createKnownError('This service is blocked')
   }
-  let registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
-  let instanceInfo = await getInstanceInfo(instanceNameInSearch)
+  const registrationPromise = registerApplication(instanceNameInSearch, REDIRECT_URI)
+  const instanceInfo = await getInstanceInfo(instanceNameInSearch)
   await database.setInstanceInfo(instanceNameInSearch, instanceInfo) // cache for later
-  let instanceData = await registrationPromise
+  const instanceData = await registrationPromise
   store.set({
     currentRegisteredInstanceName: instanceNameInSearch,
     currentRegisteredInstance: instanceData
   })
   store.save()
-  let oauthUrl = generateAuthLink(
+  const oauthUrl = generateAuthLink(
     instanceNameInSearch,
     instanceData.client_id,
     REDIRECT_URI
@@ -53,12 +53,12 @@ export async function logInToInstance () {
     await redirectToOauth()
   } catch (err) {
     console.error(err)
-    let error = `${err.message || err.name}. ` +
+    const error = `${err.message || err.name}. ` +
       (err.knownError ? '' : (navigator.onLine
         ? `Is this a valid Mastodon instance? Is a browser extension
            blocking the request? Are you in private browsing mode?`
         : `Are you offline?`))
-    let { instanceNameInSearch } = store.get()
+    const { instanceNameInSearch } = store.get()
     store.set({
       logInToInstanceError: error,
       logInToInstanceErrorForText: instanceNameInSearch
@@ -69,15 +69,15 @@ export async function logInToInstance () {
 }
 
 async function registerNewInstance (code) {
-  let { currentRegisteredInstanceName, currentRegisteredInstance } = store.get()
-  let instanceData = await getAccessTokenFromAuthCode(
+  const { currentRegisteredInstanceName, currentRegisteredInstance } = store.get()
+  const instanceData = await getAccessTokenFromAuthCode(
     currentRegisteredInstanceName,
     currentRegisteredInstance.client_id,
     currentRegisteredInstance.client_secret,
     code,
     REDIRECT_URI
   )
-  let { loggedInInstances, loggedInInstancesInOrder, instanceThemes } = store.get()
+  const { loggedInInstances, loggedInInstancesInOrder, instanceThemes } = store.get()
   instanceThemes[currentRegisteredInstanceName] = DEFAULT_THEME
   loggedInInstances[currentRegisteredInstanceName] = instanceData
   if (!loggedInInstancesInOrder.includes(currentRegisteredInstanceName)) {
@@ -93,7 +93,7 @@ async function registerNewInstance (code) {
     instanceThemes: instanceThemes
   })
   store.save()
-  let { enableGrayscale } = store.get()
+  const { enableGrayscale } = store.get()
   switchToTheme(DEFAULT_THEME, enableGrayscale)
   // fire off these requests so they're cached
   /* no await */ updateVerifyCredentialsForInstance(currentRegisteredInstanceName)

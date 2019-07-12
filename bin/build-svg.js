@@ -10,12 +10,12 @@ const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
 async function readSvg (svg) {
-  let filepath = path.join(__dirname, '../', svg.src)
-  let content = await readFile(filepath, 'utf8')
-  let optimized = (await svgo.optimize(content))
-  let $optimized = $(optimized.data)
-  let $path = $optimized.find('path').removeAttr('fill')
-  let $symbol = $('<symbol></symbol>')
+  const filepath = path.join(__dirname, '../', svg.src)
+  const content = await readFile(filepath, 'utf8')
+  const optimized = (await svgo.optimize(content))
+  const $optimized = $(optimized.data)
+  const $path = $optimized.find('path').removeAttr('fill')
+  const $symbol = $('<symbol></symbol>')
     .attr('id', svg.id)
     .attr('viewBox', `0 0 ${optimized.info.width} ${optimized.info.height}`)
     .append($path)
@@ -23,14 +23,14 @@ async function readSvg (svg) {
 }
 
 export async function buildSvg () {
-  let inlineSvgs = svgs.filter(_ => _.inline)
-  let regularSvgs = svgs.filter(_ => !_.inline)
+  const inlineSvgs = svgs.filter(_ => _.inline)
+  const regularSvgs = svgs.filter(_ => !_.inline)
 
-  let inlineSvgStrings = (await Promise.all(inlineSvgs.map(readSvg))).join('')
-  let regularSvgStrings = (await Promise.all(regularSvgs.map(readSvg))).join('')
+  const inlineSvgStrings = (await Promise.all(inlineSvgs.map(readSvg))).join('')
+  const regularSvgStrings = (await Promise.all(regularSvgs.map(readSvg))).join('')
 
-  let inlineOutput = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${inlineSvgStrings}</svg>`
-  let regularOutput = `<svg xmlns="http://www.w3.org/2000/svg">${regularSvgStrings}</svg>`
+  const inlineOutput = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${inlineSvgStrings}</svg>`
+  const regularOutput = `<svg xmlns="http://www.w3.org/2000/svg">${regularSvgStrings}</svg>`
 
   await writeFile(path.resolve(__dirname, '../static/icons.svg'), regularOutput, 'utf8')
 

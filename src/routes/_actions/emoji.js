@@ -9,7 +9,7 @@ export async function updateCustomEmojiForInstance (instanceName) {
     () => database.getCustomEmoji(instanceName),
     emoji => database.setCustomEmoji(instanceName, emoji),
     emoji => {
-      let { customEmoji } = store.get()
+      const { customEmoji } = store.get()
       customEmoji[instanceName] = emoji
       store.set({ customEmoji: customEmoji })
     }
@@ -17,12 +17,12 @@ export async function updateCustomEmojiForInstance (instanceName) {
 }
 
 export function insertEmoji (realm, emoji) {
-  let emojiText = emoji.custom ? emoji.colons : emoji.native
-  let { composeSelectionStart } = store.get()
-  let idx = composeSelectionStart || 0
-  let oldText = store.getComposeData(realm, 'text') || ''
-  let pre = oldText.substring(0, idx)
-  let post = oldText.substring(idx)
-  let newText = `${pre}${emojiText} ${post}`
+  const emojiText = emoji.custom ? emoji.colons : emoji.native
+  const { composeSelectionStart } = store.get()
+  const idx = composeSelectionStart || 0
+  const oldText = store.getComposeData(realm, 'text') || ''
+  const pre = oldText.substring(0, idx)
+  const post = oldText.substring(idx)
+  const newText = `${pre}${emojiText} ${post}`
   store.setComposeData(realm, { text: newText })
 }
