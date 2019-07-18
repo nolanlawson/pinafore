@@ -6,10 +6,10 @@ import { store } from '../_store/store'
 export async function deleteAndRedraft (status) {
   let deleteStatusPromise = doDeleteStatus(status.id)
   let dialogPromise = importShowComposeDialog()
-  await deleteStatusPromise
+  let deletedStatus = await deleteStatusPromise
 
   store.setComposeData('dialog', {
-    text: statusHtmlToPlainText(status.content, status.mentions),
+    text: deletedStatus.text || statusHtmlToPlainText(status.content, status.mentions),
     contentWarningShown: !!status.spoiler_text,
     contentWarning: status.spoiler_text || '',
     postPrivacy: status.visibility,

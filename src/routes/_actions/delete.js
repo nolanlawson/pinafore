@@ -6,9 +6,10 @@ import { deleteStatus as deleteStatusLocally } from './deleteStatuses'
 export async function doDeleteStatus (statusId) {
   let { currentInstance, accessToken } = store.get()
   try {
-    await deleteStatus(currentInstance, accessToken, statusId)
+    let deletedStatus = await deleteStatus(currentInstance, accessToken, statusId)
     deleteStatusLocally(currentInstance, statusId)
     toast.say('Status deleted.')
+    return deletedStatus
   } catch (e) {
     console.error(e)
     toast.say('Unable to delete status: ' + (e.message || ''))
