@@ -13,5 +13,6 @@ export async function doDeleteStatus (statusId) {
   } catch (e) {
     console.error(e)
     toast.say('Unable to delete status: ' + (e.message || ''))
+    return {}
   }
 }
