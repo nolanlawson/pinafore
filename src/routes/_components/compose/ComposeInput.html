@@ -68,12 +68,14 @@
   } from '../../_actions/autosuggest'
   import { observe } from 'svelte-extras'
   import { get } from '../../_utils/lodash-lite'
+  import { on } from '../../_utils/eventBus'
 
   export default {
     oncreate () {
       this.setupSyncFromStore()
       this.setupSyncToStore()
       this.setupAutosize()
+      this.setupResize()
     },
     ondestroy () {
       this.teardownAutosize()
@@ -225,6 +227,13 @@
         })
         event.preventDefault()
         event.stopPropagation()
+      },
+      setupResize () {
+        on('resizeComposeInput', this, realm => {
+          if (realm === this.get().realm) {
+            autosize.update(this.refs.textarea)
+          }
+        })
       }
     },
     store: () => store,

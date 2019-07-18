@@ -3,13 +3,14 @@
   {label}
   {title}
   background="var(--main-bg)"
+  on:show="onShow()"
 >
-  <ComposeBox realm="dialog" autoFocus={true} dialogId={id} />
+  <ComposeBox {realm} autoFocus={true} dialogId={id} />
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
   import ComposeBox from '../../compose/ComposeBox.html'
-  import { on } from '../../../_utils/eventBus'
+  import { on, emit } from '../../../_utils/eventBus'
   import { show } from '../helpers/showDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import { close } from '../helpers/closeDialog'
@@ -20,16 +21,20 @@
       onCreateDialog.call(this)
     },
     data: () => ({
-      title: void 0
+      title: void 0,
+      realm: 'dialog'
     }),
     methods: {
       show,
       close,
       onPostedStatus (realm) {
-        if (realm !== 'dialog') {
+        if (realm !== this.get().realm) {
           return
         }
         this.close()
+      },
+      onShow () {
+        emit('resizeComposeInput', this.get().realm)
       }
     },
     components: {
