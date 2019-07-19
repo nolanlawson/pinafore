@@ -109,7 +109,6 @@
   import { mark, stop } from '../_utils/marks'
   import { doubleRAF } from '../_utils/doubleRAF'
   import { scrollToTop } from '../_utils/scrollToTop'
-  import { refreshStream } from '../_store/observers/instanceObservers.js'
 
   export default {
     oncreate () {
@@ -173,7 +172,8 @@
         }
 
         if (page === 'home') {
-          refreshStream()
+          // As the array is new, it will just trigger a new refresh
+          store.set({ currentInstanceRefresh: [] })
         }
 
         if (scrollToTop(/* smooth */ true)) {

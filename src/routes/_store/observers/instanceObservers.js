@@ -114,23 +114,23 @@ export function instanceObservers () {
 
     scheduleIdleTask(() => refreshInstanceDataAndStream(store, currentInstance))
   })
-}
 
-export function refreshStream () {
-  if (!process.browser) {
-    return
-  }
-  if (currentInstanceStream) {
-    currentInstanceStream.close()
-    currentInstanceStream = null
-    if (process.env.NODE_ENV !== 'production') {
-      window.currentInstanceStream = null
+  store.observe('currentInstanceRefresh', async () => {
+    if (!process.browser) {
+      return
     }
-  }
-  const currentInstance = store.get().currentInstance
-  if (!currentInstance) {
-    return
-  }
+    if (currentInstanceStream) {
+      currentInstanceStream.close()
+      currentInstanceStream = null
+      if (process.env.NODE_ENV !== 'production') {
+        window.currentInstanceStream = null
+      }
+    }
+    const currentInstance = store.get().currentInstance
+    if (!currentInstance) {
+      return
+    }
 
-  scheduleIdleTask(() => refreshInstanceDataAndStream(store, store.get().currentInstance))
+    scheduleIdleTask(() => refreshInstanceDataAndStream(store, store.get().currentInstance))
+  })
 }
