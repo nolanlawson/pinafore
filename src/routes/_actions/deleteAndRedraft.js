@@ -17,7 +17,12 @@ export async function deleteAndRedraft (status) {
       description: _.description || '',
       data: _
     })),
-    inReplyToId: status.in_reply_to_id
+    inReplyToId: status.in_reply_to_id,
+    // note that for polls there is no real way to preserve the original expiry
+    poll: status.poll && {
+      multiple: !!status.poll.multiple,
+      options: (status.poll.options || []).map(option => option.title)
+    }
   })
   let showComposeDialog = await dialogPromise
   showComposeDialog()
