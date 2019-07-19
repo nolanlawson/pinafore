@@ -109,6 +109,7 @@
   import { mark, stop } from '../_utils/marks'
   import { doubleRAF } from '../_utils/doubleRAF'
   import { scrollToTop } from '../_utils/scrollToTop'
+  import { refreshStream } from '../_store/observers/instanceObservers.js'
 
   export default {
     oncreate () {
@@ -166,10 +167,15 @@
     },
     methods: {
       onClick (e) {
-        let { selected } = this.get()
+        let { selected, page } = this.get()
         if (!selected) {
           return
         }
+
+        if (page === 'home') {
+          refreshStream()
+        }
+
         if (scrollToTop(/* smooth */ true)) {
           e.preventDefault()
           e.stopPropagation()
