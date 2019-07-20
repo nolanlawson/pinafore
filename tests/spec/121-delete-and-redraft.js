@@ -12,9 +12,27 @@ import {
   getNthStatusSpoiler,
   composeModalContentWarningInput,
   dialogOptionsOption,
-  getNthReplyButton, getNthComposeReplyInput, getNthComposeReplyButton, getUrl, sleep, getComposeModalNthMediaListItem
+  getNthReplyButton,
+  getNthComposeReplyInput,
+  getNthComposeReplyButton,
+  getUrl,
+  sleep,
+  getComposeModalNthMediaListItem,
+  composePoll,
+  pollButton,
+  getComposePollNthInput,
+  composeButton,
+  getNthStatusPollResult,
+  getComposePollNthInputInDialog,
+  composeInput,
+  composePollMultipleChoice,
+  composePollMultipleChoiceInDialog,
+  composePollExpiry,
+  composePollExpiryOption,
+  composePollExpiryInDialog
 } from '../utils'
 import { postAs, postEmptyStatusWithMediaAs, postWithSpoilerAndPrivacyAs } from '../serverActions'
+import { POLL_EXPIRY_DEFAULT } from '../../src/routes/_static/polls'
 
 fixture`121-delete-and-redraft.js`
   .page`http://localhost:4002`
@@ -171,4 +189,33 @@ test('multiple paragraphs', async t => {
     .click(composeModalComposeButton)
     .expect(modalDialog.exists).notOk()
     .expect(getNthStatusContent(1).innerText).contains(text + '\n\nwoot')
+})
+
+test('delete and redraft polls', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(pollButton)
+    .expect(composePoll.exists).ok()
+    .typeText(composeInput, 'I love this poll', { paste: true })
+    .typeText(getComposePollNthInput(1), 'foo', { paste: true })
+    .typeText(getComposePollNthInput(2), 'bar', { paste: true })
+    .click(composePollExpiry)
+    .click(composePollExpiryOption.withText('6 hours'))
+    .click(composePollMultipleChoice)
+  await sleep(1000)
+  await t
+    .click(composeButton)
+    .expect(getNthStatusContent(1).innerText).contains('I love this poll')
+    .expect(getNthStatusPollResult(1, 1).innerText).eql('0% foo')
+    .expect(getNthStatusPollResult(1, 2).innerText).eql('0% bar')
+  await sleep(1000)
+  await t
+    .click(getNthStatusOptionsButton(1))
+    .click(dialogOptionsOption.withText('Delete and redraft'))
+    .expect(composeModalInput.value).eql('I love this poll')
+    .expect(getComposePollNthInputInDialog(1).value).eql('foo')
+    .expect(getComposePollNthInputInDialog(2).value).eql('bar')
+    // there is no way to preserve poll expiry unfortunately
+    .expect(composePollExpiryInDialog.value).eql(POLL_EXPIRY_DEFAULT.toString())
+    .expect(composePollMultipleChoiceInDialog.checked).eql(true)
 })

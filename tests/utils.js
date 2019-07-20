@@ -65,7 +65,10 @@ export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolb
 
 export const composePoll = $('.compose-poll')
 export const composePollMultipleChoice = $('.compose-poll input[type="checkbox"]')
+export const composePollMultipleChoiceInDialog = $('.modal-dialog .compose-poll input[type="checkbox"]')
 export const composePollExpiry = $('.compose-poll select')
+export const composePollExpiryOption = $('.compose-poll select option')
+export const composePollExpiryInDialog = $('.modal-dialog .compose-poll select')
 export const composePollAddButton = $('.compose-poll button:last-of-type')
 
 export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
@@ -263,6 +266,10 @@ export function getNthStatusPollVoteCount (n) {
 
 export function getComposePollNthInput (n) {
   return $(`.compose-poll input[type="text"]:nth-of-type(${n})`)
+}
+
+export function getComposePollNthInputInDialog (n) {
+  return $(`.modal-dialog .compose-poll input[type="text"]:nth-of-type(${n})`)
 }
 
 export function getComposePollRemoveNthButton (n) {
