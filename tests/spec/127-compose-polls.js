@@ -7,13 +7,7 @@ import {
   getComposePollNthInput,
   composePoll,
   composePollMultipleChoice,
-  composePollExpiry,
-  composePollAddButton,
-  getComposePollRemoveNthButton,
-  postStatusButton,
-  composeInput,
-  sleep,
-  dialogOptionsOption
+  composePollExpiry, composePollAddButton, getComposePollRemoveNthButton, postStatusButton, composeInput, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { POLL_EXPIRY_DEFAULT } from '../../src/routes/_static/polls'
@@ -78,5 +72,4 @@ test('Can add and remove poll options', async t => {
     .expect(getNthStatusPollResult(1, 3).innerText).eql('0% fourth')
     .expect(getNthStatusPollResult(1, 4).exists).notOk()
     .expect(getNthStatusPollVoteCount(1).innerText).eql('0 votes')
-    .click(dialogOptionsOption.withText('Delete and redraft'))
 })
