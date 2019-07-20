@@ -61,17 +61,31 @@
   }
   .loading-spinner-container {
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
   ul {
     list-style: none;
     max-height: 30vh;
     overflow-y: auto;
     overflow-x: hidden;
+    border: 1px solid var(--main-border);
   }
   li {
-    padding: 10px 0;
+    padding: 10px 5px;
+    border-top: 1px solid var(--main-border);
+  }
+  li:first-child {
+    border-top: none;
+  }
+
+  .recent-statuses label {
+    padding: 10px 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
   }
   textarea {
     width: 100%;
@@ -87,6 +101,10 @@
   .recent-statuses li {
     display: flex;
     flex-direction: row;
+    align-items: center;
+  }
+  .recent-statuses input {
+    margin-right: 10px;
   }
   .recent-statuses label {
     width: 0;
@@ -95,6 +113,8 @@
     overflow: hidden;
     white-space: pre-wrap;
     text-overflow: ellipsis;
+    border-left: 1px solid var(--main-border);
+    padding-left: 10px;
   }
 
   .report-flex {
