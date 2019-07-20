@@ -1,3 +1,14 @@
+// By design, scrollbar styles are only applied to the top level scroller.
+// Note that the nonstandard -webkit-* version cannot be "unset,"
+// which is inconvenient. But it also doesn't cascade, so we can
+// use that to our advantage.
+//
+// See: https://superuser.com/a/417750
+
+//
+// Firefox
+//
+
 html {
   // Firefox with scrollbar config changes as of 2018-11
   scrollbar-face-color: var(--scrollbar-face-color);
@@ -7,28 +18,39 @@ html {
   scrollbar-color: var(--scrollbar-face-color) var(--scrollbar-track-color);
 }
 
-::-webkit-scrollbar {
+body {
+  // reset firefox styles so they don't cascade past HTML
+  scrollbar-face-color: initial;
+  scrollbar-track-color: initial;
+  scrollbar-color: initial;
+}
+
+//
+// Chrome/Safari
+//
+
+body::-webkit-scrollbar {
   width: var(--scrollbar-width);
   height: var(--scrollbar-height);
 }
 
-::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
   background: var(--scrollbar-face-color);
   border-radius: var(--scrollbar-border-radius);
 }
 
-::-webkit-scrollbar-thumb:hover {
+body::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-face-color-hover);
 }
 
-::-webkit-scrollbar-thumb:active {
+body::-webkit-scrollbar-thumb:active {
   background: var(--scrollbar-face-color-active);
 }
 
-::-webkit-scrollbar-track, ::-webkit-scrollbar-track:hover, ::-webkit-scrollbar-track:active {
+body::-webkit-scrollbar-track, ::-webkit-scrollbar-track:hover, ::-webkit-scrollbar-track:active {
   background: var(--scrollbar-track-color);
 }
 
-::-webkit-scrollbar-corner {
+body::-webkit-scrollbar-corner {
   background: var(--scrollbar-background-color);
 }
