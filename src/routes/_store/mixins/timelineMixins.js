@@ -1,4 +1,5 @@
 import { pickBy, get } from '../../_utils/lodash-lite'
+import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
 
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {
@@ -23,6 +24,11 @@ export function timelineMixins (Store) {
   Store.prototype.getAllTimelineData = function (instanceName, key) {
     let root = this.get()[`timelineData_${key}`] || {}
     return root[instanceName] || {}
+  }
+
+  Store.prototype.getFirstTimelineItemId = function (instanceName, timelineName) {
+    let summaries = this.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
+    return getFirstIdFromItemSummaries(summaries)
   }
 
   Store.prototype.setForCurrentTimeline = function (obj) {

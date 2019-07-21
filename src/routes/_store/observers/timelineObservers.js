@@ -1,12 +1,6 @@
 import { updateInstanceInfo } from '../../_actions/instances'
-import { createStream } from '../../_actions/streaming'
-import { getTimeline } from '../../_api/timelines'
-import { addStatusesOrNotifications } from '../../_actions/addStatusOrNotification'
-import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
+import { createStream } from '../../_actions/stream/streaming'
 import { store } from '../store'
-import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
-
-const STREAMING_GAP_BATCH_SIZE = 40
 
 export function timelineObservers () {
   // stream to watch for local/federated/etc. updates. home and notification
@@ -62,33 +56,12 @@ export function timelineObservers () {
       return
     }
 
-    const getFirstTimelineItemId = () => {
-      let timelineItemSummaries = store.getForTimeline(currentInstance,
-        currentTimeline, 'timelineItemSummaries')
-      return getFirstIdFromItemSummaries(timelineItemSummaries)
-    }
-
-    const addNewTimelineItems = async (firstTimelineItemId) => {
-      // fill in the "streaming gap" – i.e. fetch the most recent items so that there isn't
-      // a big gap in the timeline if you haven't looked at it in awhile
-      let newTimelineItems = await getTimeline(currentInstance, accessToken,
-        currentTimeline, null, firstTimelineItemId, STREAMING_GAP_BATCH_SIZE)
-      if (newTimelineItems.length) {
-        addStatusesOrNotifications(currentInstance, currentTimeline, newTimelineItems)
-      }
-    }
-
-    const onOpenOrReconnect = async () => {
-      let firstTimelineItemId = getFirstTimelineItemId()
-      if (firstTimelineItemId && currentTimelineIsUnchanged()) {
-        /* no await */ addNewTimelineItems(firstTimelineItemId)
-      }
-    }
-
+    let firstStatusId = store.getFirstTimelineItemId(currentInstance, currentTimeline)
     let { currentInstanceInfo } = store.get()
     let streamingApi = currentInstanceInfo.urls.streaming_api
+
     currentTimelineStream = createStream(streamingApi, currentInstance, accessToken,
-      currentTimeline, onOpenOrReconnect)
+      currentTimeline, firstStatusId)
 
     if (process.env.NODE_ENV !== 'production') {
       window.currentTimelineStream = currentTimelineStream
