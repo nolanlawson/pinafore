@@ -1,7 +1,9 @@
-import { TimelineStream } from '../_api/TimelineStream'
+import { TimelineStream } from '../_api/stream/TimelineStream'
 import { mark, stop } from '../_utils/marks'
 import { deleteStatus } from './deleteStatuses'
 import { addStatusOrNotification } from './addStatusOrNotification'
+
+const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation']
 
 function processMessage (instanceName, timelineName, message) {
   mark('processMessage')
@@ -35,32 +37,28 @@ function processMessage (instanceName, timelineName, message) {
   stop('processMessage')
 }
 
-export function createStream (streamingApi, instanceName, accessToken,
-  timelineName, onOpenStream) {
-  return new TimelineStream(streamingApi, accessToken, timelineName, {
-    onMessage (msg) {
-      if (
-        msg.event !== 'update' &&
-        msg.event !== 'delete' &&
-        msg.event !== 'notification' &&
-        msg.event !== 'conversation'
-      ) {
+export function createStream (streamingApi, instanceName, accessToken, timelineName, onOpenOrReconnect) {
+  return new TimelineStream(streamingApi, accessToken, timelineName)
+    .on('message', msg => {
+      if (!KNOWN_EVENTS.includes(msg.event)) {
         console.error("don't know how to handle event", msg)
         return
       }
       processMessage(instanceName, timelineName, msg)
-    },
-    onOpen () {
-      if (onOpenStream) {
-        onOpenStream()
+    })
+    .on('open', () => {
+      if (onOpenOrReconnect) {
+        onOpenOrReconnect()
       }
-      console.log('opened stream for timeline', timelineName)
-    },
-    onClose () {
-      console.log('closed stream for timeline', timelineName)
-    },
-    onReconnect () {
-      console.log('reconnected stream for timeline', timelineName)
-    }
-  })
+      console.log(`streaming: opened stream for timeline`, timelineName)
+    })
+    .on('close', () => {
+      console.log(`streaming: closed stream for timeline`, timelineName)
+    })
+    .on('reconnect', () => {
+      if (onOpenOrReconnect) {
+        onOpenOrReconnect()
+      }
+      console.log(`streaming: reconnected stream for timeline`, timelineName)
+    })
 }

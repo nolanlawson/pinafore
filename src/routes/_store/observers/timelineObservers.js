@@ -6,6 +6,8 @@ import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
 import { store } from '../store'
 import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
 
+const STREAMING_GAP_BATCH_SIZE = 40
+
 export function timelineObservers () {
   // stream to watch for local/federated/etc. updates. home and notification
   // updates are handled in timelineObservers.js
@@ -60,27 +62,33 @@ export function timelineObservers () {
       return
     }
 
-    let timelineItemSummaries = store.getForTimeline(currentInstance,
-      currentTimeline, 'timelineItemSummaries')
-    let firstTimelineItemId = getFirstIdFromItemSummaries(timelineItemSummaries)
+    const getFirstTimelineItemId = () => {
+      let timelineItemSummaries = store.getForTimeline(currentInstance,
+        currentTimeline, 'timelineItemSummaries')
+      return getFirstIdFromItemSummaries(timelineItemSummaries)
+    }
 
-    let onOpenStream = async () => {
-      if (!firstTimelineItemId || !currentTimelineIsUnchanged()) {
-        return
-      }
-      // fill in the "streaming gap" – i.e. fetch the most recent 20 items so that there isn't
+    const addNewTimelineItems = async (firstTimelineItemId) => {
+      // fill in the "streaming gap" – i.e. fetch the most recent items so that there isn't
       // a big gap in the timeline if you haven't looked at it in awhile
       let newTimelineItems = await getTimeline(currentInstance, accessToken,
-        currentTimeline, null, firstTimelineItemId, TIMELINE_BATCH_SIZE)
+        currentTimeline, null, firstTimelineItemId, STREAMING_GAP_BATCH_SIZE)
       if (newTimelineItems.length) {
         addStatusesOrNotifications(currentInstance, currentTimeline, newTimelineItems)
+      }
+    }
+
+    const onOpenOrReconnect = async () => {
+      let firstTimelineItemId = getFirstTimelineItemId()
+      if (firstTimelineItemId && currentTimelineIsUnchanged()) {
+        /* no await */ addNewTimelineItems(firstTimelineItemId)
       }
     }
 
     let { currentInstanceInfo } = store.get()
     let streamingApi = currentInstanceInfo.urls.streaming_api
     currentTimelineStream = createStream(streamingApi, currentInstance, accessToken,
-      currentTimeline, onOpenStream)
+      currentTimeline, onOpenOrReconnect)
 
     if (process.env.NODE_ENV !== 'production') {
       window.currentTimelineStream = currentTimelineStream
