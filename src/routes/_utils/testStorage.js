@@ -3,15 +3,16 @@
 
 import { thunk } from './thunk'
 
-const testKey = '__test__'
+const TEST_KEY = '__test__'
 
 export const testHasLocalStorageOnce = () => {
   try {
-    localStorage.setItem(testKey, testKey)
-    if (!localStorage.length || localStorage.getItem(testKey) !== testKey) {
+    const LS = localStorage
+    LS[TEST_KEY] = TEST_KEY
+    if (!LS.length || LS[TEST_KEY] !== TEST_KEY) {
       return false
     }
-    localStorage.removeItem(testKey)
+    delete LS[TEST_KEY]
   } catch (e) {
     return false
   }
@@ -27,10 +28,10 @@ export const testHasIndexedDB = thunk(async () => {
 
   try {
     let idbFailed = await new Promise(resolve => {
-      let db = indexedDB.open(testKey)
+      let db = indexedDB.open(TEST_KEY)
       db.onerror = () => resolve(true)
       db.onsuccess = () => {
-        indexedDB.deleteDatabase(testKey)
+        indexedDB.deleteDatabase(TEST_KEY)
         resolve(false)
       }
     })

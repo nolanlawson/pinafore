@@ -5,7 +5,7 @@ export function onUserIsLoggedOut () {
     return
   }
   let style = document.createElement('style')
-  style.setAttribute('id', 'hiddenFromSsrStyle')
+  style.id = 'hiddenFromSsrStyle'
   style.textContent = '.hidden-from-ssr { opacity: 1 !important; }'
   document.head.appendChild(style)
 }

@@ -1,12 +1,10 @@
 function targetIsLocalhost (instanceName) {
-  return instanceName.startsWith('localhost:') || instanceName.startsWith('127.0.0.1:')
+  return /^(?:localhost|127.0.0.1):/.test(instanceName)
 }
 
 export function basename (instanceName) {
-  if (targetIsLocalhost(instanceName)) {
-    return `http://${instanceName}`
-  }
-  return `https://${instanceName}`
+  const isLocalhost = targetIsLocalhost(instanceName)
+  return `http${isLocalhost ? '' : 's'}://${instanceName}`
 }
 
 export function auth (accessToken) {
