@@ -1,10 +1,18 @@
 import { TimelineStream } from '../../_api/stream/TimelineStream'
 import { processMessage } from './processMessage'
 import { fillStreamingGap } from './fillStreamingGap'
+import { store } from '../../_store/store'
 
 export function createStream (api, instanceName, accessToken, timelineName, firstStatusId, firstNotificationId) {
   console.log(`streaming ${instanceName} ${timelineName}: createStream`, 'firstStatusId', firstStatusId,
     'firstNotificationId', firstNotificationId)
+
+  const fillGap = (timelineName, timelineItemId) => {
+    if (timelineItemId) {
+      console.log(`streaming ${instanceName} ${timelineName}: fillGap since`, timelineItemId)
+      /* no await */ fillStreamingGap(instanceName, accessToken, timelineName, timelineItemId)
+    }
+  }
 
   const onMessage = message => {
     processMessage(instanceName, timelineName, message)
@@ -12,12 +20,10 @@ export function createStream (api, instanceName, accessToken, timelineName, firs
 
   const onOpen = () => {
     console.log(`streaming ${instanceName} ${timelineName}: opened`)
-    if (firstStatusId) {
-      /* no await */ fillStreamingGap(instanceName, accessToken, timelineName, firstStatusId)
-    }
-    if (firstNotificationId) {
-      // special case - the home timeline also applies to notifications, so we handle that here if necessary
-      /* no await */ fillStreamingGap(instanceName, accessToken, 'notifications', firstNotificationId)
+    fillGap(timelineName, firstStatusId)
+    if (timelineName === 'home') {
+      // special case - home timeline stream also handles notifications
+      fillGap('notifications', firstNotificationId)
     }
   }
 
@@ -27,6 +33,15 @@ export function createStream (api, instanceName, accessToken, timelineName, firs
 
   const onReconnect = () => {
     console.log(`streaming ${instanceName} ${timelineName}: reconnected`)
+    // When reconnecting, we recompute the firstStatusId and firstNotificationId because these may have
+    // changed since we first started streaming.
+    let newFirstStatusId = store.getFirstTimelineItemId(instanceName, timelineName)
+    fillGap(timelineName, newFirstStatusId)
+    if (timelineName === 'home') {
+      // special case - home timeline stream also handles notifications
+      let newFirstNotificationId = store.getFirstTimelineItemId(instanceName, timelineName)
+      fillGap('notifications', newFirstNotificationId)
+    }
   }
 
   return new TimelineStream(api, accessToken, timelineName)
