@@ -80,8 +80,3 @@ observers(store)
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.store = store // for debugging
 }
-
-// needed for tests
-if (process.browser) {
-  window.__forceOnline = online => store.set({ online })
-}

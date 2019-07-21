@@ -1,6 +1,6 @@
 import EventEmitter from 'events-light'
 
-const eventBus = new EventEmitter()
+export const eventBus = new EventEmitter()
 
 if (process.browser && process.env.NODE_ENV !== 'production') {
   window.eventBus = eventBus
