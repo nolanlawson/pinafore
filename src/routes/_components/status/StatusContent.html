@@ -21,15 +21,31 @@
     display: block;
   }
 
-  :global(.status-content p, .status-content blockquote, .status-content ul, .status-content ol) {
+  :global(.status-content li) {
+    font-size: 1.3em;
+  }
+
+  :global(
+      .status-content p,
+      .status-content blockquote,
+      .status-content ul,
+      .status-content ol) {
     margin: 0 0 20px;
   }
 
-  :global(.status-content p:first-child) {
+  :global(
+      .status-content p:first-child,
+      .status-content blockquote:first-child,
+      .status-content ul:first-child,
+      .status-content ol:first-child) {
     margin: 0 0 20px;
   }
 
-  :global(.status-content :last-child) {
+  :global(
+      .status-content p:last-child,
+      .status-content blockquote:last-child,
+      .status-content ul:last-child,
+      .status-content ol:last-child) {
     margin: 0;
   }
 
