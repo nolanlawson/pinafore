@@ -27,9 +27,9 @@ if (currentInstance) {
   // which is why we can do this. Also we do end up calling this on loading the home page,
   // so it's not a wasted request.
   let link = document.createElement('link')
-  link.rel = 'prefetch'
-  link.href = `${basename(currentInstance)}/api/v1/instance`
-  link.crossOrigin = 'anonymous'
+  link.setAttribute('rel', 'prefetch')
+  link.setAttribute('href', `${basename(currentInstance)}/api/v1/instance`)
+  link.setAttribute('crossorigin', 'anonymous')
   document.head.appendChild(link)
 }
 
@@ -39,7 +39,8 @@ if (theme !== INLINE_THEME) {
 }
 
 if (enableGrayscale) {
-  document.getElementById('theGrayscaleStyle').media = 'all' // enables the style
+  document.getElementById('theGrayscaleStyle')
+    .setAttribute('media', 'all') // enables the style
 }
 
 if (!currentInstance) {
@@ -48,7 +49,8 @@ if (!currentInstance) {
 }
 
 if (disableCustomScrollbars) {
-  document.getElementById('theScrollbarStyle').media = 'only x' // disables the style
+  document.getElementById('theScrollbarStyle')
+    .setAttribute('media', 'only x') // disables the style
 }
 
 // hack to make the scrollbars rounded only on macOS

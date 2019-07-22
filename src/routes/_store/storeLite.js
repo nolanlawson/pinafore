@@ -10,7 +10,7 @@ export const storeLite = {
     return new Proxy({}, {
       get: function (obj, prop) {
         if (!(prop in obj)) {
-          obj[prop] = hasLocalStorage && safeParse(localStorage[`store_${prop}`])
+          obj[prop] = hasLocalStorage && safeParse(localStorage.getItem(`store_${prop}`))
         }
         return obj[prop]
       }
@@ -20,7 +20,7 @@ export const storeLite = {
   set (obj) {
     if (hasLocalStorage) {
       for (let [key, value] of Object.entries(obj)) {
-        localStorage[`store_${key}`] = JSON.stringify(value)
+        localStorage.setItem(`store_${key}`, JSON.stringify(value))
       }
     }
   }
