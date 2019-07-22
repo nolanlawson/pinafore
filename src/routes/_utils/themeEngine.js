@@ -36,7 +36,7 @@ function loadCSS (href) {
 
 export function switchToTheme (themeName = DEFAULT_THEME, enableGrayscale) {
   if (enableGrayscale) {
-    themeName = prefersDarkTheme ? 'grayscale-dark' : 'grayscale'
+    themeName = prefersDarkTheme ? 'dark-grayscale' : 'grayscale'
   }
   let themeColor = window.__themeColors[themeName]
   meta.content = themeColor || window.__themeColors[DEFAULT_THEME]
