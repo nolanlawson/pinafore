@@ -6,7 +6,7 @@ export const DEFAULT_LIGHT_THEME = 'default' // theme that is shown by default
 export const DEFAULT_DARK_THEME = 'ozark' // theme that is shown for prefers-color-scheme:dark
 export const DEFAULT_THEME = prefersDarkTheme ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME
 
-const getExistingThemeLink = () => {
+function getExistingThemeLink () {
   return document.head.querySelector('link[rel=stylesheet][href^="/theme-"]')
 }
 

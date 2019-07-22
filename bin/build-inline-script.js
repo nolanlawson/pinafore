@@ -5,7 +5,6 @@ import path from 'path'
 import { rollup } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import replace from 'rollup-plugin-replace'
-import inject from 'rollup-plugin-inject'
 import fromPairs from 'lodash-es/fromPairs'
 import { themes } from '../src/routes/_static/themes'
 
@@ -22,14 +21,6 @@ export async function buildInlineScript () {
       replace({
         'process.browser': true,
         'process.env.THEME_COLORS': JSON.stringify(themeColors)
-      }),
-      // inject some common globals to make the inline script even smaller
-      inject({
-        modules: {
-          'document.getElementById': path.resolve(__dirname, '../src/inline-script/core/getElementById.js'),
-          'document.head': path.resolve(__dirname, '../src/inline-script/core/head.js'),
-          'document.createElement': path.resolve(__dirname, '../src/inline-script/core/createElement.js')
-        }
       }),
       terser({
         ecma: 7,

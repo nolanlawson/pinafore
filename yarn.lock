@@ -6417,15 +6417,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rollup-plugin-inject@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-inject/-/rollup-plugin-inject-3.0.0.tgz#5e719fa2d2b2255ae3d9c3a52306492c33397a47"
-  integrity sha512-euo9UmiJDxyGPjlHecpOZjUcBOOzaI5fbnqmFulG0I8k3or4JMi7UHDcRCcjkeDORF966jsA2qYbvXrgrmgCuw==
-  dependencies:
-    estree-walker "^0.6.1"
-    magic-string "^0.25.2"
-    rollup-pluginutils "^2.8.1"
-
 rollup-plugin-replace@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/rollup-plugin-replace/-/rollup-plugin-replace-2.2.0.tgz#f41ae5372e11e7a217cde349c8b5d5fd115e70e3"
