@@ -112,7 +112,7 @@
 
   export default {
     async oncreate () {
-      let { currentInstance } = this.store.get()
+      const { currentInstance } = this.store.get()
       if (currentInstance) {
         await updateListsForInstance(currentInstance)
       }

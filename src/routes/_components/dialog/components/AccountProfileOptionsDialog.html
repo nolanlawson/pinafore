@@ -146,43 +146,43 @@ export default {
       }
     },
     async onMentionClicked () {
-      let { account } = this.get()
+      const { account } = this.get()
       this.close()
       await composeNewStatusMentioning(account)
     },
     async onFollowClicked () {
-      let { accountId, following } = this.get()
+      const { accountId, following } = this.get()
       this.close()
       await setAccountFollowed(accountId, !following, true)
     },
     async onBlockClicked () {
-      let { accountId, blocking } = this.get()
+      const { accountId, blocking } = this.get()
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
     async onMuteClicked () {
-      let { account, muting } = this.get()
+      const { account, muting } = this.get()
       this.close()
       await toggleMute(account, !muting)
     },
     async onShowReblogsClicked () {
-      let { accountId, showingReblogs } = this.get()
+      const { accountId, showingReblogs } = this.get()
       this.close()
       await setShowReblogs(accountId, !showingReblogs, true)
     },
     async onBlockDomainClicked () {
-      let { accountId, domain, blockingDomain } = this.get()
+      const { accountId, domain, blockingDomain } = this.get()
       this.close()
       await setDomainBlocked(accountId, domain, !blockingDomain, true)
     },
     async onCopyClicked () {
-      let { account } = this.get()
-      let { url } = account
+      const { account } = this.get()
+      const { url } = account
       this.close()
       await copyText(url)
     },
     async onReport () {
-      let { account } = this.get()
+      const { account } = this.get()
       this.close()
       await reportStatusOrAccount({ account })
     }

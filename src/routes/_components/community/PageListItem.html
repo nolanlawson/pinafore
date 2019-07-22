@@ -87,8 +87,8 @@
     methods: {
       onPinClick (e) {
         e.preventDefault()
-        let { currentInstance, pinnedPages } = this.store.get()
-        let { href } = this.get()
+        const { currentInstance, pinnedPages } = this.store.get()
+        const { href } = this.get()
         pinnedPages[currentInstance] = href
         this.store.set({ pinnedPages: pinnedPages })
         this.store.save()

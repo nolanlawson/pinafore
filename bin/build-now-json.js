@@ -13,42 +13,42 @@ import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChe
 const writeFile = promisify(fs.writeFile)
 
 const JSON_TEMPLATE = {
-  'version': 2,
-  'env': {
-    'NODE_ENV': 'production'
+  version: 2,
+  env: {
+    NODE_ENV: 'production'
   },
-  'builds': [
+  builds: [
     {
-      'src': 'package.json',
-      'use': '@now/static-build',
-      'config': {
-        'distDir': '__sapper__/export'
+      src: 'package.json',
+      use: '@now/static-build',
+      config: {
+        distDir: '__sapper__/export'
       }
     }
   ],
-  'routes': [
+  routes: [
     {
-      'src': '^/service-worker\\.js$',
-      'headers': {
+      src: '^/service-worker\\.js$',
+      headers: {
         'cache-control': 'public,max-age=0'
       }
     },
     {
-      'src': '^/(report\\.html|stats\\.json)$',
-      'headers': {
+      src: '^/(report\\.html|stats\\.json)$',
+      headers: {
         'cache-control': 'public,max-age=3600'
       },
-      'dest': 'client/$1'
+      dest: 'client/$1'
     },
     {
-      'src': '^/client/.*\\.(js|css|map)$',
-      'headers': {
+      src: '^/client/.*\\.(js|css|map)$',
+      headers: {
         'cache-control': 'public,max-age=31536000,immutable'
       }
     },
     {
-      'src': '^/.*\\.(png|css|json|svg|jpe?g|map|txt)$',
-      'headers': {
+      src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt)$',
+      headers: {
         'cache-control': 'public,max-age=3600'
       }
     }
@@ -69,21 +69,21 @@ const HTML_HEADERS = {
 }
 
 async function main () {
-  let json = cloneDeep(JSON_TEMPLATE)
+  const json = cloneDeep(JSON_TEMPLATE)
 
-  let exportDir = path.resolve(__dirname, '../__sapper__/export')
+  const exportDir = path.resolve(__dirname, '../__sapper__/export')
 
-  for (let { pattern } of routes) {
-    let route = {
+  for (const { pattern } of routes) {
+    const route = {
       src: pattern.source,
       headers: cloneDeep(HTML_HEADERS)
     }
 
     // remove all the regexy stuff in the regex
-    let filename = pattern.source.replace(/^\^\\\//, '').replace(/(\\\/)?\?\$$/, '').replace(/\\\//g, '/')
+    const filename = pattern.source.replace(/^\^\\\//, '').replace(/(\\\/)?\?\$$/, '').replace(/\\\//g, '/')
 
     // try two different possible paths
-    let filePath = [
+    const filePath = [
       `${filename}.html`,
       path.join(filename, 'index.html')
     ].map(_ => path.resolve(exportDir, _)).find(_ => fs.existsSync(_))

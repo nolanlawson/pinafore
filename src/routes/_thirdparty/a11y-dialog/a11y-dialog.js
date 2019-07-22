@@ -309,11 +309,11 @@ function $$ (selector, context) {
    * @return {Array<Element>}
    */
 function collect (target) {
-  if (NodeList.prototype.isPrototypeOf(target)) {
+  if (NodeList.prototype.isPrototypeOf(target)) { // eslint-disable-line no-prototype-builtins
     return toArray(target)
   }
 
-  if (Element.prototype.isPrototypeOf(target)) {
+  if (Element.prototype.isPrototypeOf(target)) { // eslint-disable-line no-prototype-builtins
     return [target]
   }
 

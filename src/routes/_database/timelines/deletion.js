@@ -16,14 +16,14 @@ import {
 import { deleteAll } from '../utils'
 
 export async function deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
-  for (let statusId of statusIds) {
+  for (const statusId of statusIds) {
     deleteFromCache(statusesCache, instanceName, statusId)
   }
-  for (let notificationId of notificationIds) {
+  for (const notificationId of notificationIds) {
     deleteFromCache(notificationsCache, instanceName, notificationId)
   }
   const db = await getDatabase(instanceName)
-  let storeNames = [
+  const storeNames = [
     STATUSES_STORE,
     STATUS_TIMELINES_STORE,
     NOTIFICATIONS_STORE,
@@ -32,7 +32,7 @@ export async function deleteStatusesAndNotifications (instanceName, statusIds, n
     THREADS_STORE
   ]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
-    let [
+    const [
       statusesStore,
       statusTimelinesStore,
       notificationsStore,
@@ -74,10 +74,10 @@ export async function deleteStatusesAndNotifications (instanceName, statusIds, n
       )
     }
 
-    for (let statusId of statusIds) {
+    for (const statusId of statusIds) {
       deleteStatus(statusId)
     }
-    for (let notificationId of notificationIds) {
+    for (const notificationId of notificationIds) {
       deleteNotification(notificationId)
     }
   })

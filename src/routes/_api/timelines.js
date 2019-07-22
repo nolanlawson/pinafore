@@ -26,7 +26,7 @@ function getTimelineUrlPath (timeline) {
 }
 
 export async function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
-  let timelineUrlName = getTimelineUrlPath(timeline)
+  const timelineUrlName = getTimelineUrlPath(timeline)
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
   if (timeline.startsWith('tag/')) {
@@ -37,7 +37,7 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
     url += '/' + timeline.split('/')[1]
   }
 
-  let params = {}
+  const params = {}
   if (since) {
     params.since = since
   }

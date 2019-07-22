@@ -8,7 +8,7 @@ const handler = {
   get: function (obj, prop) {
     return async function (...args) {
       if (!obj[prop]) {
-        let database = await importDatabase()
+        const database = await importDatabase()
         obj[prop] = database[prop]
       }
       return obj[prop].apply(null, args)

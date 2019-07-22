@@ -100,7 +100,7 @@
       onCreateDialog.call(this)
       on('emoji-selected', this, emoji => this.onEmojiSelected(emoji))
       try {
-        let Picker = await createEmojiMartPicker()
+        const Picker = await createEmojiMartPicker()
         if (!customElements.get('emoji-mart')) {
           define({ 'emoji-mart': Picker })
         }
@@ -164,7 +164,7 @@
       show,
       close,
       onEmojiSelected (emoji) {
-        let { realm } = this.get()
+        const { realm } = this.get()
         insertEmoji(realm, emoji)
         this.close()
       },
@@ -172,16 +172,16 @@
         this.focusIfNecessary()
       },
       focusIfNecessary () {
-        let { autoFocus } = this.get()
+        const { autoFocus } = this.get()
         if (!autoFocus) {
           return
         }
         // The setTimeout is to work around timing issues where
         // sometimes the search input isn't rendered yet.
         setTimeout(() => requestAnimationFrame(() => {
-          let container = this.refs.container
+          const container = this.refs.container
           if (container) {
-            let searchInput = container.querySelector('emoji-mart .emoji-mart-search input')
+            const searchInput = container.querySelector('emoji-mart .emoji-mart-search input')
             if (searchInput) {
               // do this manually because emoji-mart's built in autofocus doesn't work consistently
               searchInput.focus()

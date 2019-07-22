@@ -43,24 +43,24 @@ export function clearCache (cache, instanceName) {
   delete cache.caches[instanceName]
 }
 export function clearAllCaches (instanceName) {
-  let allCaches = [statusesCache, accountsCache, relationshipsCache, metaCache, notificationsCache]
-  for (let cache of allCaches) {
+  const allCaches = [statusesCache, accountsCache, relationshipsCache, metaCache, notificationsCache]
+  for (const cache of allCaches) {
     clearCache(cache, instanceName)
   }
 }
 export function setInCache (cache, instanceName, key, value) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  const instanceCache = getOrCreateInstanceCache(cache, instanceName)
   return instanceCache.set(key, value)
 }
 
 export function getInCache (cache, instanceName, key) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  const instanceCache = getOrCreateInstanceCache(cache, instanceName)
   return instanceCache.get(key)
 }
 
 export function hasInCache (cache, instanceName, key) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
-  let res = instanceCache.has(key)
+  const instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  const res = instanceCache.has(key)
   if (process.env.NODE_ENV !== 'production') {
     if (res) {
       cache.hits = (cache.hits || 0) + 1
@@ -72,6 +72,6 @@ export function hasInCache (cache, instanceName, key) {
 }
 
 export function deleteFromCache (cache, instanceName, key) {
-  let instanceCache = getOrCreateInstanceCache(cache, instanceName)
+  const instanceCache = getOrCreateInstanceCache(cache, instanceName)
   instanceCache.delete(key)
 }

@@ -83,10 +83,10 @@
     methods: {
       observe,
       setupSyncFromStore () {
-        let textarea = this.refs.textarea
+        const textarea = this.refs.textarea
         let firstTime = true
         this.observe('text', text => {
-          let { rawText } = this.get()
+          const { rawText } = this.get()
           if (rawText !== text) {
             this.set({ rawText: text })
             // this next autosize is required to resize after
@@ -97,7 +97,7 @@
           }
           if (firstTime) {
             firstTime = false
-            let { autoFocus } = this.get()
+            const { autoFocus } = this.get()
             if (autoFocus) {
               requestAnimationFrame(() => textarea.focus({ preventScroll: true }))
             }
@@ -109,14 +109,14 @@
 
         this.observe('rawText', rawText => {
           mark('observe rawText')
-          let { realm } = this.get()
+          const { realm } = this.get()
           this.store.setComposeData(realm, { text: rawText })
           saveStore()
           stop('observe rawText')
         }, { init: false })
       },
       setupAutosize () {
-        let textarea = this.refs.textarea
+        const textarea = this.refs.textarea
         requestAnimationFrame(() => {
           mark('autosize()')
           autosize(textarea)
@@ -135,7 +135,7 @@
       },
       onFocus () {
         scheduleIdleTask(() => {
-          let { realm } = this.get()
+          const { realm } = this.get()
           this.store.set({ currentComposeRealm: realm })
           this.store.setForCurrentAutosuggest({ composeFocused: true })
         })
@@ -146,7 +146,7 @@
         })
       },
       onKeydown (e) {
-        let { keyCode } = e
+        const { keyCode } = e
         // ctrl or cmd (on macs) was pressed; ctrl-enter means post a toot
         const ctrlPressed = e.getModifierState('Control') || e.getModifierState('Meta')
         switch (keyCode) {
@@ -172,7 +172,7 @@
         }
       },
       clickSelectedAutosuggestion (event) {
-        let {
+        const {
           autosuggestShown,
           autosuggestType
         } = this.store.get()
@@ -183,7 +183,7 @@
         event.stopPropagation()
 
         const clickAutosuggestedItem = async () => {
-          let { realm } = this.get()
+          const { realm } = this.get()
           /* autosuggestSelecting prevents a flash of searched content */
           this.store.setForCurrentAutosuggest({ autosuggestSelecting: true })
           if (autosuggestType === 'account') {
@@ -217,7 +217,7 @@
         event.stopPropagation()
       },
       clearAutosuggestions (event) {
-        let { autosuggestShown } = this.store.get()
+        const { autosuggestShown } = this.store.get()
         if (!autosuggestShown) {
           return
         }

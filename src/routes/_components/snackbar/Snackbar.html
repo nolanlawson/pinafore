@@ -142,7 +142,7 @@
       onClick (e) {
         e.preventDefault()
         e.stopPropagation()
-        let { buttonAction } = this.get()
+        const { buttonAction } = this.get()
         if (buttonAction) {
           buttonAction()
         }

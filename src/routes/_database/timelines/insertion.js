@@ -53,7 +53,7 @@ export function storeNotification (notificationsStore, statusesStore, accountsSt
 }
 
 async function insertTimelineNotifications (instanceName, timeline, notifications) {
-  for (let notification of notifications) {
+  for (const notification of notifications) {
     setInCache(notificationsCache, instanceName, notification.id, notification)
     setInCache(accountsCache, instanceName, notification.account.id, notification.account)
     if (notification.status) {
@@ -61,10 +61,10 @@ async function insertTimelineNotifications (instanceName, timeline, notification
     }
   }
   const db = await getDatabase(instanceName)
-  let storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, ACCOUNTS_STORE, STATUSES_STORE]
+  const storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, ACCOUNTS_STORE, STATUSES_STORE]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
-    let [ timelineStore, notificationsStore, accountsStore, statusesStore ] = stores
-    for (let notification of notifications) {
+    const [timelineStore, notificationsStore, accountsStore, statusesStore] = stores
+    for (const notification of notifications) {
       storeNotification(notificationsStore, statusesStore, accountsStore, notification)
       timelineStore.put(notification.id, createTimelineId(timeline, notification.id))
     }
@@ -72,14 +72,14 @@ async function insertTimelineNotifications (instanceName, timeline, notification
 }
 
 async function insertTimelineStatuses (instanceName, timeline, statuses) {
-  for (let status of statuses) {
+  for (const status of statuses) {
     cacheStatus(status, instanceName)
   }
   const db = await getDatabase(instanceName)
-  let storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  const storeNames = [STATUS_TIMELINES_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
-    let [ timelineStore, statusesStore, accountsStore ] = stores
-    for (let status of statuses) {
+    const [timelineStore, statusesStore, accountsStore] = stores
+    for (const status of statuses) {
       storeStatus(statusesStore, accountsStore, status)
       timelineStore.put(status.id, createTimelineId(timeline, status.id))
     }
@@ -87,18 +87,18 @@ async function insertTimelineStatuses (instanceName, timeline, statuses) {
 }
 
 async function insertStatusThread (instanceName, statusId, statuses) {
-  for (let status of statuses) {
+  for (const status of statuses) {
     cacheStatus(status, instanceName)
   }
   const db = await getDatabase(instanceName)
-  let storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  const storeNames = [THREADS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
-    let [ threadsStore, statusesStore, accountsStore ] = stores
+    const [threadsStore, statusesStore, accountsStore] = stores
     threadsStore.getAllKeys(createThreadKeyRange(statusId)).onsuccess = e => {
-      let existingKeys = e.target.result
-      let newKeys = times(statuses.length, i => createThreadId(statusId, i))
-      let keysToDelete = difference(existingKeys, newKeys)
-      for (let key of keysToDelete) {
+      const existingKeys = e.target.result
+      const newKeys = times(statuses.length, i => createThreadId(statusId, i))
+      const keysToDelete = difference(existingKeys, newKeys)
+      for (const key of keysToDelete) {
         threadsStore.delete(key)
       }
     }
@@ -114,7 +114,7 @@ export async function insertTimelineItems (instanceName, timeline, timelineItems
   if (timeline === 'notifications' || timeline === 'notifications/mentions') {
     return insertTimelineNotifications(instanceName, timeline, timelineItems)
   } else if (timeline.startsWith('status/')) {
-    let statusId = timeline.split('/').slice(-1)[0]
+    const statusId = timeline.split('/').slice(-1)[0]
     return insertStatusThread(instanceName, statusId, timelineItems)
   } else {
     return insertTimelineStatuses(instanceName, timeline, timelineItems)

@@ -18,8 +18,8 @@
 
   export default {
     oncreate () {
-      let { currentInstance } = this.store.get()
-      let { timeline } = this.get()
+      const { currentInstance } = this.store.get()
+      const { timeline } = this.get()
       this.store.set({ currentTimeline: timeline })
       this.store.setForTimeline(currentInstance, timeline, { runningUpdate: false })
     },

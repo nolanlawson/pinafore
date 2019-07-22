@@ -36,7 +36,7 @@
 
   export default {
     async oncreate () {
-      let { instanceName } = this.get()
+      const { instanceName } = this.get()
       await updateVerifyCredentialsForInstance(instanceName)
     },
     store: () => store,

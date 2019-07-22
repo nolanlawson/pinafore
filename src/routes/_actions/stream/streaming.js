@@ -35,11 +35,11 @@ export function createStream (api, instanceName, accessToken, timelineName, firs
     console.log(`streaming ${instanceName} ${timelineName}: reconnected`)
     // When reconnecting, we recompute the firstStatusId and firstNotificationId because these may have
     // changed since we first started streaming.
-    let newFirstStatusId = store.getFirstTimelineItemId(instanceName, timelineName)
+    const newFirstStatusId = store.getFirstTimelineItemId(instanceName, timelineName)
     fillGap(timelineName, newFirstStatusId)
     if (timelineName === 'home') {
       // special case - home timeline stream also handles notifications
-      let newFirstNotificationId = store.getFirstTimelineItemId(instanceName, timelineName)
+      const newFirstNotificationId = store.getFirstTimelineItemId(instanceName, timelineName)
       fillGap('notifications', newFirstNotificationId)
     }
   }

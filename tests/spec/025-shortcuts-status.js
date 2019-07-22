@@ -20,7 +20,7 @@ fixture`025-shortcuts-status.js`
   .page`http://localhost:4002`
 
 async function activateStatus (t, idx) {
-  let timeout = 20000
+  const timeout = 20000
   for (let i = 0; i <= idx; i++) {
     await t.expect(getNthStatus(1 + i).exists).ok({ timeout })
       .pressKey('j')
@@ -80,7 +80,7 @@ test('Shortcut o opens active status, backspace goes back', async t => {
 })
 
 test('Shortcut x shows/hides spoilers', async t => {
-  let idx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const idx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -96,7 +96,7 @@ test('Shortcut x shows/hides spoilers', async t => {
 })
 
 test('Shortcut y shows/hides sensitive image', async t => {
-  let idx = homeTimeline.findIndex(_ => _.content === "here's a secret kitten")
+  const idx = homeTimeline.findIndex(_ => _.content === "here's a secret kitten")
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -112,7 +112,7 @@ test('Shortcut y shows/hides sensitive image', async t => {
 })
 
 test('Shortcut f toggles favorite status', async t => {
-  let idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
+  const idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -127,7 +127,7 @@ test('Shortcut f toggles favorite status', async t => {
 })
 
 test('Shortcut p toggles profile', async t => {
-  let idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
+  const idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -139,7 +139,7 @@ test('Shortcut p toggles profile', async t => {
 })
 
 test('Shortcut m toggles mention', async t => {
-  let idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
+  const idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')

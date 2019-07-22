@@ -9,11 +9,11 @@ fixture`105-deletes.js`
   .page`http://localhost:4002`
 
 test('deleted statuses are removed from the timeline', async t => {
-  let timeout = 20000
+  const timeout = 20000
   await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
-  let status = await postAs('admin', "I'm gonna delete this")
+  const status = await postAs('admin', "I'm gonna delete this")
   await t.expect(getNthStatus(1).innerText).contains("I'm gonna delete this", { timeout })
   await deleteAs('admin', status.id)
   await t.expect(getNthStatus(1).innerText).notContains("I'm gonna delete this", { timeout })
@@ -30,12 +30,12 @@ test('deleted statuses are removed from the timeline', async t => {
 })
 
 test('deleted statuses are removed from threads', async t => {
-  let timeout = 20000
+  const timeout = 20000
   await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
-  let status = await postAs('admin', "I won't delete this")
-  let reply = await postReplyAs('admin', 'But I will delete this', status.id)
+  const status = await postAs('admin', "I won't delete this")
+  const reply = await postReplyAs('admin', 'But I will delete this', status.id)
   await t.expect(getNthStatus(1).innerText).contains('But I will delete this', { timeout })
     .expect(getNthStatus(2).innerText).contains("I won't delete this", { timeout })
     .click(getNthStatus(2))
@@ -55,12 +55,12 @@ test('deleted statuses are removed from threads', async t => {
 })
 
 test('deleted statuses result in deleted notifications', async t => {
-  let timeout = 20000
+  const timeout = 20000
   await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-  let status = await postAs('admin', "@foobar yo yo foobar what's up")
+  const status = await postAs('admin', "@foobar yo yo foobar what's up")
   await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1 notification)', { timeout })
   await deleteAs('admin', status.id)
   await t.expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications', { timeout })

@@ -77,11 +77,11 @@
     },
     methods: {
       openAuthorProfile () {
-        let { accountId } = this.get()
+        const { accountId } = this.get()
         goto(`/accounts/${accountId}`)
       },
       async mentionAuthor () {
-        let { account } = this.get()
+        const { account } = this.get()
         await composeNewStatusMentioning(account)
       }
     }

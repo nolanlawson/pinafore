@@ -9,9 +9,9 @@
   export default {
     store: () => store,
     oncreate () {
-      let params = new URLSearchParams(location.search)
+      const params = new URLSearchParams(location.search)
 
-      let text = SHARE_KEYS
+      const text = SHARE_KEYS
         .map(key => params.get(key) && decodeURIComponentWithPluses(params.get(key)))
         .filter(Boolean)
         .join(' ')

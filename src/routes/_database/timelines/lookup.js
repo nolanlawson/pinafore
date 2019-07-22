@@ -13,12 +13,12 @@ export async function getReblogsForStatus (instanceName, id) {
 export async function getNotificationIdsForStatuses (instanceName, statusIds) {
   const db = await getDatabase(instanceName)
   return dbPromise(db, NOTIFICATIONS_STORE, 'readonly', (notificationsStore, callback) => {
-    let res = []
+    const res = []
     callback(res)
     statusIds.forEach(statusId => {
-      let req = notificationsStore.index(STATUS_ID).getAllKeys(IDBKeyRange.only(statusId))
+      const req = notificationsStore.index(STATUS_ID).getAllKeys(IDBKeyRange.only(statusId))
       req.onsuccess = e => {
-        for (let id of e.target.result) {
+        for (const id of e.target.result) {
           res.push(id)
         }
       }

@@ -19,18 +19,18 @@ export function toPaddedBigInt (id) {
 }
 
 export function toReversePaddedBigInt (id) {
-  let padded = toPaddedBigInt(id)
+  const padded = toPaddedBigInt(id)
   let reversed = ''
   for (let i = 0; i < padded.length; i++) {
-    let charCode = padded.charCodeAt(i)
-    let inverseCharCode = MIN_CHAR_CODE + MAX_CHAR_CODE - charCode
+    const charCode = padded.charCodeAt(i)
+    const inverseCharCode = MIN_CHAR_CODE + MAX_CHAR_CODE - charCode
     reversed += String.fromCharCode(inverseCharCode)
   }
   return reversed
 }
 
 export function compareTimelineItemSummaries (left, right) {
-  let leftPadded = toPaddedBigInt(left.id)
-  let rightPadded = toPaddedBigInt(right.id)
+  const leftPadded = toPaddedBigInt(left.id)
+  const rightPadded = toPaddedBigInt(right.id)
   return leftPadded < rightPadded ? -1 : leftPadded === rightPadded ? 0 : 1
 }

@@ -31,7 +31,7 @@ async function doRefreshInstanceDataAndStream (store, instanceName) {
     return
   }
 
-  let { currentInstanceInfo } = store.get()
+  const { currentInstanceInfo } = store.get()
   if (!currentInstanceInfo) {
     return
   }
@@ -53,10 +53,10 @@ async function refreshInstanceData (instanceName) {
 }
 
 function stream (store, instanceName, currentInstanceInfo) {
-  let { accessToken } = store.get()
-  let streamingApi = currentInstanceInfo.urls.streaming_api
-  let firstStatusId = store.getFirstTimelineItemId(instanceName, 'home')
-  let firstNotificationId = store.getFirstTimelineItemId(instanceName, 'notifications')
+  const { accessToken } = store.get()
+  const streamingApi = currentInstanceInfo.urls.streaming_api
+  const firstStatusId = store.getFirstTimelineItemId(instanceName, 'home')
+  const firstNotificationId = store.getFirstTimelineItemId(instanceName, 'notifications')
 
   currentInstanceStream = createStream(streamingApi, instanceName, accessToken, 'home',
     firstStatusId, firstNotificationId)

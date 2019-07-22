@@ -33,7 +33,7 @@
 
   export default {
     oncreate () {
-      let { accountId } = this.get()
+      const { accountId } = this.get()
       clearProfileAndRelationship()
       updateProfileAndRelationship(accountId)
     },

@@ -1,10 +1,10 @@
 export function loadCSS (href) {
-  let existingLink = document.querySelector(`link[href="${href}"]`)
+  const existingLink = document.querySelector(`link[href="${href}"]`)
 
   if (existingLink) {
     return
   }
-  let link = document.createElement('link')
+  const link = document.createElement('link')
   link.rel = 'stylesheet'
   link.href = href
 

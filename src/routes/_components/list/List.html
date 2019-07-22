@@ -23,7 +23,7 @@
 
   export default {
     oncreate () {
-      let { realm } = this.get()
+      const { realm } = this.get()
       this.store.setCurrentRealm(realm)
     },
     ondestroy () {
@@ -39,9 +39,9 @@
         }
       },
       initialize () {
-        let { scrollToItem } = this.get()
+        const { scrollToItem } = this.get()
         if (scrollToItem) {
-          let element = document.getElementById(`list-item-${scrollToItem}`)
+          const element = document.getElementById(`list-item-${scrollToItem}`)
           requestAnimationFrame(() => {
             console.log('scrolling element into view')
             // TODO: this is hacky

@@ -44,7 +44,7 @@
       show,
       close,
       async doMute () {
-        let { account, muteNotifications } = this.get()
+        const { account, muteNotifications } = this.get()
         this.close()
         await setAccountMuted(
           account.id,

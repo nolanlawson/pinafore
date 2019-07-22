@@ -60,7 +60,7 @@
       toggle (e) {
         e.preventDefault()
         e.stopPropagation()
-        let { shown, mouseover } = this.get()
+        const { shown, mouseover } = this.get()
         if (!mouseover) {
           this.set({ shown: !shown })
         }

@@ -9,7 +9,7 @@ const womanBowing = [0x1f647, 0x200d, 0x2640, 0xfe0f].map(_ => String.fromCodePo
 
 describe('test-emoji.js', function () {
   it('does emoji replacement correctly', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji('hello world', replacer),
       'hello world'
@@ -37,7 +37,7 @@ describe('test-emoji.js', function () {
   })
 
   it('handles multi-code emoji', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`hello ${womanBowing}`, replacer),
       `hello <div>${womanBowing}</div>`
@@ -45,7 +45,7 @@ describe('test-emoji.js', function () {
   })
 
   it('handles emoji mixed with custom emoji', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`hello ${womanBowing} and :blobpats: and ${elephant}`, replacer),
       `hello <div>${womanBowing}</div> and :blobpats: and <div>${elephant}</div>`
@@ -53,7 +53,7 @@ describe('test-emoji.js', function () {
   })
 
   it('handles sequential emoji', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`${elephant}${elephant}${womanBowing}${mindBlown}`, replacer),
       `<div>${elephant}</div><div>${elephant}</div><div>${womanBowing}</div><div>${mindBlown}</div>`
@@ -61,7 +61,7 @@ describe('test-emoji.js', function () {
   })
 
   it('does not replace non-emoji characters', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`it's over #9000`, replacer),
       `it's over #9000`
@@ -84,7 +84,7 @@ describe('test-emoji.js', function () {
   })
 
   it('does not replace emoji inside HTML tags', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`check this cool link: <a href='http://example.com?q=${mindBlown}'>link</a>`, replacer),
       `check this cool link: <a href='http://example.com?q=${mindBlown}'>link</a>`
@@ -115,7 +115,7 @@ describe('test-emoji.js', function () {
   })
 
   it('removes emoji', function () {
-    let replacer = _ => ''
+    const replacer = _ => ''
     assert.strictEqual(
       replaceEmoji(`woot ${mindBlown}`, replacer),
       `woot `
@@ -135,7 +135,7 @@ describe('test-emoji.js', function () {
   })
 
   it('can handle a dangling left angle bracket for some reason', function () {
-    let replacer = _ => `<div>${_}</div>`
+    const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
       replaceEmoji(`woot ${mindBlown} <`, replacer),
       `woot <div>${mindBlown}</div> <`

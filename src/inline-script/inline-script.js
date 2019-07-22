@@ -26,7 +26,7 @@ if (currentInstance) {
   // Note that /api/v1/instance is basically the only URL that doesn't require credentials,
   // which is why we can do this. Also we do end up calling this on loading the home page,
   // so it's not a wasted request.
-  let link = document.createElement('link')
+  const link = document.createElement('link')
   link.setAttribute('rel', 'prefetch')
   link.setAttribute('href', `${basename(currentInstance)}/api/v1/instance`)
   link.setAttribute('crossorigin', 'anonymous')

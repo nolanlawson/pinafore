@@ -14,9 +14,9 @@
 
   export default {
     async oncreate () {
-      let { makeProps, key } = this.get()
+      const { makeProps, key } = this.get()
       if (makeProps) {
-        let props = await makeProps(key)
+        const props = await makeProps(key)
         mark('ListLazyItem set props')
         this.set({ props: props })
         this.fire('initialized')

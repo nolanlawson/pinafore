@@ -5,7 +5,7 @@ import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
 
 export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSuccess) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     if (pinned) {
       await pinStatus(currentInstance, accessToken, statusId)

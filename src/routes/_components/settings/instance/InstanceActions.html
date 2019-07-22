@@ -29,14 +29,14 @@
     methods: {
       onSwitchToThisInstance (e) {
         e.preventDefault()
-        let { instanceName } = this.get()
+        const { instanceName } = this.get()
         switchToInstance(instanceName)
       },
       async onLogOut (e) {
         e.preventDefault()
-        let { instanceName } = this.get()
+        const { instanceName } = this.get()
 
-        let showTextConfirmationDialog = await importShowTextConfirmationDialog()
+        const showTextConfirmationDialog = await importShowTextConfirmationDialog()
         showTextConfirmationDialog({
           text: `Log out of ${instanceName}?`
         }).on('positive', () => {

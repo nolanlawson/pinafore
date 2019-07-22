@@ -3,9 +3,9 @@ import { store } from '../_store/store'
 import { toast } from '../_components/toast/toast'
 
 export async function getPoll (pollId) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
-    let poll = await getPollApi(currentInstance, accessToken, pollId)
+    const poll = await getPollApi(currentInstance, accessToken, pollId)
     return poll
   } catch (e) {
     console.error(e)
@@ -14,9 +14,9 @@ export async function getPoll (pollId) {
 }
 
 export async function voteOnPoll (pollId, choices) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
-    let poll = await voteOnPollApi(currentInstance, accessToken, pollId, choices.map(_ => _.toString()))
+    const poll = await voteOnPollApi(currentInstance, accessToken, pollId, choices.map(_ => _.toString()))
     return poll
   } catch (e) {
     console.error(e)

@@ -9,8 +9,8 @@ fixture`008-status-media.js`
 test('shows sensitive images and videos', async t => {
   await loginAsFoobar(t)
 
-  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
-  let videoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
+  const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const videoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
 
   await scrollToStatus(t, 1 + kittenIdx)
   await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).exists).notOk()
@@ -26,8 +26,8 @@ test('shows sensitive images and videos', async t => {
 test('click and close image and video modals', async t => {
   await loginAsFoobar(t)
 
-  let videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
-  let kittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
+  const videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
+  const kittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
 
   await scrollToStatus(t, 1 + videoIdx)
   await t.expect(modalDialogContents.exists).notOk()

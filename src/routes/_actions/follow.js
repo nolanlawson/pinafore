@@ -4,7 +4,7 @@ import { toast } from '../_components/toast/toast'
 import { updateLocalRelationship } from './accounts'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     let relationship
     if (follow) {

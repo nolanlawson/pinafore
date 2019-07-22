@@ -31,7 +31,7 @@
       async onFollowButtonClick (e) {
         e.preventDefault()
         e.stopPropagation()
-        let {
+        const {
           account,
           accountId,
           following,
@@ -41,7 +41,7 @@
         if (blocking) { // unblock
           await setAccountBlocked(accountId, false)
         } else { // follow/unfollow
-          let newFollowingValue = !(following || followRequested)
+          const newFollowingValue = !(following || followRequested)
           if (!account.locked) { // be optimistic, show the user that it succeeded
             this.set({ overrideFollowing: newFollowingValue })
           }

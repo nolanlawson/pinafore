@@ -23,23 +23,23 @@ async function checkSensitivityForStatus (t, idx, sensitive) {
 }
 
 async function checkSensitivity (t, shouldBeSensitive) {
-  let sensitiveKittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
-  let sensitiveVideoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
-  let videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
-  let sensitiveAnimatedKittenIdx = homeTimeline.findIndex(_ => _.content === "here's a secret animated kitten gif")
-  let animatedKittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
+  const sensitiveKittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const sensitiveVideoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
+  const videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
+  const sensitiveAnimatedKittenIdx = homeTimeline.findIndex(_ => _.content === "here's a secret animated kitten gif")
+  const animatedKittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
 
   await t.hover(getNthStatus(1))
 
-  let expected = [
-    [ sensitiveKittenIdx, shouldBeSensitive(true) ],
-    [ sensitiveVideoIdx, shouldBeSensitive(true) ],
-    [ videoIdx, shouldBeSensitive(false) ],
-    [ sensitiveAnimatedKittenIdx, shouldBeSensitive(true) ],
-    [ animatedKittenIdx, shouldBeSensitive(false) ]
+  const expected = [
+    [sensitiveKittenIdx, shouldBeSensitive(true)],
+    [sensitiveVideoIdx, shouldBeSensitive(true)],
+    [videoIdx, shouldBeSensitive(false)],
+    [sensitiveAnimatedKittenIdx, shouldBeSensitive(true)],
+    [animatedKittenIdx, shouldBeSensitive(false)]
   ]
 
-  for (let [ idx, sensitive ] of expected) {
+  for (const [idx, sensitive] of expected) {
     await scrollToStatus(t, 1 + sensitiveKittenIdx)
     await checkSensitivityForStatus(t, idx, sensitive)
   }

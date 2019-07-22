@@ -34,17 +34,17 @@ const builders = [
 const partials = buildPartials()
 
 function buildPartials () {
-  let rawTemplate = fs.readFileSync(path.resolve(__dirname, '../src/build/template.html'), 'utf8')
+  const rawTemplate = fs.readFileSync(path.resolve(__dirname, '../src/build/template.html'), 'utf8')
 
-  let partials = [rawTemplate]
+  const partials = [rawTemplate]
 
   builders.forEach(builder => {
     for (let i = 0; i < partials.length; i++) {
-      let partial = partials[i]
+      const partial = partials[i]
       if (typeof partial !== 'string') {
         continue
       }
-      let idx = partial.indexOf(builder.comment)
+      const idx = partial.indexOf(builder.comment)
       if (idx !== -1) {
         partials.splice(
           i,
@@ -77,8 +77,8 @@ function doWatch () {
 }
 
 async function buildAll () {
-  let start = now()
-  let html = (await Promise.all(partials.map(async partial => {
+  const start = now()
+  const html = (await Promise.all(partials.map(async partial => {
     if (typeof partial === 'string') {
       return partial
     }
@@ -89,7 +89,7 @@ async function buildAll () {
   }))).join('')
 
   await writeFile(path.resolve(__dirname, '../src/template.html'), html, 'utf8')
-  let end = now()
+  const end = now()
   console.log(`Built template.html in ${(end - start).toFixed(2)}ms`)
 }
 

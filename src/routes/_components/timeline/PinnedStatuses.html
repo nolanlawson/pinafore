@@ -42,7 +42,7 @@
     },
     methods: {
       async updatePinnedStatuses () {
-        let { accountId } = this.get()
+        const { accountId } = this.get()
         await updatePinnedStatusesForAccount(accountId)
       }
     }

@@ -43,8 +43,8 @@
         }
         let activeItemKey = this.checkActiveItem(event.timeStamp)
         if (!activeItemKey) {
-          let { elements } = this.get()
-          let index = firstVisibleElementIndex(elements).first
+          const { elements } = this.get()
+          const index = firstVisibleElementIndex(elements).first
           if (index >= 0) {
             activeItemKey = elementToKey(elements[index])
           }
@@ -54,11 +54,11 @@
         }
       },
       changeActiveItem (movement, timeStamp) {
-        let { elements } = this.get()
+        const { elements } = this.get()
         let index = -1
         let activeItemKey = this.checkActiveItem(timeStamp)
         if (activeItemKey) {
-          let len = elements.length
+          const len = elements.length
           let i = -1
           while (++i < len) {
             if (elementToKey(elements[i]) === activeItemKey) {
@@ -74,7 +74,7 @@
           return
         }
         if (index === -1) {
-          let { first, firstComplete } = firstVisibleElementIndex(elements)
+          const { first, firstComplete } = firstVisibleElementIndex(elements)
           index = (movement > 0) ? firstComplete : first
         } else {
           index += movement
@@ -86,15 +86,15 @@
         }
       },
       checkActiveItem (timeStamp) {
-        let activeElement = document.activeElement
+        const activeElement = document.activeElement
         if (!activeElement) {
           return null
         }
-        let activeItem = activeElement.getAttribute('id')
+        const activeItem = activeElement.getAttribute('id')
         if (!activeItem) {
           return null
         }
-        let { activeItemChangeTime } = this.get()
+        const { activeItemChangeTime } = this.get()
         if ((timeStamp - activeItemChangeTime) > VISIBILITY_CHECK_DELAY_MS &&
             !isVisible(keyToElement(activeItem))) {
           this.setActiveItem(null, 0)

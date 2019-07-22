@@ -79,29 +79,29 @@
     store: () => store,
     methods: {
       async onEmojiClick () {
-        let { realm } = this.get()
-        let showEmojiDialog = await importShowEmojiDialog()
+        const { realm } = this.get()
+        const showEmojiDialog = await importShowEmojiDialog()
         showEmojiDialog(realm)
       },
       onMediaClick () {
         this.refs.input.click()
       },
       onFileChange (e) {
-        let file = e.target.files[0]
-        let { realm } = this.get()
+        const file = e.target.files[0]
+        const { realm } = this.get()
         doMediaUpload(realm, file)
       },
       async onPostPrivacyClick () {
-        let { realm } = this.get()
-        let showPostPrivacyDialog = await importShowPostPrivacyDialog()
+        const { realm } = this.get()
+        const showPostPrivacyDialog = await importShowPostPrivacyDialog()
         showPostPrivacyDialog(realm)
       },
       onContentWarningClick () {
-        let { realm } = this.get()
+        const { realm } = this.get()
         toggleContentWarningShown(realm)
       },
       onPollClick () {
-        let { poll, realm } = this.get()
+        const { poll, realm } = this.get()
         if (poll && poll.options && poll.options.length) {
           disablePoll(realm)
         } else {

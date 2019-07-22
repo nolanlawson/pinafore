@@ -5,17 +5,17 @@ import { database } from '../_database/database'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
-  let keys = ['timelineItemSummaries', 'timelineItemSummariesToAdd']
-  let summaryFilter = _ => idFilter(_.id)
+  const keys = ['timelineItemSummaries', 'timelineItemSummariesToAdd']
+  const summaryFilter = _ => idFilter(_.id)
 
   keys.forEach(key => {
-    let timelineData = store.getAllTimelineData(instanceName, key)
+    const timelineData = store.getAllTimelineData(instanceName, key)
     Object.keys(timelineData).forEach(timelineName => {
-      let summaries = timelineData[timelineName]
+      const summaries = timelineData[timelineName]
       if (!timelineFilter(timelineName)) {
         return
       }
-      let filteredSummaries = summaries.filter(summaryFilter)
+      const filteredSummaries = summaries.filter(summaryFilter)
       if (!isEqual(summaries, filteredSummaries)) {
         console.log('deleting an item from timelineName', timelineName, 'for key', key)
         store.setForTimeline(instanceName, timelineName, {
@@ -27,17 +27,17 @@ function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
 }
 
 function deleteStatusIdsFromStore (instanceName, idsToDelete) {
-  let idsToDeleteSet = new Set(idsToDelete)
-  let idWasNotDeleted = id => !idsToDeleteSet.has(id)
-  let notNotificationTimeline = timelineName => timelineName !== 'notifications'
+  const idsToDeleteSet = new Set(idsToDelete)
+  const idWasNotDeleted = id => !idsToDeleteSet.has(id)
+  const notNotificationTimeline = timelineName => timelineName !== 'notifications'
 
   filterItemIdsFromTimelines(instanceName, notNotificationTimeline, idWasNotDeleted)
 }
 
 function deleteNotificationIdsFromStore (instanceName, idsToDelete) {
-  let idsToDeleteSet = new Set(idsToDelete)
-  let idWasNotDeleted = id => !idsToDeleteSet.has(id)
-  let isNotificationTimeline = timelineName => timelineName === 'notifications'
+  const idsToDeleteSet = new Set(idsToDelete)
+  const idWasNotDeleted = id => !idsToDeleteSet.has(id)
+  const isNotificationTimeline = timelineName => timelineName === 'notifications'
 
   filterItemIdsFromTimelines(instanceName, isNotificationTimeline, idWasNotDeleted)
 }
@@ -50,9 +50,9 @@ async function deleteStatusesAndNotifications (instanceName, statusIdsToDelete, 
 
 async function doDeleteStatus (instanceName, statusId) {
   console.log('deleting statusId', statusId)
-  let rebloggedIds = await getIdsThatRebloggedThisStatus(instanceName, statusId)
-  let statusIdsToDelete = Array.from(new Set([statusId].concat(rebloggedIds).filter(Boolean)))
-  let notificationIdsToDelete = Array.from(new Set(await getNotificationIdsForStatuses(instanceName, statusIdsToDelete)))
+  const rebloggedIds = await getIdsThatRebloggedThisStatus(instanceName, statusId)
+  const statusIdsToDelete = Array.from(new Set([statusId].concat(rebloggedIds).filter(Boolean)))
+  const notificationIdsToDelete = Array.from(new Set(await getNotificationIdsForStatuses(instanceName, statusIdsToDelete)))
   await deleteStatusesAndNotifications(instanceName, statusIdsToDelete, notificationIdsToDelete)
 }
 

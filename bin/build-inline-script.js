@@ -13,9 +13,9 @@ const writeFile = promisify(fs.writeFile)
 const themeColors = fromPairs(themes.map(_ => ([_.name, _.color])))
 
 export async function buildInlineScript () {
-  let inlineScriptPath = path.join(__dirname, '../src/inline-script/inline-script.js')
+  const inlineScriptPath = path.join(__dirname, '../src/inline-script/inline-script.js')
 
-  let bundle = await rollup({
+  const bundle = await rollup({
     input: inlineScriptPath,
     plugins: [
       replace({
@@ -28,15 +28,15 @@ export async function buildInlineScript () {
       })
     ]
   })
-  let { output } = await bundle.generate({
+  const { output } = await bundle.generate({
     format: 'iife',
     sourcemap: true
   })
 
-  let { code, map } = output[0]
+  const { code, map } = output[0]
 
-  let fullCode = `${code}//# sourceMappingURL=/inline-script.js.map`
-  let checksum = crypto.createHash('sha256').update(fullCode).digest('base64')
+  const fullCode = `${code}//# sourceMappingURL=/inline-script.js.map`
+  const checksum = crypto.createHash('sha256').update(fullCode).digest('base64')
 
   await writeFile(path.resolve(__dirname, '../src/inline-script/checksum.js'),
     `module.exports = ${JSON.stringify(checksum)}`, 'utf8')

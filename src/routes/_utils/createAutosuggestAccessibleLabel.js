@@ -3,13 +3,13 @@ import { removeEmoji } from './removeEmoji'
 export function createAutosuggestAccessibleLabel (
   autosuggestType, $omitEmojiInDisplayNames,
   selectedIndex, searchResults) {
-  let selected = searchResults[selectedIndex]
+  const selected = searchResults[selectedIndex]
   let label
   if (autosuggestType === 'emoji') {
     label = `${selected.shortcode}`
   } else { // account
     let displayName = selected.display_name || selected.username
-    let emojis = selected.emojis || []
+    const emojis = selected.emojis || []
     displayName = $omitEmojiInDisplayNames
       ? removeEmoji(displayName, emojis) || displayName
       : displayName

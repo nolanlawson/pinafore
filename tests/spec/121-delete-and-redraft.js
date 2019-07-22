@@ -175,7 +175,7 @@ test('delete and redraft reply within thread', async t => {
 })
 
 test('multiple paragraphs', async t => {
-  let text = 'hey ho\n\ndouble newline!\njust one newline\njust another newline\n\nanother double newline!'
+  const text = 'hey ho\n\ndouble newline!\njust one newline\njust another newline\n\nanother double newline!'
   await postAs('foobar', text)
   await loginAsFoobar(t)
   await t

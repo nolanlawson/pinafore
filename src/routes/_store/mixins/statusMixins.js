@@ -1,5 +1,5 @@
 function getStatusModifications (store, instanceName) {
-  let { statusModifications } = store.get()
+  const { statusModifications } = store.get()
   statusModifications[instanceName] = statusModifications[instanceName] || {
     favorites: {},
     reblogs: {},
@@ -9,7 +9,7 @@ function getStatusModifications (store, instanceName) {
 }
 
 function setStatusModification (store, instanceName, statusId, key, value) {
-  let statusModifications = getStatusModifications(store, instanceName)
+  const statusModifications = getStatusModifications(store, instanceName)
   statusModifications[instanceName][key][statusId] = value
   store.set({ statusModifications })
 }
