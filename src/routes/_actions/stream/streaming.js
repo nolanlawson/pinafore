@@ -39,7 +39,7 @@ export function createStream (api, instanceName, accessToken, timelineName, firs
     fillGap(timelineName, newFirstStatusId)
     if (timelineName === 'home') {
       // special case - home timeline stream also handles notifications
-      let newFirstNotificationId = store.getFirstTimelineItemId(instanceName, timelineName)
+      let newFirstNotificationId = store.getFirstTimelineItemId(instanceName, 'notifications')
       fillGap('notifications', newFirstNotificationId)
     }
   }

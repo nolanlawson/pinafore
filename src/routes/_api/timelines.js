@@ -39,7 +39,7 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
 
   let params = {}
   if (since) {
-    params.since = since
+    params.since_id = since
   }
 
   if (maxId) {
