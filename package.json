@@ -149,7 +149,8 @@
       "DOMParser",
       "CSS",
       "customElements",
-      "AbortController"
+      "AbortController",
+      "matchMedia"
     ],
     "ignore": [
       "dist",
