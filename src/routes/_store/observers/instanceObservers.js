@@ -114,4 +114,23 @@ export function instanceObservers () {
 
     scheduleIdleTask(() => refreshInstanceDataAndStream(store, currentInstance))
   })
+
+  store.observe('pageVisibilityHidden', async (isHidden) => {
+    if (!process.browser || isHidden) {
+      return
+    }
+    if (currentInstanceStream) {
+      currentInstanceStream.close()
+      currentInstanceStream = null
+      if (process.env.NODE_ENV !== 'production') {
+        window.currentInstanceStream = null
+      }
+    }
+    const currentInstance = store.get().currentInstance
+    if (!currentInstance) {
+      return
+    }
+
+    scheduleIdleTask(() => refreshInstanceDataAndStream(store, store.get().currentInstance))
+  })
 }
