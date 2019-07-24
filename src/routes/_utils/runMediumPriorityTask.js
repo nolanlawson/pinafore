@@ -1,9 +1,6 @@
 import { scheduleIdleTask } from './scheduleIdleTask'
 import { store } from '../_store/store'
-
-// Rough guess at whether this is a "mobile" device or not, for the purposes
-// of "device class" estimations
-const IS_MOBILE = process.browser && navigator.userAgent.match(/(?:iPhone|iPod|iPad|Android)/)
+import { IS_MOBILE } from './userAgent'
 
 // Run a task that doesn't need to be processed immediately, but should
 // probably be delayed if we're on a mobile device. Also run it sooner

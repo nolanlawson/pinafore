@@ -3,6 +3,7 @@ import { computations } from './computations/computations'
 import { mixins } from './mixins/mixins'
 import { LocalStorageStore } from './LocalStorageStore'
 import { observe } from 'svelte-extras'
+import { IS_IOS } from '../_utils/userAgent'
 
 const persistedState = {
   autoplayGifs: false,
@@ -11,7 +12,7 @@ const persistedState = {
   currentRegisteredInstanceName: undefined,
   currentRegisteredInstance: undefined,
   // we disable scrollbars by default on iOS
-  disableCustomScrollbars: process.browser && /iP(?:hone|ad|od)/.test(navigator.userAgent),
+  disableCustomScrollbars: IS_IOS,
   disableFavCounts: false,
   disableFollowerCounts: false,
   disableHotkeys: false,

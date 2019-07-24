@@ -24,7 +24,11 @@ export async function buildInlineScript () {
       }),
       terser({
         mangle: true,
-        compress: true
+        compress: {
+          // terser does not detect RegExp.prototype.test as a pure func
+          // https://github.com/terser-js/terser/issues/405
+          pure_funcs: ['testUA']
+        }
       })
     ]
   })

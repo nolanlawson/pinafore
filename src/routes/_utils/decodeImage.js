@@ -1,4 +1,4 @@
-const IS_FIREFOX = process.browser && /Firefox/.test(navigator.userAgent)
+import { IS_FIREFOX } from './userAgent'
 
 export function decodeImage (img) {
   // Remove this UA sniff when the Firefox bug is fixed

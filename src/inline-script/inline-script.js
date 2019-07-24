@@ -7,6 +7,7 @@ import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/the
 import { basename } from '../routes/_api/utils'
 import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
 import { storeLite } from '../routes/_store/storeLite'
+import { IS_IOS_PRE_12_2 } from '../routes/_utils/userAgent'
 
 window.__themeColors = process.env.THEME_COLORS
 
@@ -62,9 +63,7 @@ if (/mac/i.test(navigator.platform)) {
 // for cross-origin authentication: https://github.com/nolanlawson/pinafore/issues/45
 // Here we sniff for iOS <12.2 by checking for the existence of a native IntersectionObserver
 // function, which was added in 12.2.
-if (/iP(?:hone|ad|od)/.test(navigator.userAgent) &&
-  !(typeof IntersectionObserver === 'function' &&
-    IntersectionObserver.toString().includes('[native code]'))) {
+if (IS_IOS_PRE_12_2) {
   document.head.removeChild(document.getElementById('theManifest'))
 }
 
