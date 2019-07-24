@@ -1,4 +1,4 @@
-const prefersDarkTheme = process.browser && window.matchMedia('(prefers-color-scheme: dark)').matches
+const prefersDarkTheme = process.browser && matchMedia('(prefers-color-scheme: dark)').matches
 const meta = process.browser && document.getElementById('theThemeColor')
 
 export const INLINE_THEME = 'default' // theme that does not require external CSS
