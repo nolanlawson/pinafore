@@ -2,7 +2,14 @@ import { loginAsFoobar } from '../roles'
 import {
   forceOffline,
   forceOnline,
-  getNthStatus, homeNavButton, localTimelineNavButton, notificationBadge, notificationsNavButton, sleep
+  getNthStatus,
+  homeNavButton,
+  localTimelineNavButton,
+  notificationBadge,
+  notificationsNavButton,
+  sleep,
+  times,
+  validateTimeline
 } from '../utils'
 import {
   postAs
@@ -81,4 +88,27 @@ test('fills timeline gap while away from notifications timeline - badge updates'
     .click(notificationsNavButton)
     .expect(notificationBadge.exists).notOk()
     .expect(getNthStatus(1).innerText).contains('sneaky mention!', { timeout })
+})
+
+test('fills a large gap while away from home timeline', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatus(1).exists).ok({ timeout })
+    .hover(getNthStatus(1))
+  await postAs('admin', 'hello hello world')
+  await t.expect(getNthStatus(1).innerText).contains('hello hello world', { timeout })
+  await forceOffline()
+  await sleep(1000)
+  const GAP_SIZE = 60
+  for (let i = 0; i < GAP_SIZE; i++) {
+    await postAs('admin', `posted while offline #${i + 1}`)
+  }
+  await sleep(1000)
+  await forceOnline()
+  await t.expect(getNthStatus(1).innerText).contains(`posted while offline #${GAP_SIZE}`, {
+    timeout: timeout * 2
+  })
+  const expected = times(GAP_SIZE, i => ({ content: `posted while offline #${GAP_SIZE - i}` }))
+    .concat([{ content: 'hello hello world' }])
+  await validateTimeline(t, expected)
 })
