@@ -16,7 +16,6 @@ const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
 // `static` is an array of everything in the `static` directory
 const assets = __assets__
   .map(file => file.startsWith('/') ? file : `/${file}`)
-  .filter(filename => !filename.startsWith('/apple-icon'))
   .filter(filename => !filename.endsWith('.map'))
   .filter(filename => filename !== '/robots.txt')
 
