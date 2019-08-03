@@ -22,13 +22,10 @@ const {
 const theme = (instanceThemes && instanceThemes[currentInstance]) || DEFAULT_THEME
 
 if (currentInstance) {
-  // Do prefetch if we're logged in, so we can connect faster to the other origin.
-  // Note that /api/v1/instance is basically the only URL that doesn't require credentials,
-  // which is why we can do this. Also we do end up calling this on loading the home page,
-  // so it's not a wasted request.
+  // Do preconnect if we're logged in, so we can connect faster to the other origin.
   let link = document.createElement('link')
-  link.setAttribute('rel', 'prefetch')
-  link.setAttribute('href', `${basename(currentInstance)}/api/v1/instance`)
+  link.setAttribute('rel', 'preconnect')
+  link.setAttribute('href', basename(currentInstance))
   link.setAttribute('crossorigin', 'anonymous')
   document.head.appendChild(link)
 }
