@@ -39,7 +39,7 @@
         const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
-          let { realm } = this.get()
+          const { realm } = this.get()
           this.store.setComposeData(realm, {
             contentWarning: rawText
           })

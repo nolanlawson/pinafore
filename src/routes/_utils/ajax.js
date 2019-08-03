@@ -10,10 +10,10 @@ function fetchWithTimeout (url, fetchOptions, timeout) {
 }
 
 function makeFetchOptions (method, headers, options) {
-  let res = {
+  const res = {
     method,
     headers: Object.assign(headers || {}, {
-      'Accept': 'application/json'
+      Accept: 'application/json'
     })
   }
   if (options && options.signal) {
@@ -23,7 +23,7 @@ function makeFetchOptions (method, headers, options) {
 }
 
 async function throwErrorIfInvalidResponse (response) {
-  let json = await response.json()
+  const json = await response.json()
   if (response.status >= 200 && response.status < 300) {
     return json
   }
@@ -44,7 +44,7 @@ async function _fetch (url, fetchOptions, options) {
 }
 
 async function _putOrPostOrPatch (method, url, body, headers, options) {
-  let fetchOptions = makeFetchOptions(method, headers, options)
+  const fetchOptions = makeFetchOptions(method, headers, options)
   if (body) {
     if (body instanceof FormData) {
       fetchOptions.body = body
@@ -80,9 +80,9 @@ export function paramsString (paramsObject) {
   let res = ''
   let count = -1
   Object.keys(paramsObject).forEach(key => {
-    let value = paramsObject[key]
+    const value = paramsObject[key]
     if (Array.isArray(value)) { // rails convention for encoding multiple values
-      for (let item of value) {
+      for (const item of value) {
         res += (++count > 0 ? '&' : '') + encodeURIComponent(key) + '[]=' + encodeURIComponent(item)
       }
     } else {

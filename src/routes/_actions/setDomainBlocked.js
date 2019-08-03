@@ -4,7 +4,7 @@ import { toast } from '../_components/toast/toast'
 import { updateRelationship } from './accounts'
 
 export async function setDomainBlocked (accountId, domain, block, toastOnSuccess) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     if (block) {
       await blockDomain(currentInstance, accessToken, domain)

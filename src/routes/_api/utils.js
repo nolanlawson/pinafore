@@ -11,6 +11,6 @@ export function basename (instanceName) {
 
 export function auth (accessToken) {
   return {
-    'Authorization': `Bearer ${accessToken}`
+    Authorization: `Bearer ${accessToken}`
   }
 }

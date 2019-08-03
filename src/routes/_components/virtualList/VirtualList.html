@@ -115,14 +115,14 @@
       observe,
       calculateListOffset () {
         // TODO: better way to get the offset top?
-        let node = this.refs.node
+        const node = this.refs.node
         if (!node) {
           return
         }
         mark('calculateListOffset')
-        let { offsetParent } = node
+        const { offsetParent } = node
         // TODO: offsetParent is null sometimes in testcafe tests
-        let listOffset = offsetParent ? offsetParent.offsetTop : 0
+        const listOffset = offsetParent ? offsetParent.offsetTop : 0
         this.store.setForRealm({ listOffset })
         stop('calculateListOffset')
       }

@@ -15,7 +15,7 @@
   export default {
     methods: {
       onClick (event) {
-        let { onClick } = this.get()
+        const { onClick } = this.get()
         if (onClick) {
           onClick(event)
         }

@@ -1,13 +1,13 @@
 import times from 'lodash-es/times'
 
 function unrollThread (user, prefix, privacy, thread) {
-  let res = []
+  const res = []
 
   function unroll (node, parentKey) {
     if (!node) {
       return
     }
-    for (let key of Object.keys(node)) {
+    for (const key of Object.keys(node)) {
       res.push({
         user: user,
         post: {

@@ -155,7 +155,7 @@
 
   export default {
     oncreate () {
-      let { elementId } = this.get()
+      const { elementId } = this.get()
       registerClickDelegate(this, elementId, () => this.toggleSensitiveMedia())
     },
     components: {
@@ -185,8 +185,8 @@
     },
     methods: {
       toggleSensitiveMedia () {
-        let { uuid } = this.get()
-        let { sensitivesShown } = this.store.get()
+        const { uuid } = this.get()
+        const { sensitivesShown } = this.store.get()
         sensitivesShown[uuid] = !sensitivesShown[uuid]
         this.store.set({ sensitivesShown })
         this.fire('recalculateHeight')

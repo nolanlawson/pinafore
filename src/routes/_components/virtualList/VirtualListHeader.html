@@ -44,14 +44,14 @@
     methods: {
       observe,
       doCalculateHeight () {
-        let { heightCalculated } = this.get()
+        const { heightCalculated } = this.get()
         if (heightCalculated) { // only need to calculate once, it never changes
           return
         }
         this.set({ heightCalculated: true })
         requestAnimationFrame(() => {
           mark('VirtualListHeader gBCR')
-          let rect = this.refs.node.getBoundingClientRect()
+          const rect = this.refs.node.getBoundingClientRect()
           stop('VirtualListHeader gBCR')
           this.store.setForRealm({ headerHeight: rect.height })
         })

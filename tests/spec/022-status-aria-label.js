@@ -29,7 +29,7 @@ test('basic aria-labels for statuses', async t => {
 
 test('aria-labels for CWed statuses', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t
     .hover(getNthStatus(1 + kittenIdx))

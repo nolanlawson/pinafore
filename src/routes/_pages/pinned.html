@@ -41,10 +41,10 @@
   export default {
     async oncreate () {
       try {
-        let { currentInstance } = this.store.get()
+        const { currentInstance } = this.store.get()
         await updateVerifyCredentialsForInstance(currentInstance)
-        let { accessToken, currentVerifyCredentials } = this.store.get()
-        let statuses = await getPinnedStatuses(currentInstance, accessToken, currentVerifyCredentials.id)
+        const { accessToken, currentVerifyCredentials } = this.store.get()
+        const statuses = await getPinnedStatuses(currentInstance, accessToken, currentVerifyCredentials.id)
         this.set({ statuses: statuses })
       } catch (e) {
         toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))

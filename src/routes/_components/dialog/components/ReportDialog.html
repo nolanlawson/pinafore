@@ -168,12 +168,12 @@
   export default {
     async oncreate () {
       onCreateDialog.call(this)
-      let { account, status, reportMap } = this.get()
+      const { account, status, reportMap } = this.get()
       if (status) {
         reportMap[status.id] = true
       }
       try {
-        let recentStatuses = await getRecentStatusesForAccount(account.id)
+        const recentStatuses = await getRecentStatusesForAccount(account.id)
         console.log('recentStatuses', recentStatuses)
         this.set({ recentStatuses })
       } catch (err) {
@@ -211,13 +211,13 @@
       show,
       close,
       onChange (statusId, event) {
-        let report = event.target.checked
-        let { reportMap } = this.get()
+        const report = event.target.checked
+        const { reportMap } = this.get()
         reportMap[statusId] = report
       },
       async doReport () {
-        let { displayStatuses, account, comment, forward, reportMap } = this.get()
-        let statusIds = displayStatuses.map(({ id }) => id).filter(id => reportMap[id])
+        const { displayStatuses, account, comment, forward, reportMap } = this.get()
+        const statusIds = displayStatuses.map(({ id }) => id).filter(id => reportMap[id])
         if (!statusIds.length) {
           toast.say(`No toots to report.`)
         } else {

@@ -94,7 +94,7 @@
 
   export default {
     oncreate () {
-      let { elementId } = this.get()
+      const { elementId } = this.get()
       registerClickDelegate(this, elementId, () => this.onClick())
     },
     computed: {
@@ -132,8 +132,8 @@
     methods: {
       onClick () {
         (async () => {
-          let { mediaAttachments, index } = this.get()
-          let showMediaDialog = await importShowMediaDialog()
+          const { mediaAttachments, index } = this.get()
+          const showMediaDialog = await importShowMediaDialog()
           showMediaDialog(mediaAttachments, index)
         })()
         return true

@@ -76,9 +76,9 @@
     }),
     methods: {
       async onFileDrop (e) {
-        let { files } = e
-        let { realm } = this.get()
-        for (let file of files) { // upload one at a time to avoid hitting limits
+        const { files } = e
+        const { realm } = this.get()
+        for (const file of files) { // upload one at a time to avoid hitting limits
           await doMediaUpload(realm, file)
         }
       }

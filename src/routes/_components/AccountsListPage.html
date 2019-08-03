@@ -61,12 +61,12 @@
     },
     methods: {
       onClickAction (event) {
-        let { action, accountId } = event
+        const { action, accountId } = event
         action.onclick(accountId)
       },
       async refreshAccounts () {
-        let { accountsFetcher } = this.get()
-        let accounts = await accountsFetcher()
+        const { accountsFetcher } = this.get()
+        const accounts = await accountsFetcher()
         this.set({ accounts: accounts })
       }
     }

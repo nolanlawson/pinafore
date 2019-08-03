@@ -1,9 +1,9 @@
 import { store } from '../_store/store'
 
 export function toggleContentWarningShown (realm) {
-  let shown = store.getComposeData(realm, 'contentWarningShown')
-  let contentWarning = store.getComposeData(realm, 'contentWarning')
-  let newShown = !shown
+  const shown = store.getComposeData(realm, 'contentWarningShown')
+  const contentWarning = store.getComposeData(realm, 'contentWarning')
+  const newShown = !shown
   store.setComposeData(realm, {
     contentWarning: newShown ? contentWarning : '',
     contentWarningShown: newShown

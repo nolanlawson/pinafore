@@ -1,15 +1,15 @@
 import { mark, stop } from './marks'
 import { massageStatusPlainText } from './massageStatusPlainText'
 
-let domParser = process.browser && new DOMParser()
+const domParser = process.browser && new DOMParser()
 
 // mentions like "@foo" have to be expanded to "@foo@example.com"
 function massageMentions (doc, mentions) {
-  let anchors = doc.querySelectorAll('a.mention')
+  const anchors = doc.querySelectorAll('a.mention')
   for (let i = 0; i < anchors.length; i++) {
-    let anchor = anchors[i]
-    let href = anchor.getAttribute('href')
-    let mention = mentions.find(mention => mention.url === href)
+    const anchor = anchors[i]
+    const href = anchor.getAttribute('href')
+    const mention = mentions.find(mention => mention.url === href)
     if (mention) {
       anchor.innerText = `@${mention.acct}`
     }
@@ -20,12 +20,12 @@ function massageMentions (doc, mentions) {
 // single <br/>s should become single newlines
 function innerTextRetainingNewlines (doc) {
   let res = ''
-  let paragraphs = doc.querySelectorAll('p')
+  const paragraphs = doc.querySelectorAll('p')
   for (let i = 0; i < paragraphs.length; i++) {
-    let paragraph = paragraphs[i]
-    let brs = paragraph.querySelectorAll('br')
+    const paragraph = paragraphs[i]
+    const brs = paragraph.querySelectorAll('br')
     for (let j = 0; j < brs.length; j++) {
-      let br = brs[j]
+      const br = brs[j]
       br.parentNode.replaceChild(doc.createTextNode('\n'), br)
     }
     res += (i > 0 ? '\n\n' : '') + paragraph.textContent
@@ -39,9 +39,9 @@ export function statusHtmlToPlainText (html, mentions) {
   }
   mark('statusHtmlToPlainText')
   html = massageStatusPlainText(html)
-  let doc = domParser.parseFromString(html, 'text/html')
+  const doc = domParser.parseFromString(html, 'text/html')
   massageMentions(doc, mentions)
-  let res = innerTextRetainingNewlines(doc)
+  const res = innerTextRetainingNewlines(doc)
   stop('statusHtmlToPlainText')
   return res
 }

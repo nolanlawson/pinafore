@@ -83,15 +83,15 @@
 
   function flushPollOptionsToDom (poll, realm) {
     for (let i = 0; i < poll.options.length; i++) {
-      let element = document.getElementById(`poll-option-${realm}-${i}`)
+      const element = document.getElementById(`poll-option-${realm}-${i}`)
       element.value = poll.options[i]
     }
   }
 
   export default {
     oncreate () {
-      let { realm } = this.get()
-      let poll = this.store.getComposeData(realm, 'poll')
+      const { realm } = this.get()
+      const poll = this.store.getComposeData(realm, 'poll')
       flushPollOptionsToDom(poll, realm)
       document.getElementById(`poll-option-multiple-${realm}`).checked = !!poll.multiple
       this.set({ pollExpiryDefaultValue: poll.expiry || POLL_EXPIRY_DEFAULT })
@@ -104,26 +104,26 @@
     methods: {
       onChange (i) {
         scheduleIdleTask(() => {
-          let { realm } = this.get()
-          let element = document.getElementById(`poll-option-${realm}-${i}`)
-          let poll = this.store.getComposeData(realm, 'poll')
+          const { realm } = this.get()
+          const element = document.getElementById(`poll-option-${realm}-${i}`)
+          const poll = this.store.getComposeData(realm, 'poll')
           poll.options[i] = element.value
           this.store.setComposeData(realm, { poll })
         })
       },
       onMultipleChange () {
         requestAnimationFrame(() => {
-          let { realm } = this.get()
-          let element = document.getElementById(`poll-option-multiple-${realm}`)
-          let poll = this.store.getComposeData(realm, 'poll')
+          const { realm } = this.get()
+          const element = document.getElementById(`poll-option-multiple-${realm}`)
+          const poll = this.store.getComposeData(realm, 'poll')
           poll.multiple = !!element.checked
           this.store.setComposeData(realm, { poll })
         })
       },
       onDeleteClick (i) {
         requestAnimationFrame(() => {
-          let { realm } = this.get()
-          let poll = this.store.getComposeData(realm, 'poll')
+          const { realm } = this.get()
+          const poll = this.store.getComposeData(realm, 'poll')
           poll.options.splice(i, 1)
           this.store.setComposeData(realm, { poll })
           flushPollOptionsToDom(poll, realm)
@@ -131,8 +131,8 @@
       },
       onAddClick () {
         requestAnimationFrame(() => {
-          let { realm } = this.get()
-          let poll = this.store.getComposeData(realm, 'poll')
+          const { realm } = this.get()
+          const poll = this.store.getComposeData(realm, 'poll')
           if (!poll.options.length !== 4) {
             poll.options.push('')
           }
@@ -141,9 +141,9 @@
       },
       onExpiryChange (e) {
         requestAnimationFrame(() => {
-          let { realm } = this.get()
-          let { value } = e.target
-          let poll = this.store.getComposeData(realm, 'poll')
+          const { realm } = this.get()
+          const { value } = e.target
+          const poll = this.store.getComposeData(realm, 'poll')
           poll.expiry = parseInt(value, 10)
           this.store.setComposeData(realm, { poll })
         })

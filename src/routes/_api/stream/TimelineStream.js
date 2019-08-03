@@ -22,7 +22,7 @@ export class TimelineStream extends EventEmitter {
     this._teardownEvents()
     // events-light currently does not support removeAllListeners()
     // https://github.com/patrick-steele-idem/events-light/issues/2
-    for (let event of ['open', 'close', 'reconnect', 'message']) {
+    for (const event of ['open', 'close', 'reconnect', 'message']) {
       this.removeAllListeners(event)
     }
   }

@@ -110,16 +110,16 @@
     methods: {
       hydrateContent () {
         mark('hydrateContent')
-        let node = this.refs.node
-        let { originalStatus, uuid } = this.get()
-        let { mentions, tags } = originalStatus
+        const node = this.refs.node
+        const { originalStatus, uuid } = this.get()
+        const { mentions, tags } = originalStatus
         let count = 0
-        let anchors = Array.from(node.getElementsByTagName('A'))
+        const anchors = Array.from(node.getElementsByTagName('A'))
 
-        for (let anchor of anchors) {
+        for (const anchor of anchors) {
           // hydrate hashtag
           if (tags && anchor.classList.contains('hashtag')) {
-            for (let tag of tags) {
+            for (const tag of tags) {
               if (anchor.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
                 anchor.setAttribute('href', `/tags/${tag.name}`)
                 anchor.setAttribute('id', `status-content-link-${uuid}-${++count}`)
@@ -129,7 +129,7 @@
             }
           // hydrate mention
           } else if (mentions && anchor.classList.contains('mention')) {
-            for (let mention of mentions) {
+            for (const mention of mentions) {
               if (anchor.getAttribute('href') === mention.url) {
                 anchor.setAttribute('href', `/accounts/${mention.id}`)
                 anchor.setAttribute('title', `@${mention.acct}`)
@@ -140,7 +140,7 @@
             }
           }
           // hydrate external links
-          let href = anchor.getAttribute('href')
+          const href = anchor.getAttribute('href')
           if (new URL(href, location.href).origin !== location.origin) {
             anchor.setAttribute('title', href)
             anchor.setAttribute('target', '_blank')

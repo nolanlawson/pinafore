@@ -19,7 +19,7 @@ export const storeLite = {
 
   set (obj) {
     if (hasLocalStorage) {
-      for (let [key, value] of Object.entries(obj)) {
+      for (const [key, value] of Object.entries(obj)) {
         localStorage.setItem(`store_${key}`, JSON.stringify(value))
       }
     }

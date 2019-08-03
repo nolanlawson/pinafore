@@ -144,8 +144,8 @@
 
   export default {
     oncreate () {
-      let { elementId, isStatusInOwnThread, showContent } = this.get()
-      let { disableTapOnStatus } = this.store.get()
+      const { elementId, isStatusInOwnThread, showContent } = this.get()
+      const { disableTapOnStatus } = this.store.get()
       if (!isStatusInOwnThread && !disableTapOnStatus) {
         // the whole <article> is clickable in this case
         registerClickDelegate(this, elementId, (e) => this.onClickOrKeydown(e))
@@ -184,10 +184,10 @@
     store: () => store,
     methods: {
       onClickOrKeydown (e) {
-        let { type, keyCode, target } = e
+        const { type, keyCode, target } = e
 
-        let isClick = type === 'click'
-        let isEnter = type === 'keydown' && keyCode === 13
+        const isClick = type === 'click'
+        const isEnter = type === 'keydown' && keyCode === 13
         if (!isClick && !isEnter) {
           return false
         }
@@ -205,15 +205,15 @@
         return true
       },
       open () {
-        let { originalStatusId } = this.get()
+        const { originalStatusId } = this.get()
         goto(`/statuses/${originalStatusId}`)
       },
       openAuthorProfile () {
-        let { accountForShortcut } = this.get()
+        const { accountForShortcut } = this.get()
         goto(`/accounts/${accountForShortcut.id}`)
       },
       async mentionAuthor () {
-        let { accountForShortcut } = this.get()
+        const { accountForShortcut } = this.get()
         await composeNewStatusMentioning(accountForShortcut)
       }
     },

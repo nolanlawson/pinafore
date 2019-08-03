@@ -19,8 +19,8 @@ app.use(compression({ threshold: 0 }))
 
 app.use(express.static(exportDir, {
   setHeaders (res, thisPath) {
-    let localPath = '/' + path.relative(exportDir, thisPath)
-    for (let { regex, headers } of routes) {
+    const localPath = '/' + path.relative(exportDir, thisPath)
+    for (const { regex, headers } of routes) {
       if (regex.test(localPath)) {
         res.set(headers)
         return

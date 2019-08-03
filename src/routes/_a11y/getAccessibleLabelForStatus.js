@@ -5,7 +5,7 @@ function getNotificationText (notification, omitEmojiInDisplayNames) {
   if (!notification) {
     return
   }
-  let notificationAccountDisplayName = getAccountAccessibleName(notification.account, omitEmojiInDisplayNames)
+  const notificationAccountDisplayName = getAccountAccessibleName(notification.account, omitEmojiInDisplayNames)
   if (notification.type === 'reblog') {
     return `${notificationAccountDisplayName} boosted your status`
   } else if (notification.type === 'favourite') {
@@ -14,7 +14,7 @@ function getNotificationText (notification, omitEmojiInDisplayNames) {
 }
 
 function getPrivacyText (visibility) {
-  for (let option of POST_PRIVACY_OPTIONS) {
+  for (const option of POST_PRIVACY_OPTIONS) {
     if (option.key === visibility) {
       return option.label
     }
@@ -25,7 +25,7 @@ function getReblogText (reblog, account, omitEmojiInDisplayNames) {
   if (!reblog) {
     return
   }
-  let accountDisplayName = getAccountAccessibleName(account, omitEmojiInDisplayNames)
+  const accountDisplayName = getAccountAccessibleName(account, omitEmojiInDisplayNames)
   return `Boosted by ${accountDisplayName}`
 }
 
@@ -37,11 +37,11 @@ export function getAccessibleLabelForStatus (originalAccount, account, plainText
   timeagoFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames,
   disableLongAriaLabels) {
-  let originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
-  let contentTextToShow = (showContent || !spoilerText)
+  const originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
+  const contentTextToShow = (showContent || !spoilerText)
     ? cleanupText(plainTextContent)
     : `Content warning: ${cleanupText(spoilerText)}`
-  let privacyText = getPrivacyText(visibility)
+  const privacyText = getPrivacyText(visibility)
 
   if (disableLongAriaLabels) {
     // Long text can crash NVDA; allow users to shorten it like we had it before.
@@ -49,7 +49,7 @@ export function getAccessibleLabelForStatus (originalAccount, account, plainText
     return `${privacyText} status by ${originalAccountDisplayName}`
   }
 
-  let values = [
+  const values = [
     getNotificationText(notification, omitEmojiInDisplayNames),
     originalAccountDisplayName,
     contentTextToShow,

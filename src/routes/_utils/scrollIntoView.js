@@ -15,25 +15,25 @@ export function isVisible (element) {
   if (!element) {
     return false
   }
-  let rect = element.getBoundingClientRect()
-  let offsetHeight = getOffsetHeight()
-  let topOverlay = getTopOverlay()
+  const rect = element.getBoundingClientRect()
+  const offsetHeight = getOffsetHeight()
+  const topOverlay = getTopOverlay()
   return rect.top < offsetHeight && rect.bottom >= topOverlay
 }
 
 export function firstVisibleElementIndex (elements) {
-  let offsetHeight = getOffsetHeight()
-  let topOverlay = getTopOverlay()
+  const offsetHeight = getOffsetHeight()
+  const topOverlay = getTopOverlay()
   let first = -1
   let firstComplete = -1
-  let len = elements.length
+  const len = elements.length
   let i = -1
   while (++i < len) {
-    let element = elements[i]
+    const element = elements[i]
     if (!element) {
       continue
     }
-    let rect = element.getBoundingClientRect()
+    const rect = element.getBoundingClientRect()
     if (rect.top < offsetHeight && rect.bottom >= topOverlay) {
       first = i
       firstComplete = (
@@ -45,14 +45,14 @@ export function firstVisibleElementIndex (elements) {
 }
 
 export function scrollIntoViewIfNeeded (element) {
-  let rect = element.getBoundingClientRect()
-  let topOverlay = getTopOverlay()
-  let offsetHeight = getOffsetHeight()
+  const rect = element.getBoundingClientRect()
+  const topOverlay = getTopOverlay()
+  const offsetHeight = getOffsetHeight()
   let scrollY = 0
   if (rect.top < topOverlay) {
     scrollY = topOverlay
   } else if (rect.bottom > offsetHeight) {
-    let height = rect.bottom - rect.top
+    const height = rect.bottom - rect.top
     if ((offsetHeight - topOverlay) > height) {
       scrollY = offsetHeight - height
     } else {
@@ -63,7 +63,7 @@ export function scrollIntoViewIfNeeded (element) {
   } else {
     return // not needed
   }
-  let scrollContainer = getScrollContainer()
-  let scrollTop = scrollContainer.scrollTop
+  const scrollContainer = getScrollContainer()
+  const scrollTop = scrollContainer.scrollTop
   smoothScroll(scrollContainer, scrollTop + rect.top - scrollY)
 }

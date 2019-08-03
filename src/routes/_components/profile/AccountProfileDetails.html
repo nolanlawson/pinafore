@@ -138,8 +138,8 @@
     },
     methods: {
       async onMoreOptionsClick () {
-        let { account, relationship, verifyCredentials } = this.get()
-        let showAccountProfileOptionsDialog = await importShowAccountProfileOptionsDialog()
+        const { account, relationship, verifyCredentials } = this.get()
+        const showAccountProfileOptionsDialog = await importShowAccountProfileOptionsDialog()
         showAccountProfileOptionsDialog(account, relationship, verifyCredentials)
       }
     },

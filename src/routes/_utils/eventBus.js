@@ -7,7 +7,7 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
 }
 
 export function on (eventName, component, method) {
-  let callback = method.bind(component)
+  const callback = method.bind(component)
   eventBus.on(eventName, callback)
   component.on('destroy', () => {
     eventBus.removeListener(eventName, callback)

@@ -16,7 +16,7 @@ export async function searchAccountsByUsername (instanceName, usernamePrefix, li
   limit = limit || 20
   const db = await getDatabase(instanceName)
   return dbPromise(db, ACCOUNTS_STORE, 'readonly', (accountsStore, callback) => {
-    let keyRange = createAccountUsernamePrefixKeyRange(usernamePrefix.toLowerCase())
+    const keyRange = createAccountUsernamePrefixKeyRange(usernamePrefix.toLowerCase())
     accountsStore.index(USERNAME_LOWERCASE).getAll(keyRange, limit).onsuccess = e => {
       callback(e.target.result)
     }

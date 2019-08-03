@@ -63,7 +63,7 @@ test('unfavorites a status', async t => {
 
 test('Keeps the correct favorites count', async t => {
   await loginAsFoobar(t)
-  let idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
+  const idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
   await t
     .hover(getNthStatus(1 + idx))
     .click(getNthFavoriteButton(1 + idx))

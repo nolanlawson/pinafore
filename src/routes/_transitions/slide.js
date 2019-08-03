@@ -4,7 +4,7 @@ import noop from 'lodash-es/noop'
 
 // same as svelte-transitions, but respecting reduceMotion
 export function slide (node, ref) {
-  let { reduceMotion } = store.get()
+  const { reduceMotion } = store.get()
   if (reduceMotion) {
     return {
       delay: 0,

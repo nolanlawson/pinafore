@@ -105,7 +105,7 @@
 
   export default {
     oncreate () {
-      let { realm, replySpoiler, replyVisibility } = this.get()
+      const { realm, replySpoiler, replyVisibility } = this.get()
       if (realm !== 'home' && realm !== 'dialog') {
         // if this is a reply, populate the handle immediately
         /* no await */ insertHandleForReply(realm)
@@ -179,7 +179,7 @@
     },
     methods: {
       doPostStatus () {
-        let {
+        const {
           text,
           media,
           postPrivacyKey,
@@ -190,17 +190,17 @@
           inReplyToId, // delete-and-redraft replies, using standard id
           poll
         } = this.get()
-        let sensitive = media.length && !!contentWarning
-        let mediaIds = media.map(_ => _.data.id)
-        let mediaDescriptions = media.map(_ => _.description)
-        let mediaFocalPoints = media.map(_ => [_.focusX, _.focusY])
-        let inReplyTo = inReplyToId || ((realm === 'home' || realm === 'dialog') ? null : realm)
+        const sensitive = media.length && !!contentWarning
+        const mediaIds = media.map(_ => _.data.id)
+        const mediaDescriptions = media.map(_ => _.description)
+        const mediaFocalPoints = media.map(_ => [_.focusX, _.focusY])
+        const inReplyTo = inReplyToId || ((realm === 'home' || realm === 'dialog') ? null : realm)
 
         if (overLimit || (!text && !media.length)) {
           return // do nothing if invalid
         }
 
-        let hasPoll = poll && poll.options && poll.options.length
+        const hasPoll = poll && poll.options && poll.options.length
         if (hasPoll) {
           // validate poll
           if (poll.options.length < 2 || !poll.options.every(Boolean)) {
@@ -209,7 +209,7 @@
         }
 
         // convert internal poll format to the format Mastodon's REST API uses
-        let pollToPost = hasPoll && {
+        const pollToPost = hasPoll && {
           expires_in: (poll.expiry || POLL_EXPIRY_DEFAULT).toString(),
           multiple: !!poll.multiple,
           options: poll.options

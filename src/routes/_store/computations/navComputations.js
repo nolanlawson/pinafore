@@ -6,8 +6,8 @@ export function navComputations (store) {
       if (!pinnedPage.startsWith('/lists')) {
         return
       }
-      let listId = pinnedPage.split('/').slice(-1)[0]
-      let list = lists.find(_ => _.id === listId)
+      const listId = pinnedPage.split('/').slice(-1)[0]
+      const list = lists.find(_ => _.id === listId)
       return list ? list.title : ''
     }
   )

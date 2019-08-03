@@ -9,7 +9,7 @@ import throttle from 'lodash-es/throttle'
 import { getScrollContainer } from '../../_utils/scrollContainer'
 
 const map = new Map()
-let createEvent = (name) => new Event(name, { bubbles: true })
+const createEvent = (name) => new Event(name, { bubbles: true })
 
 function assign (ta) {
   if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) {
@@ -17,7 +17,7 @@ function assign (ta) {
   }
 
   // TODO: hack - grab our scroll container so we can maintain the scrollTop
-  let container = getScrollContainer()
+  const container = getScrollContainer()
   let heightOffset = null
   let cachedHeight = null
 
@@ -35,7 +35,7 @@ function assign (ta) {
 
   function resize () {
     mark('autosize:resize()')
-    let res = _resize()
+    const res = _resize()
     stop('autosize:resize()')
     return res
   }
@@ -68,7 +68,7 @@ function assign (ta) {
   }
 
   function _update () {
-    let newHeight = resize()
+    const newHeight = resize()
     if (cachedHeight !== newHeight) {
       cachedHeight = newHeight
       const evt = createEvent('autosize:resized')
@@ -120,7 +120,7 @@ function update (ta) {
   }
 }
 
-let autosize = (el, options) => {
+const autosize = (el, options) => {
   if (el) {
     Array.prototype.forEach.call(el.length ? el : [el], x => assign(x, options))
   }

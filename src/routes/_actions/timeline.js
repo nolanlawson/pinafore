@@ -25,10 +25,10 @@ async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, it
 
 async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelineName, lastTimelineItemId) {
   if (timelineName.startsWith('status/')) { // special case - this is a list of descendents and ancestors
-    let statusId = timelineName.split('/').slice(-1)[0]
-    let statusRequest = getStatus(instanceName, accessToken, statusId)
-    let contextRequest = getStatusContext(instanceName, accessToken, statusId)
-    let [ status, context ] = await Promise.all([statusRequest, contextRequest])
+    const statusId = timelineName.split('/').slice(-1)[0]
+    const statusRequest = getStatus(instanceName, accessToken, statusId)
+    const contextRequest = getStatusContext(instanceName, accessToken, statusId)
+    const [status, context] = await Promise.all([statusRequest, contextRequest])
     return concat(context.ancestors, status, context.descendants)
   } else { // normal timeline
     return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, null, TIMELINE_BATCH_SIZE)
@@ -61,16 +61,16 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
 async function addTimelineItems (instanceName, timelineName, items, stale) {
   console.log('addTimelineItems, length:', items.length)
   mark('addTimelineItemSummaries')
-  let newSummaries = items.map(timelineItemToSummary)
+  const newSummaries = items.map(timelineItemToSummary)
   addTimelineItemSummaries(instanceName, timelineName, newSummaries, stale)
   stop('addTimelineItemSummaries')
 }
 
 export async function addTimelineItemSummaries (instanceName, timelineName, newSummaries, newStale) {
-  let oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
-  let oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesAreStale')
+  const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
+  const oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesAreStale')
 
-  let mergedSummaries = mergeArrays(oldSummaries, newSummaries, compareTimelineItemSummaries)
+  const mergedSummaries = mergeArrays(oldSummaries, newSummaries, compareTimelineItemSummaries)
 
   if (!isEqual(oldSummaries, mergedSummaries)) {
     store.setForTimeline(instanceName, timelineName, { timelineItemSummaries: mergedSummaries })
@@ -82,7 +82,7 @@ export async function addTimelineItemSummaries (instanceName, timelineName, newS
 
 async function fetchTimelineItemsAndPossiblyFallBack () {
   mark('fetchTimelineItemsAndPossiblyFallBack')
-  let {
+  const {
     currentTimeline,
     currentInstance,
     accessToken,
@@ -90,7 +90,7 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
     online
   } = store.get()
 
-  let { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, lastTimelineItemId, online)
+  const { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, lastTimelineItemId, online)
   addTimelineItems(currentInstance, currentTimeline, items, stale)
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
@@ -101,7 +101,7 @@ export async function setupTimeline () {
   // (i.e. via offline mode), then we need to re-fetch
   // Also do this if it's a thread, because threads change pretty frequently and
   // we don't have a good way to update them.
-  let {
+  const {
     timelineItemSummaries,
     timelineItemSummariesAreStale,
     currentTimeline
@@ -136,7 +136,7 @@ export async function showMoreItemsForTimeline (instanceName, timelineName) {
 }
 
 export function showMoreItemsForCurrentTimeline () {
-  let { currentInstance, currentTimeline } = store.get()
+  const { currentInstance, currentTimeline } = store.get()
   return showMoreItemsForTimeline(
     currentInstance,
     currentTimeline
@@ -145,11 +145,11 @@ export function showMoreItemsForCurrentTimeline () {
 
 export async function showMoreItemsForThread (instanceName, timelineName) {
   mark('showMoreItemsForThread')
-  let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd')
-  let timelineItemSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
-  let timelineItemIds = new Set(timelineItemSummaries.map(_ => _.id))
+  const itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd')
+  const timelineItemSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
+  const timelineItemIds = new Set(timelineItemSummaries.map(_ => _.id))
   // TODO: update database and do the thread merge correctly
-  for (let itemSummaryToAdd of itemSummariesToAdd) {
+  for (const itemSummaryToAdd of itemSummariesToAdd) {
     if (!timelineItemIds.has(itemSummaryToAdd.id)) {
       timelineItemSummaries.push(itemSummaryToAdd)
     }

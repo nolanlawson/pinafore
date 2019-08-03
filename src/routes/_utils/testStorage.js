@@ -26,8 +26,8 @@ export const testHasIndexedDB = thunk(async () => {
   }
 
   try {
-    let idbFailed = await new Promise(resolve => {
-      let db = indexedDB.open(testKey)
+    const idbFailed = await new Promise(resolve => {
+      const db = indexedDB.open(testKey)
       db.onerror = () => resolve(true)
       db.onsuccess = () => {
         indexedDB.deleteDatabase(testKey)

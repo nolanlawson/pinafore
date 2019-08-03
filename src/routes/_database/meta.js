@@ -7,7 +7,7 @@ async function getMetaProperty (instanceName, key) {
     return getInCache(metaCache, instanceName, key)
   }
   const db = await getDatabase(instanceName)
-  let result = await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
+  const result = await dbPromise(db, META_STORE, 'readonly', (store, callback) => {
     store.get(key).onsuccess = (e) => {
       callback(e.target.result)
     }

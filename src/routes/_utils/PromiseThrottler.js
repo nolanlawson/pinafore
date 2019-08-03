@@ -7,7 +7,7 @@ export class PromiseThrottler {
   }
 
   next () {
-    let res = this._promise
+    const res = this._promise
     // update afterwards, so we get a "leading" XHR
     this._promise = this._promise.then(() => new Promise(resolve => setTimeout(resolve, this._timeout)))
     return res

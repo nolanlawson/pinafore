@@ -59,7 +59,7 @@ describe('test-shortcuts.js', function () {
   })
 
   it('sets and unsets event listener', function () {
-    let component = new Component()
+    const component = new Component()
 
     addToShortcutScope('global', 'k', component)
     assert(eventListener != null, 'event listener not set')
@@ -68,21 +68,21 @@ describe('test-shortcuts.js', function () {
   })
 
   it('forwards the right global key event', function () {
-    let component = new Component()
+    const component = new Component()
 
     addToShortcutScope('global', 'k', component)
 
     eventListener(new KeyDownEvent('l'))
     assert.ok(component.notPressed())
 
-    let kEvent = new KeyDownEvent('k')
+    const kEvent = new KeyDownEvent('k')
     eventListener(kEvent)
     assert.ok(component.pressed())
     assert.strictEqual(component.lastEvent, kEvent)
   })
 
   it('register multiple keys', function () {
-    let lmn = new Component()
+    const lmn = new Component()
 
     addToShortcutScope('global', 'l|m|n', lmn)
 
@@ -97,7 +97,7 @@ describe('test-shortcuts.js', function () {
   })
 
   it('skips events with modifiers', function () {
-    let component = new Component()
+    const component = new Component()
 
     addToShortcutScope('global', 'k', component)
 
@@ -118,31 +118,31 @@ describe('test-shortcuts.js', function () {
   })
 
   it('does not skip events for ?', function () {
-    let component = new Component()
+    const component = new Component()
 
     addToShortcutScope('global', '?', component)
 
-    let qEvent = new KeyDownEvent('?')
+    const qEvent = new KeyDownEvent('?')
     qEvent.shiftKey = true
     eventListener(qEvent)
     assert.ok(component.pressed())
   })
 
   it('skips events for editable elements', function () {
-    let component = new Component()
+    const component = new Component()
 
     addToShortcutScope('global', 'k', component)
 
-    let kEvent = new KeyDownEvent('k')
+    const kEvent = new KeyDownEvent('k')
     kEvent.target = { isContentEditable: true }
     eventListener(kEvent)
     assert.ok(component.notPressed())
   })
 
   it('handles multi-key events', function () {
-    let a = new Component()
-    let ga = new Component()
-    let gb = new Component()
+    const a = new Component()
+    const ga = new Component()
+    const gb = new Component()
 
     addToShortcutScope('global', 'a', a)
     addToShortcutScope('global', 'g a', ga)
@@ -156,8 +156,8 @@ describe('test-shortcuts.js', function () {
   })
 
   it('falls back to single-key events if no sequence matches', function () {
-    let b = new Component()
-    let ga = new Component()
+    const b = new Component()
+    const ga = new Component()
 
     addToShortcutScope('global', 'b', b)
     addToShortcutScope('global', 'g a', ga)
@@ -169,7 +169,7 @@ describe('test-shortcuts.js', function () {
   })
 
   it('sends unhandled events to fallback', function () {
-    let fallback = new Component()
+    const fallback = new Component()
 
     addToShortcutScope('global', 'b', new Component())
     addShortcutFallback('global', fallback)
@@ -179,8 +179,8 @@ describe('test-shortcuts.js', function () {
   })
 
   it('directs events to appropriate component in arbitrary scope', function () {
-    let globalB = new Component()
-    let inScopeB = new Component()
+    const globalB = new Component()
+    const inScopeB = new Component()
 
     addToShortcutScope('global', 'b', globalB)
     addToShortcutScope('inscope', 'b', inScopeB)
@@ -191,10 +191,10 @@ describe('test-shortcuts.js', function () {
   })
 
   it('makes shortcuts modal', function () {
-    let globalA = new Component()
-    let globalB = new Component()
-    let modal1A = new Component()
-    let modal2A = new Component()
+    const globalA = new Component()
+    const globalB = new Component()
+    const modal1A = new Component()
+    const modal2A = new Component()
 
     addToShortcutScope('global', 'a', globalA)
     addToShortcutScope('global', 'b', globalB)
@@ -225,11 +225,11 @@ describe('test-shortcuts.js', function () {
   })
 
   it('ignores alt key', function () {
-    let component = new Component()
+    const component = new Component()
 
     addToShortcutScope('global', '1', component)
 
-    let event = new KeyDownEvent('1')
+    const event = new KeyDownEvent('1')
     event.altKey = true
     eventListener(event)
     assert.ok(component.notPressed())

@@ -31,14 +31,14 @@
 
   export default {
     oncreate () {
-      let { key } = this.get()
-      let node = this.refs.node
+      const { key } = this.get()
+      const node = this.refs.node
       requestAnimationFrame(() => {
         if (!node || !key) {
           return
         }
         mark('VirtualListItem gBCR')
-        let rect = node.getBoundingClientRect()
+        const rect = node.getBoundingClientRect()
         stop('VirtualListItem gBCR')
         // update all item heights in one batch for better perf
         this.store.batchUpdateForRealm('itemHeights', key, rect.height)
@@ -51,15 +51,15 @@
     },
     store: () => virtualListStore,
     computed: {
-      'shown': ({ $itemHeights, key }) => $itemHeights[key] > 0
+      shown: ({ $itemHeights, key }) => $itemHeights[key] > 0
     },
     methods: {
       doRecalculateHeight () {
         // Recalculate immediately because this is done on-demand, e.g.
         // when clicking the "More" button on a spoiler.
-        let rect = this.refs.node.getBoundingClientRect()
-        let { key } = this.get()
-        let { itemHeights } = this.store.get()
+        const rect = this.refs.node.getBoundingClientRect()
+        const { key } = this.get()
+        const { itemHeights } = this.store.get()
         itemHeights[key] = rect.height
         this.store.setForRealm({ itemHeights })
       }

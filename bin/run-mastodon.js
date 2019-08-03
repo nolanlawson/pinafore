@@ -66,21 +66,21 @@ async function setupMastodonDatabase () {
     env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
   })
 
-  let dumpFile = path.join(dir, '../tests/fixtures/dump.sql')
+  const dumpFile = path.join(dir, '../tests/fixtures/dump.sql')
   await exec(`psql -h 127.0.0.1 -U ${DB_USER} -w -d ${DB_NAME} -f "${dumpFile}"`, {
     cwd: mastodonDir,
     env: Object.assign({ PGPASSWORD: DB_PASS }, process.env)
   })
 
-  let tgzFile = path.join(dir, '../tests/fixtures/system.tgz')
-  let systemDir = path.join(mastodonDir, 'public/system')
+  const tgzFile = path.join(dir, '../tests/fixtures/system.tgz')
+  const systemDir = path.join(mastodonDir, 'public/system')
   await mkdirp(systemDir)
   await exec(`tar -xzf "${tgzFile}"`, { cwd: systemDir })
 }
 
 async function runMastodon () {
   console.log('Running mastodon...')
-  let env = Object.assign({}, process.env, {
+  const env = Object.assign({}, process.env, {
     RAILS_ENV: 'development',
     NODE_ENV: 'development',
     DB_NAME,
@@ -89,8 +89,8 @@ async function runMastodon () {
     DB_HOST,
     DB_PORT
   })
-  let cwd = mastodonDir
-  let cmds = [
+  const cwd = mastodonDir
+  const cmds = [
     'gem install bundler foreman',
     'bundle install',
     'bundle exec rails db:migrate',
@@ -103,7 +103,7 @@ async function runMastodon () {
     console.log('Already installed Mastodon')
   } catch (e) {
     console.log('Installing Mastodon...')
-    for (let cmd of cmds) {
+    for (const cmd of cmds) {
       console.log(cmd)
       await exec(cmd, { cwd, env })
     }

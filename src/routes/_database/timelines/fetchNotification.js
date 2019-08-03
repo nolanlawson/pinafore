@@ -4,7 +4,7 @@ import { fetchStatus } from './fetchStatus'
 
 export function fetchNotification (notificationsStore, statusesStore, accountsStore, id, callback) {
   notificationsStore.get(id).onsuccess = e => {
-    let notification = e.target.result
+    const notification = e.target.result
     callback(notification)
     fetchAccount(accountsStore, notification[ACCOUNT_ID], account => {
       notification.account = account

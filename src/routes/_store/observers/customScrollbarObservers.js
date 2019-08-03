@@ -1,6 +1,6 @@
 import { store } from '../store'
 
-let theScrollbarStyle = process.browser && document.getElementById('theScrollbarStyle')
+const theScrollbarStyle = process.browser && document.getElementById('theScrollbarStyle')
 
 export function customScrollbarObservers () {
   store.observe('disableCustomScrollbars', disableCustomScrollbars => {

@@ -49,13 +49,13 @@
 
   export default {
     async oncreate () {
-      let { instanceName, options } = this.get()
+      const { instanceName, options } = this.get()
       await updatePushSubscriptionForInstance(instanceName)
 
       const { form } = this.refs
       const pushSubscription = this.store.getInstanceData(instanceName, 'pushSubscriptions')
 
-      for (let { key } of options) {
+      for (const { key } of options) {
         form.elements[key].checked = get(pushSubscription, ['alerts', key])
       }
     },
@@ -93,7 +93,7 @@
         const { form } = this.refs
         const alerts = {}
 
-        for (let { key } of options) {
+        for (const { key } of options) {
           alerts[key] = form.elements[key].checked
         }
 
@@ -104,7 +104,7 @@
 
           // TODO: Better way to detect missing authorization scope
           if (err.message.startsWith('403:')) {
-            let showTextConfirmationDialog = await importShowTextConfirmationDialog()
+            const showTextConfirmationDialog = await importShowTextConfirmationDialog()
             showTextConfirmationDialog({
               text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`
             }).on('positive', () => {

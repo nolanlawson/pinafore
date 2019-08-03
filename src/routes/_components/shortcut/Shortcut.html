@@ -5,11 +5,11 @@
   export default {
     data: () => ({ scope: 'global', key: null }),
     oncreate () {
-      let { scope, key } = this.get()
+      const { scope, key } = this.get()
       addToShortcutScope(scope, key, this)
     },
     ondestroy () {
-      let { scope, key } = this.get()
+      const { scope, key } = this.get()
       removeFromShortcutScope(scope, key, this)
     },
     methods: {

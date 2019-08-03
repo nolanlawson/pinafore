@@ -5,7 +5,7 @@ let toast
 const lazyToast = {
   async say (text) {
     if (!toast) {
-      let Toast = await importToast()
+      const Toast = await importToast()
       if (!toast) {
         toast = new Toast({
           target: document.querySelector('#theToast')

@@ -235,8 +235,8 @@
         get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
       ),
       intrinsicsize: ({ mediaItem }) => {
-        let width = get(mediaItem, ['data', 'meta', 'original', 'width'])
-        let height = get(mediaItem, ['data', 'meta', 'original', 'height'])
+        const width = get(mediaItem, ['data', 'meta', 'original', 'width'])
+        const height = get(mediaItem, ['data', 'meta', 'original', 'height'])
         if (width && height) {
           return `${width} x ${height}`
         }
@@ -261,11 +261,11 @@
       close,
       setupSyncFromStore () {
         this.observe('mediaItem', mediaItem => {
-          let { rawFocusX, rawFocusY } = this.get()
+          const { rawFocusX, rawFocusY } = this.get()
 
           const syncFromStore = (rawKey, rawFocus, key) => {
-            let focus = get(mediaItem, [key], 0) || 0
-            let focusAsString = focus.toString()
+            const focus = get(mediaItem, [key], 0) || 0
+            const focusAsString = focus.toString()
             if (focusAsString !== rawFocus) {
               this.set({ [rawKey]: focusAsString })
             }
@@ -280,8 +280,8 @@
 
         const observeAndSync = (rawKey, key) => {
           this.observe(rawKey, rawFocus => {
-            let { realm, index, media } = this.get()
-            let rawFocusDecimal = parseAndValidateFloat(rawFocus)
+            const { realm, index, media } = this.get()
+            const rawFocusDecimal = parseAndValidateFloat(rawFocus)
             if (media[index][key] !== rawFocusDecimal) {
               media[index][key] = rawFocusDecimal
               this.store.setComposeData(realm, { media })
@@ -297,9 +297,9 @@
         const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         scheduleIdleTask(() => {
-          let focusX = percentToCoords(x * 100)
-          let focusY = percentToCoords(100 - (y * 100))
-          let { realm, index, media } = this.get()
+          const focusX = percentToCoords(x * 100)
+          const focusY = percentToCoords(100 - (y * 100))
+          const { realm, index, media } = this.get()
           media[index].focusX = parseAndValidateFloat(focusX)
           media[index].focusY = parseAndValidateFloat(focusY)
           this.store.setComposeData(realm, { media })
@@ -311,7 +311,7 @@
           if (!this.refs.container) {
             return
           }
-          let rect = this.refs.container.getBoundingClientRect()
+          const rect = this.refs.container.getBoundingClientRect()
           this.set({
             containerWidth: rect.width,
             containerHeight: rect.height

@@ -10,9 +10,9 @@ export function createTimelineId (timeline, id) {
 }
 
 export function createTimelineKeyRange (timeline, maxId) {
-  let negBigInt = maxId && toReversePaddedBigInt(maxId)
-  let start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
-  let end = timeline + '\u0000\uffff'
+  const negBigInt = maxId && toReversePaddedBigInt(maxId)
+  const start = negBigInt ? (timeline + '\u0000' + negBigInt) : (timeline + '\u0000')
+  const end = timeline + '\u0000\uffff'
   return IDBKeyRange.bound(start, end, true, true)
 }
 

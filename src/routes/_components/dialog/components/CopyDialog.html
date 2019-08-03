@@ -36,9 +36,9 @@
 
   function copyFromInput (input) {
     // workarounds for iOS, via https://stackoverflow.com/a/34046084
-    let range = document.createRange()
+    const range = document.createRange()
     range.selectNodeContents(input)
-    let selection = window.getSelection()
+    const selection = window.getSelection()
     selection.removeAllRanges()
     selection.addRange(range)
     input.setSelectionRange(0, 9999999)
@@ -53,14 +53,14 @@
       show,
       close,
       onClick () {
-        let { input } = this.refs
+        const { input } = this.refs
         copyFromInput(input)
         toast.say('Copied to clipboard')
         this.close()
       },
       onShow () {
-        let { text } = this.get()
-        let { input } = this.refs
+        const { text } = this.get()
+        const { input } = this.refs
         // double raf is to work around a11y-dialog trying to set the input
         doubleRAF(() => {
           input.focus()

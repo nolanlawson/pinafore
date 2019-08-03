@@ -23,7 +23,7 @@ const theme = (instanceThemes && instanceThemes[currentInstance]) || DEFAULT_THE
 
 if (currentInstance) {
   // Do preconnect if we're logged in, so we can connect faster to the other origin.
-  let link = document.createElement('link')
+  const link = document.createElement('link')
   link.setAttribute('rel', 'preconnect')
   link.setAttribute('href', basename(currentInstance))
   link.setAttribute('crossorigin', 'anonymous')

@@ -53,7 +53,7 @@
       onPointerDown (e) {
         e.preventDefault()
         e.stopPropagation()
-        let rect = this.refs.indicator.getBoundingClientRect()
+        const rect = this.refs.indicator.getBoundingClientRect()
         this.set({
           dragging: true,
           dragOffsetX: e.clientX - rect.left,
@@ -64,13 +64,13 @@
         if (this.get().dragging) {
           e.preventDefault()
           e.stopPropagation()
-          let { indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
+          const { indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
           throttledRaf(() => {
-            let rect = this.refs.area.getBoundingClientRect()
-            let offsetX = dragOffsetX - (indicatorWidth / 2)
-            let offsetY = dragOffsetY - (indicatorHeight / 2)
-            let x = clamp((e.clientX - rect.left - offsetX) / rect.width)
-            let y = clamp((e.clientY - rect.top - offsetY) / rect.height)
+            const rect = this.refs.area.getBoundingClientRect()
+            const offsetX = dragOffsetX - (indicatorWidth / 2)
+            const offsetY = dragOffsetY - (indicatorHeight / 2)
+            const x = clamp((e.clientX - rect.left - offsetX) / rect.width)
+            const y = clamp((e.clientY - rect.top - offsetY) / rect.height)
             this.set({ x, y })
             this.fire('change', { x, y })
           })
@@ -90,9 +90,9 @@
         if (!e.target.classList.contains('draggable-indicator')) {
           e.preventDefault()
           e.stopPropagation()
-          let rect = this.refs.area.getBoundingClientRect()
-          let x = clamp((e.clientX - rect.left) / rect.width)
-          let y = clamp((e.clientY - rect.top) / rect.height)
+          const rect = this.refs.area.getBoundingClientRect()
+          const x = clamp((e.clientX - rect.left) / rect.width)
+          const y = clamp((e.clientY - rect.top) / rect.height)
           this.set({ x, y })
           this.fire('change', { x, y })
         }

@@ -1,14 +1,14 @@
 import { getEmojiRegex } from './emojiRegex'
 
 // \ufe0f is a variation selector, which seems to appear for some reason in e.g. ™
-let NON_EMOJI_REGEX = new RegExp('^[0-9#*™®\ufe0f]+$')
+const NON_EMOJI_REGEX = /^(?:[0-9#*]|™|®|\ufe0f)+$/
 
 // replace emoji in HTML with something else, safely skipping HTML tags
 export function replaceEmoji (string, replacer) {
   let output = ''
   let leftAngleBracketIdx = string.indexOf('<')
   let currentIdx = 0
-  let emojiRegex = getEmojiRegex()
+  const emojiRegex = getEmojiRegex()
 
   function safeReplacer (substring) {
     // emoji regex matches digits and pound sign https://git.io/fpl6J
@@ -19,11 +19,11 @@ export function replaceEmoji (string, replacer) {
   }
 
   while (leftAngleBracketIdx !== -1) {
-    let substring = string.substring(currentIdx, leftAngleBracketIdx)
+    const substring = string.substring(currentIdx, leftAngleBracketIdx)
 
     output += substring.replace(emojiRegex, safeReplacer)
 
-    let rightAngleBracketIdx = string.indexOf('>', leftAngleBracketIdx + 1)
+    const rightAngleBracketIdx = string.indexOf('>', leftAngleBracketIdx + 1)
     if (rightAngleBracketIdx === -1) { // broken HTML, abort
       output += string.substring(leftAngleBracketIdx, string.length)
       return output
