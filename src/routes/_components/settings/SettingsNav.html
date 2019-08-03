@@ -41,7 +41,7 @@
   import SettingsNavItem from './SettingsNavItem.html'
 
   const NAV_ITEMS = {
-    'settings': 'Settings',
+    settings: 'Settings',
     'settings/about': 'About Pinafore',
     'settings/general': 'General',
     'settings/instances': 'Instances',
@@ -54,11 +54,11 @@
     },
     computed: {
       navItems: ({ page }) => {
-        let res = []
-        let breadcrumbs = page.split('/')
+        const res = []
+        const breadcrumbs = page.split('/')
         let path = ''
         for (let i = 0; i < breadcrumbs.length - 1; i++) {
-          let currentPage = breadcrumbs[i]
+          const currentPage = breadcrumbs[i]
           path += currentPage
           res.push({
             label: NAV_ITEMS[path],

@@ -35,13 +35,13 @@ export function autosuggestComputations (store) {
     'autosuggestSearchText',
     ['currentComposeText', 'composeSelectionStart'],
     (currentComposeText, composeSelectionStart) => {
-      let selectionStart = composeSelectionStart
+      const selectionStart = composeSelectionStart
       if (!currentComposeText || selectionStart < MIN_PREFIX_LENGTH) {
         return ''
       }
 
-      let textUpToCursor = currentComposeText.substring(0, selectionStart)
-      let match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
+      const textUpToCursor = currentComposeText.substring(0, selectionStart)
+      const match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
       return (match && match[1]) || ''
     }
   )

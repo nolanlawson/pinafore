@@ -25,11 +25,11 @@
     },
     methods: {
       animate (animation) {
-        let { reduceMotion } = this.store.get()
+        const { reduceMotion } = this.store.get()
         if (!animation || reduceMotion) {
           return
         }
-        let svg = this.refs.svg
+        const svg = this.refs.svg
         animate(svg, animation)
       }
     }

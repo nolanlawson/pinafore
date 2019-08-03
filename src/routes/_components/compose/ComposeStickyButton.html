@@ -74,7 +74,7 @@
     methods: {
       observe,
       onClickButton () {
-        let { sticky } = this.get()
+        const { sticky } = this.get()
         if (sticky) {
           // when the button is sticky, we're scrolled down the home timeline,
           // so we should launch a new compose dialog
@@ -95,13 +95,13 @@
         // because its parent is now the scrolling context. So for iOS only, we
         // create a fake sticky button by listening to intersecting events
         // and inserting a permanently fixed-position element into the DOM.
-        let { showSticky } = this.get()
+        const { showSticky } = this.get()
         if (!USE_IOS_WORKAROUND || !showSticky) {
           return
         }
 
-        let cleanup = () => {
-          let existingElement = document.getElementById('the-sticky-button')
+        const cleanup = () => {
+          const existingElement = document.getElementById('the-sticky-button')
           if (existingElement) {
             document.body.removeChild(existingElement)
           }
@@ -111,13 +111,13 @@
           }
         }
 
-        let createFixedStickyButton = () => {
-          let element = document.createElement('div')
+        const createFixedStickyButton = () => {
+          const element = document.createElement('div')
           element.setAttribute('id', 'the-sticky-button')
           element.classList.add('compose-box-button-wrapper')
           element.classList.add('compose-box-button-fixed')
           document.body.appendChild(element)
-          let rect = this.refs.wrapper.getBoundingClientRect()
+          const rect = this.refs.wrapper.getBoundingClientRect()
           Object.assign(element.style, {
             left: `${rect.left}px`,
             position: 'fixed'
@@ -141,7 +141,7 @@
         this.on('destroy', () => cleanup())
       },
       setupStickyObserver () {
-        let sentinel = this.refs.sentinel
+        const sentinel = this.refs.sentinel
 
         this.__stickyObserver = new IntersectionObserver(entries => this.onObserve(entries))
         this.__stickyObserver.observe(sentinel)
@@ -151,7 +151,7 @@
         // manually, the other observer doesn't necessarily fire
         this.observe('timelineInitialized', timelineInitialized => {
           if (timelineInitialized) {
-            let observer = new IntersectionObserver(entries => {
+            const observer = new IntersectionObserver(entries => {
               this.onObserve(entries)
               observer.disconnect()
             })

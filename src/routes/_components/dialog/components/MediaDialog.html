@@ -274,35 +274,35 @@
         this.refs.scroller.removeEventListener('scroll', this.onScroll)
       },
       onScroll () {
-        let { length } = this.get()
-        let { scroller } = this.refs
+        const { length } = this.get()
+        const { scroller } = this.refs
         if (!scroller) {
           return
         }
-        let { scrollWidth, scrollLeft } = scroller
-        let scrolledItem = Math.round((scrollLeft / scrollWidth) * length)
+        const { scrollWidth, scrollLeft } = scroller
+        const scrolledItem = Math.round((scrollLeft / scrollWidth) * length)
         this.set({ scrolledItem })
       },
       onButtonClick (i) {
-        let { scrolledItem } = this.get()
+        const { scrolledItem } = this.get()
         if (scrolledItem !== i) {
           this.scrollToItem(i, true)
         }
       },
       next () {
-        let { scrolledItem, length } = this.get()
+        const { scrolledItem, length } = this.get()
         if (scrolledItem < length - 1) {
           this.scrollToItem(scrolledItem + 1, true)
         }
       },
       prev () {
-        let { scrolledItem } = this.get()
+        const { scrolledItem } = this.get()
         if (scrolledItem > 0) {
           this.scrollToItem(scrolledItem - 1, true)
         }
       },
       onShow () {
-        let { scrolledItem } = this.get()
+        const { scrolledItem } = this.get()
         if (scrolledItem) {
           requestAnimationFrame(() => {
             this.scrollToItem(scrolledItem, false)
@@ -314,10 +314,10 @@
       },
       scrollToItem (scrolledItem, smooth) {
         this.set({ scrolledItem: scrolledItem })
-        let { length } = this.get()
-        let { scroller } = this.refs
-        let { scrollWidth } = scroller
-        let scrollLeft = Math.floor(scrollWidth * (scrolledItem / length))
+        const { length } = this.get()
+        const { scroller } = this.refs
+        const { scrollWidth } = scroller
+        const scrollLeft = Math.floor(scrollWidth * (scrolledItem / length))
         if (smooth) {
           if (!hasNativeSmoothScroll && 'StyleMedia' in window) {
             // Edge has a weird bug where it changes the height if we try to
@@ -335,7 +335,7 @@
         this.set({ pinchZoomMode: !this.get().pinchZoomMode })
       },
       onImageClick (e) {
-        let { nativeWidth, nativeHeight, pinchZoomMode } = this.get()
+        const { nativeWidth, nativeHeight, pinchZoomMode } = this.get()
         if (pinchZoomMode) {
           return
         }
@@ -347,10 +347,10 @@
           left: rect.left + IMAGE_AREA_PADDING.left,
           top: rect.top + IMAGE_AREA_PADDING.top
         }
-        let scale = intrinsicScale(rect.width, rect.height, nativeWidth, nativeHeight)
-        let x = e.clientX - rect.left
-        let y = e.clientY - rect.top
-        let insideImage = x >= scale.x && x <= (scale.x + scale.width) && y >= scale.y && y <= (scale.y + scale.height)
+        const scale = intrinsicScale(rect.width, rect.height, nativeWidth, nativeHeight)
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        const insideImage = x >= scale.x && x <= (scale.x + scale.width) && y >= scale.y && y <= (scale.y + scale.height)
         if (!insideImage) {
           // close dialog when clicking outside of image
           e.preventDefault()
@@ -359,11 +359,11 @@
         }
       },
       onMediaControlsClick (e) {
-        let { pinchZoomMode } = this.get()
+        const { pinchZoomMode } = this.get()
         if (pinchZoomMode) {
           return
         }
-        let { target } = e
+        const { target } = e
         if (target.tagName !== 'BUTTON' && !target.classList.contains('media-controls')) {
           e.preventDefault()
           e.stopPropagation()

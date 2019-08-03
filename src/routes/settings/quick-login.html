@@ -6,9 +6,9 @@
   export default {
     store: () => store,
     oncreate () {
-      let accessToken = location.search.match(/accessToken=([^&]+)/)[1]
-      let instanceName = location.search.match(/instanceName=([^&]+)/)[1]
-      let {
+      const accessToken = location.search.match(/accessToken=([^&]+)/)[1]
+      const instanceName = location.search.match(/instanceName=([^&]+)/)[1]
+      const {
         loggedInInstances,
         loggedInInstancesInOrder
       } = this.store.get()

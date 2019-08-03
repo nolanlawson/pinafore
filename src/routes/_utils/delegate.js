@@ -7,7 +7,7 @@ if (process.browser && process.env.NODE_ENV !== 'production') {
 }
 
 function onEvent (e) {
-  let { type, keyCode, target } = e
+  const { type, keyCode, target } = e
   if (!(type === 'click' || (type === 'keydown' && keyCode === 13))) {
     // we're not interested in any non-click or non-Enter events
     return
@@ -22,13 +22,13 @@ function onEvent (e) {
   }
   if (key && callbacks[key]) {
     if (type === 'click') {
-      let selection = window.getSelection()
-      let selectionStr = selection && selection.toString()
+      const selection = window.getSelection()
+      const selectionStr = selection && selection.toString()
       if (selectionStr && selectionStr.length && target.contains(selection.anchorNode)) {
         return // ignore if the user is selecting text inside the clickable area
       }
     }
-    let res = callbacks[key](e) // callback returns true to indicate it has handled the action
+    const res = callbacks[key](e) // callback returns true to indicate it has handled the action
     if (process.env.NODE_ENV !== 'production' && typeof res !== 'boolean') {
       console.warn(`Callback returned a non-boolean response: "${key}". This should never happen.`)
     }

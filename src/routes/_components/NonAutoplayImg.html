@@ -25,9 +25,9 @@
 
   export default {
     async oncreate () {
-      let { currentSrc } = this.get()
+      const { currentSrc } = this.get()
       try {
-        let image = new Image()
+        const image = new Image()
         image.src = currentSrc
         await decodeImage(image)
         this.set({ loaded: true })

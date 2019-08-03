@@ -8,13 +8,13 @@ import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
 
 function getExistingItemIdsSet (instanceName, timelineName) {
-  let timelineItemSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
+  const timelineItemSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
   return new Set(timelineItemSummaries.map(_ => _.id))
 }
 
 function removeDuplicates (instanceName, timelineName, updates) {
   // remove duplicates, including duplicates due to reblogs
-  let existingItemIds = getExistingItemIdsSet(instanceName, timelineName)
+  const existingItemIds = getExistingItemIdsSet(instanceName, timelineName)
   return updates.filter(update => !existingItemIds.has(update.id))
 }
 
@@ -27,12 +27,12 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
 
   await database.insertTimelineItems(instanceName, timelineName, updates)
 
-  let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
+  const itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
   console.log('itemSummariesToAdd', JSON.parse(JSON.stringify(itemSummariesToAdd)))
   console.log('updates.map(timelineItemToSummary)', JSON.parse(JSON.stringify(updates.map(timelineItemToSummary))))
   console.log('concat(itemSummariesToAdd, updates.map(timelineItemToSummary))',
     JSON.parse(JSON.stringify(concat(itemSummariesToAdd, updates.map(timelineItemToSummary)))))
-  let newItemSummariesToAdd = uniqBy(
+  const newItemSummariesToAdd = uniqBy(
     concat(itemSummariesToAdd, updates.map(timelineItemToSummary)),
     _ => _.id
   )
@@ -44,12 +44,12 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
 }
 
 function isValidStatusForThread (thread, timelineName, itemSummariesToAdd) {
-  let itemSummariesToAddIdSet = new Set(itemSummariesToAdd.map(_ => _.id))
-  let threadIdSet = new Set(thread.map(_ => _.id))
-  let focusedStatusId = timelineName.split('/')[1] // e.g. "status/123456"
-  let focusedStatusIdx = thread.findIndex(_ => _.id === focusedStatusId)
+  const itemSummariesToAddIdSet = new Set(itemSummariesToAdd.map(_ => _.id))
+  const threadIdSet = new Set(thread.map(_ => _.id))
+  const focusedStatusId = timelineName.split('/')[1] // e.g. "status/123456"
+  const focusedStatusIdx = thread.findIndex(_ => _.id === focusedStatusId)
   return status => {
-    let repliedToStatusIdx = thread.findIndex(_ => _.id === status.in_reply_to_id)
+    const repliedToStatusIdx = thread.findIndex(_ => _.id === status.in_reply_to_id)
     return (
       // A reply to an ancestor status is not valid for this thread, but for the focused status
       // itself or any of its descendents, it is valid.
@@ -67,17 +67,17 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
     return
   }
 
-  let threads = store.getThreads(instanceName)
-  let timelineNames = Object.keys(threads)
-  for (let timelineName of timelineNames) {
-    let thread = threads[timelineName]
+  const threads = store.getThreads(instanceName)
+  const timelineNames = Object.keys(threads)
+  for (const timelineName of timelineNames) {
+    const thread = threads[timelineName]
 
-    let itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
-    let validUpdates = updates.filter(isValidStatusForThread(thread, timelineName, itemSummariesToAdd))
+    const itemSummariesToAdd = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesToAdd') || []
+    const validUpdates = updates.filter(isValidStatusForThread(thread, timelineName, itemSummariesToAdd))
     if (!validUpdates.length) {
       continue
     }
-    let newItemSummariesToAdd = uniqBy(
+    const newItemSummariesToAdd = uniqBy(
       concat(itemSummariesToAdd, validUpdates.map(timelineItemToSummary)),
       _ => _.id
     )
@@ -91,9 +91,9 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
 
 async function processFreshUpdates (instanceName, timelineName) {
   mark('processFreshUpdates')
-  let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates')
+  const freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates')
   if (freshUpdates && freshUpdates.length) {
-    let updates = freshUpdates.slice()
+    const updates = freshUpdates.slice()
     store.setForTimeline(instanceName, timelineName, { freshUpdates: [] })
 
     await Promise.all([

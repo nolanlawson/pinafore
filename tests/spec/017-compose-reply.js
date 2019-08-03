@@ -62,7 +62,7 @@ test('replies have same privacy as replied-to status by default', async t => {
 
 test('replies have same CW as replied-to status', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')
@@ -74,7 +74,7 @@ test('replies have same CW as replied-to status', async t => {
 
 test('replies save deletions of CW', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')
@@ -88,7 +88,7 @@ test('replies save deletions of CW', async t => {
 
 test('replies save changes to CW', async t => {
   await loginAsFoobar(t)
-  let kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')

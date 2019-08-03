@@ -7,11 +7,11 @@ import { emit } from '../_utils/eventBus'
 import { putMediaMetadata } from '../_api/media'
 
 export async function insertHandleForReply (statusId) {
-  let { currentInstance } = store.get()
-  let status = await database.getStatus(currentInstance, statusId)
-  let { currentVerifyCredentials } = store.get()
-  let originalStatus = status.reblog || status
-  let accounts = [originalStatus.account].concat(originalStatus.mentions || [])
+  const { currentInstance } = store.get()
+  const status = await database.getStatus(currentInstance, statusId)
+  const { currentVerifyCredentials } = store.get()
+  const originalStatus = status.reblog || status
+  const accounts = [originalStatus.account].concat(originalStatus.mentions || [])
     .filter(account => account.id !== currentVerifyCredentials.id)
   if (!store.getComposeData(statusId, 'text') && accounts.length) {
     store.setComposeData(statusId, {
@@ -23,7 +23,7 @@ export async function insertHandleForReply (statusId) {
 export async function postStatus (realm, text, inReplyToId, mediaIds,
   sensitive, spoilerText, visibility,
   mediaDescriptions, inReplyToUuid, poll, mediaFocalPoints) {
-  let { currentInstance, accessToken, online } = store.get()
+  const { currentInstance, accessToken, online } = store.get()
 
   if (!online) {
     toast.say('You cannot post while offline')
@@ -32,7 +32,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
 
   text = text || ''
 
-  let mediaMetadata = (mediaIds || []).map((mediaId, idx) => {
+  const mediaMetadata = (mediaIds || []).map((mediaId, idx) => {
     return {
       description: mediaDescriptions && mediaDescriptions[idx],
       focalPoint: mediaFocalPoints && mediaFocalPoints[idx]
@@ -50,7 +50,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
         return putMediaMetadata(currentInstance, accessToken, mediaIds[i], description, focalPoint)
       }
     }))
-    let status = await postStatusToServer(currentInstance, accessToken, text,
+    const status = await postStatusToServer(currentInstance, accessToken, text,
       inReplyToId, mediaIds, sensitive, spoilerText, visibility, poll, mediaFocalPoints)
     addStatusOrNotification(currentInstance, 'home', status)
     store.clearComposeData(realm)
@@ -64,8 +64,8 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
 }
 
 export function setReplySpoiler (realm, spoiler) {
-  let contentWarning = store.getComposeData(realm, 'contentWarning')
-  let contentWarningShown = store.getComposeData(realm, 'contentWarningShown')
+  const contentWarning = store.getComposeData(realm, 'contentWarning')
+  const contentWarningShown = store.getComposeData(realm, 'contentWarningShown')
   if (typeof contentWarningShown !== 'undefined' || contentWarning) {
     return // user has already interacted with the CW
   }
@@ -76,22 +76,22 @@ export function setReplySpoiler (realm, spoiler) {
 }
 
 const PRIVACY_LEVEL = {
-  'direct': 1,
-  'private': 2,
-  'unlisted': 3,
-  'public': 4
+  direct: 1,
+  private: 2,
+  unlisted: 3,
+  public: 4
 }
 
 export function setReplyVisibility (realm, replyVisibility) {
   // return the most private between the user's preferred default privacy
   // and the privacy of the status they're replying to
-  let postPrivacy = store.getComposeData(realm, 'postPrivacy')
+  const postPrivacy = store.getComposeData(realm, 'postPrivacy')
   if (typeof postPrivacy !== 'undefined') {
     return // user has already set the postPrivacy
   }
-  let { currentVerifyCredentials } = store.get()
-  let defaultVisibility = currentVerifyCredentials.source.privacy
-  let visibility = PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]
+  const { currentVerifyCredentials } = store.get()
+  const defaultVisibility = currentVerifyCredentials.source.privacy
+  const visibility = PRIVACY_LEVEL[replyVisibility] < PRIVACY_LEVEL[defaultVisibility]
     ? replyVisibility
     : defaultVisibility
   store.setComposeData(realm, { postPrivacy: visibility })

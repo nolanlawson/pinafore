@@ -8,7 +8,7 @@ export const throttleRaf = () => {
     if (!rafQueued) {
       rafQueued = true
       requestAnimationFrame(() => {
-        let cb = rafCallback
+        const cb = rafCallback
         rafCallback = null
         rafQueued = false
         cb()

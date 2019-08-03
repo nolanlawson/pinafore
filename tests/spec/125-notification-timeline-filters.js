@@ -18,8 +18,8 @@ fixture`125-notification-timeline-filters.js`
   .page`http://localhost:4002`
 
 test('Notification timeline filters correctly affect counts - boosts', async t => {
-  let timeout = 20000
-  let { id: statusId } = await postAs('foobar', 'I do not care if you boost this')
+  const timeout = 20000
+  const { id: statusId } = await postAs('foobar', 'I do not care if you boost this')
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).innerText).contains('I do not care if you boost this')
@@ -38,8 +38,8 @@ test('Notification timeline filters correctly affect counts - boosts', async t =
 })
 
 test('Notification timeline filters correctly affect counts - favs', async t => {
-  let timeout = 20000
-  let { id: statusId } = await postAs('foobar', 'I do not care if you fav this')
+  const timeout = 20000
+  const { id: statusId } = await postAs('foobar', 'I do not care if you fav this')
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).innerText).contains('I do not care if you fav this')
@@ -58,7 +58,7 @@ test('Notification timeline filters correctly affect counts - favs', async t => 
 })
 
 test('Notification timeline filters correctly affect counts - favs', async t => {
-  let timeout = 20000
+  const timeout = 20000
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).exists).ok()
@@ -77,7 +77,7 @@ test('Notification timeline filters correctly affect counts - favs', async t => 
 })
 
 test('Notification timeline filters correctly affect counts - follows', async t => {
-  let timeout = 20000
+  const timeout = 20000
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).exists).ok()

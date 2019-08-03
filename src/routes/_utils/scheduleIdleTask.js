@@ -18,7 +18,7 @@ function getRIC () {
 function runTasks (deadline) {
   mark('scheduleIdleTask:runTasks()')
   while (taskQueue.length && deadline.timeRemaining() > 0) {
-    let task = taskQueue.shift()
+    const task = taskQueue.shift()
     try {
       task()
     } catch (e) {
@@ -26,7 +26,7 @@ function runTasks (deadline) {
     }
   }
   if (taskQueue.length) {
-    let rIC = getRIC()
+    const rIC = getRIC()
     rIC(runTasks)
   } else {
     runningRequestIdleCallback = false
@@ -38,7 +38,7 @@ export function scheduleIdleTask (task) {
   taskQueue.push(task)
   if (!runningRequestIdleCallback) {
     runningRequestIdleCallback = true
-    let rIC = getRIC()
+    const rIC = getRIC()
     rIC(runTasks)
   }
 }

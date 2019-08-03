@@ -39,12 +39,12 @@ export function timelineObservers () {
       return
     }
 
-    let { currentInstance } = store.get()
-    let { accessToken } = store.get()
+    const { currentInstance } = store.get()
+    const { accessToken } = store.get()
     await updateInstanceInfo(currentInstance)
 
-    let currentTimelineIsUnchanged = () => {
-      let {
+    const currentTimelineIsUnchanged = () => {
+      const {
         currentInstance: newCurrentInstance,
         currentTimeline: newCurrentTimeline
       } = store.get()
@@ -56,9 +56,9 @@ export function timelineObservers () {
       return
     }
 
-    let firstStatusId = store.getFirstTimelineItemId(currentInstance, currentTimeline)
-    let { currentInstanceInfo } = store.get()
-    let streamingApi = currentInstanceInfo.urls.streaming_api
+    const firstStatusId = store.getFirstTimelineItemId(currentInstance, currentTimeline)
+    const { currentInstanceInfo } = store.get()
+    const streamingApi = currentInstanceInfo.urls.streaming_api
 
     currentTimelineStream = createStream(streamingApi, currentInstance, accessToken,
       currentTimeline, firstStatusId)

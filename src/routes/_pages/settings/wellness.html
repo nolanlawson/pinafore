@@ -134,7 +134,7 @@
           enableGrayscale
       },
       onCheckAllChange (e) {
-        let { checked } = e.target
+        const { checked } = e.target
         this.store.set({
           disableFollowerCounts: checked,
           disableReblogCounts: checked,

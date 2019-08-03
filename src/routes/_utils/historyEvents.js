@@ -2,10 +2,10 @@
 // per https://stackoverflow.com/a/25673911/680742
 
 function wrapper (type) {
-  let orig = history[type]
+  const orig = history[type]
   return function () {
-    let result = orig.apply(this, arguments)
-    let e = new Event(type)
+    const result = orig.apply(this, arguments)
+    const e = new Event(type)
     e.arguments = arguments
     window.dispatchEvent(e)
     return result

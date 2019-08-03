@@ -22,10 +22,10 @@ function getStreamName (timeline) {
 }
 
 export function getStreamUrl (streamingApi, accessToken, timeline) {
-  let url = `${streamingApi}/api/v1/streaming`
-  let streamName = getStreamName(timeline)
+  const url = `${streamingApi}/api/v1/streaming`
+  const streamName = getStreamName(timeline)
 
-  let params = {
+  const params = {
     stream: streamName
   }
 

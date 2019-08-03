@@ -24,7 +24,7 @@ const DELAY = 5 * 60 * 1000 // five minutes
 function batchedGetAll (callGetAll, callback) {
   function nextBatch () {
     callGetAll().onsuccess = function (e) {
-      let results = e.target.result
+      const results = e.target.result
       callback(results)
       if (results.length) {
         nextBatch()
@@ -101,8 +101,8 @@ function cleanupRelationships (relationshipsStore, cutoff) {
 export async function cleanup (instanceName) {
   console.log('cleanup', instanceName)
   mark(`cleanup:${instanceName}`)
-  let db = await getDatabase(instanceName)
-  let storeNames = [
+  const db = await getDatabase(instanceName)
+  const storeNames = [
     STATUSES_STORE,
     STATUS_TIMELINES_STORE,
     NOTIFICATIONS_STORE,
@@ -113,7 +113,7 @@ export async function cleanup (instanceName) {
     PINNED_STATUSES_STORE
   ]
   await dbPromise(db, storeNames, 'readwrite', (stores) => {
-    let [
+    const [
       statusesStore,
       statusTimelinesStore,
       notificationsStore,
@@ -124,7 +124,7 @@ export async function cleanup (instanceName) {
       pinnedStatusesStore
     ] = stores
 
-    let cutoff = Date.now() - TIME_AGO
+    const cutoff = Date.now() - TIME_AGO
 
     cleanupStatuses(statusesStore, statusTimelinesStore, threadsStore, cutoff)
     cleanupNotifications(notificationsStore, notificationTimelinesStore, cutoff)
@@ -141,8 +141,8 @@ function doCleanup (instanceName) {
 
 async function scheduledCleanup () {
   console.log('scheduledCleanup')
-  let knownInstances = await getKnownInstances()
-  for (let instance of knownInstances) {
+  const knownInstances = await getKnownInstances()
+  for (const instance of knownInstances) {
     doCleanup(instance)
   }
 }

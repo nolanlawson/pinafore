@@ -30,16 +30,16 @@
 
   export default {
     oncreate () {
-      let { instanceName, options } = this.get()
-      let { form } = this.refs
-      for (let { key, defaultValue } of options) {
+      const { instanceName, options } = this.get()
+      const { form } = this.refs
+      for (const { key, defaultValue } of options) {
         form.elements[key].checked = this.store.getInstanceSetting(instanceName, key, defaultValue)
       }
     },
     methods: {
       onChange (event) {
-        let { instanceName } = this.get()
-        let { target } = event
+        const { instanceName } = this.get()
+        const { target } = event
         this.store.setInstanceSetting(instanceName, target.name, target.checked)
       }
     },

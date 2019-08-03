@@ -19,21 +19,21 @@
   export default {
     oncreate () {
       mark('onCreate VirtualListContainer')
-      let {
+      const {
         realm
       } = this.get()
       this.store.setCurrentRealm(realm)
       this.setupScroll()
       this.setupFullscreen()
       this.onResize = this.onResize.bind(this)
-      let { scrollTop } = this.store.get()
-      let scrollContainer = getScrollContainer()
+      const { scrollTop } = this.store.get()
+      const scrollContainer = getScrollContainer()
       if (scrollTop > 0) {
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           console.log('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight)
-          let { initializedScrollTop } = this.get()
+          const { initializedScrollTop } = this.get()
           if (!initializedScrollTop && allVisibleItemsHaveHeight) {
-            this.set({ 'initializedScrollTop': true })
+            this.set({ initializedScrollTop: true })
             requestAnimationFrame(() => {
               mark('set scrollTop')
               console.log('forcing scroll top to ', scrollTop)
@@ -70,7 +70,7 @@
       observe,
       setupScroll () {
         this.scrollListener = throttle(event => {
-          let { fullscreen } = this.get()
+          const { fullscreen } = this.get()
           if (fullscreen) {
             return
           }
@@ -92,7 +92,7 @@
         detachFullscreenListener(this.onFullscreenChange)
       },
       onScroll () {
-        let { scrollTop, scrollHeight } = getScrollContainer()
+        const { scrollTop, scrollHeight } = getScrollContainer()
 
         doubleRAF(() => {
           mark('onScroll -> setForRealm()')

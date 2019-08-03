@@ -4,7 +4,7 @@ import { emit } from '../_utils/eventBus'
 import { toast } from '../_components/toast/toast'
 
 export async function setFollowRequestApprovedOrRejected (accountId, approved, toastOnSuccess) {
-  let {
+  const {
     currentInstance,
     accessToken
   } = store.get()

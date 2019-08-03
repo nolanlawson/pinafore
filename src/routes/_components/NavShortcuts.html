@@ -26,11 +26,11 @@
     methods: {
       goto,
       async showShortcutHelpDialog () {
-        let showShortcutHelpDialog = await importShowShortcutHelpDialog()
+        const showShortcutHelpDialog = await importShowShortcutHelpDialog()
         showShortcutHelpDialog()
       },
       async showComposeDialog () {
-        let showComposeDialog = await importShowComposeDialog()
+        const showComposeDialog = await importShowComposeDialog()
         showComposeDialog()
       }
     }

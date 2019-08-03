@@ -7,9 +7,9 @@ export function emojifyText (text, emojis, autoplayGifs) {
 
   // replace custom emoji
   if (emojis) {
-    for (let emoji of emojis) {
-      let urlToUse = autoplayGifs ? emoji.url : emoji.static_url
-      let shortcodeWithColons = `:${emoji.shortcode}:`
+    for (const emoji of emojis) {
+      const urlToUse = autoplayGifs ? emoji.url : emoji.static_url
+      const shortcodeWithColons = `:${emoji.shortcode}:`
       text = replaceAll(
         text,
         shortcodeWithColons,

@@ -17,7 +17,7 @@ export class RealmStore extends Store {
   }
 
   setForRealm (obj) {
-    let { currentRealm, realms } = this.get()
+    const { currentRealm, realms } = this.get()
     realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, obj))
     this.set({ realms: realms })
   }
@@ -26,7 +26,7 @@ export class RealmStore extends Store {
     this.compute(key,
       ['realms', 'currentRealm'],
       (realms, currentRealm) => {
-        let realmData = realms.get(currentRealm)
+        const realmData = realms.get(currentRealm)
         return (realmData && realmData[key]) || defaultValue
       })
   }
@@ -36,7 +36,7 @@ export class RealmStore extends Store {
    * to a plain old javascript object.
    */
   batchUpdateForRealm (key, subKey, value) {
-    let { currentRealm } = this.get()
+    const { currentRealm } = this.get()
     let realmBatches = this._batches[currentRealm]
     if (!realmBatches) {
       realmBatches = this._batches[currentRealm] = {}
@@ -48,21 +48,21 @@ export class RealmStore extends Store {
     batch[subKey] = value
 
     requestAnimationFrame(() => {
-      let batch = this._batches[currentRealm] && this._batches[currentRealm][key]
+      const batch = this._batches[currentRealm] && this._batches[currentRealm][key]
       if (!batch) {
         return
       }
-      let updatedKeys = Object.keys(batch)
+      const updatedKeys = Object.keys(batch)
       if (!updatedKeys.length) {
         return
       }
       mark('batchUpdate')
-      let obj = this.get()[key]
-      for (let otherKey of updatedKeys) {
+      const obj = this.get()[key]
+      for (const otherKey of updatedKeys) {
         obj[otherKey] = batch[otherKey]
       }
       delete this._batches[currentRealm][key]
-      let { realms } = this.get()
+      const { realms } = this.get()
       realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, { [key]: obj }))
       this.set({ realms: realms })
       stop('batchUpdate')

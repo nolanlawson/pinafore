@@ -158,9 +158,9 @@
 
   export default {
     oncreate () {
-      let { id } = this.get()
+      const { id } = this.get()
       this.onPopState = this.onPopState.bind(this)
-      let dialogElement = this.refs.node.parentElement
+      const dialogElement = this.refs.node.parentElement
       this._a11yDialog = new A11yDialog(dialogElement)
       this._a11yDialog.on('hide', () => {
         document.body.classList.toggle('modal-open', false)
@@ -175,7 +175,7 @@
     },
     ondestroy () {
       window.removeEventListener('popstate', this.onPopState)
-      let { statePopped, statePushed, id } = this.get()
+      const { statePopped, statePushed, id } = this.get()
       if (statePushed && !statePopped) {
         // If we weren't closed due to popstate, then pop state to ensure the correct history.
         window.history.back()
@@ -214,7 +214,7 @@
     },
     methods: {
       showDialog (otherId) {
-        let { id } = this.get()
+        const { id } = this.get()
         if (otherId !== id) {
           return
         }
@@ -233,7 +233,7 @@
         })
       },
       onPopState (event) {
-        let { id } = this.get()
+        const { id } = this.get()
         if (!(event.state && event.state.modal === id)) {
           // If the new state is not us, just assume that we need to be closed.
           // This will only fail if modals are ever nested more than 2 levels deep.
@@ -242,7 +242,7 @@
         }
       },
       closeDialog (otherId) {
-        let { id } = this.get()
+        const { id } = this.get()
         if (id !== otherId) {
           return
         }

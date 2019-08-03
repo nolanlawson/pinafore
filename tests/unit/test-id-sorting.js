@@ -23,11 +23,11 @@ describe('test-id-sorting.js', () => {
   })
 
   it('can sort mastodon IDs correctly', () => {
-    let id1 = '1'
-    let id2 = '2'
-    let id3 = '101687554574502736'
-    let id4 = '101688993168288745'
-    let id5 = '101689076270570796'
+    const id1 = '1'
+    const id2 = '2'
+    const id3 = '101687554574502736'
+    const id4 = '101688993168288745'
+    const id5 = '101689076270570796'
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     lt(toPaddedBigInt(id2), toPaddedBigInt(id3))
@@ -53,22 +53,22 @@ describe('test-id-sorting.js', () => {
   })
 
   it('can sort mastodon IDs correctly - more examples', () => {
-    let ids = times(1000, i => i.toString())
+    const ids = times(1000, i => i.toString())
 
     for (let i = 1; i < ids.length; i++) {
-      let prev = ids[i - 1]
-      let next = ids[i]
+      const prev = ids[i - 1]
+      const next = ids[i]
       lt(toPaddedBigInt(prev), toPaddedBigInt(next))
       gt(toReversePaddedBigInt(prev), toReversePaddedBigInt(next))
     }
   })
 
   it('can sort base62 IDs correctly', () => {
-    let id1 = '0'
-    let id2 = 'A'
-    let id3 = 'Z'
-    let id4 = 'a'
-    let id5 = 't'
+    const id1 = '0'
+    const id2 = 'A'
+    const id3 = 'Z'
+    const id4 = 'a'
+    const id5 = 't'
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     lt(toPaddedBigInt(id2), toPaddedBigInt(id3))
@@ -104,11 +104,11 @@ describe('test-id-sorting.js', () => {
   })
 
   it('can sort base62 IDs correctly 2', () => {
-    let id1 = '0'
-    let id2 = 'A'
-    let id3 = 'T'
-    let id4 = 'a'
-    let id5 = 'z'
+    const id1 = '0'
+    const id2 = 'A'
+    const id3 = 'T'
+    const id4 = 'a'
+    const id5 = 'z'
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     lt(toPaddedBigInt(id2), toPaddedBigInt(id3))
@@ -144,11 +144,11 @@ describe('test-id-sorting.js', () => {
   })
 
   it('can sort base62 IDs correctly 3', () => {
-    let id1 = 'a'
-    let id2 = 'z'
-    let id3 = 'a0'
-    let id4 = 'xx0'
-    let id5 = 'a000'
+    const id1 = 'a'
+    const id2 = 'z'
+    const id3 = 'a0'
+    const id4 = 'xx0'
+    const id5 = 'a000'
 
     lt(toPaddedBigInt(id1), toPaddedBigInt(id2))
     lt(toPaddedBigInt(id2), toPaddedBigInt(id3))
@@ -173,7 +173,7 @@ describe('test-id-sorting.js', () => {
 
   it('can sort pleroma ids', () => {
     // these are already in base62 sorted order
-    let ids = [
+    const ids = [
       '9gP7cpqqJWyp93GxRw',
       '9gP7p4Ng7RdTgOSsro',
       '9gP8XTjVDpsT3Iqgb2',
@@ -197,15 +197,15 @@ describe('test-id-sorting.js', () => {
     ]
 
     for (let i = 1; i < ids.length; i++) {
-      let prev = ids[i - 1]
-      let next = ids[i]
+      const prev = ids[i - 1]
+      const next = ids[i]
       lt(toPaddedBigInt(prev), toPaddedBigInt(next))
       gt(toReversePaddedBigInt(prev), toReversePaddedBigInt(next))
     }
   })
 
   it('can sort pleroma ids 2', () => {
-    let ids = [
+    const ids = [
       '9gTv5mTEiXL6ZpqYHg',
       '9gTv5mK1Gny07FXBuy',
       '9gTv5kXlshmKbJx94i',
@@ -229,15 +229,15 @@ describe('test-id-sorting.js', () => {
     ].reverse()
 
     for (let i = 1; i < ids.length; i++) {
-      let prev = ids[i - 1]
-      let next = ids[i]
+      const prev = ids[i - 1]
+      const next = ids[i]
       lt(toPaddedBigInt(prev), toPaddedBigInt(next))
       gt(toReversePaddedBigInt(prev), toReversePaddedBigInt(next))
     }
   })
 
   it('can sort pleroma ids - 3', () => {
-    let ids = [
+    const ids = [
       '9gTCUO2xe7vfkLbHRA',
       '9gT35b559J1tLPhGj2',
       '9gRax4YxAwDuIdr83U',
@@ -281,8 +281,8 @@ describe('test-id-sorting.js', () => {
     ].reverse()
 
     for (let i = 1; i < ids.length; i++) {
-      let prev = ids[i - 1]
-      let next = ids[i]
+      const prev = ids[i - 1]
+      const next = ids[i]
       lt(toPaddedBigInt(prev), toPaddedBigInt(next))
       gt(toReversePaddedBigInt(prev), toReversePaddedBigInt(next))
     }

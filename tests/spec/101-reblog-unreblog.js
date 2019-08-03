@@ -67,7 +67,7 @@ test('unreblogs a status', async t => {
 })
 
 test('Keeps the correct reblogs count', async t => {
-  let { id } = await postAs('foobar', 'this will be reblogged')
+  const { id } = await postAs('foobar', 'this will be reblogged')
   await reblogStatusAs('foobar', id)
   await reblogStatusAs('admin', id)
   await loginAsFoobar(t)

@@ -224,9 +224,9 @@
   const REFRESH_MIN_DELAY = 1000
 
   async function doAsyncActionWithDelay (func) {
-    let start = Date.now()
-    let res = await func()
-    let timeElapsed = Date.now() - start
+    const start = Date.now()
+    const res = await func()
+    const timeElapsed = Date.now() - start
     if (timeElapsed < REFRESH_MIN_DELAY) {
       // If less than five seconds, then continue to show the loading animation
       // so it's clear that something happened.
@@ -236,7 +236,7 @@
   }
 
   function getChoices (form, options) {
-    let res = []
+    const res = []
     for (let i = 0; i < options.length; i++) {
       if (form.elements[i].checked) {
         res.push(i)
@@ -248,7 +248,7 @@
   export default {
     oncreate () {
       this.onRefreshClick = this.onRefreshClick.bind(this)
-      let { refreshElementId } = this.get()
+      const { refreshElementId } = this.get()
       registerClickDelegate(this, refreshElementId, this.onRefreshClick)
     },
     data: () => ({
@@ -289,12 +289,12 @@
     methods: {
       onRefreshClick () {
         (async () => {
-          let { pollId } = this.get()
+          const { pollId } = this.get()
           this.set({ loading: true })
           try {
-            let poll = await doAsyncActionWithDelay(() => getPoll(pollId))
+            const poll = await doAsyncActionWithDelay(() => getPoll(pollId))
             if (poll) {
-              let { polls } = this.store.get()
+              const { polls } = this.store.get()
               polls[pollId] = poll
               this.store.set({ polls })
             }
@@ -307,16 +307,16 @@
       async onSubmit (e) {
         e.preventDefault()
         e.stopPropagation()
-        let { pollId, options, formDisabled } = this.get()
+        const { pollId, options, formDisabled } = this.get()
         if (formDisabled) {
           return
         }
-        let choices = getChoices(this.refs.form, options)
+        const choices = getChoices(this.refs.form, options)
         this.set({ loading: true })
         try {
-          let poll = await doAsyncActionWithDelay(() => voteOnPoll(pollId, choices))
+          const poll = await doAsyncActionWithDelay(() => voteOnPoll(pollId, choices))
           if (poll) {
-            let { polls } = this.store.get()
+            const { polls } = this.store.get()
             polls[pollId] = poll
             this.store.set({ polls })
           }
@@ -325,8 +325,8 @@
         }
       },
       onChange () {
-        let { options } = this.get()
-        let choices = getChoices(this.refs.form, options)
+        const { options } = this.get()
+        const choices = getChoices(this.refs.form, options)
         this.set({ choices: choices })
       }
     },

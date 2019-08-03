@@ -5,7 +5,7 @@ let snackbar
 const lazySnackbar = {
   async announce (text, buttonText, buttonAction) {
     if (!snackbar) {
-      let Snackbar = await importSnackbar()
+      const Snackbar = await importSnackbar()
       if (!snackbar) {
         snackbar = new Snackbar({
           target: document.querySelector('#theSnackbar')

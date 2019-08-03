@@ -37,7 +37,7 @@ export async function postWithSpoilerAndPrivacyAs (username, text, spoiler, priv
 }
 
 export async function postEmptyStatusWithMediaAs (username, filename, alt) {
-  let mediaResponse = await submitMedia(users[username].accessToken, filename, alt)
+  const mediaResponse = await submitMedia(users[username].accessToken, filename, alt)
   return postStatus(instanceName, users[username].accessToken, '',
     null, [mediaResponse.id], false, null, 'public')
 }

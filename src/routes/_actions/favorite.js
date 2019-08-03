@@ -4,13 +4,13 @@ import { toast } from '../_components/toast/toast'
 import { database } from '../_database/database'
 
 export async function setFavorited (statusId, favorited) {
-  let { online } = store.get()
+  const { online } = store.get()
   if (!online) {
     toast.say(`You cannot ${favorited ? 'favorite' : 'unfavorite'} while offline.`)
     return
   }
-  let { currentInstance, accessToken } = store.get()
-  let networkPromise = favorited
+  const { currentInstance, accessToken } = store.get()
+  const networkPromise = favorited
     ? favoriteStatus(currentInstance, accessToken, statusId)
     : unfavoriteStatus(currentInstance, accessToken, statusId)
   store.setStatusFavorited(currentInstance, statusId, favorited) // optimistic update

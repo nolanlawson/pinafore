@@ -4,9 +4,9 @@ import { doDeleteStatus } from './delete'
 import { store } from '../_store/store'
 
 export async function deleteAndRedraft (status) {
-  let deleteStatusPromise = doDeleteStatus(status.id)
-  let dialogPromise = importShowComposeDialog()
-  let deletedStatus = await deleteStatusPromise
+  const deleteStatusPromise = doDeleteStatus(status.id)
+  const dialogPromise = importShowComposeDialog()
+  const deletedStatus = await deleteStatusPromise
 
   store.setComposeData('dialog', {
     text: deletedStatus.text || statusHtmlToPlainText(status.content, status.mentions),
@@ -24,6 +24,6 @@ export async function deleteAndRedraft (status) {
       options: (status.poll.options || []).map(option => option.title)
     }
   })
-  let showComposeDialog = await dialogPromise
+  const showComposeDialog = await dialogPromise
   showComposeDialog()
 }

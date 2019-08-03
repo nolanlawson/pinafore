@@ -12,6 +12,6 @@ export async function copyText (text) {
     }
   }
 
-  let showCopyDialog = await importShowCopyDialog()
+  const showCopyDialog = await importShowCopyDialog()
   showCopyDialog(text)
 }

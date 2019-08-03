@@ -70,7 +70,7 @@
 
   export default {
     oncreate () {
-      let {
+      const {
         favoriteKey,
         reblogKey,
         replyKey,
@@ -103,16 +103,16 @@
     store: () => store,
     methods: {
       toggleFavorite () {
-        let { originalStatusId, favorited } = this.get()
-        let newFavoritedValue = !favorited
+        const { originalStatusId, favorited } = this.get()
+        const newFavoritedValue = !favorited
         /* no await */ setFavorited(originalStatusId, newFavoritedValue)
         if (newFavoritedValue) {
           this.refs.favoriteIcon.animate(FAVORITE_ANIMATION)
         }
       },
       reblog () {
-        let { originalStatusId, reblogged } = this.get()
-        let newRebloggedValue = !reblogged
+        const { originalStatusId, reblogged } = this.get()
+        const newRebloggedValue = !reblogged
         /* no await */ setReblogged(originalStatusId, newRebloggedValue)
         if (newRebloggedValue) {
           this.refs.reblogIcon.animate(REBLOG_ANIMATION)
@@ -120,22 +120,22 @@
       },
       reply () {
         requestAnimationFrame(() => {
-          let { uuid } = this.get()
-          let { repliesShown } = this.store.get()
+          const { uuid } = this.get()
+          const { repliesShown } = this.store.get()
           repliesShown[uuid] = !repliesShown[uuid]
           this.store.set({ repliesShown })
           this.fire('recalculateHeight')
         })
       },
       async onOptionsClick () {
-        let { originalStatus, originalAccountId } = this.get()
-        let updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
-        let showStatusOptionsDialog = await importShowStatusOptionsDialog()
+        const { originalStatus, originalAccountId } = this.get()
+        const updateRelationshipPromise = updateProfileAndRelationship(originalAccountId)
+        const showStatusOptionsDialog = await importShowStatusOptionsDialog()
         await updateRelationshipPromise
         showStatusOptionsDialog(originalStatus)
       },
       onPostedStatus (realm, inReplyToUuid) {
-        let {
+        const {
           originalStatusId,
           uuid
         } = this.get()

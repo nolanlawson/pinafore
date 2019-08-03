@@ -93,7 +93,7 @@
 
   export default {
     oncreate () {
-      let { clickListener, elementId } = this.get()
+      const { clickListener, elementId } = this.get()
       if (clickListener) {
         this.onClick = this.onClick.bind(this)
         this.refs.node.addEventListener('click', this.onClick)
@@ -103,7 +103,7 @@
       }
     },
     ondestroy () {
-      let { clickListener } = this.get()
+      const { clickListener } = this.get()
       if (clickListener) {
         this.refs.node.removeEventListener('click', this.onClick)
       }

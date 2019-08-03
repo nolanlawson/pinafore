@@ -23,7 +23,7 @@ test('Backspace dismisses modal', async t => {
 
 test('Backspace dismisses media modal', async t => {
   await loginAsFoobar(t)
-  let idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
+  const idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
     .click(getNthStatusMediaButton(idx + 1))
@@ -36,7 +36,7 @@ test('Backspace dismisses media modal', async t => {
 
 test('Left/right changes active media in modal', async t => {
   await loginAsFoobar(t)
-  let idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
+  const idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
     .click(getNthStatusMediaButton(idx + 1))

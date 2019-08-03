@@ -79,8 +79,8 @@
       poster: ({ media }) => media.preview_url,
       static_url: ({ media }) => media.static_url,
       intrinsicsize: ({ media }) => {
-        let width = get(media, ['meta', 'original', 'width'])
-        let height = get(media, ['meta', 'original', 'height'])
+        const width = get(media, ['meta', 'original', 'width'])
+        const height = get(media, ['meta', 'original', 'height'])
         if (width && height) {
           return `${width} x ${height}`
         }
@@ -88,7 +88,7 @@
       }
     },
     ondestroy () {
-      let player = this.refs.player
+      const player = this.refs.player
       if (player && !player.paused) {
         player.pause()
       }

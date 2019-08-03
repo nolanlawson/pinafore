@@ -25,13 +25,13 @@
 
   export default {
     oncreate () {
-      let { lengthAsFraction } = this.get()
+      const { lengthAsFraction } = this.get()
       this.set({ lengthAsFractionDeferred: lengthAsFraction })
       // perf improvement for keyboard input latency
       this.observe('lengthAsFraction', () => {
         scheduleIdleTask(() => {
           mark('set lengthAsFractionDeferred')
-          let { lengthAsFraction } = this.get()
+          const { lengthAsFraction } = this.get()
           this.set({ lengthAsFractionDeferred: lengthAsFraction })
           stop('set lengthAsFractionDeferred')
           requestAnimationFrame(() => this.set({ shouldAnimate: true }))
@@ -46,7 +46,7 @@
     computed: {
       lengthAsFraction: ({ length, $maxStatusChars }) => {
         // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
-        let int = Math.round(Math.min($maxStatusChars, length) / $maxStatusChars * 100)
+        const int = Math.round(Math.min($maxStatusChars, length) / $maxStatusChars * 100)
         return (int - (int % 2)) / 100
       }
     },

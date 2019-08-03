@@ -5,7 +5,7 @@ import { updateLocalRelationship } from './accounts'
 import { emit } from '../_utils/eventBus'
 
 export async function setAccountMuted (accountId, mute, notifications, toastOnSuccess) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
   try {
     let relationship
     if (mute) {

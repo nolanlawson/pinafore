@@ -19,7 +19,7 @@
         accountName = escapeHtml(accountName)
 
         if ($omitEmojiInDisplayNames) { // display name emoji are annoying to some screenreader users
-          let emojiFreeDisplayName = removeEmoji(accountName, emojis)
+          const emojiFreeDisplayName = removeEmoji(accountName, emojis)
           if (emojiFreeDisplayName) {
             return emojiFreeDisplayName
           }

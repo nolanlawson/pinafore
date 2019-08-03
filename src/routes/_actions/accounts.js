@@ -4,8 +4,8 @@ import { database } from '../_database/database'
 import { store } from '../_store/store'
 
 async function _updateAccount (accountId, instanceName, accessToken) {
-  let localPromise = database.getAccount(instanceName, accountId)
-  let remotePromise = getAccount(instanceName, accessToken, accountId).then(account => {
+  const localPromise = database.getAccount(instanceName, accountId)
+  const remotePromise = getAccount(instanceName, accessToken, accountId).then(account => {
     /* no await */ database.setAccount(instanceName, account)
     return account
   })
@@ -23,8 +23,8 @@ async function _updateAccount (accountId, instanceName, accessToken) {
 }
 
 async function _updateRelationship (accountId, instanceName, accessToken) {
-  let localPromise = database.getRelationship(instanceName, accountId)
-  let remotePromise = getRelationship(instanceName, accessToken, accountId).then(relationship => {
+  const localPromise = database.getRelationship(instanceName, accountId)
+  const remotePromise = getRelationship(instanceName, accessToken, accountId).then(relationship => {
     /* no await */ database.setRelationship(instanceName, relationship)
     return relationship
   })
@@ -57,7 +57,7 @@ export async function clearProfileAndRelationship () {
 }
 
 export async function updateProfileAndRelationship (accountId) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
 
   await Promise.all([
     _updateAccount(accountId, currentInstance, accessToken),
@@ -66,7 +66,7 @@ export async function updateProfileAndRelationship (accountId) {
 }
 
 export async function updateRelationship (accountId) {
-  let { currentInstance, accessToken } = store.get()
+  const { currentInstance, accessToken } = store.get()
 
   await _updateRelationship(accountId, currentInstance, accessToken)
 }

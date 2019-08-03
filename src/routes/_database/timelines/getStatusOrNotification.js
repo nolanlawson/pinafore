@@ -13,9 +13,9 @@ export async function getStatus (instanceName, id) {
     return getInCache(statusesCache, instanceName, id)
   }
   const db = await getDatabase(instanceName)
-  let storeNames = [STATUSES_STORE, ACCOUNTS_STORE]
-  let result = await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
-    let [ statusesStore, accountsStore ] = stores
+  const storeNames = [STATUSES_STORE, ACCOUNTS_STORE]
+  const result = await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+    const [statusesStore, accountsStore] = stores
     fetchStatus(statusesStore, accountsStore, id, callback)
   })
   setInCache(statusesCache, instanceName, id, result)
@@ -27,9 +27,9 @@ export async function getNotification (instanceName, id) {
     return getInCache(notificationsCache, instanceName, id)
   }
   const db = await getDatabase(instanceName)
-  let storeNames = [NOTIFICATIONS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
-  let result = await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
-    let [ notificationsStore, statusesStore, accountsStore ] = stores
+  const storeNames = [NOTIFICATIONS_STORE, STATUSES_STORE, ACCOUNTS_STORE]
+  const result = await dbPromise(db, storeNames, 'readonly', (stores, callback) => {
+    const [notificationsStore, statusesStore, accountsStore] = stores
     fetchNotification(notificationsStore, statusesStore, accountsStore, id, callback)
   })
   setInCache(notificationsCache, instanceName, id, result)

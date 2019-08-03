@@ -138,7 +138,7 @@
 
   export default {
     oncreate () {
-      let { originalStatusId } = this.get()
+      const { originalStatusId } = this.get()
       on('statusUpdated', this, status => {
         if (status.id === originalStatusId) {
           this.set({

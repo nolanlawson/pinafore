@@ -1,12 +1,12 @@
 import { database } from '../_database/database'
 
 export async function getIdThatThisStatusReblogged (instanceName, statusId) {
-  let status = await database.getStatus(instanceName, statusId)
+  const status = await database.getStatus(instanceName, statusId)
   return status.reblog && status.reblog.id
 }
 
 export async function getIdsThatTheseStatusesReblogged (instanceName, statusIds) {
-  let reblogIds = await Promise.all(statusIds.map(async statusId => {
+  const reblogIds = await Promise.all(statusIds.map(async statusId => {
     return getIdThatThisStatusReblogged(instanceName, statusId)
   }))
   return reblogIds.filter(Boolean)

@@ -172,53 +172,53 @@ export default {
       }
     },
     async onDeleteClicked () {
-      let { statusId } = this.get()
+      const { statusId } = this.get()
       this.close()
       await doDeleteStatus(statusId)
     },
     async onPinClicked () {
-      let { statusId, pinned } = this.get()
+      const { statusId, pinned } = this.get()
       this.close()
       await setStatusPinnedOrUnpinned(statusId, !pinned, true)
     },
     async onFollowClicked () {
-      let { accountId, following } = this.get()
+      const { accountId, following } = this.get()
       this.close()
       await setAccountFollowed(accountId, !following, true)
     },
     async onBlockClicked () {
-      let { accountId, blocking } = this.get()
+      const { accountId, blocking } = this.get()
       this.close()
       await setAccountBlocked(accountId, !blocking, true)
     },
     async onMuteClicked () {
-      let { account, muting } = this.get()
+      const { account, muting } = this.get()
       this.close()
       await toggleMute(account, !muting)
     },
     async onMuteConversationClicked () {
-      let { statusId, mutingConversation } = this.get()
+      const { statusId, mutingConversation } = this.get()
       this.close()
       await setConversationMuted(statusId, !mutingConversation, true)
     },
     async onCopyClicked () {
-      let { status } = this.get()
-      let { url } = status
+      const { status } = this.get()
+      const { url } = status
       this.close()
       await copyText(url)
     },
     async onRedraft () {
-      let { status } = this.get()
+      const { status } = this.get()
       this.close()
       await deleteAndRedraft(status)
     },
     async onShare () {
-      let { status } = this.get()
+      const { status } = this.get()
       this.close()
       await shareStatus(status)
     },
     async onReport () {
-      let { status, account } = this.get()
+      const { status, account } = this.get()
       this.close()
       await reportStatusOrAccount(({ status, account }))
     }

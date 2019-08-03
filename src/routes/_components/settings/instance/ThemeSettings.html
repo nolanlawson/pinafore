@@ -90,8 +90,8 @@
 
   export default {
     async oncreate () {
-      let { instanceName } = this.get()
-      let { instanceThemes } = this.store.get()
+      const { instanceName } = this.get()
+      const { instanceThemes } = this.store.get()
       this.set({
         selectedTheme: instanceThemes[instanceName] || DEFAULT_THEME
       })
@@ -116,7 +116,7 @@
     },
     methods: {
       onThemeChange () {
-        let { selectedTheme, instanceName } = this.get()
+        const { selectedTheme, instanceName } = this.get()
         changeTheme(instanceName, selectedTheme)
       }
     }

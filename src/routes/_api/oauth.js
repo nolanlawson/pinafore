@@ -16,17 +16,17 @@ export function registerApplication (instanceName, redirectUri) {
 }
 
 export function generateAuthLink (instanceName, clientId, redirectUri) {
-  let params = paramsString({
-    'client_id': clientId,
-    'redirect_uri': redirectUri,
-    'response_type': 'code',
-    'scope': SCOPES
+  const params = paramsString({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    scope: SCOPES
   })
   return `${basename(instanceName)}/oauth/authorize?${params}`
 }
 
 export function getAccessTokenFromAuthCode (instanceName, clientId, clientSecret, code, redirectUri) {
-  let url = `${basename(instanceName)}/oauth/token`
+  const url = `${basename(instanceName)}/oauth/token`
   return post(url, {
     client_id: clientId,
     client_secret: clientSecret,

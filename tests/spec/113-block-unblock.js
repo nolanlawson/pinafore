@@ -11,7 +11,7 @@ fixture`113-block-unblock.js`
   .page`http://localhost:4002`
 
 test('Can block and unblock an account from a status', async t => {
-  let post = 'a very silly statement that should probably get me blocked'
+  const post = 'a very silly statement that should probably get me blocked'
   await postAs('admin', post)
   await loginAsFoobar(t)
   await t

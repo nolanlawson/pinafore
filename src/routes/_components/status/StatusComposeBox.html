@@ -37,13 +37,13 @@
     methods: {
       observe,
       onPostedStatus (realm) {
-        let { originalStatusId } = this.get()
+        const { originalStatusId } = this.get()
         if (realm !== originalStatusId) {
           return
         }
         requestAnimationFrame(() => {
-          let { uuid } = this.get()
-          let { repliesShown } = this.store.get()
+          const { uuid } = this.get()
+          const { repliesShown } = this.store.get()
           repliesShown[uuid] = false
           this.store.set({ repliesShown })
           this.fire('recalculateHeight')

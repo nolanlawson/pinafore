@@ -80,13 +80,13 @@
       onClickLoadMore (e) {
         e.preventDefault()
         e.stopPropagation()
-        let { currentInstance, currentTimeline } = this.store.get()
+        const { currentInstance, currentTimeline } = this.store.get()
         /* no await */ fetchMoreItemsAtBottomOfTimeline(currentInstance, currentTimeline)
         // focus the last item in the timeline; it makes the most sense to me since the button disappears
         try {
           // TODO: should probably expose this as an API on the virtual list instead of reaching into the DOM
-          let virtualListItems = document.querySelector('.virtual-list').children
-          let lastItem = virtualListItems[virtualListItems.length - 2] // -2 because the footer is last
+          const virtualListItems = document.querySelector('.virtual-list').children
+          const lastItem = virtualListItems[virtualListItems.length - 2] // -2 because the footer is last
           lastItem.querySelector('article').focus()
         } catch (e) {
           console.error(e)

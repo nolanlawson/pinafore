@@ -33,18 +33,18 @@ virtualListStore.compute('rawVisibleItems',
     if (!items) {
       return null
     }
-    let effectiveScrollTop = scrollTop - listOffset
-    let renderBuffer = RENDER_BUFFER_FACTOR * offsetHeight
-    let visibleItems = []
+    const effectiveScrollTop = scrollTop - listOffset
+    const renderBuffer = RENDER_BUFFER_FACTOR * offsetHeight
+    const visibleItems = []
     let totalOffset = showHeader ? headerHeight : 0
-    let len = items.length
+    const len = items.length
     let i = -1
     while (++i < len) {
-      let key = items[i]
-      let height = itemHeights[key] || 0
-      let currentOffset = totalOffset
+      const key = items[i]
+      const height = itemHeights[key] || 0
+      const currentOffset = totalOffset
       totalOffset += height
-      let isAboveViewport = (currentOffset < effectiveScrollTop)
+      const isAboveViewport = (currentOffset < effectiveScrollTop)
       if (isAboveViewport) {
         if ((effectiveScrollTop - height - renderBuffer) > currentOffset) {
           continue // above the area we want to render
@@ -74,7 +74,7 @@ virtualListStore.compute('heightWithoutFooter',
     }
     let sum = showHeader ? headerHeight : 0
     let i = -1
-    let len = items.length
+    const len = items.length
     while (++i < len) {
       sum += itemHeights[items[i]] || 0
     }
@@ -95,7 +95,7 @@ virtualListStore.compute('allVisibleItemsHaveHeight',
     if (!visibleItems) {
       return false
     }
-    for (let visibleItem of visibleItems) {
+    for (const visibleItem of visibleItems) {
       if (!itemHeights[visibleItem.key]) {
         return false
       }

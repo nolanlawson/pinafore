@@ -95,7 +95,7 @@
     },
     methods: {
       onClick (e) {
-        let { realm, dialogId, href } = this.get()
+        const { realm, dialogId, href } = this.get()
         if (realm === 'dialog') {
           e.preventDefault()
           e.stopPropagation()

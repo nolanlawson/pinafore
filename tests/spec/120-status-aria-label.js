@@ -16,11 +16,11 @@ test('aria-labels for statuses with no content text', async t => {
 })
 
 test('aria-labels with links', async t => {
-  let content = 'Text here\n\nMore text\n\n' +
+  const content = 'Text here\n\nMore text\n\n' +
     'https://example.com/long/url/here/very/long/yes/so/long\n\n' +
     '#woot #yolo'
 
-  let expected = 'admin, Text here More text ' +
+  const expected = 'admin, Text here More text ' +
     'https://example.com/long/url/here/very/long/yes/so/long #woot #yolo,'
 
   await postAs('admin', content)

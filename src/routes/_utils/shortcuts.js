@@ -57,7 +57,7 @@ export function addToShortcutScope (scopeKey, keys, component) {
 }
 
 export function removeFromShortcutScope (scopeKey, keys, component) {
-  let keyMap = scopeKeyMaps[scopeKey]
+  const keyMap = scopeKeyMaps[scopeKey]
   if (!keyMap) {
     return
   }
@@ -97,7 +97,7 @@ export function onKeyDownInShortcutScope (scopeKey, event) {
       return
     }
   }
-  let keyMap = scopeKeyMaps[scopeKey]
+  const keyMap = scopeKeyMaps[scopeKey]
   if (!keyMap) {
     return
   }
@@ -107,11 +107,11 @@ export function onKeyDownInShortcutScope (scopeKey, event) {
 }
 
 function handleEvent (scopeKey, keyMap, key, event) {
-  let value = keyMap[key]
+  const value = keyMap[key]
   if (!value) {
     return false
   }
-  if (KeyMap.prototype.isPrototypeOf(value)) {
+  if (KeyMap.prototype.isPrototypeOf(value)) { // eslint-disable-line no-prototype-builtins
     prefixMap = value
     prefixMapScope = scopeKey
   } else {
@@ -133,8 +133,8 @@ function onKeyDown (event) {
 function mapKeys (keyMap, keys, component) {
   keys.split('|').forEach(
     (seq) => {
-      let seqArray = seq.split(' ')
-      let prefixLen = seqArray.length - 1
+      const seqArray = seq.split(' ')
+      const prefixLen = seqArray.length - 1
       let currentMap = keyMap
       let i = -1
       while (++i < prefixLen) {
@@ -152,18 +152,18 @@ function mapKeys (keyMap, keys, component) {
 function unmapKeys (keyMap, keys, component) {
   keys.split('|').forEach(
     (seq) => {
-      let seqArray = seq.split(' ')
-      let prefixLen = seqArray.length - 1
+      const seqArray = seq.split(' ')
+      const prefixLen = seqArray.length - 1
       let currentMap = keyMap
       let i = -1
       while (++i < prefixLen) {
-        let prefixMap = currentMap[seqArray[i]]
+        const prefixMap = currentMap[seqArray[i]]
         if (!prefixMap) {
           return
         }
         currentMap = prefixMap
       }
-      let lastKey = seqArray[prefixLen]
+      const lastKey = seqArray[prefixLen]
       if (currentMap[lastKey] === component) {
         delete currentMap[lastKey]
       }
@@ -171,7 +171,7 @@ function unmapKeys (keyMap, keys, component) {
 }
 
 function acceptShortcutEvent (event) {
-  let { target } = event
+  const { target } = event
   return !(
     event.altKey ||
     event.metaKey ||

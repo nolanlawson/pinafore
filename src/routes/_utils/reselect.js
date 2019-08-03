@@ -13,7 +13,7 @@ export function reselect (store, outputKey, inputKey) {
   let prevValue
   let nextValue
   let count = 0
-  let countKey = `${outputKey}_reselectCount`
+  const countKey = `${outputKey}_reselectCount`
 
   store.compute(countKey, [inputKey], input => {
     if (process.browser && process.env.NODE_ENV !== 'production') {

@@ -90,7 +90,7 @@
 
   export default {
     async oncreate () {
-      let codeMatch = location.search.match(/code=([^&]+)/)
+      const codeMatch = location.search.match(/code=([^&]+)/)
       if (codeMatch) {
         return handleOauthCode(codeMatch[1])
       }

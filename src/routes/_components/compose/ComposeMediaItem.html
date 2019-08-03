@@ -172,13 +172,13 @@
       setupSyncFromStore () {
         this.observe('media', media => {
           media = media || []
-          let { index, rawText } = this.get()
-          let text = get(media, [index, 'description'], '')
+          const { index, rawText } = this.get()
+          const text = get(media, [index, 'description'], '')
           if (rawText !== text) {
             this.set({ rawText: text })
           }
-          let focusX = get(media, [index, 'focusX'], 0)
-          let focusY = get(media, [index, 'focusY'], 0)
+          const focusX = get(media, [index, 'focusX'], 0)
+          const focusY = get(media, [index, 'focusY'], 0)
           this.set({ focusX, focusY })
         })
       },
@@ -186,7 +186,7 @@
         const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
 
         this.observe('rawText', rawText => {
-          let { realm, index, media } = this.get()
+          const { realm, index, media } = this.get()
           if (media[index].description !== rawText) {
             media[index].description = rawText
             this.store.setComposeData(realm, { media })
@@ -201,12 +201,12 @@
         autosize.destroy(this.refs.textarea)
       },
       onDeleteMedia () {
-        let { realm, index } = this.get()
+        const { realm, index } = this.get()
         deleteMedia(realm, index)
       },
       async onSetFocalPoint () {
-        let { realm, index } = this.get()
-        let showMediaFocalPointDialog = await importMediaFocalPointDialog()
+        const { realm, index } = this.get()
+        const showMediaFocalPointDialog = await importMediaFocalPointDialog()
         showMediaFocalPointDialog(realm, index)
       }
     },

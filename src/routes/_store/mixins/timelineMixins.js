@@ -3,11 +3,11 @@ import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries
 
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {
-    let valuesToSet = {}
-    for (let key of Object.keys(obj)) {
-      let rootKey = `timelineData_${key}`
-      let root = this.get()[rootKey] || {}
-      let instanceData = root[instanceName] = root[instanceName] || {}
+    const valuesToSet = {}
+    for (const key of Object.keys(obj)) {
+      const rootKey = `timelineData_${key}`
+      const root = this.get()[rootKey] || {}
+      const instanceData = root[instanceName] = root[instanceName] || {}
       instanceData[timelineName] = obj[key]
       valuesToSet[rootKey] = root
     }
@@ -16,28 +16,28 @@ export function timelineMixins (Store) {
   }
 
   Store.prototype.getForTimeline = function (instanceName, timelineName, key) {
-    let rootKey = `timelineData_${key}`
-    let root = this.get()[rootKey]
+    const rootKey = `timelineData_${key}`
+    const root = this.get()[rootKey]
     return get(root, [instanceName, timelineName])
   }
 
   Store.prototype.getAllTimelineData = function (instanceName, key) {
-    let root = this.get()[`timelineData_${key}`] || {}
+    const root = this.get()[`timelineData_${key}`] || {}
     return root[instanceName] || {}
   }
 
   Store.prototype.getFirstTimelineItemId = function (instanceName, timelineName) {
-    let summaries = this.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
+    const summaries = this.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
     return getFirstIdFromItemSummaries(summaries)
   }
 
   Store.prototype.setForCurrentTimeline = function (obj) {
-    let { currentInstance, currentTimeline } = this.get()
+    const { currentInstance, currentTimeline } = this.get()
     this.setForTimeline(currentInstance, currentTimeline, obj)
   }
 
   Store.prototype.getThreads = function (instanceName) {
-    let instanceData = this.getAllTimelineData(instanceName, 'timelineItemSummaries')
+    const instanceData = this.getAllTimelineData(instanceName, 'timelineItemSummaries')
 
     return pickBy(instanceData, (value, key) => {
       return key.startsWith('status/')

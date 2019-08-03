@@ -15,11 +15,11 @@ import { cleanup, TIME_AGO } from '../../src/routes/_database/cleanup'
 const INSTANCE_NAME = 'localhost:3000'
 
 const INSTANCE_INFO = {
-  'uri': 'localhost:3000',
-  'title': 'lolcathost',
-  'description': 'blah',
-  'foo': {
-    'bar': true
+  uri: 'localhost:3000',
+  title: 'lolcathost',
+  description: 'blah',
+  foo: {
+    bar: true
   }
 }
 
@@ -33,7 +33,7 @@ const createStatus = i => ({
 })
 
 const stripDBFields = item => {
-  let res = cloneDeep(item)
+  const res = cloneDeep(item)
   delete res[TIMESTAMP]
   delete res[ACCOUNT_ID]
   delete res[STATUS_ID]
@@ -75,7 +75,7 @@ describe('test-database.js', function () {
     })
 
     it('stores and sorts some statuses', async () => {
-      let allStatuses = times(40, createStatus)
+      const allStatuses = times(40, createStatus)
       await dbApi.insertTimelineItems(INSTANCE_NAME, 'local', allStatuses)
       let statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 20)
       let expected = allStatuses.slice().reverse().slice(0, 20)
@@ -91,9 +91,9 @@ describe('test-database.js', function () {
       // set a timestamp based on the *current* date when the status is inserted,
       // not the date that the status was composed.
 
-      let longAgo = Date.now() - (TIME_AGO * 2)
+      const longAgo = Date.now() - (TIME_AGO * 2)
 
-      let oldStatus = {
+      const oldStatus = {
         id: '1',
         created_at: new Date(longAgo).toISOString(),
         content: 'This is old',
@@ -102,14 +102,14 @@ describe('test-database.js', function () {
         }
       }
 
-      let previousNow = CURRENT_TIME.now
+      const previousNow = CURRENT_TIME.now
       CURRENT_TIME.now = () => longAgo
 
       await dbApi.insertTimelineItems(INSTANCE_NAME, 'local', [oldStatus])
 
       CURRENT_TIME.now = previousNow
 
-      let newStatus = {
+      const newStatus = {
         id: '2',
         created_at: new Date().toISOString(),
         content: 'This is new',
@@ -159,7 +159,7 @@ describe('test-database.js', function () {
       await getDatabase(INSTANCE_NAME)
 
       // insert some statuses
-      let allStatuses = times(40, createStatus)
+      const allStatuses = times(40, createStatus)
       await dbApi.insertTimelineItems(INSTANCE_NAME, 'local', allStatuses)
 
       let statuses = await dbApi.getTimeline(INSTANCE_NAME, 'local', null, 1000)
@@ -179,7 +179,7 @@ describe('test-database.js', function () {
       assert.deepStrictEqual(statuses.map(stripDBFields), expected)
 
       // insert some more statuses for good measure
-      let moreStatuses = times(20, i => 40 + i).map(createStatus)
+      const moreStatuses = times(20, i => 40 + i).map(createStatus)
 
       await dbApi.insertTimelineItems(INSTANCE_NAME, 'local', moreStatuses)
 
