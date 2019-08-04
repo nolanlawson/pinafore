@@ -151,8 +151,7 @@
       "customElements",
       "AbortController",
       "matchMedia",
-      "MessageChannel",
-      "requestPostAnimationFrame"
+      "MessageChannel"
     ],
     "ignore": [
       "dist",
