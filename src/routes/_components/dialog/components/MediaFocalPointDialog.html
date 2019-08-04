@@ -25,12 +25,14 @@
         <!-- 52px == 32px icon width + 10px padding -->
         <Draggable
           draggableClass="media-draggable-area-inner"
-          indicatorClass="media-focal-point-indicator {imageLoaded ? '': 'hidden'}"
+          indicatorClass="media-focal-point-indicator {imageLoaded ? '': 'hidden'} {dragging ? 'dragging' : ''}"
           indicatorWidth={52}
           indicatorHeight={52}
           x={indicatorX}
           y={indicatorY}
           on:change="onDraggableChange(event)"
+          on:dragStart="set({dragging: true})"
+          on:dragEnd="set({dragging: false})"
         >
           <SvgIcon
             className="media-focal-point-indicator-svg"
@@ -142,6 +144,14 @@
     display: flex;
   }
 
+  :global(.media-focal-point-indicator:hover) {
+    background: var(--focal-bg-hover);
+  }
+
+  :global(.media-focal-point-indicator.dragging) {
+    background: var(--focal-bg-drag);
+  }
+
   :global(.media-draggable-area-inner) {
     width: 100%;
     height: 100%;
@@ -177,13 +187,17 @@
   import { store } from '../../../_store/store'
   import { get } from '../../../_utils/lodash-lite'
   import { observe } from 'svelte-extras'
-  import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../../_utils/scheduleIdleTask'
   import { coordsToPercent, percentToCoords } from '../../../_utils/coordsToPercent'
   import SvgIcon from '../../SvgIcon.html'
   import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
   import { resize } from '../../../_utils/events'
   import Draggable from '../../Draggable.html'
+  import { throttleRequestAnimationFrame } from '../../../_utils/throttleRequestAnimationFrame'
+
+  // updating the focal points in the database causes a DOM write and recalc of style/layout,
+  // so ensure it's throttled using rAF
+  const updateFocalPoints = throttleRequestAnimationFrame()
 
   const parseAndValidateFloat = rawText => {
     let float = parseFloat(rawText)
@@ -208,6 +222,7 @@
       Draggable
     },
     data: () => ({
+      dragging: false,
       rawFocusX: '0',
       rawFocusY: '0',
       containerWidth: 0,
@@ -276,8 +291,6 @@
         })
       },
       setupSyncToStore () {
-        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-
         const observeAndSync = (rawKey, key) => {
           this.observe(rawKey, rawFocus => {
             const { realm, index, media } = this.get()
@@ -285,7 +298,7 @@
             if (media[index][key] !== rawFocusDecimal) {
               media[index][key] = rawFocusDecimal
               this.store.setComposeData(realm, { media })
-              saveStore()
+              scheduleIdleTask(() => this.store.save())
             }
           }, { init: false })
         }
@@ -294,16 +307,14 @@
         observeAndSync('rawFocusY', 'focusY')
       },
       onDraggableChange ({ x, y }) {
-        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-
-        scheduleIdleTask(() => {
+        updateFocalPoints(() => {
           const focusX = percentToCoords(x * 100)
           const focusY = percentToCoords(100 - (y * 100))
           const { realm, index, media } = this.get()
           media[index].focusX = parseAndValidateFloat(focusX)
           media[index].focusY = parseAndValidateFloat(focusY)
           this.store.setComposeData(realm, { media })
-          saveStore()
+          scheduleIdleTask(() => this.store.save())
         })
       },
       measure () {
