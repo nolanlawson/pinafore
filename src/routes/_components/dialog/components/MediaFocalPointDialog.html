@@ -195,8 +195,8 @@
   import Draggable from '../../Draggable.html'
   import { throttleScheduleIdleTask } from '../../../_utils/throttleTimers'
 
-  // updating the focal points in the store causes a sync to the screen, so we really don't want to
-  // do it for every drag event or else it causes CPU slowdown from all the extra JS work
+  // Updating the focal points in the store causes a lot of computations (extra JS work),
+  // so we really don't want to do it for every drag event.
   const updateFocalPointsInStore = throttleScheduleIdleTask()
 
   const parseAndValidateFloat = rawText => {
