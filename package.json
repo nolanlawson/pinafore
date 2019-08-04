@@ -46,7 +46,6 @@
     "@babel/core": "^7.5.0",
     "@gamestdio/websocket": "^0.3.2",
     "@webcomponents/custom-elements": "^1.2.4",
-    "@wessberg/pointer-events": "^1.0.9",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cheerio": "^1.0.0-rc.2",

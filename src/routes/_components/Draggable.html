@@ -1,13 +1,14 @@
-<div class="draggable-area {draggableClass}"
-     on:pointermove="onPointerMove(event)"
-     on:pointerleave="onPointerLeave(event)"
+<div class="draggable-area {draggableClass} "
+     style={touchStyle}
+     on:pointerMove="onPointerMove(event)"
+     on:pointerLeave="onPointerLeave(event)"
      on:click="onClick(event)"
      ref:area
 >
   <div class="draggable-indicator {indicatorClass}"
        style={indicatorStyle}
-       on:pointerdown="onPointerDown(event)"
-       on:pointerup="onPointerUp(event)"
+       on:pointerDown="onPointerDown(event)"
+       on:pointerUp="onPointerUp(event)"
        ref:indicator
   >
     <div class="draggable-indicator-inner">
@@ -18,7 +19,6 @@
 <style>
   .draggable-area {
     position: relative;
-    touch-action: none;
   }
   .draggable-indicator {
     position: absolute;
@@ -31,6 +31,13 @@
 </style>
 <script>
   import { throttleRaf } from '../_utils/throttleRaf'
+  import {
+    hasPointerEvents,
+    pointerUp,
+    pointerDown,
+    pointerLeave,
+    pointerMove
+  } from '../_utils/pointerEvents'
 
   const clamp = x => Math.max(0, Math.min(1, x))
   const throttledRaf = throttleRaf()
@@ -42,15 +49,18 @@
       x: 0,
       y: 0,
       indicatorWidth: 0,
-      indicatorHeight: 0
+      indicatorHeight: 0,
+      hasPointerEvents
     }),
     computed: {
       indicatorStyle: ({ x, y, indicatorWidth, indicatorHeight }) => (
         `left: calc(${x * 100}% - ${indicatorWidth / 2}px); top: calc(${y * 100}% - ${indicatorHeight / 2}px);`
-      )
+      ),
+      touchStyle: ({ hasPointerEvents }) => hasPointerEvents ? 'touch-action:none' : ''
     },
     methods: {
       onPointerDown (e) {
+        console.log('onPointerDown')
         e.preventDefault()
         e.stopPropagation()
         const rect = this.refs.indicator.getBoundingClientRect()
@@ -61,11 +71,14 @@
         })
       },
       onPointerMove (e) {
+        console.log('Draggable: onPointerMove')
         if (this.get().dragging) {
+          console.log('Draggable: dragging')
           e.preventDefault()
           e.stopPropagation()
           const { indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
           throttledRaf(() => {
+            console.log('Draggable: throttledRaf')
             const rect = this.refs.area.getBoundingClientRect()
             const offsetX = dragOffsetX - (indicatorWidth / 2)
             const offsetY = dragOffsetY - (indicatorHeight / 2)
@@ -77,17 +90,21 @@
         }
       },
       onPointerUp (e) {
+        console.log('Draggable: onPointerUp')
         e.preventDefault()
         e.stopPropagation()
         this.set({ dragging: false })
       },
       onPointerLeave (e) {
+        console.log('Draggable: onPointerLeave')
         e.preventDefault()
         e.stopPropagation()
         this.set({ dragging: false })
       },
       onClick (e) {
+        console.log('Draggable: onClick')
         if (!e.target.classList.contains('draggable-indicator')) {
+          console.log('Draggable: clickHandled')
           e.preventDefault()
           e.stopPropagation()
           const rect = this.refs.area.getBoundingClientRect()
@@ -97,6 +114,12 @@
           this.fire('change', { x, y })
         }
       }
+    },
+    events: {
+      pointerUp,
+      pointerDown,
+      pointerLeave,
+      pointerMove
     }
   }
 </script>
