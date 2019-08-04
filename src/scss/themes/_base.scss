@@ -124,5 +124,7 @@
   --focal-img-backdrop-filter: #{rgba($main-bg-color, 0.5)};
   --focal-img-bg: #{rgba($main-bg-color, 0.3)};
   --focal-bg: #{rgba($toast-bg, 0.8)};
+  --focal-bg-drag: #{rgba($toast-bg, 0.9)};
+  --focal-bg-hover: #{lighten(rgba($toast-bg, 0.8), 5%)};
   --focal-color: #{$secondary-text-color};
 }
