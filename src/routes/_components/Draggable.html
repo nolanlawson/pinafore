@@ -1,13 +1,13 @@
 <div class="draggable-area {draggableClassAfterRaf}"
-     on:pointermove="onPointerMove(event)"
-     on:pointerleave="onPointerLeave(event)"
+     on:pointerMove="onPointerMove(event)"
+     on:pointerLeave="onPointerLeave(event)"
+     on:pointerUp="onPointerUp(event)"
      on:click="onClick(event)"
      ref:area
 >
   <div class="draggable-indicator {indicatorClassAfterRaf}"
        style={indicatorStyleAfterRaf}
-       on:pointerdown="onPointerDown(event)"
-       on:pointerup="onPointerUp(event)"
+       on:pointerDown="onPointerDown(event)"
        ref:indicator
   >
     <div class="draggable-indicator-inner">
@@ -31,7 +31,11 @@
 </style>
 <script>
   import { observe } from 'svelte-extras'
-  import { throttleRequestAnimationFrame, throttleRequestPostAnimationFrame } from '../_utils/throttleRequestAnimationFrame'
+  import {
+    throttleRequestAnimationFrame,
+    throttleRequestPostAnimationFrame
+  } from '../_utils/throttleTimers'
+  import { pointerUp, pointerDown, pointerLeave, pointerMove } from '../_utils/pointerEvents'
 
   // ensure DOM writes only happen once after a rAF
   const updateIndicatorStyle = throttleRequestAnimationFrame()
@@ -53,6 +57,7 @@
         }
       }, { init: false })
       this.observe('indicatorStyle', indicatorStyle => {
+        console.log('Draggable indicatorStyle', indicatorStyle)
         updateIndicatorStyle(() => {
           this.set({ indicatorStyleAfterRaf: indicatorStyle })
         })
@@ -71,7 +76,7 @@
     data: () => ({
       dragging: false,
       draggableClass: '',
-      dragglableClassAfterRaf: '',
+      draggableClassAfterRaf: '',
       indicatorClass: '',
       indicatorClassAfterRaf: '',
       x: 0,
@@ -89,9 +94,9 @@
       observe,
       onPointerDown (e) {
         console.log('Draggable: onPointerDown')
-        e.preventDefault()
-        e.stopPropagation()
         const rect = this.refs.indicator.getBoundingClientRect()
+        console.log('Draggable: e.clientX', e.clientX)
+        console.log('Draggable: e.clientY', e.clientY)
         this.set({
           dragging: true,
           dragOffsetX: e.clientX - rect.left,
@@ -100,11 +105,9 @@
       },
       onPointerMove (e) {
         console.log('Draggable: onPointerMove')
-        if (this.get().dragging) {
+        const { dragging, indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
+        if (dragging) {
           console.log('Draggable: dragging')
-          e.preventDefault()
-          e.stopPropagation()
-          const { indicatorWidth, indicatorHeight, dragOffsetX, dragOffsetY } = this.get()
           calculateGBCR(() => {
             const rect = this.refs.area.getBoundingClientRect()
             const offsetX = dragOffsetX - (indicatorWidth / 2)
@@ -118,22 +121,18 @@
       },
       onPointerUp (e) {
         console.log('Draggable: onPointerUp')
-        e.preventDefault()
-        e.stopPropagation()
         this.set({ dragging: false })
       },
       onPointerLeave (e) {
         console.log('Draggable: onPointerLeave')
-        e.preventDefault()
-        e.stopPropagation()
         this.set({ dragging: false })
       },
       onClick (e) {
         console.log('Draggable: onClick')
+        console.log('Draggable: target classList', e.target.classList)
+        console.log('Draggable: currentTarget classList', e.currentTarget.classList)
         if (!e.target.classList.contains('draggable-indicator')) {
           console.log('Draggable: onClick handled')
-          e.preventDefault()
-          e.stopPropagation()
           const rect = this.refs.area.getBoundingClientRect()
           const x = clamp((e.clientX - rect.left) / rect.width)
           const y = clamp((e.clientY - rect.top) / rect.height)
@@ -141,6 +140,12 @@
           this.fire('change', { x, y })
         }
       }
+    },
+    events: {
+      pointerUp,
+      pointerDown,
+      pointerLeave,
+      pointerMove
     }
   }
 </script>

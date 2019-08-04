@@ -193,11 +193,11 @@
   import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
   import { resize } from '../../../_utils/events'
   import Draggable from '../../Draggable.html'
-  import { throttleRequestAnimationFrame } from '../../../_utils/throttleRequestAnimationFrame'
+  import { throttleScheduleIdleTask } from '../../../_utils/throttleTimers'
 
-  // updating the focal points in the database causes a DOM write and recalc of style/layout,
-  // so ensure it's throttled using rAF
-  const updateFocalPoints = throttleRequestAnimationFrame()
+  // updating the focal points in the store causes a sync to the screen, so we really don't want to
+  // do it for every drag event or else it causes CPU slowdown from all the extra JS work
+  const updateFocalPointsInStore = throttleScheduleIdleTask()
 
   const parseAndValidateFloat = rawText => {
     let float = parseFloat(rawText)
@@ -307,14 +307,16 @@
         observeAndSync('rawFocusY', 'focusY')
       },
       onDraggableChange ({ x, y }) {
-        updateFocalPoints(() => {
-          const focusX = percentToCoords(x * 100)
-          const focusY = percentToCoords(100 - (y * 100))
+        updateFocalPointsInStore(() => {
+          const focusX = parseAndValidateFloat(percentToCoords(x * 100))
+          const focusY = parseAndValidateFloat(percentToCoords(100 - (y * 100)))
           const { realm, index, media } = this.get()
-          media[index].focusX = parseAndValidateFloat(focusX)
-          media[index].focusY = parseAndValidateFloat(focusY)
-          this.store.setComposeData(realm, { media })
-          scheduleIdleTask(() => this.store.save())
+          if (media[index].focusX !== focusX || media[index].focusY !== focusY) {
+            media[index].focusX = focusX
+            media[index].focusY = focusY
+            this.store.setComposeData(realm, { media })
+            scheduleIdleTask(() => this.store.save())
+          }
         })
       },
       measure () {
