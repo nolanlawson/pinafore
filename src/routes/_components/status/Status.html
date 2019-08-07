@@ -232,8 +232,14 @@
       visibility: ({ originalStatus }) => originalStatus.visibility,
       mentions: ({ originalStatus }) => originalStatus.mentions || [],
       plainTextContent: ({ content, mentions }) => statusHtmlToPlainText(content, mentions),
-      plainTextContentLength: ({ plainTextContent }) => measureText(plainTextContent),
-      plainTextContentOverLength: ({ plainTextContentLength }) => plainTextContentLength > LONG_POST_LENGTH,
+      plainTextContentOverLength: ({ plainTextContent }) => (
+        // measureText() is expensive, so avoid doing it when possible.
+        // Also measureText() typically only makes text shorter, not longer, so we can measure the raw length
+        // as a shortcut. (The only case where it makes text longer is with short URLs which get expanded to a longer
+        // placeholder.) This isn't 100% accurate, but we don't need perfect accuracy here because this is just
+        // to show a "long post" content warning.
+        plainTextContent.length > LONG_POST_LENGTH && measureText(plainTextContent) > LONG_POST_LENGTH
+      ),
       spoilerText: ({ originalStatus, plainTextContentOverLength }) => (
         originalStatus.spoiler_text || (plainTextContentOverLength && LONG_POST_TEXT)
       ),
