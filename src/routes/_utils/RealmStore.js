@@ -4,6 +4,7 @@
 import { Store } from 'svelte/store.js'
 import QuickLRU from 'quick-lru'
 import { mark, stop } from './marks'
+import { requestPostAnimationFrame } from './requestPostAnimationFrame'
 
 export class RealmStore extends Store {
   constructor (init, maxSize) {
@@ -47,7 +48,7 @@ export class RealmStore extends Store {
     }
     batch[subKey] = value
 
-    requestAnimationFrame(() => {
+    requestPostAnimationFrame(() => {
       const batch = this._batches[currentRealm] && this._batches[currentRealm][key]
       if (!batch) {
         return

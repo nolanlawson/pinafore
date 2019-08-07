@@ -28,12 +28,13 @@
   import { virtualListStore } from './virtualListStore'
   import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
   import { mark, stop } from '../../_utils/marks'
+  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
 
   export default {
     oncreate () {
       const { key } = this.get()
       const node = this.refs.node
-      requestAnimationFrame(() => {
+      requestPostAnimationFrame(() => {
         if (!node || !key) {
           return
         }
