@@ -69,6 +69,7 @@
   import { observe } from 'svelte-extras'
   import { get } from '../../_utils/lodash-lite'
   import { on } from '../../_utils/eventBus'
+  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
 
   export default {
     oncreate () {
@@ -117,7 +118,7 @@
       },
       setupAutosize () {
         const textarea = this.refs.textarea
-        requestAnimationFrame(() => {
+        requestPostAnimationFrame(() => {
           mark('autosize()')
           autosize(textarea)
           stop('autosize()')
