@@ -130,7 +130,7 @@ async function showSimpleNotification (data) {
     icon: data.icon,
     body: data.body,
     data: {
-      url: `${origin}/notifications`
+      url: `${self.origin}/notifications`
     }
   })
 }
