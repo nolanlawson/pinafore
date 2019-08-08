@@ -48,7 +48,6 @@
   export default {
     oncreate () {
       this.observe('dragging', dragging => {
-        console.log('dragging', dragging)
         if (dragging) {
           this.fire('dragStart')
         } else {
