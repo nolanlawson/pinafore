@@ -5,11 +5,13 @@ let canvas
 
 export function decode (blurhash) {
   mark('computeBlurhash')
-  const pixels = decodeBlurHash(blurhash, 320, 320)
+  const pixels = decodeBlurHash(blurhash, 32, 32)
 
   if (pixels) {
     canvas = canvas || document.createElement('canvas')
-    const imageData = new window.ImageData(pixels, 320, 320)
+    canvas.height = 32
+    canvas.width = 32
+    const imageData = new window.ImageData(pixels, 32, 32)
     canvas.getContext('2d').putImageData(imageData, 0, 0)
     const base64Image = canvas.toDataURL()
     stop('computeBlurhash')
