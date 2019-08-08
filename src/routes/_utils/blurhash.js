@@ -11,7 +11,10 @@ export function decode (blurhash) {
     canvas = canvas || document.createElement('canvas')
     const imageData = new window.ImageData(pixels, 320, 320)
     canvas.getContext('2d').putImageData(imageData, 0, 0)
-    return canvas.toDataURL()
+    const base64Image = canvas.toDataURL()
+    stop('computeBlurhash')
+    return base64Image
   }
+
   stop('computeBlurhash')
 }
