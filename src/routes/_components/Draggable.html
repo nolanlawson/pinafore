@@ -31,29 +31,30 @@
 </style>
 <script>
   import { observe } from 'svelte-extras'
-  import {
-    throttleRequestAnimationFrame,
-    throttleRequestPostAnimationFrame
-  } from '../_utils/throttleTimers'
+  import { throttleTimer } from '../_utils/throttleTimer'
   import { pointerUp, pointerDown, pointerLeave, pointerMove } from '../_utils/pointerEvents'
+  import { requestPostAnimationFrame } from '../_utils/requestPostAnimationFrame'
 
   // ensure DOM writes only happen once after a rAF
-  const updateIndicatorStyle = throttleRequestAnimationFrame()
-  const updateIndicatorClass = throttleRequestAnimationFrame()
-  const updateDraggableClass = throttleRequestAnimationFrame()
+  const updateIndicatorStyle = throttleTimer(requestAnimationFrame)
+  const updateIndicatorClass = throttleTimer(requestAnimationFrame)
+  const updateDraggableClass = throttleTimer(requestAnimationFrame)
 
   // ensure DOM reads only happen once after a rPAF
-  const calculateGBCR = throttleRequestPostAnimationFrame()
+  const calculateGBCR = throttleTimer(requestPostAnimationFrame)
 
   const clamp = x => Math.max(0, Math.min(1, x))
 
   export default {
     oncreate () {
       this.observe('dragging', dragging => {
+        console.log('dragging', dragging)
         if (dragging) {
           this.fire('dragStart')
         } else {
+          const { x, y } = this.get()
           this.fire('dragEnd')
+          this.fire('change', { x, y })
         }
       }, { init: false })
       this.observe('indicatorStyle', indicatorStyle => {
@@ -115,7 +116,6 @@
             const x = clamp((e.clientX - rect.left - offsetX) / rect.width)
             const y = clamp((e.clientY - rect.top - offsetY) / rect.height)
             this.set({ x, y })
-            this.fire('change', { x, y })
           })
         }
       },

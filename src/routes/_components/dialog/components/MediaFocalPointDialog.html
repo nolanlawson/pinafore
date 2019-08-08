@@ -30,9 +30,9 @@
           indicatorHeight={52}
           x={indicatorX}
           y={indicatorY}
+          on:dragStart="onDragStart()"
+          on:dragEnd="onDragEnd()"
           on:change="onDraggableChange(event)"
-          on:dragStart="set({dragging: true})"
-          on:dragEnd="set({dragging: false})"
         >
           <SvgIcon
             className="media-focal-point-indicator-svg"
@@ -193,11 +193,6 @@
   import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
   import { resize } from '../../../_utils/events'
   import Draggable from '../../Draggable.html'
-  import { throttleScheduleIdleTask } from '../../../_utils/throttleTimers'
-
-  // Updating the focal points in the store causes a lot of computations (extra JS work),
-  // so we really don't want to do it for every drag event.
-  const updateFocalPointsInStore = throttleScheduleIdleTask()
 
   const parseAndValidateFloat = rawText => {
     let float = parseFloat(rawText)
@@ -307,7 +302,7 @@
         observeAndSync('rawFocusY', 'focusY')
       },
       onDraggableChange ({ x, y }) {
-        updateFocalPointsInStore(() => {
+        scheduleIdleTask(() => {
           const focusX = parseAndValidateFloat(percentToCoords(x * 100))
           const focusY = parseAndValidateFloat(percentToCoords(100 - (y * 100)))
           const { realm, index, media } = this.get()
@@ -318,6 +313,12 @@
             scheduleIdleTask(() => this.store.save())
           }
         })
+      },
+      onDragStart () {
+        this.set({ dragging: true })
+      },
+      onDragEnd () {
+        this.set({ dragging: false })
       },
       measure () {
         requestAnimationFrame(() => {
