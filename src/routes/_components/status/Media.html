@@ -53,6 +53,8 @@
       title={description}
       src={previewUrl}
       fallback={oneTransparentPixel}
+      showBlurhash={showBlurhash}
+      blurhash={blurhash}
       width={inlineWidth}
       height={inlineHeight}
       background="var(--loading-bg)"
@@ -91,8 +93,9 @@
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate } from '../../_utils/delegate'
+  import { decode } from '../../_utils/blurhash'
 
-  export default {
+export default {
     oncreate () {
       const { elementId } = this.get()
       registerClickDelegate(this, elementId, () => this.onClick())
@@ -126,6 +129,7 @@
       elementId: ({ media, uuid }) => `media-${uuid}-${media.id}`,
       description: ({ media }) => media.description || '',
       previewUrl: ({ media }) => media.preview_url,
+      blurhash: ({ media }) => media.blurhash && decode(media.blurhash),
       url: ({ media }) => media.url,
       type: ({ media }) => media.type
     },
