@@ -1,8 +1,10 @@
 import { decode as decodeBlurHash } from 'blurhash'
+import { mark, stop } from './marks'
 
 let canvas
 
 export function decode (blurhash) {
+  mark('computeBlurhash')
   const pixels = decodeBlurHash(blurhash, 320, 320)
 
   if (pixels) {
@@ -11,4 +13,5 @@ export function decode (blurhash) {
     canvas.getContext('2d').putImageData(imageData, 0, 0)
     return canvas.toDataURL()
   }
+  stop('computeBlurhash')
 }
