@@ -191,7 +191,7 @@
         $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
-      canUseBlurhash: ({ mediaAttachments }) => mediaAttachments && mediaAttachments.every(media => !!media.blurhash),
+      canUseBlurhash: ({ $useBlurhash, mediaAttachments }) => $useBlurhash && mediaAttachments && mediaAttachments.every(media => !!media.blurhash),
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
         !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
