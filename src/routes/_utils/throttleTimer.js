@@ -2,7 +2,7 @@
 // It's tedious to do this using cancelAnimationFrame, so this is a utility to throttle
 // a timer such that it only runs the last callback when it fires.
 
-export const throttleTimer = (timer) => {
+export const throttleTimer = timer => {
   let queuedCallback
 
   const flush = () => {
