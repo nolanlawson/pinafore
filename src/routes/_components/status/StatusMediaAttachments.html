@@ -16,7 +16,7 @@
             class="status-sensitive-media-button"
             aria-label="Show sensitive media" >
 
-      <div class="status-sensitive-media-warning">
+      <div class="{customWarningClass}">
         <div class="status-sensitive-media-warning-text">
           Sensitive content. Click to show.
         </div>
@@ -26,7 +26,9 @@
       </div>
     </button>
   {/if}
-  <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
+  {#if sensitiveShown || canUseBlurhash}
+    <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
+  {/if}
   </div>
 </div>
 {#if enableShortcuts}
@@ -99,7 +101,6 @@
   }
 
   .status-sensitive-media-container .status-sensitive-media-warning {
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -112,7 +113,16 @@
     padding: 0 10px;
   }
 
-  .status-sensitive-media-container .status-sensitive-media-warning .status-sensitive-media-warning-text {
+  .status-sensitive-media-container .status-sensitive-media-warning-transparent {
+    position: absolute;
+  }
+
+  .status-sensitive-media-container .status-sensitive-media-warning-opaque {
+    background: var(--mask-bg);
+    height: 100%;
+  }
+
+  .status-sensitive-media-container .status-sensitive-media-warning-transparent .status-sensitive-media-warning-text {
     background: var(--mask-bg);
     padding: 10px;
     border-radius: 6px;
@@ -181,6 +191,7 @@
         $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
+      canUseBlurhash: ({ mediaAttachments }) => mediaAttachments && mediaAttachments.every(media => !!media.blurhash),
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
         !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
@@ -191,7 +202,11 @@
           return ''
         }
         return `padding-bottom: ${Math.ceil(mediaAttachments.length / 2) * 29}%;`
-      }
+      },
+      customWarningClass: ({ canUseBlurhash }) => classname(
+        'status-sensitive-media-warning',
+        canUseBlurhash ? 'status-sensitive-media-warning-transparent' : 'status-sensitive-media-warning-opaque'
+      )
     },
     methods: {
       toggleSensitiveMedia () {

@@ -57,7 +57,7 @@
       ),
       showBlurhash:
         ({ sensitive, sensitiveShown, mediaAttachments }) => {
-          return sensitive && mediaAttachments.every(attachment => 'blurhash' in attachment) ? !sensitiveShown : false
+          return sensitive && mediaAttachments.every(attachment => !!attachment.blurhash) ? !sensitiveShown : false
         },
       nCols:
         ({ mediaAttachments, $largeInlineMedia }) => {
