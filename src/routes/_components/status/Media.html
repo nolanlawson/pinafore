@@ -4,7 +4,9 @@
           class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
           aria-label="Play video: {description}"
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
-    <PlayVideoIcon />
+    {#if !blurhash}
+      <PlayVideoIcon />
+    {/if}
     {#if type === 'video'}
       <LazyImage
         alt={description}
