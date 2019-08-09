@@ -53,7 +53,6 @@
       title={description}
       src={previewUrl}
       fallback={oneTransparentPixel}
-      showBlurhash={showBlurhash}
       blurhash={blurhash}
       width={inlineWidth}
       height={inlineHeight}
@@ -129,7 +128,7 @@ export default {
       elementId: ({ media, uuid }) => `media-${uuid}-${media.id}`,
       description: ({ media }) => media.description || '',
       previewUrl: ({ media }) => media.preview_url,
-      blurhash: ({ media }) => media.blurhash && decode(media.blurhash),
+      blurhash: ({ showBlurhash, media }) => showBlurhash && media.blurhash && decode(media.blurhash),
       url: ({ media }) => media.url,
       type: ({ media }) => media.type
     },

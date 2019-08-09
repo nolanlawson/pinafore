@@ -71,7 +71,7 @@
         return `object-position: ${coordsToPercent(focus.x)}% ${100 - coordsToPercent(focus.y)}%;`
       },
       fillFixSize: ({ forceSize, $largeInlineMedia }) => !$largeInlineMedia && !forceSize,
-      displaySrc: ({ showBlurhash, blurhash, error, src, fallback }) => ((showBlurhash && blurhash) || (error && fallback) || src)
+      displaySrc: ({ blurhash, error, src, fallback }) => (blurhash || (error && fallback) || src)
     }
   }
 </script>
