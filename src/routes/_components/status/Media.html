@@ -11,6 +11,7 @@
         title={description}
         src={previewUrl}
         fallback={oneTransparentPixel}
+        blurhash={blurhash}
         width={inlineWidth}
         height={inlineHeight}
         background="var(--loading-bg)"
@@ -40,6 +41,7 @@
       class={noNativeWidthHeight ? 'no-native-width-height' : ''}
       label="Animated GIF: {description}"
       poster={previewUrl}
+      blurhash={blurhash}
       src={url}
       staticSrc={previewUrl}
       width={inlineWidth}
