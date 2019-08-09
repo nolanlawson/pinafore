@@ -106,7 +106,7 @@ test('Shortcut y shows/hides sensitive image', async t => {
     .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).ok()
     .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^data:image\/png;base64,/)
     .pressKey('y')
-    .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/$https:\/\//)
+    .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^http:\/\//)
     .pressKey('y')
     .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^data:image\/png;base64,/)
 })

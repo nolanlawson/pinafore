@@ -18,7 +18,7 @@ async function checkSensitivityForStatus (t, idx, sensitive) {
   } else {
     await t
       .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).notOk()
-      .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/$https:\/\//)
+      .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^http:\/\//)
   }
 }
 

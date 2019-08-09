@@ -16,7 +16,7 @@ test('shows sensitive images and videos', async t => {
   await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^data:image\/png;base64,/)
     .click($(`${getNthStatusSelector(1 + kittenIdx)} .status-sensitive-media-button`))
     .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('alt')).eql('kitten')
-    .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/$https:\/\//)
+    .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^http:\/\//)
     .hover(getNthStatus(1 + videoIdx))
     .expect($(`${getNthStatusSelector(1 + videoIdx)} .status-media .play-video-button`).exists).notOk()
     .click($(`${getNthStatusSelector(1 + videoIdx)} .status-sensitive-media-button`))
