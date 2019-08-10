@@ -58,11 +58,11 @@
 
   export default {
     oncreate () {
-      this.setupStickyObserver()
+      this.setupIntersectionObservers()
       this.setupIOSWorkaround()
     },
     ondestroy () {
-      this.teardownStickyObserver()
+      this.teardownIntersectionObservers()
     },
     store: () => store,
     data: () => ({
@@ -140,7 +140,7 @@
         })
         this.on('destroy', () => cleanup())
       },
-      setupStickyObserver () {
+      setupIntersectionObservers () {
         const sentinel = this.refs.sentinel
 
         this.__stickyObserver = new IntersectionObserver(entries => this.onObserve(entries))
@@ -150,21 +150,27 @@
         // due to a bug in Firefox where when the scrollTop is set
         // manually, the other observer doesn't necessarily fire
         this.observe('timelineInitialized', timelineInitialized => {
-          if (timelineInitialized) {
-            const observer = new IntersectionObserver(entries => {
+          if (timelineInitialized && !this.__oneShotObserver) {
+            this.__oneShotObserver = new IntersectionObserver(entries => {
               this.onObserve(entries)
-              observer.disconnect()
+              this.__oneShotObserver.disconnect()
+              this.__oneShotObserver = null
             })
-            observer.observe(sentinel)
+            this.__oneShotObserver.observe(sentinel)
           }
         }, { init: false })
       },
       onObserve (entries) {
         this.set({ sticky: !entries[0].isIntersecting })
       },
-      teardownStickyObserver () {
+      teardownIntersectionObservers () {
         if (this.__stickyObserver) {
           this.__stickyObserver.disconnect()
+          this.__stickyObserver = null
+        }
+        if (this.__oneShotObserver) {
+          this.__oneShotObserver.disconnect()
+          this.__oneShotObserver = null
         }
       }
     },
