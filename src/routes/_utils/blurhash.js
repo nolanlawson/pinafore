@@ -6,18 +6,20 @@ let canvas
 
 export function decode (blurhash) {
   mark('computeBlurhash')
-  const pixels = decodeBlurHash(blurhash, RESOLUTION, RESOLUTION)
+  try {
+    const pixels = decodeBlurHash(blurhash, RESOLUTION, RESOLUTION)
 
-  if (pixels) {
-    canvas = canvas || document.createElement('canvas')
-    canvas.height = RESOLUTION
-    canvas.width = RESOLUTION
-    const imageData = new window.ImageData(pixels, RESOLUTION, RESOLUTION)
-    canvas.getContext('2d').putImageData(imageData, 0, 0)
-    const base64Image = canvas.toDataURL()
+    if (pixels) {
+      if (!canvas) {
+        canvas = canvas || document.createElement('canvas')
+        canvas.height = RESOLUTION
+        canvas.width = RESOLUTION
+      }
+      const imageData = new ImageData(pixels, RESOLUTION, RESOLUTION)
+      canvas.getContext('2d').putImageData(imageData, 0, 0)
+      return canvas.toDataURL()
+    }
+  } finally {
     stop('computeBlurhash')
-    return base64Image
   }
-
-  stop('computeBlurhash')
 }

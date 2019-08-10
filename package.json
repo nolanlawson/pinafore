@@ -151,7 +151,8 @@
       "customElements",
       "AbortController",
       "matchMedia",
-      "MessageChannel"
+      "MessageChannel",
+      "ImageData"
     ],
     "ignore": [
       "dist",
