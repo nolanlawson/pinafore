@@ -1,9 +1,10 @@
 import { get } from './lodash-lite'
+import { isGnomeWeb } from './userAgent'
 
 const hasPointerEvents = process.browser && typeof PointerEvent === 'function'
 
 // Epiphany browser reports that it's a touch device even though it's not
-const isTouchDevice = process.browser && 'ontouchstart' in document && !/Epiphany/.test(navigator.userAgent)
+const isTouchDevice = process.browser && 'ontouchstart' in document && !isGnomeWeb()
 
 let pointerDown
 let pointerUp

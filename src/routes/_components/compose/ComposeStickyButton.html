@@ -53,8 +53,7 @@
   import { store } from '../../_store/store'
   import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { observe } from 'svelte-extras'
-
-  const USE_IOS_WORKAROUND = process.browser && CSS.supports('-webkit-overflow-scrolling', 'touch')
+  import { isFirefox, isIOS } from '../../_utils/userAgent'
 
   export default {
     oncreate () {
@@ -96,7 +95,7 @@
         // create a fake sticky button by listening to intersecting events
         // and inserting a permanently fixed-position element into the DOM.
         const { showSticky } = this.get()
-        if (!USE_IOS_WORKAROUND || !showSticky) {
+        if (!isIOS() || !showSticky) {
           return
         }
 
@@ -146,18 +145,20 @@
         this.__stickyObserver = new IntersectionObserver(entries => this.onObserve(entries))
         this.__stickyObserver.observe(sentinel)
 
-        // also create a one-shot observer for the $timelineInitialized event,
-        // due to a bug in Firefox where when the scrollTop is set
-        // manually, the other observer doesn't necessarily fire
-        this.observe('timelineInitialized', timelineInitialized => {
-          if (timelineInitialized) {
-            const observer = new IntersectionObserver(entries => {
-              this.onObserve(entries)
-              observer.disconnect()
-            })
-            observer.observe(sentinel)
-          }
-        }, { init: false })
+        if (isFirefox()) {
+          // also create a one-shot observer for the $timelineInitialized event,
+          // due to a bug in Firefox where when the scrollTop is set
+          // manually, the other observer doesn't necessarily fire
+          this.observe('timelineInitialized', timelineInitialized => {
+            if (timelineInitialized) {
+              const observer = new IntersectionObserver(entries => {
+                this.onObserve(entries)
+                observer.disconnect()
+              })
+              observer.observe(sentinel)
+            }
+          }, { init: false })
+        }
       },
       onObserve (entries) {
         this.set({ sticky: !entries[0].isIntersecting })

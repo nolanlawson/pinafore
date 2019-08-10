@@ -214,6 +214,7 @@
   import { store } from '../../../_store/store'
   import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
   import { get } from '../../../_utils/lodash-lite'
+  import { isEdgeHTML } from '../../../_utils/userAgent'
 
   // padding for .media-scroll-item-image-area
   const IMAGE_AREA_PADDING = {
@@ -319,7 +320,7 @@
         const { scrollWidth } = scroller
         const scrollLeft = Math.floor(scrollWidth * (scrolledItem / length))
         if (smooth) {
-          if (!hasNativeSmoothScroll && 'StyleMedia' in window) {
+          if (!hasNativeSmoothScroll && isEdgeHTML()) {
             // Edge has a weird bug where it changes the height if we try to
             // smooth scroll, so disable smooth scrolling
             scroller.scrollLeft = scrollLeft
