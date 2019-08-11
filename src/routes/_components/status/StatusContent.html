@@ -87,6 +87,7 @@
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
   import { massageUserText } from '../../_utils/massageUserText'
+  import { urlIsCrossOrigin } from '../../_utils/urlIsCrossOrigin'
 
   export default {
     oncreate () {
@@ -141,7 +142,7 @@
           }
           // hydrate external links
           const href = anchor.getAttribute('href')
-          if (new URL(href, location.href).origin !== location.origin) {
+          if (urlIsCrossOrigin(href)) {
             anchor.setAttribute('title', href)
             anchor.setAttribute('target', '_blank')
             anchor.setAttribute('rel', 'nofollow noopener')
