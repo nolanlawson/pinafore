@@ -113,9 +113,13 @@
   import { decode } from '../../_utils/blurhash'
 
 export default {
-    oncreate () {
-      const { elementId } = this.get()
+    async oncreate () {
+      const { elementId, media } = this.get()
       registerClickDelegate(this, elementId, () => this.onClick())
+
+      if (media.blurhash) {
+        this.set({ decodedBlurhash: await decode(media.blurhash) })
+      }
     },
     computed: {
       focus: ({ meta }) => meta && meta.focus,
@@ -146,7 +150,7 @@ export default {
       elementId: ({ media, uuid }) => `media-${uuid}-${media.id}`,
       description: ({ media }) => media.description || '',
       previewUrl: ({ media }) => media.preview_url,
-      blurhash: ({ showBlurhash, media }) => showBlurhash && media.blurhash && decode(media.blurhash),
+      blurhash: ({ showBlurhash, decodedBlurhash }) => showBlurhash && decodedBlurhash,
       url: ({ media }) => media.url,
       type: ({ media }) => media.type
     },
@@ -162,6 +166,7 @@ export default {
     },
     data: () => ({
       oneTransparentPixel: ONE_TRANSPARENT_PIXEL,
+      decodedBlurhash: ONE_TRANSPARENT_PIXEL,
       mouseover: void 0
     }),
     store: () => store,
