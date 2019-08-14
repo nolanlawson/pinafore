@@ -1,25 +1,47 @@
-import { decode as decodeBlurHash } from 'blurhash'
+import BlurhashWorker from 'worker-loader!../_workers/blurhash' // eslint-disable-line
 
 const RESOLUTION = 32
+let worker
 let canvas
+
+export function init () {
+  worker = worker || new BlurhashWorker()
+}
 
 export async function decode (blurhash) {
   return new Promise((resolve, reject) => {
     try {
-      const pixels = decodeBlurHash(blurhash, RESOLUTION, RESOLUTION)
+      init()
 
-      if (pixels) {
-        if (!canvas) {
-          canvas = canvas || document.createElement('canvas')
-          canvas.height = RESOLUTION
-          canvas.width = RESOLUTION
+      const onMessage = ({ data: { encoded, decoded, imageData, error } }) => {
+        if (encoded !== blurhash) {
+          return
         }
-        const imageData = new ImageData(pixels, RESOLUTION, RESOLUTION)
-        canvas.getContext('2d').putImageData(imageData, 0, 0)
-        canvas.toBlob(blob => {
-          resolve(URL.createObjectURL(blob))
-        })
+
+        worker.removeEventListener('message', onMessage)
+
+        if (error) {
+          return reject(error)
+        }
+
+        if (decoded) {
+          resolve(decoded)
+        } else {
+          if (!canvas) {
+            canvas = document.createElement('canvas')
+            canvas.height = RESOLUTION
+            canvas.width = RESOLUTION
+          }
+
+          canvas.getContext('2d').putImageData(imageData, 0, 0)
+          canvas.toBlob(blob => {
+            resolve(URL.createObjectURL(blob))
+          })
+        }
       }
+
+      worker.addEventListener('message', onMessage)
+      worker.postMessage({ encoded: blurhash })
     } catch (e) {
       reject(e)
     }

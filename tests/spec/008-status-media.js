@@ -13,7 +13,7 @@ test('shows sensitive images and videos', async t => {
   const videoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
 
   await scrollToStatus(t, 1 + kittenIdx)
-  await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^data:image\/png;base64,/)
+  await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^blob:http:\/\/localhost/)
     .click($(`${getNthStatusSelector(1 + kittenIdx)} .status-sensitive-media-button`))
     .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('alt')).eql('kitten')
     .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^http:\/\//)

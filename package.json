@@ -110,7 +110,8 @@
     "mocha": "^6.1.4",
     "now": "^15.7.0",
     "standard": "^13.1.0",
-    "testcafe": "^1.2.1"
+    "testcafe": "^1.2.1",
+    "worker-loader": "^2.0.0"
   },
   "engines": {
     "node": ">= 8"
@@ -152,7 +153,9 @@
       "AbortController",
       "matchMedia",
       "MessageChannel",
-      "ImageData"
+      "ImageData",
+      "OffscreenCanvas",
+      "postMessage"
     ],
     "ignore": [
       "dist",
