@@ -6,7 +6,7 @@ const OFFSCREEN_CANVAS = typeof OffscreenCanvas === 'function'
   ? new OffscreenCanvas(RESOLUTION, RESOLUTION) : null
 const OFFSCREEN_CANVAS_CONTEXT_2D = OFFSCREEN_CANVAS
   ? OFFSCREEN_CANVAS.getContext('2d') : null
-const CACHE = new QuickLRU({ maxSize: 1 })
+const CACHE = new QuickLRU({ maxSize: 100 })
 
 self.addEventListener('message', ({ data: { encoded } }) => {
   try {
