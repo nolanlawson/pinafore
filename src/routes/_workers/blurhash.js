@@ -4,7 +4,9 @@ import QuickLRU from 'quick-lru'
 const RESOLUTION = 32
 const OFFSCREEN_CANVAS = typeof OffscreenCanvas === 'function'
   ? new OffscreenCanvas(RESOLUTION, RESOLUTION) : null
-const CACHE = new QuickLRU({ maxSize: 100 })
+const OFFSCREEN_CANVAS_CONTEXT_2D = OFFSCREEN_CANVAS
+  ? OFFSCREEN_CANVAS.getContext('2d') : null
+const CACHE = new QuickLRU({ maxSize: 1 })
 
 self.addEventListener('message', ({ data: { encoded } }) => {
   try {
@@ -22,7 +24,7 @@ self.addEventListener('message', ({ data: { encoded } }) => {
       const imageData = new ImageData(pixels, RESOLUTION, RESOLUTION)
 
       if (OFFSCREEN_CANVAS) {
-        OFFSCREEN_CANVAS.getContext('2d').putImageData(imageData, 0, 0)
+        OFFSCREEN_CANVAS_CONTEXT_2D.putImageData(imageData, 0, 0)
         OFFSCREEN_CANVAS.convertToBlob().then(blob => {
           const decoded = URL.createObjectURL(blob)
           CACHE.set(encoded, decoded)

@@ -3,6 +3,7 @@ import BlurhashWorker from 'worker-loader!../_workers/blurhash' // eslint-disabl
 const RESOLUTION = 32
 let worker
 let canvas
+let canvasContext2D
 
 export function init () {
   worker = worker || new BlurhashWorker()
@@ -31,9 +32,10 @@ export async function decode (blurhash) {
             canvas = document.createElement('canvas')
             canvas.height = RESOLUTION
             canvas.width = RESOLUTION
+            canvasContext2D = canvas.getContext('2d')
           }
 
-          canvas.getContext('2d').putImageData(imageData, 0, 0)
+          canvasContext2D.putImageData(imageData, 0, 0)
           canvas.toBlob(blob => {
             resolve(URL.createObjectURL(blob))
           })
