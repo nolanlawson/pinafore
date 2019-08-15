@@ -4,7 +4,7 @@ export function decodeImage (img) {
   // Remove this UA sniff when the Firefox bug is fixed
   // https://github.com/nolanlawson/pinafore/issues/1344#issuecomment-514312672
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1565542
-  if (!IS_FIREFOX && typeof img.decode === 'function') {
+  if (!IS_FIREFOX && typeof img.decode === 'function' && !img.src.startsWith('data:image/png;base64,')) {
     return img.decode()
   }
 
