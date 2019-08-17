@@ -1,6 +1,9 @@
 import BlurhashWorker from 'worker-loader!../_workers/blurhash' // eslint-disable-line
 import PromiseWorker from 'promise-worker'
 import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'
+import QuickLRU from 'quick-lru'
+
+const CACHE = new QuickLRU({ maxSize: 100 })
 
 let worker
 let canvas
@@ -19,7 +22,7 @@ function initCanvas () {
   }
 }
 
-// canvas is the backup if we can't use the worker
+// canvas is the backup if we can't use OffscreenCanvas
 async function decodeUsingCanvas (imageData) {
   initCanvas()
   canvasContext2D.putImageData(imageData, 0, 0)
@@ -27,12 +30,20 @@ async function decodeUsingCanvas (imageData) {
   return URL.createObjectURL(blob)
 }
 
-export async function decode (blurhash) {
+async function decodeWithoutCache (blurhash) {
   init()
-  // TODO: should maintain a cache outside of worker to avoid round-trip for cached data
   const { decoded, imageData } = await worker.postMessage(blurhash)
   if (decoded) {
     return decoded
   }
   return decodeUsingCanvas(imageData)
+}
+
+export async function decode (blurhash) {
+  let result = CACHE.get(blurhash)
+  if (!result) {
+    result = await decodeWithoutCache(blurhash)
+    CACHE.set(blurhash, result)
+  }
+  return result
 }

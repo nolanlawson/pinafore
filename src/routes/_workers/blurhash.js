@@ -1,5 +1,4 @@
 import { decode as decodeBlurHash } from 'blurhash'
-import QuickLRU from 'quick-lru'
 import registerPromiseWorker from 'promise-worker/register'
 import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'
 
@@ -7,9 +6,8 @@ const OFFSCREEN_CANVAS = typeof OffscreenCanvas === 'function'
   ? new OffscreenCanvas(RESOLUTION, RESOLUTION) : null
 const OFFSCREEN_CANVAS_CONTEXT_2D = OFFSCREEN_CANVAS
   ? OFFSCREEN_CANVAS.getContext('2d') : null
-const CACHE = new QuickLRU({ maxSize: 100 })
 
-async function decodeWithoutCache (encoded) {
+registerPromiseWorker(async (encoded) => {
   const pixels = decodeBlurHash(encoded, RESOLUTION, RESOLUTION)
 
   if (!pixels) {
@@ -25,13 +23,4 @@ async function decodeWithoutCache (encoded) {
   } else {
     return { imageData, decoded: null }
   }
-}
-
-registerPromiseWorker(async (encoded) => {
-  let result = CACHE.get(encoded)
-  if (!result) {
-    result = await decodeWithoutCache(encoded)
-    CACHE.set(encoded, result)
-  }
-  return result
 })
