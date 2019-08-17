@@ -83,6 +83,7 @@
     "performance-now": "^2.1.0",
     "pinch-zoom-element": "^1.1.1",
     "preact": "^10.0.0-beta.1",
+    "promise-worker": "^2.0.1",
     "prop-types": "^15.7.2",
     "quick-lru": "^4.0.1",
     "remount": "^0.11.0",

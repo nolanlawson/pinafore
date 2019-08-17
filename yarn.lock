@@ -5991,6 +5991,11 @@ promise-polyfill@^6.0.1:
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
   integrity sha1-36lpQ+qcEh/KTem1hoyznTRy4Fc=
 
+promise-worker@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/promise-worker/-/promise-worker-2.0.1.tgz#63bb532624ecd40cdb335b51bb7830c3c892aa6c"
+  integrity sha512-jR7vHqMEwWJ15i9vA3qyCKwRHihyLJp1sAa3RyY5F35m3u5s2lQUfq0nzVjbA8Xc7+3mL3Y9+9MHBO9UFRpFxA==
+
 promisify-event@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/promisify-event/-/promisify-event-1.0.0.tgz#bd7523ea06b70162f370979016b53a686c60e90f"
