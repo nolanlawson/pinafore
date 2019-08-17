@@ -17,6 +17,7 @@
       alt={label || ''}
       title={label || ''}
       src={staticSrc}
+      blurhash={blurhash}
       fallback={oneTransparentPixel}
       {width}
       {height}
@@ -24,7 +25,9 @@
       {focus}
     />
   {/if}
-  <PlayVideoIcon className={playing ? 'hidden' : ''}/>
+  {#if !blurhash}
+    <PlayVideoIcon className={playing ? 'hidden' : ''}/>
+  {/if}
 </div>
 <style>
   .non-autoplay-gifv {

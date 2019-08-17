@@ -1,23 +1,40 @@
 {#if type === 'video' || type === 'audio'}
-  <button id={elementId}
-          type="button"
-          class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
-          aria-label="Play video: {description}"
-          style="width: {inlineWidth}px; height: {inlineHeight}px;">
-    <PlayVideoIcon />
+  {#if blurhash}
     {#if type === 'video'}
       <LazyImage
         alt={description}
         title={description}
         src={previewUrl}
         fallback={oneTransparentPixel}
+        blurhash={blurhash}
         width={inlineWidth}
         height={inlineHeight}
         background="var(--loading-bg)"
         {focus}
       />
     {/if}
-  </button>
+  {:else}
+    <button id={elementId}
+            type="button"
+            class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
+            aria-label="Play video: {description}"
+            style="width: {inlineWidth}px; height: {inlineHeight}px;">
+      <PlayVideoIcon />
+      {#if type === 'video'}
+        <LazyImage
+          alt={description}
+          title={description}
+          src={previewUrl}
+          fallback={oneTransparentPixel}
+          blurhash={blurhash}
+          width={inlineWidth}
+          height={inlineHeight}
+          background="var(--loading-bg)"
+          {focus}
+        />
+      {/if}
+    </button>
+  {/if}
 {:else}
   <button id={elementId}
           type="button"
@@ -40,6 +57,7 @@
       class={noNativeWidthHeight ? 'no-native-width-height' : ''}
       label="Animated GIF: {description}"
       poster={previewUrl}
+      blurhash={blurhash}
       src={url}
       staticSrc={previewUrl}
       width={inlineWidth}
@@ -53,6 +71,7 @@
       title={description}
       src={previewUrl}
       fallback={oneTransparentPixel}
+      blurhash={blurhash}
       width={inlineWidth}
       height={inlineHeight}
       background="var(--loading-bg)"
@@ -91,11 +110,16 @@
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate } from '../../_utils/delegate'
+  import { decode } from '../../_utils/blurhash'
 
-  export default {
-    oncreate () {
-      const { elementId } = this.get()
+export default {
+    async oncreate () {
+      const { elementId, media } = this.get()
       registerClickDelegate(this, elementId, () => this.onClick())
+
+      if (media.blurhash) {
+        this.set({ decodedBlurhash: await decode(media.blurhash) })
+      }
     },
     computed: {
       focus: ({ meta }) => meta && meta.focus,
@@ -126,6 +150,7 @@
       elementId: ({ media, uuid }) => `media-${uuid}-${media.id}`,
       description: ({ media }) => media.description || '',
       previewUrl: ({ media }) => media.preview_url,
+      blurhash: ({ showBlurhash, decodedBlurhash }) => showBlurhash && decodedBlurhash,
       url: ({ media }) => media.url,
       type: ({ media }) => media.type
     },
@@ -141,6 +166,7 @@
     },
     data: () => ({
       oneTransparentPixel: ONE_TRANSPARENT_PIXEL,
+      decodedBlurhash: ONE_TRANSPARENT_PIXEL,
       mouseover: void 0
     }),
     store: () => store,

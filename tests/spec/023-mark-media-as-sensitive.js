@@ -1,7 +1,7 @@
 import { loginAsFoobar } from '../roles'
 import {
   generalSettingsButton,
-  getNthStatus, getNthStatusMedia, getNthStatusSensitiveMediaButton, homeNavButton, markMediaSensitiveInput,
+  getNthStatus, getNthStatusMediaImg, getNthStatusSensitiveMediaButton, homeNavButton, markMediaSensitiveInput,
   scrollToStatus, settingsNavButton, neverMarkMediaSensitiveInput
 } from '../utils'
 
@@ -14,11 +14,11 @@ async function checkSensitivityForStatus (t, idx, sensitive) {
   if (sensitive) {
     await t
       .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).ok()
-      .expect(getNthStatusMedia(1 + idx).exists).notOk()
+      .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^blob:http:\/\/localhost/)
   } else {
     await t
       .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).notOk()
-      .expect(getNthStatusMedia(1 + idx).exists).ok()
+      .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^http:\/\//)
   }
 }
 

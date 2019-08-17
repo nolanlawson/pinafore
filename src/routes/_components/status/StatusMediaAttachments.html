@@ -10,20 +10,24 @@
       <SvgIcon className="status-sensitive-media-svg" href="#fa-eye-slash" />
     </div>
   </button>
-  <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
   {:else}
     <button id={elementId}
             type="button"
             class="status-sensitive-media-button"
             aria-label="Show sensitive media" >
 
-      <div class="status-sensitive-media-warning">
-        Sensitive content. Click to show.
+      <div class="{customWarningClass}">
+        <div class="status-sensitive-media-warning-text">
+          Sensitive content. Click to show.
+        </div>
       </div>
       <div class="svg-wrapper">
         <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
       </div>
     </button>
+  {/if}
+  {#if sensitiveShown || canUseBlurhash}
+    <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
   {/if}
   </div>
 </div>
@@ -31,7 +35,7 @@
   <Shortcut scope={shortcutScope} key="y" on:pressed="toggleSensitiveMedia()"/>
 {/if}
 {:else}
-  <MediaAttachments {mediaAttachments} {sensitive} {uuid} />
+  <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
 {/if}
 <style>
   .status-sensitive-media-container {
@@ -81,6 +85,7 @@
   }
 
   .status-sensitive-media-hidden .status-sensitive-media-button {
+    position: absolute;
     right: 0;
     bottom: 0;
     width: 100%;
@@ -96,7 +101,6 @@
   }
 
   .status-sensitive-media-container .status-sensitive-media-warning {
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -109,6 +113,21 @@
     padding: 0 10px;
   }
 
+  .status-sensitive-media-container .status-sensitive-media-warning-transparent {
+    position: absolute;
+  }
+
+  .status-sensitive-media-container .status-sensitive-media-warning-opaque {
+    background: var(--mask-bg);
+    height: 100%;
+  }
+
+  .status-sensitive-media-container .status-sensitive-media-warning-transparent .status-sensitive-media-warning-text {
+    background: var(--mask-bg);
+    padding: 10px;
+    border-radius: 6px;
+  }
+
   .status-sensitive-media-container .svg-wrapper {
     display: flex;
     align-items: flex-start;
@@ -119,6 +138,7 @@
   }
   .status-sensitive-media-hidden .svg-wrapper {
     position: absolute;
+    background: none;
     top: 0;
     left: 0;
     right: 0;
@@ -171,6 +191,7 @@
         $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
+      canUseBlurhash: ({ $ignoreBlurhash, mediaAttachments }) => !$ignoreBlurhash && mediaAttachments && mediaAttachments.every(media => !!media.blurhash),
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
         !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
@@ -181,7 +202,11 @@
           return ''
         }
         return `padding-bottom: ${Math.ceil(mediaAttachments.length / 2) * 29}%;`
-      }
+      },
+      customWarningClass: ({ canUseBlurhash }) => classname(
+        'status-sensitive-media-warning',
+        canUseBlurhash ? 'status-sensitive-media-warning-transparent' : 'status-sensitive-media-warning-opaque'
+      )
     },
     methods: {
       toggleSensitiveMedia () {

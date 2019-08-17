@@ -30,6 +30,7 @@ const persistedState = {
   loggedInInstancesInOrder: [],
   markMediaAsSensitive: false,
   neverMarkMediaAsSensitive: false,
+  ignoreBlurhash: false,
   omitEmojiInDisplayNames: undefined,
   pinnedPages: {},
   pushSubscriptions: {},

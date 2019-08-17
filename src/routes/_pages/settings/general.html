@@ -9,6 +9,11 @@
       <label for="choice-never-mark-media-sensitive">Show sensitive media by default</label>
     </div>
     <div class="setting-group">
+        <input type="checkbox" id="choice-use-blurhash"
+               bind:checked="$ignoreBlurhash" on:change="onChange(event)">
+        <label for="choice-use-blurhash">Show a plain gray color for sensitive media</label>
+      </div>
+    <div class="setting-group">
       <input type="checkbox" id="choice-mark-media-sensitive"
              bind:checked="$markMediaAsSensitive" on:change="onChange(event)">
       <label for="choice-mark-media-sensitive">Hide all media by default</label>

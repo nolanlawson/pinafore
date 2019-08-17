@@ -4,7 +4,7 @@ import {
   getNthFavorited,
   getNthStatus,
   getNthStatusContent,
-  getNthStatusMedia,
+  getNthStatusMediaImg,
   getNthStatusSensitiveMediaButton,
   getNthStatusSpoiler,
   getUrl, modalDialog,
@@ -104,11 +104,11 @@ test('Shortcut y shows/hides sensitive image', async t => {
   await t
     .expect(isNthStatusActive(1 + idx)()).ok()
     .expect(getNthStatusSensitiveMediaButton(1 + idx).exists).ok()
-    .expect(getNthStatusMedia(1 + idx).exists).notOk()
+    .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^blob:http:\/\/localhost/)
     .pressKey('y')
-    .expect(getNthStatusMedia(1 + idx).exists).ok()
+    .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^http:\/\//)
     .pressKey('y')
-    .expect(getNthStatusMedia(1 + idx).exists).notOk()
+    .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^blob:http:\/\/localhost/)
 })
 
 test('Shortcut f toggles favorite status', async t => {
