@@ -1,6 +1,6 @@
 import BlurhashWorker from 'worker-loader!../_workers/blurhash' // eslint-disable-line
 import PromiseWorker from 'promise-worker'
-import { BLURHASH_RESOLUTION } from '../_static/blurhash'
+import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'
 
 let worker
 let canvas
@@ -13,8 +13,8 @@ export function init () {
 function initCanvas () {
   if (!canvas) {
     canvas = document.createElement('canvas')
-    canvas.height = BLURHASH_RESOLUTION
-    canvas.width = BLURHASH_RESOLUTION
+    canvas.height = RESOLUTION
+    canvas.width = RESOLUTION
     canvasContext2D = canvas.getContext('2d')
   }
 }
