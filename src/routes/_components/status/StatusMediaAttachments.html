@@ -4,9 +4,9 @@
   {#if sensitiveShown}
   <button id={elementId}
           type="button"
-          class="status-sensitive-media-button"
+          class={sensitiveMediaButtonClass}
           aria-label="Hide sensitive media" >
-    <div class="svg-wrapper">
+    <div class={svgWrapperClass}>
       <SvgIcon className={sensitiveMediaIconClass}
                href="#fa-eye-slash" />
     </div>
@@ -14,7 +14,7 @@
   {:else}
     <button id={elementId}
             type="button"
-            class="status-sensitive-media-button"
+            class={sensitiveMediaButtonClass}
             aria-label="Show sensitive media" >
 
       <div class="{customWarningClass}">
@@ -22,7 +22,7 @@
           Sensitive content. Click to show.
         </div>
       </div>
-      <div class="svg-wrapper">
+      <div class={svgWrapperClass}>
         <SvgIcon className={sensitiveMediaIconClass} href="#fa-eye" />
       </div>
     </button>
@@ -85,6 +85,10 @@
     z-index: 90;
   }
 
+  .status-sensitive-media-shown .status-sensitive-media-button.status-sensitive-media-button-transparent {
+    top: 5px;
+  }
+
   .status-sensitive-media-hidden .status-sensitive-media-button {
     position: absolute;
     right: 0;
@@ -145,6 +149,10 @@
     left: 0;
     right: 0;
     bottom: 0;
+  }
+
+  .status-sensitive-media-hidden .svg-wrapper.svg-wrapper-transparent {
+    top: 5px;
   }
 
   .status-sensitive-media-container.grouped-images .svg-wrapper {
@@ -210,6 +218,14 @@
         }
         return `padding-bottom: ${Math.ceil(mediaAttachments.length / 2) * 29}%;`
       },
+      sensitiveMediaButtonClass: ({ canUseBlurhash }) => classname(
+        'status-sensitive-media-button',
+        canUseBlurhash && 'status-sensitive-media-button-transparent'
+      ),
+      svgWrapperClass: ({ canUseBlurhash }) => classname(
+        'svg-wrapper',
+        canUseBlurhash && 'svg-wrapper-transparent'
+      ),
       customWarningClass: ({ canUseBlurhash }) => classname(
         'status-sensitive-media-warning',
         canUseBlurhash ? 'status-sensitive-media-warning-transparent' : 'status-sensitive-media-warning-opaque'
