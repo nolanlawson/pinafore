@@ -48,4 +48,6 @@
   --toast-anchor-color: #{$anchor-color};
 
   --length-indicator-color: var(--action-button-fill-color);
+
+  --blurhash-sensitive-text-color: #{lighten($deemphasized-color, 15%)};
 }

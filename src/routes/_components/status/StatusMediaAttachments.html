@@ -7,7 +7,8 @@
           class="status-sensitive-media-button"
           aria-label="Hide sensitive media" >
     <div class="svg-wrapper">
-      <SvgIcon className="status-sensitive-media-svg" href="#fa-eye-slash" />
+      <SvgIcon className={sensitiveMediaIconClass}
+               href="#fa-eye-slash" />
     </div>
   </button>
   {:else}
@@ -22,7 +23,7 @@
         </div>
       </div>
       <div class="svg-wrapper">
-        <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
+        <SvgIcon className={sensitiveMediaIconClass} href="#fa-eye" />
       </div>
     </button>
   {/if}
@@ -126,6 +127,7 @@
     background: var(--mask-bg);
     padding: 10px;
     border-radius: 6px;
+    color: var(--blurhash-sensitive-text-color);
   }
 
   .status-sensitive-media-container .svg-wrapper {
@@ -163,6 +165,11 @@
   :global(.status-sensitive-media-container.status-sensitive-media-hidden .status-sensitive-media-svg) {
     fill: var(--deemphasized-text-color);
     background: var(--mask-opaque-bg);
+  }
+  :global(.status-sensitive-media-container.status-sensitive-media-hidden
+    .status-sensitive-media-svg.status-sensitive-media-svg-transparent) {
+    fill: var(--blurhash-sensitive-text-color);
+    background: var(--mask-bg);
   }
 </style>
 <script>
@@ -206,6 +213,10 @@
       customWarningClass: ({ canUseBlurhash }) => classname(
         'status-sensitive-media-warning',
         canUseBlurhash ? 'status-sensitive-media-warning-transparent' : 'status-sensitive-media-warning-opaque'
+      ),
+      sensitiveMediaIconClass: ({ canUseBlurhash }) => classname(
+        'status-sensitive-media-svg',
+        canUseBlurhash && 'status-sensitive-media-svg-transparent'
       )
     },
     methods: {

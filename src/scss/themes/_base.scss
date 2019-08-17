@@ -127,4 +127,6 @@
   --focal-bg-drag: #{rgba($toast-bg, 0.9)};
   --focal-bg-hover: #{lighten(rgba($toast-bg, 0.8), 5%)};
   --focal-color: #{$secondary-text-color};
+
+  --blurhash-sensitive-text-color: #{lighten($deemphasized-color, 40%)};
 }
