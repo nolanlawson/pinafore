@@ -1,6 +1,7 @@
 import { database } from '../_database/database'
 import { decode as decodeBlurhash, init as initBlurhash } from '../_utils/blurhash'
 import { mark, stop } from '../_utils/marks'
+import { get } from '../_utils/lodash-lite'
 
 async function getNotification (instanceName, timelineType, timelineValue, itemId) {
   return {
@@ -28,15 +29,14 @@ function tryInitBlurhash () {
 
 async function decodeAllBlurhashes (statusOrNotification) {
   const status = statusOrNotification.status || statusOrNotification.notification.status
-  if (status && status.media_attachments) {
+  const mediaWithBlurhashes = get(status, ['media_attachments'], []).filter(_ => _.blurhash)
+  if (mediaWithBlurhashes.length) {
     mark(`decodeBlurhash-${status.id}`)
-    await Promise.all(status.media_attachments.map(async media => {
-      if (media.blurhash) {
-        try {
-          media.decodedBlurhash = await decodeBlurhash(media.blurhash)
-        } catch (err) {
-          console.warn('Could not decode blurhash, ignoring', err)
-        }
+    await Promise.all(mediaWithBlurhashes.map(async media => {
+      try {
+        media.decodedBlurhash = await decodeBlurhash(media.blurhash)
+      } catch (err) {
+        console.warn('Could not decode blurhash, ignoring', err)
       }
     }))
     stop(`decodeBlurhash-${status.id}`)
