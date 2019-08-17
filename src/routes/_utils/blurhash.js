@@ -30,10 +30,7 @@ async function decodeUsingCanvas (imageData) {
 export async function decode (blurhash) {
   init()
   // TODO: should maintain a cache outside of worker to avoid round-trip for cached data
-  const { encoded, decoded, imageData } = await worker.postMessage(blurhash)
-  if (encoded !== blurhash) { // TODO: why do we check this? Shouldn't it always be the same?
-    return
-  }
+  const { decoded, imageData } = await worker.postMessage(blurhash)
   if (decoded) {
     return decoded
   }

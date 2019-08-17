@@ -28,11 +28,10 @@ async function decodeWithoutCache (encoded) {
 }
 
 registerPromiseWorker(async (encoded) => {
-  if (CACHE.has(encoded)) {
-    const { decoded, imageData } = CACHE.get(encoded)
-    return { encoded, decoded, imageData }
+  let result = CACHE.get(encoded)
+  if (!result) {
+    result = await decodeWithoutCache(encoded)
+    CACHE.set(encoded, result)
   }
-  const { decoded, imageData } = await decodeWithoutCache(encoded)
-  CACHE.set(encoded, { decoded, imageData })
-  return { encoded, decoded, imageData }
+  return result
 })
