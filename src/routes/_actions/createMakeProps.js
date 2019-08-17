@@ -1,4 +1,6 @@
 import { database } from '../_database/database'
+import { decode as decodeBlurhash, init as initBlurhash } from '../_utils/blurhash'
+import { mark, stop } from '../_utils/marks'
 
 async function getNotification (instanceName, timelineType, timelineValue, itemId) {
   return {
@@ -16,9 +18,37 @@ async function getStatus (instanceName, timelineType, timelineValue, itemId) {
   }
 }
 
+function tryInitBlurhash () {
+  try {
+    initBlurhash()
+  } catch (err) {
+    console.error('could not start blurhash worker', err)
+  }
+}
+
+async function decodeAllBlurhashes (statusOrNotification) {
+  const status = statusOrNotification.status || statusOrNotification.notification.status
+  if (status && status.media_attachments) {
+    mark(`decodeBlurhash-${status.id}`)
+    await Promise.all(status.media_attachments.map(async media => {
+      if (media.blurhash) {
+        try {
+          media.decodedBlurhash = await decodeBlurhash(media.blurhash)
+        } catch (err) {
+          console.warn('Could not decode blurhash, ignoring', err)
+        }
+      }
+    }))
+    stop(`decodeBlurhash-${status.id}`)
+  }
+  return statusOrNotification
+}
+
 export function createMakeProps (instanceName, timelineType, timelineValue) {
   let taskCount = 0
   let pending = []
+
+  tryInitBlurhash() // start the blurhash worker a bit early to save time
 
   // The worker-powered indexeddb promises can resolve in arbitrary order,
   // causing the timeline to load in a jerky way. With this function, we
@@ -34,14 +64,25 @@ export function createMakeProps (instanceName, timelineType, timelineValue) {
     })
   }
 
+  async function fetchFromIndexedDB (itemId) {
+    mark(`fetchFromIndexedDB-${itemId}`)
+    try {
+      const res = await (timelineType === 'notifications'
+        ? getNotification(instanceName, timelineType, timelineValue, itemId)
+        : getStatus(instanceName, timelineType, timelineValue, itemId))
+      return res
+    } finally {
+      stop(`fetchFromIndexedDB-${itemId}`)
+    }
+  }
+
   return (itemId) => {
     taskCount++
-    const promise = timelineType === 'notifications'
-      ? getNotification(instanceName, timelineType, timelineValue, itemId)
-      : getStatus(instanceName, timelineType, timelineValue, itemId)
 
-    return promise.then(res => {
-      return awaitAllTasksComplete().then(() => res)
-    })
+    return fetchFromIndexedDB(itemId)
+      .then(decodeAllBlurhashes)
+      .then(statusOrNotification => {
+        return awaitAllTasksComplete().then(() => statusOrNotification)
+      })
   }
 }

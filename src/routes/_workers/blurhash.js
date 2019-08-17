@@ -1,45 +1,38 @@
 import { decode as decodeBlurHash } from 'blurhash'
 import QuickLRU from 'quick-lru'
+import registerPromiseWorker from 'promise-worker/register'
+import { BLURHASH_RESOLUTION } from '../_static/blurhash'
 
-const RESOLUTION = 32
 const OFFSCREEN_CANVAS = typeof OffscreenCanvas === 'function'
-  ? new OffscreenCanvas(RESOLUTION, RESOLUTION) : null
+  ? new OffscreenCanvas(BLURHASH_RESOLUTION, BLURHASH_RESOLUTION) : null
 const OFFSCREEN_CANVAS_CONTEXT_2D = OFFSCREEN_CANVAS
   ? OFFSCREEN_CANVAS.getContext('2d') : null
 const CACHE = new QuickLRU({ maxSize: 100 })
 
-self.addEventListener('message', ({ data: { encoded } }) => {
-  try {
-    if (CACHE.has(encoded)) {
-      if (OFFSCREEN_CANVAS) {
-        postMessage({ encoded, decoded: CACHE.get(encoded), imageData: null, error: null })
-      } else {
-        postMessage({ encoded, imageData: CACHE.get(encoded), decoded: null, error: null })
-      }
-    } else {
-      const pixels = decodeBlurHash(encoded, RESOLUTION, RESOLUTION)
+async function decodeWithoutCache (encoded) {
+  const pixels = decodeBlurHash(encoded, BLURHASH_RESOLUTION, BLURHASH_RESOLUTION)
 
-      if (pixels) {
-        const imageData = new ImageData(pixels, RESOLUTION, RESOLUTION)
-
-        if (OFFSCREEN_CANVAS) {
-          OFFSCREEN_CANVAS_CONTEXT_2D.putImageData(imageData, 0, 0)
-          OFFSCREEN_CANVAS.convertToBlob().then(blob => {
-            const decoded = URL.createObjectURL(blob)
-            CACHE.set(encoded, decoded)
-            postMessage({ encoded, decoded, imageData: null, error: null })
-          }).catch(error => {
-            postMessage({ encoded, decoded: null, imageData: null, error })
-          })
-        } else {
-          CACHE.set(encoded, imageData)
-          postMessage({ encoded, imageData, decoded: null, error: null })
-        }
-      } else {
-        postMessage({ encoded, decoded: null, imageData: null, error: new Error('decode did not return any pixels') })
-      }
-    }
-  } catch (error) {
-    postMessage({ encoded, decoded: null, imageData: null, error })
+  if (!pixels) {
+    throw new Error('decode did not return any pixels')
   }
+  const imageData = new ImageData(pixels, BLURHASH_RESOLUTION, BLURHASH_RESOLUTION)
+
+  if (OFFSCREEN_CANVAS) {
+    OFFSCREEN_CANVAS_CONTEXT_2D.putImageData(imageData, 0, 0)
+    const blob = await OFFSCREEN_CANVAS.convertToBlob()
+    const decoded = URL.createObjectURL(blob)
+    return { decoded, imageData: null }
+  } else {
+    return { imageData, decoded: null }
+  }
+}
+
+registerPromiseWorker(async (encoded) => {
+  if (CACHE.has(encoded)) {
+    const { decoded, imageData } = CACHE.get(encoded)
+    return { encoded, decoded, imageData }
+  }
+  const { decoded, imageData } = await decodeWithoutCache(encoded)
+  CACHE.set(encoded, { decoded, imageData })
+  return { encoded, decoded, imageData }
 })

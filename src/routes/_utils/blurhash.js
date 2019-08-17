@@ -1,51 +1,41 @@
 import BlurhashWorker from 'worker-loader!../_workers/blurhash' // eslint-disable-line
+import PromiseWorker from 'promise-worker'
+import { BLURHASH_RESOLUTION } from '../_static/blurhash'
 
-const RESOLUTION = 32
 let worker
 let canvas
 let canvasContext2D
 
 export function init () {
-  worker = worker || new BlurhashWorker()
+  worker = worker || new PromiseWorker(new BlurhashWorker())
+}
+
+function initCanvas () {
+  if (!canvas) {
+    canvas = document.createElement('canvas')
+    canvas.height = BLURHASH_RESOLUTION
+    canvas.width = BLURHASH_RESOLUTION
+    canvasContext2D = canvas.getContext('2d')
+  }
+}
+
+// canvas is the backup if we can't use the worker
+async function decodeUsingCanvas (imageData) {
+  initCanvas()
+  canvasContext2D.putImageData(imageData, 0, 0)
+  const blob = await new Promise(resolve => canvas.toBlob(resolve))
+  return URL.createObjectURL(blob)
 }
 
 export async function decode (blurhash) {
-  return new Promise((resolve, reject) => {
-    try {
-      init()
-
-      const onMessage = ({ data: { encoded, decoded, imageData, error } }) => {
-        if (encoded !== blurhash) {
-          return
-        }
-
-        worker.removeEventListener('message', onMessage)
-
-        if (error) {
-          return reject(error)
-        }
-
-        if (decoded) {
-          resolve(decoded)
-        } else {
-          if (!canvas) {
-            canvas = document.createElement('canvas')
-            canvas.height = RESOLUTION
-            canvas.width = RESOLUTION
-            canvasContext2D = canvas.getContext('2d')
-          }
-
-          canvasContext2D.putImageData(imageData, 0, 0)
-          canvas.toBlob(blob => {
-            resolve(URL.createObjectURL(blob))
-          })
-        }
-      }
-
-      worker.addEventListener('message', onMessage)
-      worker.postMessage({ encoded: blurhash })
-    } catch (e) {
-      reject(e)
-    }
-  })
+  init()
+  // TODO: should maintain a cache outside of worker to avoid round-trip for cached data
+  const { encoded, decoded, imageData } = await worker.postMessage(blurhash)
+  if (encoded !== blurhash) { // TODO: why do we check this? Shouldn't it always be the same?
+    return
+  }
+  if (decoded) {
+    return decoded
+  }
+  return decodeUsingCanvas(imageData)
 }
