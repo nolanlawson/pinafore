@@ -5,6 +5,7 @@ import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru'
 
 // A timeline will typically show 20-30 articles at once in the virtual list. The maximum number
 // of sensitive images per article is 4. 30*4=120, so this is a very conservative number.
+// Blurhash blobs seem to range from ~1.2-2kB, so this cache could grow to about 2kB*150=300kB max.
 const cache = new QuickLRU({ maxSize: 150 })
 
 let worker
@@ -34,6 +35,7 @@ async function decodeUsingCanvas (imageData) {
   initCanvas()
   canvasContext2D.putImageData(imageData, 0, 0)
   const blob = await new Promise(resolve => canvas.toBlob(resolve))
+  console.log('blob.size', blob.size)
   return URL.createObjectURL(blob)
 }
 
