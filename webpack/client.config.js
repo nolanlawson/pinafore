@@ -36,6 +36,12 @@ module.exports = {
         }
       },
       {
+        test: /\/_workers\/blurhash\.js$/,
+        use: {
+          loader: 'worker-loader'
+        }
+      },
+      {
         test: /\.m?js$/,
         include: /node_modules\/emoji-mart/,
         use: {
