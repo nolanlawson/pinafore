@@ -85,7 +85,7 @@
 <script>
   import { changeTheme } from '../../../_actions/instances'
   import { store } from '../../../_store/store'
-  import { themes } from '../../../_static/themes'
+  import { themes, getRuntimeThemes } from '../../../_static/themes'
   import { DEFAULT_THEME } from '../../../_utils/themeEngine'
 
   export default {
@@ -98,7 +98,7 @@
     },
     store: () => store,
     data: () => ({
-      themes,
+      themes: [...themes, ...getRuntimeThemes()],
       DEFAULT_THEME,
       selectedTheme: DEFAULT_THEME
     }),

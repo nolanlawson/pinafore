@@ -4,11 +4,18 @@
 // the build process and write it to checksum.js.
 
 import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
+import { getRuntimeThemes } from '../routes/_static/themes'
 import { basename } from '../routes/_api/utils'
 import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
 import { storeLite } from '../routes/_store/storeLite'
 
 window.__themeColors = process.env.THEME_COLORS
+
+const runtimeThemes = getRuntimeThemes()
+
+runtimeThemes.forEach(runtimeTheme => {
+  window.__themeColors[runtimeTheme.name] = runtimeTheme
+})
 
 const {
   currentInstance,

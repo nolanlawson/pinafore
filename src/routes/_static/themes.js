@@ -103,15 +103,24 @@ const themes = [
   }
 ]
 
-if (process.browser && CSS.supports('color', '-moz-field')) {
-  const div = document.createElement('div')
-  div.style.color = '-moz-field'
+function getRuntimeThemes () {
+  const runtimeThemes = []
 
-  themes.push({
-    name: 'native',
-    label: 'Native (beta)',
-    color: window.getComputedStyle(div).color
-  })
+  if (CSS.supports('color', '-moz-field')) {
+    runtimeThemes.push({
+      name: 'native',
+      label: 'Native (beta)',
+      dark: false, // TODO: Determine based on the color
+      color: (() => {
+        const div = document.createElement('div')
+        div.style.color = '-moz-field'
+        const color = window.getComputedStyle(div).color
+        return color
+      })()
+    })
+  }
+
+  return runtimeThemes
 }
 
-export { themes }
+export { themes, getRuntimeThemes }
