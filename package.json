@@ -85,7 +85,6 @@
     "preact": "^10.0.0-beta.1",
     "promise-worker": "^2.0.1",
     "prop-types": "^15.7.2",
-    "quick-lru": "^4.0.1",
     "remount": "^0.11.0",
     "requestidlecallback": "^0.3.0",
     "rollup": "^1.16.2",
