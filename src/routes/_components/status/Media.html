@@ -43,7 +43,7 @@
           title={description}
           on:mouseover="set({mouseover: event})"
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
-  {#if type === 'gifv' && $autoplayGifs}
+  {#if type === 'gifv' && $autoplayGifs && !blurhash}
     <AutoplayVideo
       ariaLabel="Animated GIF: {description}"
       poster={previewUrl}
@@ -52,7 +52,7 @@
       height={inlineHeight}
       {focus}
     />
-  {:elseif type === 'gifv' && !$autoplayGifs}
+  {:elseif type === 'gifv'}
     <NonAutoplayGifv
       class={noNativeWidthHeight ? 'no-native-width-height' : ''}
       label="Animated GIF: {description}"
