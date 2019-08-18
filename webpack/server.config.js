@@ -5,6 +5,7 @@ const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 
 const serverResolve = JSON.parse(JSON.stringify(resolve))
 serverResolve.alias['page-lifecycle/dist/lifecycle.mjs'] = 'lodash-es/noop' // page lifecycle fails in Node
+serverResolve.alias['../_workers/blurhash'] = 'lodash-es/noop' // not used on the server side
 
 module.exports = {
   entry: config.server.entry(),
