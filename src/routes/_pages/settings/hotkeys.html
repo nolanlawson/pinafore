@@ -3,11 +3,11 @@
 
   <h2 class="sr-only">Preferences</h2>
   <form class="ui-settings" aria-label="Hotkey settings">
-    <div class="setting-group">
+    <label class="setting-group">
       <input type="checkbox" id="choice-disable-hotkeys"
              bind:checked="$disableHotkeys" on:change="onChange()">
-      <label for="choice-disable-hotkeys">Disable hotkeys</label>
-    </div>
+      Disable hotkeys
+    </label>
   </form>
 
   <h2 class="sr-only">Guide</h2>
@@ -24,6 +24,7 @@
     margin-bottom: 20px;
   }
   .setting-group {
+    display: block;
     padding: 5px 0;
   }
 </style>

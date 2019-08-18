@@ -3,44 +3,44 @@
 
   <h2>Media</h2>
   <form class="ui-settings">
-    <div class="setting-group">
+    <label class="setting-group">
       <input type="checkbox" id="choice-never-mark-media-sensitive"
              bind:checked="$neverMarkMediaAsSensitive" on:change="onChange(event)">
-      <label for="choice-never-mark-media-sensitive">Show sensitive media by default</label>
-    </div>
-    <div class="setting-group">
-        <input type="checkbox" id="choice-use-blurhash"
-               bind:checked="$ignoreBlurhash" on:change="onChange(event)">
-        <label for="choice-use-blurhash">Show a plain gray color for sensitive media</label>
-      </div>
-    <div class="setting-group">
+      Show sensitive media by default
+    </label>
+    <label class="setting-group">
+      <input type="checkbox" id="choice-use-blurhash"
+              bind:checked="$ignoreBlurhash" on:change="onChange(event)">
+      Show a plain gray color for sensitive media
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-mark-media-sensitive"
              bind:checked="$markMediaAsSensitive" on:change="onChange(event)">
-      <label for="choice-mark-media-sensitive">Treat all media as sensitive</label>
-    </div>
-    <div class="setting-group">
+      Treat all media as sensitive
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-large-inline-media"
              bind:checked="$largeInlineMedia" on:change="onChange(event)">
-      <label for="choice-large-inline-media">Show large inline images and videos</label>
-    </div>
-    <div class="setting-group">
+      Show large inline images and videos
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-autoplay-gif"
              bind:checked="$autoplayGifs" on:change="onChange(event)">
-      <label for="choice-autoplay-gif">Autoplay GIFs</label>
-    </div>
+      Autoplay GIFs
+    </label>
   </form>
 
   <h2>UI</h2>
   <form class="ui-settings">
-    <div class="setting-group">
+    <label class="setting-group">
       <input type="checkbox" id="choice-disable-custom-scrollbars"
              bind:checked="$disableCustomScrollbars" on:change="onChange(event)">
-      <label for="choice-disable-custom-scrollbars">Disable custom scrollbars</label>
-    </div>
-    <div class="setting-group">
+      Disable custom scrollbars
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-disable-infinite-scroll"
              bind:checked="$disableInfiniteScroll" on:change="onChange(event)">
-      <label for="choice-disable-infinite-scroll">Disable
+      Disable
         <Tooltip
           text="infinite scroll"
           tooltipText={
@@ -48,42 +48,41 @@
             "or top of the timeline. Instead, buttons will allow you to load more content on demand."
           }
         />
-      </label>
-    </div>
-    <div class="setting-group">
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-hide-cards"
              bind:checked="$hideCards" on:change="onChange(event)">
-      <label for="choice-hide-cards">Hide link preview cards</label>
-    </div>
-    <div class="setting-group">
+      Hide link preview cards
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-underline-links"
              bind:checked="$underlineLinks" on:change="onChange(event)">
-      <label for="choice-underline-links">Underline links in toots and profiles</label>
-    </div>
+      Underline links in toots and profiles
+    </label>
   </form>
 
   <h2>Accessibility</h2>
   <form class="ui-settings">
-    <div class="setting-group">
+    <label class="setting-group">
       <input type="checkbox" id="choice-reduce-motion"
              bind:checked="$reduceMotion" on:change="onChange(event)">
-      <label for="choice-reduce-motion">Reduce motion in UI animations</label>
-    </div>
-    <div class="setting-group">
+      Reduce motion in UI animations
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-disable-tap-on-status"
              bind:checked="$disableTapOnStatus" on:change="onChange(event)">
-      <label for="choice-disable-tap-on-status">Disable tappable area on entire toot</label>
-    </div>
-    <div class="setting-group">
+      Disable tappable area on entire toot
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-omit-emoji-in-display-names"
              bind:checked="$omitEmojiInDisplayNames" on:change="onChange(event)">
-      <label for="choice-omit-emoji-in-display-names">Remove emoji from user display names</label>
-    </div>
-    <div class="setting-group">
+      Remove emoji from user display names
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-disable-long-aria-labels"
              bind:checked="$disableLongAriaLabels" on:change="onChange(event)">
-      <label for="choice-disable-long-aria-labels">Use short article ARIA labels</label>
-    </div>
+      Use short article ARIA labels
+    </label>
   </form>
 
   {#if $isUserLoggedIn }
@@ -100,6 +99,7 @@
     line-height: 2em;
   }
   .setting-group {
+    display: block;
     padding: 5px 0;
   }
 </style>
