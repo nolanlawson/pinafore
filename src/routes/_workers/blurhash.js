@@ -2,7 +2,11 @@ import { decode as decodeBlurHash } from 'blurhash'
 import registerPromiseWorker from 'promise-worker/register'
 import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'
 
-const OFFSCREEN_CANVAS = typeof OffscreenCanvas === 'function'
+const isChrome = /Chrome/.test(navigator.userAgent)
+
+// Disabled in Chrome because convertToBlob() is slow
+// https://github.com/nolanlawson/pinafore/issues/1396
+const OFFSCREEN_CANVAS = !isChrome && typeof OffscreenCanvas === 'function'
   ? new OffscreenCanvas(RESOLUTION, RESOLUTION) : null
 const OFFSCREEN_CANVAS_CONTEXT_2D = OFFSCREEN_CANVAS
   ? OFFSCREEN_CANVAS.getContext('2d') : null
