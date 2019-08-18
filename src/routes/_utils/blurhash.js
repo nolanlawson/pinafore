@@ -1,13 +1,21 @@
 import BlurhashWorker from 'worker-loader!../_workers/blurhash' // eslint-disable-line
 import PromiseWorker from 'promise-worker'
 import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'
-import QuickLRU from 'quick-lru'
+import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru'
 
-const CACHE = new QuickLRU({ maxSize: 100 })
+// A timeline will typically show 20-30 articles at once in the virtual list. The maximum number
+// of sensitive images per article is 4. 30*4=120, so this is a very conservative number.
+// Blurhash blobs seem to range from ~1.2-2kB, so this cache could grow to about 2kB*150=300kB max.
+const cache = new QuickLRU({ maxSize: 150 })
 
 let worker
 let canvas
 let canvasContext2D
+
+cache.on('evict', (evictedUrl, blurhash) => {
+  console.log('evicted URL', evictedUrl, 'with blurhash', blurhash)
+  URL.revokeObjectURL(evictedUrl)
+})
 
 export function init () {
   worker = worker || new PromiseWorker(new BlurhashWorker())
@@ -27,6 +35,7 @@ async function decodeUsingCanvas (imageData) {
   initCanvas()
   canvasContext2D.putImageData(imageData, 0, 0)
   const blob = await new Promise(resolve => canvas.toBlob(resolve))
+  console.log('blob.size', blob.size)
   return URL.createObjectURL(blob)
 }
 
@@ -40,10 +49,10 @@ async function decodeWithoutCache (blurhash) {
 }
 
 export async function decode (blurhash) {
-  let result = CACHE.get(blurhash)
+  let result = cache.get(blurhash)
   if (!result) {
     result = await decodeWithoutCache(blurhash)
-    CACHE.set(blurhash, result)
+    cache.set(blurhash, result)
   }
   return result
 }
