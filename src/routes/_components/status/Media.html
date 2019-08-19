@@ -1,5 +1,12 @@
 {#if type === 'video' || type === 'audio'}
-  {#if blurhash}
+  <button id={elementId}
+          type="button"
+          class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
+          aria-label="Play video: {description}"
+          style="width: {inlineWidth}px; height: {inlineHeight}px;">
+    {#if !blurhash}
+      <PlayVideoIcon />
+    {/if}
     {#if type === 'video'}
       <LazyImage
         alt={description}
@@ -13,28 +20,7 @@
         {focus}
       />
     {/if}
-  {:else}
-    <button id={elementId}
-            type="button"
-            class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
-            aria-label="Play video: {description}"
-            style="width: {inlineWidth}px; height: {inlineHeight}px;">
-      <PlayVideoIcon />
-      {#if type === 'video'}
-        <LazyImage
-          alt={description}
-          title={description}
-          src={previewUrl}
-          fallback={oneTransparentPixel}
-          blurhash={blurhash}
-          width={inlineWidth}
-          height={inlineHeight}
-          background="var(--loading-bg)"
-          {focus}
-        />
-      {/if}
-    </button>
-  {/if}
+  </button>
 {:else}
   <button id={elementId}
           type="button"
