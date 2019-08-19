@@ -107,10 +107,10 @@
     "assert": "^2.0.0",
     "eslint-plugin-html": "^6.0.0",
     "fake-indexeddb": "^2.1.1",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.0",
     "now": "^16.1.1",
     "standard": "^13.1.0",
-    "testcafe": "^1.2.1",
+    "testcafe": "^1.4.1",
     "worker-loader": "^2.0.0"
   },
   "engines": {
