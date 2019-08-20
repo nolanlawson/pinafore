@@ -123,7 +123,6 @@
 <script>
   import { store } from '../../_store/store'
   import { deleteMedia } from '../../_actions/media'
-  import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { observe } from 'svelte-extras'
   import SvgIcon from '../SvgIcon.html'
@@ -132,6 +131,9 @@
   import { get } from '../../_utils/lodash-lite'
   import { coordsToPercent } from '../../_utils/coordsToPercent'
   import { importMediaFocalPointDialog } from '../dialog/asyncDialogs'
+  import { throttleTimer } from '../../_utils/throttleTimer'
+
+  const updateMediaInStore = throttleTimer(scheduleIdleTask)
 
   export default {
     oncreate () {
@@ -183,15 +185,15 @@
         })
       },
       setupSyncToStore () {
-        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-
         this.observe('rawText', rawText => {
-          const { realm, index, media } = this.get()
-          if (media[index].description !== rawText) {
-            media[index].description = rawText
-            this.store.setComposeData(realm, { media })
-            saveStore()
-          }
+          updateMediaInStore(() => {
+            const { realm, index, media } = this.get()
+            if (media[index].description !== rawText) {
+              media[index].description = rawText
+              this.store.setComposeData(realm, { media })
+              this.store.save()
+            }
+          })
         }, { init: false })
       },
       setupAutosize () {

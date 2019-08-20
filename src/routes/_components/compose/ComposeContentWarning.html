@@ -15,9 +15,11 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import debounce from 'lodash-es/debounce'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { observe } from 'svelte-extras'
+  import { throttleTimer } from '../../_utils/throttleTimer'
+
+  const updateContentWarningInStore = throttleTimer(scheduleIdleTask)
 
   export default {
     oncreate () {
@@ -36,14 +38,12 @@
         })
       },
       setupSyncToStore () {
-        const saveText = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-
+        const { realm } = this.get()
         this.observe('rawText', rawText => {
-          const { realm } = this.get()
-          this.store.setComposeData(realm, {
-            contentWarning: rawText
+          updateContentWarningInStore(() => {
+            this.store.setComposeData(realm, { contentWarning: rawText })
+            this.store.save()
           })
-          saveText()
         }, { init: false })
       }
     }
