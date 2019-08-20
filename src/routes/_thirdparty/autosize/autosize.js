@@ -5,8 +5,10 @@
 
 import { mark, stop } from '../../_utils/marks'
 import debounce from 'lodash-es/debounce'
-import throttle from 'lodash-es/throttle'
 import { getScrollContainer } from '../../_utils/scrollContainer'
+import { throttleTimer } from '../../_utils/throttleTimer'
+
+const doUpdate = process.browser && throttleTimer(requestAnimationFrame)
 
 const map = new Map()
 const createEvent = (name) => new Event(name, { bubbles: true })
@@ -59,7 +61,7 @@ function assign (ta) {
     return endHeight
   }
 
-  const deferredUpdate = throttle(() => requestAnimationFrame(update), 100)
+  const deferredUpdate = () => doUpdate(update)
 
   function update () {
     mark('autosize:update()')
