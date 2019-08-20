@@ -29,7 +29,9 @@ function tryInitBlurhash () {
 
 async function decodeAllBlurhashes (statusOrNotification) {
   const status = statusOrNotification.status || statusOrNotification.notification.status
-  const mediaWithBlurhashes = get(status, ['media_attachments'], []).filter(_ => _.blurhash)
+  const mediaWithBlurhashes = get(status, ['media_attachments'], [])
+    .concat(get(status, ['reblog', 'media_attachments'], []))
+    .filter(_ => _.blurhash)
   if (mediaWithBlurhashes.length) {
     mark(`decodeBlurhash-${status.id}`)
     await Promise.all(mediaWithBlurhashes.map(async media => {
