@@ -1,17 +1,19 @@
 {#if type === 'video' || type === 'audio'}
   {#if blurhash}
     {#if type === 'video'}
-      <LazyImage
-        alt={description}
-        title={description}
-        src={previewUrl}
-        fallback={oneTransparentPixel}
-        blurhash={blurhash}
-        width={inlineWidth}
-        height={inlineHeight}
-        background="var(--loading-bg)"
-        {focus}
-      />
+      <div>
+        <LazyImage
+          alt={description}
+          title={description}
+          src={previewUrl}
+          fallback={oneTransparentPixel}
+          blurhash={blurhash}
+          width={inlineWidth}
+          height={inlineHeight}
+          background="var(--loading-bg)"
+          {focus}
+        />
+      </div>
     {/if}
   {:else}
     <button id={elementId}
