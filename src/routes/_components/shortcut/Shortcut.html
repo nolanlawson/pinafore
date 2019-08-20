@@ -1,7 +1,8 @@
 <script>
   import {
     addToShortcutScope,
-    removeFromShortcutScope } from '../../_utils/shortcuts'
+    removeFromShortcutScope
+} from '../../_utils/shortcuts'
   export default {
     data: () => ({ scope: 'global', key: null }),
     oncreate () {
@@ -18,7 +19,8 @@
         event.preventDefault()
         this.fire('pressed', {
           key: event.key,
-          timeStamp: event.timeStamp })
+          timeStamp: event.timeStamp
+        })
       }
     }
   }

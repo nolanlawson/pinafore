@@ -1,6 +1,7 @@
 import {
   getScrollContainer,
-  getOffsetHeight } from './scrollContainer'
+  getOffsetHeight
+} from './scrollContainer'
 import { smoothScroll } from './smoothScroll'
 
 let mainNavElement

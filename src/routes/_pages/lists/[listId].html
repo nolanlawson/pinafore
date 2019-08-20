@@ -22,7 +22,7 @@
 
   export default {
     computed: {
-      list: ({ params, $lists }) => $lists && $lists.find(_ => _.id === params['listId']),
+      list: ({ params, $lists }) => $lists && $lists.find(_ => _.id === params.listId),
       listTitle: ({ list }) => list ? list.title : ''
     },
     store: () => store,

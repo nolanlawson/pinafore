@@ -57,7 +57,7 @@ export async function logInToInstance () {
       (err.knownError ? '' : (navigator.onLine
         ? `Is this a valid Mastodon instance? Is a browser extension
            blocking the request? Are you in private browsing mode?`
-        : `Are you offline?`))
+        : 'Are you offline?'))
     const { instanceNameInSearch } = store.get()
     store.set({
       logInToInstanceError: error,

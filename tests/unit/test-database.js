@@ -26,7 +26,7 @@ const INSTANCE_INFO = {
 const createStatus = i => ({
   id: i.toString(),
   created_at: new Date().toISOString(),
-  content: `Status #4{id}`,
+  content: 'Status #4{id}',
   account: {
     id: '1'
   }

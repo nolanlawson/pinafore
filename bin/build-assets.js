@@ -9,7 +9,7 @@ const copyFile = promisify(fs.copyFile)
 
 async function compileThirdPartyCss () {
   let css = await readFile(path.resolve(__dirname, '../node_modules/emoji-mart/css/emoji-mart.css'), 'utf8')
-  css = `/* compiled from emoji-mart.css */` + new CleanCSS().minify(css).styles
+  css = '/* compiled from emoji-mart.css */' + new CleanCSS().minify(css).styles
   await writeFile(path.resolve(__dirname, '../static/emoji-mart.css'), css, 'utf8')
 }
 

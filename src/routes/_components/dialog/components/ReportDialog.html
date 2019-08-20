@@ -185,8 +185,8 @@
     },
     store: () => store,
     data: () => ({
-      account: void 0,
-      status: void 0,
+      account: undefined,
+      status: undefined,
       positiveText: 'Report',
       reportMap: {},
       recentStatuses: [],
@@ -219,7 +219,7 @@
         const { displayStatuses, account, comment, forward, reportMap } = this.get()
         const statusIds = displayStatuses.map(({ id }) => id).filter(id => reportMap[id])
         if (!statusIds.length) {
-          toast.say(`No toots to report.`)
+          toast.say('No toots to report.')
         } else {
           await reportStatuses(account, statusIds, comment, forward)
         }

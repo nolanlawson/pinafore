@@ -176,8 +176,8 @@
       Shortcut
     },
     data: () => ({
-      notification: void 0,
-      replyVisibility: void 0,
+      notification: undefined,
+      replyVisibility: undefined,
       contentPreloaded: false,
       enableShortcuts: null
     }),
@@ -284,8 +284,10 @@
       absoluteFormattedDate: ({ createdAtDateTS }) => absoluteDateFormatter.format(createdAtDateTS),
       timeagoFormattedDate: ({ createdAtDateTS, $now }) => formatTimeagoDate(createdAtDateTS, $now),
       reblog: ({ status }) => status.reblog,
-      ariaLabel: ({ originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
-        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels }) => (
+      ariaLabel: ({
+        originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
+        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels
+      }) => (
         getAccessibleLabelForStatus(originalAccount, account, plainTextContent,
           timeagoFormattedDate, spoilerText, showContent,
           reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
@@ -318,11 +320,13 @@
       // This params list deliberately does *not* include `spoilersShown` or `replyShown`, because these
       // change frequently and would therefore cause costly recomputes if included here.
       // The main goal here is to avoid typing by passing as many params as possible to child components.
-      params: ({ notification, notificationId, status, statusId, timelineType,
+      params: ({
+        notification, notificationId, status, statusId, timelineType,
         account, accountId, uuid, isStatusInNotification, isStatusInOwnThread,
         originalAccount, originalAccountId, visibility,
         replyVisibility, spoilerText, originalStatus, originalStatusId, inReplyToId,
-        enableShortcuts, shortcutScope, originalStatusEmojis }) => ({
+        enableShortcuts, shortcutScope, originalStatusEmojis
+      }) => ({
         notification,
         notificationId,
         status,

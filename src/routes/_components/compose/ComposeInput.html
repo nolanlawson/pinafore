@@ -151,24 +151,29 @@
         // ctrl or cmd (on macs) was pressed; ctrl-enter means post a toot
         const ctrlPressed = e.getModifierState('Control') || e.getModifierState('Meta')
         switch (keyCode) {
-          case 9: // tab
+          case 9: { // tab
             this.clickSelectedAutosuggestion(e)
             break
-          case 13: // enter
+          }
+          case 13: { // enter
             const autosuggestionClicked = this.clickSelectedAutosuggestion(e)
             if (!autosuggestionClicked && ctrlPressed) {
               this.fire('postAction')
             }
             break
-          case 38: // up
+          }
+          case 38: { // up
             this.incrementAutosuggestSelected(-1, e)
             break
-          case 40: // down
+          }
+          case 40: { // down
             this.incrementAutosuggestSelected(1, e)
             break
-          case 27: // escape
+          }
+          case 27: { // escape
             this.clearAutosuggestions(e)
             break
+          }
           default:
         }
       },

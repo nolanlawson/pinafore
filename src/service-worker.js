@@ -156,7 +156,7 @@ async function showRichNotification (data, notification) {
     }
     case 'reblog':
     case 'favourite':
-    case 'poll':
+    case 'poll': {
       await self.registration.showNotification(data.title, {
         badge,
         icon,
@@ -167,7 +167,8 @@ async function showRichNotification (data, notification) {
         }
       })
       break
-    case 'mention':
+    }
+    case 'mention': {
       const isPublic = ['public', 'unlisted'].includes(notification.status.visibility)
       const actions = [
         isPublic && {
@@ -196,6 +197,7 @@ async function showRichNotification (data, notification) {
         actions
       })
       break
+    }
   }
 }
 

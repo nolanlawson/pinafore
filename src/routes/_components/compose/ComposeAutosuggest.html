@@ -113,11 +113,13 @@
         !!($autosuggestShown && composeFocused)
       ),
       // text that is read to screen readers. based on https://haltersweb.github.io/Accessibility/autocomplete.html
-      assertiveAriaText: ({ shouldBeShown,
+      assertiveAriaText: ({
+        shouldBeShown,
         autosuggestSearchResults,
         autosuggestSelected,
         autosuggestType,
-        $omitEmojiInDisplayNames }) => {
+        $omitEmojiInDisplayNames
+      }) => {
         if (!shouldBeShown || !autosuggestSearchResults || !autosuggestSearchResults.length) {
           return ''
         }

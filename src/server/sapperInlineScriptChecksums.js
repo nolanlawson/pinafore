@@ -5,10 +5,10 @@
 import crypto from 'crypto'
 
 const baseScripts = [
-  `__SAPPER__={baseUrl:"",preloaded:[{},{}]};`,
-  `__SAPPER__={baseUrl:"",preloaded:[{}]};`,
-  `__SAPPER__={baseUrl:"",preloaded:[{},null,null,{}]};`,
-  `__SAPPER__={baseUrl:"",preloaded:[{},null,{}]};`
+  '__SAPPER__={baseUrl:"",preloaded:[{},{}]};',
+  '__SAPPER__={baseUrl:"",preloaded:[{}]};',
+  '__SAPPER__={baseUrl:"",preloaded:[{},null,null,{}]};',
+  '__SAPPER__={baseUrl:"",preloaded:[{},null,{}]};'
 ]
 
 const scriptsWithSW = baseScripts.map(script => (

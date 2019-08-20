@@ -7,7 +7,8 @@ import {
   onKeyDownInShortcutScope,
   popShortcutScope,
   pushShortcutScope,
-  removeFromShortcutScope } from '../../src/routes/_utils/shortcuts'
+  removeFromShortcutScope
+} from '../../src/routes/_utils/shortcuts'
 import assert from 'assert'
 
 function KeyDownEvent (key) {
