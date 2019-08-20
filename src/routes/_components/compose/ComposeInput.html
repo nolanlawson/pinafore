@@ -59,7 +59,6 @@
   import { store } from '../../_store/store'
   import { autosize } from '../../_thirdparty/autosize/autosize'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import debounce from 'lodash-es/debounce'
   import { mark, stop } from '../../_utils/marks'
   import { selectionChange } from '../../_utils/events'
   import {
@@ -70,6 +69,9 @@
   import { get } from '../../_utils/lodash-lite'
   import { on } from '../../_utils/eventBus'
   import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
+  import { throttleTimer } from '../../_utils/throttleTimer'
+
+  const updateComposeTextInStore = throttleTimer(scheduleIdleTask)
 
   export default {
     oncreate () {
@@ -106,14 +108,14 @@
         })
       },
       setupSyncToStore () {
-        const saveStore = debounce(() => scheduleIdleTask(() => this.store.save()), 1000)
-
+        const { realm } = this.get()
         this.observe('rawText', rawText => {
-          mark('observe rawText')
-          const { realm } = this.get()
-          this.store.setComposeData(realm, { text: rawText })
-          saveStore()
-          stop('observe rawText')
+          updateComposeTextInStore(() => {
+            mark('updateComposeTextInStore')
+            this.store.setComposeData(realm, { text: rawText })
+            this.store.save()
+            stop('updateComposeTextInStore')
+          })
         }, { init: false })
       },
       setupAutosize () {

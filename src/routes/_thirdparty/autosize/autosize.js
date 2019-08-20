@@ -5,11 +5,12 @@
 
 import { mark, stop } from '../../_utils/marks'
 import debounce from 'lodash-es/debounce'
-import throttle from 'lodash-es/throttle'
 import { getScrollContainer } from '../../_utils/scrollContainer'
+import { throttleTimer } from '../../_utils/throttleTimer'
+
+const doUpdate = process.browser && throttleTimer(requestAnimationFrame)
 
 const map = new Map()
-const createEvent = (name) => new Event(name, { bubbles: true })
 
 function assign (ta) {
   if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) {
@@ -19,7 +20,6 @@ function assign (ta) {
   // TODO: hack - grab our scroll container so we can maintain the scrollTop
   const container = getScrollContainer()
   let heightOffset = null
-  let cachedHeight = null
 
   function init () {
     const style = window.getComputedStyle(ta, null)
@@ -35,9 +35,8 @@ function assign (ta) {
 
   function resize () {
     mark('autosize:resize()')
-    const res = _resize()
+    _resize()
     stop('autosize:resize()')
-    return res
   }
 
   function _resize () {
@@ -51,15 +50,13 @@ function assign (ta) {
     if (ta.scrollHeight === 0) {
       // If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
       ta.style.height = originalHeight
-      return
+    } else {
+      ta.style.height = `${endHeight}px`
+      container.scrollTop = scrollTop // Firefox jiggles if we don't reset the scrollTop of the container
     }
-
-    ta.style.height = endHeight + 'px'
-    container.scrollTop = scrollTop // Firefox jiggles if we don't reset the scrollTop of the container
-    return endHeight
   }
 
-  const deferredUpdate = throttle(() => requestAnimationFrame(update), 100)
+  const deferredUpdate = () => doUpdate(update)
 
   function update () {
     mark('autosize:update()')
@@ -68,17 +65,7 @@ function assign (ta) {
   }
 
   function _update () {
-    const newHeight = resize()
-    if (cachedHeight !== newHeight) {
-      cachedHeight = newHeight
-      const evt = createEvent('autosize:resized')
-      try {
-        ta.dispatchEvent(evt)
-      } catch (err) {
-        // Firefox will throw an error on dispatchEvent for a detached element
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=889376
-      }
-    }
+    resize()
   }
 
   const pageResize = debounce(() => requestAnimationFrame(update), 1000)
@@ -86,17 +73,12 @@ function assign (ta) {
   const destroy = () => {
     window.removeEventListener('resize', pageResize, false)
     ta.removeEventListener('input', deferredUpdate, false)
-    ta.removeEventListener('autosize:destroy', destroy, false)
-    ta.removeEventListener('autosize:update', update, false)
 
     map.delete(ta)
   }
 
-  ta.addEventListener('autosize:destroy', destroy, false)
-
   window.addEventListener('resize', pageResize, false)
   ta.addEventListener('input', deferredUpdate, false)
-  ta.addEventListener('autosize:update', update, false)
 
   map.set(ta, {
     destroy,
