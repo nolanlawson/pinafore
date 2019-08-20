@@ -73,17 +73,12 @@ function assign (ta) {
   const destroy = () => {
     window.removeEventListener('resize', pageResize, false)
     ta.removeEventListener('input', deferredUpdate, false)
-    ta.removeEventListener('autosize:destroy', destroy, false)
-    ta.removeEventListener('autosize:update', update, false)
 
     map.delete(ta)
   }
 
-  ta.addEventListener('autosize:destroy', destroy, false)
-
   window.addEventListener('resize', pageResize, false)
   ta.addEventListener('input', deferredUpdate, false)
-  ta.addEventListener('autosize:update', update, false)
 
   map.set(ta, {
     destroy,
