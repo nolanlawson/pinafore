@@ -79,7 +79,7 @@ export default {
     mentions: ({ status }) => status.mentions || [],
     mentionsUser: ({ mentions, verifyCredentialsId }) => !!mentions.find(_ => _.id === verifyCredentialsId),
     mutingConversation: ({ status }) => !!status.muted,
-    muteConversationLabel: ({ mutingConversation }) => mutingConversation ? `Unmute conversation` : `Mute conversation`,
+    muteConversationLabel: ({ mutingConversation }) => mutingConversation ? 'Unmute conversation' : 'Mute conversation',
     muteConversationIcon: ({ mutingConversation }) => mutingConversation ? '#fa-volume-up' : '#fa-volume-off',
     isPublicOrUnlisted: ({ visibility }) => visibility === 'public' || visibility === 'unlisted',
     items: ({

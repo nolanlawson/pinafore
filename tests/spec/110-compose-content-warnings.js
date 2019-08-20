@@ -50,8 +50,8 @@ test('content warnings can have emoji', async t => {
 })
 
 test('no XSS in content warnings or text', async t => {
-  const pwned1 = `<script>alert("pwned!")</script>`
-  const pwned2 = `<script>alert("pwned from CW!")</script>`
+  const pwned1 = '<script>alert("pwned!")</script>'
+  const pwned2 = '<script>alert("pwned from CW!")</script>'
   await loginAsFoobar(t)
   await t
     .typeText(composeInput, pwned1)

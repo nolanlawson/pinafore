@@ -59,7 +59,7 @@ export function timelineComputations (store) {
   )
   store.compute('currentTimelineValue', ['currentTimeline'], currentTimeline => {
     if (!currentTimeline) {
-      return void 0
+      return undefined
     }
     const split = currentTimeline.split('/')
     const len = split.length
@@ -152,7 +152,7 @@ export function timelineComputations (store) {
   )
 
   store.compute('timelineNotificationItemSummaries',
-    [`timelineData_timelineItemSummariesToAdd`, 'timelineFilterFunction', 'currentInstance'],
+    ['timelineData_timelineItemSummariesToAdd', 'timelineFilterFunction', 'currentInstance'],
     (root, timelineFilterFunction, currentInstance) => (
       get(root, [currentInstance, 'notifications'])
     )

@@ -44,7 +44,7 @@ async function cloneMastodon () {
   } catch (e) {
     console.log('Cloning mastodon...')
     await exec(`git clone --single-branch --branch ${GIT_BRANCH} ${GIT_URL} "${mastodonDir}"`)
-    await exec(`git fetch origin --tags`, { cwd: mastodonDir }) // may already be cloned, e.g. in CI
+    await exec('git fetch origin --tags', { cwd: mastodonDir }) // may already be cloned, e.g. in CI
     await exec(`git checkout ${GIT_TAG_OR_COMMIT}`, { cwd: mastodonDir })
     await writeFile(path.join(dir, '../mastodon/.env'), envFile, 'utf8')
   }

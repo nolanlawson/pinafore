@@ -1,7 +1,7 @@
 <button type="button"
         title={label}
         aria-label={label}
-        aria-pressed={pressable ? !!pressed : void 0}
+        aria-pressed={pressable ? !!pressed : undefined}
         aria-hidden={ariaHidden}
         class={computedClass}
         {disabled}
@@ -112,11 +112,11 @@
       big: false,
       muted: false,
       disabled: false,
-      svgClassName: void 0,
-      elementId: void 0,
+      svgClassName: undefined,
+      elementId: undefined,
       pressable: false,
       pressed: false,
-      className: void 0,
+      className: undefined,
       sameColorWhenPressed: false,
       ariaHidden: false,
       clickListener: true

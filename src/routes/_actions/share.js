@@ -9,6 +9,6 @@ export async function shareStatus (status) {
       url: status.url
     })
   } catch (e) {
-    toast.say(`Unable to share: ` + (e.message || ''))
+    toast.say('Unable to share: ' + (e.message || ''))
   }
 }

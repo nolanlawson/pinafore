@@ -63,17 +63,17 @@ describe('test-emoji.js', function () {
   it('does not replace non-emoji characters', function () {
     const replacer = _ => `<div>${_}</div>`
     assert.strictEqual(
-      replaceEmoji(`it's over #9000`, replacer),
-      `it's over #9000`
+      replaceEmoji('it\'s over #9000', replacer),
+      'it\'s over #9000'
     )
     assert.strictEqual(
-      replaceEmoji(`woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`, replacer),
-      `woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`
+      replaceEmoji('woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®', replacer),
+      'woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®'
     )
 
     assert.strictEqual(
-      replaceEmoji(`woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`, replacer),
-      `woot !@#$%^&*()~` + '`' + `{[}]:;"'<,>.?/£™℠®`
+      replaceEmoji('woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®', replacer),
+      'woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®'
     )
 
     // hidden VARIATION SELECTOR character is in here
@@ -118,19 +118,19 @@ describe('test-emoji.js', function () {
     const replacer = _ => ''
     assert.strictEqual(
       replaceEmoji(`woot ${mindBlown}`, replacer),
-      `woot `
+      'woot '
     )
     assert.strictEqual(
       replaceEmoji(`woot ${mindBlown} woot`, replacer),
-      `woot  woot`
+      'woot  woot'
     )
     assert.strictEqual(
       replaceEmoji(`woot ${mindBlown}${elephant}`, replacer),
-      `woot `
+      'woot '
     )
     assert.strictEqual(
       replaceEmoji(`woot ${mindBlown}${elephant} woot`, replacer),
-      `woot  woot`
+      'woot  woot'
     )
   })
 

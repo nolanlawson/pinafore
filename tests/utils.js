@@ -50,7 +50,7 @@ export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitiv
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 export const disableInfiniteScroll = $('#choice-disable-infinite-scroll')
 export const disableUnreadNotifications = $('#choice-disable-unread-notification-counts')
-export const dialogOptionsOption = $(`.modal-dialog button`)
+export const dialogOptionsOption = $('.modal-dialog button')
 export const emojiSearchInput = $('.emoji-mart-search input')
 export const confirmationDialogOKButton = $('.confirmation-dialog-form-flex button:nth-child(1)')
 export const confirmationDialogCancelButton = $('.confirmation-dialog-form-flex button:nth-child(2)')
@@ -353,7 +353,7 @@ export function getNthStatusAndImage (nStatus, nImage) {
 }
 
 export function getFirstVisibleStatus () {
-  return $(`.list-item > article[aria-posinset]`).nth(0)
+  return $('.list-item > article[aria-posinset]').nth(0)
 }
 
 export function getNthReplyButton (n) {
