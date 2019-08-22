@@ -1,21 +1,4 @@
-{#if type === 'video' || type === 'audio'}
-  {#if blurhash}
-    {#if type === 'video'}
-      <div>
-        <LazyImage
-          alt={description}
-          title={description}
-          src={previewUrl}
-          fallback={oneTransparentPixel}
-          blurhash={blurhash}
-          width={inlineWidth}
-          height={inlineHeight}
-          background="var(--loading-bg)"
-          {focus}
-        />
-      </div>
-    {/if}
-  {:else}
+{#if (type === 'video' && !blurhash) || type === 'audio'}
     <button id={elementId}
             type="button"
             class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
@@ -36,7 +19,6 @@
         />
       {/if}
     </button>
-  {/if}
 {:else}
   <button id={elementId}
           type="button"
@@ -54,7 +36,7 @@
       height={inlineHeight}
       {focus}
     />
-  {:elseif type === 'gifv'}
+  {:elseif type === 'gifv' && !blurhash}
     <NonAutoplayGifv
       class={noNativeWidthHeight ? 'no-native-width-height' : ''}
       label="Animated GIF: {description}"

@@ -54,13 +54,12 @@
   }
 
   .status-sensitive-media-container.grouped-images .status-sensitive-inner-div {
-    position: absolute;
+    position: relative;
     width: 100%;
   }
 
   .status-sensitive-media-container.grouped-images {
     grid-area: media-grp;
-    padding-bottom: 58%;
   }
 
   .status-sensitive-media-button {
@@ -87,6 +86,7 @@
 
   .status-sensitive-media-shown .status-sensitive-media-button.status-sensitive-media-button-transparent {
     top: 5px;
+    left: 5px;
   }
 
   .status-sensitive-media-hidden .status-sensitive-media-button {
@@ -153,6 +153,7 @@
 
   .status-sensitive-media-hidden .svg-wrapper.svg-wrapper-transparent {
     top: 5px;
+    left: 5px;
   }
 
   .status-sensitive-media-container.grouped-images .svg-wrapper {
@@ -200,9 +201,11 @@
     },
     store: () => store,
     computed: {
-      computedClass: ({ sensitiveShown, $largeInlineMedia }) => classname(
+      computedClass: ({ sensitiveShown, oddCols, twoCols, $largeInlineMedia }) => classname(
         'status-sensitive-media-container',
         sensitiveShown ? 'status-sensitive-media-shown' : 'status-sensitive-media-hidden',
+        oddCols && 'odd-cols',
+        twoCols && 'two-cols',
         $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
@@ -233,7 +236,21 @@
       sensitiveMediaIconClass: ({ canUseBlurhash }) => classname(
         'status-sensitive-media-svg',
         canUseBlurhash && 'status-sensitive-media-svg-transparent'
-      )
+      ),
+      nCols:
+        ({ mediaAttachments, $largeInlineMedia }) => {
+          return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
+        },
+      oddCols:
+        ({ mediaAttachments }) => {
+          return (mediaAttachments.length > 1 && (mediaAttachments.length % 2))
+        },
+
+      twoCols:
+        ({ mediaAttachments }) => {
+          return (mediaAttachments.length === 2)
+        }
+
     },
     methods: {
       toggleSensitiveMedia () {
