@@ -23,16 +23,16 @@
     border-radius: 6px;
   }
 
-  .status-media.grouped-images > :global(*) {
+  .status-media.grouped-images > :global(.inline-media) {
       padding-bottom: 56.25%;
       width: 100%;
   }
 
-  .status-media.grouped-images.two-cols > :global(*) {
+  .status-media.grouped-images.two-cols > :global(.inline-media) {
       padding-bottom: calc(112.5% + 5px);
   }
 
-  .status-media.grouped-images.odd-cols > :global(:first-child) {
+  .status-media.grouped-images.odd-cols > :global(.inline-media:first-child) {
       grid-row-end: span 2;
       padding-bottom: calc(112.5% + 5px);
       background-color: blue;

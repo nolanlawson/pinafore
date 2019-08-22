@@ -1,7 +1,7 @@
 {#if (type === 'video' && !blurhash) || type === 'audio'}
     <button id={elementId}
             type="button"
-            class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
+            class="inline-media play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
             aria-label="Play video: {description}"
             style="width: {inlineWidth}px; height: {inlineHeight}px;">
       <PlayVideoIcon />
@@ -22,7 +22,7 @@
 {:else}
   <button id={elementId}
           type="button"
-          class="show-image-button focus-after {$largeInlineMedia ? '' : 'fixed-size'}"
+          class="inline-media show-image-button focus-after {$largeInlineMedia ? '' : 'fixed-size'}"
           aria-label="Show image: {description}"
           title={description}
           on:mouseover="set({mouseover: event})"
