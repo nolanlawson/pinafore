@@ -1,7 +1,7 @@
 <div class={computedClass}
      style="grid-template-columns: repeat({nCols}, 1fr);" >
   {#each mediaAttachments as media, index}
-    <Media {media} {uuid} {mediaAttachments} {index} {showBlurhash} />
+    <Media {media} {uuid} {mediaAttachments} {index} {showAsSensitive} />
   {/each}
 </div>
 <style>
@@ -56,8 +56,8 @@
         twoCols && 'two-cols',
         !$largeInlineMedia && 'grouped-images'
       ),
-      showBlurhash: ({ sensitive, sensitiveShown, mediaAttachments }) => {
-        return sensitive && mediaAttachments.every(attachment => !!attachment.blurhash) ? !sensitiveShown : false
+      showAsSensitive: ({ sensitive, sensitiveShown }) => {
+        return sensitive ? !sensitiveShown : false
       },
       nCols: ({ mediaAttachments, $largeInlineMedia }) => {
         return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1

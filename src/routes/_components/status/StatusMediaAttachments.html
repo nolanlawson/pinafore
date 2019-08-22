@@ -4,32 +4,30 @@
   {#if sensitiveShown}
   <button id={elementId}
           type="button"
-          class={sensitiveMediaButtonClass}
+          class="status-sensitive-media-button"
           aria-label="Hide sensitive media" >
-    <div class={svgWrapperClass}>
-      <SvgIcon className={sensitiveMediaIconClass}
+    <div class="svg-wrapper">
+      <SvgIcon className="status-sensitive-media-svg"
                href="#fa-eye-slash" />
     </div>
   </button>
   {:else}
     <button id={elementId}
             type="button"
-            class={sensitiveMediaButtonClass}
+            class="status-sensitive-media-button"
             aria-label="Show sensitive media" >
 
-      <div class="{customWarningClass}">
+      <div class="status-sensitive-media-warning">
         <div class="status-sensitive-media-warning-text">
           Sensitive content. Click to show.
         </div>
       </div>
-      <div class={svgWrapperClass}>
-        <SvgIcon className={sensitiveMediaIconClass} href="#fa-eye" />
+      <div class="svg-wrapper">
+        <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
       </div>
     </button>
   {/if}
-  {#if sensitiveShown || canUseBlurhash}
-    <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
-  {/if}
+  <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
   </div>
 </div>
 {#if enableShortcuts}
@@ -79,14 +77,9 @@
 
   .status-sensitive-media-shown .status-sensitive-media-button {
     position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 90;
-  }
-
-  .status-sensitive-media-shown .status-sensitive-media-button.status-sensitive-media-button-transparent {
     top: 5px;
     left: 5px;
+    z-index: 90;
   }
 
   .status-sensitive-media-hidden .status-sensitive-media-button {
@@ -116,18 +109,10 @@
     color: var(--deemphasized-text-color);
     z-index: 60;
     padding: 0 10px;
-  }
-
-  .status-sensitive-media-container .status-sensitive-media-warning-transparent {
     position: absolute;
   }
 
-  .status-sensitive-media-container .status-sensitive-media-warning-opaque {
-    background: var(--mask-bg);
-    height: 100%;
-  }
-
-  .status-sensitive-media-container .status-sensitive-media-warning-transparent .status-sensitive-media-warning-text {
+  .status-sensitive-media-container .status-sensitive-media-warning .status-sensitive-media-warning-text {
     background: var(--mask-bg);
     padding: 10px;
     border-radius: 6px;
@@ -145,15 +130,10 @@
   .status-sensitive-media-hidden .svg-wrapper {
     position: absolute;
     background: none;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .status-sensitive-media-hidden .svg-wrapper.svg-wrapper-transparent {
     top: 5px;
     left: 5px;
+    right: 0;
+    bottom: 0;
   }
 
   .status-sensitive-media-container.grouped-images .svg-wrapper {
@@ -172,11 +152,6 @@
     padding: 6px 10px;
   }
   :global(.status-sensitive-media-container.status-sensitive-media-hidden .status-sensitive-media-svg) {
-    fill: var(--deemphasized-text-color);
-    background: var(--mask-opaque-bg);
-  }
-  :global(.status-sensitive-media-container.status-sensitive-media-hidden
-    .status-sensitive-media-svg.status-sensitive-media-svg-transparent) {
     fill: var(--blurhash-sensitive-text-color);
     background: var(--mask-bg);
   }
@@ -209,7 +184,6 @@
         $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       mediaAttachments: ({ originalStatus }) => originalStatus.media_attachments,
-      canUseBlurhash: ({ $ignoreBlurhash, mediaAttachments }) => !$ignoreBlurhash && mediaAttachments && mediaAttachments.every(media => !!media.blurhash),
       sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
         !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
@@ -221,22 +195,6 @@
         }
         return `padding-bottom: ${Math.ceil(mediaAttachments.length / 2) * 29}%;`
       },
-      sensitiveMediaButtonClass: ({ canUseBlurhash }) => classname(
-        'status-sensitive-media-button',
-        canUseBlurhash && 'status-sensitive-media-button-transparent'
-      ),
-      svgWrapperClass: ({ canUseBlurhash }) => classname(
-        'svg-wrapper',
-        canUseBlurhash && 'svg-wrapper-transparent'
-      ),
-      customWarningClass: ({ canUseBlurhash }) => classname(
-        'status-sensitive-media-warning',
-        canUseBlurhash ? 'status-sensitive-media-warning-transparent' : 'status-sensitive-media-warning-opaque'
-      ),
-      sensitiveMediaIconClass: ({ canUseBlurhash }) => classname(
-        'status-sensitive-media-svg',
-        canUseBlurhash && 'status-sensitive-media-svg-transparent'
-      ),
       nCols: ({ mediaAttachments, $largeInlineMedia }) => {
         return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
       },

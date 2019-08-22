@@ -155,7 +155,8 @@
       "MessageChannel",
       "ImageData",
       "OffscreenCanvas",
-      "postMessage"
+      "postMessage",
+      "getComputedStyle"
     ],
     "ignore": [
       "dist",

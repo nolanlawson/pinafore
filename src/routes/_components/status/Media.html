@@ -1,4 +1,4 @@
-{#if (type === 'video' && !blurhash) || type === 'audio'}
+{#if !blurhash && (type === 'video' || type === 'audio')}
     <button id={elementId}
             type="button"
             class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
@@ -11,7 +11,7 @@
           title={description}
           src={previewUrl}
           fallback={oneTransparentPixel}
-          blurhash={blurhash}
+          {blurhash}
           width={inlineWidth}
           height={inlineHeight}
           background="var(--loading-bg)"
@@ -27,7 +27,7 @@
           title={description}
           on:mouseover="set({mouseover: event})"
           style="width: {inlineWidth}px; height: {inlineHeight}px;">
-  {#if type === 'gifv' && $autoplayGifs && !blurhash}
+  {#if type === 'gifv' && $autoplayGifs}
     <AutoplayVideo
       ariaLabel="Animated GIF: {description}"
       poster={previewUrl}
@@ -36,12 +36,12 @@
       height={inlineHeight}
       {focus}
     />
-  {:elseif type === 'gifv' && !blurhash}
+  {:elseif type === 'gifv'}
     <NonAutoplayGifv
       class={noNativeWidthHeight ? 'no-native-width-height' : ''}
       label="Animated GIF: {description}"
       poster={previewUrl}
-      blurhash={blurhash}
+      {blurhash}
       src={url}
       staticSrc={previewUrl}
       width={inlineWidth}
@@ -55,7 +55,7 @@
       title={description}
       src={previewUrl}
       fallback={oneTransparentPixel}
-      blurhash={blurhash}
+      {blurhash}
       width={inlineWidth}
       height={inlineHeight}
       background="var(--loading-bg)"
@@ -94,6 +94,7 @@
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate } from '../../_utils/delegate'
+  import { convertCssPropertyToDataUrl } from '../../_utils/convertCssPropertyToDataUrl'
 
 export default {
     async oncreate () {
@@ -129,8 +130,16 @@ export default {
       elementId: ({ media, uuid }) => `media-${uuid}-${media.id}`,
       description: ({ media }) => media.description || '',
       previewUrl: ({ media }) => media.preview_url,
-      decodedBlurhash: ({ media }) => media.decodedBlurhash || ONE_TRANSPARENT_PIXEL,
-      blurhash: ({ showBlurhash, decodedBlurhash }) => showBlurhash && decodedBlurhash,
+      decodedBlurhash: ({ media }) => media.decodedBlurhash,
+      blurhashToUse: ({ decodedBlurhash, $ignoreBlurhash }) => {
+        if (!$ignoreBlurhash && decodedBlurhash) {
+          return decodedBlurhash
+        }
+        // Convert the var(--loading-bg) variable into a data URL based on a single pixel of color
+        // TODO: this is hacky
+        return convertCssPropertyToDataUrl('--mask-bg')
+      },
+      blurhash: ({ blurhashToUse, showAsSensitive }) => showAsSensitive && blurhashToUse,
       url: ({ media }) => media.url,
       type: ({ media }) => media.type
     },
