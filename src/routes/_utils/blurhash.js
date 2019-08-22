@@ -35,7 +35,6 @@ async function decodeUsingCanvas (imageData) {
   initCanvas()
   canvasContext2D.putImageData(imageData, 0, 0)
   const blob = await new Promise(resolve => canvas.toBlob(resolve))
-  console.log('blob.size', blob.size)
   return URL.createObjectURL(blob)
 }
 
