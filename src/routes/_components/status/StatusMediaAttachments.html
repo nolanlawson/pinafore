@@ -237,20 +237,15 @@
         'status-sensitive-media-svg',
         canUseBlurhash && 'status-sensitive-media-svg-transparent'
       ),
-      nCols:
-        ({ mediaAttachments, $largeInlineMedia }) => {
-          return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
-        },
-      oddCols:
-        ({ mediaAttachments }) => {
-          return (mediaAttachments.length > 1 && (mediaAttachments.length % 2))
-        },
-
-      twoCols:
-        ({ mediaAttachments }) => {
-          return (mediaAttachments.length === 2)
-        }
-
+      nCols: ({ mediaAttachments, $largeInlineMedia }) => {
+        return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
+      },
+      oddCols: ({ mediaAttachments }) => {
+        return (mediaAttachments.length > 1 && (mediaAttachments.length % 2))
+      },
+      twoCols: ({ mediaAttachments }) => {
+        return (mediaAttachments.length === 2)
+      }
     },
     methods: {
       toggleSensitiveMedia () {
