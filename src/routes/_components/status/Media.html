@@ -1,4 +1,4 @@
-{#if type === 'video' || type === 'audio'}
+{#if !blurhash && (type === 'video' || type === 'audio')}
     <button id={elementId}
             type="button"
             class="play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
