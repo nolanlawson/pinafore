@@ -56,23 +56,18 @@
         twoCols && 'two-cols',
         !$largeInlineMedia && 'grouped-images'
       ),
-      showBlurhash:
-        ({ sensitive, sensitiveShown, mediaAttachments }) => {
-          return sensitive && mediaAttachments.every(attachment => !!attachment.blurhash) ? !sensitiveShown : false
-        },
-      nCols:
-        ({ mediaAttachments, $largeInlineMedia }) => {
-          return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
-        },
-      oddCols:
-        ({ mediaAttachments }) => {
-          return (mediaAttachments.length > 1 && (mediaAttachments.length % 2))
-        },
-
-      twoCols:
-        ({ mediaAttachments }) => {
-          return (mediaAttachments.length === 2)
-        }
+      showBlurhash: ({ sensitive, sensitiveShown, mediaAttachments }) => {
+        return sensitive && mediaAttachments.every(attachment => !!attachment.blurhash) ? !sensitiveShown : false
+      },
+      nCols: ({ mediaAttachments, $largeInlineMedia }) => {
+        return (!$largeInlineMedia && mediaAttachments.length > 1) ? 2 : 1
+      },
+      oddCols: ({ mediaAttachments }) => {
+        return (mediaAttachments.length > 1 && (mediaAttachments.length % 2))
+      },
+      twoCols: ({ mediaAttachments }) => {
+        return (mediaAttachments.length === 2)
+      }
     },
     components: {
       Media
