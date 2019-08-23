@@ -22,7 +22,7 @@ addons:
     - imagemagick
     - libffi-dev
     - libgdbm-dev
-    - libgdbm3
+    - libgdbm5
     - libicu-dev
     - libidn11-dev
     - libncurses5-dev
@@ -33,10 +33,8 @@ addons:
     - libxml2-dev
     - libxslt1-dev
     - libyaml-dev
-    - pkg-config nodejs
-    - postgresql-10
-    - postgresql-client-10
-    - postgresql-contrib-10
+    - pkg-config
+    - postgresql-contrib
     - protobuf-compiler
     - redis-server
     - redis-tools
