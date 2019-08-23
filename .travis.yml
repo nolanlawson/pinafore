@@ -9,7 +9,7 @@ services:
   - xvfb
 addons:
   chrome: stable
-  postgresql: "10"
+  postgresql: "11"
   apt:
     packages:
     - autoconf
@@ -34,9 +34,9 @@ addons:
     - libxslt1-dev
     - libyaml-dev
     - pkg-config
-    - postgresql-10
-    - postgresql-client-10
-    - postgresql-contrib-10
+    - postgresql-11
+    - postgresql-client-11
+    - postgresql-contrib-11
     - protobuf-compiler
     - redis-server
     - redis-tools
@@ -44,7 +44,7 @@ addons:
 before_install:
   - npm install -g greenkeeper-lockfile@1
   # setup postgres
-  - psql -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+  - psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
   # install yarn
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s
   - export PATH="$HOME/.yarn/bin:$PATH"
