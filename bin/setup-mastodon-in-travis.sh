@@ -11,8 +11,6 @@ source "$HOME/.rvm/scripts/rvm"
 rvm install 2.6.1
 rvm use 2.6.1
 
-echo PING | nc localhost 6379 # check redis running
-
 # check versions
 ruby --version
 node --version
