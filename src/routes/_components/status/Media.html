@@ -3,7 +3,7 @@
             type="button"
             class="inline-media play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
             aria-label="Play video: {description}"
-            style="width: {inlineWidth}px; height: {inlineHeight}px;">
+            style={inlineMediaStyle}>
       <PlayVideoIcon />
       {#if type === 'video'}
         <LazyImage
@@ -26,7 +26,7 @@
           aria-label="Show image: {description}"
           title={description}
           on:mouseover="set({mouseover: event})"
-          style="width: {inlineWidth}px; height: {inlineHeight}px;">
+          style={inlineMediaStyle}>
   {#if type === 'gifv' && $autoplayGifs && !blurhash}
     <AutoplayVideo
       ariaLabel="Animated GIF: {description}"
@@ -44,6 +44,7 @@
       {blurhash}
       src={url}
       staticSrc={previewUrl}
+      useWidthHeight={!blurhash}
       width={inlineWidth}
       height={inlineHeight}
       playing={mouseover}
@@ -141,7 +142,14 @@ export default {
       },
       blurhash: ({ blurhashToUse, showAsSensitive }) => showAsSensitive && blurhashToUse,
       url: ({ media }) => media.url,
-      type: ({ media }) => media.type
+      type: ({ media }) => media.type,
+      inlineMediaStyle: ({ type, inlineWidth, inlineHeight, blurhash, $largeInlineMedia }) => {
+        if ((type === 'audio') || (blurhash && $largeInlineMedia)) {
+          return ''
+        } else {
+          return `width: ${inlineWidth}px; height: ${inlineHeight}px;`
+        }
+      }
     },
     methods: {
       onClick () {

@@ -38,6 +38,17 @@
       background-color: blue;
   }
 
+  .status-media.not-grouped-images > :global(.inline-media) {
+    width: 100%;
+    min-height: 250px;
+  }
+
+  .status-media.not-grouped-images :global(.inline-media img),
+  .status-media.not-grouped-images :global(.inline-media .lazy-image) {
+    width: 100%;
+    height: 100%;
+  }
+
   .status-media.status-media-is-sensitive {
     height: inherit;
     margin: 0;
@@ -54,7 +65,7 @@
         sensitive && 'status-media-is-sensitive',
         oddCols && 'odd-cols',
         twoCols && 'two-cols',
-        !$largeInlineMedia && 'grouped-images'
+        $largeInlineMedia ? 'not-grouped-images' : 'grouped-images'
       ),
       showAsSensitive: ({ sensitive, sensitiveShown }) => {
         return sensitive ? !sensitiveShown : false

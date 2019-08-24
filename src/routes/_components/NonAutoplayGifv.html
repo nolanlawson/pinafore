@@ -1,5 +1,5 @@
 <div class="non-autoplay-gifv  {$largeInlineMedia ? '' : 'non-autoplay-gifv-fixed-size'}"
-     style="width: {width}px; height: {height}px;"
+     {style}
      on:mouseover="onMouseOver(event)"
      ref:node
 >
@@ -70,6 +70,11 @@
       oneTransparentPixel: ONE_TRANSPARENT_PIXEL,
       focus: undefined
     }),
+    computed: {
+      style: ({ useWidthHeight, width, height }) => (
+        useWidthHeight ? `width: ${width}px; height: ${height}px;` : ''
+      )
+    },
     components: {
       PlayVideoIcon,
       LazyImage,
