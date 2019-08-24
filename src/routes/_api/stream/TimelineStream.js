@@ -13,7 +13,7 @@ export class TimelineStream extends EventEmitter {
     this._onStateChange = this._onStateChange.bind(this)
     this._onOnline = this._onOnline.bind(this)
     this._onOffline = this._onOffline.bind(this)
-    this._onOnlineStateChange = this._onOnlineStateChange.bind(this)
+    this._onForcedOnlineStateChange = this._onForcedOnlineStateChange.bind(this)
     this._setupWebSocket()
     this._setupEvents()
   }
@@ -65,14 +65,14 @@ export class TimelineStream extends EventEmitter {
 
   _setupEvents () {
     lifecycle.addEventListener('statechange', this._onStateChange)
-    eventBus.on('forcedOnline', this._onOnlineStateChange) // only happens in tests
+    eventBus.on('forcedOnline', this._onForcedOnlineStateChange) // only happens in tests
     window.addEventListener('online', this._onOnline)
     window.addEventListener('offline', this._onOffline)
   }
 
   _teardownEvents () {
     lifecycle.removeEventListener('statechange', this._onStateChange)
-    eventBus.removeListener('forcedOnline', this._onOnlineStateChange) // only happens in tests
+    eventBus.removeListener('forcedOnline', this._onForcedOnlineStateChange) // only happens in tests
     window.removeEventListener('online', this._onOnline)
     window.removeEventListener('offline', this._onOffline)
   }
@@ -103,31 +103,38 @@ export class TimelineStream extends EventEmitter {
     }
     if (event.newState === 'active') { // page is reopened from a background tab
       console.log('active')
-      console.log('websocket readyState', this._ws && this._ws.readyState)
-      if (this._ws && this._ws.readyState !== WebSocketClient.OPEN) {
-        // if a websocket connection is not currently open, then reset the
-        // backoff counter to ensure that fresh notifications come in faster
-        this._ws.reset()
-        this._ws.reconnect()
-      }
+      this._tryToReconnect()
     }
   }
 
   _onOnline () {
-    this._onOnlineStateChange(true)
+    console.log('online')
+    this._unpause()
+    this._tryToReconnect()
   }
 
   _onOffline () {
-    this._onOnlineStateChange(false)
+    console.log('offline')
+    this._pause()
   }
 
-  _onOnlineStateChange (online) {
+  _onForcedOnlineStateChange (online) {
     if (online) {
-      console.log('online')
+      console.log('online forced')
       this._unpause()
     } else {
-      console.log('offline')
+      console.log('offline forced')
       this._pause()
+    }
+  }
+
+  _tryToReconnect () {
+    console.log('websocket readyState', this._ws && this._ws.readyState)
+    if (this._ws && this._ws.readyState !== WebSocketClient.OPEN) {
+      // if a websocket connection is not currently open, then reset the
+      // backoff counter to ensure that fresh notifications come in faster
+      this._ws.reset()
+      this._ws.reconnect()
     }
   }
 }
