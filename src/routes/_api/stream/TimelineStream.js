@@ -1,4 +1,4 @@
-import WebSocketClient from '@gamestdio/websocket'
+import { WebSocketClient } from '../../_thirdparty/websocket/websocket'
 import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
 import { getStreamUrl } from './getStreamUrl'
 import { EventEmitter } from 'events-light'
@@ -11,7 +11,9 @@ export class TimelineStream extends EventEmitter {
     this._accessToken = accessToken
     this._timeline = timeline
     this._onStateChange = this._onStateChange.bind(this)
-    this._onOnlineForced = this._onOnlineForced.bind(this)
+    this._onOnline = this._onOnline.bind(this)
+    this._onOffline = this._onOffline.bind(this)
+    this._onOnlineStateChange = this._onOnlineStateChange.bind(this)
     this._setupWebSocket()
     this._setupEvents()
   }
@@ -40,7 +42,7 @@ export class TimelineStream extends EventEmitter {
 
   _setupWebSocket () {
     const url = getStreamUrl(this._streamingApi, this._accessToken, this._timeline)
-    const ws = new WebSocketClient(url, null, { backoff: 'fibonacci' })
+    const ws = new WebSocketClient(url)
 
     ws.onopen = () => {
       if (!this._opened) {
@@ -63,12 +65,16 @@ export class TimelineStream extends EventEmitter {
 
   _setupEvents () {
     lifecycle.addEventListener('statechange', this._onStateChange)
-    eventBus.on('forcedOnline', this._onOnlineForced)
+    eventBus.on('forcedOnline', this._onOnlineStateChange) // only happens in tests
+    window.addEventListener('online', this._onOnline)
+    window.addEventListener('offline', this._onOffline)
   }
 
   _teardownEvents () {
     lifecycle.removeEventListener('statechange', this._onStateChange)
-    eventBus.removeListener('forcedOnline', this._onOnlineForced)
+    eventBus.removeListener('forcedOnline', this._onOnlineStateChange) // only happens in tests
+    window.removeEventListener('online', this._onOnline)
+    window.removeEventListener('offline', this._onOffline)
   }
 
   _pause () {
@@ -95,14 +101,32 @@ export class TimelineStream extends EventEmitter {
       console.log('unfrozen')
       this._unpause()
     }
+    if (event.newState === 'active') { // page is reopened from a background tab
+      console.log('active')
+      console.log('websocket readyState', this._ws && this._ws.readyState)
+      if (this._ws && this._ws.readyState !== WebSocketClient.OPEN) {
+        // if a websocket connection is not currently open, then reset the
+        // backoff counter to ensure that fresh notifications come in faster
+        this._ws.reset()
+        this._ws.reconnect()
+      }
+    }
   }
 
-  _onOnlineForced (online) {
+  _onOnline () {
+    this._onOnlineStateChange(true)
+  }
+
+  _onOffline () {
+    this._onOnlineStateChange(false)
+  }
+
+  _onOnlineStateChange (online) {
     if (online) {
-      console.log('online forced')
+      console.log('online')
       this._unpause()
     } else {
-      console.log('offline forced')
+      console.log('offline')
       this._pause()
     }
   }
