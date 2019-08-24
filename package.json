@@ -44,7 +44,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
-    "@gamestdio/websocket": "^0.3.2",
     "@webcomponents/custom-elements": "^1.2.4",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -156,7 +155,8 @@
       "ImageData",
       "OffscreenCanvas",
       "postMessage",
-      "getComputedStyle"
+      "getComputedStyle",
+      "WebSocket"
     ],
     "ignore": [
       "dist",
