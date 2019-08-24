@@ -6,12 +6,12 @@ sudo: false
 services:
   - postgresql
 addons:
-  postgresql: "11"
+  postgresql: "10"
   apt:
     packages:
-    - postgresql-11
-    - postgresql-client-11
-    - postgresql-contrib-11
+    - postgresql-10
+    - postgresql-client-10
+    - postgresql-contrib-10
 before_install:
   - psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
 script: echo hello
