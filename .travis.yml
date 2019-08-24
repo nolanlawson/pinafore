@@ -1,50 +1,50 @@
 language: node_js
 node_js:
   - "10"
-dist: trusty   # needed for chrome headless
-sudo: required # needed for various sudo operations
+dist: bionic
+sudo: false
+services:
+  - redis-server
+  - postgresql
 addons:
   chrome: stable
   postgresql: "10"
   apt:
     packages:
-    - autoconf
-    - bison
-    - build-essential
-    - file
-    - g++
-    - gcc
-    - imagemagick
-    - libffi-dev
-    - libgdbm-dev
-    - libgdbm3
-    - libicu-dev
-    - libidn11-dev
-    - libncurses5-dev
-    - libpq-dev
-    - libprotobuf-dev
-    - libreadline6-dev
-    - libssl-dev
-    - libxml2-dev
-    - libxslt1-dev
-    - libyaml-dev
-    - pkg-config nodejs
-    - postgresql-10
-    - postgresql-client-10
-    - postgresql-contrib-10
-    - protobuf-compiler
-    - redis-server
-    - redis-tools
-    - zlib1g-dev
+      - autoconf
+      - bison
+      - build-essential
+      - ffmpeg
+      - file
+      - g++
+      - gcc
+      - imagemagick
+      - libffi-dev
+      - libgdbm-dev
+      - libgdbm5
+      - libicu-dev
+      - libidn11-dev
+      - libncurses5-dev
+      - libpq-dev
+      - libprotobuf-dev
+      - libreadline6-dev
+      - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - libyaml-dev
+      - pkg-config
+      - postgresql-10
+      - postgresql-client-10
+      - postgresql-contrib-10
+      - protobuf-compiler
+      - redis-server
+      - redis-tools
+      - zlib1g-dev
 before_install:
   - npm install -g greenkeeper-lockfile@1
-  # install yarn
+  - psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s
   - export PATH="$HOME/.yarn/bin:$PATH"
-  # install ffmpeg
-  - sudo add-apt-repository -y ppa:mc3man/trusty-media
-  - sudo apt-get update
-  - sudo apt-get install -y ffmpeg
   - ./bin/setup-mastodon-in-travis.sh
 before_script:
   - yarn run lint
@@ -54,9 +54,8 @@ after_script:
 script: travis_retry yarn run $COMMAND
 env:
   global:
-  - PGPORT=5433
-  - secure: "iR11lD+OAyTJdNoK67esDOrd34HKQboJo0DrVL4xqwoAwQGmNX7posBtcj0TOwVAdHfd5S80xlhWlMebrtHWR9oMtdcBXusWnehZVRB0WE89n8enkJCbAxn5uMpcEpKpDHTcfR/Gbxf2sw15dTy0PrW/ldiZXWf7wybJEBGbrEP7QI8oy3VHzmKpSyjRpN/hnSlgxskVnfIMKPp43D+705Ka7aMJNTWZ5dAdKdIjQWX6j6jlqx6Vl+qIq7td3DTZA9A5ft8HxaWC27F1bbd52PdRY2h8Ii3Ps+n8Q8uZK1KJPp9t3pPk+PmYINu2715ArukRk73kahnFadBQLhytn95FLiyKOLj+ajBNo+o3KIQDs3qRj8gkXpkJpuLAPgwABOEVWuLh9y+oa33IDYVzyESRVtXqbbwgziYVjNQCozP1Nt9+Wyh4YHfdOjEEMdlVlkwlyzPfaLAqVBusEphnaF/vx7itdVvxOMQYNcSRoBrAgciN4ng0GZHi5P85DMXnNV41r+d3JK5JEYZD/gpSja5cPUlpPlkXsKiElG3fEoO2D/Uc8rR9Cu84XiJiJQjP91QuWagfdhgqM4YOndt2YukiGzRzDMjTx1BzSW4S11RQGWzZrv06zmDLXTlnUAMEm1/Exo4L6VfgRvyFmgM0LAT+IceVEHbOKC/Hnd8Y3mo="
-  - secure: "E9t4zTDdPX9I4XgeC5zJEy+mIM2s0MFPpNfJ/mc5q/JX+gQkHSNkE/32NKgfSce85v33kWWxiPK4qorgX4B+v/MkK6kVQ2HSC7p4XttlQucvSICh/hYSM21WnH7g7DRNj3mDWHWEAwQuquaxVLfGWL60M/svnKG9MOoewos9iDj9AvANm6J09DjRmLuqmDV+VL+cV6ZL/SvUZ5Ervkgs/s3nXHEMse9rKMH/6/KncTGGPRolqyx86XSU6/XtRKX2+bEdiOaIxUYYvjcHJZTKxpSelPpEHjoUfWCM2CG3WyjtYkLF/1Romh8Ft4pnz+iiTzN3eWaT2ralOFvW30oB3cKbDcFb6LDGfXYw7v+XIORc79Ehcb2XlweEymf7fPhbx+7bkCfudRCMLw6OUWXoh66BBjOh2gcQYQ2+3U8KV7YKl/ZQHYb722wE6rN0YvJ6zGriWomDuV1smdyu4teo4lY2oVUUUGflyz2HWxnjVbqWizw4k69TNIcEEQ8j8YgdXMUxNMUOJoCu0c3Lnd8J1BeU/7LX87c54/oCMjEivnsENGIC/EUgAoXDi3L0y7HzHgaDs112p5zjspJsSSON/T4E2uyyb2RpjBY4Ghl43a/RDAlv1gUFtvbanphg3PEGMfG7B2gxk9Z/v5J9pUP/NtsspmT2MvTHZXtH/44XPEU="
+    - secure: "iR11lD+OAyTJdNoK67esDOrd34HKQboJo0DrVL4xqwoAwQGmNX7posBtcj0TOwVAdHfd5S80xlhWlMebrtHWR9oMtdcBXusWnehZVRB0WE89n8enkJCbAxn5uMpcEpKpDHTcfR/Gbxf2sw15dTy0PrW/ldiZXWf7wybJEBGbrEP7QI8oy3VHzmKpSyjRpN/hnSlgxskVnfIMKPp43D+705Ka7aMJNTWZ5dAdKdIjQWX6j6jlqx6Vl+qIq7td3DTZA9A5ft8HxaWC27F1bbd52PdRY2h8Ii3Ps+n8Q8uZK1KJPp9t3pPk+PmYINu2715ArukRk73kahnFadBQLhytn95FLiyKOLj+ajBNo+o3KIQDs3qRj8gkXpkJpuLAPgwABOEVWuLh9y+oa33IDYVzyESRVtXqbbwgziYVjNQCozP1Nt9+Wyh4YHfdOjEEMdlVlkwlyzPfaLAqVBusEphnaF/vx7itdVvxOMQYNcSRoBrAgciN4ng0GZHi5P85DMXnNV41r+d3JK5JEYZD/gpSja5cPUlpPlkXsKiElG3fEoO2D/Uc8rR9Cu84XiJiJQjP91QuWagfdhgqM4YOndt2YukiGzRzDMjTx1BzSW4S11RQGWzZrv06zmDLXTlnUAMEm1/Exo4L6VfgRvyFmgM0LAT+IceVEHbOKC/Hnd8Y3mo="
+    - secure: "E9t4zTDdPX9I4XgeC5zJEy+mIM2s0MFPpNfJ/mc5q/JX+gQkHSNkE/32NKgfSce85v33kWWxiPK4qorgX4B+v/MkK6kVQ2HSC7p4XttlQucvSICh/hYSM21WnH7g7DRNj3mDWHWEAwQuquaxVLfGWL60M/svnKG9MOoewos9iDj9AvANm6J09DjRmLuqmDV+VL+cV6ZL/SvUZ5Ervkgs/s3nXHEMse9rKMH/6/KncTGGPRolqyx86XSU6/XtRKX2+bEdiOaIxUYYvjcHJZTKxpSelPpEHjoUfWCM2CG3WyjtYkLF/1Romh8Ft4pnz+iiTzN3eWaT2ralOFvW30oB3cKbDcFb6LDGfXYw7v+XIORc79Ehcb2XlweEymf7fPhbx+7bkCfudRCMLw6OUWXoh66BBjOh2gcQYQ2+3U8KV7YKl/ZQHYb722wE6rN0YvJ6zGriWomDuV1smdyu4teo4lY2oVUUUGflyz2HWxnjVbqWizw4k69TNIcEEQ8j8YgdXMUxNMUOJoCu0c3Lnd8J1BeU/7LX87c54/oCMjEivnsENGIC/EUgAoXDi3L0y7HzHgaDs112p5zjspJsSSON/T4E2uyyb2RpjBY4Ghl43a/RDAlv1gUFtvbanphg3PEGMfG7B2gxk9Z/v5J9pUP/NtsspmT2MvTHZXtH/44XPEU="
 matrix:
   include:
     - env: BROWSER=chrome:headless COMMAND=test-browser-suite0
@@ -67,10 +66,10 @@ matrix:
     - env: COMMAND=deploy-all-travis
 branches:
   only:
-  - master
-  - /^greenkeeper/.*$/
+    - master
+    - /^greenkeeper/.*$/
 cache:
   yarn: true
   bundler: true
   directories:
-  - /home/travis/.rvm/
+    - /home/travis/.rvm/
