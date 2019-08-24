@@ -109,13 +109,13 @@ export class TimelineStream extends EventEmitter {
 
   _onOnline () {
     console.log('online')
-    this._unpause()
-    this._tryToReconnect()
+    this._unpause() // if we're not paused, then this is a no-op
+    this._tryToReconnect() // to be safe, try to reset and reconnect
   }
 
   _onOffline () {
     console.log('offline')
-    this._pause()
+    this._pause() // in testing, it seems to work better to stop polling when we get this event
   }
 
   _onForcedOnlineStateChange (online) {
