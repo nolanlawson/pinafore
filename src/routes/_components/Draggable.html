@@ -5,7 +5,7 @@
      on:click="onClick(event)"
      ref:area
 >
-  <div class="draggable-indicator {indicatorClassAfterRaf}"
+  <div class="draggable-indicator {computedIndicatorClassAfterRaf}"
        style={indicatorStyleAfterRaf}
        on:pointerDown="onPointerDown(event)"
        ref:indicator
@@ -19,10 +19,14 @@
   .draggable-area {
     position: relative;
     touch-action: none;
+    cursor: pointer;
   }
   .draggable-indicator {
     position: absolute;
-    cursor: pointer;
+    cursor: grab;
+  }
+  .draggable-indicator.grabbing {
+    cursor: grabbing;
   }
   .draggable-indicator-inner {
     pointer-events: none;
@@ -34,6 +38,7 @@
   import { throttleTimer } from '../_utils/throttleTimer'
   import { pointerUp, pointerDown, pointerLeave, pointerMove } from '../_utils/pointerEvents'
   import { requestPostAnimationFrame } from '../_utils/requestPostAnimationFrame'
+  import { classname } from '../_utils/classname'
 
   // ensure DOM writes only happen once after a rAF
   const updateIndicatorStyle = throttleTimer(requestAnimationFrame)
@@ -56,19 +61,21 @@
           this.fire('change', { x, y })
         }
       }, { init: false })
-      this.observe('indicatorStyle', indicatorStyle => {
-        console.log('Draggable indicatorStyle', indicatorStyle)
+      this.observe('indicatorStyle', () => {
         updateIndicatorStyle(() => {
+          const { indicatorStyle } = this.get()
           this.set({ indicatorStyleAfterRaf: indicatorStyle })
         })
       })
-      this.observe('indicatorClass', indicatorClass => {
+      this.observe('computedIndicatorClass', () => {
         updateIndicatorClass(() => {
-          this.set(({ indicatorClassAfterRaf: indicatorClass }))
+          const { computedIndicatorClass } = this.get()
+          this.set(({ computedIndicatorClassAfterRaf: computedIndicatorClass }))
         })
       })
-      this.observe('draggableClass', draggableClass => {
+      this.observe('draggableClass', () => {
         updateDraggableClass(() => {
+          const { draggableClass } = this.get()
           this.set({ draggableClassAfterRaf: draggableClass })
         })
       })
@@ -78,7 +85,7 @@
       draggableClass: '',
       draggableClassAfterRaf: '',
       indicatorClass: '',
-      indicatorClassAfterRaf: '',
+      computedIndicatorClassAfterRaf: '',
       x: 0,
       y: 0,
       indicatorWidth: 0,
@@ -88,7 +95,8 @@
     computed: {
       indicatorStyle: ({ x, y, indicatorWidth, indicatorHeight }) => (
         `left: calc(${x * 100}% - ${indicatorWidth / 2}px); top: calc(${y * 100}% - ${indicatorHeight / 2}px);`
-      )
+      ),
+      computedIndicatorClass: ({ dragging, indicatorClass }) => classname(dragging && 'grabbing', indicatorClass)
     },
     methods: {
       observe,
