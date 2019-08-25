@@ -44,6 +44,6 @@ export const importShowReportDialog = () => import(
   /* webpackChunkName: 'showReportDialog' */ './creators/showReportDialog'
   ).then(getDefault)
 
-export const importMediaFocalPointDialog = () => import(
-  /* webpackChunkName: 'mediaFocalPointDialog' */ './creators/mediaFocalPointDialog'
+export const importShowMediaEditDialog = () => import(
+  /* webpackChunkName: 'showMediaEditDialog' */ './creators/showMediaEditDialog'
   ).then(getDefault)

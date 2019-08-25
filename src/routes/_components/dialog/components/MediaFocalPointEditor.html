@@ -1,86 +1,71 @@
-<ModalDialog
-  {id}
-  {label}
-  {title}
-  background="var(--main-bg)"
-  className="media-focal-point-dialog"
-  on:show="measure()"
+<form class="media-focal-point-container"
+      aria-label="Enter the focal point (X, Y) for this media"
+      on:resize="measure()"
 >
-  <form class="media-focal-point-container"
-        aria-label="Enter the focal point (X, Y) for this media"
-        on:resize="measure()"
-  >
-    <div class="media-focal-point-image-container" ref:container>
-      <img
-        {intrinsicsize}
-        class="media-focal-point-image"
-        src={previewSrc}
-        alt={shortName}
-        on:load="onImageLoad()"
-      />
-      <div class="media-focal-point-backdrop"></div>
-      <div class="media-draggable-area"
-           style={draggableAreaStyle}
+  <div class="media-focal-point-image-container" ref:container>
+    <img
+      {intrinsicsize}
+      class="media-focal-point-image"
+      src={previewSrc}
+      alt={shortName}
+      on:load="onImageLoad()"
+    />
+    <div class="media-focal-point-backdrop"></div>
+    <div class="media-draggable-area"
+         style={draggableAreaStyle}
+    >
+      <!-- 52px == 32px icon width + 10px padding -->
+      <Draggable
+        draggableClass="media-draggable-area-inner"
+        indicatorClass="media-focal-point-indicator {imageLoaded ? '': 'hidden'} {dragging ? 'dragging' : ''}"
+        indicatorWidth={52}
+        indicatorHeight={52}
+        x={indicatorX}
+        y={indicatorY}
+        on:dragStart="onDragStart()"
+        on:dragEnd="onDragEnd()"
+        on:change="onDraggableChange(event)"
       >
-        <!-- 52px == 32px icon width + 10px padding -->
-        <Draggable
-          draggableClass="media-draggable-area-inner"
-          indicatorClass="media-focal-point-indicator {imageLoaded ? '': 'hidden'} {dragging ? 'dragging' : ''}"
-          indicatorWidth={52}
-          indicatorHeight={52}
-          x={indicatorX}
-          y={indicatorY}
-          on:dragStart="onDragStart()"
-          on:dragEnd="onDragEnd()"
-          on:change="onDraggableChange(event)"
-        >
-          <SvgIcon
-            className="media-focal-point-indicator-svg"
-            href="#fa-crosshairs"
-          />
-        </Draggable>
-      </div>
+        <SvgIcon
+          className="media-focal-point-indicator-svg"
+          href="#fa-crosshairs"
+        />
+      </Draggable>
     </div>
-    <div class="media-focal-point-inputs">
-      <div class="media-focal-point-input-pair">
-        <label for="media-focal-point-x-input-{realm}">
-          X coordinate
-        </label>
-        <input type="number"
-               step="0.01"
-               min="-1"
-               max="1"
-               inputmode="decimal"
-               placeholder="0"
-               id="media-focal-point-x-input-{realm}"
-               bind:value="rawFocusX"
-         />
-      </div>
-      <div class="media-focal-point-input-pair">
-        <label for="media-focal-point-y-input-{realm}">
-          Y coordinate
-        </label>
-        <input type="number"
-               step="0.01"
-               min="-1"
-               max="1"
-               inputmode="decimal"
-               placeholder="0"
-               id="media-focal-point-y-input-{realm}"
-               bind:value="rawFocusY"
+  </div>
+  <div class="media-focal-point-inputs">
+    <div class="media-focal-point-input-pair">
+      <label for="media-focal-point-x-input-{realm}">
+        X coordinate
+      </label>
+      <input type="number"
+             step="0.01"
+             min="-1"
+             max="1"
+             inputmode="decimal"
+             placeholder="0"
+             id="media-focal-point-x-input-{realm}"
+             bind:value="rawFocusX"
       />
-      </div>
     </div>
-  </form>
-</ModalDialog>
+    <div class="media-focal-point-input-pair">
+      <label for="media-focal-point-y-input-{realm}">
+        Y coordinate
+      </label>
+      <input type="number"
+             step="0.01"
+             min="-1"
+             max="1"
+             inputmode="decimal"
+             placeholder="0"
+             id="media-focal-point-y-input-{realm}"
+             bind:value="rawFocusY"
+      />
+    </div>
+  </div>
+</form>
 <style>
-  :global(.media-focal-point-dialog) {
-    max-width: calc(100%);
-  }
   .media-focal-point-container {
-    height: calc(100% - 44px); /* 44px X button height */
-    width: calc(100vw - 40px);
-    padding-top: 10px;
     display: flex;
     flex-direction: column;
   }
@@ -120,7 +105,7 @@
 
   .media-focal-point-inputs {
     display: flex;
-    padding: 20px 40px;
+    padding: 10px;
     justify-content: space-around;
     width: auto;
   }
@@ -128,6 +113,10 @@
   .media-focal-point-input-pair {
     display: flex;
     align-items: center;
+  }
+
+  .media-focal-point-input-pair:first-child {
+    margin-right: 10px;
   }
 
   .media-focal-point-input-pair input {
@@ -180,10 +169,6 @@
   }
 </style>
 <script>
-  import ModalDialog from './ModalDialog.html'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import { store } from '../../../_store/store'
   import { get } from '../../../_utils/lodash-lite'
   import { observe } from 'svelte-extras'
@@ -207,12 +192,10 @@
 
   export default {
     oncreate () {
-      onCreateDialog.call(this)
       this.setupSyncFromStore()
       this.setupSyncToStore()
     },
     components: {
-      ModalDialog,
       SvgIcon,
       Draggable
     },
@@ -226,9 +209,6 @@
     }),
     store: () => store,
     computed: {
-      media: ({ $currentInstance, $composeData, realm }) => (
-        get($composeData, [$currentInstance, realm, 'media'])
-      ),
       mediaItem: ({ media, index }) => get(media, [index]),
       focusX: ({ mediaItem }) => get(mediaItem, ['focusX'], 0),
       focusY: ({ mediaItem }) => get(mediaItem, ['focusY'], 0),
@@ -267,8 +247,6 @@
     },
     methods: {
       observe,
-      show,
-      close,
       setupSyncFromStore () {
         this.observe('mediaItem', mediaItem => {
           const { rawFocusX, rawFocusY } = this.get()
