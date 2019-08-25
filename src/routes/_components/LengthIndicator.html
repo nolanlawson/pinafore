@@ -1,0 +1,56 @@
+<span class="length-indicator {overLimit ? 'over-char-limit' : ''}"
+      aria-label={lengthLabel}
+      {style}
+>{lengthToDisplayDeferred}</span>
+<style>
+  .length-indicator {
+    color: var(--length-indicator-color);
+    font-size: 1.3em;
+  }
+
+  .length-indicator.over-char-limit {
+    color: var(--warning-color);
+  }
+</style>
+<script>
+  import { mark, stop } from '../_utils/marks'
+  import { store } from '../_store/store'
+  import { observe } from 'svelte-extras'
+  import { throttleTimer } from '../_utils/throttleTimer'
+
+  const updateDisplayedLength = process.browser && throttleTimer(requestAnimationFrame)
+
+  export default {
+    oncreate () {
+      const { lengthToDisplay } = this.get()
+      this.set({ lengthToDisplayDeferred: lengthToDisplay })
+      // perf improvement for keyboard input latency
+      this.observe('lengthToDisplay', () => {
+        updateDisplayedLength(() => {
+          mark('set lengthToDisplayDeferred')
+          const { lengthToDisplay } = this.get()
+          this.set({ lengthToDisplayDeferred: lengthToDisplay })
+          stop('set lengthToDisplayDeferred')
+        })
+      }, { init: false })
+    },
+    data: () => ({
+      lengthToDisplayDeferred: 0,
+      style: ''
+    }),
+    store: () => store,
+    computed: {
+      lengthToDisplay: ({ length, max }) => max - length,
+      lengthLabel: ({ overLimit, lengthToDisplayDeferred }) => {
+        if (overLimit) {
+          return `${lengthToDisplayDeferred} characters over limit`
+        } else {
+          return `${lengthToDisplayDeferred} characters remaining`
+        }
+      }
+    },
+    methods: {
+      observe
+    }
+  }
+</script>
