@@ -13,7 +13,7 @@ async function compileThirdPartyCss () {
   await writeFile(path.resolve(__dirname, '../static/emoji-mart.css'), css, 'utf8')
 }
 
-async function copy(from, to) {
+async function copy (from, to) {
   await copyFile(
     path.resolve(__dirname, from),
     path.resolve(__dirname, to)
@@ -25,18 +25,6 @@ async function compileThirdPartyJson () {
     copy(
       '../node_modules/emoji-mart/data/all.json',
       '../static/emoji-mart-all.json'
-    ),
-    copy(
-      '../node_modules/tesseract.js-core/tesseract-core.wasm.js',
-      '../static/tesseract-core.wasm.js'
-    ),
-    copy(
-      '../node_modules/tesseract.js/dist/worker.min.js',
-      '../static/worker.min.js'
-    ),
-    copy(
-      '../node_modules/tesseract.js/dist/worker.min.js.map',
-      '../static/worker.min.js.map'
     )
   ])
 }

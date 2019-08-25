@@ -48,6 +48,6 @@ export const importComposeBox = () => import(
   /* webpackChunkName: 'ComposeBox.html' */ '../_components/compose/ComposeBox.html'
   ).then(getDefault)
 
-export const importTesseract = () => import(
-  /* webpackChunkName: 'tesseract.js' */ 'tesseract.js'
-  )
+export const importTesseractWorker = () => import(
+  /* webpackChunkName: 'tesseractWorker' */ '../_utils/tesseractWorker.js'
+  ).then(getDefault)

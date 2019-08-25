@@ -20,7 +20,21 @@
     max={mediaAltCharLimit}
     style="width: 100%; text-align: right;"
   />
-  <button type="button" on:click="onClick()">Automatically figure shit out</button>
+  <button class="extract-text-button" type="button"
+          on:click="onClick()"
+          disabled={extracting}
+  >
+    <SvgIcon href="{extracting ? '#fa-spinner' : '#fa-magic'}"
+             className="extract-text-svg {extracting ? 'spin' : ''}"
+    />
+    <span>
+      {#if extracting}
+        Extracting text…
+      {:else}
+        Extract text from image
+      {/if}
+    </span>
+  </button>
 </div>
 <style>
   .media-alt-editor {
@@ -39,10 +53,33 @@
     max-height: 70vh;
   }
 
+  .extract-text-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .extract-text-button span {
+    margin-left: 15px;
+  }
+
+  :global(.extract-text-svg) {
+    fill: var(--button-text);
+    width: 18px;
+    height: 18px;
+  }
+
   @media (max-height: 767px) {
     .media-alt-input {
       max-height: 40vh;
       width: 100%;
+    }
+  }
+
+  @media (min-height: 768px) {
+    .media-alt-input {
+      min-width: 300px;
     }
   }
 </style>
@@ -59,6 +96,8 @@
   import LengthIndicator from '../../LengthIndicator.html'
   import { length } from 'stringz'
   import { tesseract } from '../../../_utils/tesseract'
+  import SvgIcon from '../../SvgIcon.html'
+  import { toast } from '../../toast/toast'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 
@@ -74,11 +113,13 @@
     store: () => store,
     data: () => ({
       rawText: '',
-      mediaAltCharLimit: MEDIA_ALT_CHAR_LIMIT
+      mediaAltCharLimit: MEDIA_ALT_CHAR_LIMIT,
+      extracting: false
     }),
     computed: {
       length: ({ rawText }) => length(rawText || ''),
-      overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit
+      overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit,
+      url: ({ media, index }) => get(media, [index, 'data', 'url'])
     },
     methods: {
       observe,
@@ -122,15 +163,30 @@
         autosize.update(this.refs.textarea)
       },
       async onClick () {
-        const { media, index } = this.get()
-        const { url } = media[index].data
-        const text = await tesseract(url)
-        console.log('text', text)
+        this.set({ extracting: true })
+        try {
+          const { url } = this.get()
+          const text = await tesseract(url)
+          const { media, index, realm } = this.get()
+          if (media[index].description !== text) {
+            media[index].description = text
+            this.store.setComposeData(realm, { media })
+            this.store.save()
+          }
+        } catch (err) {
+          console.error(err)
+          /* no await */ toast.say(
+            'Unable to extract text. Ensure your instance supports cross-origin resource sharing (CORS) for images.'
+          )
+        } finally {
+          this.set({ extracting: false })
+        }
       }
     },
     components: {
       LengthGauge,
-      LengthIndicator
+      LengthIndicator,
+      SvgIcon
     }
   }
 </script>
