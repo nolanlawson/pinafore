@@ -7,7 +7,10 @@ import workerPath from 'tesseract.js/dist/worker.min.js'
 import corePath from 'tesseract.js-core/tesseract-core.wasm.js'
 import { TesseractWorker } from 'tesseract.js'
 
-// tesseract has a bug where
+// tesseract has a bug where broken image URLs will silently fail. We could spawn a new worker
+// every time to work around the issue, but then it literally spawns a new web worker for each request,
+// which seems excessive. So we just live with the bug for now.
+// https://github.com/naptha/tesseract.js/issues/325
 const { origin } = location
 const tesseractWorker = new TesseractWorker({
   workerPath: `${origin}/${workerPath}`,
