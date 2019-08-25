@@ -20,6 +20,7 @@
     max={mediaAltCharLimit}
     style="width: 100%; text-align: right;"
   />
+  <button type="button" on:click="onClick()">Automatically figure shit out</button>
 </div>
 <style>
   .media-alt-editor {
@@ -57,6 +58,7 @@
   import LengthGauge from '../../LengthGauge.html'
   import LengthIndicator from '../../LengthIndicator.html'
   import { length } from 'stringz'
+  import { tesseract } from '../../../_utils/tesseract'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 
@@ -118,6 +120,12 @@
       },
       measure () {
         autosize.update(this.refs.textarea)
+      },
+      async onClick () {
+        const { media, index } = this.get()
+        const { url } = media[index].data
+        const text = await tesseract(url)
+        console.log('text', text)
       }
     },
     components: {
