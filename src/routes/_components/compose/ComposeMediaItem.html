@@ -129,6 +129,7 @@
   import { throttleTimer } from '../../_utils/throttleTimer'
 
   const updateMediaInStore = throttleTimer(scheduleIdleTask)
+  const resizeTextarea = process.browser && throttleTimer(requestAnimationFrame)
 
   export default {
     oncreate () {
@@ -172,6 +173,7 @@
           const text = get(media, [index, 'description'], '')
           if (rawText !== text) {
             this.set({ rawText: text })
+            resizeTextarea(() => autosize.update(this.refs.textarea))
           }
           const focusX = get(media, [index, 'focusX'], 0)
           const focusY = get(media, [index, 'focusY'], 0)
