@@ -8,3 +8,5 @@ export const mediaAccept = '.jpg,.jpeg,.png,.gif,.webm,.mp4,.m4v,.mov,image/jpeg
   'image/gif,video/webm,video/mp4,video/quicktime,' +
   // some instances allow audio uploads
   'audio/mpeg,audio/mp4,audio/vnd.wav,audio/wav,audio/x-wav,audio/x-wave,audio/ogg'
+
+export const MEDIA_ALT_CHAR_LIMIT = 420

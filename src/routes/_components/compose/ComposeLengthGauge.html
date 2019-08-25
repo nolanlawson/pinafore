@@ -1,57 +1,16 @@
-<div class="compose-box-length-gauge {shouldAnimate ? 'should-animate' : ''}  {overLimit ? 'over-char-limit' : ''}"
-     style="transform: scaleX({lengthAsFractionDeferred});"
-     aria-hidden="true"
-></div>
-<style>
-  .compose-box-length-gauge {
-    grid-area: gauge;
-    margin: 0 0 5px 5px;
-    height: 2px;
-    background: var(--main-theme-color);
-    transform-origin: left;
-  }
-  .compose-box-length-gauge.should-animate {
-    transition: transform 0.2s linear;
-  }
-  .compose-box-length-gauge.over-char-limit {
-    background: var(--warning-color);
-  }
-</style>
+<LengthGauge style="grid-area: gauge; margin: 0 0 5px 5px;"
+       {length}
+       {overLimit}
+       max={$maxStatusChars}
+/>
 <script>
-  import { mark, stop } from '../../_utils/marks'
+  import LengthGauge from '../LengthGauge.html'
   import { store } from '../../_store/store'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { observe } from 'svelte-extras'
 
   export default {
-    oncreate () {
-      const { lengthAsFraction } = this.get()
-      this.set({ lengthAsFractionDeferred: lengthAsFraction })
-      // perf improvement for keyboard input latency
-      this.observe('lengthAsFraction', () => {
-        scheduleIdleTask(() => {
-          mark('set lengthAsFractionDeferred')
-          const { lengthAsFraction } = this.get()
-          this.set({ lengthAsFractionDeferred: lengthAsFraction })
-          stop('set lengthAsFractionDeferred')
-          requestAnimationFrame(() => this.set({ shouldAnimate: true }))
-        })
-      }, { init: false })
+    components: {
+      LengthGauge
     },
-    data: () => ({
-      shouldAnimate: false,
-      lengthAsFractionDeferred: 0
-    }),
-    store: () => store,
-    computed: {
-      lengthAsFraction: ({ length, $maxStatusChars }) => {
-        // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
-        const int = Math.round(Math.min($maxStatusChars, length) / $maxStatusChars * 100)
-        return (int - (int % 2)) / 100
-      }
-    },
-    methods: {
-      observe
-    }
+    store: () => store
   }
 </script>

@@ -1,0 +1,59 @@
+<div class="length-gauge {shouldAnimate ? 'should-animate' : ''}  {overLimit ? 'over-char-limit' : ''}"
+     style={computedStyle}
+     aria-hidden="true"
+></div>
+<style>
+  .length-gauge {
+    height: 2px;
+    background: var(--main-theme-color);
+    transform-origin: left;
+  }
+  .length-gauge.should-animate {
+    transition: transform 0.2s linear;
+  }
+  .length-gauge.over-char-limit {
+    background: var(--warning-color);
+  }
+</style>
+<script>
+  import { mark, stop } from '../_utils/marks'
+  import { store } from '../_store/store'
+  import { observe } from 'svelte-extras'
+  import { throttleTimer } from '../_utils/throttleTimer'
+
+  const updateDisplayedLength = process.browser && throttleTimer(requestAnimationFrame)
+
+  export default {
+    oncreate () {
+      const { lengthAsFraction } = this.get()
+      this.set({ lengthAsFractionDeferred: lengthAsFraction })
+      // perf improvement for keyboard input latency
+      this.observe('lengthAsFraction', () => {
+        updateDisplayedLength(() => {
+          mark('set lengthAsFractionDeferred')
+          const { lengthAsFraction } = this.get()
+          this.set({ lengthAsFractionDeferred: lengthAsFraction })
+          stop('set lengthAsFractionDeferred')
+          requestAnimationFrame(() => this.set({ shouldAnimate: true }))
+        })
+      }, { init: false })
+    },
+    data: () => ({
+      shouldAnimate: false,
+      lengthAsFractionDeferred: 0,
+      style: ''
+    }),
+    store: () => store,
+    computed: {
+      lengthAsFraction: ({ length, max }) => {
+        // We don't need to update the gauge for every decimal point, so round it to the nearest 0.02
+        const int = Math.round(Math.min(max, length) / max * 100)
+        return (int - (int % 2)) / 100
+      },
+      computedStyle: ({ style, lengthAsFractionDeferred }) => `transform: scaleX(${lengthAsFractionDeferred}); ${style}`
+    },
+    methods: {
+      observe
+    }
+  }
+</script>
