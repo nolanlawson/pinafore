@@ -13,20 +13,11 @@ async function compileThirdPartyCss () {
   await writeFile(path.resolve(__dirname, '../static/emoji-mart.css'), css, 'utf8')
 }
 
-async function copy (from, to) {
-  await copyFile(
-    path.resolve(__dirname, from),
-    path.resolve(__dirname, to)
-  )
-}
-
 async function compileThirdPartyJson () {
-  await Promise.all([
-    copy(
-      '../node_modules/emoji-mart/data/all.json',
-      '../static/emoji-mart-all.json'
-    )
-  ])
+  await copyFile(
+    path.resolve(__dirname, '../node_modules/emoji-mart/data/all.json'),
+    path.resolve(__dirname, '../static/emoji-mart-all.json')
+  )
 }
 
 async function main () {
