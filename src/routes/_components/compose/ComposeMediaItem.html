@@ -7,12 +7,11 @@
     aria-hidden="true"
   />
   <div class="compose-media-buttons">
-    <button class="compose-media-button compose-media-focal-button {focalHidden ? 'compose-media-hidden' : ''}"
-            aria-hidden={focalHidden}
-            aria-label="Change preview"
-            title="Change preview"
-            on:click="onSetFocalPoint()" >
-      <SvgIcon className="compose-media-button-svg" href="#fa-crosshairs" />
+    <button class="compose-media-button compose-media-focal-button"
+            aria-label="Edit"
+            title="Edit"
+            on:click="onEdit()" >
+      <SvgIcon className="compose-media-button-svg" href="#fa-pencil" />
     </button>
     <button class="compose-media-button compose-media-delete-button"
             aria-label="Delete"
@@ -27,6 +26,7 @@
            placeholder="Description"
            ref:textarea
            bind:value=rawText
+           maxlength="420"
     ></textarea>
     <label for="compose-media-input-{uuid}" class="sr-only">
       Describe for the visually impaired (image, video) or auditorily impaired (audio, video)
@@ -98,11 +98,6 @@
     height: 18px;
   }
 
-  .compose-media-hidden {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
   .audio-preview {
     background: var(--audio-bg);
   }
@@ -130,7 +125,7 @@
   import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
   import { get } from '../../_utils/lodash-lite'
   import { coordsToPercent } from '../../_utils/coordsToPercent'
-  import { importMediaFocalPointDialog } from '../dialog/asyncDialogs'
+  import { importShowMediaEditDialog } from '../dialog/asyncDialogs'
   import { throttleTimer } from '../../_utils/throttleTimer'
 
   const updateMediaInStore = throttleTimer(scheduleIdleTask)
@@ -165,8 +160,7 @@
           return 'center center'
         }
         return `${coordsToPercent(focusX)}% ${100 - coordsToPercent(focusY)}%`
-      },
-      focalHidden: ({ type }) => type !== 'image'
+      }
     },
     store: () => store,
     methods: {
@@ -206,10 +200,10 @@
         const { realm, index } = this.get()
         deleteMedia(realm, index)
       },
-      async onSetFocalPoint () {
-        const { realm, index } = this.get()
-        const showMediaFocalPointDialog = await importMediaFocalPointDialog()
-        showMediaFocalPointDialog(realm, index)
+      async onEdit () {
+        const { realm, index, type } = this.get()
+        const showMediaEditDialog = await importShowMediaEditDialog()
+        showMediaEditDialog(realm, index, type)
       }
     },
     components: {
