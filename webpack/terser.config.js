@@ -1,11 +1,12 @@
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = () => new TerserWebpackPlugin({
+  exclude: /tesseract-asset/,
   cache: true,
   parallel: true,
   sourceMap: true,
   terserOptions: {
-    ecma: 6,
+    ecma: 8,
     mangle: true,
     compress: {
       pure_funcs: ['console.log']

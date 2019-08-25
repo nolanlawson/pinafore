@@ -95,7 +95,7 @@
   import LengthGauge from '../../LengthGauge.html'
   import LengthIndicator from '../../LengthIndicator.html'
   import { length } from 'stringz'
-  import { tesseract } from '../../../_utils/tesseract'
+  import { runTesseract } from '../../../_utils/runTesseract'
   import SvgIcon from '../../SvgIcon.html'
   import { toast } from '../../toast/toast'
 
@@ -166,7 +166,7 @@
         this.set({ extracting: true })
         try {
           const { url } = this.get()
-          const text = await tesseract(url)
+          const text = await runTesseract(url)
           const { media, index, realm } = this.get()
           if (media[index].description !== text) {
             media[index].description = text
