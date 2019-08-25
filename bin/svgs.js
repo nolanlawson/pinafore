@@ -53,5 +53,6 @@ module.exports = [
   { id: 'fa-refresh', src: 'src/thirdparty/font-awesome-svg-png/white/svg/refresh.svg' },
   { id: 'fa-plus', src: 'src/thirdparty/font-awesome-svg-png/white/svg/plus.svg' },
   { id: 'fa-info-circle', src: 'src/thirdparty/font-awesome-svg-png/white/svg/info-circle.svg' },
-  { id: 'fa-crosshairs', src: 'src/thirdparty/font-awesome-svg-png/white/svg/crosshairs.svg' }
+  { id: 'fa-crosshairs', src: 'src/thirdparty/font-awesome-svg-png/white/svg/crosshairs.svg' },
+  { id: 'fa-magic', src: 'src/thirdparty/font-awesome-svg-png/white/svg/magic.svg' }
 ]

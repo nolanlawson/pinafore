@@ -38,7 +38,24 @@ module.exports = {
       {
         test: /\/_workers\/blurhash\.js$/,
         use: {
-          loader: 'worker-loader'
+          loader: 'worker-loader',
+          options: {
+            name: 'blurhash.[hash].[name].[ext]'
+          }
+        }
+      },
+      {
+        test: [
+          /tesseract\.js\/dist\/worker\.min\.js$/,
+          /tesseract\.js\/dist\/worker\.min\.js.map$/,
+          /tesseract\.js-core\/tesseract-core\.wasm$/,
+          /tesseract\.js-core\/tesseract-core\.wasm.js$/
+        ],
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'tesseract-asset.[hash].[name].[ext]'
+          }
         }
       },
       {
@@ -109,6 +126,9 @@ module.exports = {
   ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
-    hints: dev ? false : 'error' // fail if we exceed the default performance budgets
+    hints: dev ? false : 'error',
+    assetFilter: assetFilename => {
+      return !(/\.map$/.test(assetFilename)) && !/tesseract-asset/.test(assetFilename)
+    }
   }
 }
