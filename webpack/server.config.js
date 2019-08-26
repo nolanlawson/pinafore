@@ -3,9 +3,22 @@ const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
 const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 
+// modules that the server should ignore, either because they cause errors or warnings
+// (because they're only used on the client side)
+const NOOP_MODULES = [
+  'page-lifecycle/dist/lifecycle.mjs',
+  '../_workers/blurhash',
+  'tesseract.js/dist/worker.min.js',
+  'tesseract.js/dist/worker.min.js.map',
+  'tesseract.js-core/tesseract-core.wasm',
+  'tesseract.js-core/tesseract-core.wasm.js',
+  'tesseract.js'
+]
+
 const serverResolve = JSON.parse(JSON.stringify(resolve))
-serverResolve.alias['page-lifecycle/dist/lifecycle.mjs'] = 'lodash-es/noop' // page lifecycle fails in Node
-serverResolve.alias['../_workers/blurhash'] = 'lodash-es/noop' // not used on the server side
+NOOP_MODULES.forEach(mod => {
+  serverResolve.alias[mod] = 'lodash-es/noop'
+})
 
 module.exports = {
   entry: config.server.entry(),
