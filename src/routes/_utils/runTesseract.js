@@ -1,6 +1,6 @@
 import { importTesseractWorker } from '../_utils/asyncModules'
 
-export async function runTesseract (image) {
+export async function runTesseract (url) {
   const worker = await importTesseractWorker()
 
   // TODO: have to trick tesseract into not creating a blob URL because that would break our CSP
@@ -9,7 +9,7 @@ export async function runTesseract (image) {
   const OldBlob = window.Blob
   window.Blob = null
   try {
-    promise = worker.recognize(image)
+    promise = worker.recognize(url)
   } finally {
     window.Blob = OldBlob
   }
