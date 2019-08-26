@@ -98,6 +98,7 @@
   import { runTesseract } from '../../../_utils/runTesseract'
   import SvgIcon from '../../SvgIcon.html'
   import { toast } from '../../toast/toast'
+  import { mediaUploadFileCache } from '../../../_utils/mediaUploadFileCache'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 
@@ -119,7 +120,8 @@
     computed: {
       length: ({ rawText }) => length(rawText || ''),
       overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit,
-      url: ({ media, index }) => get(media, [index, 'data', 'url'])
+      url: ({ media, index }) => get(media, [index, 'data', 'url']),
+      mediaId: ({ media, index }) => get(media, [index, 'data', 'id'])
     },
     methods: {
       observe,
@@ -165,8 +167,19 @@
       async onClick () {
         this.set({ extracting: true })
         try {
-          const { url } = this.get()
-          const text = await runTesseract(url)
+          const { url, mediaId } = this.get()
+          const file = mediaUploadFileCache.get(mediaId)
+          let text
+          if (file) { // Avoid downloading from the network a file that the user *just* uploaded
+            const fileUrl = URL.createObjectURL(file)
+            try {
+              text = await runTesseract(fileUrl)
+            } finally {
+              URL.revokeObjectURL(fileUrl)
+            }
+          } else {
+            text = await runTesseract(url)
+          }
           const { media, index, realm } = this.get()
           if (media[index].description !== text) {
             media[index].description = text
