@@ -36,7 +36,7 @@
   <div class="media-focal-point-inputs">
     <div class="media-focal-point-input-pair">
       <label for="media-focal-point-x-input-{realm}">
-        X coordinate
+        X
       </label>
       <input type="number"
              step="0.01"
@@ -50,7 +50,7 @@
     </div>
     <div class="media-focal-point-input-pair">
       <label for="media-focal-point-y-input-{realm}">
-        Y coordinate
+        Y
       </label>
       <input type="number"
              step="0.01"
@@ -120,7 +120,7 @@
   }
 
   .media-focal-point-input-pair input {
-    margin-left: 20px;
+    margin-left: 10px;
   }
 
   .media-draggable-area {
@@ -156,15 +156,7 @@
   @media (max-width: 767px) {
     .media-focal-point-inputs {
       padding: 10px 20px;
-    }
-    .media-focal-point-input-pair {
-      flex-direction: column;
-      justify-content: center;
-      margin: 0 5px;
-    }
-    .media-focal-point-input-pair input {
-      margin-left: 0;
-      width: 100px;
+      justify-content: space-around;
     }
   }
 </style>
