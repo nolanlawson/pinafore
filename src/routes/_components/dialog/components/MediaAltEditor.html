@@ -120,8 +120,7 @@
     computed: {
       length: ({ rawText }) => length(rawText || ''),
       overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit,
-      url: ({ media, index }) => get(media, [index, 'data', 'url']),
-      mediaId: ({ media, index }) => get(media, [index, 'data', 'id'])
+      url: ({ media, index }) => get(media, [index, 'data', 'url'])
     },
     methods: {
       observe,
@@ -167,8 +166,8 @@
       async onClick () {
         this.set({ extracting: true })
         try {
-          const { url, mediaId } = this.get()
-          const file = mediaUploadFileCache.get(mediaId)
+          const { url } = this.get()
+          const file = mediaUploadFileCache.get(url)
           let text
           if (file) { // Avoid downloading from the network a file that the user *just* uploaded
             const fileUrl = URL.createObjectURL(file)

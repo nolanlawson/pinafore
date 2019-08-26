@@ -13,7 +13,7 @@ export async function doMediaUpload (realm, file) {
     if (composeMedia.length === 4) {
       throw new Error('Only 4 media max are allowed')
     }
-    mediaUploadFileCache.set(response.id, file)
+    mediaUploadFileCache.set(response.url, file)
     composeMedia.push({
       data: response,
       file: { name: file.name },
