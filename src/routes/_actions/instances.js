@@ -31,7 +31,7 @@ export function switchToInstance (instanceName) {
   switchToTheme(instanceThemes[instanceName], enableGrayscale)
 }
 
-export async function logOutOfInstance (instanceName) {
+export async function logOutOfInstance (instanceName, message = `Logged out of ${instanceName}`) {
   const {
     loggedInInstances,
     instanceThemes,
@@ -56,7 +56,7 @@ export async function logOutOfInstance (instanceName) {
     composeData: composeData
   })
   store.save()
-  toast.say(`Logged out of ${instanceName}`)
+  toast.say(message)
   const { enableGrayscale } = store.get()
   switchToTheme(instanceThemes[newInstance], enableGrayscale)
   /* no await */ database.clearDatabaseForInstance(instanceName)
@@ -73,7 +73,7 @@ export async function updateVerifyCredentialsForInstance (instanceName) {
   const { loggedInInstances } = store.get()
   const accessToken = loggedInInstances[instanceName].access_token
   await cacheFirstUpdateAfter(
-    () => getVerifyCredentials(instanceName, accessToken),
+    () => getVerifyCredentials(instanceName, accessToken).catch(logOutOnUnauthorized(instanceName)),
     () => database.getInstanceVerifyCredentials(instanceName),
     verifyCredentials => database.setInstanceVerifyCredentials(instanceName, verifyCredentials),
     verifyCredentials => setStoreVerifyCredentials(instanceName, verifyCredentials)
@@ -96,4 +96,14 @@ export async function updateInstanceInfo (instanceName) {
       store.set({ instanceInfos: instanceInfos })
     }
   )
+}
+
+export function logOutOnUnauthorized (instanceName) {
+  return async error => {
+    if (error.message.startsWith('401:')) {
+      await logOutOfInstance(instanceName, `The access token was revoked, logged out of ${instanceName}`)
+    }
+
+    throw error
+  }
 }
