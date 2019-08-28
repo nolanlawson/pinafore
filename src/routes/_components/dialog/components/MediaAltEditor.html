@@ -23,17 +23,12 @@
   <button class="extract-text-button" type="button"
           on:click="onClick()"
           disabled={extracting}
+          aria-label={extractButtonLabel}
   >
     <SvgIcon href="{extracting ? '#fa-spinner' : '#fa-magic'}"
              className="extract-text-svg {extracting ? 'spin' : ''}"
     />
-    <span>
-      {#if extracting}
-        Extracting text…
-      {:else}
-        Extract text from image
-      {/if}
-    </span>
+    <span>{extractButtonText}</span>
   </button>
   <LengthGauge
     length={extractionProgress}
@@ -135,7 +130,14 @@
     computed: {
       length: ({ rawText }) => length(rawText || ''),
       overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit,
-      url: ({ media, index }) => get(media, [index, 'data', 'url'])
+      url: ({ media, index }) => get(media, [index, 'data', 'url']),
+      extractButtonText: ({ extracting }) => extracting ? 'Extracting text…' : 'Extract text from image',
+      extractButtonLabel: ({ extractButtonText, extractionProgress, extracting }) => {
+        if (extracting) {
+          return `Extracting text (${Math.round(extractionProgress)}% complete)…`
+        }
+        return extractButtonText
+      }
     },
     methods: {
       observe,
