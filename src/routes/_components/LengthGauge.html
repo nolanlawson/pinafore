@@ -1,4 +1,4 @@
-<div class="length-gauge {shouldAnimate ? 'should-animate' : ''}  {overLimit ? 'over-char-limit' : ''}"
+<div class={computedClass}
      style={computedStyle}
      aria-hidden="true"
 ></div>
@@ -20,6 +20,7 @@
   import { store } from '../_store/store'
   import { observe } from 'svelte-extras'
   import { throttleTimer } from '../_utils/throttleTimer'
+  import { classname } from '../_utils/classname'
 
   const updateDisplayedLength = process.browser && throttleTimer(requestAnimationFrame)
 
@@ -50,6 +51,11 @@
         const int = Math.round(Math.min(max, length) / max * 100)
         return (int - (int % 2)) / 100
       },
+      computedClass: ({ shouldAnimate, overLimit, $reduceMotion }) => classname(
+        'length-gauge',
+        !$reduceMotion && shouldAnimate && 'should-animate',
+        overLimit && 'over-char-limit'
+      ),
       computedStyle: ({ style, lengthAsFractionDeferred }) => `transform: scaleX(${lengthAsFractionDeferred}); ${style}`
     },
     methods: {
