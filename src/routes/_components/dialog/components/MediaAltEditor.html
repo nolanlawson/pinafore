@@ -134,7 +134,7 @@
       extractButtonText: ({ extracting }) => extracting ? 'Extracting text…' : 'Extract text from image',
       extractButtonLabel: ({ extractButtonText, extractionProgress, extracting }) => {
         if (extracting) {
-          return `Extracting text (${extractionProgress}% complete)…`
+          return `Extracting text (${Math.round(extractionProgress)}% complete)…`
         }
         return extractButtonText
       }
