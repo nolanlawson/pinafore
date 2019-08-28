@@ -1,4 +1,4 @@
-<form class="media-focal-point-container"
+<form class="media-focal-point-container {className}"
       aria-label="Enter the focal point (X, Y) for this media"
       on:resize="measure()"
 >
@@ -155,8 +155,20 @@
 
   @media (max-width: 767px) {
     .media-focal-point-inputs {
-      padding: 10px 20px;
+      padding: 5px 20px;
       justify-content: space-around;
+    }
+    :global(.media-focal-point-indicator-svg) {
+      width: 32px;
+      height: 32px;
+      padding: 12px;
+      fill: var(--focal-color);
+    }
+    .media-focal-point-input-pair label {
+      font-size: 1.1em;
+    }
+    .media-focal-point-input-pair input {
+      font-size: 1.1em;
     }
   }
 </style>
@@ -197,7 +209,8 @@
       rawFocusY: '0',
       containerWidth: 0,
       containerHeight: 0,
-      imageLoaded: false
+      imageLoaded: false,
+      className: ''
     }),
     store: () => store,
     computed: {

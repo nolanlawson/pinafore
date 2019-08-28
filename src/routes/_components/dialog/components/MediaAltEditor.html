@@ -1,4 +1,4 @@
-<div class="media-alt-editor">
+<div class="media-alt-editor {className}">
   <textarea
     id="the-media-alt-input-{realm}-{index}"
     class="media-alt-input"
@@ -44,7 +44,7 @@
   .media-alt-input {
     padding: 5px;
     border: 1px solid var(--input-border);
-    min-height: 75px;
+    min-height: 40px;
     resize: none;
     overflow: hidden;
     word-wrap: break-word;
@@ -74,12 +74,20 @@
     .media-alt-input {
       max-height: 40vh;
       width: 100%;
+      overflow: auto;
+    }
+    .extract-text-button {
+      margin-top: 0;
+    }
+    button.extract-text-button {
+      padding: 7px 10px;
     }
   }
 
   @media (min-height: 768px) {
     .media-alt-input {
       min-width: 250px;
+      min-height: 75px;
     }
   }
 </style>
@@ -115,7 +123,8 @@
     data: () => ({
       rawText: '',
       mediaAltCharLimit: MEDIA_ALT_CHAR_LIMIT,
-      extracting: false
+      extracting: false,
+      className: ''
     }),
     computed: {
       length: ({ rawText }) => length(rawText || ''),
