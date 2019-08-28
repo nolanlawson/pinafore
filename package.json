@@ -111,7 +111,7 @@
     "fake-indexeddb": "^2.1.1",
     "mocha": "^6.2.0",
     "now": "^16.1.1",
-    "standard": "^14.0.0",
+    "standard": "^14.0.2",
     "testcafe": "^1.4.1",
     "worker-loader": "^2.0.0"
   },
