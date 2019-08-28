@@ -35,6 +35,11 @@
       {/if}
     </span>
   </button>
+  <LengthGauge
+    length={extractionProgress}
+    overLimit={false}
+    max={100}
+  />
 </div>
 <style>
   .media-alt-editor {
@@ -124,7 +129,8 @@
       rawText: '',
       mediaAltCharLimit: MEDIA_ALT_CHAR_LIMIT,
       extracting: false,
-      className: ''
+      className: '',
+      extractionProgress: 0
     }),
     computed: {
       length: ({ rawText }) => length(rawText || ''),
@@ -176,17 +182,22 @@
         this.set({ extracting: true })
         try {
           const { url } = this.get()
+          const onProgress = progress => {
+            requestAnimationFrame(() => {
+              this.set({ extractionProgress: progress * 100 })
+            })
+          }
           const file = mediaUploadFileCache.get(url)
           let text
           if (file) { // Avoid downloading from the network a file that the user *just* uploaded
             const fileUrl = URL.createObjectURL(file)
             try {
-              text = await runTesseract(fileUrl)
+              text = await runTesseract(fileUrl, onProgress)
             } finally {
               URL.revokeObjectURL(fileUrl)
             }
           } else {
-            text = await runTesseract(url)
+            text = await runTesseract(url, onProgress)
           }
           const { media, index, realm } = this.get()
           if (media[index].description !== text) {
@@ -201,6 +212,11 @@
           )
         } finally {
           this.set({ extracting: false })
+          setTimeout(() => {
+            requestAnimationFrame(() => {
+              this.set({ extractionProgress: 0 })
+            })
+          }, 400)
         }
       }
     },
