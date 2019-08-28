@@ -1,5 +1,4 @@
 import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances'
-import { updateListsForInstance } from '../../_actions/lists'
 import { createStream } from '../../_actions/stream/streaming'
 import { updatePushSubscriptionForInstance } from '../../_actions/pushSubscription'
 import { updateCustomEmojiForInstance } from '../../_actions/emoji'
@@ -42,7 +41,6 @@ async function doRefreshInstanceDataAndStream (store, instanceName) {
 async function refreshInstanceData (instanceName) {
   // these are all low-priority
   scheduleIdleTask(() => updateCustomEmojiForInstance(instanceName))
-  scheduleIdleTask(() => updateListsForInstance(instanceName))
   scheduleIdleTask(() => updatePushSubscriptionForInstance(instanceName))
 
   // these are the only critical ones
