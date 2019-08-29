@@ -12,10 +12,9 @@ import { TesseractWorker } from 'tesseract.js'
 // which seems excessive. So we just live with the bug for now.
 // https://github.com/naptha/tesseract.js/issues/325
 const { origin } = location
-const tesseractWorker = new TesseractWorker({
+
+export default () => new TesseractWorker({
   workerPath: `${origin}/${workerPath}`,
   langPath: `${origin}/`,
   corePath: `${origin}/${corePath}`
 })
-
-export default tesseractWorker
