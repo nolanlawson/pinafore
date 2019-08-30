@@ -1,10 +1,13 @@
-import { cacheFirstUpdateAfter } from '../_utils/sync'
+import {
+  cacheFirstUpdateAfter,
+  cacheFirstUpdateOnlyIfNotInCache
+} from '../_utils/sync'
 import { database } from '../_database/database'
 import { getCustomEmoji } from '../_api/emoji'
 import { store } from '../_store/store'
 
-export async function updateCustomEmojiForInstance (instanceName) {
-  await cacheFirstUpdateAfter(
+async function syncEmojiForInstance (instanceName, syncMethod) {
+  await syncMethod(
     () => getCustomEmoji(instanceName),
     () => database.getCustomEmoji(instanceName),
     emoji => database.setCustomEmoji(instanceName, emoji),
@@ -14,6 +17,14 @@ export async function updateCustomEmojiForInstance (instanceName) {
       store.set({ customEmoji: customEmoji })
     }
   )
+}
+
+export async function updateCustomEmojiForInstance (instanceName) {
+  await syncEmojiForInstance(instanceName, cacheFirstUpdateAfter)
+}
+
+export async function setupCustomEmojiForInstance (instanceName) {
+  await syncEmojiForInstance(instanceName, cacheFirstUpdateOnlyIfNotInCache)
 }
 
 export function insertEmoji (realm, emoji) {
