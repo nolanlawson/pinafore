@@ -20,3 +20,19 @@ export async function cacheFirstUpdateAfter (networkFetcher, dbFetcher, dbUpdate
     }
   }
 }
+
+export async function cacheFirstUpdateOnlyIfNotInCache (networkFetcher, dbFetcher, dbUpdater, stateSetter) {
+  let dbResponse
+  try {
+    dbResponse = await dbFetcher()
+  } catch (err) {
+    console.error('ignored DB error', err)
+  }
+  if (dbResponse) {
+    stateSetter(dbResponse)
+  } else {
+    const networkResponse = await networkFetcher()
+    /* no await */ dbUpdater(networkResponse)
+    stateSetter(networkResponse)
+  }
+}
