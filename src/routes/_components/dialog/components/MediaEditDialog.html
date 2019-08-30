@@ -8,7 +8,7 @@
 >
   <div class="media-edit-dialog-container">
     <div class="media-edit-header-and-item media-edit-header-and-item-alt">
-      <h1>Description</h1>
+      <h2>Description</h2>
       <MediaAltEditor
         className="media-edit-item"
         {realm}
@@ -20,7 +20,7 @@
     </div>
     {#if type === 'image'}
       <div class="media-edit-header-and-item media-edit-header-and-item-focal">
-        <h1>Preview (focal point)</h1>
+        <h2>Preview (focal point)</h2>
         <MediaFocalPointEditor
           className="media-edit-item"
           {realm}
@@ -49,9 +49,8 @@
     padding: 10px;
   }
 
-  .media-edit-header-and-item h1 {
+  .media-edit-header-and-item h2 {
     margin-bottom: 10px;
-    font-size: 1.4em;
   }
 
   @media (max-width: 767px) {
@@ -85,7 +84,7 @@
       flex-basis: 60%;
     }
 
-    .media-edit-header-and-item h1 {
+    .media-edit-header-and-item h2 {
       font-size: 1.2em;
       margin-bottom: 5px;
     }
