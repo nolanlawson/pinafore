@@ -68,6 +68,7 @@
   import { toggleContentWarningShown } from '../../_actions/contentWarnings'
   import { mediaAccept } from '../../_static/media'
   import { enablePoll, disablePoll } from '../../_actions/composePoll'
+  import { updateCustomEmojiForInstance } from '../../_actions/emoji'
 
   export default {
     components: {
@@ -80,7 +81,11 @@
     methods: {
       async onEmojiClick () {
         const { realm } = this.get()
-        const showEmojiDialog = await importShowEmojiDialog()
+        const { currentInstance } = this.store.get()
+        const [showEmojiDialog] = await Promise.all([
+          importShowEmojiDialog(),
+          updateCustomEmojiForInstance(currentInstance)
+        ])
         showEmojiDialog(realm)
       },
       onMediaClick () {
