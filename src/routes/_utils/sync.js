@@ -21,6 +21,8 @@ export async function cacheFirstUpdateAfter (networkFetcher, dbFetcher, dbUpdate
   }
 }
 
+// Try the cache first. If we get a hit, set the state and do nothing. If we don't get a cache hit,
+// then go to the network, update the cache, and set the state.
 export async function cacheFirstUpdateOnlyIfNotInCache (networkFetcher, dbFetcher, dbUpdater, stateSetter) {
   let dbResponse
   try {
