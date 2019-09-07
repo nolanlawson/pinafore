@@ -2,48 +2,48 @@ const getDefault = mod => mod.default
 
 export const importShowAccountProfileOptionsDialog = () => import(
   /* webpackChunkName: 'showAccountProfileOptionsDialog' */ './creators/showAccountProfileOptionsDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowComposeDialog = () => import(
   /* webpackChunkName: 'showComposeDialog' */ './creators/showComposeDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowTextConfirmationDialog = () => import(
   /* webpackChunkName: 'showTextConfirmationDialog' */ './creators/showTextConfirmationDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowEmojiDialog = () => import(
   /* webpackChunkName: 'showEmojiDialog' */ './creators/showEmojiDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowPostPrivacyDialog = () => import(
   /* webpackChunkName: 'showPostPrivacyDialog' */ './creators/showPostPrivacyDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowStatusOptionsDialog = () => import(
   /* webpackChunkName: 'showStatusOptionsDialog' */ './creators/showStatusOptionsDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowCopyDialog = () => import(
   /* webpackChunkName: 'showCopyDialog' */ './creators/showCopyDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowShortcutHelpDialog = () => import(
   /* webpackChunkName: 'showShortcutHelpDialog' */ './creators/showShortcutHelpDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowMediaDialog = () => import(
   /* webpackChunkName: 'showMediaDialog' */ './creators/showMediaDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowMuteDialog = () => import(
   /* webpackChunkName: 'showMuteDialog' */ './creators/showMuteDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowReportDialog = () => import(
   /* webpackChunkName: 'showReportDialog' */ './creators/showReportDialog'
-  ).then(getDefault)
+).then(getDefault)
 
 export const importShowMediaEditDialog = () => import(
   /* webpackChunkName: 'showMediaEditDialog' */ './creators/showMediaEditDialog'
-  ).then(getDefault)
+).then(getDefault)
