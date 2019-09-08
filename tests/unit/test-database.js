@@ -10,7 +10,8 @@ import {
   TIMESTAMP, ACCOUNT_ID, STATUS_ID, REBLOG_ID, USERNAME_LOWERCASE,
   CURRENT_TIME, DB_VERSION_CURRENT, DB_VERSION_SEARCH_ACCOUNTS, DB_VERSION_SNOWFLAKE_IDS
 } from '../../src/routes/_database/constants'
-import { cleanup, TIME_AGO } from '../../src/routes/_database/cleanup'
+import { cleanup } from '../../src/routes/_database/cleanup'
+import { CLEANUP_TIME_AGO } from '../../src/routes/_static/database'
 
 const INSTANCE_NAME = 'localhost:3000'
 
@@ -91,7 +92,7 @@ describe('test-database.js', function () {
       // set a timestamp based on the *current* date when the status is inserted,
       // not the date that the status was composed.
 
-      const longAgo = Date.now() - (TIME_AGO * 2)
+      const longAgo = Date.now() - (CLEANUP_TIME_AGO * 2)
 
       const oldStatus = {
         id: '1',
