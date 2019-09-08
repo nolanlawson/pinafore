@@ -1,6 +1,7 @@
 import { store } from '../store'
 import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../../_static/database'
+import { scheduleInterval } from '../../_utils/scheduleInterval'
 
 function doCleanup () {
   // Periodically clean up drafts in localStorage, so they don't grow without bound.
@@ -26,6 +27,10 @@ function doCleanup () {
   }
 }
 
+function doCleanupLazily () {
+  scheduleIdleTask(doCleanup)
+}
+
 export function cleanup () {
-  setInterval(() => scheduleIdleTask(doCleanup), CLEANUP_DELAY)
+  scheduleInterval(doCleanupLazily, CLEANUP_DELAY, /* runOnActive */ false)
 }
