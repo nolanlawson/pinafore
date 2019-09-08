@@ -16,10 +16,9 @@ import { deleteAll } from './utils'
 import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 import { getKnownInstances } from './knownInstances'
 import noop from 'lodash-es/noop'
+import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../_static/database'
 
 const BATCH_SIZE = 20
-export const TIME_AGO = 5 * 24 * 60 * 60 * 1000 // five days ago
-const DELAY = 5 * 60 * 1000 // five minutes
 
 function batchedGetAll (callGetAll, callback) {
   function nextBatch () {
@@ -124,7 +123,7 @@ export async function cleanup (instanceName) {
       pinnedStatusesStore
     ] = stores
 
-    const cutoff = Date.now() - TIME_AGO
+    const cutoff = Date.now() - CLEANUP_TIME_AGO
 
     cleanupStatuses(statusesStore, statusTimelinesStore, threadsStore, cutoff)
     cleanupNotifications(notificationsStore, notificationTimelinesStore, cutoff)
@@ -148,4 +147,4 @@ async function scheduledCleanup () {
 }
 
 // we have unit tests that test indexedDB; we don't want this thing to run forever
-export const scheduleCleanup = process.browser ? debounce(scheduledCleanup, DELAY) : noop
+export const scheduleCleanup = process.browser ? debounce(scheduledCleanup, CLEANUP_DELAY) : noop
