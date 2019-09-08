@@ -32,9 +32,9 @@ export function scheduleInterval (callback, delay, runOnActive) {
     startPolling()
   }
 
-  startPolling()
-
   if (process.browser) {
+    startPolling()
+
     lifecycle.addEventListener('statechange', e => {
       if (e.newState === 'passive') {
         console.log('pausing interval...')
