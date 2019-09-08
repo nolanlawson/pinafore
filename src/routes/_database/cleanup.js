@@ -17,6 +17,7 @@ import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
 import { getKnownInstances } from './knownInstances'
 import noop from 'lodash-es/noop'
 import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../_static/database'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 const BATCH_SIZE = 20
 
@@ -134,8 +135,7 @@ export async function cleanup (instanceName) {
 }
 
 function doCleanup (instanceName) {
-  // run in setTimeout because we're in a worker and there's no requestIdleCallback
-  setTimeout(() => cleanup(instanceName))
+  scheduleIdleTask(() => cleanup(instanceName))
 }
 
 async function scheduledCleanup () {
