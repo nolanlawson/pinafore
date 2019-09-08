@@ -9,7 +9,7 @@
     <IconButton
       className="compose-toolbar-button"
       svgClassName={$uploadingMedia ? 'spin' : ''}
-      label="Add media"
+      label="Add media (images, video, audio)"
       href={$uploadingMedia ? '#fa-spinner' : '#fa-camera'}
       on:click="onMediaClick()"
       disabled={$uploadingMedia || (media.length === 4)}
@@ -41,6 +41,7 @@
          on:change="onFileChange(event)"
          style="display: none;"
          type="file"
+         multiple
          accept={mediaAccept} >
 </div>
 <style>
@@ -91,10 +92,12 @@
       onMediaClick () {
         this.refs.input.click()
       },
-      onFileChange (e) {
-        const file = e.target.files[0]
+      async onFileChange (e) {
+        const { files } = e.target
         const { realm } = this.get()
-        doMediaUpload(realm, file)
+        for (const file of files) {
+          await doMediaUpload(realm, file)
+        }
       },
       async onPostPrivacyClick () {
         const { realm } = this.get()
