@@ -121,7 +121,7 @@
           // hydrate hashtag
           if (tags && anchor.classList.contains('hashtag')) {
             for (const tag of tags) {
-              if (anchor.getAttribute('href').endsWith(`/tags/${tag.name}`)) {
+              if (anchor.getAttribute('href').toLowerCase().endsWith(`/tags/${tag.name.toLowerCase()}`)) {
                 anchor.setAttribute('href', `/tags/${tag.name}`)
                 anchor.setAttribute('id', `status-content-link-${uuid}-${++count}`)
                 anchor.removeAttribute('target')
