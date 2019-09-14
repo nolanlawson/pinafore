@@ -112,7 +112,7 @@
     "fake-indexeddb": "^2.1.1",
     "mocha": "^6.2.0",
     "now": "^16.2.0",
-    "standard": "^14.1.0",
+    "standard": "^14.2.0",
     "testcafe": "^1.4.1"
   },
   "engines": {
