@@ -86,11 +86,11 @@
 <Shortcut scope='modal-{id}' key="ArrowRight" on:pressed="next()" />
 <style>
   :global(.media-modal-dialog) {
-    max-width: calc(100%);
+    max-width: 100%;
   }
   .media-container {
     height: calc(100% - 64px); /* 44px X button height + 20px padding */
-    width: calc(100vw);
+    width: 100vw;
     display: flex;
     flex-direction: column;
   }
@@ -196,8 +196,15 @@
     .media-scroll-item {
       scroll-snap-coordinate: 0 0;
     }
-
   }
+
+  @media (max-width: 767px) {
+    .media-container {
+      height: calc(100vh - 64px);
+    }
+  }
+
+
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
