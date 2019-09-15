@@ -51,6 +51,31 @@
     }
   }
 
+  /* Hide the nav when the keyboard is open on mobile devices.
+  This is a bit fuzzy, but can be helpful when the soft keyboard takes up a lot of space.*/
+
+  @media screen and (max-width: 812px) {
+    #main-nav, :global(.main-content) {
+      transform: translateY(0);
+    }
+
+    @supports not (-moz-appearance: none) {
+      /* TODO: this animation is very ugly in mobile firefox. remove when FF improves */
+      #main-nav, :global(.main-content) {
+        transition: transform 0.333s ease-in-out 0.1s;
+      }
+    }
+
+    @supports not (-moz-appearance: none) {
+      @media
+        /* portrait, roughly */  (max-width: 479px) and (max-height: 299px),
+        /* landscape, roughly */ (min-width: 480px) and (max-height: 199px) {
+        #main-nav, :global(.main-content) {
+          transform: translateY(-67px); /* height of nav */
+        }
+      }
+    }
+  }
 </style>
 <script>
   import NavItem from './NavItem'
