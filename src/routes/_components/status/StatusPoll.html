@@ -35,7 +35,7 @@
   <ul class="poll-details" aria-label="Poll details">
     <li class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-bar-chart" />
-      <span class="poll-stat-text">{votesCount} {votesCount === 1 ? 'vote' : 'votes'}</span>
+      <span class="poll-stat-text">{votesText}</span>
     </li>
     <li class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-clock" />
@@ -297,6 +297,7 @@
         !isStatusInOwnThread && $isMobileSize && !expired
       ),
       formDisabled: ({ choices }) => !choices.length,
+      votesText: ({ votesCount }) => `${votesCount} ${votesCount === 1 ? 'vote' : 'votes'}`,
       computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading }) => (
         classname(
           'poll',
