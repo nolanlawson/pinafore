@@ -91,7 +91,20 @@
         this.observe('text', text => {
           const { rawText } = this.get()
           if (rawText !== text) {
+            let newSelectionStart
+            if (!firstTime) {
+              const { selectionStart, selectionEnd } = textarea
+              if (selectionStart > 0 && selectionStart === selectionEnd) {
+                // Preserve cursor position when doing an autosuggest.
+                // Note that we don't need to do anything special to measure length here, because
+                // the selectionStart value is not emoji-aware.
+                newSelectionStart = (text.length - rawText.length) + selectionStart
+              }
+            }
             this.set({ rawText: text })
+            if (typeof newSelectionStart === 'number' && newSelectionStart > 0) {
+              textarea.selectionStart = textarea.selectionEnd = newSelectionStart
+            }
             // this next autosize is required to resize after
             // the user clicks the "toot" button
             mark('autosize.update()')
