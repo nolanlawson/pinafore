@@ -1,6 +1,10 @@
 <h2 class="sr-only">Name and following</h2>
 <div class="account-profile-avatar">
-  <Avatar {account} size="big" />
+  <button class="account-profile-avatar-button"
+          aria-label="Click to see avatar"
+          on:click="onAvatarClick()" >
+    <Avatar {account} size="big" />
+  </button>
 </div>
 <div class="account-profile-name">
   <ExternalLink
@@ -70,6 +74,22 @@
     min-width: 0;
   }
 
+  .account-profile-avatar-button {
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  .account-profile-avatar-button:hover {
+    opacity: 0.9;
+  }
+
+  .account-profile-avatar-button:active {
+    opacity: 0.8;
+  }
+
   :global(a.account-profile-name-link) {
     color: var(--body-text-color);
     text-decoration: none;
@@ -104,6 +124,8 @@
   import { removeEmoji } from '../../_utils/removeEmoji'
   import { store } from '../../_store/store'
   import Label from '../Label.html'
+  import { importShowMediaDialog } from '../dialog/asyncDialogs'
+  import { getImageNativeDimensions } from '../../_utils/getImageNativeDimensions'
 
   export default {
     store: () => store,
@@ -117,6 +139,37 @@
       },
       bot: ({ account }) => !!account.bot,
       label: ({ bot }) => bot ? 'bot' : ''
+    },
+    methods: {
+      async onAvatarClick () {
+        const { account } = this.get()
+        const { avatar, avatar_static: avatarStatic, display_name: displayName, username } = account
+        const [showMediaDialog, nativeDimensions] = await Promise.all([
+          importShowMediaDialog(),
+          getImageNativeDimensions(avatarStatic)
+        ])
+        // pretend this is a media attachment so it will work in the media dialog
+        const { width, height } = nativeDimensions
+        const mediaAttachments = [
+          {
+            description: `Avatar for ${displayName || username}`,
+            type: 'image',
+            preview_url: avatarStatic,
+            url: avatar,
+            meta: {
+              original: {
+                width,
+                height
+              },
+              small: {
+                width: 100,
+                height: 100
+              }
+            }
+          }
+        ]
+        showMediaDialog(mediaAttachments, /* index */ 0)
+      }
     },
     components: {
       Avatar,
