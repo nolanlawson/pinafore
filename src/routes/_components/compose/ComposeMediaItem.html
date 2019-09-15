@@ -113,6 +113,12 @@
       max-height: 7vh;
     }
   }
+
+  @media (max-width: 320px) {
+    .compose-media-realm-dialog .compose-media-alt-input {
+      display: none; /* too small to show this - use the edit button instead */
+    }
+  }
 </style>
 <script>
   import { store } from '../../_store/store'

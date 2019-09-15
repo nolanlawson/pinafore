@@ -71,6 +71,8 @@ export const composePollExpiryOption = $('.compose-poll select option')
 export const composePollExpiryInDialog = $('.modal-dialog .compose-poll select')
 export const composePollAddButton = $('.compose-poll button:last-of-type')
 
+export const composeMediaSensitiveCheckbox = $('.compose-media-sensitive input')
+
 export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
 
 export const accountProfileFilterStatuses = $('.account-profile-filters li:nth-child(1)')
@@ -350,6 +352,14 @@ export function getNthStatusHeader (n) {
 
 export function getNthStatusAndImage (nStatus, nImage) {
   return $(`${getNthStatusSelector(nStatus)} .status-media .show-image-button:nth-child(${nImage}) img`)
+}
+
+export function getNthStatusAndSensitiveButton (nStatus, nImage) {
+  return $(`${getNthStatusSelector(nStatus)} .status-sensitive-media-button:nth-child(${nImage})`)
+}
+
+export function getNthStatusAndSensitiveImage (nStatus, nImage) {
+  return $(`${getNthStatusSelector(nStatus)} .status-media button:nth-child(${nImage}) img`)
 }
 
 export function getFirstVisibleStatus () {
