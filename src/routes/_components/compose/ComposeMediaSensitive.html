@@ -1,0 +1,79 @@
+{#if media.length}
+  <div class="compose-media-sensitive">
+    <label>
+      <input type="checkbox" bind:checked="rawChecked" {disabled} />
+      <span class="{disabled ? 'compose-sensitive-span-disabled' : ''}">
+        Mark media as sensitive
+      </span>
+    </label>
+  </div>
+{/if}
+<style>
+  .compose-media-sensitive {
+    grid-area: sensitive;
+    margin-top: 10px;
+  }
+  label {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  span {
+    margin-left: 5px;
+  }
+  .compose-sensitive-span-disabled {
+    color: var(--deemphasized-text-color);
+  }
+
+  @media (max-width: 767px) {
+    .compose-media-sensitive {
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 320px) {
+    span {
+      font-size: 0.9em;
+    }
+  }
+
+</style>
+<script>
+  import { observe } from 'svelte-extras'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+
+  export default {
+    oncreate () {
+      this.setupSyncToStore()
+      this.setupSyncFromStore()
+    },
+    data: () => ({
+      rawChecked: false
+    }),
+    computed: {
+      disabled: ({ contentWarning, contentWarningShown }) => contentWarning && contentWarningShown
+    },
+    methods: {
+      observe,
+      setupSyncToStore () {
+        this.observe('rawChecked', () => {
+          scheduleIdleTask(() => {
+            const { realm } = this.get()
+            const { rawChecked } = this.get()
+            const sensitive = this.store.getComposeData(realm, 'sensitive')
+            if (sensitive !== rawChecked) {
+              this.store.setComposeData(realm, { sensitive: rawChecked })
+              this.store.save()
+            }
+          })
+        }, { init: false })
+      },
+      setupSyncFromStore () {
+        this.observe('sensitive', sensitive => {
+          this.set({ rawChecked: sensitive })
+        })
+      }
+    }
+  }
+</script>

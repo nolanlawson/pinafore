@@ -10,7 +10,8 @@ import {
   homeNavButton,
   mediaButton,
   notificationsNavButton,
-  uploadKittenImage
+  uploadKittenImage,
+  composeMediaSensitiveCheckbox, getNthStatusAndSensitiveImage, getNthStatusAndSensitiveButton, getNthStatusContent
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
@@ -96,4 +97,21 @@ test('can post a status with empty content if there is media', async t => {
     .typeText(getNthMediaAltInput(1), 'just an image!')
   await t.click(composeButton)
     .expect(getNthStatusAndImage(1, 1).getAttribute('alt')).eql('just an image!')
+})
+
+test('can make an image sensitive without adding a CW', async t => {
+  await loginAsFoobar(t)
+  await t
+    .typeText(composeInput, 'this is just a kitteh')
+  await (uploadKittenImage(2)())
+  await t
+    .typeText(getNthMediaAltInput(1), 'sensitive kitteh')
+    .expect(composeMediaSensitiveCheckbox.checked).notOk()
+    .click(composeMediaSensitiveCheckbox)
+    .expect(composeMediaSensitiveCheckbox.checked).ok()
+    .click(composeButton)
+    .expect(getNthStatusContent(1).innerText).contains('this is just a kitteh')
+    .expect(getNthStatusAndSensitiveImage(1, 1).getAttribute('src')).match(/^blob:http:\/\/localhost/)
+    .click(getNthStatusAndSensitiveButton(1, 1))
+    .expect(getNthStatusAndImage(1, 1).getAttribute('alt')).eql('sensitive kitteh')
 })

@@ -41,7 +41,10 @@
         const { realm } = this.get()
         this.observe('rawText', rawText => {
           updateContentWarningInStore(() => {
-            this.store.setComposeData(realm, { contentWarning: rawText })
+            this.store.setComposeData(realm, {
+              sensitive: !!rawText, // toggling the content warning automatically toggles sensitive media
+              contentWarning: rawText
+            })
             this.store.save()
           })
         }, { init: false })

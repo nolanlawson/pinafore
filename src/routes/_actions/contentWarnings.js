@@ -6,6 +6,7 @@ export function toggleContentWarningShown (realm) {
   const newShown = !shown
   store.setComposeData(realm, {
     contentWarning: newShown ? contentWarning : '',
-    contentWarningShown: newShown
+    contentWarningShown: newShown,
+    sensitive: contentWarning && newShown // toggling content warning automatically toggles sensitive media
   })
 }
