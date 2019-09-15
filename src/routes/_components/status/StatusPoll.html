@@ -1,8 +1,8 @@
 <div class={computedClass} aria-busy={loading} >
   {#if voted || expired }
-    <ul aria-label="Poll results">
+    <ul class="poll-choices" aria-label="Poll results">
       {#each options as option}
-        <li class="option">
+        <li class="poll-choice option">
           <div class="option-text">
             <strong>{option.share}%</strong> {option.title}
           </div>
@@ -14,9 +14,9 @@
     </ul>
   {:else}
     <form class="poll-form" aria-label="Vote on poll" on:submit="onSubmit(event)" ref:form>
-      <ul aria-label="Poll choices">
+      <ul class="poll-choices" aria-label="Poll choices">
         {#each options as option, i}
-          <li class="poll-form-option">
+          <li class="poll-choice poll-form-option">
             <input type="{multiple ? 'checkbox' : 'radio'}"
                    id="poll-choice-{uuid}-{i}"
                    name="poll-choice-{uuid}"
@@ -32,12 +32,12 @@
       <button disabled={formDisabled} type="submit">Vote</button>
     </form>
   {/if}
-  <div class="poll-details">
-    <div class="poll-stat {notification ? 'is-notification' : ''}">
+  <ul class="poll-details" aria-label="Poll details">
+    <li class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-bar-chart" />
       <span class="poll-stat-text">{votesCount} {votesCount === 1 ? 'vote' : 'votes'}</span>
-    </div>
-    <div class="poll-stat {notification ? 'is-notification' : ''}">
+    </li>
+    <li class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-clock" />
       <span class="poll-stat-text poll-stat-expiry">
         <span class="{useNarrowSize ? 'sr-only' : ''}">{expiryText}</span>
@@ -45,15 +45,17 @@
           {expiresAtTimeagoFormatted}
         </time>
       </span>
-    </div>
-    <button class="poll-stat {notification ? 'is-notification' : ''} {expired ? 'poll-expired' : ''}"
-            id={refreshElementId}>
-      <SvgIcon className="poll-icon" href="#fa-refresh" />
-      <span class="poll-stat-text">
-        Refresh
-      </span>
-    </button>
-  </div>
+    </li>
+    <li class="poll-stat {notification ? 'is-notification' : ''} {expired ? 'poll-expired' : ''}">
+      <button id={refreshElementId}
+              aria-label="Refresh">
+        <SvgIcon className="poll-icon" href="#fa-refresh" />
+        <span class="poll-stat-text poll-stat-text-refresh" aria-hidden="true">
+          Refresh
+        </span>
+      </button>
+    </li>
+  </ul>
 </div>
 <style>
   .poll {
@@ -74,13 +76,13 @@
     pointer-events: none;
   }
 
-  ul {
+  ul.poll-choices {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  li {
+  li.poll-choice {
     margin: 0;
     padding: 0;
   }
@@ -118,16 +120,18 @@
     font-size: 1.2em;
   }
 
-  .poll-details {
+  ul.poll-details {
     display: grid;
     grid-template-columns: max-content minmax(0, max-content) max-content;
     grid-gap: 20px;
     align-items: center;
     justify-content: left;
-    margin-top: 10px;
+    margin: 10px 0 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  button.poll-stat {
+  .poll-stat button {
     /* reset button styles */
     background: none;
     box-shadow: none;
@@ -140,17 +144,21 @@
     text-align: left;
     text-decoration: none;
     text-indent: 0;
+    display: flex;
+    align-items: center;
   }
 
-  button.poll-stat:hover {
+  .poll-stat button:hover {
     text-decoration: underline;
   }
 
-  .poll-stat {
+  li.poll-stat {
     display: flex;
     flex-direction: row;
     align-items: center;
     color: var(--deemphasized-text-color);
+    padding: 0;
+    margin: 0;
   }
 
   .poll-stat.is-notification {
@@ -167,6 +175,7 @@
 
   .poll-stat-text {
     margin-left: 5px;
+    color: var(--deemphasized-text-color);
   }
 
   .poll-stat-expiry {
@@ -187,9 +196,6 @@
     padding-bottom: 10px;
   }
 
-  .poll-form button {
-  }
-
   .poll-form label {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -205,9 +211,21 @@
     .poll.status-in-own-thread {
       padding: 10px;
     }
-    .poll-details {
+    ul.poll-details {
       grid-gap: 5px;
       justify-content: space-between;
+    }
+  }
+
+  @media (max-width: 320px) {
+    :global(.poll-stat-text-refresh) {
+      display: none; /* takes up too much space on small devices */
+    }
+    ul.poll-details {
+      grid-gap: 2px;
+    }
+    .poll-stat-text {
+      margin-left: 2px;
     }
   }
 
@@ -275,7 +293,9 @@
       expiresAtAbsoluteFormatted: ({ expiresAtTS }) => absoluteDateFormatter.format(expiresAtTS),
       expiryText: ({ expired }) => expired ? 'Ended' : 'Ends',
       refreshElementId: ({ uuid }) => `poll-refresh-${uuid}`,
-      useNarrowSize: ({ $isMobileSize, expired }) => $isMobileSize && !expired,
+      useNarrowSize: ({ $isMobileSize, expired, isStatusInOwnThread }) => (
+        !isStatusInOwnThread && $isMobileSize && !expired
+      ),
       formDisabled: ({ choices }) => !choices.length,
       computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading }) => (
         classname(
