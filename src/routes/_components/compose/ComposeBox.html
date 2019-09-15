@@ -145,7 +145,8 @@
       autoFocus: false,
       hideBottomBorder: false,
       hidden: false,
-      dialogId: undefined
+      dialogId: undefined,
+      aboutToPostStatus: false
     }),
     store: () => store,
     computed: {
@@ -184,12 +185,22 @@
       slide
     },
     methods: {
-      doPostStatus () {
+      async doPostStatus () {
+        const { aboutToPostStatus } = this.get()
+        const { postingStatus } = this.store.get()
+        if (aboutToPostStatus || postingStatus) { // do nothing if the user rapidly taps the Ctrl-Enter key
+          console.log('ignored post command', { aboutToPostStatus, postingStatus })
+          return
+        }
         // The reason we add a scheduleIdleTask delay here is because we also use scheduleIdleTask
         // in ComposeInput.html to debounce the input events. If the user is very fast at typing
         // at their keyboard and quickly presses Ctrl+Enter or the "Toot" button then there could
         // be a race condition where not all of their status is posted.
-        scheduleIdleTask(() => this.doPostStatusAfterDelay())
+        this.set({ aboutToPostStatus: true })
+        scheduleIdleTask(() => {
+          this.set({ aboutToPostStatus: false })
+          this.doPostStatusAfterDelay()
+        })
       },
       doPostStatusAfterDelay () {
         const {
@@ -228,8 +239,7 @@
           options: poll.options
         }
 
-        /* no await */
-        postStatus(realm, text, inReplyTo, mediaIds,
+        /* no await */ postStatus(realm, text, inReplyTo, mediaIds,
           sensitive, contentWarning, postPrivacyKey,
           mediaDescriptions, inReplyToUuid, pollToPost,
           mediaFocalPoints)
