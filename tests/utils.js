@@ -257,7 +257,7 @@ export function getNthStatusPollResult (n, i) {
 }
 
 export function getNthStatusPollRefreshButton (n) {
-  return $(`${getNthStatusSelector(n)} button.poll-stat`)
+  return $(`${getNthStatusSelector(n)} .poll-stat button`)
 }
 
 export function getNthStatusPollVoteCount (n) {
