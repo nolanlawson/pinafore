@@ -3,7 +3,9 @@
    rel="prefetch"
    href="/accounts/{originalAccountId}"
    aria-hidden="true"
+   tabindex="-1"
 >
+  <!-- the avatar is duplicated information, so hide from tab order and screenreaders -->
   <Avatar account={originalAccount}
           isLink="true"
           {size} />
