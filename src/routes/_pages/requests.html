@@ -5,9 +5,18 @@
 <script>
   import AccountsListPage from '../_components/AccountsListPage.html'
   import { store } from '../_store/store'
-  import { getFollowRequests } from '../_actions/followRequests'
+  import { getFollowRequests } from '../_api/followRequests'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
   import { setFollowRequestApprovedOrRejected } from '../_actions/requests'
+  import { database } from '../_database/database'
+
+  // sneakily update the follow reqs count in the cache, since we just fetched it
+  function updateFollowReqsCount ($currentInstance, followReqs) {
+    /* no await */ database.setFollowRequestCount($currentInstance, followReqs.length)
+    const { followRequestCounts } = store.get()
+    followRequestCounts[$currentInstance] = followReqs.length
+    store.set({ followRequestCounts })
+  }
 
   export default {
     data: () => ({
@@ -25,7 +34,11 @@
       ]
     }),
     computed: {
-      accountsFetcher: ({ $currentInstance, $accessToken }) => () => getFollowRequests($currentInstance, $accessToken)
+      accountsFetcher: ({ $currentInstance, $accessToken }) => async () => {
+        const followReqs = await getFollowRequests($currentInstance, $accessToken)
+        updateFollowReqsCount($currentInstance, followReqs)
+        return followReqs
+      }
     },
     store: () => store,
     components: {

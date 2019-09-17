@@ -55,3 +55,11 @@ export async function getCustomEmoji (instanceName) {
 export async function setCustomEmoji (instanceName, value) {
   return setMetaProperty(instanceName, 'customEmoji', value)
 }
+
+export async function getFollowRequestCount (instanceName) {
+  return getMetaProperty(instanceName, 'followRequestCount')
+}
+
+export async function setFollowRequestCount (instanceName, value) {
+  return setMetaProperty(instanceName, 'followRequestCount', value)
+}

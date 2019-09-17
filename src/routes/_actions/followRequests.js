@@ -1,17 +1,25 @@
-import { DEFAULT_TIMEOUT, get, post, WRITE_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from '../_api/utils'
+import { store } from '../_store/store'
+import { cacheFirstUpdateAfter } from '../_utils/sync'
+import { database } from '../_database/database'
+import { getFollowRequests } from '../_api/followRequests'
 
-export async function getFollowRequests (instanceName, accessToken) {
-  const url = `${basename(instanceName)}/api/v1/follow_requests`
-  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
-}
+export async function updateFollowRequestCountIfLockedAccount (instanceName) {
+  const { verifyCredentials, loggedInInstances } = store.get()
 
-export async function authorizeFollowRequest (instanceName, accessToken, id) {
-  const url = `${basename(instanceName)}/api/v1/follow_requests/${id}/authorize`
-  return post(url, null, auth(accessToken), { timeout: WRITE_TIMEOUT })
-}
+  if (!verifyCredentials[instanceName].locked) {
+    return
+  }
 
-export async function rejectFollowRequest (instanceName, accessToken, id) {
-  const url = `${basename(instanceName)}/api/v1/follow_requests/${id}/reject`
-  return post(url, null, auth(accessToken), { timeout: WRITE_TIMEOUT })
+  const accessToken = loggedInInstances[instanceName].access_token
+
+  await cacheFirstUpdateAfter(
+    async () => (await getFollowRequests(instanceName, accessToken)).length,
+    () => database.getFollowRequestCount(instanceName),
+    followReqsCount => database.setFollowRequestCount(instanceName, followReqsCount),
+    followReqsCount => {
+      const { followRequestCounts } = store.get()
+      followRequestCounts[instanceName] = followReqsCount
+      store.set({ followRequestCounts })
+    }
+  )
 }

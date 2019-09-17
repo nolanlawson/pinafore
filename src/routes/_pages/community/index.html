@@ -53,7 +53,7 @@
   <PageList label="Instance settings">
     {#if isLockedAccount}
     <PageListItem href="/requests"
-                  label="Follow requests"
+                  label={followRequestsLabel}
                   icon="#fa-user-plus"
      />
     {/if}
@@ -109,12 +109,16 @@
   import PageList from '../../_components/community/PageList.html'
   import PageListItem from '../../_components/community/PageListItem.html'
   import { updateListsForInstance } from '../../_actions/lists'
+  import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
 
   export default {
     async oncreate () {
       const { currentInstance } = this.store.get()
       if (currentInstance) {
-        await updateListsForInstance(currentInstance)
+        await Promise.all([
+          updateListsForInstance(currentInstance),
+          updateFollowRequestCountIfLockedAccount(currentInstance)
+        ])
       }
     },
     store: () => store,
@@ -125,7 +129,10 @@
       PageListItem
     },
     computed: {
-      isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked
+      isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked,
+      followRequestsLabel: ({ $hasFollowRequests, $numberOfFollowRequests }) => (
+        `Follow requests${$hasFollowRequests ? ` (${$numberOfFollowRequests})` : ''}`
+      )
     }
   }
 </script>

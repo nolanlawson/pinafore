@@ -181,4 +181,14 @@ export function timelineComputations (store) {
       currentPage !== 'notifications' && !!numberOfNotifications
     )
   )
+
+  store.compute('numberOfFollowRequests',
+    ['followRequestCounts', 'currentInstance'],
+    (followRequestCounts, currentInstance) => get(followRequestCounts, [currentInstance], 0)
+  )
+
+  store.compute('hasFollowRequests',
+    ['numberOfFollowRequests'],
+    (numberOfFollowRequests) => !!numberOfFollowRequests
+  )
 }
