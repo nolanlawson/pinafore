@@ -2,7 +2,7 @@ import { dbPromise, getDatabase } from './databaseLifecycle'
 import { META_STORE } from './constants'
 import { metaCache, hasInCache, getInCache, setInCache } from './cache'
 
-export async function getMetaProperty (instanceName, key) {
+async function getMetaProperty (instanceName, key) {
   if (hasInCache(metaCache, instanceName, key)) {
     return getInCache(metaCache, instanceName, key)
   }
@@ -16,7 +16,7 @@ export async function getMetaProperty (instanceName, key) {
   return result
 }
 
-export async function setMetaProperty (instanceName, key, value) {
+async function setMetaProperty (instanceName, key, value) {
   setInCache(metaCache, instanceName, key, value)
   const db = await getDatabase(instanceName)
   return dbPromise(db, META_STORE, 'readwrite', (store) => {
