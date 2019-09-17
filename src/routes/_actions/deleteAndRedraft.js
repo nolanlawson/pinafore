@@ -22,7 +22,8 @@ export async function deleteAndRedraft (status) {
     poll: status.poll && {
       multiple: !!status.poll.multiple,
       options: (status.poll.options || []).map(option => option.title)
-    }
+    },
+    sensitive: !!status.sensitive
   })
   const showComposeDialog = await dialogPromise
   showComposeDialog()
