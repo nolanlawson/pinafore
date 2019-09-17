@@ -62,6 +62,7 @@ export const composeModalComposeButton = $('.modal-dialog .compose-box-button')
 export const composeModalContentWarningInput = $('.modal-dialog .content-warning-input')
 export const composeModalEmojiButton = $('.modal-dialog .compose-box-toolbar button:nth-child(1)')
 export const composeModalPostPrivacyButton = $('.modal-dialog .compose-box-toolbar button:nth-child(4)')
+export const composeModalMediaSensitiveCheckbox = $('.modal-dialog .compose-media-sensitive input')
 
 export const composePoll = $('.compose-poll')
 export const composePollMultipleChoice = $('.compose-poll input[type="checkbox"]')

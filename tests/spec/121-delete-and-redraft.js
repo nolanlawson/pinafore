@@ -29,7 +29,7 @@ import {
   composePollMultipleChoiceInDialog,
   composePollExpiry,
   composePollExpiryOption,
-  composePollExpiryInDialog
+  composePollExpiryInDialog, composeModalMediaSensitiveCheckbox, getNthStatusSensitiveMediaButton, getNthStatusAndImage
 } from '../utils'
 import { postAs, postEmptyStatusWithMediaAs, postWithSpoilerAndPrivacyAs } from '../serverActions'
 import { POLL_EXPIRY_DEFAULT } from '../../src/routes/_static/polls'
@@ -64,6 +64,7 @@ test('image with empty text delete and redraft', async t => {
     .click(dialogOptionsOption.withText('Delete and redraft'))
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
     .expect(composeModalInput.value).eql('')
+    .expect(composeModalMediaSensitiveCheckbox.checked).notOk()
     .expect(composeModalPostPrivacyButton.getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
     .expect(getComposeModalNthMediaListItem(1).getAttribute('aria-label')).eql('what a kitteh')
     .expect(getComposeModalNthMediaAltInput(1).value).eql('what a kitteh')
@@ -218,4 +219,17 @@ test('delete and redraft polls', async t => {
     // there is no way to preserve poll expiry unfortunately
     .expect(composePollExpiryInDialog.value).eql(POLL_EXPIRY_DEFAULT.toString())
     .expect(composePollMultipleChoiceInDialog.checked).eql(true)
+})
+
+test('delete and redraft sensitive', async t => {
+  await postEmptyStatusWithMediaAs('foobar', 'kitten2.jpg', 'what a sensitive kitteh', true)
+  await loginAsFoobar(t)
+  await t
+    .hover(getNthStatus(1))
+    .click(getNthStatusSensitiveMediaButton(1))
+    .expect(getNthStatusAndImage(1, 1).getAttribute('alt')).eql('what a sensitive kitteh')
+    .click(getNthStatusOptionsButton(1))
+    .click(dialogOptionsOption.withText('Delete and redraft'))
+    .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
+    .expect(composeModalMediaSensitiveCheckbox.checked).ok()
 })
