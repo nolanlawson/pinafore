@@ -1,5 +1,6 @@
 import {
-  composeInput,
+  composeContentWarning,
+  composeInput, composeMediaSensitiveCheckbox, contentWarningButton,
   getNthDeleteMediaButton,
   getNthMedia,
   getNthMediaAltInput,
@@ -125,4 +126,33 @@ test('keeps media in local storage', async t => {
     .expect(getNthMediaAltInput(2).value).eql('kitten numero dos')
     .expect(getNthMediaListItem(1).getAttribute('aria-label')).eql('kitten1.jpg')
     .expect(getNthMediaListItem(2).getAttribute('aria-label')).eql('kitten2.jpg')
+})
+
+test('resets sensitive settings when deleting media', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(mediaButton.exists).ok()
+  await (uploadKittenImage(1)())
+  await t
+    .click(composeMediaSensitiveCheckbox)
+    .expect(composeMediaSensitiveCheckbox.checked).ok()
+  await (uploadKittenImage(2)())
+  await t
+    .expect(composeMediaSensitiveCheckbox.checked).ok()
+    .click(getNthDeleteMediaButton(2))
+    .expect(getNthMedia(2).exists).notOk()
+    .expect(composeMediaSensitiveCheckbox.checked).ok()
+    .click(getNthDeleteMediaButton(1))
+    .expect(getNthMedia(1).exists).notOk()
+  await (uploadKittenImage(1)())
+  await t
+    .expect(composeMediaSensitiveCheckbox.checked).notOk()
+    .click(contentWarningButton)
+    .typeText(composeContentWarning, 'warn warn warn', { paste: true })
+    .expect(composeMediaSensitiveCheckbox.checked).ok()
+    .click(getNthDeleteMediaButton(1))
+    .expect(getNthMedia(1).exists).notOk()
+  await (uploadKittenImage(1)())
+  await t
+    .expect(composeMediaSensitiveCheckbox.checked).ok()
 })
