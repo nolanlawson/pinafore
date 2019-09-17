@@ -3,7 +3,7 @@ import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { database } from '../_database/database'
 import { getFollowRequests } from '../_api/followRequests'
 
-export async function updateFollowRequestsCountIfLockedAccount (instanceName) {
+export async function updateFollowRequestCountIfLockedAccount (instanceName) {
   const { verifyCredentials, loggedInInstances } = store.get()
 
   if (!verifyCredentials[instanceName].locked) {

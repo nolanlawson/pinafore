@@ -109,7 +109,7 @@
   import PageList from '../../_components/community/PageList.html'
   import PageListItem from '../../_components/community/PageListItem.html'
   import { updateListsForInstance } from '../../_actions/lists'
-  import { updateFollowRequestsCountIfLockedAccount } from '../../_actions/followRequests'
+  import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
 
   export default {
     async oncreate () {
@@ -117,7 +117,7 @@
       if (currentInstance) {
         await Promise.all([
           updateListsForInstance(currentInstance),
-          updateFollowRequestsCountIfLockedAccount(currentInstance)
+          updateFollowRequestCountIfLockedAccount(currentInstance)
         ])
       }
     },
