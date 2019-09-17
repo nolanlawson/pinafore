@@ -42,6 +42,7 @@ const persistedState = {
 
 const nonPersistedState = {
   customEmoji: {},
+  followRequestCounts: {},
   instanceInfos: {},
   instanceLists: {},
   online: !process.browser || navigator.onLine,

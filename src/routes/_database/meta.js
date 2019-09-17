@@ -2,7 +2,7 @@ import { dbPromise, getDatabase } from './databaseLifecycle'
 import { META_STORE } from './constants'
 import { metaCache, hasInCache, getInCache, setInCache } from './cache'
 
-async function getMetaProperty (instanceName, key) {
+export async function getMetaProperty (instanceName, key) {
   if (hasInCache(metaCache, instanceName, key)) {
     return getInCache(metaCache, instanceName, key)
   }
@@ -16,7 +16,7 @@ async function getMetaProperty (instanceName, key) {
   return result
 }
 
-async function setMetaProperty (instanceName, key, value) {
+export async function setMetaProperty (instanceName, key, value) {
   setInCache(metaCache, instanceName, key, value)
   const db = await getDatabase(instanceName)
   return dbPromise(db, META_STORE, 'readwrite', (store) => {
@@ -54,4 +54,12 @@ export async function getCustomEmoji (instanceName) {
 
 export async function setCustomEmoji (instanceName, value) {
   return setMetaProperty(instanceName, 'customEmoji', value)
+}
+
+export async function getFollowRequestCount (instanceName) {
+  return getMetaProperty(instanceName, 'followRequestCount')
+}
+
+export async function setFollowRequestCount (instanceName, value) {
+  return setMetaProperty(instanceName, 'followRequestCount', value)
 }

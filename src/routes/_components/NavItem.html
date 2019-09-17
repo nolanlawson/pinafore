@@ -148,18 +148,24 @@
           // special case – these should both highlight the notifications tab icon
           (name === 'notifications' && page === 'notifications/mentions')
       },
-      ariaLabel: ({ selected, name, label, $numberOfNotifications }) => {
+      ariaLabel: ({ selected, name, label, $numberOfNotifications, $numberOfFollowRequests }) => {
         let res = label
         if (selected) {
           res += ' (current page)'
         }
         if (name === 'notifications' && $numberOfNotifications) {
           res += ` (${$numberOfNotifications} notification${$numberOfNotifications === 1 ? '' : 's'})`
+        } else if (name === 'community' && $numberOfFollowRequests) {
+          res += ` (${$numberOfFollowRequests} follow request${$numberOfFollowRequests === 1 ? '' : 's'})`
         }
         return res
       },
-      showBadge: ({ name, $hasNotifications }) => name === 'notifications' && $hasNotifications,
-      badgeNumber: ({ name, $numberOfNotifications }) => name === 'notifications' && $numberOfNotifications
+      showBadge: ({ name, $hasNotifications, $hasFollowRequests }) => (
+        (name === 'notifications' && $hasNotifications) || (name === 'community' && $hasFollowRequests)
+      ),
+      badgeNumber: ({ name, $numberOfNotifications, $numberOfFollowRequests }) => (
+        (name === 'notifications' && $numberOfNotifications) || (name === 'community' && $numberOfFollowRequests)
+      )
     },
     methods: {
       onClick (e) {

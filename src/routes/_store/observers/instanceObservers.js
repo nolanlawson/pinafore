@@ -6,6 +6,7 @@ import { setupCustomEmojiForInstance } from '../../_actions/emoji'
 import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 import { mark, stop } from '../../_utils/marks'
 import { store } from '../store'
+import { updateFollowRequestsCountIfLockedAccount } from '../../_actions/followRequests'
 
 // stream to watch for home timeline updates and notifications
 let currentInstanceStream
@@ -48,7 +49,10 @@ async function refreshInstanceData (instanceName) {
   // these are the only critical ones
   await Promise.all([
     updateInstanceInfo(instanceName),
-    updateVerifyCredentialsForInstance(instanceName)
+    updateVerifyCredentialsForInstance(instanceName).then(() => {
+      // Once we have the verifyCredentials (so we know if the account is locked), lazily update the follow requests
+      scheduleIdleTask(() => updateFollowRequestsCountIfLockedAccount(instanceName))
+    })
   ])
 }
 
