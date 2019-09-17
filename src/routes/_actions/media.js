@@ -38,5 +38,12 @@ export function deleteMedia (realm, i) {
   store.setComposeData(realm, {
     media: composeMedia
   })
+  if (!composeMedia.length) {
+    const contentWarningShown = store.getComposeData(realm, 'contentWarningShown')
+    const contentWarning = store.getComposeData(realm, 'contentWarning')
+    store.setComposeData(realm, {
+      sensitive: contentWarningShown && contentWarning // reset sensitive if the last media is deleted
+    })
+  }
   scheduleIdleTask(() => store.save())
 }
