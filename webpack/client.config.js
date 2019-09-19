@@ -24,18 +24,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html$/,
-        use: {
-          loader: 'svelte-loader',
-          options: {
-            dev,
-            hydratable: true,
-            store: true,
-            hotReload: dev
-          }
-        }
-      },
-      {
         test: /\/_workers\/blurhash\.js$/,
         use: {
           loader: 'worker-loader',
@@ -79,25 +67,45 @@ module.exports = {
         }
       },
       {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
+        test: /\.(m?js|html)$/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              [
-                '@babel/preset-env',
-                {
-                  targets: {
-                    firefox: '48'
-                  }
-                }
-              ]
+              '@babel/preset-env'
             ],
             plugins: [
-              '@babel/plugin-transform-block-scoping',
               '@babel/plugin-transform-runtime'
             ]
+          }
+        }
+      },
+      {
+        test: /\.m?js$/,
+        include: /node_modules/,
+        exclude: /node_modules\/(tesseract\.js|realistic-structured-clone|@babel\/runtime|page-lifecycle|localstorage-memory|promise-worker|webpack)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env'
+            ],
+            plugins: [
+              '@babel/plugin-transform-runtime'
+            ]
+          }
+        }
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'svelte-loader',
+          options: {
+            dev,
+            hydratable: true,
+            store: true,
+            hotReload: dev
           }
         }
       }
