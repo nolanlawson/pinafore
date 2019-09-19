@@ -24,6 +24,9 @@
       Shortcut
     },
     methods: {
+      oncreate() {
+        console.log('nav shortcuts')
+      },
       goto,
       async showShortcutHelpDialog () {
         const showShortcutHelpDialog = await importShowShortcutHelpDialog()
@@ -32,7 +35,7 @@
       async showComposeDialog () {
         const showComposeDialog = await importShowComposeDialog()
         showComposeDialog()
-      }
+      },
     }
   }
 </script>
