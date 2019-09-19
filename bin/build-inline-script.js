@@ -6,6 +6,7 @@ import { rollup } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import replace from 'rollup-plugin-replace'
 import fromPairs from 'lodash-es/fromPairs'
+import babel from 'rollup-plugin-babel'
 import { themes } from '../src/routes/_static/themes'
 
 const writeFile = promisify(fs.writeFile)
@@ -21,6 +22,13 @@ export async function buildInlineScript () {
       replace({
         'process.browser': true,
         'process.env.THEME_COLORS': JSON.stringify(themeColors)
+      }),
+      babel({
+        runtimeHelpers: true,
+        presets: ['@babel/preset-env'],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ]
       }),
       terser({
         mangle: true,
