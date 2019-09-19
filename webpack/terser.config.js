@@ -6,7 +6,7 @@ module.exports = () => new TerserWebpackPlugin({
   parallel: true,
   sourceMap: true,
   terserOptions: {
-    ecma: 5,
+    ecma: 8,
     mangle: true,
     compress: {
       pure_funcs: ['console.log']

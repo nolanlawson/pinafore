@@ -84,8 +84,18 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    firefox: '48'
+                  }
+                }
+              ]
+            ],
             plugins: [
+              '@babel/plugin-transform-block-scoping',
               '@babel/plugin-transform-runtime'
             ]
           }
@@ -97,9 +107,9 @@ module.exports = {
     setImmediate: false
   },
   optimization: dev ? {} : {
-    minimizer: [
-      terser()
-    ],
+    // minimizer: [
+    //   terser()
+    // ],
     splitChunks: {
       chunks: 'async',
       minSize: 5000,

@@ -25,15 +25,12 @@ export async function buildInlineScript () {
       }),
       babel({
         runtimeHelpers: true,
-        presets: ['@babel/preset-env'],
-        plugins: [
-          '@babel/plugin-transform-runtime'
-        ]
+        presets: ['@babel/preset-env']
       }),
-      terser({
-        mangle: true,
-        compress: true
-      })
+      // terser({
+      //   mangle: true,
+      //   compress: true
+      // })
     ]
   })
   const { output } = await bundle.generate({

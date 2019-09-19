@@ -1,5 +1,5 @@
 import { WebSocketClient } from '../../_thirdparty/websocket/websocket'
-import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
+import lifecycle from 'page-lifecycle/dist/lifecycle.es5.js'
 import { getStreamUrl } from './getStreamUrl'
 import { EventEmitter } from 'events-light'
 import { eventBus } from '../../_utils/eventBus'
