@@ -6,7 +6,7 @@
    on:click="onClick(event)"
 >
   <!-- the avatar is duplicated information, so hide from tab order and screenreaders -->
-  <Avatar account={verifyCredentials} size="small"/>
+  <Avatar account={verifyCredentials} size={avatarSize} />
 </a>
 <a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
    {href}
@@ -83,6 +83,9 @@
       AccountDisplayName
     },
     store: () => store,
+    data: () => ({
+      avatarSize: process.browser && matchMedia('(max-width: 240px)').matches ? 'extra-small' : 'small'
+    }),
     computed: {
       loaded: ({ $currentVerifyCredentials }) => !!$currentVerifyCredentials,
       verifyCredentials: ({ $currentVerifyCredentials }) => {

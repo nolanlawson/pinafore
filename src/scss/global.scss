@@ -31,6 +31,11 @@ body {
   background: var(--body-bg);
   -webkit-tap-highlight-color: transparent; // fix for blue background on spoiler tap on Chrome for Android
   overflow-x: hidden; // Prevent horizontal scrolling on mobile Firefox on small screens
+
+  @media (max-width: 240px) {
+    font-size: 0.75em; /* KaiOS */
+  }
+
 }
 
 .main-content {
@@ -46,6 +51,9 @@ body {
   }
   @media (max-width: 767px) {
     padding-top: 62px;
+  }
+  @media (max-width: 240px) {
+    padding-top: 42px;
   }
 }
 

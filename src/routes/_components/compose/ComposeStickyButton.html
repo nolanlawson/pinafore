@@ -28,14 +28,14 @@
     top: 52px; /* padding-top for .main-content plus 10px */
   }
 
-  @media (max-width: 767px) {
-    :global(.compose-box-button-sticky, .compose-box-button-fixed) {
-      top: 57px; /* padding-top for .main-content plus 5px */
-    }
-  }
   @media (max-width: 991px) {
     :global(.compose-box-button-sticky, .compose-box-button-fixed) {
       top: 62px; /* padding-top for .main-content plus 10px */
+    }
+  }
+  @media (max-width: 240px) {
+    :global(.compose-box-button-sticky, .compose-box-button-fixed) {
+      top: 42px; /* padding-top for .main-content */
     }
   }
   @supports (-webkit-overflow-scrolling: touch) {
