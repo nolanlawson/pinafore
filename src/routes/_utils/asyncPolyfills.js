@@ -25,5 +25,6 @@ export const importStringPolyfills = () => import(
 export const importArrayIncludes = () => import(
   /* webpackChunkName: 'array-includes' */ 'array-includes/implementation'
 ).then(mod => {
-  Array.prototype.includes = mod.default // eslint-disable-line
+  // eslint-disable-next-line no-extend-native
+  Array.prototype.includes = mod.default
 })
