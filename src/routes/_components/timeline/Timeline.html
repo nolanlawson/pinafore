@@ -4,11 +4,10 @@
      on:focusin="saveFocus(event)"
      on:focusout="clearFocus()"
 >
-  {#await componentsPromise}
-    <!-- awaiting promise -->
-  {:then result}
-    <svelte:component this={result.listComponent}
-                component={result.listItemComponent}
+  {#if components}
+  <div>components should go here</div>
+    <svelte:component this={components.listComponent}
+                component={components.listItemComponent}
                 realm="{$currentInstance + '/' + timeline}"
                 {makeProps}
                 items={itemIds}
@@ -24,9 +23,7 @@
                 on:initialized="initialize()"
                 on:noNeedToScroll="onNoNeedToScroll()"
     />
-  {:catch error}
-    <div>Error: component failed to load! Try reloading. {error}</div>
-  {/await}
+  {/if}
 </div>
 <Shortcut scope="global" key="." on:pressed="showMoreAndScrollToTop()" />
 <ScrollListShortcuts />
@@ -66,6 +63,14 @@
       setupTimeline()
       this.restoreFocus()
       this.setupStreaming()
+      this.observe('componentsPromise', async componentsPromise => {
+        if (componentsPromise) {
+          console.log('loading components')
+          const components = await componentsPromise
+          console.log('loaded components')
+          this.set({ components })
+        }
+      })
     },
     ondestroy () {
       console.log('ondestroy')
@@ -75,7 +80,8 @@
       LoadingFooter,
       MoreHeaderVirtualWrapper,
       Status,
-      scrollTop: 0
+      scrollTop: 0,
+      components: undefined
     }),
     computed: {
       // For threads, it's simpler to just render all items as a pseudo-virtual list

@@ -2,7 +2,10 @@ import {
   importCustomElementsPolyfill,
   importIndexedDBGetAllShim,
   importIntersectionObserver,
-  importRequestIdleCallback
+  importIntl,
+  importRequestIdleCallback,
+  importStringPolyfills,
+  importArrayIncludes
 } from './asyncPolyfills'
 
 export function loadPolyfills () {
@@ -10,6 +13,9 @@ export function loadPolyfills () {
     typeof IntersectionObserver === 'undefined' && importIntersectionObserver(),
     typeof requestIdleCallback === 'undefined' && importRequestIdleCallback(),
     !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim(),
-    typeof customElements === 'undefined' && importCustomElementsPolyfill()
+    typeof customElements === 'undefined' && importCustomElementsPolyfill(),
+    typeof Intl === 'undefined' && importIntl(),
+    (!String.prototype.endsWith || !String.prototype.includes || !String.prototype.trim) && importStringPolyfills(),
+    !Array.prototype.includes && importArrayIncludes()
   ])
 }

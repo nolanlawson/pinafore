@@ -13,3 +13,17 @@ export const importIndexedDBGetAllShim = () => import(
 export const importCustomElementsPolyfill = () => import(
   /* webpackChunkName: '$polyfill$-@webcomponents/custom-elements' */ '@webcomponents/custom-elements'
 )
+
+export const importIntl = () => import(
+  /* webpackChunkName: '$polyfill$-intl' */ 'intl'
+)
+
+export const importStringPolyfills = () => import(
+  /* webpackChunkName: 'string-polyfills' */ 'string-polyfills'
+)
+
+export const importArrayIncludes = () => import(
+  /* webpackChunkName: 'array-includes' */ 'array-includes/implementation'
+).then(mod => {
+  Array.prototype.includes = mod.default // eslint-disable-line
+})

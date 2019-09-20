@@ -68,6 +68,7 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
 
   url += '?' + paramsString(params)
 
+  console.log('fetching url', url)
   const items = await get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 
   if (timeline === 'direct') {

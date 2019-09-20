@@ -138,11 +138,11 @@ module.exports = {
       './database.prod.js'
     ),
     new LodashModuleReplacementPlugin(),
-    new CircularDependencyPlugin({
-      exclude: /node_modules/,
-      failOnError: true,
-      cwd: process.cwd()
-    })
+    // new CircularDependencyPlugin({
+    //   exclude: /node_modules/,
+    //   failOnError: true,
+    //   cwd: process.cwd()
+    // })
   ].concat(dev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
@@ -157,7 +157,7 @@ module.exports = {
   ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
-    hints: dev ? false : 'error',
+    hints: dev ? false : 'warning',
     assetFilter: assetFilename => {
       return !(/\.map$/.test(assetFilename)) && !/tesseract-asset/.test(assetFilename)
     }
