@@ -1,6 +1,6 @@
 <div class="lazy-timeline">
-  {#if ready}
-    <Timeline {timeline} />
+  {#if timelineComponent}
+    <svelte:component this={timelineComponent} {timeline} />
   {/if}
 </div>
 <style>
@@ -10,7 +10,7 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import Timeline from '../../_components/timeline/Timeline.html'
+  import { importTimeline } from '../../_utils/asyncModules'
 
   export default {
     async oncreate () {
@@ -20,17 +20,14 @@
       this.store.set({ currentTimeline: timeline })
       this.store.setForTimeline(currentInstance, timeline, { runningUpdate: false })
       this.set({ ready: true })
-      // console.log('importing timeline')
-      // const timelineComponent = await importTimeline()
-      // console.log('imported timeline')
-      // this.set({ timelineComponent })
+      console.log('importing timeline')
+      const timelineComponent = await importTimeline()
+      console.log('imported timeline')
+      this.set({ timelineComponent })
     },
     store: () => store,
     data: () => ({
-      ready: false
-    }),
-    components: {
-      Timeline
-    }
+      timelineComponent: undefined
+    })
   }
 </script>
