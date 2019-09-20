@@ -8,8 +8,7 @@ import { updateCustomEmojiForInstance } from './emoji'
 import { database } from '../_database/database'
 import { DOMAIN_BLOCKS } from '../_static/blocks'
 
-const REDIRECT_URI = (typeof location !== 'undefined'
-  ? location.origin : 'https://pinafore.social') + '/settings/instances/add'
+const REDIRECT_URI = process.browser && `${location.origin}/settings/instances/add`
 
 function createKnownError (message) {
   const err = new Error(message)
