@@ -15,16 +15,5 @@ export const importCustomElementsPolyfill = () => import(
 )
 
 export const importIntl = () => import(
-  /* webpackChunkName: '$polyfill$-intl' */ 'intl'
+  /* webpackChunkName: '$polyfill$-intl' */ './intlPolyfill'
 )
-
-export const importStringPolyfills = () => import(
-  /* webpackChunkName: 'string-polyfills' */ 'string-polyfills'
-)
-
-export const importArrayIncludes = () => import(
-  /* webpackChunkName: 'array-includes' */ 'array-includes/implementation'
-).then(mod => {
-  // eslint-disable-next-line no-extend-native
-  Array.prototype.includes = mod.default
-})

@@ -14,8 +14,6 @@ export function loadPolyfills () {
     typeof requestIdleCallback === 'undefined' && importRequestIdleCallback(),
     !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim(),
     typeof customElements === 'undefined' && importCustomElementsPolyfill(),
-    typeof Intl === 'undefined' && importIntl(),
-    (!String.prototype.endsWith || !String.prototype.includes || !String.prototype.trim) && importStringPolyfills(),
-    !Array.prototype.includes && importArrayIncludes()
+    typeof Intl === 'undefined' && importIntl()
   ])
 }
