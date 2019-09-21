@@ -1,10 +1,12 @@
+<!-- old browsers can't handle <use> very well -->
 <svg
   class={className}
   {style}
   aria-hidden={!ariaLabel}
   aria-label={ariaLabel}
+  {viewBox}
   ref:svg>
-  <use xlink:href="{inline ? '' : '/icons.svg'}{href}" />
+  {@html html}
 </svg>
 <script>
   import { animate } from '../_utils/animate'
@@ -18,7 +20,9 @@
     }),
     store: () => store,
     computed: {
-      inline: ({ href }) => process.env.INLINE_SVGS.includes(href)
+      svgData: ({ href }) => process.env.ALL_SVGS[href],
+      html: ({ svgData }) => svgData.html,
+      viewBox: ({ svgData }) => svgData.viewBox
     },
     methods: {
       animate (animation) {

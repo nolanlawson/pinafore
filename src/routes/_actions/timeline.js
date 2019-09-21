@@ -81,6 +81,7 @@ export async function addTimelineItemSummaries (instanceName, timelineName, newS
 }
 
 async function fetchTimelineItemsAndPossiblyFallBack () {
+  console.log('fetchTimelineItemsAndPossiblyFallBack')
   mark('fetchTimelineItemsAndPossiblyFallBack')
   const {
     currentTimeline,
@@ -96,6 +97,7 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
 }
 
 export async function setupTimeline () {
+  console.log('setupTimeline')
   mark('setupTimeline')
   // If we don't have any item summaries, or if the current item summaries are stale
   // (i.e. via offline mode), then we need to re-fetch

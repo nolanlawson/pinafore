@@ -79,6 +79,6 @@ mixins(PinaforeStore)
 computations(store)
 observers(store)
 
-if (process.browser && process.env.NODE_ENV !== 'production') {
-  window.store = store // for debugging
+if (process.browser) {
+  window.__store = store // for debugging
 }
