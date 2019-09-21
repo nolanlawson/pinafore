@@ -40,7 +40,12 @@
     },
     computed: {
       elementId: ({ uuid }) => `status-author-avatar-${uuid}`,
-      size: ({ isStatusInOwnThread }) => isStatusInOwnThread ? 'medium' : 'small'
+      size: ({ isStatusInOwnThread, $isVeryTinyMobileSize }) => {
+        if ($isVeryTinyMobileSize) {
+          return isStatusInOwnThread ? 'small' : 'extra-small'
+        }
+        return isStatusInOwnThread ? 'medium' : 'small'
+      }
     }
   }
 </script>

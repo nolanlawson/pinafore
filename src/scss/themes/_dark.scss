@@ -50,4 +50,6 @@
   --length-indicator-color: var(--action-button-fill-color);
 
   --blurhash-sensitive-text-color: #{lighten($deemphasized-color, 15%)};
+
+  --focus-bg: #{rgba(255, 255, 255, 0.1)};
 }

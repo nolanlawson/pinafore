@@ -60,6 +60,19 @@
     }
   }
 
+  @media (max-width: 240px) {
+    .page-list-item a {
+      padding: 10px 5px;
+      font-size: 0.9em;
+    }
+    :global(.page-list-item-svg) {
+      margin-right: 5px;
+    }
+    :global(.page-list-item a button.icon-button) {
+      padding: 6px 5px;
+    }
+  }
+
 </style>
 <script>
   import { store } from '../../_store/store'

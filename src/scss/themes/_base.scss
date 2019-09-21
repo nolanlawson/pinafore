@@ -129,4 +129,6 @@
   --focal-color: #{$secondary-text-color};
 
   --blurhash-sensitive-text-color: #{lighten($deemphasized-color, 40%)};
+
+  --focus-bg: #{rgba(0, 0, 0, 0.1)};
 }

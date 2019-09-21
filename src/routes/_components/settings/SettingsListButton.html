@@ -1,4 +1,9 @@
-<a {href} on:click="fire('click', event)" rel="prefetch" aria-label={ariaLabel || label} class="settings-list-button {className ? className : ''}">
+<a {href}
+   on:click="fire('click', event)"
+   rel="prefetch"
+   aria-label={ariaLabel || label}
+   class="settings-list-button focus-after {className ? className : ''}"
+>
   <span>
     {label}
   </span>
