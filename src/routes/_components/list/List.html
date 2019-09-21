@@ -19,7 +19,12 @@
   import ListLazyItem from './ListLazyItem.html'
   import { listStore } from './listStore'
   import { getScrollContainer } from '../../_utils/scrollContainer'
-  import { getMainTopMargin } from '../../_utils/getMainTopMargin'
+
+  function getScrollTopOffset () {
+    const style = getComputedStyle(document.documentElement)
+    return parseInt(style.getPropertyValue('--main-content-pad-top'), 10) +
+      parseInt(style.getPropertyValue('--status-pad-v'), 10)
+  }
 
   export default {
     oncreate () {
@@ -44,9 +49,9 @@
           const element = document.getElementById(`list-item-${scrollToItem}`)
           requestAnimationFrame(() => {
             console.log('scrolling element into view')
-            // TODO: this is hacky
             element.scrollIntoView(true)
-            getScrollContainer().scrollTop -= (getMainTopMargin() + 10) // 10 is the status-article padding top
+            const scrollTopOffset = getScrollTopOffset()
+            getScrollContainer().scrollTop -= scrollTopOffset
             this.fire('initialized')
           })
         } else {

@@ -1,0 +1,45 @@
+:root {
+
+  //
+  // Vertical and horizontal padding for the status-article element (Status.html, Notification.html)
+  //
+  --status-pad-v: 10px;
+  --status-pad-h: 20px;
+
+  @media (max-width: 767px) {
+    --status-pad-h: 10px;
+  }
+
+  //
+  // Nav and .main-content offset. This is important for things like the sticky header (ComposeStickyButton.html)
+  // as well as deciding how to scroll to the nth item in a list (List.html).
+  //
+
+  --nav-icon-pad-v: 15px;
+  --nav-icon-pad-h: 20px;
+  --nav-icon-width: 20px;
+  --nav-icon-height: 20px;
+  --main-content-pad-top: 42px;
+  --sticky-pad-top: 10px;
+
+  @media (max-width: 991px) {
+    --nav-icon-pad-v: 20px;
+    --nav-icon-pad-h: 10px;
+    --nav-icon-width: 25px;
+    --nav-icon-height: 25px;
+    --main-content-pad-top: 52px;
+  }
+
+  @media (max-width: 767px) {
+    --main-content-pad-top: 62px;
+    --sticky-pad-top: 0px;
+  }
+
+  @media (max-width: 240px) {
+    --nav-icon-pad-v: 10px;
+    --nav-icon-pad-h: 0px;
+    --main-content-pad-top: 42px;
+    --sticky-pad-top: 0px;
+  }
+
+}

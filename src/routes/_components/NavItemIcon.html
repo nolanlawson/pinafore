@@ -15,8 +15,8 @@
   }
 
   :global(.nav-link-svg-wrapper, .nav-link-svg) {
-    width: 20px;
-    height: 20px;
+    width: var(--nav-icon-width);
+    height: var(--nav-icon-height);
   }
 
   .nav-link-badge {
@@ -57,10 +57,6 @@
   }
 
   @media (max-width: 991px) {
-    :global(.nav-link-svg-wrapper, .nav-link-svg) {
-      width: 25px;
-      height: 25px;
-    }
     .nav-link-badge {
       transform: translate(15px, 7px);
       margin: 2px 1px 4px;
