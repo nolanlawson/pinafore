@@ -23,5 +23,5 @@ module.exports = {
       'process.env.SAPPER_TIMESTAMP': process.env.SAPPER_TIMESTAMP || Date.now()
     }),
     terser()
-  ]
+  ].filter(Boolean)
 }

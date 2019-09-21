@@ -143,6 +143,12 @@ Pinafore also offers a "legacy" build designed for older browsers. To build this
 
     LEGACY=1 yarn build
 
+## Debug build
+
+To disable minification in a production build (for debugging purposes), you can run:
+
+    DEBUG=1 yarn build
+
 ## Debugging Webpack
 
 The Webpack Bundle Analyzer `report.html` and `stats.json` are available publicly via e.g.:
