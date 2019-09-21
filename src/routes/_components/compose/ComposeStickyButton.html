@@ -25,19 +25,9 @@
 
   :global(.compose-box-button-sticky, .compose-box-button-fixed) {
     z-index: 5000;
-    top: 52px; /* padding-top for .main-content plus 10px */
+    top: calc(var(--main-content-pad-top) + var(--sticky-pad-top));
   }
 
-  @media (max-width: 767px) {
-    :global(.compose-box-button-sticky, .compose-box-button-fixed) {
-      top: 57px; /* padding-top for .main-content plus 5px */
-    }
-  }
-  @media (max-width: 991px) {
-    :global(.compose-box-button-sticky, .compose-box-button-fixed) {
-      top: 62px; /* padding-top for .main-content plus 10px */
-    }
-  }
   @supports (-webkit-overflow-scrolling: touch) {
     .compose-box-button-sticky {
       /* disable sticky positioning on iOS due to

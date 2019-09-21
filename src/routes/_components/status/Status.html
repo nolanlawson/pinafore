@@ -49,7 +49,7 @@
 
 <style>
   .status-article {
-    padding: 10px 20px;
+    padding: var(--status-pad-v) var(--status-pad-h);
     display: grid;
     grid-template-areas:
         "header  header       header        header"
@@ -97,12 +97,6 @@
       "compose     compose";
     grid-template-columns: min-content 1fr;
     grid-template-rows: repeat(7, max-content);
-  }
-
-  @media (max-width: 767px) {
-    .status-article {
-      padding: 10px 10px;
-    }
   }
 </style>
 <script>
