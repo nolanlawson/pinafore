@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
-const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
+const { mode, dev, resolve, inlineSvgs, allSvgs } = require('./shared.config')
 
 // modules that the server should ignore, either because they cause errors or warnings
 // (because they're only used on the client side)
@@ -49,7 +49,9 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs)
+      'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
+      'process.env.ALL_SVGS': JSON.stringify(allSvgs),
+      'process.env.LEGACY': !!process.env.LEGACY
     })
   ]
 }

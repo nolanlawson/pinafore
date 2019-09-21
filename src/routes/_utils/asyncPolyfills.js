@@ -13,3 +13,7 @@ export const importIndexedDBGetAllShim = () => import(
 export const importCustomElementsPolyfill = () => import(
   /* webpackChunkName: '$polyfill$-@webcomponents/custom-elements' */ '@webcomponents/custom-elements'
 )
+
+export const importIntl = () => import(
+  /* webpackChunkName: '$polyfill$-intl' */ 'intl'
+)

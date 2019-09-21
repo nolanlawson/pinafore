@@ -24,6 +24,9 @@
       Shortcut
     },
     methods: {
+      oncreate () {
+        console.log('nav shortcuts')
+      },
       goto,
       async showShortcutHelpDialog () {
         const showShortcutHelpDialog = await importShowShortcutHelpDialog()
