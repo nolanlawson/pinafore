@@ -7,7 +7,7 @@
 <Shortcut key="g d" on:pressed="goto('/direct')"/>
 <Shortcut key="s" on:pressed="goto('/search')"/>
 <Shortcut key="h|?" on:pressed="showShortcutHelpDialog()"/>
-<Shortcut key="c" on:pressed="showComposeDialog()"/>
+<Shortcut key="c|7" on:pressed="showComposeDialog()"/>
 {#each $navPages as navPage, i}
   <Shortcut key={(i + 1).toString()} on:pressed="goto(navPage.href)" />
 {/each}
