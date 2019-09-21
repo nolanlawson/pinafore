@@ -26,7 +26,7 @@ export async function buildInlineScript () {
       babel({
         runtimeHelpers: true,
         presets: ['@babel/preset-env']
-      }),
+      })
       // terser({
       //   mangle: true,
       //   compress: true

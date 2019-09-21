@@ -62,14 +62,7 @@
       setupTimeline()
       this.restoreFocus()
       this.setupStreaming()
-      this.observe('componentsPromise', async componentsPromise => {
-        if (componentsPromise) {
-          console.log('loading components')
-          const components = await componentsPromise
-          console.log('loaded components')
-          this.set({ components })
-        }
-      })
+      this.setupAsyncComponents()
     },
     ondestroy () {
       console.log('ondestroy')
@@ -234,6 +227,16 @@
       },
       teardownFocus () {
         window.removeEventListener('pushState', this.onPushState)
+      },
+      setupAsyncComponents () {
+        this.observe('componentsPromise', async componentsPromise => {
+          if (componentsPromise) {
+            console.log('loading timeline components')
+            const components = await componentsPromise
+            console.log('loaded timeline components')
+            this.set({ components })
+          }
+        })
       },
       onPushState () {
         this.store.setForCurrentTimeline({ ignoreBlurEvents: true })

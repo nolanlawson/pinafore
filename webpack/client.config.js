@@ -138,7 +138,7 @@ module.exports = {
       /\/_database\/database\.js$/, // this version plays nicer with IDEs
       './database.prod.js'
     ),
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin()
     // new CircularDependencyPlugin({
     //   exclude: /node_modules/,
     //   failOnError: true,
