@@ -4,6 +4,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
+const legacyBabel = require('./legacyBabel.config')
 const { mode, dev, resolve, inlineSvgs, allSvgs } = require('./shared.config')
 
 const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
@@ -46,7 +47,7 @@ module.exports = {
           }
         }
       },
-      process.env.LEGACY && {
+      {
         test: /\.m?js$/,
         include: /node_modules\/emoji-mart/,
         use: {
@@ -66,40 +67,7 @@ module.exports = {
           }
         }
       },
-      process.env.LEGACY && {
-        test: /\.(m?js|html)$/,
-        exclude: path => {
-          if (!path.includes('node_modules')) {
-            return false // don't exclude our own packages
-          }
-          const toSkip = [
-            'tesseract.js',
-            'realistic-structured-clone',
-            '@babel/runtime',
-            'page-lifecycle',
-            'localstorage-memory',
-            'promise-worker',
-            'webpack'
-          ]
-          for (const module of toSkip) {
-            if (path.includes(`node_modules/${module}`)) {
-              return true // exclude certain packages that don't transpile well
-            }
-          }
-          return false
-        },
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env'
-            ],
-            plugins: [
-              '@babel/plugin-transform-runtime'
-            ]
-          }
-        }
-      },
+      process.env.LEGACY && legacyBabel(),
       {
         test: /\.html$/,
         use: {
