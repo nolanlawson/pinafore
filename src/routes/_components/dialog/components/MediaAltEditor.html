@@ -20,7 +20,7 @@
     max={mediaAltCharLimit}
     style="width: 100%; text-align: right;"
   />
-  {#if !$legacy}
+  {#if !legacy}
     <button class="extract-text-button" type="button"
             on:click="onClick()"
             disabled={extracting}
@@ -127,7 +127,8 @@
       mediaAltCharLimit: MEDIA_ALT_CHAR_LIMIT,
       extracting: false,
       className: '',
-      extractionProgress: 0
+      extractionProgress: 0,
+      legacy: process.env.LEGACY
     }),
     computed: {
       length: ({ rawText }) => length(rawText || ''),

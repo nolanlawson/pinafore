@@ -50,7 +50,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
-      'process.env.ALL_SVGS': JSON.stringify(allSvgs)
+      'process.env.ALL_SVGS': JSON.stringify(allSvgs),
+      'process.env.LEGACY': !!process.env.LEGACY
     })
   ]
 }

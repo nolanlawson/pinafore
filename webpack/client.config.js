@@ -135,7 +135,8 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
       'process.env.ALL_SVGS': JSON.stringify(allSvgs),
-      'process.env.URL_REGEX': urlRegex.toString()
+      'process.env.URL_REGEX': urlRegex.toString(),
+      'process.env.LEGACY': !!process.env.LEGACY
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs

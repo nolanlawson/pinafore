@@ -1,12 +1,24 @@
-<svg
-  class={className}
-  {style}
-  aria-hidden={!ariaLabel}
-  aria-label={ariaLabel}
-  {viewBox}
-  ref:svg>
-  {@html html}
-</svg>
+{#if legacy}
+  <!-- old browsers can't handle <use> very well -->
+  <svg
+    class={className}
+    {style}
+    aria-hidden={!ariaLabel}
+    aria-label={ariaLabel}
+    {viewBox}
+    ref:svg>
+    {@html html}
+  </svg>
+{:else}
+  <svg
+    class={className}
+    {style}
+    aria-hidden={!ariaLabel}
+    aria-label={ariaLabel}
+    ref:svg>
+    <use xlink:href="{inline ? '' : '/icons.svg'}{href}" />
+  </svg>
+{/if}
 <script>
   import { animate } from '../_utils/animate'
   import { store } from '../_store/store'
@@ -15,17 +27,15 @@
     data: () => ({
       className: '',
       style: '',
-      ariaLabel: ''
+      ariaLabel: '',
+      legacy: process.env.LEGACY
     }),
     store: () => store,
     computed: {
-      // inline: ({ href }) => {
-      //   // filled in during build
-      //   return process.env.INLINE_SVGS.includes(href)
-      // },
-      svgData: ({ href })=> process.env.ALL_SVGS[href],
-      html: ({ svgData }) => svgData.html,
-      viewBox: ({ svgData }) => svgData.viewBox,
+      inline: ({ href }) => !process.env.LEGACY && process.env.INLINE_SVGS.includes(href),
+      svgData: ({ href })=> process.env.LEGACY && process.env.ALL_SVGS[href],
+      html: ({ svgData }) => svgData && svgData.html,
+      viewBox: ({ svgData }) => svgData && svgData.viewBox,
     },
     methods: {
       animate (animation) {
