@@ -6,6 +6,12 @@
 {@html `
   <h2>Global</h2>
   <div class="hotkey-group">
+    ${showLeftRightNav ? `
+    <ul>
+      <li><kdb>→</kdb> to go to the next focusable element</li>
+      <li><kdb>←</kdb> to go to the previous focusable element</li>
+    </ul>
+    ` : ''}
     <ul>
       <li><kbd>1</kbd> - <kbd>6</kbd> to switch columns</li>
       <li><kbd>7</kbd> or <kbd>c</kbd> to compose a new toot</li>
@@ -83,9 +89,12 @@
   }
 </style>
 <script>
+  import { isKaiOS } from '../_utils/userAgent'
+
   export default {
     data: () => ({
-      inDialog: false
+      inDialog: false,
+      showLeftRightNav: process.env.LEGACY && isKaiOS()
     })
   }
 </script>

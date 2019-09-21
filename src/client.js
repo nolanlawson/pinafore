@@ -4,6 +4,7 @@ import './routes/_utils/serviceWorkerClient'
 import './routes/_utils/historyEvents'
 import './routes/_utils/loadingMask'
 import './routes/_utils/forceOnline'
+import './routes/_utils/leftRightNavShortcuts'
 
 loadPolyfills().then(() => {
   console.log('init()')
