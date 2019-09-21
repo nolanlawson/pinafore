@@ -1,4 +1,6 @@
-<div class="shortcut-help-info {inDialog ? 'in-dialog' : ''}">
+<div class="shortcut-help-info {inDialog ? 'in-dialog' : ''}"
+     tabindex="{inDialog ? '0' : '-1'}"
+>
   <!-- Svelte makes this file kind of ridiculously large for a static page (~17kB),
        so just use raw HTML here to make it smaller -->
 {@html `
@@ -44,12 +46,14 @@
 `}
 </div>
 <style>
-  .shortcut-help-info {
-    overflow-y: scroll;
+  .shortcut-help-info.in-dialog {
+    overflow-y: auto;
+  }
+  .shortcut-help-info.in-dialog:not(:focus) {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  .shortcut-help-info::-webkit-scrollbar {
+  .shortcut-help-info.in-dialog:not(:focus)::-webkit-scrollbar {
     display: none;
   }
   :global(.shortcut-help-info li) {
