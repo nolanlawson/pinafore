@@ -1,5 +1,6 @@
 @import './fonts.scss';
 @import './variables.scss';
+@import './focus.scss';
 
 body {
   margin: 0;
@@ -10,6 +11,11 @@ body {
   background: var(--body-bg);
   -webkit-tap-highlight-color: transparent; // fix for blue background on spoiler tap on Chrome for Android
   overflow-x: hidden; // Prevent horizontal scrolling on mobile Firefox on small screens
+
+  @media (max-width: 240px) {
+    font-size: 0.75em; /* tiny text for tiny screens */
+  }
+
 }
 
 .main-content {
@@ -148,16 +154,6 @@ ul, li, p {
   opacity: 0;
 }
 
-*:focus, .focus {
-  outline: 2px solid var(--focus-outline);
-}
-
-.container:focus {
-  // the outline causes choppy rendering on Edge and isn't visible or necessary anyway
-  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/17343598/
-  outline: none;
-}
-
 button::-moz-focus-inner {
   border: 0;
 }
@@ -214,25 +210,4 @@ textarea {
 
 .inline-emoji {
   font-family: PinaforeEmoji, sans-serif;
-}
-
-/* Special class to make focus outlines easier to see in some odd
- * cases where the outline would be clipped. */
-.focus-after {
-  position: relative;
-}
-
-.focus-after:focus {
-  outline: none;
-}
-
-.focus-after:focus::after {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  content: '';
-  border: 2px solid var(--focus-outline);
-  pointer-events: none;
 }

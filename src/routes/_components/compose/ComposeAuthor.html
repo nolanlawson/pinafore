@@ -6,7 +6,7 @@
    on:click="onClick(event)"
 >
   <!-- the avatar is duplicated information, so hide from tab order and screenreaders -->
-  <Avatar account={verifyCredentials} size="small"/>
+  <Avatar account={verifyCredentials} size={avatarSize} />
 </a>
 <a class="compose-box-display-name {loaded ? 'loaded' : 'not-loaded'}"
    {href}
@@ -96,7 +96,8 @@
         }
       },
       id: ({ verifyCredentials }) => (verifyCredentials && verifyCredentials.id),
-      href: ({ id }) => (id ? `/accounts/${id}` : '#')
+      href: ({ id }) => (id ? `/accounts/${id}` : '#'),
+      avatarSize: ({ $isVeryTinyMobileSize }) => $isVeryTinyMobileSize ? 'extra-small' : 'small'
     },
     methods: {
       onClick (e) {

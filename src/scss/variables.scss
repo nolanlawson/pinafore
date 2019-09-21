@@ -10,6 +10,10 @@
     --status-pad-h: 10px;
   }
 
+  @media (max-width: 240px) {
+    --status-pad-h: 5px;
+  }
+
   //
   // Nav and .main-content offset. This is important for things like the sticky header (ComposeStickyButton.html)
   // as well as deciding how to scroll to the nth item in a list (List.html).
