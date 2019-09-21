@@ -88,7 +88,7 @@ module.exports = {
   optimization: dev ? {} : {
     minimizer: [
       terser()
-    ],
+    ].filter(Boolean),
     splitChunks: {
       chunks: 'async',
       minSize: 5000,
@@ -130,7 +130,7 @@ module.exports = {
   ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
-    hints: dev ? false : 'error',
+    hints: dev ? false : (process.env.DEBUG ? 'warning' : 'error'),
     assetFilter: assetFilename => {
       return !(/\.map$/.test(assetFilename)) && !/tesseract-asset/.test(assetFilename)
     }

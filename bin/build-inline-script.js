@@ -21,13 +21,14 @@ export async function buildInlineScript () {
     plugins: [
       replace({
         'process.browser': true,
+        'process.env.LEGACY': JSON.stringify(process.env.LEGACY),
         'process.env.THEME_COLORS': JSON.stringify(themeColors)
       }),
       process.env.LEGACY && babel({
         runtimeHelpers: true,
         presets: ['@babel/preset-env']
       }),
-      terser({
+      !process.env.DEBUG && terser({
         mangle: true,
         compress: true,
         ecma: 8
