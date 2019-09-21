@@ -19,7 +19,6 @@
       const { timeline } = this.get()
       this.store.set({ currentTimeline: timeline })
       this.store.setForTimeline(currentInstance, timeline, { runningUpdate: false })
-      this.set({ ready: true })
       console.log('importing timeline')
       const timelineComponent = await importTimeline()
       console.log('imported timeline')
