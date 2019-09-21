@@ -25,7 +25,7 @@ const resolve = {
   alias: {
     react: 'preact/compat/dist/compat.module.js',
     'react-dom': 'preact/compat/dist/compat.module.js',
-    ...(process.env.LEGACY && {
+    ...(process.env.LEGACY ? {
       '../_utils/tesseractWorker.js': 'lodash/noop',
       'emoji-mart/dist-modern/components/picker/nimble-picker': 'emoji-mart/dist-es/components/picker/nimble-picker',
       'emoji-regex/es2015/text': 'emoji-regex/text',
@@ -35,6 +35,8 @@ const resolve = {
       '../../SvgIcon.html': '../../SvgIconLegacy.html',
       '../../_components/SvgIcon.html': '../../_components/SvgIconLegacy.html',
       '../../../_components/SvgIcon.html': '../../../_components/SvgIconLegacy.html'
+    } : {
+      intl: 'lodash/noop'
     })
   }
 }

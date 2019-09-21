@@ -15,5 +15,5 @@ export const importCustomElementsPolyfill = () => import(
 )
 
 export const importIntl = () => import(
-  /* webpackChunkName: '$polyfill$-intl' */ './intlPolyfill'
+  /* webpackChunkName: '$polyfill$-intl' */ 'intl'
 )
