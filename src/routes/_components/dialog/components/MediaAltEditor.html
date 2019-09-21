@@ -20,6 +20,7 @@
     max={mediaAltCharLimit}
     style="width: 100%; text-align: right;"
   />
+  <!-- WASM is unlikely to work on older browsers and Tesseract.js is a big dependency -->
   {#if !legacy}
     <button class="extract-text-button" type="button"
             on:click="onClick()"

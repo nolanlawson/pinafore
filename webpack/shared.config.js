@@ -29,7 +29,12 @@ const resolve = {
       '../_utils/tesseractWorker.js': 'lodash/noop',
       'emoji-mart/dist-modern/components/picker/nimble-picker': 'emoji-mart/dist-es/components/picker/nimble-picker',
       'emoji-regex/es2015/text': 'emoji-regex/text',
-      'page-lifecycle/dist/lifecycle.mjs': 'page-lifecycle/dist/lifecycle.es5.js'
+      'page-lifecycle/dist/lifecycle.mjs': 'page-lifecycle/dist/lifecycle.es5.js',
+      './SvgIcon.html': './SvgIconLegacy.html',
+      '../SvgIcon.html': '../SvgIconLegacy.html',
+      '../../SvgIcon.html': '../../SvgIconLegacy.html',
+      '../../_components/SvgIcon.html': '../../_components/SvgIconLegacy.html',
+      '../../../_components/SvgIcon.html': '../../../_components/SvgIconLegacy.html'
     })
   }
 }
