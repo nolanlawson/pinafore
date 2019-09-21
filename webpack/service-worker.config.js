@@ -13,7 +13,7 @@ module.exports = {
   module: {
     rules: [
       process.env.LEGACY && legacyBabel()
-    ]
+    ].filter(Boolean)
   },
   plugins: [
     new webpack.DefinePlugin({
