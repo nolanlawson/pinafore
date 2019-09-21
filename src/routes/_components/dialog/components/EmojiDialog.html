@@ -5,6 +5,7 @@
   shrinkWidthToFit={true}
   background="var(--main-bg)"
   on:show="onShow()"
+  className="emoji-dialog"
 >
   <div class="emoji-container" {style} ref:container >
     {#if loaded}
@@ -63,6 +64,13 @@
   }
 
   @media (max-width: 320px) {
+    :global(.modal-dialog .modal-dialog-contents.emoji-dialog) {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .emoji-container {
+      max-width: calc(100vw - 10px);
+    }
     :global(.emoji-container .emoji-mart-preview) {
       height: 60px;
     }
@@ -121,9 +129,10 @@
     }),
     computed: {
       // try to estimate size of emoji-mart based on mobile vs desktop
-      style: ({ $isSmallMobileSize }) => (`
-        min-width: ${$isSmallMobileSize ? 250 : 300}px;
-        min-height: ${$isSmallMobileSize ? 300 : 400}px;
+      style: ({ $isVeryTinyMobileSize, $isSmallMobileSize }) => (`
+        min-width: ${$isVeryTinyMobileSize ? 200 : $isSmallMobileSize ? 250 : 300}px;
+        min-height: ${$isVeryTinyMobileSize ? 0 : $isSmallMobileSize ? 300 : 400}px;
+        ${$isVeryTinyMobileSize ? 'overflow-y: auto; overflow-x: hidden;' : ''}
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
       emojiMartProps: ({ perLine, custom }) => ({
@@ -135,14 +144,16 @@
         include: categoriesSort,
         showPreview: true
       }),
-      perLine: ({ $isSmallMobileSize, $isTinyMobileSize, $isMobileSize }) => (
-        $isTinyMobileSize
-          ? 7
-          : $isSmallMobileSize
-            ? 8
-            : $isMobileSize
-              ? 9
-              : 10
+      perLine: ({ $isSmallMobileSize, $isTinyMobileSize, $isMobileSize, $isVeryTinyMobileSize }) => (
+        $isVeryTinyMobileSize
+          ? 6
+          : $isTinyMobileSize
+            ? 7
+            : $isSmallMobileSize
+              ? 8
+              : $isMobileSize
+                ? 9
+                : 10
       ),
       custom: ({ $currentCustomEmoji, $autoplayGifs }) => {
         if (!$currentCustomEmoji) {
