@@ -29,12 +29,22 @@
   pointer-events: none;
 }
 
+// For KaiOS, do the same thing. It seems to show up better.
+// TODO: is there a better way to get these focus styles to show up?
 @media (max-width: 320px) {
-  *:focus, .focus {
-    outline: 3px solid var(--focus-outline);
+  *:focus {
+    position: relative;
+    outline: none;
   }
 
-  .focus-after:focus::after {
-    border: 3px solid var(--focus-outline);
+  *:focus::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    content: '';
+    border: 2px solid var(--focus-outline);
+    pointer-events: none;
   }
 }
