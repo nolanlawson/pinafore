@@ -8,6 +8,10 @@
 <Shortcut key="s" on:pressed="goto('/search')"/>
 <Shortcut key="h|?" on:pressed="showShortcutHelpDialog()"/>
 <Shortcut key="c|7" on:pressed="showComposeDialog()"/>
+{#if !$leftRightChangesFocus}
+  <Shortcut key="ArrowLeft" on:pressed="goLeftOrRight(true)" />
+  <Shortcut key="ArrowRight" on:pressed="goLeftOrRight(false)" />
+{/if}
 {#each $navPages as navPage, i}
   <Shortcut key={(i + 1).toString()} on:pressed="goto(navPage.href)" />
 {/each}
@@ -35,6 +39,21 @@
       async showComposeDialog () {
         const showComposeDialog = await importShowComposeDialog()
         showComposeDialog()
+      },
+      goLeftOrRight (left) {
+        let { currentPage, navPages } = this.store.get()
+        if (currentPage === 'notifications/mentions') { // special case
+          currentPage = 'notifications'
+        }
+        const idx = navPages.findIndex(_ => _.name === currentPage)
+        if (idx === -1) {
+          return
+        }
+        if (left && idx > 0) {
+          goto(navPages[idx - 1].href)
+        } else if (!left && idx < navPages.length - 1) {
+          goto(navPages[idx + 1].href)
+        }
       }
     }
   }

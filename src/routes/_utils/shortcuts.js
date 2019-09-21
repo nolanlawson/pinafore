@@ -179,7 +179,8 @@ function acceptShortcutEvent (event) {
     (event.shiftKey && event.key !== '?') || // '?' is a special case - it is allowed
     (target && (
       target.isContentEditable ||
-        ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)
+        ['TEXTAREA', 'SELECT'].includes(target.tagName) ||
+        (target.tagName === 'INPUT' && !['radio', 'checkbox'].includes(target.getAttribute('type')))
     ))
   )
 }
