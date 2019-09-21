@@ -3,9 +3,7 @@ import {
   importIndexedDBGetAllShim,
   importIntersectionObserver,
   importIntl,
-  importRequestIdleCallback,
-  importStringPolyfills,
-  importArrayIncludes
+  importRequestIdleCallback
 } from './asyncPolyfills'
 
 export function loadPolyfills () {
@@ -14,6 +12,6 @@ export function loadPolyfills () {
     typeof requestIdleCallback === 'undefined' && importRequestIdleCallback(),
     !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim(),
     typeof customElements === 'undefined' && importCustomElementsPolyfill(),
-    typeof Intl === 'undefined' && importIntl()
+    process.env.LEGACY && typeof Intl === 'undefined' && importIntl()
   ])
 }

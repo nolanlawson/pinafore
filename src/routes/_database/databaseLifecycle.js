@@ -2,7 +2,7 @@ import { DB_VERSION_CURRENT } from './constants'
 import { addKnownInstance, deleteKnownInstance } from './knownInstances'
 import { migrations } from './migrations'
 import { clearAllCaches } from './cache'
-import lifecycle from 'page-lifecycle/dist/lifecycle.es5.js'
+import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
 
 const openReqs = {}
 const databaseCache = {}

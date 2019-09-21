@@ -45,6 +45,7 @@ const nonPersistedState = {
   followRequestCounts: {},
   instanceInfos: {},
   instanceLists: {},
+  legacy: process.env.LEGACY,
   online: !process.browser || navigator.onLine,
   pinnedStatuses: {},
   polls: {},

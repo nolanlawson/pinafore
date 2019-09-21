@@ -20,21 +20,23 @@
     max={mediaAltCharLimit}
     style="width: 100%; text-align: right;"
   />
-  <button class="extract-text-button" type="button"
-          on:click="onClick()"
-          disabled={extracting}
-          aria-label={extractButtonLabel}
-  >
-    <SvgIcon href="{extracting ? '#fa-spinner' : '#fa-magic'}"
-             className="extract-text-svg {extracting ? 'spin' : ''}"
+  {#if !$legacy}
+    <button class="extract-text-button" type="button"
+            on:click="onClick()"
+            disabled={extracting}
+            aria-label={extractButtonLabel}
+    >
+      <SvgIcon href="{extracting ? '#fa-spinner' : '#fa-magic'}"
+               className="extract-text-svg {extracting ? 'spin' : ''}"
+      />
+      <span>{extractButtonText}</span>
+    </button>
+    <LengthGauge
+      length={extractionProgress}
+      overLimit={false}
+      max={100}
     />
-    <span>{extractButtonText}</span>
-  </button>
-  <LengthGauge
-    length={extractionProgress}
-    overLimit={false}
-    max={100}
-  />
+  {/if}
 </div>
 <style>
   .media-alt-editor {

@@ -46,7 +46,7 @@ module.exports = {
           }
         }
       },
-      {
+      process.env.LEGACY && {
         test: /\.m?js$/,
         include: /node_modules\/emoji-mart/,
         use: {
@@ -66,25 +66,28 @@ module.exports = {
           }
         }
       },
-      {
+      process.env.LEGACY && {
         test: /\.(m?js|html)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env'
-            ],
-            plugins: [
-              '@babel/plugin-transform-runtime'
-            ]
+        exclude: path => {
+          if (!path.includes('node_modules')) {
+            return false // don't exclude our own packages
           }
-        }
-      },
-      {
-        test: /\.m?js$/,
-        include: /node_modules/,
-        exclude: /node_modules\/(tesseract\.js|realistic-structured-clone|@babel\/runtime|page-lifecycle|localstorage-memory|promise-worker|webpack)/,
+          const toSkip = [
+            'tesseract.js',
+            'realistic-structured-clone',
+            '@babel/runtime',
+            'page-lifecycle',
+            'localstorage-memory',
+            'promise-worker',
+            'webpack'
+          ]
+          for (const module of toSkip) {
+            if (path.includes(`node_modules/${module}`)) {
+              return true // exclude certain packages that don't transpile well
+            }
+          }
+          return false
+        },
         use: {
           loader: 'babel-loader',
           options: {
@@ -115,9 +118,9 @@ module.exports = {
     setImmediate: false
   },
   optimization: dev ? {} : {
-    // minimizer: [
-    //   terser()
-    // ],
+    minimizer: [
+      terser()
+    ],
     splitChunks: {
       chunks: 'async',
       minSize: 5000,
@@ -138,12 +141,12 @@ module.exports = {
       /\/_database\/database\.js$/, // this version plays nicer with IDEs
       './database.prod.js'
     ),
-    new LodashModuleReplacementPlugin()
-    // new CircularDependencyPlugin({
-    //   exclude: /node_modules/,
-    //   failOnError: true,
-    //   cwd: process.cwd()
-    // })
+    new LodashModuleReplacementPlugin(),
+    new CircularDependencyPlugin({
+      exclude: /node_modules/,
+      failOnError: true,
+      cwd: process.cwd()
+    })
   ].concat(dev ? [
     new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
@@ -158,7 +161,7 @@ module.exports = {
   ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
-    hints: dev ? false : 'warning',
+    hints: dev ? false : 'error',
     assetFilter: assetFilename => {
       return !(/\.map$/.test(assetFilename)) && !/tesseract-asset/.test(assetFilename)
     }

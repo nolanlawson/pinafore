@@ -24,7 +24,13 @@ const resolve = {
   mainFields: ['svelte', 'module', 'browser', 'main'],
   alias: {
     react: 'preact/compat/dist/compat.module.js',
-    'react-dom': 'preact/compat/dist/compat.module.js'
+    'react-dom': 'preact/compat/dist/compat.module.js',
+    ...(process.env.LEGACY && {
+      '../_utils/tesseractWorker.js': 'lodash/noop',
+      'emoji-mart/dist-modern/components/picker/nimble-picker': 'emoji-mart/dist-es/components/picker/nimble-picker',
+      'emoji-regex/es2015/text': 'emoji-regex/text',
+      'page-lifecycle/dist/lifecycle.mjs': 'page-lifecycle/dist/lifecycle.es5.js'
+    })
   }
 }
 

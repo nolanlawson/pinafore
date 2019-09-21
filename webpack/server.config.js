@@ -6,7 +6,7 @@ const { mode, dev, resolve, inlineSvgs, allSvgs } = require('./shared.config')
 // modules that the server should ignore, either because they cause errors or warnings
 // (because they're only used on the client side)
 const NOOP_MODULES = [
-  'page-lifecycle/dist/lifecycle.es5.js',
+  'page-lifecycle/dist/lifecycle.mjs',
   '../_workers/blurhash',
   'tesseract.js/dist/worker.min.js',
   'tesseract.js/dist/worker.min.js.map',

@@ -23,14 +23,15 @@ export async function buildInlineScript () {
         'process.browser': true,
         'process.env.THEME_COLORS': JSON.stringify(themeColors)
       }),
-      babel({
+      process.env.LEGACY && babel({
         runtimeHelpers: true,
         presets: ['@babel/preset-env']
+      }),
+      terser({
+        mangle: true,
+        compress: true,
+        ecma: 8
       })
-      // terser({
-      //   mangle: true,
-      //   compress: true
-      // })
     ]
   })
   const { output } = await bundle.generate({
