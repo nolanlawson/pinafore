@@ -13,13 +13,9 @@
     {/each}
 	</ul>
 </nav>
-{#await importNavShortcuts}
-<!-- awaiting nav shortcuts promise -->
-{:then component}
-<svelte:component this={component}/>
-{:catch error}
-<!-- nav shortcuts {error} -->
-{/await}
+{#if navShortcuts}
+  <svelte:component this={navShortcuts}/>
+{/if}
 
 <style>
 	.main-nav {
@@ -58,12 +54,16 @@
   import { store } from '../_store/store'
 
   export default {
+    async oncreate () {
+      const navShortcuts = await importNavShortcuts()
+      this.set({ navShortcuts })
+    },
     store: () => store,
     components: {
       NavItem
     },
     data: () => ({
-      importNavShortcuts: importNavShortcuts()
+      navShortcuts: undefined
     })
   }
 </script>
