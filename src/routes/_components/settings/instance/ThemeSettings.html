@@ -81,6 +81,12 @@
       margin-top: 0.5em;
     }
   }
+
+  @media (max-width: 240px) {
+    .theme-groups {
+      grid-row-gap: 25px; /* TODO: "Dark background" text overlaps with previous div on KaiOS for some reason */
+    }
+  }
 </style>
 <script>
   import { changeTheme } from '../../../_actions/instances'

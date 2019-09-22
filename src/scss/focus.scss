@@ -31,7 +31,7 @@
 
 // For KaiOS, do some additional things to improve the focus styles, which don't show up well
 // for some reason
-@media (max-width: 320px) {
+@media (max-width: 240px) {
   *:focus, .focus {
     outline: 3px solid var(--focus-outline);
   }
@@ -42,5 +42,25 @@
 
   button:focus {
     opacity: 0.7;
+  }
+
+  // add extra "focus-after"-like styles for buttons to increase visibility
+  button.icon-button {
+    position: relative;
+  }
+
+  button.icon-button:focus {
+    outline: none;
+  }
+
+  button.icon-button:focus::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    content: '';
+    border: 3px solid var(--focus-outline);
+    pointer-events: none;
   }
 }
