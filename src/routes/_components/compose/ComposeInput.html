@@ -3,10 +3,10 @@
   class="compose-box-input compose-box-input-realm-{realm}"
   placeholder="What's on your mind?"
   aria-describedby="compose-box-input-description-{realm}"
-  aria-owns="compose-autosuggest-list-{realm}"
+  aria-owns="{autosuggestShownForThisInput ? `compose-autosuggest-list-${realm}` : undefined}"
   aria-expanded={autosuggestShownForThisInput}
   aria-autocomplete="both"
-  aria-activedescendant="{autosuggestShownForThisInput ? `compose-autosuggest-active-item-${realm}` : ''}"
+  aria-activedescendant="{autosuggestShownForThisInput ? `compose-autosuggest-active-item-${realm}` : undefined}"
   ref:textarea
   bind:value=rawText
   on:blur="onBlur()"
