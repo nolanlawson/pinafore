@@ -13,7 +13,7 @@
         <h1 class="modal-dialog-title">{title}</h1>
       {/if}
       <div class="close-dialog-button-wrapper">
-        <button class="close-dialog-button"
+        <button class="close-dialog-button focus-after"
                 data-a11y-dialog-hide aria-label="Close dialog">
           <SvgIcon className="close-dialog-button-svg" href="#fa-times" />
         </button>
@@ -126,6 +126,14 @@
     overflow-y: hidden;
   }
 
+  @media(min-width: 768px) {
+    /* On desktop, some dialogs look bad if they expand to fit all the way. So we shrink
+       them to fit if shrinkWidthToFit is true.*/
+    .modal-dialog-contents.shrink-width-to-fit {
+      flex: none;
+    }
+  }
+
   @media (max-width: 320px) {
     .modal-dialog-title {
       font-size: 1.3em;
@@ -137,11 +145,9 @@
     }
   }
 
-  @media(min-width: 768px) {
-    /* On desktop, some dialogs look bad if they expand to fit all the way. So we shrink
-       them to fit if shrinkWidthToFit is true.*/
-    .modal-dialog-contents.shrink-width-to-fit {
-      flex: none;
+  @media (max-width: 240px) {
+    .modal-dialog-contents {
+      min-width: calc(100% - 20px);
     }
   }
 </style>

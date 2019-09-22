@@ -84,6 +84,12 @@
   .show-image-button {
     cursor: zoom-in;
   }
+
+  @media (max-width: 240px) {
+    .inline-media {
+      min-height: 100px; /* TODO: hack for KaiOS, which renders the grouped-images style as 0 height */
+    }
+  }
 </style>
 <script>
   import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media'

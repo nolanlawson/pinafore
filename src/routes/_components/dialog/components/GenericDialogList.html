@@ -4,14 +4,17 @@
     <button
         class="generic-dialog-list-button focus-after"
         on:click="fire('click', item)">
-      <SvgIcon className="generic-dialog-list-item-svg" href={item.icon} />
-      <span class="generic-dialog-list-button-span">
-        {item.label}
-      </span>
-      {#if selectable}
-        <SvgIcon className="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}"
-                 href="#fa-check" />
-      {/if}
+      <!-- Extra wrapper inside button is required for KaiOS. Seems old Firefox does not like flex buttons. -->
+      <div class="generic-dialog-list-button-inner">
+        <SvgIcon className="generic-dialog-list-item-svg" href={item.icon} />
+        <span class="generic-dialog-list-button-span">
+          {item.label}
+        </span>
+        {#if selectable}
+          <SvgIcon className="generic-dialog-list-item-svg {item.selected ? '' : 'hidden'}"
+                   href="#fa-check" />
+        {/if}
+      </div>
     </button>
   </li>
   {/each}
@@ -41,6 +44,8 @@
     background: var(--settings-list-item-bg);
     border: none;
     margin: 0;
+  }
+  .generic-dialog-list-button-inner {
     display: flex;
     flex-direction: row;
   }

@@ -3,6 +3,7 @@
         aria-label={label}
         aria-pressed={pressable ? !!pressed : undefined}
         aria-hidden={ariaHidden}
+        tabindex="{ariaHidden ? '-1' : '0'}"
         class={computedClass}
         {disabled}
         ref:node
