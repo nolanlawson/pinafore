@@ -40,7 +40,10 @@ async function redirectToOauth () {
     instanceData.client_id,
     REDIRECT_URI
   )
-  document.location.href = oauthUrl
+  // setTimeout to allow the browser to *actually* save the localStorage data (fixes Safari bug apparently)
+  setTimeout(() => {
+    document.location.href = oauthUrl
+  }, 200)
 }
 
 export async function logInToInstance () {
