@@ -3,6 +3,7 @@ import { computations } from './computations/computations'
 import { mixins } from './mixins/mixins'
 import { LocalStorageStore } from './LocalStorageStore'
 import { observe } from 'svelte-extras'
+import { isKaiOS } from '../_utils/userAgent'
 
 const persistedState = {
   autoplayGifs: false,
@@ -15,7 +16,7 @@ const persistedState = {
   disableFavCounts: false,
   disableFollowerCounts: false,
   disableHotkeys: false,
-  disableInfiniteScroll: false,
+  disableInfiniteScroll: isKaiOS(),
   disableLongAriaLabels: false,
   disableNotificationBadge: false,
   disableReblogCounts: false,
@@ -23,6 +24,7 @@ const persistedState = {
   enableGrayscale: false,
   hideCards: false,
   largeInlineMedia: false,
+  leftRightChangesFocus: isKaiOS(),
   instanceNameInSearch: '',
   instanceThemes: {},
   instanceSettings: {},

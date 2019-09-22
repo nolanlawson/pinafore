@@ -3,10 +3,21 @@
 
   <h2 class="sr-only">Preferences</h2>
   <form class="ui-settings" aria-label="Hotkey settings">
-    <label class="setting-group">
-      <input type="checkbox" id="choice-disable-hotkeys"
-             bind:checked="$disableHotkeys" on:change="onChange()">
-      Disable hotkeys
+    <label class="setting-group {allowChangeHotkeySetting ? '' : 'disabled-style'}">
+      <input type="checkbox"
+             bind:checked="$disableHotkeys"
+             on:change="onChange()"
+             disabled={!allowChangeHotkeySetting}
+      >
+      Disable all hotkeys
+    </label>
+    <label class="setting-group  {allowChangeLeftRightSetting ? '' : 'disabled-style'}">
+      <input type="checkbox"
+             bind:checked="$leftRightChangesFocus"
+             on:change="onChange()"
+             disabled={!allowChangeLeftRightSetting}
+      >
+      Left/right arrow keys change focus rather than columns/media
     </label>
   </form>
 
@@ -28,6 +39,10 @@
     padding: 5px 0;
   }
 
+  label.disabled-style {
+    color: var(--deemphasized-text-color);
+  }
+
   @media (max-width: 240px) {
     .ui-settings {
       padding: 20px 10px;
@@ -38,9 +53,18 @@
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import ShortcutHelpInfo from '../../_components/ShortcutHelpInfo.html'
   import { store } from '../../_store/store'
+  import { isKaiOS } from '../../_utils/userAgent'
 
   export default {
     store: () => store,
+    data: () => ({
+      allowChangeHotkeySetting: !isKaiOS() // In general KaiOS users cannot change this because they need the hotkeys
+    }),
+    computed: {
+      allowChangeLeftRightSetting: ({ $disableHotkeys }) => (
+        !$disableHotkeys && !isKaiOS()
+      )
+    },
     methods: {
       onChange () {
         this.store.save()
