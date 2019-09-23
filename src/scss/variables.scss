@@ -46,4 +46,14 @@
     --sticky-pad-top: 0px;
   }
 
+  //
+  // focus outline
+  //
+
+  --focus-width: 2px;
+
+  @media (max-width: 240px) {
+    --focus-width: 3px;
+  }
+
 }

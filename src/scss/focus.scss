@@ -1,5 +1,7 @@
+
+
 *:focus, .focus {
-  outline: 2px solid var(--focus-outline);
+  outline: var(--focus-width) solid var(--focus-outline);
 }
 
 .container:focus {
@@ -10,6 +12,7 @@
 
 /* Special class to make focus outlines easier to see in some odd
  * cases where the outline would be clipped. */
+/* TODO: use box-sizing:border-box everywhere so we can get rid of this hack */
 .focus-after {
   position: relative;
 }
@@ -25,17 +28,13 @@
   bottom: 0;
   top: 0;
   content: '';
-  border: 2px solid var(--focus-outline);
+  border: var(--focus-width) solid var(--focus-outline);
   pointer-events: none;
 }
 
 // For KaiOS, do some additional things to improve the focus styles, which don't show up well
 // for some reason
 @media (max-width: 240px) {
-  *:focus, .focus {
-    outline: 3px solid var(--focus-outline);
-  }
-
   a:focus, span:focus {
     background: var(--focus-bg) !important;
   }
@@ -60,7 +59,7 @@
     bottom: 0;
     top: 0;
     content: '';
-    border: 3px solid var(--focus-outline);
+    border: var(--focus-width) solid var(--focus-outline);
     pointer-events: none;
   }
 }
