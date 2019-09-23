@@ -4,7 +4,7 @@
   <h2 class="sr-only">Preferences</h2>
   <form class="ui-settings" aria-label="Hotkey settings">
     <label class="setting-group {allowChangeHotkeySetting ? '' : 'disabled-style'}">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-disable-hotkeys"
              bind:checked="$disableHotkeys"
              on:change="onChange()"
              disabled={!allowChangeHotkeySetting}
@@ -12,7 +12,7 @@
       Disable all hotkeys
     </label>
     <label class="setting-group  {allowChangeLeftRightSetting ? '' : 'disabled-style'}">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-left-right-focus"
              bind:checked="$leftRightChangesFocus"
              on:change="onChange()"
              disabled={!allowChangeLeftRightSetting}
