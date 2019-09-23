@@ -82,8 +82,10 @@
   </div>
 </ModalDialog>
 
-<Shortcut scope='modal-{id}' key="ArrowLeft" on:pressed="prev()" />
-<Shortcut scope='modal-{id}' key="ArrowRight" on:pressed="next()" />
+{#if !$leftRightChangesFocus }
+  <Shortcut scope='modal-{id}' key="ArrowLeft" on:pressed="prev()" />
+  <Shortcut scope='modal-{id}' key="ArrowRight" on:pressed="next()" />
+{/if}
 <style>
   :global(.media-modal-dialog) {
     max-width: 100%;

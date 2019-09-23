@@ -50,6 +50,8 @@ export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitiv
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 export const disableInfiniteScroll = $('#choice-disable-infinite-scroll')
 export const disableUnreadNotifications = $('#choice-disable-unread-notification-counts')
+export const leftRightChangesFocus = $('#choice-left-right-focus')
+export const disableHotkeys = $('#choice-disable-hotkeys')
 export const dialogOptionsOption = $('.modal-dialog button')
 export const emojiSearchInput = $('.emoji-mart-search input')
 export const confirmationDialogOKButton = $('.confirmation-dialog-form-flex button:nth-child(1)')
@@ -134,6 +136,10 @@ export const getActiveElementRectTop = exec(() => (
 
 export const getActiveElementAriaPosInSet = exec(() => (
   (document.activeElement && document.activeElement.getAttribute('aria-posinset')) || ''
+))
+
+export const getActiveElementAriaLabel = exec(() => (
+  (document.activeElement && document.activeElement.getAttribute('aria-label')) || ''
 ))
 
 export const getActiveElementInsideNthStatus = exec(() => {

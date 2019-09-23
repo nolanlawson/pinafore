@@ -1,10 +1,13 @@
 import {
+  disableHotkeys,
+  getActiveElementAriaLabel,
   getNthStatus,
-  getUrl, isNthStatusActive,
+  getUrl, homeNavButton, isNthStatusActive, leftRightChangesFocus, modalDialog,
   modalDialogContents,
-  notificationsNavButton, scrollToStatus
+  notificationsNavButton, scrollToStatus, settingsNavButton, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
+import { Selector as $ } from 'testcafe'
 
 fixture`024-shortcuts-navigation.js`
   .page`http://localhost:4002`
@@ -121,4 +124,67 @@ test('Shortcut . scrolls to top and focuses', async t => {
   await t
     .pressKey('.')
     .expect(isNthStatusActive(1)).ok()
+})
+
+test('Shortcut left and right changes columns', async t => {
+  await loginAsFoobar(t)
+
+  const steps = [
+    ['right', 'notifications'],
+    ['right', 'local'],
+    ['right', 'community'],
+    ['right', 'search'],
+    ['right', 'settings'],
+    ['right', 'settings'],
+    ['left', 'search'],
+    ['left', 'community'],
+    ['left', 'local'],
+    ['left', 'notifications'],
+    ['left', ''],
+    ['left', '']
+  ]
+
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+
+  for (const [key, page] of steps) {
+    await t.pressKey(key)
+      .expect(getUrl()).eql('http://localhost:4002/' + page)
+  }
+})
+
+test('Shortcut left and right can change focus', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(settingsNavButton)
+    .click($('a[href="/settings/hotkeys"]'))
+    .click(leftRightChangesFocus)
+    .expect(leftRightChangesFocus.checked).ok()
+    .click(homeNavButton)
+  await sleep(1000)
+  await t
+    .pressKey('right')
+    .expect(getActiveElementAriaLabel()).eql('Home (current page)')
+    .pressKey('right')
+    .expect(getActiveElementAriaLabel()).eql('Notifications')
+    .pressKey('left')
+    .expect(getActiveElementAriaLabel()).eql('Home (current page)')
+})
+
+test('Shortcuts can be disabled', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(settingsNavButton)
+    .click($('a[href="/settings/hotkeys"]'))
+    .click(disableHotkeys)
+    .expect(disableHotkeys.checked).ok()
+    .click(homeNavButton)
+    .pressKey('2')
+  await sleep(500)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .pressKey('h')
+  await sleep(500)
+  await t
+    .expect(modalDialog.exists).false
 })
