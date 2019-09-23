@@ -22,6 +22,7 @@
     align-items: center;
     flex: 1;
     flex-direction: column;
+    outline-offset: calc(-1 * var(--focus-width)); /* TODO: this is hacky, switch to box-sizing:border-box */
   }
 
   .nav-icon-and-label {
