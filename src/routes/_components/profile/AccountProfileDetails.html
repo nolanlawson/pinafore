@@ -47,13 +47,13 @@
 <style>
   .account-profile-details {
     grid-area: details;
-    display: flex;
+    display: grid;
     margin: 0 5px;
     align-items: center;
+    grid-template-columns: 1fr 1fr 1fr min-content;
   }
 
   .account-profile-details-item {
-    flex: 1;
     display: flex;
     flex-direction: row;
     padding: 5px;
@@ -106,11 +106,18 @@
       margin-left: 0;
       text-align: center;
     }
-  }
-
-  @media (max-width: 767px) {
     .account-profile-details-item {
       font-size: 1em;
+    }
+  }
+
+  @media (max-width: 240px) {
+    .account-profile-details {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .account-profile-more-options {
+      justify-self: flex-end;
+      grid-column: 1 / 4;
     }
   }
 </style>

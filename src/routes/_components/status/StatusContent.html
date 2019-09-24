@@ -81,6 +81,16 @@
     text-decoration: underline;
   }
 
+  @media (max-width: 240px) {
+    :global(
+      .status-content p:last-child,
+      .status-content blockquote:last-child,
+      .status-content ul:last-child,
+      .status-content ol:last-child) {
+      margin: 0 0 10px; /* looks better on KaiOS with some spacing here */
+    }
+  }
+
 </style>
 <script>
   import { mark, stop } from '../../_utils/marks'

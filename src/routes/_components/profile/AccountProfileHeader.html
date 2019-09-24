@@ -3,7 +3,7 @@
   <button class="account-profile-avatar-button"
           aria-label="Click to see avatar"
           on:click="onAvatarClick()" >
-    <Avatar {account} size="big" />
+    <Avatar {account} size={avatarSize} />
   </button>
 </div>
 <div class="account-profile-name">
@@ -138,7 +138,10 @@
           : displayName
       },
       bot: ({ account }) => !!account.bot,
-      label: ({ bot }) => bot ? 'bot' : ''
+      label: ({ bot }) => bot ? 'bot' : '',
+      avatarSize: ({ $isVeryTinyMobileSize, $isTinyMobileSize }) => (
+        $isVeryTinyMobileSize ? 'small' : $isTinyMobileSize ? 'medium' : 'big'
+      )
     },
     methods: {
       async onAvatarClick () {
