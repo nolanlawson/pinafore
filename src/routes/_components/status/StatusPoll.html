@@ -17,14 +17,13 @@
       <ul class="poll-choices" aria-label="Poll choices">
         {#each options as option, i}
           <li class="poll-choice poll-form-option">
-            <input type="{multiple ? 'checkbox' : 'radio'}"
-                   id="poll-choice-{uuid}-{i}"
-                   name="poll-choice-{uuid}"
-                   value="{i}"
-                   on:change="onChange()"
-            >
-            <label for="poll-choice-{uuid}-{i}">
-              {option.title}
+            <label>
+              <input type="{multiple ? 'checkbox' : 'radio'}"
+                     name="poll-choice-{uuid}"
+                     value="{i}"
+                     on:change="onChange()"
+              >
+              <span>{option.title}</span>
             </label>
           </li>
         {/each}
@@ -83,8 +82,12 @@
   }
 
   li.poll-choice {
-    margin: 0;
+    margin: 10px 0;
     padding: 0;
+  }
+
+  li.poll-choice:first-child {
+    margin-top: 0;
   }
 
   .option {
@@ -197,7 +200,7 @@
     padding-bottom: 10px;
   }
 
-  .poll-form label {
+  .poll-form label span {
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-word;
@@ -228,8 +231,10 @@
     .poll-stat-text {
       margin-left: 2px;
     }
+    li.poll-choice {
+      margin: 5px 0;
+    }
   }
-
 </style>
 <script>
   import SvgIcon from '../SvgIcon.html'
