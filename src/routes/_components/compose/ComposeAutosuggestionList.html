@@ -15,7 +15,7 @@
         {#if type === 'account'}
         <div class="compose-autosuggest-list-item-avatar">
           <Avatar
-            size="small"
+            size="{$isVeryTinyMobileSize ? 'extra-small' : 'small'}"
             account={item}
           />
         </div>
@@ -99,6 +99,15 @@
   }
   .compose-autosuggest-list-item:active {
     background: var(--compose-autosuggest-item-active);
+  }
+
+  @media (max-width: 320px) {
+    .compose-autosuggest-list-item {
+      padding: 5px;
+    }
+    .compose-autosuggest-list-grid {
+      grid-column-gap: 5px;
+    }
   }
 </style>
 <script>
