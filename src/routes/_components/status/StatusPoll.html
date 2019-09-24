@@ -48,6 +48,7 @@
     </li>
     <li class="poll-stat {notification ? 'is-notification' : ''} {expired ? 'poll-expired' : ''}">
       <button id={refreshElementId}
+              class="focus-fix"
               aria-label="Refresh">
         <SvgIcon className="poll-icon" href="#fa-refresh" />
         <span class="poll-stat-text poll-stat-text-refresh" aria-hidden="true">

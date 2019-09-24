@@ -3,6 +3,7 @@
     {#each tabs as tab (tab.name)}
     <li class="{currentTabName === tab.name ? 'current' : 'not-current'}">
       <a aria-label="{tab.label} { currentTabName === tab.name ? '(Current)' : ''}"
+         class="focus-fix"
          href={tab.href}
          rel="prefetch">
         {tab.label}

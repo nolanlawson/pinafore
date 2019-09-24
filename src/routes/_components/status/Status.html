@@ -294,7 +294,7 @@
       className: ({ visibility, timelineType, isStatusInOwnThread, $underlineLinks, $disableTapOnStatus }) => (classname(
         'status-article',
         'shortcut-list-item',
-        'focus-after',
+        'focus-fix',
         timelineType !== 'direct' && visibility === 'direct' && 'status-direct',
         timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
