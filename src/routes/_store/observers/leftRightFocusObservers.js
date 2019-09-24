@@ -65,7 +65,7 @@ export function leftRightFocusObservers (store) {
     return true
   }
 
-  function focusNextOrPrevious (e, key) {
+  function focusNextOrPrevious (event, key) {
     const { activeElement } = document
     if (shouldIgnoreEvent(activeElement, key)) {
       return
@@ -81,26 +81,35 @@ export function leftRightFocusObservers (store) {
       element = focusable[index + 1] || focusable[focusable.length - 1]
     }
     element.focus()
-    e.preventDefault()
-    e.stopPropagation()
+    event.preventDefault()
+    event.stopPropagation()
   }
 
-  function handleEnter (e) {
+  function handleEnter (event) {
     const { activeElement } = document
     if (activeElement.tagName === 'INPUT' && ['checkbox', 'radio'].includes(activeElement.getAttribute('type'))) {
       // Explicitly override "enter" on an input and make it fire the checkbox/radio
       activeElement.click()
-      e.preventDefault()
-      e.stopPropagation()
+      event.preventDefault()
+      event.stopPropagation()
     }
   }
 
-  function keyListener (e) {
-    const { key } = e
-    if (key === 'ArrowRight' || key === 'ArrowLeft') {
-      focusNextOrPrevious(e, key)
-    } else if (key === 'Enter') {
-      handleEnter(e)
+  function keyListener (event) {
+    if (event.altKey || event.metaKey || event.ctrlKey) {
+      return // ignore e.g. Alt-Left and Ctrl-Right, which are used to switch browser tabs or navigate back/forward
+    }
+    const { key } = event
+    switch (key) {
+      case 'ArrowLeft':
+      case 'ArrowRight': {
+        focusNextOrPrevious(event, key)
+        break
+      }
+      case 'Enter': {
+        handleEnter(event)
+        break
+      }
     }
   }
 
