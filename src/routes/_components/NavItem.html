@@ -107,36 +107,19 @@
 
   export default {
     oncreate () {
-      const { name } = this.get()
-      const indicator = this.refs.indicator
       on('animateNavPart1', this, ({ fromPage, toPage }) => {
-        if (fromPage !== name) {
-          return
+        const { name } = this.get()
+        const { reduceMotion } = this.store.get()
+        if (fromPage === name && !reduceMotion) {
+          this.animatePart1({ toPage })
         }
-        mark('animateNavPart1 gBCR')
-        const fromRect = indicator.getBoundingClientRect()
-        stop('animateNavPart1 gBCR')
-        emit('animateNavPart2', { fromRect, fromPage, toPage })
       })
-      on('animateNavPart2', this, ({ fromPage, fromRect, toPage }) => {
-        if (toPage !== name) {
-          return
+      on('animateNavPart2', this, ({ toPage, fromRect }) => {
+        const { name } = this.get()
+        const { reduceMotion } = this.store.get()
+        if (toPage === name && !reduceMotion) {
+          this.animatePart2({ fromRect })
         }
-        mark('animateNavPart2 gBCR')
-        const toRect = indicator.getBoundingClientRect()
-        stop('animateNavPart2 gBCR')
-        const translateX = fromRect.left - toRect.left
-        const scaleX = fromRect.width / toRect.width
-        indicator.style.transform = `translateX(${translateX}px) scaleX(${scaleX})`
-        const onTransitionEnd = () => {
-          indicator.removeEventListener('transitionend', onTransitionEnd)
-          indicator.classList.remove('animate')
-        }
-        indicator.addEventListener('transitionend', onTransitionEnd)
-        doubleRAF(() => {
-          indicator.classList.add('animate')
-          indicator.style.transform = ''
-        })
       })
     },
     store: () => store,
@@ -175,6 +158,31 @@
           e.preventDefault()
           e.stopPropagation()
         }
+      },
+      animatePart1 ({ toPage }) {
+        const indicator = this.refs.indicator
+        mark('animateNavPart1 gBCR')
+        const fromRect = indicator.getBoundingClientRect()
+        stop('animateNavPart1 gBCR')
+        emit('animateNavPart2', { fromRect, toPage })
+      },
+      animatePart2 ({ fromRect }) {
+        const indicator = this.refs.indicator
+        mark('animateNavPart2 gBCR')
+        const toRect = indicator.getBoundingClientRect()
+        stop('animateNavPart2 gBCR')
+        const translateX = fromRect.left - toRect.left
+        const scaleX = fromRect.width / toRect.width
+        indicator.style.transform = `translateX(${translateX}px) scaleX(${scaleX})`
+        const onTransitionEnd = () => {
+          indicator.removeEventListener('transitionend', onTransitionEnd)
+          indicator.classList.remove('animate')
+        }
+        indicator.addEventListener('transitionend', onTransitionEnd)
+        doubleRAF(() => {
+          indicator.classList.add('animate')
+          indicator.style.transform = ''
+        })
       }
     },
     components: {
