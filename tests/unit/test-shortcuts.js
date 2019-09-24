@@ -235,4 +235,16 @@ describe('test-shortcuts.js', function () {
     eventListener(event)
     assert.ok(component.notPressed())
   })
+
+  it('works with caps lock on', function () {
+    const lmn = new Component()
+
+    addToShortcutScope('global', 'z', lmn)
+
+    assert.strictEqual(lmn.eventCount, 0)
+    eventListener(new KeyDownEvent('z'))
+    assert.strictEqual(lmn.eventCount, 1)
+    eventListener(new KeyDownEvent('Z'))
+    assert.strictEqual(lmn.eventCount, 2)
+  })
 })
