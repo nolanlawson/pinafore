@@ -46,6 +46,17 @@
     }
   }
 
+  @media (max-width: 240px) {
+    .compose-autosuggest {
+      width: calc(100vw - 10px);
+      transform: translateX(-29px); /* avatar size 24px + 5px padding */
+    }
+    .compose-autosuggest.is-dialog {
+      transform: translateX(-34px); /* avatar size 24px + 10px padding */
+      width: calc(100vw - 20px); /* extra padding when within the dialog */
+    }
+  }
+
 </style>
 <script>
   import { store } from '../../_store/store'
