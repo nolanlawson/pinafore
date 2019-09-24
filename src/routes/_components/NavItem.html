@@ -1,4 +1,4 @@
-<a class='main-nav-link {selected ? "selected" : ""}'
+<a class='main-nav-link focus-fix {selected ? "selected" : ""}'
    aria-label={ariaLabel}
    aria-current={selected}
    on:click="onClick(event)"
@@ -22,7 +22,6 @@
     align-items: center;
     flex: 1;
     flex-direction: column;
-    outline-offset: calc(-1 * var(--focus-width)); /* TODO: this is hacky, switch to box-sizing:border-box */
   }
 
   .nav-icon-and-label {

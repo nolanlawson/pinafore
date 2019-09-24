@@ -1,6 +1,6 @@
 
 
-*:focus, .focus {
+*:focus {
   outline: var(--focus-width) solid var(--focus-outline);
 }
 
@@ -13,6 +13,11 @@
 /* Special class to make focus outlines easier to see in some odd
  * cases where the outline would be clipped. */
 /* TODO: use box-sizing:border-box everywhere so we can get rid of this hack */
+.focus-fix:focus {
+  outline-offset: calc(-1 * var(--focus-width)); /* TODO: this is hacky, switch to box-sizing:border-box */
+}
+
+/* Another hack to make some focus styles appear better */
 .focus-after {
   position: relative;
 }
@@ -35,24 +40,28 @@
 // For KaiOS, do some additional things to improve the focus styles, which don't show up well
 // for some reason
 @media (max-width: 240px) {
-  a:focus, span:focus {
+  a:not(.button):focus, span:focus {
     background: var(--focus-bg) !important;
   }
 
-  button:focus {
+  button:focus, .button:focus {
     opacity: 0.7;
   }
 
-  // add extra "focus-after"-like styles for buttons to increase visibility
-  button.icon-button {
+  button.primary:focus, .button.primary:focus {
+    opacity: 0.8;
+  }
+
+  button, .button {
     position: relative;
   }
 
-  button.icon-button:focus {
+  // add extremely visible styles for buttons, ala .focus-after
+  button:focus, .button:focus {
     outline: none;
   }
 
-  button.icon-button:focus::after {
+  button:focus::after, .button:focus::after {
     position: absolute;
     left: 0;
     right: 0;
