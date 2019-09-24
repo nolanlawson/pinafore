@@ -1,10 +1,11 @@
 <div class="account-profile-follow {shown ? 'shown' : ''}">
   <IconButton
+    className="account-profile-follow-icon-button"
     label={followLabel}
     href={followIcon}
     pressable="true"
     pressed={following}
-    big="true"
+    big={!$isVeryTinyMobileSize}
     on:click="onFollowButtonClick(event)"
     ref:icon
   />
@@ -17,6 +18,12 @@
   }
   .account-profile-follow.shown {
     display: block;
+  }
+
+  @media (max-width: 240px) {
+    .account-profile-follow {
+      justify-self: flex-end;
+    }
   }
 </style>
 <script>

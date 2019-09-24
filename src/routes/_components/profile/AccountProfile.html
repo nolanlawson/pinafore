@@ -61,6 +61,10 @@
   }
 
   @media (max-width: 767px) {
+    .account-profile {
+      padding-top: 100px;
+    }
+    
     .account-profile-grid {
       display: grid;
       grid-template-areas: "avatar     name          follow"
@@ -73,6 +77,31 @@
       grid-template-columns: min-content minmax(auto, 1fr) min-content;
       grid-template-rows: min-content min-content 1fr min-content;
       padding: 10px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    .account-profile {
+      padding-top: 50px;
+    }
+  }
+
+  @media (max-width: 240px) {
+    .account-profile {
+      padding-top: 0;
+    }
+    .account-profile-grid {
+      grid-template-areas: "avatar      name"
+                           "avatar      label"
+                           "username    username"
+                           "followed-by followed-by"
+                           "follow      follow"
+                           "note        note"
+                           "meta        meta"
+                           "details     details";
+      grid-template-columns: min-content 1fr;
+      grid-column-gap: 5px;
+      grid-row-gap: 0;
     }
   }
 </style>
