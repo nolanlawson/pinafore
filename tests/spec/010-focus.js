@@ -1,7 +1,20 @@
 import {
-  getNthStatus, scrollToStatus, closeDialogButton, modalDialogContents, goBack, getUrl,
-  goBackButton, getActiveElementInnerText, getNthReplyButton, getActiveElementInsideNthStatus, focus,
-  getNthStatusSelector, getActiveElementTagName, getActiveElementClassList
+  getNthStatus,
+  scrollToStatus,
+  closeDialogButton,
+  modalDialogContents,
+  goBack,
+  getUrl,
+  goBackButton,
+  getActiveElementInnerText,
+  getNthReplyButton,
+  getActiveElementInsideNthStatus,
+  focus,
+  getNthStatusSelector,
+  getActiveElementTagName,
+  getActiveElementClassList,
+  getNthStatusSensitiveMediaButton,
+  getActiveElementAriaLabel
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -112,4 +125,15 @@ test('reply preserves focus and moves focus to the text input', async t => {
 
 test('focus main content element on index page load', async t => {
   await t.expect(getActiveElementTagName()).match(/body/i)
+})
+
+test('clicking sensitive button returns focus to sensitive button', async t => {
+  await loginAsFoobar(t)
+  const sensitiveKittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  await scrollToStatus(t, sensitiveKittenIdx + 1)
+  await t
+    .click(getNthStatusSensitiveMediaButton(sensitiveKittenIdx + 1))
+    .expect(getActiveElementAriaLabel()).eql('Hide sensitive media')
+    .click(getNthStatusSensitiveMediaButton(sensitiveKittenIdx + 1))
+    .expect(getActiveElementAriaLabel()).eql('Show sensitive media')
 })

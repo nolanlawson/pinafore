@@ -1,37 +1,41 @@
 {#if sensitive }
 <div class={computedClass} style={customSize}>
   <div class="status-sensitive-inner-div">
-  {#if sensitiveShown}
-  <button id={elementId}
-          type="button"
-          class="status-sensitive-media-button"
-          aria-label="Hide sensitive media" >
-    <div class="svg-wrapper">
-      <SvgIcon className="status-sensitive-media-svg"
-               href="#fa-eye-slash" />
-    </div>
-  </button>
-  {:else}
-    <button id={elementId}
-            type="button"
-            class="status-sensitive-media-button"
-            aria-label="Show sensitive media" >
-
-      <div class="status-sensitive-media-warning">
-        <div class="status-sensitive-media-warning-text">
-          Sensitive content. Click to show.
+    {#if sensitiveShown}
+      <button id={elementId}
+              type="button"
+              class="status-sensitive-media-button"
+              aria-label="Hide sensitive media"
+              ref:hideSensitiveMedia
+      >
+        <div class="svg-wrapper">
+          <SvgIcon className="status-sensitive-media-svg"
+                   href="#fa-eye-slash" />
         </div>
-      </div>
-      <div class="svg-wrapper">
-        <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
-      </div>
-    </button>
-  {/if}
-  <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
+      </button>
+    {:else}
+      <button id={elementId}
+              type="button"
+              class="status-sensitive-media-button"
+              aria-label="Show sensitive media"
+              ref:showSensitiveMedia
+      >
+
+        <div class="status-sensitive-media-warning">
+          <div class="status-sensitive-media-warning-text">
+            Sensitive content. Click to show.
+          </div>
+        </div>
+        <div class="svg-wrapper">
+          <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
+        </div>
+      </button>
+    {/if}
+    <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
   </div>
 </div>
 {#if enableShortcuts}
-  <Shortcut scope={shortcutScope} key="y" on:pressed="toggleSensitiveMedia()"/>
+  <Shortcut scope={shortcutScope} key="y" on:pressed="toggleSensitiveMedia(false)"/>
 {/if}
 {:else}
   <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
@@ -167,7 +171,7 @@
   export default {
     oncreate () {
       const { elementId } = this.get()
-      registerClickDelegate(this, elementId, () => this.toggleSensitiveMedia())
+      registerClickDelegate(this, elementId, () => this.toggleSensitiveMedia(true))
     },
     components: {
       MediaAttachments,
@@ -206,12 +210,24 @@
       }
     },
     methods: {
-      toggleSensitiveMedia () {
+      toggleSensitiveMedia (changeFocus) {
         const { uuid } = this.get()
         const { sensitivesShown } = this.store.get()
         sensitivesShown[uuid] = !sensitivesShown[uuid]
         this.store.set({ sensitivesShown })
         this.fire('recalculateHeight')
+        // Only change focus for clicks, not for hotkeys. It's weird if, when the entire toot
+        // is focused and you press "y", that the focus changes to the sensitive media button.
+        if (changeFocus) {
+          requestAnimationFrame(() => {
+            const element = this.refs.hideSensitiveMedia || this.refs.showSensitiveMedia
+            try {
+              element.focus({ preventScroll: true })
+            } catch (e) {
+              console.error('ignored focus error', e)
+            }
+          })
+        }
         return true
       }
     }
