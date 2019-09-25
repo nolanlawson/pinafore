@@ -2,6 +2,7 @@
    class="status-relative-date {isStatusInNotification ? 'status-in-notification' : '' }"
    href="/statuses/{originalStatusId}"
    rel="prefetch"
+   {tabindex}
 >
   <time datetime={createdAtDate} title={absoluteFormattedDate}
         aria-label="{timeagoFormattedDate} – click to show thread">
@@ -32,7 +33,12 @@
 <script>
   export default {
     computed: {
-      elementId: ({ uuid }) => `status-relative-date-${uuid}`
+      elementId: ({ uuid }) => `status-relative-date-${uuid}`,
+      tabindex: ({ $disableTapOnStatus }) => (
+        // If you can't tap on the entire status, then you need some way to click on it. Otherwise it's
+        // just a duplicate link in the focus order.
+        $disableTapOnStatus ? '0' : '-1'
+      )
     }
   }
 </script>
