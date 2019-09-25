@@ -6,7 +6,7 @@
 
   export default {
     async oncreate () {
-      const [ composeBox ] = await Promise.all([
+      const [composeBox] = await Promise.all([
         importComposeBox(),
         importLoggedInObserversAndComputations()
       ])

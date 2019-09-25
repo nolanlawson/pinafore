@@ -20,7 +20,7 @@
       this.store.set({ currentTimeline: timeline })
       this.store.setForTimeline(currentInstance, timeline, { runningUpdate: false })
       console.log('importing timeline')
-      const [ timelineComponent ] = await Promise.all([
+      const [timelineComponent] = await Promise.all([
         importTimeline(),
         importLoggedInObserversAndComputations()
       ])
