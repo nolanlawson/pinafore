@@ -3,6 +3,8 @@
             type="button"
             class="inline-media play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
             aria-label="Play video: {description}"
+            {tabindex}
+            aria-hidden={ariaHidden}
             style={inlineMediaStyle}>
       <PlayVideoIcon />
       {#if type === 'video'}
@@ -26,7 +28,10 @@
           aria-label="Show image: {description}"
           title={description}
           on:mouseover="set({mouseover: event})"
-          style={inlineMediaStyle}>
+          style={inlineMediaStyle}
+          {tabindex}
+          aria-hidden={ariaHidden}
+  >
   {#if type === 'gifv' && $autoplayGifs && !blurhash}
     <AutoplayVideo
       ariaLabel="Animated GIF: {description}"
@@ -159,7 +164,9 @@ export default {
         } else {
           return `width: ${inlineWidth}px; height: ${inlineHeight}px;`
         }
-      }
+      },
+      tabindex: ({ showAsSensitive }) => showAsSensitive ? '-1' : '0',
+      ariaHidden: ({ showAsSensitive }) => showAsSensitive
     },
     methods: {
       onClick () {
