@@ -20,21 +20,21 @@
 /* Another hack to make some focus styles appear better */
 .focus-after {
   position: relative;
-}
 
-.focus-after:focus {
-  outline: none;
-}
+  &:focus {
+    outline: none;
+  }
 
-.focus-after:focus::after {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  content: '';
-  border: var(--focus-width) solid var(--focus-outline);
-  pointer-events: none;
+  &:focus::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    content: '';
+    border: var(--focus-width) solid var(--focus-outline);
+    pointer-events: none;
+  }
 }
 
 // For KaiOS, do some additional things to improve the focus styles, which don't show up well
@@ -52,23 +52,24 @@
     opacity: 0.8;
   }
 
-  button, .button {
-    position: relative;
-  }
-
   // add extremely visible styles for buttons, ala .focus-after
-  button:focus, .button:focus {
-    outline: none;
-  }
+  button, .button, a.main-nav-link {
+    position: relative;
 
-  button:focus::after, .button:focus::after {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    content: '';
-    border: var(--focus-width) solid var(--focus-outline);
-    pointer-events: none;
+    &:focus {
+      outline: none;
+    }
+
+    &:focus::after {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      content: '';
+      border: var(--focus-width) solid var(--focus-outline);
+      pointer-events: none;
+    }
+
   }
 }
