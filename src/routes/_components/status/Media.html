@@ -2,7 +2,7 @@
     <button id={elementId}
             type="button"
             class="inline-media play-video-button focus-after {$largeInlineMedia ? '' : 'fixed-size'} {type === 'audio' ? 'play-audio-button' : ''}"
-            aria-label="Play video: {description}"
+            aria-label="Play {type === 'video' ? 'video' : 'audio'}: {description}"
             {tabindex}
             aria-hidden={ariaHidden}
             style={inlineMediaStyle}>
