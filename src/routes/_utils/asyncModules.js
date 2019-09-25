@@ -24,8 +24,8 @@ export const importDatabase = () => import(
   /* webpackChunkName: 'database.js' */ '../_database/databaseApis.js'
 )
 
-export const importLoggedInObservers = () => import(
-  /* webpackChunkName: 'loggedInObservers.js' */ '../_store/observers/loggedInObservers.js'
+export const importLoggedInObserversAndComputations = () => import(
+  /* webpackChunkName: 'loggedInObserversAndComputations.js' */ '../_store/loggedInObserversAndComputations.js'
 ).then(getDefault)
 
 export const importNavShortcuts = () => import(

@@ -10,7 +10,7 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { importTimeline } from '../../_utils/asyncModules'
+  import { importLoggedInObserversAndComputations, importTimeline } from '../../_utils/asyncModules'
 
   export default {
     async oncreate () {
@@ -20,7 +20,10 @@
       this.store.set({ currentTimeline: timeline })
       this.store.setForTimeline(currentInstance, timeline, { runningUpdate: false })
       console.log('importing timeline')
-      const timelineComponent = await importTimeline()
+      const [ timelineComponent ] = await Promise.all([
+        importTimeline(),
+        importLoggedInObserversAndComputations()
+      ])
       console.log('imported timeline')
       this.set({ timelineComponent })
     },

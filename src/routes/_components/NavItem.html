@@ -144,7 +144,7 @@
         (name === 'notifications' && $hasNotifications) || (name === 'community' && $hasFollowRequests)
       ),
       badgeNumber: ({ name, $numberOfNotifications, $numberOfFollowRequests }) => (
-        (name === 'notifications' && $numberOfNotifications) || (name === 'community' && $numberOfFollowRequests)
+        (name === 'notifications' && $numberOfNotifications) || (name === 'community' && $numberOfFollowRequests) || 0
       )
     },
     methods: {
