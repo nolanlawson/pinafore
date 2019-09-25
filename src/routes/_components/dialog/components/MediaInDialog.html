@@ -1,8 +1,11 @@
+<!-- iOS safari requires type="*" on video to play properly, don't ask me why
+     https://stackoverflow.com/a/28361053 -->
 {#if type === 'video'}
   <video
     class="media-fit"
     aria-label={description}
     src={url}
+    type="*"
     {poster}
     controls
     {intrinsicsize}
@@ -14,6 +17,7 @@
       class="audio-player"
       aria-label={description}
       src={url}
+      type="*"
       controls
       ref:player
     />
@@ -23,6 +27,7 @@
     class="media-fit"
     aria-label={description}
     src={url}
+    type="*"
     {poster}
     autoplay
     muted
