@@ -1,33 +1,37 @@
 {#if sensitive }
 <div class={computedClass} style={customSize}>
   <div class="status-sensitive-inner-div">
-  {#if sensitiveShown}
-  <button id={elementId}
-          type="button"
-          class="status-sensitive-media-button"
-          aria-label="Hide sensitive media" >
-    <div class="svg-wrapper">
-      <SvgIcon className="status-sensitive-media-svg"
-               href="#fa-eye-slash" />
-    </div>
-  </button>
-  {:else}
-    <button id={elementId}
-            type="button"
-            class="status-sensitive-media-button"
-            aria-label="Show sensitive media" >
-
-      <div class="status-sensitive-media-warning">
-        <div class="status-sensitive-media-warning-text">
-          Sensitive content. Click to show.
+    {#if sensitiveShown}
+      <button id={elementId}
+              type="button"
+              class="status-sensitive-media-button"
+              aria-label="Hide sensitive media"
+              ref:hideSensitiveMedia
+      >
+        <div class="svg-wrapper">
+          <SvgIcon className="status-sensitive-media-svg"
+                   href="#fa-eye-slash" />
         </div>
-      </div>
-      <div class="svg-wrapper">
-        <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
-      </div>
-    </button>
-  {/if}
-  <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
+      </button>
+    {:else}
+      <button id={elementId}
+              type="button"
+              class="status-sensitive-media-button"
+              aria-label="Show sensitive media"
+              ref:showSensitiveMedia
+      >
+
+        <div class="status-sensitive-media-warning">
+          <div class="status-sensitive-media-warning-text">
+            Sensitive content. Click to show.
+          </div>
+        </div>
+        <div class="svg-wrapper">
+          <SvgIcon className="status-sensitive-media-svg" href="#fa-eye" />
+        </div>
+      </button>
+    {/if}
+    <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
   </div>
 </div>
 {#if enableShortcuts}
@@ -212,6 +216,14 @@
         sensitivesShown[uuid] = !sensitivesShown[uuid]
         this.store.set({ sensitivesShown })
         this.fire('recalculateHeight')
+        requestAnimationFrame(() => {
+          const element = this.refs.hideSensitiveMedia || this.refs.showSensitiveMedia
+          try {
+            element.focus({ preventScroll: true })
+          } catch (e) {
+            console.error('ignored focus error', e)
+          }
+        })
         return true
       }
     }
