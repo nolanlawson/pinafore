@@ -107,7 +107,7 @@ export function onKeyDownInShortcutScope (scopeKey, event) {
 }
 
 function handleEvent (scopeKey, keyMap, key, event) {
-  const value = keyMap[key]
+  const value = keyMap[key] || keyMap[key.toLowerCase()] // treat uppercase and lowercase the same (e.g. caps lock)
   if (!value) {
     return false
   }
