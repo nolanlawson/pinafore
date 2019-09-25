@@ -1,4 +1,8 @@
+import { mark, stop } from '../../_utils/marks'
+
 export function navComputations (store) {
+  mark('navComputations')
+
   store.compute(
     'pinnedListTitle',
     ['lists', 'pinnedPage'],
@@ -89,4 +93,6 @@ export function navComputations (store) {
       ]
     }
   )
+
+  stop('navComputations')
 }

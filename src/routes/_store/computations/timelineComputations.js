@@ -9,6 +9,7 @@ import {
   NOTIFICATION_POLLS,
   NOTIFICATION_MENTIONS
 } from '../../_static/instanceSettings'
+import { mark, stop } from '../../_utils/marks'
 
 function computeForTimeline (store, key, defaultValue) {
   store.compute(key,
@@ -45,6 +46,7 @@ function computeNotificationFilter (store, computationName, key) {
 }
 
 export function timelineComputations (store) {
+  mark('timelineComputations')
   computeForTimeline(store, 'timelineItemSummaries', null)
   computeForTimeline(store, 'timelineItemSummariesToAdd', null)
   computeForTimeline(store, 'runningUpdate', false)
@@ -191,4 +193,5 @@ export function timelineComputations (store) {
     ['numberOfFollowRequests'],
     (numberOfFollowRequests) => !!numberOfFollowRequests
   )
+  stop('timelineComputations')
 }
