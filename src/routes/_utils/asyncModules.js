@@ -26,7 +26,7 @@ export const importDatabase = () => import(
 
 export const importLoggedInObserversAndComputations = () => import(
   /* webpackChunkName: 'loggedInObserversAndComputations.js' */ '../_store/loggedInObserversAndComputations.js'
-).then(getDefault)
+)
 
 export const importNavShortcuts = () => import(
   /* webpackChunkName: 'NavShortcuts' */ '../_components/NavShortcuts.html'
