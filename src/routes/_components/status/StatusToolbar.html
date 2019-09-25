@@ -19,7 +19,7 @@
     ref:reblogIcon
   />
   <IconButton
-    label="Favorite"
+    label="{favoriteLabel}"
     pressable="true"
     pressed={favorited}
     href="#fa-star"
@@ -193,6 +193,10 @@
         }
         return originalStatus.reblogged
       },
+      favoriteLabel: ({ visibility } => {
+        const { favorited } = this.get()
+        return favorited ? 'Unfavorite' : 'Favorite'
+      }),
       favorited: ({ originalStatusId, $currentStatusModifications, originalStatus }) => {
         if ($currentStatusModifications && originalStatusId in $currentStatusModifications.favorites) {
           return $currentStatusModifications.favorites[originalStatusId]
