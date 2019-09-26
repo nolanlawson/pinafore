@@ -3,12 +3,13 @@
   import { store } from './_store/store'
   import { goto } from '../../__sapper__/client'
   import { decodeURIComponentWithPluses } from './_utils/decodeURIComponentWithPluses'
+  import { importLoggedInStoreExtensions } from './_utils/asyncModules'
 
   const SHARE_KEYS = ['title', 'text', 'url']
 
   export default {
     store: () => store,
-    oncreate () {
+    async oncreate () {
       const params = new URLSearchParams(location.search)
 
       const text = SHARE_KEYS
@@ -16,6 +17,7 @@
         .filter(Boolean)
         .join(' ')
 
+      await importLoggedInStoreExtensions()
       this.store.set({ openShareDialog: true })
       this.store.clearComposeData('dialog')
       this.store.setComposeData('dialog', { text })
