@@ -43,4 +43,15 @@ export function timelineMixins (Store) {
       return key.startsWith('status/')
     })
   }
+
+  Store.prototype.clearTimelineDataForInstance = function (instanceName) {
+    const changes = {}
+    Object.entries(this.get()).forEach(([key, value]) => {
+      if (key.startsWith('timelineData_') && value) {
+        delete value[instanceName]
+        changes[key] = value
+      }
+    })
+    this.set(changes)
+  }
 }
