@@ -2,13 +2,13 @@
   <svelte:component this={composeBox} {realm} {hidden} />
 {/if}
 <script>
-  import { importComposeBox, importLoggedInObserversAndComputations } from '../../_utils/asyncModules'
+  import { importComposeBox, importLoggedInStoreExtensions } from '../../_utils/asyncModules'
 
   export default {
     async oncreate () {
       const [composeBox] = await Promise.all([
         importComposeBox(),
-        importLoggedInObserversAndComputations()
+        importLoggedInStoreExtensions()
       ])
       this.set({ composeBox })
     },
