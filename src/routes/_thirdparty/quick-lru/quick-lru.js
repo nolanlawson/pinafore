@@ -87,6 +87,17 @@ export class QuickLRU extends EventEmitter {
     this._size = 0
   }
 
+  getAllKeys () {
+    const set = new Set()
+    for (const key of this.cache.keys()) {
+      set.add(key)
+    }
+    for (const key of this.oldCache.keys()) {
+      set.add(key)
+    }
+    return set
+  }
+
   // unused
   // * keys() {
   //   for (const [key] of this) {

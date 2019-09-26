@@ -110,6 +110,7 @@ async function insertStatusThread (instanceName, statusId, statuses) {
 }
 
 export async function insertTimelineItems (instanceName, timeline, timelineItems) {
+  console.log('insertTimelineItems', instanceName, timeline, timelineItems)
   /* no await */ scheduleCleanup()
   if (timeline === 'notifications' || timeline === 'notifications/mentions') {
     return insertTimelineNotifications(instanceName, timeline, timelineItems)

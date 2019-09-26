@@ -23,4 +23,15 @@ export function autosuggestMixins (Store) {
     const { currentInstance, currentComposeRealm } = this.get()
     return get(this.get()[`autosuggestData_${key}`], [currentInstance, currentComposeRealm])
   }
+
+  Store.prototype.clearAutosuggestDataForInstance = function (instanceName) {
+    const changes = {}
+    Object.entries(this.get()).forEach(([key, value]) => {
+      if (key.startsWith('autosuggestData_') && value) {
+        delete value[instanceName]
+        changes[key] = value
+      }
+    })
+    this.set(changes)
+  }
 }

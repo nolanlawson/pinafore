@@ -40,7 +40,7 @@
               scrollContainer.scrollTop = scrollTop
               stop('set scrollTop')
               doubleRAF(() => {
-                console.log('initialized VirtualList')
+                console.log('initialized VirtualList (1)')
                 this.fire('initialized')
               })
             })
@@ -50,7 +50,7 @@
         this.fire('noNeedToScroll')
         this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
           if (allVisibleItemsHaveHeight) {
-            console.log('initialized VirtualList')
+            console.log('initialized VirtualList (2)')
             this.fire('initialized')
           }
         })

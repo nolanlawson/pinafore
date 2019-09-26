@@ -8,6 +8,21 @@ class VirtualListStore extends RealmStore {
   constructor (state) {
     super(state, /* maxSize */ 10)
   }
+
+  // TODO: this is hacky
+  clearRealmByPrefix (prefix) {
+    const { realms } = this.get()
+    if (!realms) {
+      return
+    }
+    for (const key of realms.getAllKeys()) {
+      if (key.startsWith(prefix)) {
+        console.log('deleted realm', key)
+        realms.delete(key)
+      }
+    }
+    this.set({ realms })
+  }
 }
 
 const virtualListStore = new VirtualListStore()
@@ -103,17 +118,19 @@ virtualListStore.compute('allVisibleItemsHaveHeight',
     return true
   })
 
-if (process.browser && process.env.NODE_ENV !== 'production') {
-  window.virtualListStore = virtualListStore
+if (process.browser) {
+  window.__virtualListStore = virtualListStore // for debugging
 
-  virtualListStore.on('state', ({ changed }) => {
-    if (changed.visibleItems) {
-      window.visibleItemsChangedCount = (window.visibleItemsChangedCount || 0) + 1
-    }
-    if (changed.rawVisibleItems) {
-      window.rawVisibleItemsChangedCount = (window.rawVisibleItemsChangedCount || 0) + 1
-    }
-  })
+  if (process.env.NODE_ENV !== 'production') { // for extra debugging
+    virtualListStore.on('state', ({ changed }) => {
+      if (changed.visibleItems) {
+        window.visibleItemsChangedCount = (window.visibleItemsChangedCount || 0) + 1
+      }
+      if (changed.rawVisibleItems) {
+        window.rawVisibleItemsChangedCount = (window.rawVisibleItemsChangedCount || 0) + 1
+      }
+    })
+  }
 }
 
 export {

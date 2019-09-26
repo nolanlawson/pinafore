@@ -6,6 +6,7 @@ import { goto } from '../../../__sapper__/client'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getInstanceInfo } from '../_api/instance'
 import { database } from '../_database/database'
+import { importVirtualListStore } from '../_utils/asyncModules'
 
 export function changeTheme (instanceName, newTheme) {
   const { instanceThemes } = store.get()
@@ -33,29 +34,50 @@ export function switchToInstance (instanceName) {
 
 export async function logOutOfInstance (instanceName, message = `Logged out of ${instanceName}`) {
   const {
-    loggedInInstances,
-    instanceThemes,
-    loggedInInstancesInOrder,
     composeData,
-    currentInstance
+    currentInstance,
+    customEmoji,
+    instanceInfos,
+    instanceLists,
+    instanceThemes,
+    loggedInInstances,
+    loggedInInstancesInOrder,
+    verifyCredentials
   } = store.get()
   loggedInInstancesInOrder.splice(loggedInInstancesInOrder.indexOf(instanceName), 1)
-  const newInstance = instanceName === currentInstance
-    ? loggedInInstancesInOrder[0]
-    : currentInstance
-  delete loggedInInstances[instanceName]
-  delete instanceThemes[instanceName]
-  delete composeData[instanceName]
+  const newInstance = instanceName === currentInstance ? loggedInInstancesInOrder[0] : currentInstance
+  const objectsToClear = [
+    composeData,
+    customEmoji,
+    instanceInfos,
+    instanceLists,
+    instanceThemes,
+    loggedInInstances,
+    verifyCredentials
+  ]
+  for (const obj of objectsToClear) {
+    delete obj[instanceName]
+  }
   store.set({
-    loggedInInstances: loggedInInstances,
-    instanceThemes: instanceThemes,
-    loggedInInstancesInOrder: loggedInInstancesInOrder,
+    composeData,
     currentInstance: newInstance,
-    searchResults: null,
+    customEmoji,
+    instanceInfos,
+    instanceLists,
+    instanceThemes,
+    loggedInInstances,
+    loggedInInstancesInOrder,
     queryInSearch: '',
-    composeData: composeData
+    searchResults: null,
+    timelineInitialized: false,
+    timelinePreinitialized: false,
+    verifyCredentials
   })
+  store.clearTimelineDataForInstance(instanceName)
+  store.clearAutosuggestDataForInstance(instanceName)
   store.save()
+  const { virtualListStore } = await importVirtualListStore()
+  virtualListStore.clearRealmByPrefix(currentInstance + '/') // TODO: this is a hacky way to clear the vlist cache
   toast.say(message)
   const { enableGrayscale } = store.get()
   switchToTheme(instanceThemes[newInstance], enableGrayscale)

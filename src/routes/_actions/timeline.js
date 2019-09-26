@@ -108,6 +108,7 @@ export async function setupTimeline () {
     timelineItemSummariesAreStale,
     currentTimeline
   } = store.get()
+  console.log({ timelineItemSummaries, timelineItemSummariesAreStale, currentTimeline })
   if (!timelineItemSummaries ||
       timelineItemSummariesAreStale ||
       currentTimeline.startsWith('status/')) {

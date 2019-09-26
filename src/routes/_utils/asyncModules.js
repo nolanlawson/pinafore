@@ -51,3 +51,7 @@ export const importComposeBox = () => import(
 export const importTesseractWorker = () => import(
   /* webpackChunkName: 'tesseractWorker' */ '../_utils/tesseractWorker.js'
 ).then(getDefault)
+
+export const importVirtualListStore = () => import(
+  /* webpackChunkName: 'virtualListStore.js' */ '../_components/virtualList/virtualListStore.js'
+)
