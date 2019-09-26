@@ -1,4 +1,5 @@
 import { DEFAULT_THEME } from '../../_utils/themeEngine'
+import { mark, stop } from '../../_utils/marks'
 
 function computeForInstance (store, computedKey, key, defaultValue) {
   store.compute(computedKey,
@@ -7,6 +8,7 @@ function computeForInstance (store, computedKey, key, defaultValue) {
 }
 
 export function instanceComputations (store) {
+  mark('instanceComputations')
   computeForInstance(store, 'currentTheme', 'instanceThemes', DEFAULT_THEME)
   computeForInstance(store, 'currentVerifyCredentials', 'verifyCredentials', null)
   computeForInstance(store, 'currentInstanceInfo', 'instanceInfos', null)
@@ -59,4 +61,6 @@ export function instanceComputations (store) {
       (currentInstanceInfo && currentInstanceInfo.max_toot_chars) || 500
     )
   )
+
+  stop('instanceComputations')
 }

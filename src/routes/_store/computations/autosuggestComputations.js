@@ -1,4 +1,5 @@
 import { get } from '../../_utils/lodash-lite'
+import { mark, stop } from '../../_utils/marks'
 
 const MIN_PREFIX_LENGTH = 2
 // Technically mastodon accounts allow dots, but it would be weird to do an autosuggest search if it ends with a dot.
@@ -17,6 +18,7 @@ function computeForAutosuggest (store, key, defaultValue) {
 }
 
 export function autosuggestComputations (store) {
+  mark('autosuggestComputations')
   computeForAutosuggest(store, 'composeFocused', false)
   computeForAutosuggest(store, 'composeSelectionStart', 0)
   computeForAutosuggest(store, 'autosuggestSelected', 0)
@@ -59,4 +61,5 @@ export function autosuggestComputations (store) {
       !!(composeFocused && autosuggestSearchText && autosuggestNumSearchResults)
     )
   )
+  stop('autosuggestComputations')
 }

@@ -67,7 +67,7 @@ const nonPersistedState = {
 const state = Object.assign({}, persistedState, nonPersistedState)
 const keysToStoreInLocalStorage = new Set(Object.keys(persistedState))
 
-class PinaforeStore extends LocalStorageStore {
+export class PinaforeStore extends LocalStorageStore {
   constructor (state) {
     super(state, keysToStoreInLocalStorage)
   }

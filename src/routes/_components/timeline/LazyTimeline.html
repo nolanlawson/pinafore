@@ -10,18 +10,19 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { importTimeline } from '../../_utils/asyncModules'
+  import { importLoggedInStoreExtensions, importTimeline } from '../../_utils/asyncModules'
 
   export default {
     async oncreate () {
       console.log('LazyTimeline oncreate')
       const { currentInstance } = this.store.get()
       const { timeline } = this.get()
+      const [timelineComponent] = await Promise.all([
+        importTimeline(),
+        importLoggedInStoreExtensions()
+      ])
       this.store.set({ currentTimeline: timeline })
       this.store.setForTimeline(currentInstance, timeline, { runningUpdate: false })
-      console.log('importing timeline')
-      const timelineComponent = await importTimeline()
-      console.log('imported timeline')
       this.set({ timelineComponent })
     },
     store: () => store,
