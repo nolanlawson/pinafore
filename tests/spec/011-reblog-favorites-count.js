@@ -15,7 +15,7 @@ test('shows favorites', async t => {
     .expect(getUrl()).contains('/statuses/')
     .expect(getFavoritesCount()).eql(2)
     .expect(favoritesCountElement.getAttribute('aria-label')).eql('Favorited 2 times')
-    .expect($('.icon-button[aria-label="Favorite"]').getAttribute('aria-pressed')).eql('true')
+    .expect($('.icon-button[aria-label="Unfavorite"]').getAttribute('aria-pressed')).eql('true')
     .click(favoritesCountElement)
     .expect(getUrl()).match(/\/statuses\/[^/]+\/favorites/)
     .expect($('.search-result-account-name').nth(0).innerText).eql('foobar')
