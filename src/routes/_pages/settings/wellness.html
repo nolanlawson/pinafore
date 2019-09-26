@@ -44,13 +44,10 @@
     </label>
   </form>
 
-  <aside>
-    <SvgIcon href="#fa-info-circle" className="aside-icon" />
-    <span>
-      You can filter or disable notifications in the
-      <a rel="prefetch" href="/settings/instances{$currentInstance ? '/' + $currentInstance : ''}">instance settings</a>.
-    </span>
-  </aside>
+  <InfoAside className="wellness-aside">
+    You can filter or disable notifications in the
+    <a rel="prefetch" href="/settings/instances{$currentInstance ? '/' + $currentInstance : ''}">instance settings</a>.
+  </InfoAside>
 
   <h2>UI</h2>
 
@@ -78,26 +75,8 @@
     display: block;
     padding: 5px 0;
   }
-  aside {
-    font-size: 1.2em;
+  :global(.wellness-aside) {
     margin: 20px 10px 0px 10px;
-    color: var(--deemphasized-text-color);
-    display: flex;
-    align-items: center;
-  }
-  aside a {
-    text-decoration: underline;
-    color: var(--deemphasized-text-color);
-  }
-  aside span {
-    flex: 1;
-  }
-  :global(.aside-icon) {
-    fill: var(--deemphasized-text-color);
-    width: 18px;
-    height: 18px;
-    margin: 0 10px 0 5px;
-    min-width: 18px;
   }
 
   @media (max-width: 240px) {
@@ -110,7 +89,7 @@
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import { store } from '../../_store/store'
   import ExternalLink from '../../_components/ExternalLink.html'
-  import SvgIcon from '../../_components/SvgIcon.html'
+  import InfoAside from '../../_components/InfoAside.html'
 
   export default {
     oncreate () {
@@ -119,7 +98,7 @@
     components: {
       SettingsLayout,
       ExternalLink,
-      SvgIcon
+      InfoAside
     },
     methods: {
       flushChangesToCheckAll () {
