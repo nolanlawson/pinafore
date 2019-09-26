@@ -23,6 +23,11 @@ function makeFetchOptions (method, headers, options) {
 }
 
 async function throwErrorIfInvalidResponse (response) {
+  if (response.status >= 300) {
+    const err = new Error('Request failed: ' + response.status)
+    err.status = response.status
+    throw err
+  }
   const json = await response.json()
   if (response.status >= 200 && response.status < 300) {
     return json
