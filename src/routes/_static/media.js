@@ -1,3 +1,5 @@
+import { isIOSPre13 } from '../_utils/userAgent'
+
 export const DEFAULT_MEDIA_WIDTH = 300
 export const DEFAULT_MEDIA_HEIGHT = 250
 
@@ -51,10 +53,8 @@ const acceptedFileTypes = [
   'video/x-ms-asf'
 ]
 
-const isIOS = process.browser && /iP(?:hone|ad|od)/.test(navigator.userAgent)
-
 // TODO: iOS has a bug where it does not allow audio uploads unless you either *only* accept audio, or
 // you accept everything. Since this is not a great user experience (e.g. it could lead someone trying
 // to upload a PDF, which is not allowed), then we only use the */* for iOS.
 // WebKit bug: https://bugs.webkit.org/show_bug.cgi?id=190982#c2
-export const mediaAccept = isIOS ? '*/*' : acceptedFileTypes.join(',')
+export const mediaAccept = isIOSPre13() ? '*/*' : acceptedFileTypes.join(',')
