@@ -1,7 +1,7 @@
 import {
   composeButton,
   composeModalPostPrivacyButton,
-  getNthPostPrivacyOptionInDialog, getNthStatus,
+  getNthPostPrivacyOptionInDialog,
   postPrivacyButton, postPrivacyDialogButtonUnlisted,
   scrollToStatus,
   sleep
