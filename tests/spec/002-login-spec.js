@@ -1,7 +1,7 @@
 import { Selector as $ } from 'testcafe'
 import {
   addInstanceButton,
-  authorizeInput, confirmationDialogOKButton, copyPasteModeButton,
+  authorizeInput, confirmationDialogOKButton,
   emailInput,
   formError,
   getFirstVisibleStatus, getNthStatus, getOpacity,
@@ -9,10 +9,10 @@ import {
   homeNavButton,
   instanceInput,
   logInToInstanceLink,
-  mastodonLogInButton, oauthCodeInput,
+  mastodonLogInButton,
   passwordInput, reload,
   settingsButton,
-  sleep, submitOauthButton
+  sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
@@ -95,14 +95,4 @@ test('Logs in, refreshes, then logs out', async t => {
     .expect($('.main-content').innerText).contains("You're not logged in to any instances")
     .click(homeNavButton)
     .expect(getOpacity('.hidden-from-ssr')()).eql('1')
-})
-
-test('Shows error when entering only oauth code in basic mode', async t => {
-  await t
-    .click(logInToInstanceLink)
-    .click(copyPasteModeButton)
-    .typeText(oauthCodeInput, 'blahblahblah')
-    .click(submitOauthButton)
-    .expect(formError.exists).ok()
-    .expect(formError.innerText).contains('You must log in to an instance first')
 })
