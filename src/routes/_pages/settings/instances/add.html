@@ -33,19 +33,6 @@
         Log in
       </button>
     </form>
-
-    {#if $copyPasteMode }
-      <form aria-label="Enter code" on:submit="onSubmitOauth(event)">
-        <label for="oauthCodeInput">Code:</label>
-        <input type="text" id="oauthCodeInput"
-               bind:value='oauthCode' placeholder="Enter code" required
-        >
-        <button class="primary" type="submit" id="submitOauthButton"
-                disabled={!oauthCode}>
-          Submit
-        </button>
-      </form>
-    {/if}
   </div>
 
   {#if !$isUserLoggedIn}
@@ -58,23 +45,6 @@
       ?
       <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink>
     </p>
-  {/if}
-  <p>
-    {#if $copyPasteMode}
-      Switch back to
-    {:else}
-      Trouble logging in? Switch to
-    {/if}
-    <button on:click="onCopyPasteModeButtonClick()"
-            class="copy-paste-mode-button"
-            aria-pressed={$copyPasteMode}>
-      {$copyPasteMode ? 'regular' : 'basic'} login mode
-    </button>.
-  </p>
-  {#if $copyPasteMode}
-    <InfoAside className="add-new-instance-aside">
-      In basic login mode, click "log in" to open a new window. Then copy the code and paste it above.
-    </InfoAside>
   {/if}
 </SettingsLayout>
 <style>
@@ -105,20 +75,6 @@
     margin: 20px 5px;
   }
 
-  button.copy-paste-mode-button {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    background: none;
-    border: none;
-    font-size: 1em;
-    color: var(--anchor-text);
-  }
-
-  button.copy-paste-mode-button:hover {
-    text-decoration: underline;
-  }
-
   @media (max-width: 767px) {
     input {
       min-width: 95%;
@@ -129,11 +85,10 @@
 <script>
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import { store } from '../../../_store/store'
-  import { logInToInstance, handleOauthCode, handleCopyPasteOauthCode } from '../../../_actions/addInstance'
+  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
   import ExternalLink from '../../../_components/ExternalLink.html'
   import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
   import Tooltip from '../../../_components/Tooltip.html'
-  import InfoAside from '../../../_components/InfoAside.html'
 
   export default {
     async oncreate () {
@@ -149,30 +104,18 @@
     components: {
       SettingsLayout,
       ExternalLink,
-      Tooltip,
-      InfoAside
+      Tooltip
     },
     store: () => store,
     data: () => ({
       hasIndexedDB: true,
-      hasLocalStorage: true,
-      oauthCode: ''
+      hasLocalStorage: true
     }),
     methods: {
       onSubmitInstance (event) {
         event.preventDefault()
         event.stopPropagation()
         logInToInstance()
-      },
-      onSubmitOauth (event) {
-        event.preventDefault()
-        event.stopPropagation()
-        handleCopyPasteOauthCode(this.get().oauthCode)
-      },
-      onCopyPasteModeButtonClick () {
-        const { copyPasteMode } = this.store.get()
-        console.log('copyPasteMode', copyPasteMode)
-        this.store.set({ copyPasteMode: !copyPasteMode })
       }
     }
   }
