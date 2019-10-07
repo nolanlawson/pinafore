@@ -142,6 +142,7 @@
       "NodeList",
       "NotificationEvent",
       "OffscreenCanvas",
+      "PointerEvent",
       "URL",
       "WebSocket",
       "__assets__",
