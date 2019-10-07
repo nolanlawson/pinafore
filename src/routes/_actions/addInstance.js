@@ -15,8 +15,7 @@ function createKnownError (message) {
 }
 
 function getRedirectUri () {
-  const { copyPasteMode } = store.get()
-  return copyPasteMode ? 'urn:ietf:wg:oauth:2.0:oob' : `${location.origin}/settings/instances/add`
+  return `${location.origin}/settings/instances/add`
 }
 
 async function redirectToOauth () {
@@ -45,13 +44,8 @@ async function redirectToOauth () {
     redirectUri
   )
   // setTimeout to allow the browser to *actually* save the localStorage data (fixes Safari bug apparently)
-  const { copyPasteMode } = store.get()
   setTimeout(() => {
-    if (copyPasteMode) {
-      window.open(oauthUrl, '_blank', 'noopener')
-    } else {
-      document.location.href = oauthUrl
-    }
+    document.location.href = oauthUrl
   }, 200)
 }
 
@@ -102,8 +96,7 @@ async function registerNewInstance (code) {
     loggedInInstances: loggedInInstances,
     currentInstance: currentRegisteredInstanceName,
     loggedInInstancesInOrder: loggedInInstancesInOrder,
-    instanceThemes: instanceThemes,
-    copyPasteMode: false
+    instanceThemes: instanceThemes
   })
   store.save()
   const { enableGrayscale } = store.get()
@@ -122,18 +115,5 @@ export async function handleOauthCode (code) {
     store.set({ logInToInstanceError: `${err.message || err.name}. Failed to connect to instance.` })
   } finally {
     store.set({ logInToInstanceLoading: false })
-  }
-}
-
-export async function handleCopyPasteOauthCode (code) {
-  const { currentRegisteredInstanceName, currentRegisteredInstance } = store.get()
-  if (!currentRegisteredInstanceName || !currentRegisteredInstance) {
-    store.set({
-      logInToInstanceError: 'You must log in to an instance first.',
-      logInToInstanceErrorForText: '',
-      instanceNameInSearch: ''
-    })
-  } else {
-    await handleOauthCode(code)
   }
 }
