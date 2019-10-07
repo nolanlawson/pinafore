@@ -89,7 +89,6 @@
   import ExternalLink from '../../../_components/ExternalLink.html'
   import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
   import Tooltip from '../../../_components/Tooltip.html'
-  import InfoAside from '../../../_components/InfoAside.html'
 
   export default {
     async oncreate () {
@@ -105,8 +104,7 @@
     components: {
       SettingsLayout,
       ExternalLink,
-      Tooltip,
-      InfoAside
+      Tooltip
     },
     store: () => store,
     data: () => ({
