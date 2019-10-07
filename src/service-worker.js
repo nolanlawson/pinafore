@@ -77,6 +77,34 @@ self.addEventListener('activate', event => {
   })())
 })
 
+// from https://stackoverflow.com/questions/54138601/cant-access-arraybuffer-on-rangerequest/54207122
+const returnRangeRequest = request =>
+  fetch(request, { headers: {}, mode: 'cors', credentials: 'omit' })
+    .then(res => {
+      return res.arrayBuffer()
+    })
+    .then(arrayBuffer => {
+      const bytes = /^bytes=(\d+)-(\d+)?$/g.exec(request.headers.get('range'))
+      if (bytes) {
+        const start = Number(bytes[1])
+        const end = Number(bytes[2]) || arrayBuffer.byteLength - 1
+
+        return new self.Response(arrayBuffer.slice(start, end + 1), {
+          status: 206,
+          statusText: 'Partial Content',
+          headers: [
+            ['Content-Range', `bytes ${start}-${end}/${arrayBuffer.byteLength}`]
+          ]
+        })
+      } else {
+        return new self.Response(null, {
+          status: 416,
+          statusText: 'Range Not Satisfiable',
+          headers: [['Content-Range', `*/${arrayBuffer.byteLength}`]]
+        })
+      }
+    })
+
 self.addEventListener('fetch', event => {
   const req = event.request
   const url = new URL(req.url)
@@ -118,6 +146,13 @@ self.addEventListener('fetch', event => {
     }
 
     // for everything else, go network-only
+
+    // range request need to be be patched with a 206 response to satisfy
+    // Safari (https://stackoverflow.com/questions/52087208)
+    if (event.request.headers.get('range')) {
+      return returnRangeRequest(req)
+    }
+
     return fetch(req)
   })())
 })
