@@ -16,7 +16,7 @@ const persistedState = {
   disableFavCounts: false,
   disableFollowerCounts: false,
   disableHotkeys: false,
-  disableInfiniteScroll: isKaiOS(),
+  disableInfiniteScroll: false,
   disableLongAriaLabels: false,
   disableNotificationBadge: false,
   disableReblogCounts: false,
