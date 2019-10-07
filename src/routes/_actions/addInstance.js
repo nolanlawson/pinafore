@@ -44,15 +44,19 @@ async function redirectToOauth () {
     instanceData.client_id,
     redirectUri
   )
-  // setTimeout to allow the browser to *actually* save the localStorage data (fixes Safari bug apparently)
   const { copyPasteMode } = store.get()
-  setTimeout(() => {
-    if (copyPasteMode) {
-      window.open(oauthUrl, '_blank', 'noopener')
-    } else {
+
+  if (copyPasteMode) {
+    store.set({
+      copyPasteModeLogInLink: oauthUrl
+    })
+    store.save()
+  } else {
+    // setTimeout to allow the browser to *actually* save the localStorage data (fixes Safari bug apparently)
+    setTimeout(() => {
       document.location.href = oauthUrl
-    }
-  }, 200)
+    }, 200)
+  }
 }
 
 export async function logInToInstance () {

@@ -28,14 +28,28 @@
       <input type="text" inputmode="url" id="instanceInput"
              bind:value='$instanceNameInSearch' placeholder="Enter instance name" required
       >
-      <button class="primary" type="submit" id="submitButton"
-              disabled={!$instanceNameInSearch || $logInToInstanceLoading}>
-        Log in
-      </button>
+      {#if $copyPasteMode }
+        <a href="{$copyPasteModeLogInLink || '#'}"
+           ref:copyPageLogInLink
+           class="copy-paste-link button primary {!$copyPasteModeLogInLink ? 'disabled' : ''}"
+           target="_blank"
+           rel="noopener"
+           aria-busy="{!$copyPasteModeLogInLink}"
+           on:click="onCopyPasteLinkClick(event)"
+        >
+          Log in
+        </a>
+      {:else}
+        <button class="primary" type="submit" id="submitButton"
+                disabled={!$instanceNameInSearch || $logInToInstanceLoading}>
+          Log in
+        </button>
+      {/if}
+
     </form>
 
     {#if $copyPasteMode }
-      <form aria-label="Enter code" on:submit="onSubmitOauth(event)">
+      <form class="copy-paste-form" aria-label="Enter code" on:submit="onSubmitOauth(event)">
         <label for="oauthCodeInput">Code:</label>
         <input type="text" id="oauthCodeInput"
                bind:value='oauthCode' placeholder="Enter code" required
@@ -100,9 +114,8 @@
     background-color: var(--input-bg);
   }
 
-  label, input, button, :global(.add-new-instance-aside) {
-    display: block;
-    margin: 20px 5px;
+  label, input, button, :global(.add-new-instance-aside), a.copy-paste-link {
+    margin: 15px 5px;
   }
 
   button.copy-paste-mode-button {
@@ -117,6 +130,22 @@
 
   button.copy-paste-mode-button:hover {
     text-decoration: underline;
+  }
+
+  a.copy-paste-link.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copy-paste-form {
+    margin-top: 20px;
   }
 
   @media (max-width: 767px) {
@@ -134,6 +163,8 @@
   import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
   import Tooltip from '../../../_components/Tooltip.html'
   import InfoAside from '../../../_components/InfoAside.html'
+  import { observe } from 'svelte-extras'
+  import debounce from 'lodash-es/debounce'
 
   export default {
     async oncreate () {
@@ -141,10 +172,8 @@
       if (codeMatch) {
         return handleOauthCode(codeMatch[1])
       }
-      this.set({
-        hasIndexedDB: await testHasIndexedDB(),
-        hasLocalStorage: testHasLocalStorage()
-      })
+      /* no await */ this.testStorage()
+      this.setupObservers()
     },
     components: {
       SettingsLayout,
@@ -158,11 +187,22 @@
       hasLocalStorage: true,
       oauthCode: ''
     }),
+    computed: {
+      copyPasteLogInDisabled: ({ $instanceNameInSearch, $logInToInstanceLoading }) => (
+        !$instanceNameInSearch || $logInToInstanceLoading
+      ),
+      instanceNameInSearch: ({ $instanceNameInSearch }) => $instanceNameInSearch
+    },
     methods: {
+      observe,
       onSubmitInstance (event) {
         event.preventDefault()
         event.stopPropagation()
-        logInToInstance()
+        if (this.store.get().copyPasteMode) {
+          this.refs.copyPageLogInLink.click()
+        } else {
+          logInToInstance()
+        }
       },
       onSubmitOauth (event) {
         event.preventDefault()
@@ -173,6 +213,31 @@
         const { copyPasteMode } = this.store.get()
         console.log('copyPasteMode', copyPasteMode)
         this.store.set({ copyPasteMode: !copyPasteMode })
+      },
+      onCopyPasteLinkClick (e) {
+        if (!this.store.get().copyPasteModeLogInLink) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+      },
+      async testStorage () {
+        this.set({ hasLocalStorage: testHasLocalStorage() })
+        const hasIndexedDB = await testHasIndexedDB()
+        this.set({ hasIndexedDB })
+      },
+      setupObservers () {
+        const generateLoginLink = debounce(() => {
+          const { copyPasteMode } = this.store.get()
+          const { instanceNameInSearch } = this.get()
+          if (!copyPasteMode || !instanceNameInSearch) {
+            return
+          }
+
+          this.store.set({ copyPasteModeLogInLink : null })
+          logInToInstance()
+        }, 400)
+
+        this.observe('instanceNameInSearch', generateLoginLink)
       }
     }
   }
