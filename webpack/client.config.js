@@ -86,9 +86,10 @@ module.exports = {
     setImmediate: false
   },
   optimization: dev ? {} : {
+    minimize: !process.env.DEBUG,
     minimizer: [
       terser()
-    ].filter(Boolean),
+    ],
     splitChunks: {
       chunks: 'async',
       minSize: 5000,
