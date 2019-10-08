@@ -1,8 +1,8 @@
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
-module.exports = () => !process.env.DEBUG && new TerserWebpackPlugin({
+module.exports = () => new TerserWebpackPlugin({
   exclude: /tesseract-asset/,
-  cache: true,
+  cache: !process.env.TERSER_DISABLE_CACHE,
   parallel: true,
   sourceMap: true,
   terserOptions: {
