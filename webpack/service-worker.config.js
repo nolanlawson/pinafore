@@ -15,13 +15,18 @@ module.exports = {
       process.env.LEGACY && legacyBabel()
     ].filter(Boolean)
   },
+  optimization: dev ? {} : {
+    minimize: !process.env.DEBUG,
+    minimizer: [
+      terser()
+    ]
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.LEGACY': !!process.env.LEGACY,
       'process.env.SAPPER_TIMESTAMP': process.env.SAPPER_TIMESTAMP || Date.now()
-    }),
-    terser()
+    })
   ].filter(Boolean)
 }
