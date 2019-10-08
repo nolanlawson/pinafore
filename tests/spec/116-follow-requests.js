@@ -28,16 +28,15 @@ async function resetFollows () {
 }
 
 test('Can approve and reject follow requests', async t => {
-  await loginAsLockedAccount(t)
   await resetFollows()
-
+  await sleep(2000)
   await Promise.all([
     followAs('admin', 'LockedAccount'),
     followAs('baz', 'LockedAccount'),
     followAs('quux', 'LockedAccount')
   ])
-
   await sleep(2000)
+  await loginAsLockedAccount(t)
 
   await t
     .expect(communityNavButton.getAttribute('aria-label')).eql('Community (3 follow requests)')
