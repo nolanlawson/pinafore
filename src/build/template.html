@@ -28,6 +28,13 @@
     }
   </style>
 
+  <style id="iosWorkaroundStyle" media="only x">
+    /* fixes iOS Safari horizontal scrolling (see https://github.com/nolanlawson/pinafore/issues/667) */
+    .main-content {
+      overflow-x: hidden;
+    }
+  </style>
+
   <noscript>
     <style>
       .hidden-from-ssr {

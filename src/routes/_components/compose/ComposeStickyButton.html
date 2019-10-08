@@ -1,5 +1,5 @@
 <div class="compose-box-button-sentinel" ref:sentinel></div>
-<div class="compose-box-button-wrapper {showSticky ? 'compose-box-button-sticky' : ''} {hideAndFadeIn}"
+<div class="{computedClass}"
      ref:wrapper >
   <ComposeButton {overLimit} {sticky} on:click="onClickButton()" />
 </div>
@@ -28,14 +28,11 @@
     top: calc(var(--main-content-pad-top) + var(--sticky-pad-top));
   }
 
-  @supports (-webkit-overflow-scrolling: touch) {
-    .compose-box-button-sticky {
-      /* disable sticky positioning on iOS due to
-         https://github.com/nolanlawson/pinafore/issues/667 */
-      position: relative;
-      z-index: 0;
-      top: 0;
-    }
+  .compose-box-button-sticky.ios-workaround {
+    /* see https://github.com/nolanlawson/pinafore/issues/667 */
+    position: relative;
+    z-index: 0;
+    top: 0;
   }
 </style>
 <script>
@@ -43,8 +40,8 @@
   import { store } from '../../_store/store'
   import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { observe } from 'svelte-extras'
-
-  const USE_IOS_WORKAROUND = process.browser && CSS.supports('-webkit-overflow-scrolling', 'touch')
+  import { isIOSPre13 } from '../../_utils/userAgent'
+  import { classname } from '../../_utils/classname'
 
   export default {
     oncreate () {
@@ -56,10 +53,17 @@
     },
     store: () => store,
     data: () => ({
-      sticky: false
+      sticky: false,
+      iosWorkaround: false /* isIOSPre13() */
     }),
     computed: {
-      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized
+      timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized,
+      computedClass: ({ showSticky, hideAndFadeIn, iosWorkaround }) => (classname(
+        'compose-box-button-wrapper',
+        showSticky && 'compose-box-button-sticky',
+        hideAndFadeIn,
+        iosWorkaround && 'ios-workaround'
+      ))
     },
     methods: {
       observe,
@@ -79,14 +83,14 @@
       },
       setupIOSWorkaround () {
         // This is an elaborate fix for https://github.com/nolanlawson/pinafore/issues/667
-        // We detect iOS using support for -webkit-overflow-scrolling: touch
-        // (both here and in global.scss). Then, we set the main content element
+        // We detect old iOS versions. Then, we set the main content element
         // to be overflow-x: hidden, which normally would break the sticky button
         // because its parent is now the scrolling context. So for iOS only, we
         // create a fake sticky button by listening to intersecting events
         // and inserting a permanently fixed-position element into the DOM.
-        const { showSticky } = this.get()
-        if (!USE_IOS_WORKAROUND || !showSticky) {
+        // This bug seems fixed in iOS 13 so it's only enabled for older iOS versions.
+        const { showSticky, iosWorkaround } = this.get()
+        if (!iosWorkaround || !showSticky) {
           return
         }
 

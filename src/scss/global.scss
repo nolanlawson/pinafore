@@ -20,11 +20,6 @@ body {
 
 .main-content {
   contain: content; // see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content
-  // these paddings should be kept in sync with getMainTopMargin.js
-  @supports (-webkit-overflow-scrolling: touch) {
-    // fixes iOS Safari horizontal scrolling (see https://github.com/nolanlawson/pinafore/issues/667)
-    overflow-x: hidden;
-  }
   padding-top: var(--main-content-pad-top);
 }
 
