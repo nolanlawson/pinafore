@@ -7,7 +7,7 @@ import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/the
 import { basename } from '../routes/_api/utils'
 import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
 import { storeLite } from '../routes/_store/storeLite'
-import { isIOSPre12Point2, isIOSPre13, isMac } from '../routes/_utils/userAgent'
+import { isIOSPre12Point2, isMac } from '../routes/_utils/userAgent'
 
 window.__themeColors = process.env.THEME_COLORS
 
@@ -62,12 +62,6 @@ if (isMac()) {
 // function, which was added in 12.2.
 if (isIOSPre12Point2()) {
   document.head.removeChild(document.getElementById('theManifest'))
-}
-
-// see https://github.com/nolanlawson/pinafore/issues/667
-if (false /* isIOSPre13() */) {
-  document.getElementById('iosWorkaroundStyle')
-    .setAttribute('media', 'all') // enables the style
 }
 
 if (pushSubscription) {

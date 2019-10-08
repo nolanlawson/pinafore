@@ -27,42 +27,31 @@
     z-index: 5000;
     top: calc(var(--main-content-pad-top) + var(--sticky-pad-top));
   }
-
-  .compose-box-button-sticky.ios-workaround {
-    /* see https://github.com/nolanlawson/pinafore/issues/667 */
-    position: relative;
-    z-index: 0;
-    top: 0;
-  }
 </style>
 <script>
   import ComposeButton from './ComposeButton.html'
   import { store } from '../../_store/store'
   import { importShowComposeDialog } from '../dialog/asyncDialogs'
   import { observe } from 'svelte-extras'
-  import { isIOSPre13 } from '../../_utils/userAgent'
   import { classname } from '../../_utils/classname'
 
   export default {
     oncreate () {
       this.setupIntersectionObservers()
-      this.setupIOSWorkaround()
     },
     ondestroy () {
       this.teardownIntersectionObservers()
     },
     store: () => store,
     data: () => ({
-      sticky: false,
-      iosWorkaround: false /* isIOSPre13() */
+      sticky: false
     }),
     computed: {
       timelineInitialized: ({ $timelineInitialized }) => $timelineInitialized,
-      computedClass: ({ showSticky, hideAndFadeIn, iosWorkaround }) => (classname(
+      computedClass: ({ showSticky, hideAndFadeIn }) => (classname(
         'compose-box-button-wrapper',
         showSticky && 'compose-box-button-sticky',
-        hideAndFadeIn,
-        iosWorkaround && 'ios-workaround'
+        hideAndFadeIn
       ))
     },
     methods: {
@@ -80,59 +69,6 @@
       },
       async showDialog () {
         (await importShowComposeDialog())()
-      },
-      setupIOSWorkaround () {
-        // This is an elaborate fix for https://github.com/nolanlawson/pinafore/issues/667
-        // We detect old iOS versions. Then, we set the main content element
-        // to be overflow-x: hidden, which normally would break the sticky button
-        // because its parent is now the scrolling context. So for iOS only, we
-        // create a fake sticky button by listening to intersecting events
-        // and inserting a permanently fixed-position element into the DOM.
-        // This bug seems fixed in iOS 13 so it's only enabled for older iOS versions.
-        const { showSticky, iosWorkaround } = this.get()
-        if (!iosWorkaround || !showSticky) {
-          return
-        }
-
-        const cleanup = () => {
-          const existingElement = document.getElementById('the-sticky-button')
-          if (existingElement) {
-            document.body.removeChild(existingElement)
-          }
-          if (this.__fixedStickyButton) {
-            this.__fixedStickyButton.destroy()
-            this.__fixedStickyButton = null
-          }
-        }
-
-        const createFixedStickyButton = () => {
-          const element = document.createElement('div')
-          element.setAttribute('id', 'the-sticky-button')
-          element.classList.add('compose-box-button-wrapper')
-          element.classList.add('compose-box-button-fixed')
-          document.body.appendChild(element)
-          const rect = this.refs.wrapper.getBoundingClientRect()
-          Object.assign(element.style, {
-            left: `${rect.left}px`,
-            position: 'fixed'
-          })
-          this.__fixedStickyButton = new ComposeButton({
-            target: element,
-            data: {
-              sticky: true,
-              overLimit: false
-            }
-          })
-          this.__fixedStickyButton.on('click', () => this.showDialog())
-        }
-
-        this.observe('sticky', sticky => {
-          cleanup()
-          if (sticky) {
-            createFixedStickyButton()
-          }
-        })
-        this.on('destroy', () => cleanup())
       },
       setupIntersectionObservers () {
         const sentinel = this.refs.sentinel
