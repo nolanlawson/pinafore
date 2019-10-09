@@ -51,6 +51,7 @@ before_script:
   - greenkeeper-lockfile-update
 after_script:
   - greenkeeper-lockfile-upload
+  - rm -f /home/travis/.rvm/gems/ruby-*/bin/posix-spawn-benchmark # file seems generated every time, breaks travis cache
 script: travis_retry yarn run $COMMAND
 env:
   global:
