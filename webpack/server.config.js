@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
 const { mode, dev, resolve, inlineSvgs, allSvgs } = require('./shared.config')
-const terser = require('./terser.config')
 
 // modules that the server should ignore, either because they cause errors or warnings
 // (because they're only used on the client side)
@@ -49,10 +48,7 @@ module.exports = {
     hints: false // it doesn't matter if server.js is large
   },
   optimization: dev ? {} : {
-    minimize: !process.env.DEBUG,
-    minimizer: [
-      terser()
-    ]
+    minimize: false
   },
   plugins: [
     new webpack.DefinePlugin({
