@@ -25,28 +25,14 @@
 
   <ShortcutHelpInfo />
 </SettingsLayout>
+<UISettingsStyles />
 <style>
   .ui-settings {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    padding: 20px;
-    line-height: 2em;
     margin-bottom: 20px;
-  }
-  .setting-group {
-    display: block;
-    padding: 5px 0;
   }
 
   label.disabled-style {
     color: var(--deemphasized-text-color);
-  }
-
-  @media (max-width: 240px) {
-    .ui-settings {
-      padding: 20px 10px;
-    }
   }
 </style>
 <script>
@@ -54,6 +40,7 @@
   import ShortcutHelpInfo from '../../_components/ShortcutHelpInfo.html'
   import { store } from '../../_store/store'
   import { isKaiOS } from '../../_utils/userAgent'
+  import UISettingsStyles from '../../_components/settings/UISettingsStyles.html'
 
   export default {
     store: () => store,
@@ -72,7 +59,8 @@
     },
     components: {
       SettingsLayout,
-      ShortcutHelpInfo
+      ShortcutHelpInfo,
+      UISettingsStyles
     }
   }
 </script>
