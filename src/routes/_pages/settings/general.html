@@ -90,36 +90,20 @@
     <ThemeSettings instanceName={$currentInstance} />
   {/if}
 </SettingsLayout>
-<style>
-  .ui-settings {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    padding: 20px;
-    line-height: 2em;
-  }
-  .setting-group {
-    display: block;
-    padding: 5px 0;
-  }
-
-  @media (max-width: 240px) {
-    .ui-settings {
-      padding: 20px 10px;
-    }
-  }
-</style>
+<UISettingsStyles />
 <script>
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
   import ThemeSettings from '../../_components/settings/instance/ThemeSettings.html'
   import { store } from '../../_store/store'
   import Tooltip from '../../_components/Tooltip.html'
+  import UISettingsStyles from '../../_components/settings/UISettingsStyles.html'
 
   export default {
     components: {
       SettingsLayout,
       ThemeSettings,
-      Tooltip
+      Tooltip,
+      UISettingsStyles
     },
     methods: {
       onChange (event) {

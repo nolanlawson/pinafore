@@ -63,26 +63,10 @@
     <ExternalLink href="https://humanetech.com">Center for Humane Technology</ExternalLink>.
   </p>
 </SettingsLayout>
+<UISettingsStyles />
 <style>
-  .ui-settings {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    padding: 20px;
-    line-height: 2em;
-  }
-  .setting-group {
-    display: block;
-    padding: 5px 0;
-  }
   :global(.wellness-aside) {
     margin: 20px 10px 0px 10px;
-  }
-
-  @media (max-width: 240px) {
-    .ui-settings {
-      padding: 20px 10px;
-    }
   }
 </style>
 <script>
@@ -90,6 +74,7 @@
   import { store } from '../../_store/store'
   import ExternalLink from '../../_components/ExternalLink.html'
   import InfoAside from '../../_components/InfoAside.html'
+  import UISettingsStyles from '../../_components/settings/UISettingsStyles.html'
 
   export default {
     oncreate () {
@@ -98,7 +83,8 @@
     components: {
       SettingsLayout,
       ExternalLink,
-      InfoAside
+      InfoAside,
+      UISettingsStyles
     },
     methods: {
       flushChangesToCheckAll () {
