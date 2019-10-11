@@ -1,8 +1,17 @@
-<LengthGauge style="grid-area: gauge; margin: 0 0 5px 5px;"
-       {length}
-       {overLimit}
-       max={$maxStatusChars}
-/>
+<div class="compose-length-gauge slide-in-out-listen">
+  <LengthGauge
+    className="slide-in-out-listen"
+    {length}
+    {overLimit}
+    max={$maxStatusChars}
+  />
+</div>
+<style>
+  .compose-length-gauge {
+    grid-area: gauge;
+    margin: 0 0 5px 5px;
+  }
+</style>
 <script>
   import LengthGauge from '../LengthGauge.html'
   import { store } from '../../_store/store'

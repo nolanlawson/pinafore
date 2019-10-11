@@ -1,0 +1,54 @@
+<div class="{className} animated" ref:node>
+  <slot></slot>
+</div>
+<style>
+  .animated {
+  }
+</style>
+<script>
+  import { observe } from 'svelte-extras'
+  import { emit } from '../../_utils/eventBus'
+
+  export default {
+    oncreate () {
+      this.observe('shown', shown => {
+        if (shown) {
+          const { node } = this.refs
+          requestAnimationFrame(() => {
+            const { height } = node.getBoundingClientRect()
+            node.style.transform = `translateY(-${height}px)`
+            node.style.clipPath = `inset(${height}px 0 0 0)`
+            Array.from(document.getElementsByClassName('slide-in-out-listen')).forEach(node => {
+              node.style.transform = `translateY(-${height}px)`
+              requestAnimationFrame(() => {
+                const onTransitionEnd = () => {
+                  node.style.transition = ''
+                  node.removeEventListener('transitionend', onTransitionEnd)
+                }
+                node.addEventListener('transitionend', onTransitionEnd)
+                node.style.transition = 'transform 0.333s ease-in-out'
+                node.style.transform = 'translateY(0)'
+              })
+            })
+            requestAnimationFrame(() => {
+              const onTransitionEnd = () => {
+                node.style.transition = ''
+                node.removeEventListener('transitionend', onTransitionEnd)
+              }
+              node.addEventListener('transitionend', onTransitionEnd)
+              node.style.transition = 'all 0.333s ease-in-out'
+              node.style.transform = 'translateY(0)'
+              node.style.clipPath = 'inset(0 0 0 0)'
+            })
+          })
+        }
+      }, { init: false })
+    },
+    data: () => ({
+      className: ''
+    }),
+    methods: {
+      observe
+    }
+  }
+</script>

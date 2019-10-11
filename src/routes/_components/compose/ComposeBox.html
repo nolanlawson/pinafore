@@ -4,21 +4,19 @@
 <ComposeFileDrop {realm} >
   <div class="{computedClassName} {hideAndFadeIn}">
     <ComposeAuthor {realm} {dialogId} />
-    {#if contentWarningShown}
-      <div class="compose-content-warning-wrapper"
-           transition:slide="{duration: 333}">
+    <SlideInOut className="compose-content-warning-wrapper" shown={contentWarningShown}>
+      {#if contentWarningShown}
         <ComposeContentWarning {realm} {contentWarning} />
-      </div>
-    {/if}
+      {/if}
+    </SlideInOut>
     <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
     <ComposeLengthGauge {length} {overLimit} />
     <ComposeAutosuggest {realm} {text} />
-    {#if poll && poll.options && poll.options.length}
-      <div class="compose-poll-wrapper"
-           transition:slide="{duration: 333}">
+    <SlideInOut className="compose-poll-wrapper" shown={pollShown}>
+      {#if pollShown}
         <ComposePoll {realm} {poll} />
-      </div>
-    {/if}
+      {/if}
+    </SlideInOut>
     <ComposeToolbar {realm} {postPrivacy} {media} {contentWarningShown} {text} {poll} />
     <ComposeLengthIndicator {length} {overLimit} />
     <ComposeMedia {realm} {media} />
@@ -30,9 +28,8 @@
                      {hideAndFadeIn}
                      on:postAction="doPostStatus()" />
 {#if !hideBottomBorder}
-  <div class="compose-box-border-bottom {hideAndFadeIn}"></div>
+  <div class="compose-box-border-bottom slide-in-out-listen {hideAndFadeIn}"></div>
 {/if}
-
 <style>
   .compose-box {
     border-radius: 4px;
@@ -67,11 +64,11 @@
     width: 100%;
   }
 
-  .compose-content-warning-wrapper {
+  :global(.compose-content-warning-wrapper) {
     grid-area: cw;
   }
 
-  .compose-poll-wrapper {
+  :global(.compose-poll-wrapper) {
     grid-area: poll;
   }
 
@@ -107,11 +104,12 @@
   import { measureText } from '../../_utils/measureText'
   import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
   import { store } from '../../_store/store'
-  import { slide } from '../../_transitions/slide'
   import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
   import { classname } from '../../_utils/classname'
   import { POLL_EXPIRY_DEFAULT } from '../../_static/polls'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { get } from '../../_utils/lodash-lite'
+  import SlideInOut from '../transitions/SlideInOut.html'
 
   export default {
     oncreate () {
@@ -143,7 +141,8 @@
       ComposeFileDrop,
       ComposeAutosuggest,
       ComposePoll,
-      ComposeMediaSensitive
+      ComposeMediaSensitive,
+      SlideInOut
     },
     data: () => ({
       size: undefined,
@@ -185,10 +184,8 @@
       overLimit: ({ length, $maxStatusChars }) => length > $maxStatusChars,
       contentWarningShown: ({ composeData }) => composeData.contentWarningShown,
       contentWarning: ({ composeData }) => composeData.contentWarning || '',
-      sensitive: ({ composeData }) => !!composeData.sensitive
-    },
-    transitions: {
-      slide
+      sensitive: ({ composeData }) => !!composeData.sensitive,
+      pollShown: ({ poll }) => get(poll, ['options', 'length'])
     },
     methods: {
       async doPostStatus () {
