@@ -1,6 +1,7 @@
 import { store } from '../store'
 import { doEmojiSearch } from '../../_actions/autosuggestEmojiSearch'
 import { doAccountSearch } from '../../_actions/autosuggestAccountSearch'
+import { doHashtagSearch } from '../../_actions/autosuggestHashtagSearch'
 
 export function autosuggestObservers () {
   let lastSearch
@@ -19,11 +20,11 @@ export function autosuggestObservers () {
       return
     }
 
-    const autosuggestType = autosuggestSearchText.startsWith('@') ? 'account' : 'emoji'
-
-    if (autosuggestType === 'emoji') {
+    if (autosuggestSearchText.startsWith(':')) { // emoji
       lastSearch = doEmojiSearch(autosuggestSearchText)
-    } else {
+    } else if (autosuggestSearchText.startsWith('#')) { // hashtag
+      lastSearch = doHashtagSearch(autosuggestSearchText)
+    } else { // account
       lastSearch = doAccountSearch(autosuggestSearchText)
     }
   })
