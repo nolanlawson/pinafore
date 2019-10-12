@@ -1,5 +1,11 @@
 import {
-  composeInput, getNthAutosuggestionResult, getNthComposeReplyInput, getNthReplyButton, getNthStatus, sleep
+  composeInput,
+  composeLengthIndicator,
+  getNthAutosuggestionResult,
+  getNthComposeReplyInput,
+  getNthReplyButton,
+  getNthStatus,
+  sleep
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { loginAsFoobar } from '../roles'
@@ -16,6 +22,7 @@ test('autosuggests user handles', async t => {
   await sleep(1000)
   await t
     .typeText(composeInput, 'hey @qu')
+    .expect(getNthAutosuggestionResult(1).getAttribute('aria-label')).contains('@quux')
     .click(getNthAutosuggestionResult(1), { timeout })
     .expect(composeInput.value).eql('hey @quux ')
     .typeText(composeInput, 'and also @adm')
@@ -39,6 +46,7 @@ test('autosuggests custom emoji', async t => {
     .click(getNthAutosuggestionResult(1))
     .expect(composeInput.value).eql(':blobnom: ')
     .typeText(composeInput, 'and :blob')
+    .expect(getNthAutosuggestionResult(1).getAttribute('aria-label')).contains('blobnom')
     .expect(getNthAutosuggestionResult(1).innerText).contains(':blobnom:', { timeout })
     .expect(getNthAutosuggestionResult(2).innerText).contains(':blobpats:')
     .expect(getNthAutosuggestionResult(3).innerText).contains(':blobpeek:')
@@ -119,5 +127,15 @@ test('autosuggest only shows for one input part 2', async t => {
     .typeText(getNthComposeReplyInput(1), '@dd')
   await sleep(1000)
   await t.pressKey('backspace')
+    .expect($('.compose-autosuggest.shown').exists).notOk()
+})
+
+test('autocomplete disappears on blur', async t => {
+  await loginAsFoobar(t)
+  await t
+    .hover(composeInput)
+    .typeText(composeInput, '@adm')
+    .expect($('.compose-autosuggest.shown').exists).ok({ timeout })
+    .click(composeLengthIndicator)
     .expect($('.compose-autosuggest.shown').exists).notOk()
 })
