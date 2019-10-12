@@ -5,6 +5,7 @@
       index={i}
       {length}
       {makeProps}
+      className={itemClassName}
       key={item}
       on:initialized="itemInitialized()"
     />
@@ -60,7 +61,8 @@
       }
     },
     data: () => ({
-      initializedCount: 0
+      initializedCount: 0,
+      itemClassName: ''
     }),
     computed: {
       safeItems: ({ items }) => items || [],

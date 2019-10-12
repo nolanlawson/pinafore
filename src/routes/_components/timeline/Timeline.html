@@ -7,6 +7,7 @@
   {#if components}
     <svelte:component this={components.listComponent}
                 component={components.listItemComponent}
+                itemClassName="slide-in-out-listen"
                 realm="{$currentInstance + '/' + timeline}"
                 {makeProps}
                 items={itemIds}

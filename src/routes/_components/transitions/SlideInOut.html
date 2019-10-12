@@ -1,13 +1,25 @@
-<div class="{className} animated" ref:node>
+<div class="{className} slide-in-out-listen" ref:node>
   <slot></slot>
 </div>
 <style>
-  .animated {
+  :global(.slide-in-out-animate) {
+    transition: all 0.333s ease-in-out;
+  }
+
+  :global(.slide-in-out-animate-other) {
+    transition: transform 0.333s ease-in-out !important;
   }
 </style>
 <script>
   import { observe } from 'svelte-extras'
-  import { emit } from '../../_utils/eventBus'
+
+  function onTransitionEnd (node, callback) {
+    const listener = () => {
+      node.removeEventListener('transitionend', listener)
+      callback()
+    }
+    node.addEventListener('transitionend', listener)
+  }
 
   export default {
     oncreate () {
@@ -18,27 +30,32 @@
             const { height } = node.getBoundingClientRect()
             node.style.transform = `translateY(-${height}px)`
             node.style.clipPath = `inset(${height}px 0 0 0)`
-            Array.from(document.getElementsByClassName('slide-in-out-listen')).forEach(node => {
-              node.style.transform = `translateY(-${height}px)`
-              requestAnimationFrame(() => {
-                const onTransitionEnd = () => {
-                  node.style.transition = ''
-                  node.removeEventListener('transitionend', onTransitionEnd)
-                }
-                node.addEventListener('transitionend', onTransitionEnd)
-                node.style.transition = 'transform 0.333s ease-in-out'
-                node.style.transform = 'translateY(0)'
-              })
-            })
             requestAnimationFrame(() => {
-              const onTransitionEnd = () => {
-                node.style.transition = ''
-                node.removeEventListener('transitionend', onTransitionEnd)
-              }
-              node.addEventListener('transitionend', onTransitionEnd)
-              node.style.transition = 'all 0.333s ease-in-out'
+              onTransitionEnd(node, () => {
+                node.classList.remove('slide-in-out-animate')
+              })
+              node.classList.add('slide-in-out-animate')
               node.style.transform = 'translateY(0)'
               node.style.clipPath = 'inset(0 0 0 0)'
+            })
+
+            let otherNodes = Array.from(document.getElementsByClassName('slide-in-out-listen'))
+            let idx = otherNodes.indexOf(node)
+            otherNodes = otherNodes.slice(idx + 1) // only consider nodes after the target one
+            otherNodes.forEach(node => {
+              let existingTransform = node.style.transform || 0
+              if (existingTransform) {
+                const match = existingTransform.match(/translateY\(([\d.]+)(?:px)?\)/)
+                existingTransform = parseInt(match[1], 10)
+              }
+              node.style.transform = `translateY(${existingTransform - height}px)`
+              requestAnimationFrame(() => {
+                onTransitionEnd(node, () => {
+                  node.classList.remove('slide-in-out-animate-other')
+                })
+                node.classList.add('slide-in-out-animate-other')
+                node.style.transform = `translateY(${existingTransform}px)`
+              })
             })
           })
         }

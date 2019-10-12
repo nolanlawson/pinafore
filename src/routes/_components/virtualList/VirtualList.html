@@ -10,6 +10,7 @@
                              {makeProps}
                              key={visibleItem.key}
                              index={visibleItem.index}
+                             className={itemClassName}
         />
       {/each}
     {/if}
@@ -93,7 +94,8 @@
       })
     },
     data: () => ({
-      component: null
+      component: null,
+      itemClassName: ''
     }),
     store: () => virtualListStore,
     components: {
