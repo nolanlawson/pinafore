@@ -23,42 +23,65 @@
 
   export default {
     oncreate () {
-      this.observe('shown', shown => {
-        if (shown) {
+      let height
+      if (this.get().shown) {
+        requestAnimationFrame(() => {
           const { node } = this.refs
+          height = node.getBoundingClientRect().height
+        })
+      }
+
+      this.observe('shown', shown => {
+        requestAnimationFrame(() => {
+          const { node } = this.refs
+          if (shown) {
+            height = node.getBoundingClientRect().height
+          }
+          const translateY = shown ? -height : height
+          node.style.transform = `translateY(${translateY}px)`
+          node.style.clipPath = `inset(${-translateY}px 0 0 0)`
           requestAnimationFrame(() => {
-            const { height } = node.getBoundingClientRect()
-            node.style.transform = `translateY(-${height}px)`
-            node.style.clipPath = `inset(${height}px 0 0 0)`
+            onTransitionEnd(node, () => {
+              node.classList.remove('slide-in-out-animate')
+            })
+            node.classList.add('slide-in-out-animate')
+            node.style.transform = 'translateY(0)'
+            node.style.clipPath = 'inset(0 0 0 0)'
+          })
+
+          let otherNodes = Array.from(document.getElementsByClassName('slide-in-out-listen'))
+          let idx = otherNodes.indexOf(node)
+          otherNodes = otherNodes.slice(idx + 1) // only consider nodes after the target one
+
+          const hasParentThatWillBeAnimated = node => {
+            let parent = node.parentElement
+            while (parent) {
+              if (otherNodes.indexOf(parent) !== -1) {
+                return true
+              }
+              parent = parent.parentElement
+            }
+          }
+
+          otherNodes.forEach(node => {
+            if (hasParentThatWillBeAnimated(node)) {
+              return
+            }
+            let existingTransform = node.style.transform || 0
+            if (existingTransform) {
+              const match = existingTransform.match(/translateY\(([\d.]+)(?:px)?\)/)
+              existingTransform = parseInt(match[1], 10)
+            }
+            node.style.transform = `translateY(${existingTransform + translateY}px)`
             requestAnimationFrame(() => {
               onTransitionEnd(node, () => {
-                node.classList.remove('slide-in-out-animate')
+                node.classList.remove('slide-in-out-animate-other')
               })
-              node.classList.add('slide-in-out-animate')
-              node.style.transform = 'translateY(0)'
-              node.style.clipPath = 'inset(0 0 0 0)'
-            })
-
-            let otherNodes = Array.from(document.getElementsByClassName('slide-in-out-listen'))
-            let idx = otherNodes.indexOf(node)
-            otherNodes = otherNodes.slice(idx + 1) // only consider nodes after the target one
-            otherNodes.forEach(node => {
-              let existingTransform = node.style.transform || 0
-              if (existingTransform) {
-                const match = existingTransform.match(/translateY\(([\d.]+)(?:px)?\)/)
-                existingTransform = parseInt(match[1], 10)
-              }
-              node.style.transform = `translateY(${existingTransform - height}px)`
-              requestAnimationFrame(() => {
-                onTransitionEnd(node, () => {
-                  node.classList.remove('slide-in-out-animate-other')
-                })
-                node.classList.add('slide-in-out-animate-other')
-                node.style.transform = `translateY(${existingTransform}px)`
-              })
+              node.classList.add('slide-in-out-animate-other')
+              node.style.transform = `translateY(${existingTransform}px)`
             })
           })
-        }
+        })
       }, { init: false })
     },
     data: () => ({

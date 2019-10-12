@@ -41,6 +41,9 @@
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
 </article>
+{#if timelineType !== 'search'}
+  <div class="slide-in-out-listen" style="height: 1px; width: 100%; background: var(--main-border);"></div>
+{/if}
 {#if enableShortcuts}
   <Shortcut scope={shortcutScope} key="o" on:pressed="open()" />
   <Shortcut scope={shortcutScope} key="p" on:pressed="openAuthorProfile()" />
@@ -70,10 +73,6 @@
 
   .status-article.tap-on-status {
     cursor: pointer;
-  }
-
-  .status-article.status-in-timeline {
-    border-bottom: 1px solid var(--main-border);
   }
 
   .status-article.status-direct {
@@ -296,7 +295,6 @@
         'shortcut-list-item',
         'focus-fix',
         timelineType !== 'direct' && visibility === 'direct' && 'status-direct',
-        timelineType !== 'search' && 'status-in-timeline',
         isStatusInOwnThread && 'status-in-own-thread',
         $underlineLinks && 'underline-links',
         !$disableTapOnStatus && !isStatusInOwnThread && 'tap-on-status'
