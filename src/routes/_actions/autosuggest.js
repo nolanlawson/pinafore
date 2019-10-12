@@ -1,7 +1,7 @@
 import { store } from '../_store/store'
 
 const emojiMapper = emoji => `:${emoji.shortcode}:`
-const hashtagMapper = hashtag => `#${hashtag.name.toLowerCase()}`
+const hashtagMapper = hashtag => `#${hashtag.name}`
 const accountMapper = account => `@${account.acct}`
 
 async function insertTextAtPosition (realm, text, startIndex, endIndex) {
