@@ -33,12 +33,16 @@ export function doHashtagSearch (searchText) {
   }
 
   scheduleIdleTask(async () => {
-    const results = await requestThrottler.request()
-    store.setForCurrentAutosuggest({
-      autosuggestType: 'hashtag',
-      autosuggestSelected: 0,
-      autosuggestSearchResults: results
-    })
+    try {
+      const results = await requestThrottler.request()
+      store.setForCurrentAutosuggest({
+        autosuggestType: 'hashtag',
+        autosuggestSelected: 0,
+        autosuggestSearchResults: results
+      })
+    } catch (err) {
+      console.warn('ignored autosuggest error', err)
+    }
   })
 
   return {
