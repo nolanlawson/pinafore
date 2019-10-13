@@ -5,10 +5,9 @@ import { SEARCH_RESULTS_LIMIT } from '../_static/autosuggest'
 import { concat } from '../_utils/arrays'
 import uniqBy from 'lodash-es/uniqBy'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { PromiseThrottler } from '../_utils/PromiseThrottler'
+import { RequestThrottler } from '../_utils/RequestThrottler'
 
 const DATABASE_SEARCH_RESULTS_LIMIT = 30
-const promiseThrottler = new PromiseThrottler(200) // Mastodon FE also uses 200ms
 
 function byUsername (a, b) {
   const usernameA = a.acct.toLowerCase()
@@ -26,29 +25,22 @@ export function doAccountSearch (searchText) {
   let localResults
   let remoteResults
   const { currentInstance, accessToken } = store.get()
-  let controller = typeof AbortController === 'function' && new AbortController()
-
-  function abortFetch () {
-    if (controller) {
-      controller.abort()
-      controller = null
-    }
-  }
+  const requestThrottler = new RequestThrottler(searchAccountsRemotely, onNewRemoteResults)
 
   async function searchAccountsLocally (searchText) {
     localResults = await database.searchAccountsByUsername(
       currentInstance, searchText.substring(1), DATABASE_SEARCH_RESULTS_LIMIT)
   }
 
-  async function searchAccountsRemotely (searchText) {
-    // Throttle our XHRs to be a good citizen and not spam the server with one XHR per keystroke
-    await promiseThrottler.next()
-    if (canceled) {
-      return
-    }
-    remoteResults = (await search(
-      currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT, controller && controller.signal
+  async function searchAccountsRemotely (signal) {
+    return (await search(
+      currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT, signal
     )).accounts
+  }
+
+  function onNewRemoteResults (results) {
+    remoteResults = results
+    onNewResults()
   }
 
   function mergeAndTruncateResults () {
@@ -87,18 +79,14 @@ export function doAccountSearch (searchText) {
       return
     }
     // run the two searches in parallel
-    searchAccountsLocally(searchText).then(onNewResults).catch(err => {
-      console.error('could not search locally', err)
-    })
-    searchAccountsRemotely(searchText).then(onNewResults).catch(err => {
-      console.error('could not search remotely', err)
-    })
+    searchAccountsLocally(searchText).then(onNewResults)
+    requestThrottler.request()
   })
 
   return {
     cancel: () => {
       canceled = true
-      abortFetch()
+      requestThrottler.cancel()
     }
   }
 }
