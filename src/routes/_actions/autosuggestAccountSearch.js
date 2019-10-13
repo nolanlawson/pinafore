@@ -73,13 +73,17 @@ export function doAccountSearch (searchText) {
     })
   }
 
+  function onError (err) {
+    console.warn('ignored autosuggest error', err)
+  }
+
   scheduleIdleTask(() => {
     if (canceled) {
       return
     }
     // run the two searches in parallel
-    searchAccountsLocally().then(onNewResults)
-    searchAccountsRemotely().then(onNewResults)
+    searchAccountsLocally().then(onNewResults).catch(onError)
+    searchAccountsRemotely().then(onNewResults).catch(onError)
   })
 
   return {

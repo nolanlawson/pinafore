@@ -24,10 +24,10 @@ export function autosuggestObservers () {
     const { composeFocused } = store.get()
     const autosuggestSelecting = store.getForCurrentAutosuggest('autosuggestSelecting')
     if (!composeFocused || !autosuggestSearchText || autosuggestSelecting) {
+      resetAutosuggest()
       return
     }
 
-    resetAutosuggest()
     if (autosuggestSearchText.startsWith(':')) { // emoji
       lastSearch = doEmojiSearch(autosuggestSearchText)
     } else if (autosuggestSearchText.startsWith('#')) { // hashtag
