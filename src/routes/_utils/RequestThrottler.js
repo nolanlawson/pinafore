@@ -4,24 +4,22 @@ import { PromiseThrottler } from './PromiseThrottler'
 const promiseThrottler = new PromiseThrottler(200) // Mastodon FE also uses 200ms
 
 export class RequestThrottler {
-  constructor (fetcher, onNewResults) {
+  constructor (fetcher) {
     this._canceled = false
     this._controller = typeof AbortController === 'function' && new AbortController()
     this._fetcher = fetcher
-    this._onNewResults = onNewResults
   }
 
   async request () {
     if (this._canceled) {
-      return
+      throw new Error('canceled')
     }
     await promiseThrottler.next()
     if (this._canceled) {
-      return
+      throw new Error('canceled')
     }
     const signal = this._controller && this._controller.signal
-    const results = await this._fetcher(signal)
-    this._onNewResults(results)
+    return this._fetcher(signal)
   }
 
   cancel () {

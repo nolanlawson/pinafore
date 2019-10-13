@@ -3,6 +3,13 @@ import { doEmojiSearch } from '../../_actions/autosuggestEmojiSearch'
 import { doAccountSearch } from '../../_actions/autosuggestAccountSearch'
 import { doHashtagSearch } from '../../_actions/autosuggestHashtagSearch'
 
+function resetAutosuggest () {
+  store.setForCurrentAutosuggest({
+    autosuggestSelected: 0,
+    autosuggestSearchResults: []
+  })
+}
+
 export function autosuggestObservers () {
   let lastSearch
 
@@ -20,6 +27,7 @@ export function autosuggestObservers () {
       return
     }
 
+    resetAutosuggest()
     if (autosuggestSearchText.startsWith(':')) { // emoji
       lastSearch = doEmojiSearch(autosuggestSearchText)
     } else if (autosuggestSearchText.startsWith('#')) { // hashtag
