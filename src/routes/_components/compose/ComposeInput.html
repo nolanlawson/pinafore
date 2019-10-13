@@ -63,7 +63,7 @@
   import { selectionChange } from '../../_utils/events'
   import {
     clickSelectedAutosuggestionUsername,
-    clickSelectedAutosuggestionEmoji
+    clickSelectedAutosuggestionEmoji, clickSelectedAutosuggestionHashtag
   } from '../../_actions/autosuggest'
   import { observe } from 'svelte-extras'
   import { get } from '../../_utils/lodash-lite'
@@ -209,6 +209,8 @@
           this.store.setForCurrentAutosuggest({ autosuggestSelecting: true })
           if (autosuggestType === 'account') {
             await clickSelectedAutosuggestionUsername(realm)
+          } else if (autosuggestType === 'hashtag') {
+            await clickSelectedAutosuggestionHashtag(realm)
           } else { // emoji
             await clickSelectedAutosuggestionEmoji(realm)
           }

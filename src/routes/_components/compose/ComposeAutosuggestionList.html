@@ -3,7 +3,7 @@
     class="compose-autosuggest-list"
     role="listbox"
 >
-  {#each items as item, i (item.shortcode ? `emoji-${item.shortcode}` : `account-${item.id}`)}
+  {#each items as item, i (item.shortcode || item.id || item.name)}
   <li id="{i === selected ? `compose-autosuggest-active-item-${realm}` : ''}"
       class="compose-autosuggest-list-item {i === selected ? 'selected' : ''}"
       role="option"
@@ -13,24 +13,34 @@
   >
       <div class="compose-autosuggest-list-grid" aria-hidden="true">
         {#if type === 'account'}
-        <div class="compose-autosuggest-list-item-avatar">
-          <Avatar
-            size="{$isVeryTinyMobileSize ? 'extra-small' : 'small'}"
-            account={item}
+          <div class="compose-autosuggest-list-item-avatar">
+            <Avatar
+              size="{$isVeryTinyMobileSize ? 'extra-small' : 'small'}"
+              account={item}
+            />
+          </div>
+          <span class="compose-autosuggest-list-display-name">
+              <AccountDisplayName account={item} />
+          </span>
+          <span class="compose-autosuggest-list-username">
+              {'@' + item.acct}
+          </span>
+        {:elseif type === 'hashtag'}
+          <SvgIcon
+              href="#fa-hashtag"
+              ariaHidden={true}
+              className="compose-autosuggest-list-item-icon"
           />
-        </div>
-        <span class="compose-autosuggest-list-display-name">
-            <AccountDisplayName account={item} />
-        </span>
-        <span class="compose-autosuggest-list-username">
-            {'@' + item.acct}
-        </span>
+          <span class="compose-autosuggest-list-display-name compose-autosuggest-list-display-name-single">
+            {item.name.toLowerCase()}
+          </span>
         {:else}
           <img src={$autoplayGifs ? item.url : item.static_url}
                class="compose-autosuggest-list-item-icon"
-               alt="{':' + item.shortcode + ':'}"
+               alt=""
+               aria-hidden="true"
           />
-          <span class="compose-autosuggest-list-display-name">
+          <span class="compose-autosuggest-list-display-name compose-autosuggest-list-display-name-single">
               {':' + item.shortcode + ':'}
           </span>
         {/if}
@@ -70,11 +80,12 @@
   :global(.compose-autosuggest-list-item-avatar) {
     grid-area: icon;
   }
-  .compose-autosuggest-list-item-icon {
+  :global(.compose-autosuggest-list-item-icon) {
     grid-area: icon;
     width: 48px;
     height: 48px;
     object-fit: contain;
+    fill: var(--deemphasized-text-color);
   }
   .compose-autosuggest-list-display-name {
     grid-area: display-name;
@@ -84,6 +95,10 @@
     text-overflow: ellipsis;
     min-width: 0;
     text-align: left;
+  }
+  .compose-autosuggest-list-display-name-single {
+    grid-row: 1 / 3;
+    align-self: center;
   }
   .compose-autosuggest-list-username {
     grid-area: username;
@@ -108,6 +123,10 @@
     .compose-autosuggest-list-grid {
       grid-column-gap: 5px;
     }
+    :global(.compose-autosuggest-list-item-icon) {
+      width: 24px;
+      height: 24px;
+    }
   }
 </style>
 <script>
@@ -115,6 +134,7 @@
   import { store } from '../../_store/store'
   import AccountDisplayName from '../profile/AccountDisplayName.html'
   import { createAutosuggestAccessibleLabel } from '../../_utils/createAutosuggestAccessibleLabel'
+  import SvgIcon from '../SvgIcon.html'
 
   export default {
     store: () => store,
@@ -134,7 +154,8 @@
     },
     components: {
       Avatar,
-      AccountDisplayName
+      AccountDisplayName,
+      SvgIcon
     }
   }
 </script>

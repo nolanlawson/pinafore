@@ -1,49 +1,54 @@
 import { store } from '../_store/store'
 
-export async function insertUsername (realm, username, startIndex, endIndex) {
+const emojiMapper = emoji => `:${emoji.shortcode}:`
+const hashtagMapper = hashtag => `#${hashtag.name}`
+const accountMapper = account => `@${account.acct}`
+
+async function insertTextAtPosition (realm, text, startIndex, endIndex) {
   const { currentInstance } = store.get()
   const oldText = store.getComposeData(realm, 'text')
   const pre = oldText.substring(0, startIndex)
   const post = oldText.substring(endIndex)
-  const newText = `${pre}@${username} ${post}`
+  const newText = `${pre}${text} ${post}`
   store.setComposeData(realm, { text: newText })
   store.setForAutosuggest(currentInstance, realm, { autosuggestSearchResults: [] })
+}
+
+export async function insertUsername (realm, account, startIndex, endIndex) {
+  await insertTextAtPosition(realm, accountMapper(account), startIndex, endIndex)
+}
+
+export async function insertHashtag (realm, hashtag, startIndex, endIndex) {
+  await insertTextAtPosition(realm, hashtagMapper(hashtag), startIndex, endIndex)
+}
+
+export async function insertEmojiAtPosition (realm, emoji, startIndex, endIndex) {
+  await insertTextAtPosition(realm, emojiMapper(emoji), startIndex, endIndex)
+}
+
+async function clickSelectedItem (realm, resultMapper) {
+  const {
+    composeSelectionStart,
+    autosuggestSearchText,
+    autosuggestSelected,
+    autosuggestSearchResults
+  } = store.get()
+  const result = autosuggestSearchResults[autosuggestSelected]
+  const startIndex = composeSelectionStart - autosuggestSearchText.length
+  const endIndex = composeSelectionStart
+  await insertTextAtPosition(realm, resultMapper(result), startIndex, endIndex)
 }
 
 export async function clickSelectedAutosuggestionUsername (realm) {
-  const {
-    composeSelectionStart,
-    autosuggestSearchText,
-    autosuggestSelected,
-    autosuggestSearchResults
-  } = store.get()
-  const account = autosuggestSearchResults[autosuggestSelected]
-  const startIndex = composeSelectionStart - autosuggestSearchText.length
-  const endIndex = composeSelectionStart
-  await insertUsername(realm, account.acct, startIndex, endIndex)
+  return clickSelectedItem(realm, accountMapper)
 }
 
-export function insertEmojiAtPosition (realm, emoji, startIndex, endIndex) {
-  const { currentInstance } = store.get()
-  const oldText = store.getComposeData(realm, 'text') || ''
-  const pre = oldText.substring(0, startIndex)
-  const post = oldText.substring(endIndex)
-  const newText = `${pre}:${emoji.shortcode}: ${post}`
-  store.setComposeData(realm, { text: newText })
-  store.setForAutosuggest(currentInstance, realm, { autosuggestSearchResults: [] })
+export async function clickSelectedAutosuggestionHashtag (realm) {
+  return clickSelectedItem(realm, hashtagMapper)
 }
 
 export async function clickSelectedAutosuggestionEmoji (realm) {
-  const {
-    composeSelectionStart,
-    autosuggestSearchText,
-    autosuggestSelected,
-    autosuggestSearchResults
-  } = store.get()
-  const emoji = autosuggestSearchResults[autosuggestSelected]
-  const startIndex = composeSelectionStart - autosuggestSearchText.length
-  const endIndex = composeSelectionStart
-  await insertEmojiAtPosition(realm, emoji, startIndex, endIndex)
+  return clickSelectedItem(realm, emojiMapper)
 }
 
 export function selectAutosuggestItem (item) {
@@ -55,8 +60,10 @@ export function selectAutosuggestItem (item) {
   const startIndex = composeSelectionStart - autosuggestSearchText.length
   const endIndex = composeSelectionStart
   if (item.acct) {
-    /* no await */ insertUsername(currentComposeRealm, item.acct, startIndex, endIndex)
-  } else {
+    /* no await */ insertUsername(currentComposeRealm, item, startIndex, endIndex)
+  } else if (item.shortcode) {
     /* no await */ insertEmojiAtPosition(currentComposeRealm, item, startIndex, endIndex)
+  } else { // hashtag
+    /* no await */ insertHashtag(currentComposeRealm, item, startIndex, endIndex)
   }
 }

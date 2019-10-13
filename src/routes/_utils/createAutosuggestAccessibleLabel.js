@@ -7,6 +7,8 @@ export function createAutosuggestAccessibleLabel (
   let label
   if (autosuggestType === 'emoji') {
     label = `${selected.shortcode}`
+  } else if (autosuggestType === 'hashtag') {
+    label = `#${selected.name}`
   } else { // account
     let displayName = selected.display_name || selected.username
     const emojis = selected.emojis || []

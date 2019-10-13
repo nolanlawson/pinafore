@@ -4,9 +4,9 @@ import { mark, stop } from '../../_utils/marks'
 const MIN_PREFIX_LENGTH = 2
 // Technically mastodon accounts allow dots, but it would be weird to do an autosuggest search if it ends with a dot.
 // Also this is rare. https://github.com/tootsuite/mastodon/pull/6844
-const VALID_ACCOUNT_AND_EMOJI_CHAR = '\\w'
-const ACCOUNT_SEARCH_REGEX = new RegExp(`(?:\\s|^)(@${VALID_ACCOUNT_AND_EMOJI_CHAR}{${MIN_PREFIX_LENGTH},})$`)
-const EMOJI_SEARCH_REGEX = new RegExp(`(?:\\s|^)(:${VALID_ACCOUNT_AND_EMOJI_CHAR}{${MIN_PREFIX_LENGTH},})$`)
+const VALID_CHARS = '\\w'
+const PREFIXES = '(?:@|:|#)'
+const REGEX = new RegExp(`(?:\\s|^)(${PREFIXES}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
 
 function computeForAutosuggest (store, key, defaultValue) {
   store.compute(key,
@@ -43,7 +43,7 @@ export function autosuggestComputations (store) {
       }
 
       const textUpToCursor = currentComposeText.substring(0, selectionStart)
-      const match = textUpToCursor.match(ACCOUNT_SEARCH_REGEX) || textUpToCursor.match(EMOJI_SEARCH_REGEX)
+      const match = textUpToCursor.match(REGEX)
       return (match && match[1]) || ''
     }
   )
