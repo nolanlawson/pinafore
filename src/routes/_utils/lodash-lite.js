@@ -28,3 +28,11 @@ export function padStart (string, length, chars) {
   }
   return string
 }
+
+export function sum (list) {
+  let total = 0
+  for (const item of list) {
+    total += item
+  }
+  return total
+}

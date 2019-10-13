@@ -25,22 +25,21 @@ export function doAccountSearch (searchText) {
   let localResults
   let remoteResults
   const { currentInstance, accessToken } = store.get()
-  const requestThrottler = new RequestThrottler(searchAccountsRemotely, onNewRemoteResults)
+  const requestThrottler = new RequestThrottler(doSearchAccountsRemotely)
 
-  async function searchAccountsLocally (searchText) {
+  async function searchAccountsLocally () {
     localResults = await database.searchAccountsByUsername(
       currentInstance, searchText.substring(1), DATABASE_SEARCH_RESULTS_LIMIT)
   }
 
-  async function searchAccountsRemotely (signal) {
-    return (await search(
-      currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT, signal
-    )).accounts
+  async function searchAccountsRemotely () {
+    remoteResults = await requestThrottler.request()
   }
 
-  function onNewRemoteResults (results) {
-    remoteResults = results
-    onNewResults()
+  async function doSearchAccountsRemotely (signal) {
+    return (await search(
+      currentInstance, accessToken, searchText, false, SEARCH_RESULTS_LIMIT, false, signal
+    )).accounts
   }
 
   function mergeAndTruncateResults () {
@@ -79,8 +78,8 @@ export function doAccountSearch (searchText) {
       return
     }
     // run the two searches in parallel
-    searchAccountsLocally(searchText).then(onNewResults)
-    requestThrottler.request()
+    searchAccountsLocally().then(onNewResults)
+    searchAccountsRemotely().then(onNewResults)
   })
 
   return {
