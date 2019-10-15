@@ -1,16 +1,20 @@
-// the page-lifecycle package causes some problems (doesn't work in node, busts the webpack cache),
-// so load asynchronously
+// the page-lifecycle package causes some problems (doesn't work in node),
+// and plus it's not needed immediately, so lazy-load it
 import { importPageLifecycle } from './asyncModules'
 
 function addEventListener (event, func) {
   if (process.browser) {
-    importPageLifecycle().then(lifecycle => lifecycle.addEventListener(event, func))
+    importPageLifecycle().then(lifecycle => {
+      lifecycle.addEventListener(event, func)
+    })
   }
 }
 
 function removeEventListener (event, func) {
   if (process.browser) {
-    importPageLifecycle().then(lifecycle => lifecycle.removeEventListener(event, func))
+    importPageLifecycle().then(lifecycle => {
+      lifecycle.removeEventListener(event, func)
+    })
   }
 }
 
