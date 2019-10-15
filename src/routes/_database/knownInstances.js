@@ -1,5 +1,5 @@
 import { set, keys, del, close } from '../_thirdparty/idb-keyval/idb-keyval'
-import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
+import { lifecycle } from '../_utils/lifecycle'
 
 const PREFIX = 'known-instance-'
 

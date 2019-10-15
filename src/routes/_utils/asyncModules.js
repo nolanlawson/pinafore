@@ -55,3 +55,7 @@ export const importTesseractWorker = () => import(
 export const importVirtualListStore = () => import(
   /* webpackChunkName: 'virtualListStore.js' */ '../_components/virtualList/virtualListStore.js'
 )
+
+export const importPageLifecycle = () => import(
+  /* webpackChunkName: 'page-lifecycle' */ 'page-lifecycle/dist/lifecycle.mjs'
+).then(getDefault)

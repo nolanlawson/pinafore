@@ -13,8 +13,8 @@ const output = Object.assign(config.client.output(), {
   // enables HMR in workers
   globalObject: 'this',
   // Zeit does not like filenames with "$" in them, so just keep things simple
-  filename: '[hash]/[id].js',
-  chunkFilename: '[hash]/[id].js'
+  filename: dev ? '[hash]/[id].js' : '[id].[contenthash].js',
+  chunkFilename: dev ? '[hash]/[id].js' : '[id].[contenthash].js'
 })
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
         use: {
           loader: 'worker-loader',
           options: {
-            name: 'blurhash.[hash].[name].[ext]'
+            name: dev ? '[hash]/blurhash.[name].[ext]' : 'blurhash.[contenthash].[name].[ext]'
           }
         }
       },
@@ -43,7 +43,7 @@ module.exports = {
         use: {
           loader: 'file-loader',
           options: {
-            name: 'tesseract-asset.[hash].[name].[ext]'
+            name: dev ? '[hash]/tesseract-asset.[name].[ext]' : 'tesseract-asset.[contenthash].[name].[ext]'
           }
         }
       },
@@ -90,6 +90,9 @@ module.exports = {
     minimizer: [
       terser()
     ],
+    // TODO: we should be able to enable this, but Sapper breaks if we do so
+    // // isolate runtime chunk to avoid excessive cache invalidations https://webpack.js.org/guides/caching/
+    // runtimeChunk: 'single',
     splitChunks: {
       chunks: 'async',
       minSize: 5000,

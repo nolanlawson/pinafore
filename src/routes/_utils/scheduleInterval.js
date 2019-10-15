@@ -1,4 +1,4 @@
-import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
+import { lifecycle } from './lifecycle'
 
 /**
  * Schedule a callback, similar to setInterval but disables itself when the page is not active to save battery/CPU.
