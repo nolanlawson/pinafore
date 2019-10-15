@@ -13,8 +13,8 @@ const output = Object.assign(config.client.output(), {
   // enables HMR in workers
   globalObject: 'this',
   // Zeit does not like filenames with "$" in them, so just keep things simple
-  filename: '[hash]/[id].js',
-  chunkFilename: '[hash]/[id].js'
+  filename: '[id].[contenthash].js',
+  chunkFilename: '[id].[contenthash].js'
 })
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
         use: {
           loader: 'worker-loader',
           options: {
-            name: 'blurhash.[hash].[name].[ext]'
+            name: 'blurhash.[contenthash].[name].[ext]'
           }
         }
       },
@@ -43,7 +43,7 @@ module.exports = {
         use: {
           loader: 'file-loader',
           options: {
-            name: 'tesseract-asset.[hash].[name].[ext]'
+            name: 'tesseract-asset.[contenthash].[name].[ext]'
           }
         }
       },

@@ -1,6 +1,6 @@
 import { Store } from 'svelte/store'
 import { safeLocalStorage as LS } from '../_utils/safeLocalStorage'
-import lifecycle from 'page-lifecycle/dist/lifecycle.mjs'
+import { lifecycle } from '../_utils/lifecycle'
 import { safeParse } from './safeParse'
 
 export class LocalStorageStore extends Store {
