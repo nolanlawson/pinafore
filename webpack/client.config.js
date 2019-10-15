@@ -90,6 +90,9 @@ module.exports = {
     minimizer: [
       terser()
     ],
+    // FIXME
+    // // isolate runtime chunk to avoid excessive cache invalidations https://webpack.js.org/guides/caching/
+    // runtimeChunk: 'single',
     splitChunks: {
       chunks: 'async',
       minSize: 5000,
