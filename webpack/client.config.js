@@ -90,7 +90,7 @@ module.exports = {
     minimizer: [
       terser()
     ],
-    // FIXME
+    // TODO: we should be able to enable this, but Sapper breaks if we do so
     // // isolate runtime chunk to avoid excessive cache invalidations https://webpack.js.org/guides/caching/
     // runtimeChunk: 'single',
     splitChunks: {
