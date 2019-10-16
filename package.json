@@ -91,7 +91,7 @@
     "prop-types": "^15.7.2",
     "remount": "^0.11.0",
     "requestidlecallback": "^0.3.0",
-    "rollup": "^1.19.4",
+    "rollup": "^1.24.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.1.1",
