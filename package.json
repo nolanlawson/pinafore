@@ -108,7 +108,7 @@
     "text-encoding": "^0.7.0",
     "tiny-queue": "^0.2.1",
     "webpack": "^4.41.2",
-    "webpack-bundle-analyzer": "^3.4.1",
+    "webpack-bundle-analyzer": "^3.5.2",
     "worker-loader": "^2.0.0"
   },
   "devDependencies": {
