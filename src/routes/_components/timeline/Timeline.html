@@ -54,6 +54,7 @@
   import { observe } from 'svelte-extras'
   import { createMakeProps } from '../../_actions/createMakeProps'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
+  import { isFennec } from '../../_utils/userAgent'
 
   export default {
     oncreate () {
@@ -140,18 +141,19 @@
     store: () => store,
     methods: {
       observe,
-      initialize () {
+      async initialize () {
         const { initializeStarted } = this.get()
         if (initializeStarted) {
           return
         }
         this.set({ initializeStarted: true })
         mark('initializeTimeline')
-        doubleRAF(() => {
-          console.log('timeline initialized')
-          this.store.set({ timelineInitialized: true })
-          stop('initializeTimeline')
-        })
+        await new Promise(resolve => doubleRAF(resolve))
+        if (isFennec()) { // Firefox for Android shows a weird flash if we initialize too soon, so add a delay
+          await new Promise(resolve => doubleRAF(resolve))
+        }
+        this.store.set({ timelineInitialized: true })
+        stop('initializeTimeline')
       },
       onScrollTopChanged (scrollTop) {
         this.set({ scrollTop: scrollTop })
@@ -291,7 +293,7 @@
       },
       onNoNeedToScroll () {
         // If the timeline doesn't need to scroll, then we can safely "preinitialize,"
-        // i.e. render anything above the fold of the timeline. This avoids the affect
+        // i.e. render anything above the fold of the timeline. This avoids the effect
         // where the scrollable content appears to jump around if we need to scroll it.
         console.log('timeline preinitialized')
         this.store.set({ timelinePreinitialized: true })

@@ -17,3 +17,8 @@ export const isIOSPre13 = thunk(() => process.browser && isIOS() &&
     PointerEvent.toString().includes('[native code]')))
 
 export const isMobile = thunk(() => process.browser && navigator.userAgent.match(/(?:iPhone|iPod|iPad|Android|KAIOS)/))
+
+export const isFennec = thunk(() => process.browser &&
+  typeof InstallTrigger !== 'undefined' &&
+  !(typeof PointerEvent === 'function' &&
+    PointerEvent.toString().includes('[native code]')))
