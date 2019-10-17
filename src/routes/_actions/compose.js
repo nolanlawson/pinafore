@@ -5,14 +5,17 @@ import { addStatusOrNotification } from './addStatusOrNotification'
 import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
 import { putMediaMetadata } from '../_api/media'
+import uniqBy from 'lodash-es/uniqBy'
 
 export async function insertHandleForReply (statusId) {
   const { currentInstance } = store.get()
   const status = await database.getStatus(currentInstance, statusId)
   const { currentVerifyCredentials } = store.get()
   const originalStatus = status.reblog || status
-  const accounts = [originalStatus.account].concat(originalStatus.mentions || [])
+  let accounts = [originalStatus.account].concat(originalStatus.mentions || [])
     .filter(account => account.id !== currentVerifyCredentials.id)
+  // Pleroma includes account in mentions as well, so make uniq https://github.com/nolanlawson/pinafore/issues/1591
+  accounts = uniqBy(accounts, _ => _.id)
   if (!store.getComposeData(statusId, 'text') && accounts.length) {
     store.setComposeData(statusId, {
       text: accounts.map(account => `@${account.acct} `).join('')
