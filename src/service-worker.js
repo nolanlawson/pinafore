@@ -13,6 +13,8 @@ const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS = `assets_${timestamp}`
 const WEBPACK_ASSETS = `webpack_assets_${timestamp}`
 
+const isSafari = /Safari/.test(navigator.userAgent) && !/Chrom/.test(navigator.userAgent)
+
 // `static` is an array of everything in the `static` directory
 const assets = __assets__
   .map(file => file.startsWith('/') ? file : `/${file}`)
@@ -78,33 +80,29 @@ self.addEventListener('activate', event => {
   })())
 })
 
-// from https://stackoverflow.com/questions/54138601/cant-access-arraybuffer-on-rangerequest/54207122
-const returnRangeRequest = request =>
-  fetch(request, { headers: {}, mode: 'cors', credentials: 'omit' })
-    .then(res => {
-      return res.arrayBuffer()
-    })
-    .then(arrayBuffer => {
-      const bytes = /^bytes=(\d+)-(\d+)?$/g.exec(request.headers.get('range'))
-      if (bytes) {
-        const start = Number(bytes[1])
-        const end = Number(bytes[2]) || arrayBuffer.byteLength - 1
+async function returnRangeRequest (request) {
+  const response = await fetch(request, { headers: {}, mode: 'cors', credentials: 'omit' })
+  const arrayBuffer = await response.arrayBuffer()
+  const bytes = /^bytes=(\d+)-(\d+)?$/g.exec(request.headers.get('range'))
+  if (bytes) {
+    const start = parseInt(bytes[1], 10)
+    const end = parseInt(bytes[2], 10) || arrayBuffer.byteLength - 1
 
-        return new self.Response(arrayBuffer.slice(start, end + 1), {
-          status: 206,
-          statusText: 'Partial Content',
-          headers: [
-            ['Content-Range', `bytes ${start}-${end}/${arrayBuffer.byteLength}`]
-          ]
-        })
-      } else {
-        return new self.Response(null, {
-          status: 416,
-          statusText: 'Range Not Satisfiable',
-          headers: [['Content-Range', `*/${arrayBuffer.byteLength}`]]
-        })
-      }
+    return new Response(arrayBuffer.slice(start, end + 1), {
+      status: 206,
+      statusText: 'Partial Content',
+      headers: [
+        ['Content-Range', `bytes ${start}-${end}/${arrayBuffer.byteLength}`]
+      ]
     })
+  } else {
+    return new Response(null, {
+      status: 416,
+      statusText: 'Range Not Satisfiable',
+      headers: [['Content-Range', `*/${arrayBuffer.byteLength}`]]
+    })
+  }
+}
 
 self.addEventListener('fetch', event => {
   const req = event.request
@@ -150,7 +148,8 @@ self.addEventListener('fetch', event => {
 
     // range request need to be be patched with a 206 response to satisfy
     // Safari (https://stackoverflow.com/questions/52087208)
-    if (event.request.headers.get('range')) {
+    // Once this bug is fixed in WebKit we can remove this https://bugs.webkit.org/show_bug.cgi?id=186050
+    if (isSafari && event.request.headers.get('range')) {
       return returnRangeRequest(req)
     }
 
