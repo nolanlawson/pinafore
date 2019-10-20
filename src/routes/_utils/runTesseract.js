@@ -17,6 +17,9 @@ let destroyWorkerHandle
 async function initWorker () {
   if (!worker) {
     worker = (await importTesseractWorker())()
+    await worker.load()
+    await worker.loadLanguage('eng')
+    await worker.initialize('eng')
   }
 }
 
@@ -52,23 +55,13 @@ function getTotalProgress (progressInfo) {
 }
 
 function recognize (url, onProgress) {
-  // TODO: have to trick tesseract into not creating a blob URL because that would break our CSP
-  // see https://github.com/naptha/tesseract.js/pull/322
-  let promise
-  const OldBlob = window.Blob
-  window.Blob = null
-  try {
-    promise = worker.recognize(url)
-  } finally {
-    window.Blob = OldBlob
-  }
-  promise.progress(progressInfo => {
-    console.log('progress', progressInfo)
-    if (onProgress && steps.find(({ status }) => status === progressInfo.status)) {
-      onProgress(getTotalProgress(progressInfo))
-    }
-  })
-  return promise
+  return worker.recognize(url, 'eng')
+  // progressInfo => {
+  //   console.log('progress', progressInfo)
+  //   if (onProgress && steps.find(({ status }) => status === progressInfo.status)) {
+  //     onProgress(getTotalProgress(progressInfo))
+  //   }
+  // }
 }
 
 export async function runTesseract (url, onProgress) {
