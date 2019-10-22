@@ -14,5 +14,7 @@ export default () => createWorker({
   corePath: `${origin}/${corePath}`,
   cacheMethod: 'none', // this file is huge, so I'd prefer to cache it in the regular HTTP cache instead of origin cache
   workerBlobURL: false,
-  logger: m => console.log(m)
+  logger: message => {
+    console.log(message)
+  }
 })

@@ -1,6 +1,6 @@
 import { importTesseractWorker } from '../_utils/asyncModules'
 
-const DESTROY_WORKER_DELAY = 300000 // 5 minutes
+const DESTROY_WORKER_DELAY = 10000 // 5 minutes
 
 // TODO: it's flaky to try to estimate tesseract's total progress this way
 const steps = [
@@ -54,22 +54,30 @@ function getTotalProgress (progressInfo) {
   return total
 }
 
-function recognize (url, onProgress) {
-  return worker.recognize(url, 'eng')
-  // progressInfo => {
-  //   console.log('progress', progressInfo)
-  //   if (onProgress && steps.find(({ status }) => status === progressInfo.status)) {
-  //     onProgress(getTotalProgress(progressInfo))
-  //   }
-  // }
+async function recognize (url, onProgress) {
+  // TODO: it seems hacky that we have to spy on the tesseract worker to figure out its progress
+  const listener = event => {
+    const { data } = event
+    if (onProgress && data.status === 'progress' && steps.find(({ status }) => status === data.data.status)) {
+      onProgress(getTotalProgress(data.data))
+    }
+  }
+  worker.worker.addEventListener('message', listener)
+  try {
+    const res = await worker.recognize(url, 'eng')
+    return res
+  } finally {
+    worker.worker.removeEventListener('message', listener)
+  }
 }
 
 export async function runTesseract (url, onProgress) {
   cancelDestroyWorker()
   await initWorker()
   try {
-    const { text } = await recognize(url, onProgress)
-    return text
+    const res = await recognize(url, onProgress)
+    console.log('result', res)
+    return res.data.text
   } finally {
     scheduleDestroyWorker()
   }
