@@ -1,6 +1,6 @@
 import { importTesseractWorker } from '../_utils/asyncModules'
 
-const DESTROY_WORKER_DELAY = 10000 // 5 minutes
+const DESTROY_WORKER_DELAY = 300000 // 5 minutes
 
 // TODO: it's flaky to try to estimate tesseract's total progress this way
 const steps = [
