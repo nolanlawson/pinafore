@@ -12,7 +12,7 @@ export default () => createWorker({
   workerPath: `${origin}/${workerPath}`,
   langPath: `${origin}/`,
   corePath: `${origin}/${corePath}`,
-  cacheMethod: 'none', // this file is huge, so I'd prefer to cache it in the regular HTTP cache instead of origin cache
+  cacheMethod: 'none', // this file is 23.4MB ungzipped, so store in service worker instead (11MB gzipped)
   workerBlobURL: false,
   logger: message => {
     console.log(message)
