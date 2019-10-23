@@ -2,7 +2,10 @@ import { importTesseractWorker } from '../_utils/asyncModules'
 
 const DESTROY_WORKER_DELAY = 300000 // 5 minutes
 
-// TODO: it's flaky to try to estimate tesseract's total progress this way
+let worker
+let destroyWorkerHandle
+
+// TODO: it seems hacky that we have to spy on the tesseract worker to figure out its progress
 const steps = [
   { status: 'loading tesseract core', proportion: 0.1 },
   { status: 'initializing tesseract', proportion: 0.05 },
@@ -17,17 +20,14 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-let worker
-let destroyWorkerHandle
-
 async function spyOnWorkerProgress (onProgress, runnable) {
-  // TODO: it seems hacky that we have to spy on the tesseract worker to figure out its progress
   const listener = event => {
     const { data } = event
     if (onProgress && data.status === 'progress' && steps.find(({ status }) => status === data.data.status)) {
       onProgress(getTotalProgress(data.data))
     }
   }
+
   worker.worker.addEventListener('message', listener)
   try {
     const res = await runnable()
