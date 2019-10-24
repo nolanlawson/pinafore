@@ -1,21 +1,26 @@
 <HiddenFromSSR>
   <footer>
-    <p>
-      Pinafore is <ExternalLink href="https://github.com/nolanlawson/pinafore">open-source software</ExternalLink>
-      created by <ExternalLink href="https://nolanlawson.com">Nolan Lawson</ExternalLink> and distributed under the
-      <ExternalLink href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">AGPL License</ExternalLink>.
-      Here is the <a href="/settings/about#privacy-policy" rel="prefetch">privacy policy</a>.
-    </p>
+    <!-- Use raw HTML to make the output smaller -->
+    {@html `
+      <p>
+        Pinafore is
+        <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore">open-source software</a>
+        created by
+        <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+        and distributed under the
+        <a rel="noopener" target="_blank"
+           href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">AGPL License</a>.
+        Here is the <a href="/settings/about#privacy-policy" rel="prefetch">privacy policy</a>.
+      </p>
+    `}
   </footer>
 </HiddenFromSSR>
 <script>
   import HiddenFromSSR from './HiddenFromSSR.html'
-  import ExternalLink from './ExternalLink.html'
 
   export default {
     components: {
-      HiddenFromSSR,
-      ExternalLink
+      HiddenFromSSR
     }
   }
 </script>

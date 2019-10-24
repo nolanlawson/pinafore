@@ -1,48 +1,56 @@
 <SettingsLayout page='settings/about' label="About Pinafore">
-  <h1>About Pinafore</h1>
+  <div>
+    <!-- Use raw HTML to make the output smaller -->
+    {@html `
+      <h1>About Pinafore</h1>
 
-  <h2>Version {version}</h2>
+      <h2>Version ${version}</h2>
 
-  <p>
-    Pinafore is <ExternalLink href="https://github.com/nolanlawson/pinafore">free and open-source software</ExternalLink>
-    created by <ExternalLink href="https://nolanlawson.com">Nolan Lawson</ExternalLink> and distributed under the
-    <ExternalLink href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">GNU Affero General Public License</ExternalLink>.
-  </p>
+      <p>
+        Pinafore is
+        <a rel="noopener" target="_blank"
+           href="https://github.com/nolanlawson/pinafore">free and open-source software</a>
+        created by
+        <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+        and distributed under the
+        <a rel="noopener" target="_blank"
+           href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">GNU Affero General Public License</a>.
+      </p>
 
-  <h2 id="privacy-policy">Privacy Policy</h2>
+      <h2 id="privacy-policy">Privacy Policy</h2>
 
-  <p>
-    Pinafore does not store any personal information on its servers, including but not limited to names, email addresses,
-    IP addresses, posts, and photos.
-  </p>
+      <p>
+        Pinafore does not store any personal information on its servers,
+        including but not limited to names, email addresses,
+        IP addresses, posts, and photos.
+      </p>
 
-  <p>
-    Pinafore is a static site. All data is stored locally in your browser and shared with the fediverse
-    instance(s) you connect to.
-  </p>
+      <p>
+        Pinafore is a static site. All data is stored locally in your browser and shared with the fediverse
+        instance(s) you connect to.
+      </p>
 
-  <h2>Credits</h2>
+      <h2>Credits</h2>
 
-  <p>
-    Icons provided by <ExternalLink href="http://fontawesome.io/">Font Awesome</ExternalLink>.
-  </p>
+      <p>
+        Icons provided by <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.
+      </p>
 
-  <p>
-    Logo thanks to "sailboat" by Gregor Cresnar from <ExternalLink href="https://thenounproject.com/">the Noun Project</ExternalLink>.
-  </p>
-
-
+      <p>
+        Logo thanks to "sailboat" by Gregor Cresnar from
+        <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.
+      </p>
+    `}
+  </div>
 </SettingsLayout>
 <script>
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
-  import ExternalLink from '../../_components/ExternalLink.html'
 
   import { version } from '../../../../package.json'
 
   export default {
     components: {
-      SettingsLayout,
-      ExternalLink
+      SettingsLayout
     },
     data: () => ({
       version
