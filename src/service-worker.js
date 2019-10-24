@@ -3,11 +3,8 @@ import {
   shell as __shell__,
   routes as __routes__
 } from '../__sapper__/service-worker.js'
-
-import {
-  get,
-  post
-} from './routes/_utils/ajax'
+import { get, post } from './routes/_utils/ajax'
+import { isSafari } from './routes/_utils/userAgent'
 
 const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS = `assets_${timestamp}`
@@ -23,8 +20,6 @@ const ON_DEMAND_CACHE = [
     cache: ASSETS
   }
 ]
-
-const isSafari = /Safari/.test(navigator.userAgent) && !/Chrom/.test(navigator.userAgent)
 
 // `static` is an array of everything in the `static` directory
 const assets = __assets__
@@ -163,7 +158,7 @@ self.addEventListener('fetch', event => {
     // range request need to be be patched with a 206 response to satisfy
     // Safari (https://stackoverflow.com/questions/52087208)
     // Once this bug is fixed in WebKit we can remove this https://bugs.webkit.org/show_bug.cgi?id=186050
-    if (isSafari && event.request.headers.get('range')) {
+    if (isSafari() && event.request.headers.get('range')) {
       return returnRangeRequest(req)
     }
 

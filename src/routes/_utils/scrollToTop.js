@@ -8,7 +8,7 @@ export function scrollToTop (smooth) {
     return false
   }
   if (smooth) {
-    smoothScroll(scroller, 0)
+    smoothScroll(scroller, 0, /* horizontal */ false, /* preferFast */ true)
   } else {
     scroller.scrollTop = 0
   }

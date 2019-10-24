@@ -17,3 +17,8 @@ export const isIOSPre13 = thunk(() => process.browser && isIOS() &&
     PointerEvent.toString().includes('[native code]')))
 
 export const isMobile = thunk(() => process.browser && navigator.userAgent.match(/(?:iPhone|iPod|iPad|Android|KAIOS)/))
+
+export const isSafari = thunk(() => process.browser && /Safari/.test(navigator.userAgent) &&
+  !/Chrome/.test(navigator.userAgent))
+
+export const isChrome = thunk(() => process.browser && /Chrome/.test(navigator.userAgent))

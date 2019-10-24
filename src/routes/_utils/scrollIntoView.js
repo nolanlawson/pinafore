@@ -66,5 +66,5 @@ export function scrollIntoViewIfNeeded (element) {
   }
   const scrollContainer = getScrollContainer()
   const scrollTop = scrollContainer.scrollTop
-  smoothScroll(scrollContainer, scrollTop + rect.top - scrollY)
+  smoothScroll(scrollContainer, scrollTop + rect.top - scrollY, /* horizontal */ false, /* preferFast */ false)
 }
