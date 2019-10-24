@@ -1,6 +1,6 @@
-import { thunk } from './thunk'
+import { __thunk__ } from './thunk'
 
-export const urlRegex = thunk(() => {
+export const urlRegex = __thunk__(() => {
   // this is provided at build time to avoid having a lot of runtime code just to build
   // a static regex
   return process.env.URL_REGEX

@@ -4,7 +4,7 @@ module.exports = {
   compress: {
     pure_funcs: [
       'console.log', // remove console logs in production
-      'thunk' // see thunk.js
+      '__thunk__' // see thunk.js
     ]
   },
   output: {
