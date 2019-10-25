@@ -43,7 +43,7 @@
         tooltipText="An instance is your Mastodon home server, such as mastodon.social or cybre.space."
       />
       ?
-      <ExternalLink href="https://joinmastodon.org">Join Mastodon!</ExternalLink>
+      <a rel="noopener" target="_blank" href="https://joinmastodon.org">Join Mastodon!</a>
     </p>
   {/if}
 </SettingsLayout>
@@ -86,7 +86,6 @@
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import { store } from '../../../_store/store'
   import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
-  import ExternalLink from '../../../_components/ExternalLink.html'
   import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
   import Tooltip from '../../../_components/Tooltip.html'
 
@@ -103,7 +102,6 @@
     },
     components: {
       SettingsLayout,
-      ExternalLink,
       Tooltip
     },
     store: () => store,
