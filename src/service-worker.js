@@ -4,7 +4,7 @@ import {
   routes as __routes__
 } from '../__sapper__/service-worker.js'
 import { get, post } from './routes/_utils/ajax'
-import { isSafari } from './routes/_utils/userAgent'
+import { isSafari } from './routes/_utils/userAgent/isSafari'
 
 const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS = `assets_${timestamp}`

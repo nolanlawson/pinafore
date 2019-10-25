@@ -3,7 +3,7 @@ import { computations } from './computations/computations'
 import { mixins } from './mixins/mixins'
 import { LocalStorageStore } from './LocalStorageStore'
 import { observe } from 'svelte-extras'
-import { isKaiOS } from '../_utils/userAgent'
+import { isKaiOS } from '../_utils/userAgent/isKaiOS'
 
 const persistedState = {
   autoplayGifs: false,

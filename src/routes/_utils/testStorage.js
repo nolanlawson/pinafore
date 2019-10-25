@@ -1,11 +1,11 @@
 // LocalStorage and IDB may be disabled in private mode, when "blocking cookies" in Safari,
 // or other cases
 
-import { __thunk__ } from './thunk'
+import { thunk } from './thunk'
 
 const testKey = '__test__'
 
-export const testHasLocalStorage = __thunk__(() => {
+export const testHasLocalStorage = thunk(() => {
   try {
     localStorage.setItem(testKey, testKey)
     if (!localStorage.length || localStorage.getItem(testKey) !== testKey) {
@@ -18,7 +18,7 @@ export const testHasLocalStorage = __thunk__(() => {
   return true
 })
 
-export const testHasIndexedDB = __thunk__(async () => {
+export const testHasIndexedDB = thunk(async () => {
   if (typeof indexedDB === 'undefined') {
     return false
   }
