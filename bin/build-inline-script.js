@@ -8,6 +8,7 @@ import replace from 'rollup-plugin-replace'
 import fromPairs from 'lodash-es/fromPairs'
 import babel from 'rollup-plugin-babel'
 import { themes } from '../src/routes/_static/themes'
+import terserOptions from './terserOptions'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -28,11 +29,7 @@ export async function buildInlineScript () {
         runtimeHelpers: true,
         presets: ['@babel/preset-env']
       }),
-      !process.env.DEBUG && terser({
-        mangle: true,
-        compress: true,
-        ecma: 8
-      })
+      !process.env.DEBUG && terser(terserOptions)
     ]
   })
   const { output } = await bundle.generate({

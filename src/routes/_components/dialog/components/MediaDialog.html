@@ -333,7 +333,7 @@
             // smooth scroll, so disable smooth scrolling
             scroller.scrollLeft = scrollLeft
           } else {
-            smoothScroll(scroller, scrollLeft, true)
+            smoothScroll(scroller, scrollLeft, /* horizontal */ true, /* preferFast */ false)
           }
         } else {
           console.log('setting scrollLeft', scrollLeft)

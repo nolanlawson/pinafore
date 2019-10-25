@@ -72,7 +72,7 @@
         if (index === 0 && movement === -1) {
           activeItemKey = null
           this.set({ activeItemKey })
-          smoothScroll(getScrollContainer(), 0)
+          smoothScroll(getScrollContainer(), 0, /* horizontal */ false, /* preferFast */ false)
           return
         }
         if (index === -1) {
