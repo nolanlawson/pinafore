@@ -1,6 +1,5 @@
-// We name this __thunk__ so that we can tell terser that it's a pure function, without possibly
-// affecting third-party libraries that may also be using a function called "thunk".
-export function __thunk__ (func) {
+// Run a function once, then cache the result and return the cached result thereafter
+export function thunk (func) {
   let cached
   let runOnce
   return () => {

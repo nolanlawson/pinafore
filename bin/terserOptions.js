@@ -3,8 +3,7 @@ module.exports = {
   mangle: true,
   compress: {
     pure_funcs: [
-      'console.log', // remove console logs in production
-      '__thunk__' // see thunk.js
+      'console.log' // remove console logs in production
     ]
   },
   output: {
