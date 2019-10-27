@@ -48,7 +48,7 @@ export function leftRightFocusObservers (store) {
   function shouldIgnoreEvent (activeElement, key) {
     const isTextarea = activeElement.tagName === 'TEXTAREA'
     const isTextInput = activeElement.tagName === 'INPUT' &&
-      ['input', 'search'].includes(activeElement.getAttribute('type'))
+      ['text', 'search', 'number', 'email', 'url'].includes(activeElement.getAttribute('type').toLowerCase())
 
     if (!isTextarea && !isTextInput) {
       return false
