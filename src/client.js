@@ -1,3 +1,4 @@
+import './routes/_thirdparty/regenerator-runtime/runtime.js'
 import * as sapper from '../__sapper__/client.js'
 import { loadPolyfills } from './routes/_utils/loadPolyfills'
 import './routes/_utils/serviceWorkerClient'
