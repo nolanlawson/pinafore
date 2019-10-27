@@ -27,7 +27,15 @@ module.exports = () => ({
         '@babel/preset-env'
       ],
       plugins: [
-        '@babel/plugin-transform-runtime'
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            // This started failing with commit 2a248cb for some mysterious reason, causing an error:
+            // TypeError: Cannot set property 'wrap' of undefined
+            // I could not for the life of me figure out how to fix it, so I just manually import regenerator.
+            regenerator: false
+          }
+        ]
       ]
     }
   }

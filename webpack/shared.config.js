@@ -36,7 +36,9 @@ const resolve = {
       '../../_components/SvgIcon.html': '../../_components/SvgIconLegacy.html',
       '../../../_components/SvgIcon.html': '../../../_components/SvgIconLegacy.html'
     } : {
-      intl: 'lodash/noop'
+      intl: 'lodash/noop',
+      './routes/_thirdparty/regenerator-runtime/runtime.js': 'lodash/noop',
+      '../_thirdparty/regenerator-runtime/runtime.js': 'lodash/noop'
     })
   }
 }
