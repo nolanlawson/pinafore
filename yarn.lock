@@ -1225,6 +1225,11 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
+arrow-key-navigation@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/arrow-key-navigation/-/arrow-key-navigation-1.0.1.tgz#557f5c0034791acc04091843718888e18c9cd61a"
+  integrity sha512-/RZFi4p3MCr6Y2y2luNh8eP7CwlVsoq+F2oiNoE+jSHgRWUbc+fLaI2/8NWqDF6XZLu5GdTvXkN70KRpN0/5Hw==
+
 asar@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/asar/-/asar-2.0.1.tgz#8518a1c62c238109c15a5f742213e83a09b9fd38"

@@ -59,3 +59,7 @@ export const importVirtualListStore = () => import(
 export const importPageLifecycle = () => import(
   /* webpackChunkName: 'page-lifecycle' */ 'page-lifecycle/dist/lifecycle.mjs'
 ).then(getDefault)
+
+export const importArrowKeyNavigation = () => import(
+  /* webpackChunkName: 'arrow-key-navigation' */ 'arrow-key-navigation'
+)
