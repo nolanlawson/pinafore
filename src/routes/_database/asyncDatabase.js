@@ -2,7 +2,7 @@
 // put an async import of the database, to avoid including it in the main bundle
 // (which doesn't need to run when the user isn't logged in).
 
-import { importDatabase } from '../_utils/asyncModules'
+import { importDatabase } from '../_utils/asyncModules/importDatabase.js'
 
 const handler = {
   get: function (obj, prop) {

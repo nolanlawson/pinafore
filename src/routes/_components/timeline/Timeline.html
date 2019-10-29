@@ -33,12 +33,10 @@
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
   import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
   import Shortcut from '../shortcut/Shortcut.html'
-  import {
-    importVirtualList,
-    importList,
-    importStatusVirtualListItem,
-    importNotificationVirtualListItem
-  } from '../../_utils/asyncModules'
+  import { importVirtualList } from '../../_utils/asyncModules/importVirtualList'
+  import { importList } from '../../_utils/asyncModules/importList'
+  import { importStatusVirtualListItem } from '../../_utils/asyncModules/importStatusVirtualListItem'
+  import { importNotificationVirtualListItem } from '../../_utils/asyncModules/importNotificationVirtualListItem'
   import { timelines } from '../../_static/timelines'
   import {
     fetchMoreItemsAtBottomOfTimeline,

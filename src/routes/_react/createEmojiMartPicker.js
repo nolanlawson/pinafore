@@ -1,4 +1,4 @@
-import { importEmojiMart } from '../_utils/asyncModules'
+import { importEmojiMart } from '../_utils/asyncModules/importEmojiMart.js'
 import { loadCSS } from '../_utils/loadCSS'
 
 async function fetchEmojiMartData () {

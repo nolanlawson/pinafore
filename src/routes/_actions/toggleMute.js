@@ -1,4 +1,4 @@
-import { importShowMuteDialog } from '../_components/dialog/asyncDialogs'
+import { importShowMuteDialog } from '../_components/dialog/asyncDialogs/importShowMuteDialog.js'
 import { setAccountMuted } from './mute'
 
 export async function toggleMute (account, mute) {

@@ -1,4 +1,4 @@
-import { importShowComposeDialog } from '../_components/dialog/asyncDialogs'
+import { importShowComposeDialog } from '../_components/dialog/asyncDialogs/importShowComposeDialog.js'
 import { store } from '../_store/store'
 
 export async function composeNewStatusMentioning (account) {

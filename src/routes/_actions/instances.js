@@ -6,7 +6,7 @@ import { goto } from '../../../__sapper__/client'
 import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getInstanceInfo } from '../_api/instance'
 import { database } from '../_database/database'
-import { importVirtualListStore } from '../_utils/asyncModules'
+import { importVirtualListStore } from '../_utils/asyncModules/importVirtualListStore.js'
 
 export function changeTheme (instanceName, newTheme) {
   const { instanceThemes } = store.get()

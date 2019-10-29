@@ -2,7 +2,8 @@
   <svelte:component this={composeBox} {realm} {hidden} />
 {/if}
 <script>
-  import { importComposeBox, importLoggedInStoreExtensions } from '../../_utils/asyncModules'
+  import { importComposeBox } from '../../_utils/asyncModules/importComposeBox'
+  import { importLoggedInStoreExtensions } from '../../_utils/asyncModules/importLoggedInStoreExtensions'
 
   export default {
     async oncreate () {
