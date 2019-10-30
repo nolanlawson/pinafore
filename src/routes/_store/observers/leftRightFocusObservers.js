@@ -1,7 +1,7 @@
 // Makes it so the left and right arrows change focus, ala Tab/Shift+Tab. This is mostly designed
 // for KaiOS devices.
 
-import { importArrowKeyNavigation } from '../../_utils/asyncModules'
+import { importArrowKeyNavigation } from '../../_utils/asyncModules/importArrowKeyNavigation.js'
 
 let arrowKeyNav
 

@@ -10,7 +10,8 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import { importLoggedInStoreExtensions, importTimeline } from '../../_utils/asyncModules'
+  import { importLoggedInStoreExtensions } from '../../_utils/asyncModules/importLoggedInStoreExtensions'
+  import { importTimeline } from '../../_utils/asyncModules/importTimeline'
 
   export default {
     async oncreate () {

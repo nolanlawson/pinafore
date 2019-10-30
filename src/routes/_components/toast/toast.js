@@ -1,4 +1,4 @@
-import { importToast } from '../../_utils/asyncModules'
+import { importToast } from '../../_utils/asyncModules/importToast.js'
 
 let toast
 

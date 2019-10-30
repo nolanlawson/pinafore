@@ -1,6 +1,6 @@
 // the page-lifecycle package causes some problems (doesn't work in node),
 // and plus it's not needed immediately, so lazy-load it
-import { importPageLifecycle } from './asyncModules'
+import { importPageLifecycle } from './asyncModules/importPageLifecycle.js'
 
 function addEventListener (event, func) {
   if (process.browser) {

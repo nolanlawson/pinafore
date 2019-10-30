@@ -1,4 +1,4 @@
-import { importSnackbar } from '../../_utils/asyncModules'
+import { importSnackbar } from '../../_utils/asyncModules/importSnackbar.js'
 
 let snackbar
 

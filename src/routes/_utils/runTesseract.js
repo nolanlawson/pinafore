@@ -1,4 +1,4 @@
-import { importTesseractWorker } from '../_utils/asyncModules'
+import { importTesseractWorker } from '../_utils/asyncModules/importTesseractWorker.js'
 
 const DESTROY_WORKER_DELAY = 300000 // 5 minutes
 

@@ -1,5 +1,5 @@
 import { store } from '../_store/store'
-import { importShowComposeDialog } from '../_components/dialog/asyncDialogs'
+import { importShowComposeDialog } from '../_components/dialog/asyncDialogs/importShowComposeDialog.js'
 
 export async function showShareDialogIfNecessary () {
   const { isUserLoggedIn, openShareDialog } = store.get()

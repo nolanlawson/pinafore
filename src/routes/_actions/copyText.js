@@ -1,4 +1,4 @@
-import { importShowCopyDialog } from '../_components/dialog/asyncDialogs'
+import { importShowCopyDialog } from '../_components/dialog/asyncDialogs/importShowCopyDialog.js'
 import { toast } from '../_components/toast/toast'
 
 export async function copyText (text) {
