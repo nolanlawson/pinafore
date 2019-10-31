@@ -39,21 +39,22 @@
 </style>
 <script>
   import SettingsNavItem from './SettingsNavItem.html'
-
-  const NAV_ITEMS = {
-    settings: 'Settings',
-    'settings/about': 'About Pinafore',
-    'settings/general': 'General',
-    'settings/instances': 'Instances',
-    'settings/instances/add': 'Add instance'
-  }
+  import { store } from '../../_store/store'
 
   export default {
     components: {
       SettingsNavItem
     },
+    store: () => store,
     computed: {
-      navItems: ({ page }) => {
+      navItemLabels: ({ $isUserLoggedIn }) => ({
+        settings: 'Settings',
+        'settings/about': 'About Pinafore',
+        'settings/general': 'General',
+        'settings/instances': 'Instances',
+        'settings/instances/add': $isUserLoggedIn ? 'Add instance' : 'Log in'
+      }),
+      navItems: ({ page, navItemLabels }) => {
         const res = []
         const breadcrumbs = page.split('/')
         let path = ''
@@ -61,7 +62,7 @@
           const currentPage = breadcrumbs[i]
           path += currentPage
           res.push({
-            label: NAV_ITEMS[path],
+            label: navItemLabels[path],
             href: `/${path}`,
             name: path
           })

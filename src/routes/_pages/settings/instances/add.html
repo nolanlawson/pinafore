@@ -1,5 +1,5 @@
-<SettingsLayout page='settings/instances/add' label="Add instance">
-  <h1 id="add-an-instance-h1">Add instance</h1>
+<SettingsLayout page='settings/instances/add' label={pageLabel}>
+  <h1 id="add-an-instance-h1">{pageLabel}</h1>
 
   <div class="add-new-instance">
     <form on:submit='onSubmitInstance(event)' aria-labelledby="add-an-instance-h1">
@@ -109,6 +109,9 @@
       hasIndexedDB: true,
       hasLocalStorage: true
     }),
+    computed: {
+      pageLabel: ({ $isUserLoggedIn }) => $isUserLoggedIn ? 'Add instance' : 'Log in'
+    },
     methods: {
       onSubmitInstance (event) {
         event.preventDefault()
