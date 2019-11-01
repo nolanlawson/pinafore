@@ -17,7 +17,7 @@ async function readSvg (svg) {
   const $path = $optimized.find('path').removeAttr('fill')
   const $symbol = $('<symbol></symbol>')
     .attr('id', svg.id)
-    .attr('viewBox', $optimized.attr('viewBox'))
+    .attr('viewBox', `0 0 ${optimized.info.width} ${optimized.info.height}`)
     .append($path)
   return $.xml($symbol)
 }
