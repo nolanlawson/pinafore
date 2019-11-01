@@ -14,7 +14,7 @@ async function readSvg (svg) {
   const content = await readFile(filepath, 'utf8')
   const optimized = (await svgo.optimize(content))
   const $optimized = $(optimized.data)
-  const $path = $optimized.find('path').removeAttr('fill')
+  const $path = $optimized.find('path, circle').removeAttr('fill')
   const $symbol = $('<symbol></symbol>')
     .attr('id', svg.id)
     .attr('viewBox', $optimized.attr('viewBox'))
