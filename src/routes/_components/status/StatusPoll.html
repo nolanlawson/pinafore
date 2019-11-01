@@ -4,7 +4,7 @@
       {#each options as option}
         <li class="poll-choice option">
           <div class="option-text">
-            <strong>{option.share}%</strong> {option.title}
+            <strong>{option.share}%</strong> <span>{@html option.title}</span>
           </div>
           <svg aria-hidden="true">
             <line x1="0" y1="0" x2="{option.share}%" y2="0" />
@@ -23,7 +23,7 @@
                      value="{i}"
                      on:change="onChange()"
               >
-              <span>{option.title}</span>
+              <span>{@html option.title}</span>
             </label>
           </li>
         {/each}
@@ -245,6 +245,8 @@
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
   import { getPoll, voteOnPoll } from '../../_actions/polls'
+  import escapeHtml from 'escape-html'
+  import { emojifyText } from '../../_utils/emojifyText'
 
   const REFRESH_MIN_DELAY = 1000
 
@@ -284,10 +286,12 @@
     computed: {
       pollId: ({ originalStatus }) => originalStatus.poll.id,
       poll: ({ originalStatus, $polls, pollId }) => $polls[pollId] || originalStatus.poll,
-      options: ({ poll }) => poll.options.map(({ title, votes_count: votesCount }) => ({
-        title,
-        share: poll.votes_count ? Math.round(votesCount / poll.votes_count * 100) : 0
-      })),
+      options: ({ poll, originalStatusEmojis, $autoplayGifs }) => (
+        poll.options.map(({ title, votes_count: votesCount }) => ({
+          title: emojifyText(escapeHtml(title), originalStatusEmojis, $autoplayGifs),
+          share: poll.votes_count ? Math.round(votesCount / poll.votes_count * 100) : 0
+        }))
+      ),
       votesCount: ({ poll }) => poll.votes_count,
       voted: ({ poll }) => poll.voted,
       multiple: ({ poll }) => poll.multiple,

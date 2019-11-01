@@ -7,7 +7,13 @@ import {
   getComposePollNthInput,
   composePoll,
   composePollMultipleChoice,
-  composePollExpiry, composePollAddButton, getComposePollRemoveNthButton, postStatusButton, composeInput, sleep
+  composePollExpiry,
+  composePollAddButton,
+  getComposePollRemoveNthButton,
+  postStatusButton,
+  composeInput,
+  sleep,
+  getNthStatus
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { POLL_EXPIRY_DEFAULT } from '../../src/routes/_static/polls'
@@ -18,6 +24,7 @@ fixture`127-compose-polls.js`
 test('Can add and remove poll', async t => {
   await loginAsFoobar(t)
   await t
+    .expect(getNthStatus(1).exists).ok()
     .expect(composePoll.exists).notOk()
     .expect(pollButton.getAttribute('aria-label')).eql('Add poll')
     .click(pollButton)
@@ -36,6 +43,7 @@ test('Can add and remove poll', async t => {
 test('Can add and remove poll options', async t => {
   await loginAsFoobar(t)
   await t
+    .expect(getNthStatus(1).exists).ok()
     .expect(composePoll.exists).notOk()
     .expect(pollButton.getAttribute('aria-label')).eql('Add poll')
     .click(pollButton)
@@ -72,4 +80,23 @@ test('Can add and remove poll options', async t => {
     .expect(getNthStatusPollResult(1, 3).innerText).eql('0% fourth')
     .expect(getNthStatusPollResult(1, 4).exists).notOk()
     .expect(getNthStatusPollVoteCount(1).innerText).eql('0 votes')
+})
+
+test('Properly escapes HTML and emojos in polls', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatus(1).exists).ok()
+    .click(pollButton)
+    .expect(composePoll.exists).ok()
+  await sleep(1000)
+  await t
+    .typeText(composeInput, 'vote vote vote', { paste: true })
+    .typeText(getComposePollNthInput(1), '&ndash;', { paste: true })
+    .typeText(getComposePollNthInput(2), ':blobpeek:', { paste: true })
+  await sleep(1000)
+  await t
+    .click(postStatusButton)
+    .expect(getNthStatusPollResult(1, 1).innerText).contains('&ndash;')
+    .expect(getNthStatusPollResult(1, 2).find('img').exists).ok()
+    .expect(getNthStatusPollResult(1, 2).find('img').getAttribute('alt')).eql(':blobpeek:')
 })
