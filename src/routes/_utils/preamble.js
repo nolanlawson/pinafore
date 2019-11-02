@@ -1,16 +1,10 @@
-
-// For perf reasons, this script is run inline to quickly set certain styles.
-// To allow CSP to work correctly, we also calculate a sha256 hash during
-// the build process and write it to checksum.js.
-
-import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
-import { basename } from '../routes/_api/utils'
-import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
-import { storeLite } from '../routes/_store/storeLite'
-import { isIOSPre12Point2 } from '../routes/_utils/userAgent/isIOSPre12Point2'
-import { isMac } from '../routes/_utils/userAgent/isMac'
-
-window.__themeColors = process.env.THEME_COLORS
+// Code that is designed to run before just about everything in the main JavaScript bundle
+import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from './themeEngine'
+import { basename } from '../_api/utils'
+import { onUserIsLoggedOut } from '../_actions/onUserIsLoggedOut'
+import { store } from '../_store/store'
+import { isIOSPre12Point2 } from './userAgent/isIOSPre12Point2'
+import { isMac } from './userAgent/isMac'
 
 const {
   currentInstance,
@@ -19,7 +13,7 @@ const {
   enableGrayscale,
   pushSubscription,
   loggedInInstancesInOrder
-} = storeLite.get()
+} = store.get()
 
 const theme = (instanceThemes && instanceThemes[currentInstance]) || DEFAULT_THEME
 
@@ -69,13 +63,13 @@ if (pushSubscription) {
   // Fix a bug in Pinafore <=v1.9.0 if we only have one instance we're logged in to
   // (https://github.com/nolanlawson/pinafore/issues/1274)
   if (loggedInInstancesInOrder && loggedInInstancesInOrder.length === 1) {
-    storeLite.set({
+    store.set({
       pushSubscriptions: {
         [currentInstance]: pushSubscription
       }
     })
   }
-  storeLite.set({
+  store.set({
     pushSubscription: null
   })
 }

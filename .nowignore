@@ -6,7 +6,5 @@
 /src/template.html
 /static/*.css
 /static/icons.svg
-/static/inline-script.js.map
 /static/emoji-mart-all.json
-/src/inline-script/checksum.js
 yarn-error.log

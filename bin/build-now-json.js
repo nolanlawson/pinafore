@@ -7,7 +7,6 @@ import fs from 'fs'
 import { promisify } from 'util'
 import { routes } from '../__sapper__/service-worker'
 import cloneDeep from 'lodash-es/cloneDeep'
-import inlineScriptChecksum from '../src/inline-script/checksum'
 import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChecksums'
 
 const writeFile = promisify(fs.writeFile)
@@ -58,7 +57,7 @@ const JSON_TEMPLATE = {
 const HTML_HEADERS = {
   'cache-control': 'public,max-age=3600',
   'content-security-policy': 'script-src \'self\' ' +
-    `${[inlineScriptChecksum].concat(sapperInlineScriptChecksums).map(_ => `'sha256-${_}'`).join(' ')}; ` +
+    `${sapperInlineScriptChecksums.map(_ => `'sha256-${_}'`).join(' ')}; ` +
     'worker-src \'self\'; style-src \'self\' \'unsafe-inline\'; frame-src \'none\'; object-src \'none\'; manifest-src \'self\'',
   'referrer-policy': 'no-referrer',
   'strict-transport-security': 'max-age=15552000; includeSubDomains',

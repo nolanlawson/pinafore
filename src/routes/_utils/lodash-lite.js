@@ -36,3 +36,11 @@ export function sum (list) {
   }
   return total
 }
+
+export function fromPairs (arr) {
+  const res = {}
+  for (const item of arr) {
+    res[item[0]] = item[1]
+  }
+  return res
+}
