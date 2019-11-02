@@ -1,7 +1,6 @@
 // Code that is designed to run before just about everything in the main JavaScript bundle
 import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from './themeEngine'
 import { basename } from '../_api/utils'
-import { onUserIsLoggedOut } from '../_actions/onUserIsLoggedOut'
 import { store } from '../_store/store'
 import { isIOSPre12Point2 } from './userAgent/isIOSPre12Point2'
 import { isMac } from './userAgent/isMac'
@@ -9,7 +8,6 @@ import { isMac } from './userAgent/isMac'
 const {
   currentInstance,
   instanceThemes,
-  disableCustomScrollbars,
   enableGrayscale,
   pushSubscription,
   loggedInInstancesInOrder
@@ -29,21 +27,6 @@ if (currentInstance) {
 if (theme !== INLINE_THEME) {
   // switch theme ASAP to minimize flash of default theme
   switchToTheme(theme, enableGrayscale)
-}
-
-if (enableGrayscale) {
-  document.getElementById('theGrayscaleStyle')
-    .setAttribute('media', 'all') // enables the style
-}
-
-if (!currentInstance) {
-  // if not logged in, show all these 'hidden-from-ssr' elements
-  onUserIsLoggedOut()
-}
-
-if (disableCustomScrollbars) {
-  document.getElementById('theScrollbarStyle')
-    .setAttribute('media', 'only x') // disables the style
 }
 
 // hack to make the scrollbars rounded only on macOS
