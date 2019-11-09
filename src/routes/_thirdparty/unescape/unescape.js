@@ -1,43 +1,50 @@
-// via https://github.com/jonschlinkert/unescape/blob/98d1e52/index.js
+//
+// Originally via https://github.com/jonschlinkert/unescape/blob/98d1e52/index.js
+//
+import { thunk } from '../../_utils/thunk'
 
+// via https://www.htmlhelp.com/reference/html40/entities/special.html
+// plus some more known entities like pound, nbsp, etc
 const chars = {
-  '&quot;': '"',
-  '&#34;': '"',
-
-  '&apos;': '\'',
-  '&#39;': '\'',
-
   '&amp;': '&',
-  '&#38;': '&',
-
-  '&gt;': '>',
-  '&#62;': '>',
-
-  '&lt;': '<',
-  '&#60;': '<',
-
+  '&apos;': '\'',
+  '&bdquo;': '„',
   '&cent;': '¢',
-  '&#162;': '¢',
-
+  '&circ;': 'ˆ',
   '&copy;': '©',
-  '&#169;': '©',
-
+  '&dagger;': '†',
+  '&Dagger;': '‡',
+  '&emsp;': ' ',
+  '&ensp;': ' ',
   '&euro;': '€',
-  '&#8364;': '€',
-
+  '&gt;': '>',
+  '&ldquo;': '“',
+  '&lrm;': '',
+  '&lsaquo;': '‹',
+  '&lsquo;': '‘',
+  '&lt;': '<',
+  '&mdash;': '—',
+  '&nbsp;': ' ',
+  '&ndash;': '–',
+  '&oelig;': 'œ',
+  '&OElig;': 'Œ',
+  '&permil;': '‰',
   '&pound;': '£',
-  '&#163;': '£',
-
+  '&quot;': '"',
+  '&rdquo;': '”',
   '&reg;': '®',
-  '&#174;': '®',
-
+  '&rsaquo;': '›',
+  '&rsquo;': '’',
+  '&sbquo;': '‚',
+  '&scaron;': 'š',
+  '&Scaron;': 'Š',
+  '&thinsp;': ' ',
+  '&tilde;': '˜',
   '&yen;': '¥',
-  '&#165;': '¥',
-
-  '&nbsp;': ' '
+  '&Yuml;': 'Ÿ'
 }
 
-let regex
+const getRegex = thunk(() => toRegex(chars))
 
 /**
  * Convert HTML entities to HTML characters.
@@ -45,15 +52,35 @@ let regex
  * @param  {String} `str` String with HTML entities to un-escape.
  * @return {String}
  */
-
 function unescape (str) {
-  regex = regex || toRegex(chars)
-  return str.replace(regex, m => chars[m])
+  return str.replace(getRegex(), replace)
+}
+
+function replace (match) {
+  const knownValue = chars[match]
+  if (knownValue) {
+    return knownValue
+  }
+  let codePoint
+  try {
+    if (match.startsWith('&#x')) { // hex
+      codePoint = parseInt(match.substring(3, match.length - 1), 16)
+    } else { // decimal
+      codePoint = parseInt(match.substring(2, match.length - 1), 10)
+    }
+    return String.fromCodePoint(codePoint)
+  } catch (e) {
+    return match // bad code point, bail out
+  }
 }
 
 function toRegex (chars) {
-  var keys = Object.keys(chars).join('|')
-  return new RegExp('(' + keys + ')', 'g')
+  const patterns = Object.keys(chars).concat([
+    '&#[0-9]{1,6};', // decimal code points
+    '&#x[a-fA-F0-9]{1,6};' // hex code points
+  ])
+
+  return new RegExp('(' + patterns.join('|') + ')', 'g')
 }
 
 /**
