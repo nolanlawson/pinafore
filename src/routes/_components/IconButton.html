@@ -1,5 +1,8 @@
+<!-- Toggle buttons should have an immutable label, e.g. a mute/unmute button should just always say
+     "mute." For sighted users, though, I think it's nice if the title changes when the action changes.
+     See http://w3c.github.io/aria-practices/#button -->
 <button type="button"
-        title={label}
+        title={pressable ? (pressed ? pressedLabel : label) : label}
         aria-label={label}
         aria-pressed={pressable ? !!pressed : undefined}
         aria-hidden={ariaHidden}
@@ -102,6 +105,12 @@
       if (elementId) {
         this.refs.node.setAttribute('id', elementId)
       }
+      if (process.env.NODE_ENV !== 'production') {
+        const { pressable, pressedLabel, label } = this.get()
+        if (pressable && ((!pressedLabel || !label) || pressedLabel === label)) {
+          throw new Error('pressable buttons should have a label and a pressedLabel different from each other')
+        }
+      }
     },
     ondestroy () {
       const { clickListener } = this.get()
@@ -117,6 +126,7 @@
       elementId: undefined,
       pressable: false,
       pressed: false,
+      pressedLabel: undefined,
       className: undefined,
       sameColorWhenPressed: false,
       ariaHidden: false,

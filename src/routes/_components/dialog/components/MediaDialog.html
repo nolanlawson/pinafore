@@ -46,11 +46,13 @@
               on:click="prev()"
             />
             {#each dots as dot, i (dot.i)}
+              <!-- TODO: this should probably be aria-current or something, not a toggle button -->
               <IconButton
                 className="media-control-button"
                 svgClassName="media-control-button-svg"
                 pressable={true}
                 label="Show {nth(i)} media"
+                pressedLabel="Showing {nth(i)} media"
                 pressed={i === scrolledItem}
                 href={i === scrolledItem ? '#fa-circle' : '#fa-circle-o'}
                 sameColorWhenPressed={true}
@@ -73,7 +75,8 @@
           svgClassName="media-control-button-svg"
           pressable={true}
           pressed={pinchZoomMode}
-          label={pinchZoomMode ? 'Disable pinch-zoom mode' : 'Enable pinch-zoom mode'}
+          label="Pinch-zoom mode"
+          pressedLabel="Exit pinch-zoom mode"
           href="#fa-search"
           on:click="togglePinchZoomMode()"
         />
