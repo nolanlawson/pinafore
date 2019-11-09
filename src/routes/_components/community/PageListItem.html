@@ -7,7 +7,8 @@
     {#if pinnable}
       <IconButton pressable="true"
                   pressed={$pinnedPage === href}
-                  label={$pinnedPage === href ? 'Unpin timeline' : 'Pin timeline'}
+                  label="Pin timeline"
+                  pressedLabel="Timeline pinned"
                   href="#fa-thumb-tack"
                   on:click="onPinClick(event)" />
     {/if}

@@ -2,6 +2,7 @@
   <IconButton
     className="status-toolbar-reply-button"
     label={replyLabel}
+    pressedLabel="Close reply"
     pressable="true"
     pressed={replyShown}
     href={replyIcon}
@@ -10,6 +11,7 @@
     />
   <IconButton
     label={reblogLabel}
+    pressedLabel="Unboost"
     pressable={!reblogDisabled}
     pressed={reblogged}
     disabled={reblogDisabled}
@@ -19,7 +21,8 @@
     ref:reblogIcon
   />
   <IconButton
-    label={favoriteLabel}
+    label="Favorite"
+    pressedLabel="Unfavorite"
     pressable="true"
     pressed={favorited}
     href="#fa-star"
@@ -160,18 +163,18 @@
       reblogAnimation: REBLOG_ANIMATION
     }),
     computed: {
-      replyLabel: ({ replyShown, inReplyToId }) => (
-        replyShown ? 'Close reply' : inReplyToId ? 'Reply to thread' : 'Reply'
+      replyLabel: ({ inReplyToId }) => (
+        inReplyToId ? 'Reply to thread' : 'Reply'
       ),
       replyIcon: ({ inReplyToId }) => inReplyToId ? '#fa-reply-all' : '#fa-reply',
-      reblogLabel: ({ visibility, reblogged }) => {
+      reblogLabel: ({ visibility }) => {
         switch (visibility) {
           case 'private':
             return 'Cannot be boosted because this is followers-only'
           case 'direct':
             return 'Cannot be boosted because this is a direct message'
           default:
-            return reblogged ? 'Unboost' : 'Boost'
+            return 'Boost'
         }
       },
       reblogIcon: ({ visibility }) => {
@@ -193,9 +196,6 @@
         }
         return originalStatus.reblogged
       },
-      favoriteLabel: ({ favorited }) => (
-        favorited ? 'Unfavorite' : 'Favorite'
-      ),
       favorited: ({ originalStatusId, $currentStatusModifications, originalStatus }) => {
         if ($currentStatusModifications && originalStatusId in $currentStatusModifications.favorites) {
           return $currentStatusModifications.favorites[originalStatusId]

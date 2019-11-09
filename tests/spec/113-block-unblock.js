@@ -5,7 +5,7 @@ import {
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { loginAsFoobar } from '../roles'
-import { postAs } from '../serverActions'
+import { postAs, unfollowAs } from '../serverActions'
 
 fixture`113-block-unblock.js`
   .page`http://localhost:4002`
@@ -28,14 +28,21 @@ test('Can block and unblock an account from a status', async t => {
     .expect(getUrl()).contains('/accounts/1')
     .expect(accountProfileFollowedBy.innerText).match(/blocked/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unblock')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Unblock')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql(undefined)
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowedBy.innerText).contains('')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('false')
     .click(accountProfileFollowButton)
-    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
+    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Unfollow')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('true')
 })
 
 test('Can block and unblock an account from the account profile page', async t => {
+  await unfollowAs('foobar', 'baz') // reset
   await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/5')
@@ -47,11 +54,19 @@ test('Can block and unblock an account from the account profile page', async t =
     .click(getNthDialogOptionsOption(3))
     .expect(accountProfileFollowedBy.innerText).match(/blocked/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unblock')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Unblock')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql(undefined)
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowedBy.innerText).contains('')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
-    .click(accountProfileFollowButton)
-    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('false')
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Unfollow')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('true')
+    .click(accountProfileFollowButton)
+    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('title')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('false')
 })

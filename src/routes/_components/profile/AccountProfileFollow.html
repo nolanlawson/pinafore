@@ -1,10 +1,18 @@
 <div class="account-profile-follow {shown ? 'shown' : ''}">
+  <!--
+    This button has a few different states.
+     - If we're blocking, then it's a normal non-toggle button that unblocks.
+     - Otherwise it's a toggle button that changes whether we're following the account or not.
+     - If a follow is requested, then the button is pressed but shows as "follow requested" with
+       a different icon.
+  -->
   <IconButton
     className="account-profile-follow-icon-button"
-    label={followLabel}
-    href={followIcon}
-    pressable="true"
-    pressed={following}
+    {label}
+    {pressedLabel}
+    {href}
+    {pressable}
+    {pressed}
     big={!$isVeryTinyMobileSize}
     on:click="onFollowButtonClick(event)"
     ref:icon
@@ -35,6 +43,11 @@
 
   export default {
     methods: {
+      oncreate () {
+        if (process.browser) {
+          window.__button = this
+        }
+      },
       async onFollowButtonClick (e) {
         e.preventDefault()
         e.stopPropagation()
@@ -75,18 +88,20 @@
       followRequested: ({ relationship }) => {
         return relationship && relationship.requested
       },
-      followLabel: ({ blocking, following, followRequested }) => {
-        if (blocking) {
-          return 'Unblock'
-        } else if (following) {
-          return 'Unfollow'
-        } else if (followRequested) {
-          return 'Unfollow (follow requested)'
+      labelExtraText: ({ blocking, following, followRequested }) => {
+        if (!blocking && !following && followRequested) {
+          return ' (follow requested)'
         } else {
-          return 'Follow'
+          return ''
         }
       },
-      followIcon: ({ blocking, following, followRequested }) => {
+      label: ({ blocking, labelExtraText }) => {
+        return (blocking ? 'Unblock' : 'Follow') + labelExtraText
+      },
+      pressedLabel: ({ labelExtraText }) => {
+        return 'Unfollow' + labelExtraText
+      },
+      href: ({ blocking, following, followRequested }) => {
         if (blocking) {
           return '#fa-unlock'
         } else if (following) {
@@ -97,9 +112,13 @@
           return '#fa-user-plus'
         }
       },
-      shown: ({ verifyCredentials, relationship }) => {
-        return verifyCredentials && relationship && verifyCredentials.id !== relationship.id
-      }
+      shown: ({ verifyCredentials, relationship }) => (
+        verifyCredentials && relationship && verifyCredentials.id !== relationship.id
+      ),
+      pressable: ({ blocking }) => !blocking,
+      pressed: ({ blocking, following, followRequested }) => (
+        !blocking && (following || followRequested)
+      )
     },
     components: {
       IconButton

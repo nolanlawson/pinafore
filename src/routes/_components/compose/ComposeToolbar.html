@@ -16,7 +16,8 @@
     />
     <IconButton
       className="compose-toolbar-button"
-      label="{poll && poll.options && poll.options.length ? 'Remove poll' : 'Add poll'}"
+      label="Add poll"
+      pressedLabel="Remove poll"
       href="#fa-bar-chart"
       on:click="onPollClick()"
       pressable="true"
@@ -30,7 +31,8 @@
     />
     <IconButton
       className="compose-toolbar-button"
-      label={contentWarningShown ? 'Remove content warning' : 'Add content warning'}
+      label="Add content warning"
+      pressedLabel="Remove content warning"
       href="#fa-exclamation-triangle"
       on:click="onContentWarningClick()"
       pressable="true"
