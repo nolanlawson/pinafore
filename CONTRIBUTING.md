@@ -77,7 +77,7 @@ In separate terminals:
 
 3\. Run a debuggable TestCafé instance:
 
-    npx testcafe --hostname localhost --skip-js-errors --debug-mode chrome tests/spec
+    npx testcafe --debug-mode chrome tests/spec
 
 ### Test conventions
 

@@ -26,8 +26,8 @@
     "test-browser-suite1": "run-p --race run-mastodon build-and-start test-mastodon-suite1",
     "test-mastodon-suite1": "run-s wait-for-mastodon-to-start wait-for-mastodon-data testcafe-suite1",
     "testcafe": "run-s testcafe-suite0 testcafe-suite1",
-    "testcafe-suite0": "cross-env-shell testcafe --hostname localhost --skip-js-errors -q -c 4 $BROWSER tests/spec/0*",
-    "testcafe-suite1": "cross-env-shell testcafe --hostname localhost --skip-js-errors -q $BROWSER tests/spec/1*",
+    "testcafe-suite0": "cross-env-shell testcafe -c 4 $BROWSER tests/spec/0*",
+    "testcafe-suite1": "cross-env-shell testcafe $BROWSER tests/spec/1*",
     "test-unit": "mocha -r esm -r bin/browser-shim.js tests/unit/",
     "wait-for-mastodon-to-start": "node -r esm bin/wait-for-mastodon-to-start.js",
     "wait-for-mastodon-data": "node -r esm bin/wait-for-mastodon-data.js",
@@ -119,7 +119,7 @@
     "mocha": "^6.2.1",
     "now": "^16.3.1",
     "standard": "^14.3.1",
-    "testcafe": "^1.5.0"
+    "testcafe": "^1.6.1"
   },
   "engines": {
     "node": ">= 8"
