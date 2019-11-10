@@ -4,7 +4,7 @@
     role="listbox"
 >
   {#each items as item, i (item.shortcode || item.id || item.name)}
-  <li id="{i === selected ? `compose-autosuggest-active-item-${realm}` : ''}"
+  <li id="compose-autosuggest-active-item-{realm}-{i}"
       class="compose-autosuggest-list-item {i === selected ? 'selected' : ''}"
       role="option"
       aria-selected="{i === selected}"

@@ -17,6 +17,5 @@ export function createAutosuggestAccessibleLabel (
       : displayName
     label = `${displayName} @${selected.acct}`
   }
-  return `${label} (${selectedIndex + 1} of ${searchResults.length}). ` +
-    'Press up and down arrows to review and enter to select.'
+  return label
 }
