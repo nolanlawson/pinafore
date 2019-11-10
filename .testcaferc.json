@@ -5,5 +5,5 @@
     "takeOnFails": false
   },
   "skipJsErrors": true,
-  "stopOnFirstFail": true
+  "stopOnFirstFail": false
 }
