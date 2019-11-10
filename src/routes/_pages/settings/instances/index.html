@@ -3,26 +3,29 @@
 
   {#if $isUserLoggedIn}
   <p>Instances you've logged in to:</p>
-  <SettingsList label="Instances">
-    {#each instanceStates as instance}
-    <SettingsListRow>
-      <SettingsListButton className="instance-switcher-instance-name"
-                          href="/settings/instances/{instance.name}"
-                          label={instance.name}
-                          ariaLabel={instance.label} />
-      <div class="instance-switcher-button-wrapper">
-        <button class="instance-switcher-button"
-                aria-label={instance.switchLabel}
-                title={instance.switchLabel}
-                aria-pressed={instance.current}
-                on:click="onSwitchToThisInstance(event, instance.name)">
-          <SvgIcon className="instance-switcher-button-svg"
-                   href={instance.current ? '#fa-star' : '#fa-star-o'} />
-        </button>
-      </div>
-    </SettingsListRow>
-    {/each}
-  </SettingsList>
+  <RadioGroup label="Switch to instance" length={numInstances}>
+    <SettingsList label="Instances">
+      {#each instanceStates as instance}
+      <SettingsListRow>
+        <SettingsListButton className="instance-switcher-instance-name"
+                            href="/settings/instances/{instance.name}"
+                            label={instance.name}
+                            ariaLabel={instance.label} />
+        <div class="instance-switcher-button-wrapper">
+          <RadioGroupButton
+                  className="instance-switcher-button"
+                  label={instance.switchLabel}
+                  checked={instance.current}
+                  index={instance.index}
+                  on:click="onSwitchToThisInstance(event, instance.name)">
+            <SvgIcon className="instance-switcher-button-svg"
+                     href={instance.current ? '#fa-star' : '#fa-star-o'} />
+          </RadioGroupButton>
+        </div>
+      </SettingsListRow>
+      {/each}
+    </SettingsList>
+  </RadioGroup>
   <p><a rel="prefetch" href="/settings/instances/add">Add another instance</a></p>
   {:else}
   <p>You're not logged in to any instances.</p>
@@ -40,7 +43,7 @@
     border: 1px solid var(--settings-list-item-border);
     min-width: 44px;
   }
-  .instance-switcher-button {
+  :global(.instance-switcher-button) {
     display: flex;
     position: absolute;
     top: 0;
@@ -69,6 +72,8 @@
   import SettingsListRow from '../../../_components/settings/SettingsListRow.html'
   import SettingsListButton from '../../../_components/settings/SettingsListButton.html'
   import SvgIcon from '../../../_components/SvgIcon.html'
+  import RadioGroup from '../../../_components/radio/RadioGroup.html'
+  import RadioGroupButton from '../../../_components/radio/RadioGroupButton.html'
 
   export default {
     components: {
@@ -76,7 +81,9 @@
       SettingsList,
       SettingsListRow,
       SettingsListButton,
-      SvgIcon
+      SvgIcon,
+      RadioGroup,
+      RadioGroupButton
     },
     methods: {
       onSwitchToThisInstance (e, instanceName) {
@@ -88,13 +95,15 @@
     store: () => store,
     computed: {
       instanceStates: ({ $loggedInInstancesAsList }) => (
-        $loggedInInstancesAsList.map(({ name, current }) => ({
+        $loggedInInstancesAsList.map(({ name, current }, index) => ({
+          index,
           name,
           current,
           label: `${name} ${current ? '(current instance)' : ''}`,
-          switchLabel: current ? `${name} is the current instance` : `Switch to ${name}`
+          switchLabel: `Switch to ${name}`
         }))
-      )
+      ),
+      numInstances: ({ $loggedInInstancesAsList }) => $loggedInInstancesAsList.length
     }
   }
 </script>
