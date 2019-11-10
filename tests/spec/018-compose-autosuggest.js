@@ -22,7 +22,7 @@ test('autosuggests user handles', async t => {
   await sleep(1000)
   await t
     .typeText(composeInput, 'hey @qu')
-    .expect(getNthAutosuggestionResult(1).getAttribute('aria-label')).contains('@quux')
+    .expect(getNthAutosuggestionResult(1).find('.sr-only').innerText).contains('@quux')
     .click(getNthAutosuggestionResult(1), { timeout })
     .expect(composeInput.value).eql('hey @quux ')
     .typeText(composeInput, 'and also @adm')
@@ -46,7 +46,7 @@ test('autosuggests custom emoji', async t => {
     .click(getNthAutosuggestionResult(1))
     .expect(composeInput.value).eql(':blobnom: ')
     .typeText(composeInput, 'and :blob')
-    .expect(getNthAutosuggestionResult(1).getAttribute('aria-label')).contains('blobnom')
+    .expect(getNthAutosuggestionResult(1).find('.sr-only').innerText).contains('blobnom')
     .expect(getNthAutosuggestionResult(1).innerText).contains(':blobnom:', { timeout })
     .expect(getNthAutosuggestionResult(2).innerText).contains(':blobpats:')
     .expect(getNthAutosuggestionResult(3).innerText).contains(':blobpeek:')
