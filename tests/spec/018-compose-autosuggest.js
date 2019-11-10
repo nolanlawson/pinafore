@@ -110,7 +110,7 @@ test('autosuggest only shows for one input', async t => {
     .selectText(getNthComposeReplyInput(1))
     .pressKey('delete')
     .typeText(getNthComposeReplyInput(1), 'uu')
-    .expect($('.compose-autosuggest.shown').exists).notOk()
+    .expect($('.compose-autosuggest').visible).notOk()
 })
 
 test('autosuggest only shows for one input part 2', async t => {
@@ -118,7 +118,7 @@ test('autosuggest only shows for one input part 2', async t => {
   await t
     .hover(composeInput)
     .typeText(composeInput, '@adm')
-    .expect($('.compose-autosuggest.shown').exists).ok({ timeout })
+    .expect($('.compose-autosuggest').visible).ok({ timeout })
     .expect(getNthAutosuggestionResult(1).innerText).contains('@admin')
     .hover(getNthStatus(1))
     .click(getNthReplyButton(1))
@@ -127,7 +127,7 @@ test('autosuggest only shows for one input part 2', async t => {
     .typeText(getNthComposeReplyInput(1), '@dd')
   await sleep(1000)
   await t.pressKey('backspace')
-    .expect($('.compose-autosuggest.shown').exists).notOk()
+    .expect($('.compose-autosuggest').visible).notOk()
 })
 
 test('autocomplete disappears on blur', async t => {
@@ -135,7 +135,7 @@ test('autocomplete disappears on blur', async t => {
   await t
     .hover(composeInput)
     .typeText(composeInput, '@adm')
-    .expect($('.compose-autosuggest.shown').exists).ok({ timeout })
+    .expect($('.compose-autosuggest').visible).ok({ timeout })
     .click(composeLengthIndicator)
-    .expect($('.compose-autosuggest.shown').exists).notOk()
+    .expect($('.compose-autosuggest').visible).notOk()
 })
