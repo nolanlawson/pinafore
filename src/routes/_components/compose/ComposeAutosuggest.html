@@ -1,6 +1,4 @@
-<div class="compose-autosuggest {shown ? 'shown' : ''} {realm === 'dialog' ? 'is-dialog' : ''}"
-     aria-hidden={!shown}
->
+<div class="compose-autosuggest {shown ? '' : 'not-shown'} {realm === 'dialog' ? 'is-dialog' : ''}">
   <ComposeAutosuggestionList
     items={autosuggestSearchResults}
     on:click="onClick(event)"
@@ -15,17 +13,13 @@
     position: absolute;
     left: 5px;
     top: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.1s linear;
     z-index: 7000;
   }
   .compose-autosuggest.is-dialog {
     z-index: 11000;
   }
-  .compose-autosuggest.shown {
-    pointer-events: auto;
-    opacity: 1;
+  .compose-autosuggest.not-shown {
+    display: none;
   }
 
   @media (min-width: 480px) {
