@@ -32,8 +32,6 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
-      - postgresql-client
-      - postgresql-contrib
       - protobuf-compiler
       - redis-server
       - redis-tools
