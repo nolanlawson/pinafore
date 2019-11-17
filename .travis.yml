@@ -8,6 +8,7 @@ services:
   - postgresql
 addons:
   chrome: stable
+  postgresql: "12"
   apt:
     packages:
       - autoconf
@@ -32,6 +33,9 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
+      - postgresql-10
+      - postgresql-client-12
+      - postgresql-contrib-12
       - protobuf-compiler
       - redis-server
       - redis-tools
