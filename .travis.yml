@@ -55,6 +55,7 @@ after_script:
 script: travis_retry yarn run $COMMAND
 env:
   global:
+    - PGPORT=5433
     - ESM_DISABLE_CACHE=1 # this cache causes travis to rebuild its cache every single time
     - TERSER_DISABLE_CACHE=1 # ditto
     - secure: "iR11lD+OAyTJdNoK67esDOrd34HKQboJo0DrVL4xqwoAwQGmNX7posBtcj0TOwVAdHfd5S80xlhWlMebrtHWR9oMtdcBXusWnehZVRB0WE89n8enkJCbAxn5uMpcEpKpDHTcfR/Gbxf2sw15dTy0PrW/ldiZXWf7wybJEBGbrEP7QI8oy3VHzmKpSyjRpN/hnSlgxskVnfIMKPp43D+705Ka7aMJNTWZ5dAdKdIjQWX6j6jlqx6Vl+qIq7td3DTZA9A5ft8HxaWC27F1bbd52PdRY2h8Ii3Ps+n8Q8uZK1KJPp9t3pPk+PmYINu2715ArukRk73kahnFadBQLhytn95FLiyKOLj+ajBNo+o3KIQDs3qRj8gkXpkJpuLAPgwABOEVWuLh9y+oa33IDYVzyESRVtXqbbwgziYVjNQCozP1Nt9+Wyh4YHfdOjEEMdlVlkwlyzPfaLAqVBusEphnaF/vx7itdVvxOMQYNcSRoBrAgciN4ng0GZHi5P85DMXnNV41r+d3JK5JEYZD/gpSja5cPUlpPlkXsKiElG3fEoO2D/Uc8rR9Cu84XiJiJQjP91QuWagfdhgqM4YOndt2YukiGzRzDMjTx1BzSW4S11RQGWzZrv06zmDLXTlnUAMEm1/Exo4L6VfgRvyFmgM0LAT+IceVEHbOKC/Hnd8Y3mo="
