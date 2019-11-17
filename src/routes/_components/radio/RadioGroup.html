@@ -35,8 +35,8 @@
       className: ''
     }),
     computed: {
-      ariaOwns: ({ length }) => (
-        times(length, index => `radio-group-button-${index}`).join(' ')
+      ariaOwns: ({ length, id }) => (
+        times(length, index => `radio-group-button-${id}-${index}`).join(' ')
       )
     }
   }
