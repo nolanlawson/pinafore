@@ -8,7 +8,6 @@ services:
   - postgresql
 addons:
   chrome: stable
-  postgresql: "9.6"
   apt:
     packages:
       - autoconf
@@ -33,9 +32,8 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
-      - postgresql-9.6
-      - postgresql-client-9.6
-      - postgresql-contrib-9.6
+      - postgresql-client-9.2
+      - postgresql-contrib-9.2
       - protobuf-compiler
       - redis-server
       - redis-tools
