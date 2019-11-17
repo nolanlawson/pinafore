@@ -5,9 +5,10 @@ dist: bionic
 sudo: false
 services:
   - redis-server
+  - postgresql
 addons:
   chrome: stable
-  postgresql: "10"
+  postgresql: "11"
   apt:
     packages:
       - autoconf
@@ -32,9 +33,9 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
-      - postgresql-10
-      - postgresql-client-10
-      - postgresql-contrib-10
+      - postgresql-11
+      - postgresql-client-11
+      - postgresql-contrib-11
       - protobuf-compiler
       - redis-server
       - redis-tools
