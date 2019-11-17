@@ -2,7 +2,7 @@
   <!--
     This button has a few different states.
      - If we're blocking, then it's a normal non-toggle button that unblocks.
-     - Otherwise it's a toggle button that changes whether we're following the account or not.
+     - Otherwise it's a pseudo-toggle button that changes whether we're following the account or not.
      - If a follow is requested, then the button is pressed but shows as "follow requested" with
        a different icon.
   -->
@@ -13,6 +13,7 @@
     {href}
     {pressable}
     {pressed}
+    toggleButton={false}
     big={!$isVeryTinyMobileSize}
     on:click="onFollowButtonClick(event)"
     ref:icon

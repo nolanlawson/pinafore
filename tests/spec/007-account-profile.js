@@ -19,7 +19,6 @@ test('shows account profile', async t => {
     .expect(accountProfileUsername.innerText).contains('@quux')
     .expect(accountProfileFollowedBy.innerText).match(/follows you/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
-    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('false')
 })
 
 test('shows account profile 2', async t => {
@@ -30,9 +29,8 @@ test('shows account profile 2', async t => {
     .expect(accountProfileName.innerText).contains('admin')
     .expect(accountProfileUsername.innerText).contains('@admin')
     .expect(accountProfileFollowedBy.innerText).match(/follows you/i)
-    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+    .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Unfollow')
-    .expect(accountProfileFollowButton.getAttribute('aria-pressed')).eql('true')
 })
 
 test('shows account profile 3', async t => {
