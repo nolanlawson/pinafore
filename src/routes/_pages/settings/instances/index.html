@@ -3,7 +3,7 @@
 
   {#if $isUserLoggedIn}
   <p>Instances you've logged in to:</p>
-  <RadioGroup label="Switch to instance" length={numInstances}>
+  <RadioGroup id="instance-switch" label="Switch to instance" length={numInstances}>
     <SettingsList label="Instances">
       {#each instanceStates as instance}
       <SettingsListRow>
@@ -13,6 +13,7 @@
                             ariaLabel={instance.label} />
         <div class="instance-switcher-button-wrapper">
           <RadioGroupButton
+                  id="instance-switch"
                   className="instance-switcher-button"
                   label={instance.switchLabel}
                   checked={instance.current}
