@@ -21,7 +21,7 @@ addons:
       - imagemagick
       - libffi-dev
       - libgdbm-dev
-      - libgdbm5
+      - libgdbm-dev
       - libicu-dev
       - libidn11-dev
       - libncurses5-dev
