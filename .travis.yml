@@ -1,14 +1,14 @@
 language: node_js
 node_js:
   - "10"
-dist: bionic
+dist: xenial
 sudo: false
 services:
   - redis-server
   - postgresql
 addons:
   chrome: stable
-  postgresql: "12"
+  postgresql: "10"
   apt:
     packages:
       - autoconf
@@ -34,8 +34,8 @@ addons:
       - libyaml-dev
       - pkg-config
       - postgresql-10
-      - postgresql-client-12
-      - postgresql-contrib-12
+      - postgresql-client-10
+      - postgresql-contrib-10
       - protobuf-compiler
       - redis-server
       - redis-tools
