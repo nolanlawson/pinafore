@@ -5,7 +5,7 @@
         title={pressable ? (pressed ? pressedLabel : label) : label}
         aria-label={label}
         aria-pressed={pressable ? !!pressed : undefined}
-        aria-hidden={ariaHidden}
+        aria-hidden={ariaHidden ? 'true' : undefined}
         tabindex="{ariaHidden ? '-1' : '0'}"
         class={computedClass}
         {disabled}
