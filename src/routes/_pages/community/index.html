@@ -1,50 +1,62 @@
 {#if $isUserLoggedIn}
 <div class="community-page">
 
-  <h2 class="community-header">
-    Timelines
-  </h2>
-
-  <PageList label="Timelines">
-    <PageListItem href="/local"
-                  label="Local Timeline"
-                  icon="#fa-users"
-                  pinnable="true"
-    />
-    <PageListItem href="/federated"
-                  label="Federated Timeline"
-                  icon="#fa-globe"
-                  pinnable="true"
-    />
-    <PageListItem href="/favorites"
-                  label="Favorites"
-                  icon="#fa-star"
-                  pinnable="true"
-    />
-    <PageListItem href="/direct"
-                  label="Direct messages"
-                  icon="#fa-envelope"
-                  pinnable="true"
-    />
-  </PageList>
-
-  {#if $lists.length}
+  <RadioGroup
+    id="pinnables"
+    length={numPinnable}
+    label="Pinnable timelines">
 
     <h2 class="community-header">
-      Lists
+      Timelines
     </h2>
 
-    <PageList label="Lists">
-      {#each $lists as list}
-      <PageListItem href="/lists/{list.id}"
-                    label={list.title}
-                    icon="#fa-bars"
+    <PageList label="Timelines">
+      <PageListItem href="/local"
+                    label="Local Timeline"
+                    icon="#fa-users"
                     pinnable="true"
+                    pinIndex={0}
       />
-      {/each}
+      <PageListItem href="/federated"
+                    label="Federated Timeline"
+                    icon="#fa-globe"
+                    pinnable="true"
+                    pinIndex={1}
+      />
+      <PageListItem href="/favorites"
+                    label="Favorites"
+                    icon="#fa-star"
+                    pinnable="true"
+                    pinIndex={2}
+      />
+      <PageListItem href="/direct"
+                    label="Direct messages"
+                    icon="#fa-envelope"
+                    pinnable="true"
+                    pinIndex={3}
+      />
     </PageList>
 
-  {/if}
+    {#if listsLength}
+
+      <h2 class="community-header">
+        Lists
+      </h2>
+
+      <PageList label="Lists">
+        {#each $lists as list, i}
+          <PageListItem href="/lists/{list.id}"
+                        label={list.title}
+                        icon="#fa-bars"
+                        pinnable="true"
+                        pinIndex={4 + i}
+          />
+        {/each}
+      </PageList>
+
+    {/if}
+
+  </RadioGroup>
 
   <h2 class="community-header">
     Instance settings
@@ -108,6 +120,7 @@
   import HiddenFromSSR from '../../_components/HiddenFromSSR'
   import PageList from '../../_components/community/PageList.html'
   import PageListItem from '../../_components/community/PageListItem.html'
+  import RadioGroup from '../../_components/radio/RadioGroup.html'
   import { updateListsForInstance } from '../../_actions/lists'
   import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
 
@@ -126,13 +139,16 @@
       FreeTextLayout,
       HiddenFromSSR,
       PageList,
-      PageListItem
+      PageListItem,
+      RadioGroup
     },
     computed: {
       isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked,
       followRequestsLabel: ({ $hasFollowRequests, $numberOfFollowRequests }) => (
         `Follow requests${$hasFollowRequests ? ` (${$numberOfFollowRequests})` : ''}`
-      )
+      ),
+      listsLength: ({ $lists }) => $lists ? $lists.length : 0,
+      numPinnable: ({ listsLength }) => listsLength + 4 // 4 because of local/federated/favs/direct
     }
   }
 </script>

@@ -5,12 +5,16 @@
       {label}
     </span>
     {#if pinnable}
-      <IconButton pressable="true"
-                  pressed={$pinnedPage === href}
-                  label="Pin timeline"
-                  pressedLabel="Timeline pinned"
-                  href="#fa-thumb-tack"
-                  on:click="onPinClick(event)" />
+      <RadioGroupButton
+        id="pinnables"
+        className="pinnable-button"
+        checked={$pinnedPage === href}
+        label="Pin {label}"
+        index={pinIndex}
+        on:click="onPinClick(event)"
+      >
+        <SvgIcon className="pinnable-svg" href="#fa-thumb-tack" />
+    </RadioGroupButton>
     {/if}
   </a>
 </li>
@@ -52,6 +56,42 @@
     text-overflow: ellipsis;
   }
 
+  /* TODO: begin copypasta from IconButton.html */
+
+  :global(.pinnable-button) {
+    background: none;
+    border: none;
+    padding: 6px 10px;
+  }
+
+  :global(.pinnable-button .pinnable-svg) {
+    fill: var(--action-button-fill-color);
+    width: 24px;
+    height: 24px;
+  }
+
+  :global(.pinnable-button:hover .pinnable-svg) {
+    fill: var(--action-button-fill-color-hover);
+  }
+
+  :global(.pinnable-button:active .pinnable-svg) {
+    fill: var(--action-button-fill-color-active);
+  }
+
+  :global(.pinnable-button.checked .pinnable-svg) {
+    fill: var(--action-button-fill-color-pressed);
+  }
+
+  :global(.pinnable-button.checked:hover .pinnable-svg) {
+    fill: var(--action-button-fill-color-pressed-hover);
+  }
+
+  :global(.pinnable-button.checked:active .pinnable-svg) {
+    fill: var(--action-button-fill-color-pressed-active);
+  }
+
+  /* TODO: end copypasta */
+
   @media (max-width: 767px) {
     .page-list-item a {
       padding: 20px 10px;
@@ -77,8 +117,8 @@
 </style>
 <script>
   import { store } from '../../_store/store'
-  import IconButton from '../IconButton'
   import SvgIcon from '../SvgIcon.html'
+  import RadioGroupButton from '../../_components/radio/RadioGroupButton.html'
 
   export default {
     store: () => store,
@@ -95,8 +135,8 @@
       }
     },
     components: {
-      IconButton,
-      SvgIcon
+      SvgIcon,
+      RadioGroupButton
     },
     methods: {
       onPinClick (e) {
