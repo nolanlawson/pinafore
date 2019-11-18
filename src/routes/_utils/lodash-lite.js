@@ -36,3 +36,11 @@ export function sum (list) {
   }
   return total
 }
+
+export function times (n, func) {
+  const res = []
+  for (let i = 0; i < n; i++) {
+    res.push(func(i))
+  }
+  return res
+}
