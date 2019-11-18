@@ -1,5 +1,5 @@
 <!-- Modeled after https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/radio/radio.html -->
-<div class="radio-group focus-fix {className}"
+<div class="radio-group {className}"
      role="radiogroup"
      aria-label={label}
      aria-owns={ariaOwns}
@@ -29,6 +29,8 @@
         const newIndex = (len + (index + (key === 'ArrowUp' ? -1 : 1))) % len // increment/decrement and wrap around
         buttons[newIndex].focus()
         buttons[newIndex].click()
+        e.preventDefault()
+        e.stopPropagation()
       }
     },
     data: () => ({
