@@ -34,7 +34,7 @@ test('Fav stats update', async t => {
     .expect(getFavoritesCount()).eql(4)
 })
 
-test('Reblog stats update', async t => {
+test('Boost stats update', async t => {
   const status = await postAs('foobar', 'oh why hello it looks like another toot')
   const statusId = status.id
   await reblogStatusAs('admin', statusId)

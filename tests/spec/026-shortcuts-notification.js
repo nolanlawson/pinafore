@@ -1,7 +1,7 @@
 import {
   closeDialogButton,
   composeModalInput,
-  getNthFavorited,
+  getNthFavoritedLabel,
   getNthStatus,
   getUrl, modalDialog, notificationsNavButton,
   isNthStatusActive, goBack
@@ -19,13 +19,13 @@ test('Shortcut f toggles favorite status in notification', async t => {
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .expect(getNthStatus(1 + idx).exists).ok({ timeout: 30000 })
-    .expect(getNthFavorited(1 + idx)).eql('false')
+    .expect(getNthFavoritedLabel(1 + idx)).eql('Favorite')
     .pressKey('j '.repeat(idx + 1))
     .expect(isNthStatusActive(1 + idx)()).ok()
     .pressKey('f')
-    .expect(getNthFavorited(1 + idx)).eql('true')
+    .expect(getNthFavoritedLabel(1 + idx)).eql('Unfavorite')
     .pressKey('f')
-    .expect(getNthFavorited(1 + idx)).eql('false')
+    .expect(getNthFavoritedLabel(1 + idx)).eql('Favorite')
 })
 
 test('Shortcut p toggles profile in a follow notification', async t => {

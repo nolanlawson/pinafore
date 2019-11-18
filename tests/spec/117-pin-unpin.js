@@ -46,11 +46,11 @@ test('Can favorite a pinned status', async t => {
   await t
     .click(avatarInComposeBox)
     .expect(getNthPinnedStatus(1).getAttribute('aria-setsize')).eql('1')
-    .expect(getNthPinnedStatusFavoriteButton(1).getAttribute('aria-pressed')).eql('false')
+    .expect(getNthPinnedStatusFavoriteButton(1).getAttribute('aria-label')).eql('Favorite')
     .click(getNthPinnedStatusFavoriteButton(1))
-    .expect(getNthPinnedStatusFavoriteButton(1).getAttribute('aria-pressed')).eql('true')
+    .expect(getNthPinnedStatusFavoriteButton(1).getAttribute('aria-label')).eql('Unfavorite')
     .click(getNthPinnedStatusFavoriteButton(1))
-    .expect(getNthPinnedStatusFavoriteButton(1).getAttribute('aria-pressed')).eql('false')
+    .expect(getNthPinnedStatusFavoriteButton(1).getAttribute('aria-label')).eql('Favorite')
 })
 
 test('Saved pinned/unpinned state of status', async t => {

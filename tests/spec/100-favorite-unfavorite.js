@@ -1,7 +1,7 @@
 import {
   getFavoritesCount,
   getNthFavoriteButton,
-  getNthFavorited,
+  getNthFavoritedLabel,
   getNthStatus,
   getNthStatusContent,
   getUrl,
@@ -23,9 +23,9 @@ test('favorites a status', async t => {
   await t
     .expect(getNthStatusContent(1).innerText).contains('favorite me')
     .hover(getNthStatus(1))
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
     .click(getNthFavoriteButton(1))
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
 
   // scroll down and back up to force an unrender
   await scrollToBottom()
@@ -33,18 +33,18 @@ test('favorites a status', async t => {
   await scrollToTop()
   await t
     .hover(getNthStatus(1))
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
     .click(notificationsNavButton)
     .click(homeNavButton)
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getNthStatus(1))
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
     .click(getNthFavoriteButton(1))
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
 })
 
 test('unfavorites a status', async t => {
@@ -53,24 +53,24 @@ test('unfavorites a status', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).innerText).contains('favorite this one too')
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
     .click(getNthFavoriteButton(1))
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
 
   // scroll down and back up to force an unrender
   await scrollToBottom()
   await sleep(1)
   await scrollToTop()
   await t
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
     .click(notificationsNavButton)
     .click(homeNavButton)
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
     .click(notificationsNavButton)
     .navigateTo('/')
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
     .click(getNthFavoriteButton(1))
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
 })
 
 test('Keeps the correct favorites count', async t => {
@@ -81,18 +81,18 @@ test('Keeps the correct favorites count', async t => {
     .expect(getNthStatusContent(1).innerText).contains('favorite this twice pls')
     .hover(getNthStatus(1))
     .click(getNthFavoriteButton(1))
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
     .click(getNthStatus(1))
     .expect(getUrl()).contains('/status')
-    .expect(getNthFavorited(1)).eql('true')
+    .expect(getNthFavoritedLabel(1)).eql('Unfavorite')
     .expect(getFavoritesCount()).eql(2)
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getNthStatus(1))
     .click(getNthFavoriteButton(1))
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
     .click(getNthStatus(1))
     .expect(getUrl()).contains('/status')
-    .expect(getNthFavorited(1)).eql('false')
+    .expect(getNthFavoritedLabel(1)).eql('Favorite')
     .expect(getFavoritesCount()).eql(1)
 })

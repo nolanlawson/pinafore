@@ -404,8 +404,8 @@ export function getNthStatusOptionsButton (n) {
   return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(4)`)
 }
 
-export function getNthFavorited (n) {
-  return getNthFavoriteButton(n).getAttribute('aria-pressed')
+export function getNthFavoritedLabel (n) {
+  return getNthFavoriteButton(n).getAttribute('aria-label')
 }
 
 export function getNthShowOrHideButton (n) {
@@ -420,8 +420,8 @@ export function getNthReblogButton (n) {
   return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(2)`)
 }
 
-export function getNthReblogged (n) {
-  return getNthReblogButton(n).getAttribute('aria-pressed')
+export function getNthRebloggedLabel (n) {
+  return getNthReblogButton(n).getAttribute('aria-label')
 }
 
 export function getNthDialogOptionsOption (n) {

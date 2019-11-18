@@ -1,5 +1,5 @@
 import {
-  getNthReblogButton, getNthReblogged, getNthStatus, getNthStatusContent, getReblogsCount, getUrl, homeNavButton,
+  getNthReblogButton, getNthRebloggedLabel, getNthStatus, getNthStatusContent, getReblogsCount, getUrl, homeNavButton,
   notificationsNavButton, scrollToBottom, scrollToTop, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -14,9 +14,9 @@ test('reblogs a status', async t => {
   await t
     .hover(getNthStatus(1))
     .expect(getNthStatusContent(1).innerText).contains('should be reblogged')
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .click(getNthReblogButton(1))
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
 
   // scroll down and back up to force an unrender
   await scrollToBottom()
@@ -24,17 +24,17 @@ test('reblogs a status', async t => {
   await scrollToTop()
   await t
     .hover(getNthStatus(1))
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
     .click(notificationsNavButton)
     .click(homeNavButton)
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
     .click(getNthReblogButton(1))
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
 })
 
 test('unreblogs a status', async t => {
@@ -43,11 +43,11 @@ test('unreblogs a status', async t => {
   await t
     .hover(getNthStatus(1))
     .expect(getNthStatusContent(1).innerText).contains('woot i wanna')
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .click(getNthReblogButton(1))
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
     .click(getNthReblogButton(1))
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
 
   // scroll down and back up to force an unrender
   await scrollToBottom()
@@ -55,15 +55,15 @@ test('unreblogs a status', async t => {
   await scrollToTop()
   await t
     .hover(getNthStatus(1))
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .click(notificationsNavButton)
     .click(homeNavButton)
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .click(notificationsNavButton)
     .navigateTo('/')
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .click(getNthReblogButton(1))
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
 })
 
 test('Keeps the correct reblogs count', async t => {
@@ -74,18 +74,18 @@ test('Keeps the correct reblogs count', async t => {
   await t
     .hover(getNthStatus(1))
     .expect(getNthStatusContent(1).innerText).contains('this will be reblogged')
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
     .click(getNthStatus(1))
     .expect(getUrl()).contains('/status')
-    .expect(getNthReblogged(1)).eql('true')
+    .expect(getNthRebloggedLabel(1)).eql('Unboost')
     .expect(getReblogsCount()).eql(2)
     .click(homeNavButton)
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getNthStatus(1))
     .click(getNthReblogButton(1))
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .click(getNthStatus(1))
     .expect(getUrl()).contains('/status')
-    .expect(getNthReblogged(1)).eql('false')
+    .expect(getNthRebloggedLabel(1)).eql('Boost')
     .expect(getReblogsCount()).eql(1)
 })
