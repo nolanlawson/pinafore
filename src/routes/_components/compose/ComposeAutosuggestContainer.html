@@ -1,0 +1,125 @@
+<div class="compose-autosuggest {shown ? '' : 'not-shown'} {realm === 'dialog' ? 'is-dialog' : ''}"
+     style="top: {top}px; --autosuggest-input-left: {left}px;"
+>
+  <ComposeAutosuggestionList
+    items={autosuggestSearchResults}
+    on:click="onClick(event)"
+    type={autosuggestType}
+    selected={autosuggestSelected}
+    {realm}
+  />
+</div>
+<style>
+  .compose-autosuggest {
+    position: absolute;
+    z-index: 90;
+    --autosuggest-input-left: 0; /* overridden by "left" prop passed in */
+    --autosuggest-left-offset: 5px;
+    /* In desktop mode, the autosuggest tracks the position of the input (the "left" prop passed in). */
+    left: calc(var(--autosuggest-input-left) + var(--autosuggest-left-offset));
+  }
+  .compose-autosuggest.not-shown {
+    display: none;
+  }
+
+  /* desktop styles */
+  @media (min-width: 480px) {
+    .compose-autosuggest {
+      min-width: 400px;
+      max-width: calc(100% - 20px);
+    }
+  }
+
+  /* mobile size */
+  @media (max-width: 479px) {
+    .compose-autosuggest {
+      /* on mobile, make it fill the viewport width */
+      --autosuggest-left-offset: 10px;
+      left: var(--autosuggest-left-offset);
+      width: calc(100vw - (2 * var(--autosuggest-left-offset)));
+    }
+  }
+
+  /* tiny mobile size */
+  @media (max-width: 240px) {
+    .compose-autosuggest {
+      --autosuggest-left-offset: 5px; /* make it bigger on tiny devices */
+    }
+    .compose-autosuggest.is-dialog {
+      --autosuggest-left-offset: 10px; /* more padding in dialogs */
+    }
+  }
+
+</style>
+<script>
+  import { store } from '../../_store/store'
+  import ComposeAutosuggestionList from './ComposeAutosuggestionList.html'
+  import { get } from '../../_utils/lodash-lite'
+  import { selectAutosuggestItem } from '../../_actions/autosuggest'
+  import { observe } from 'svelte-extras'
+  import { once } from '../../_utils/once'
+
+  export default {
+    oncreate () {
+      this._promiseChain = Promise.resolve()
+      this.observe('shouldBeShown', (shouldBeShown) => {
+        // TODO: hack so that when the user clicks the button, and the textarea blurs,
+        // we don't immediately hide the dropdown which would cause the click to get lost
+        this._promiseChain = this._promiseChain.then(() => {
+          if (!shouldBeShown) {
+            return Promise.race([
+              new Promise(resolve => setTimeout(resolve, 200)),
+              new Promise(resolve => this.once('autosuggestItemSelected', resolve))
+            ])
+          }
+        }).then(() => {
+          this.set({ shown: shouldBeShown })
+          this.store.setForCurrentAutosuggest({ autosuggestSelecting: false })
+        })
+      })
+    },
+    methods: {
+      observe,
+      once,
+      onClick (item) {
+        /* autosuggestSelecting prevents a flash of searched content */
+        this.store.setForCurrentAutosuggest({ autosuggestSelecting: true })
+        this.fire('autosuggestItemSelected')
+        selectAutosuggestItem(item)
+      }
+    },
+    computed: {
+      /* eslint-disable camelcase */
+      composeSelectionStart: ({ $autosuggestData_composeSelectionStart, $currentInstance, realm }) => (
+        get($autosuggestData_composeSelectionStart, [$currentInstance, realm], 0)
+      ),
+      composeFocused: ({ $autosuggestData_composeFocused, $currentInstance, realm }) => (
+        get($autosuggestData_composeFocused, [$currentInstance, realm], false)
+      ),
+      autosuggestSearchResults: ({ $autosuggestData_autosuggestSearchResults, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestSearchResults, [$currentInstance, realm], [])
+      ),
+      autosuggestType: ({ $autosuggestData_autosuggestType, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestType, [$currentInstance, realm])
+      ),
+      autosuggestSelected: ({ $autosuggestData_autosuggestSelected, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestSelected, [$currentInstance, realm], 0)
+      ),
+      autosuggestSearchText: ({ $autosuggestData_autosuggestSelected, $currentInstance, realm }) => (
+        get($autosuggestData_autosuggestSelected, [$currentInstance, realm])
+      ),
+      /* eslint-enable camelcase */
+      shouldBeShown: ({ $autosuggestShown, composeFocused }) => (
+        !!($autosuggestShown && composeFocused)
+      )
+    },
+    data: () => ({
+      shown: false,
+      top: 0
+    }),
+    store: () => store,
+    components: {
+      ComposeAutosuggestionList
+    }
+  }
+</script>
