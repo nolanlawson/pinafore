@@ -1,14 +1,12 @@
-<!-- Toggle buttons should have an immutable label, e.g. a mute/unmute button should just always say
-     "mute." For sighted users, though, I think it's nice if the title changes when the action changes.
-     See http://w3c.github.io/aria-practices/#button
-     We also have toggleButton === false which can make it just a normal button that changes its aria-label.
-     -->
-<button type="button"
-        {title}
+<!-- Normally "pressable" icons would be toggle buttons, but to avoid having the titles and labels mismatched
+     due to guidelines from http://w3c.github.io/aria-practices/#button , we just use normal buttons and change
+     the aria-label instead. See discussion in: https://github.com/nolanlawson/pinafore/issues/1633 -->
+<button id={elementId}
+        type="button"
+        title={ariaLabel}
         aria-label={ariaLabel}
-        aria-pressed={ariaPressed}
         aria-hidden={ariaHidden ? 'true' : undefined}
-        tabindex="{ariaHidden ? '-1' : '0'}"
+        tabindex={ariaHidden ? '-1' : '0'}
         class={computedClass}
         {disabled}
         ref:node
@@ -99,13 +97,10 @@
 
   export default {
     oncreate () {
-      const { clickListener, elementId } = this.get()
+      const { clickListener } = this.get()
       if (clickListener) {
         this.onClick = this.onClick.bind(this)
         this.refs.node.addEventListener('click', this.onClick)
-      }
-      if (elementId) {
-        this.refs.node.setAttribute('id', elementId)
       }
       if (process.env.NODE_ENV !== 'production') {
         const { pressable, pressedLabel, label } = this.get()
@@ -125,15 +120,14 @@
       muted: false,
       disabled: false,
       svgClassName: undefined,
-      elementId: undefined,
+      elementId: '',
       pressable: false,
       pressed: false,
       pressedLabel: undefined,
       className: undefined,
       sameColorWhenPressed: false,
       ariaHidden: false,
-      clickListener: true,
-      toggleButton: true // whether or not to actually present it as a toggle button to screen readers (when pressable)
+      clickListener: true
     }),
     store: () => store,
     computed: {
@@ -146,15 +140,7 @@
         sameColorWhenPressed ? 'same-pressed' : 'not-same-pressed',
         className
       )),
-      title: ({ pressable, pressed, pressedLabel, label }) => pressable ? (pressed ? pressedLabel : label) : label,
-      ariaLabel: ({ toggleButton, pressable, pressed, label, pressedLabel }) => {
-        if (!pressable || toggleButton) {
-          return label // per Aria Practices, toggleButtons never change their label
-        } else {
-          return pressed ? pressedLabel : label
-        }
-      },
-      ariaPressed: ({ toggleButton, pressable, pressed }) => (toggleButton && pressable) ? !!pressed : undefined
+      ariaLabel: ({ pressable, pressed, label, pressedLabel }) => ((pressable && pressed) ? pressedLabel : label)
     },
     methods: {
       animate (animation) {
