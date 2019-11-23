@@ -12,7 +12,7 @@
     {/if}
     <ComposeInput {realm} {text} {autoFocus} on:postAction="doPostStatus()" />
     <ComposeLengthGauge {length} {overLimit} />
-    <ComposeAutosuggest {realm} {text} />
+    <ComposeAutosuggest {realm} {text} {dialogId} />
     {#if poll && poll.options && poll.options.length}
       <div class="compose-poll-wrapper"
            transition:slide="{duration: 333}">

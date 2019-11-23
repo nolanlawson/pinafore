@@ -1,125 +1,120 @@
-<div class="compose-autosuggest {shown ? '' : 'not-shown'} {realm === 'dialog' ? 'is-dialog' : ''}">
-  <ComposeAutosuggestionList
-    items={autosuggestSearchResults}
-    on:click="onClick(event)"
-    type={autosuggestType}
-    selected={autosuggestSelected}
-    {realm}
-  />
-</div>
+<div class="compose-autosuggest-anchor-point" ref:anchor></div>
 <style>
-  .compose-autosuggest {
+  .compose-autosuggest-anchor-point {
     grid-area: autosuggest;
-    position: absolute;
-    left: 5px;
-    top: 0;
-    z-index: 7000;
+    width: 100%;
+    height: 0;
   }
-  .compose-autosuggest.is-dialog {
-    z-index: 11000;
-  }
-  .compose-autosuggest.not-shown {
-    display: none;
-  }
-
-  @media (min-width: 480px) {
-    .compose-autosuggest {
-      min-width: 400px;
-      max-width: calc(100% - 20px);
-    }
-  }
-
-  @media (max-width: 479px) {
-    .compose-autosuggest {
-      /* on mobile, move it to the left and make it fill the viewport width */
-      transform: translateX(-58px); /* avatar size 48px + 10px padding */
-      width: calc(100vw - 20px);
-    }
-    .compose-autosuggest.is-dialog {
-      width: calc(100vw - 40px); /* extra padding when within the dialog */
-    }
-  }
-
-  @media (max-width: 240px) {
-    .compose-autosuggest {
-      width: calc(100vw - 10px);
-      transform: translateX(-29px); /* avatar size 24px + 5px padding */
-    }
-    .compose-autosuggest.is-dialog {
-      transform: translateX(-34px); /* avatar size 24px + 10px padding */
-      width: calc(100vw - 20px); /* extra padding when within the dialog */
-    }
-  }
-
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import ComposeAutosuggestionList from './ComposeAutosuggestionList.html'
-  import { get } from '../../_utils/lodash-lite'
-  import { selectAutosuggestItem } from '../../_actions/autosuggest'
+  import ComposeAutosuggestContainer from './ComposeAutosuggestContainer.html'
+  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
   import { observe } from 'svelte-extras'
-  import { once } from '../../_utils/once'
+  import { throttleTimer } from '../../_utils/throttleTimer'
+  import { on } from '../../_utils/eventBus'
+  import { store } from '../../_store/store'
+  import { getScrollContainer } from '../../_utils/scrollContainer'
+  import { get } from '../../_utils/lodash-lite'
+  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
+
+  const updatePosition = process.browser && throttleTimer(requestAnimationFrame)
 
   export default {
     oncreate () {
-      this._promiseChain = Promise.resolve()
-      this.observe('shouldBeShown', (shouldBeShown) => {
-        // TODO: hack so that when the user clicks the button, and the textarea blurs,
-        // we don't immediately hide the dropdown which would cause the click to get lost
-        this._promiseChain = this._promiseChain.then(() => {
-          if (!shouldBeShown) {
-            return Promise.race([
-              new Promise(resolve => setTimeout(resolve, 200)),
-              new Promise(resolve => this.once('autosuggestItemSelected', resolve))
-            ])
+      const { dialogId } = this.get()
+      this.onResize = () => updatePosition(() => this.doResize())
+      let setupDone = false
+      if (this.get().realm === 'dialog') {
+        // wait for dialog to render first
+        on('dialogDidRender', this, id => {
+          if (id === dialogId && !setupDone) {
+            setupDone = true
+            this.setup()
           }
-        }).then(() => {
-          this.set({ shown: shouldBeShown })
-          this.store.setForCurrentAutosuggest({ autosuggestSelecting: false })
         })
-      })
+      } else {
+        setupDone = true
+        this.setup()
+      }
+    },
+    ondestroy () {
+      if (this._autosuggest) {
+        this._autosuggest.destroy()
+        this._autosuggest = null
+      }
+      if (this._element) {
+        this._element.remove()
+      }
+      unregisterResizeListener(this.onResize)
+      document.removeEventListener('scroll', this.onResize)
     },
     methods: {
       observe,
-      once,
-      onClick (item) {
-        /* autosuggestSelecting prevents a flash of searched content */
-        this.store.setForCurrentAutosuggest({ autosuggestSelecting: true })
-        this.fire('autosuggestItemSelected')
-        selectAutosuggestItem(item)
+      setup () {
+        const { realm, text, dialogId } = this.get()
+        requestAnimationFrame(() => {
+          const id = `the-autosuggest-container-${realm}`
+          this._element = document.getElementById(id)
+          if (!this._element) {
+            this._element = document.createElement('div')
+            this._element.id = id
+            const parent = realm === 'dialog' ? document.querySelector('.modal-dialog-contents') : document.body
+            parent.appendChild(this._element) // write
+          }
+          requestPostAnimationFrame(() => {
+            const { left, top } = this.calculateLeftAndTop()
+            this._autosuggest = new ComposeAutosuggestContainer({
+              target: this._element,
+              data: {
+                realm,
+                text,
+                dialogId,
+                left,
+                top
+              }
+            })
+            this.observe('text', text => {
+              this._autosuggest.set({ text })
+            }, { init: false })
+            this.observe('shouldBeShown', shouldBeShown => {
+              if (shouldBeShown) {
+                this.onResize() // just in case the window size changed while we weren't focused
+              }
+            })
+            registerResizeListener(this.onResize)
+            document.addEventListener('scroll', this.onResize)
+          })
+        })
+      },
+      doResize () {
+        const { shouldBeShown } = this.get()
+        if (this._autosuggest && shouldBeShown) {
+          const { left, top } = this.calculateLeftAndTop()
+          console.log('updating autosuggest position', { left, top })
+          this._autosuggest.set({ left, top })
+        }
+      },
+      calculateLeftAndTop () {
+        const { anchor } = this.refs
+        const { realm } = this.get()
+        const { left, bottom } = anchor.getBoundingClientRect()
+        const yOffset = realm === 'dialog' ? 0 : getScrollContainer().scrollTop
+        return {
+          left,
+          top: bottom + yOffset
+        }
       }
     },
+    store: () => store,
     computed: {
       /* eslint-disable camelcase */
-      composeSelectionStart: ({ $autosuggestData_composeSelectionStart, $currentInstance, realm }) => (
-        get($autosuggestData_composeSelectionStart, [$currentInstance, realm], 0)
-      ),
       composeFocused: ({ $autosuggestData_composeFocused, $currentInstance, realm }) => (
         get($autosuggestData_composeFocused, [$currentInstance, realm], false)
       ),
-      autosuggestSearchResults: ({ $autosuggestData_autosuggestSearchResults, $currentInstance, realm }) => (
-        get($autosuggestData_autosuggestSearchResults, [$currentInstance, realm], [])
-      ),
-      autosuggestType: ({ $autosuggestData_autosuggestType, $currentInstance, realm }) => (
-        get($autosuggestData_autosuggestType, [$currentInstance, realm])
-      ),
-      autosuggestSelected: ({ $autosuggestData_autosuggestSelected, $currentInstance, realm }) => (
-        get($autosuggestData_autosuggestSelected, [$currentInstance, realm], 0)
-      ),
-      autosuggestSearchText: ({ $autosuggestData_autosuggestSelected, $currentInstance, realm }) => (
-        get($autosuggestData_autosuggestSelected, [$currentInstance, realm])
-      ),
       /* eslint-enable camelcase */
-      shouldBeShown: ({ realm, $autosuggestShown, composeFocused }) => (
+      shouldBeShown: ({ $autosuggestShown, composeFocused }) => (
         !!($autosuggestShown && composeFocused)
       )
-    },
-    data: () => ({
-      shown: false
-    }),
-    store: () => store,
-    components: {
-      ComposeAutosuggestionList
     }
   }
 </script>
