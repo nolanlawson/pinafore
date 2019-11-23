@@ -20,7 +20,7 @@
       pressedLabel="Remove poll"
       href="#fa-bar-chart"
       on:click="onPollClick()"
-      pressable="true"
+      pressable={true}
       pressed={poll && poll.options && poll.options.length}
     />
     <IconButton
@@ -35,7 +35,7 @@
       pressedLabel="Remove content warning"
       href="#fa-exclamation-triangle"
       on:click="onContentWarningClick()"
-      pressable="true"
+      pressable={true}
       pressed={contentWarningShown}
     />
   </div>
