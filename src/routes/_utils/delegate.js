@@ -2,8 +2,8 @@
 
 const callbacks = {}
 
-if (process.browser && process.env.NODE_ENV !== 'production') {
-  window.delegateCallbacks = callbacks
+if (process.browser) {
+  window.__delegateCallbacks = callbacks
 }
 
 function onEvent (e) {

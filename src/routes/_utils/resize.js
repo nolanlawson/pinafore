@@ -4,8 +4,8 @@ const DEBOUNCE_DELAY = 700
 
 const listeners = new Set()
 
-if (process.browser && process.env.NODE_ENV !== 'production') {
-  window.resizeListeners = listeners
+if (process.browser) {
+  window.__resizeListeners = listeners
 }
 
 if (process.browser) {

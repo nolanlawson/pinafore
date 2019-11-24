@@ -119,6 +119,13 @@ export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeo
 
 export const getUrl = exec(() => window.location.href)
 
+export const getNumSyntheticListeners = exec(() => {
+  return Object.keys(window.__eventBus.$e).map(key => window.__eventBus.listenerCount(key))
+    .concat(window.__resizeListeners.size)
+    .concat(Object.keys(window.__delegateCallbacks).length)
+    .reduce((a, b) => a + b, 0)
+})
+
 export const getMediaScrollLeft = exec(() => document.querySelector('.media-scroll').scrollLeft || 0)
 
 export const getActiveElementClassList = exec(() =>
