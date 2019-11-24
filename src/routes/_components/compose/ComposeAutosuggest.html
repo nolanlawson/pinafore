@@ -13,7 +13,7 @@
   import { throttleTimer } from '../../_utils/throttleTimer'
   import { on } from '../../_utils/eventBus'
   import { store } from '../../_store/store'
-  import { getScrollContainer } from '../../_utils/scrollContainer'
+  import { addScrollListener, getScrollContainer, removeScrollListener } from '../../_utils/scrollContainer'
   import { get } from '../../_utils/lodash-lite'
   import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
 
@@ -46,7 +46,7 @@
         this._element.remove()
       }
       unregisterResizeListener(this.onResize)
-      document.removeEventListener('scroll', this.onResize)
+      removeScrollListener(this.onResize)
     },
     methods: {
       observe,
@@ -82,7 +82,7 @@
               }
             })
             registerResizeListener(this.onResize)
-            document.addEventListener('scroll', this.onResize)
+            addScrollListener(this.onResize)
           })
         })
       },
