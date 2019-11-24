@@ -6,7 +6,7 @@ import {
   homeNavButton,
   scrollToStatus,
   scrollToTop,
-  settingsNavButton
+  settingsNavButton, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
@@ -35,10 +35,12 @@ async function interactAndGoToEndPoint (t) {
 test('Does not leak synthetic listeners', async t => {
   await loginAsFoobar(t)
   await goToStartPoint(t)
+  await sleep(1000)
   const numSyntheticListeners = await getNumSyntheticListeners()
   await t
     .expect(numSyntheticListeners).typeOf('number')
   await interactAndGoToEndPoint(t)
+  await sleep(1000)
   await t
     .expect(getNumSyntheticListeners()).eql(numSyntheticListeners)
 })
