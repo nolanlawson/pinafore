@@ -1,29 +1,27 @@
 <h1 class="sr-only">{label}</h1>
-<div class="timeline"
-     role="feed"
-     on:focusin="saveFocus(event)"
-     on:focusout="clearFocus()"
->
-  {#if components}
-    <svelte:component this={components.listComponent}
-                component={components.listItemComponent}
-                realm="{$currentInstance + '/' + timeline}"
-                {makeProps}
-                items={itemIds}
-                showFooter={true}
-                footerComponent={LoadingFooter}
-                showHeader={$showHeader}
-                headerComponent={MoreHeaderVirtualWrapper}
-                {headerProps}
-                {scrollToItem}
-                on:scrollToBottom="onScrollToBottom()"
-                on:scrollToTop="onScrollToTop()"
-                on:scrollTopChanged="onScrollTopChanged(event)"
-                on:initialized="initialize()"
-                on:noNeedToScroll="onNoNeedToScroll()"
-    />
-  {/if}
-</div>
+<FocusRestoration realm={focusRealm}>
+  <div class="timeline" role="feed">
+    {#if components}
+      <svelte:component this={components.listComponent}
+                  component={components.listItemComponent}
+                  realm="{$currentInstance + '/' + timeline}"
+                  {makeProps}
+                  items={itemIds}
+                  showFooter={true}
+                  footerComponent={LoadingFooter}
+                  showHeader={$showHeader}
+                  headerComponent={MoreHeaderVirtualWrapper}
+                  {headerProps}
+                  {scrollToItem}
+                  on:scrollToBottom="onScrollToBottom()"
+                  on:scrollToTop="onScrollToTop()"
+                  on:scrollTopChanged="onScrollTopChanged(event)"
+                  on:initialized="initialize()"
+                  on:noNeedToScroll="onNoNeedToScroll()"
+      />
+    {/if}
+  </div>
+</FocusRestoration>
 <Shortcut scope="global" key="." on:pressed="showMoreAndScrollToTop()" />
 <ScrollListShortcuts />
 <script>
@@ -52,19 +50,14 @@
   import { observe } from 'svelte-extras'
   import { createMakeProps } from '../../_actions/createMakeProps'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
+  import FocusRestoration from '../FocusRestoration.html'
 
   export default {
     oncreate () {
       console.log('timeline oncreate()')
-      this.setupFocus()
       setupTimeline()
-      this.restoreFocus()
       this.setupStreaming()
       this.setupAsyncComponents()
-    },
-    ondestroy () {
-      console.log('ondestroy')
-      this.teardownFocus()
     },
     data: () => ({
       LoadingFooter,
@@ -133,7 +126,8 @@
           count: itemIdsToAdd ? itemIdsToAdd.length : 0,
           onClick: showMoreItemsForCurrentTimeline
         }
-      }
+      },
+      focusRealm: ({ $currentInstance, timeline }) => `${$currentInstance}-${timeline}`
     },
     store: () => store,
     methods: {
@@ -216,16 +210,6 @@
           scheduleIdleTask(handleItemIdsToAdd)
         })
       },
-      setupFocus () {
-        this.onPushState = this.onPushState.bind(this)
-        this.store.setForCurrentTimeline({
-          ignoreBlurEvents: false
-        })
-        window.addEventListener('pushState', this.onPushState)
-      },
-      teardownFocus () {
-        window.removeEventListener('pushState', this.onPushState)
-      },
       setupAsyncComponents () {
         this.observe('componentsPromise', async componentsPromise => {
           if (componentsPromise) {
@@ -234,57 +218,6 @@
             console.log('loaded timeline components')
             this.set({ components })
           }
-        })
-      },
-      onPushState () {
-        this.store.setForCurrentTimeline({ ignoreBlurEvents: true })
-      },
-      saveFocus (e) {
-        try {
-          const { currentInstance } = this.store.get()
-          const { timeline } = this.get()
-          let lastFocusedElementId
-          const activeElement = e.target
-          if (activeElement) {
-            lastFocusedElementId = activeElement.getAttribute('id')
-          }
-          console.log('saving focus to ', lastFocusedElementId)
-          this.store.setForTimeline(currentInstance, timeline, {
-            lastFocusedElementId: lastFocusedElementId
-          })
-        } catch (err) {
-          console.error('unable to save focus', err)
-        }
-      },
-      clearFocus () {
-        try {
-          const { ignoreBlurEvents } = this.store.get()
-          if (ignoreBlurEvents) {
-            return
-          }
-          console.log('clearing focus')
-          const { currentInstance } = this.store.get()
-          const { timeline } = this.get()
-          this.store.setForTimeline(currentInstance, timeline, {
-            lastFocusedElementId: null
-          })
-        } catch (err) {
-          console.error('unable to clear focus', err)
-        }
-      },
-      restoreFocus () {
-        const { lastFocusedElementId } = this.store.get()
-        if (!lastFocusedElementId) {
-          return
-        }
-        console.log('restoreFocus', lastFocusedElementId)
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            const element = document.getElementById(lastFocusedElementId)
-            if (element) {
-              element.focus({ preventScroll: true })
-            }
-          })
         })
       },
       onNoNeedToScroll () {
@@ -298,7 +231,8 @@
     },
     components: {
       ScrollListShortcuts,
-      Shortcut
+      Shortcut,
+      FocusRestoration
     }
   }
 </script>
