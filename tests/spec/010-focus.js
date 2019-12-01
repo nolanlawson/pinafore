@@ -137,3 +137,21 @@ test('clicking sensitive button returns focus to sensitive button', async t => {
     .click(getNthStatusSensitiveMediaButton(sensitiveKittenIdx + 1))
     .expect(getActiveElementAriaLabel()).eql('Show sensitive media')
 })
+
+test('preserves focus two levels deep', async t => {
+  await loginAsFoobar(t)
+  await t
+    .hover(getNthStatus(1))
+    .click($('.status-author-name').withText(('admin')))
+    .expect(getUrl()).contains('/accounts/1')
+    .click(getNthStatus(1))
+    .expect(getUrl()).contains('status')
+  await goBack()
+  await t
+    .expect(getUrl()).contains('/accounts/1')
+    .expect(getActiveElementClassList()).contains('status-article')
+  await goBack()
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getActiveElementClassList()).contains('status-author-name')
+})

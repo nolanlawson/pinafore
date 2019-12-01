@@ -1,0 +1,99 @@
+<div
+  on:focusin="saveFocus(event)"
+  on:focusout="clearFocus()"
+>
+  <slot></slot>
+</div>
+<script>
+  import { PAGE_HISTORY_SIZE } from '../_static/pages'
+  import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru'
+  import { doubleRAF } from '../_utils/doubleRAF'
+
+  const cache = new QuickLRU({ maxSize: PAGE_HISTORY_SIZE })
+
+  if (process.browser) {
+    window.__focusRestorationCache = cache
+  }
+
+  export default {
+    oncreate () {
+      this.setupPushState()
+      this.restoreFocus()
+      if (process.env.NODE_ENV !== 'production') {
+        if (!this.get().realm) {
+          throw new Error('FocusRestoration needs a realm')
+        }
+      }
+    },
+    ondestroy () {
+      this.teardownPushState()
+    },
+    methods: {
+      setupPushState () {
+        this.onPushState = this.onPushState.bind(this)
+        this.setInCache({ ignoreBlurEvents: false })
+        window.addEventListener('pushState', this.onPushState)
+      },
+      teardownPushState () {
+        window.removeEventListener('pushState', this.onPushState)
+      },
+      setInCache (obj) {
+        const { realm } = this.get()
+        if (!cache.has(realm)) {
+          cache.set(realm, {})
+        }
+        Object.assign(cache.get(realm), obj)
+      },
+      deleteInCache (key) {
+        const { realm } = this.get()
+        if (cache.has(realm)) {
+          delete cache.get(realm)[key]
+        }
+      },
+      getInCache () {
+        const { realm } = this.get()
+        return cache.get(realm) || {}
+      },
+      onPushState () {
+        this.setInCache({ ignoreBlurEvents: true })
+      },
+      restoreFocus () {
+        const { realm } = this.get()
+        const { elementId } = this.getInCache()
+        if (!elementId) {
+          return
+        }
+        console.log('restoreFocus', realm, elementId)
+        doubleRAF(() => {
+          const element = document.getElementById(elementId)
+          if (element) {
+            try {
+              element.focus({ preventScroll: true })
+            } catch (err) {
+              console.warn('failed to focus', elementId, err)
+            }
+          }
+        })
+      },
+      clearFocus () {
+        const { realm } = this.get()
+        const { ignoreBlurEvents } = this.getInCache()
+        if (!ignoreBlurEvents) {
+          console.log('clearFocus', realm)
+          this.deleteInCache('elementId')
+        }
+      },
+      saveFocus (e) {
+        const { realm } = this.get()
+        const element = e.target
+        if (element) {
+          const elementId = element.getAttribute('id')
+          if (elementId) {
+            console.log('saveFocus', realm, elementId)
+            this.setInCache({ elementId })
+          }
+        }
+      }
+    }
+  }
+</script>
