@@ -169,7 +169,7 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
   event.waitUntil((async () => {
     const data = event.data.json()
-    const { origin } = new URL(data.icon)
+    const { origin } = event.target
 
     try {
       const notification = await get(`${origin}/api/v1/notifications/${data.notification_id}`, {
