@@ -132,6 +132,10 @@ export const getActiveElementClassList = exec(() =>
   (document.activeElement && (document.activeElement.getAttribute('class') || '').split(/\s+/)) || []
 )
 
+export const getActiveElementHref = exec(() =>
+  (document.activeElement && (document.activeElement.getAttribute('href') || ''))
+)
+
 export const getActiveElementTagName = exec(() =>
   (document.activeElement && document.activeElement.tagName) || ''
 )
