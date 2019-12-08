@@ -9,6 +9,7 @@ import {
   NOTIFICATION_POLLS,
   NOTIFICATION_MENTIONS
 } from '../../_static/instanceSettings'
+import { createFilterFunction } from '../../_utils/createFilterFunction'
 import { mark, stop } from '../../_utils/marks'
 
 function computeForTimeline (store, key, defaultValue) {
@@ -89,30 +90,6 @@ export function timelineComputations (store) {
   computeNotificationFilter(store, 'timelineNotificationShowFavs', NOTIFICATION_FAVORITES)
   computeNotificationFilter(store, 'timelineNotificationShowMentions', NOTIFICATION_MENTIONS)
   computeNotificationFilter(store, 'timelineNotificationShowPolls', NOTIFICATION_POLLS)
-
-  function createFilterFunction (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls) {
-    return item => {
-      switch (item.type) {
-        case 'poll':
-          return showPolls
-        case 'favourite':
-          return showFavs
-        case 'reblog':
-          return showReblogs
-        case 'mention':
-          return showMentions
-        case 'follow':
-          return showFollows
-      }
-      if (item.reblogId) {
-        return showReblogs
-      } else if (item.replyId) {
-        return showReplies
-      } else {
-        return true
-      }
-    }
-  }
 
   store.compute(
     'timelineFilterFunction',
