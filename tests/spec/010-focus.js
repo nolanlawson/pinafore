@@ -14,7 +14,7 @@ import {
   getActiveElementTagName,
   getActiveElementClassList,
   getNthStatusSensitiveMediaButton,
-  getActiveElementAriaLabel
+  getActiveElementAriaLabel, settingsNavButton, getActiveElementHref
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -154,4 +154,31 @@ test('preserves focus two levels deep', async t => {
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getActiveElementClassList()).contains('status-author-name')
+})
+
+test('preserves focus on settings page', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(settingsNavButton)
+    .click($('a[href="/settings/instances"]'))
+    .expect(getUrl()).eql('http://localhost:4002/settings/instances')
+    .click($('a[href="/settings/instances/add"]'))
+    .expect(getUrl()).eql('http://localhost:4002/settings/instances/add')
+  await goBack()
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/settings/instances')
+    .expect(getActiveElementHref()).eql('/settings/instances/add')
+  await goBack()
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/settings')
+    .expect(getActiveElementHref()).eql('/settings/instances')
+    .click($('a[href="/settings/instances"]'))
+    .expect(getUrl()).eql('http://localhost:4002/settings/instances')
+    .click($('a.settings-nav-item[href="/settings"]'))
+    .expect(getUrl()).eql('http://localhost:4002/settings')
+  await goBack()
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/settings/instances')
+    .expect(getActiveElementHref()).eql('/settings')
+    .expect(getActiveElementClassList()).contains('settings-nav-item')
 })

@@ -1,10 +1,12 @@
-<SettingsNav {page} {label}/>
+<FocusRestoration realm={page}>
+  <SettingsNav {page} {label}/>
 
-<div class="settings">
-  <FreeTextLayout>
-    <slot></slot>
-  </FreeTextLayout>
-</div>
+  <div class="settings">
+    <FreeTextLayout>
+      <slot></slot>
+    </FreeTextLayout>
+  </div>
+</FocusRestoration>
 <style>
   .settings {
     margin: 20px;
@@ -24,11 +26,13 @@
 <script>
   import SettingsNav from './SettingsNav.html'
   import FreeTextLayout from '../FreeTextLayout'
+  import FocusRestoration from '../FocusRestoration.html'
 
   export default {
     components: {
       FreeTextLayout,
-      SettingsNav
+      SettingsNav,
+      FocusRestoration
     }
   }
 </script>

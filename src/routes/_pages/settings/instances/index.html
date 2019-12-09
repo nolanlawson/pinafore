@@ -2,35 +2,40 @@
   <h1>Instances</h1>
 
   {#if $isUserLoggedIn}
-  <p>Instances you've logged in to:</p>
-  <RadioGroup id="instance-switch" label="Switch to instance" length={numInstances}>
-    <SettingsList label="Instances">
-      {#each instanceStates as instance}
-      <SettingsListRow>
-        <SettingsListButton className="instance-switcher-instance-name"
-                            href="/settings/instances/{instance.name}"
-                            label={instance.name}
-                            ariaLabel={instance.label} />
-        <div class="instance-switcher-button-wrapper">
-          <RadioGroupButton
-                  id="instance-switch"
-                  className="instance-switcher-button"
-                  label={instance.switchLabel}
-                  checked={instance.current}
-                  index={instance.index}
-                  on:click="onSwitchToThisInstance(event, instance.name)">
-            <SvgIcon className="instance-switcher-button-svg"
-                     href={instance.current ? '#fa-star' : '#fa-star-o'} />
-          </RadioGroupButton>
-        </div>
-      </SettingsListRow>
-      {/each}
-    </SettingsList>
-  </RadioGroup>
-  <p><a rel="prefetch" href="/settings/instances/add">Add another instance</a></p>
+    <p>Instances you've logged in to:</p>
+    <RadioGroup id="instance-switch" label="Switch to instance" length={numInstances}>
+      <SettingsList label="Instances">
+        {#each instanceStates as instance}
+        <SettingsListRow>
+          <SettingsListButton className="instance-switcher-instance-name"
+                              href="/settings/instances/{instance.name}"
+                              label={instance.name}
+                              ariaLabel={instance.label} />
+          <div class="instance-switcher-button-wrapper">
+            <RadioGroupButton
+                    id="instance-switch"
+                    className="instance-switcher-button"
+                    label={instance.switchLabel}
+                    checked={instance.current}
+                    index={instance.index}
+                    on:click="onSwitchToThisInstance(event, instance.name)">
+              <SvgIcon className="instance-switcher-button-svg"
+                       href={instance.current ? '#fa-star' : '#fa-star-o'} />
+            </RadioGroupButton>
+          </div>
+        </SettingsListRow>
+        {/each}
+      </SettingsList>
+    </RadioGroup>
+    <p>
+      <a rel="prefetch" href="/settings/instances/add" id="log-in-link-1">Add another instance</a>
+    </p>
   {:else}
-  <p>You're not logged in to any instances.</p>
-  <p><a rel="prefetch" href="/settings/instances/add">Log in to an instance</a> to start using Pinafore.</p>
+    <p>You're not logged in to any instances.</p>
+    <p>
+      <a rel="prefetch" href="/settings/instances/add" id="log-in-link-2">Log in to an instance</a>
+      to start using Pinafore.
+    </p>
   {/if}
 </SettingsLayout>
 <style>
