@@ -14,7 +14,7 @@ import {
   getActiveElementTagName,
   getActiveElementClassList,
   getNthStatusSensitiveMediaButton,
-  getActiveElementAriaLabel, settingsNavButton, getActiveElementHref
+  getActiveElementAriaLabel, settingsNavButton, getActiveElementHref, communityNavButton
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -181,4 +181,16 @@ test('preserves focus on settings page', async t => {
     .expect(getUrl()).eql('http://localhost:4002/settings/instances')
     .expect(getActiveElementHref()).eql('/settings')
     .expect(getActiveElementClassList()).contains('settings-nav-item')
+})
+
+test('preserves focus on community page', async t => {
+  await loginAsFoobar(t)
+  await t
+    .click(communityNavButton)
+    .expect(getUrl()).contains('/community')
+    .click($('a[href="/federated"]'))
+    .expect(getUrl()).contains('/federated')
+  await goBack()
+  await t
+    .expect(getActiveElementHref()).eql('/federated')
 })
