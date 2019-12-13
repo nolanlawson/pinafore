@@ -1,88 +1,90 @@
 {#if $isUserLoggedIn}
 <div class="community-page">
 
-  <RadioGroup
-    id="pinnables"
-    length={numPinnable}
-    label="Pinnable timelines">
+  <FocusRestoration realm="community">
+    <RadioGroup
+      id="pinnables"
+      length={numPinnable}
+      label="Pinnable timelines">
+
+      <h2 class="community-header">
+        Timelines
+      </h2>
+
+      <PageList label="Timelines">
+        <PageListItem href="/local"
+                      label="Local Timeline"
+                      icon="#fa-users"
+                      pinnable="true"
+                      pinIndex={0}
+        />
+        <PageListItem href="/federated"
+                      label="Federated Timeline"
+                      icon="#fa-globe"
+                      pinnable="true"
+                      pinIndex={1}
+        />
+        <PageListItem href="/favorites"
+                      label="Favorites"
+                      icon="#fa-star"
+                      pinnable="true"
+                      pinIndex={2}
+        />
+        <PageListItem href="/direct"
+                      label="Direct messages"
+                      icon="#fa-envelope"
+                      pinnable="true"
+                      pinIndex={3}
+        />
+      </PageList>
+
+      {#if listsLength}
+
+        <h2 class="community-header">
+          Lists
+        </h2>
+
+        <PageList label="Lists">
+          {#each $lists as list, i}
+            <PageListItem href="/lists/{list.id}"
+                          label={list.title}
+                          icon="#fa-bars"
+                          pinnable="true"
+                          pinIndex={4 + i}
+            />
+          {/each}
+        </PageList>
+
+      {/if}
+
+    </RadioGroup>
 
     <h2 class="community-header">
-      Timelines
+      Instance settings
     </h2>
 
-    <PageList label="Timelines">
-      <PageListItem href="/local"
-                    label="Local Timeline"
-                    icon="#fa-users"
-                    pinnable="true"
-                    pinIndex={0}
+    <PageList label="Instance settings">
+      {#if isLockedAccount}
+      <PageListItem href="/requests"
+                    label={followRequestsLabel}
+                    icon="#fa-user-plus"
+       />
+      {/if}
+      <PageListItem href="/muted"
+                    label="Muted users"
+                    icon="#fa-volume-off"
       />
-      <PageListItem href="/federated"
-                    label="Federated Timeline"
-                    icon="#fa-globe"
-                    pinnable="true"
-                    pinIndex={1}
+      <PageListItem href="/blocked"
+                    label="Blocked users"
+                    icon="#fa-ban"
       />
-      <PageListItem href="/favorites"
-                    label="Favorites"
-                    icon="#fa-star"
-                    pinnable="true"
-                    pinIndex={2}
-      />
-      <PageListItem href="/direct"
-                    label="Direct messages"
-                    icon="#fa-envelope"
-                    pinnable="true"
-                    pinIndex={3}
+      <PageListItem href="/pinned"
+                    label="Pinned toots"
+                    icon="#fa-thumb-tack"
       />
     </PageList>
 
-    {#if listsLength}
-
-      <h2 class="community-header">
-        Lists
-      </h2>
-
-      <PageList label="Lists">
-        {#each $lists as list, i}
-          <PageListItem href="/lists/{list.id}"
-                        label={list.title}
-                        icon="#fa-bars"
-                        pinnable="true"
-                        pinIndex={4 + i}
-          />
-        {/each}
-      </PageList>
-
-    {/if}
-
-  </RadioGroup>
-
-  <h2 class="community-header">
-    Instance settings
-  </h2>
-
-  <PageList label="Instance settings">
-    {#if isLockedAccount}
-    <PageListItem href="/requests"
-                  label={followRequestsLabel}
-                  icon="#fa-user-plus"
-     />
-    {/if}
-    <PageListItem href="/muted"
-                  label="Muted users"
-                  icon="#fa-volume-off"
-    />
-    <PageListItem href="/blocked"
-                  label="Blocked users"
-                  icon="#fa-ban"
-    />
-    <PageListItem href="/pinned"
-                  label="Pinned toots"
-                  icon="#fa-thumb-tack"
-    />
-  </PageList>
-
+  </FocusRestoration>
 </div>
 {:else}
 <HiddenFromSSR>
@@ -123,6 +125,7 @@
   import RadioGroup from '../../_components/radio/RadioGroup.html'
   import { updateListsForInstance } from '../../_actions/lists'
   import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
+  import FocusRestoration from '../../_components/FocusRestoration.html'
 
   export default {
     async oncreate () {
@@ -140,7 +143,8 @@
       HiddenFromSSR,
       PageList,
       PageListItem,
-      RadioGroup
+      RadioGroup,
+      FocusRestoration
     },
     computed: {
       isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked,
