@@ -167,6 +167,27 @@ export const getActiveElementInsideNthStatus = exec(() => {
   return ''
 })
 
+export const getNthStatusId = n => exec(() => {
+  return document.querySelector(getNthStatusSelector(n))
+    .getAttribute('id')
+    .split('/')
+    .slice(-1)[0]
+}, {
+  dependencies: {
+    getNthStatusSelector,
+    n
+  }
+})
+
+export const getStatusContents = exec(() => {
+  const res = []
+  const elements = document.querySelectorAll('.list-item > article .status-content')
+  for (let i = 0; i < elements.length; i++) {
+    res.push(elements[i].innerText)
+  }
+  return res
+})
+
 export const getTitleText = exec(() => document.head.querySelector('title') && document.head.querySelector('title').innerHTML)
 
 export const goBack = exec(() => window.history.back())
