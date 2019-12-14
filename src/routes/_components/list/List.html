@@ -19,6 +19,7 @@
   import ListLazyItem from './ListLazyItem.html'
   import { listStore } from './listStore'
   import { getScrollContainer } from '../../_utils/scrollContainer'
+  import { observe } from 'svelte-extras'
 
   function getScrollTopOffset () {
     const style = getComputedStyle(document.documentElement)
@@ -30,11 +31,20 @@
     oncreate () {
       const { realm } = this.get()
       this.store.setCurrentRealm(realm)
+
+      if (process.env.NODE_ENV !== 'production') {
+        this.observe('safeItems', safeItems => {
+          if (new Set(safeItems).size !== safeItems.length) {
+            console.error('list of items is not unique:', safeItems)
+          }
+        })
+      }
     },
     ondestroy () {
       this.store.setCurrentRealm(null)
     },
     methods: {
+      observe,
       itemInitialized () {
         let { initializedCount, length } = this.get()
         initializedCount++

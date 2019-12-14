@@ -10,6 +10,9 @@ import { getStatus, getStatusContext } from '../_api/statuses'
 import { emit } from '../_utils/eventBus'
 import { TIMELINE_BATCH_SIZE } from '../_static/timelines'
 import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
+import uniqBy from 'lodash-es/uniqBy'
+
+const byId = _ => _.id
 
 async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, items) {
   await database.insertTimelineItems(instanceName, timelineName, items)
@@ -70,7 +73,7 @@ export async function addTimelineItemSummaries (instanceName, timelineName, newS
   const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
   const oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesAreStale')
 
-  const mergedSummaries = mergeArrays(oldSummaries, newSummaries, compareTimelineItemSummaries)
+  const mergedSummaries = uniqBy(mergeArrays(oldSummaries, newSummaries, compareTimelineItemSummaries), byId)
 
   if (!isEqual(oldSummaries, mergedSummaries)) {
     store.setForTimeline(instanceName, timelineName, { timelineItemSummaries: mergedSummaries })

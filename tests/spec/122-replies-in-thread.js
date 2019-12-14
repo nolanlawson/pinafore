@@ -3,9 +3,17 @@ import {
   getNthStatus,
   getNthStatusContent,
   getUrl,
-  getNthReplyButton, getNthComposeReplyInput, sleep,
+  getNthReplyButton,
+  getNthComposeReplyInput,
+  sleep,
   getAriaSetSize,
-  getNthComposeReplyButton, goBack, goForward
+  getNthComposeReplyButton,
+  goBack,
+  goForward,
+  composeInput,
+  composeButton,
+  getNthStatusId,
+  getStatusContents
 } from '../utils'
 import { postAs, postReplyAs } from '../serverActions'
 
@@ -105,4 +113,72 @@ test('reply to non-focused grandchild status in a thread', async t => {
     .typeText(getNthComposeReplyInput(3), 'this is sweet', { paste: true })
     .click(getNthComposeReplyButton(3))
   await verifyAriaSetSize(t, '4')
+})
+
+async function replyToNthStatus (t, n, replyText, expectedN) {
+  await t
+    .click(getNthReplyButton(n))
+    .typeText(getNthComposeReplyInput(n), replyText, { paste: true })
+    .click(getNthComposeReplyButton(n))
+    .expect(getNthStatusContent(expectedN).innerText).contains(replyText)
+}
+
+test('no duplicates in threads', async t => {
+  await loginAsFoobar(t)
+  await t
+    .hover(composeInput)
+    .typeText(composeInput, 'this is my thread 1', { paste: true })
+    .click(composeButton)
+    .expect(getNthStatusContent(1).innerText).contains('this is my thread 1')
+    .click(getNthStatus(1))
+    .expect(getUrl()).contains('status')
+  await replyToNthStatus(t, 1, 'this is my thread 2', 2)
+  const [id1, id2] = await Promise.all([getNthStatusId(1)(), getNthStatusId(2)()])
+  await t
+    .click(getNthStatus(2))
+    .expect(getUrl()).contains(id2)
+  await replyToNthStatus(t, 2, 'this is my thread 3', 3)
+  const id3 = await getNthStatusId(3)()
+  await postReplyAs('quux', 'hey i am replying to 1', id1)
+  await postReplyAs('admin', 'hey i am replying to 3', id3)
+  await t
+    .expect(getNthStatusContent(4).innerText).contains('hey i am replying to 3', { timeout: 20000 })
+  const idReplyTo3 = await getNthStatusId(4)()
+  await t
+    .click(getNthStatus(4))
+    .expect(getUrl()).contains(idReplyTo3)
+  await postReplyAs('quux', 'hey check this reply', id1)
+  await t
+    .click(getNthStatus(2))
+    .expect(getUrl()).contains(id2)
+    .click(getNthStatus(3))
+    .expect(getUrl()).contains(id3)
+  await replyToNthStatus(t, 3, 'this is my thread 4', 5)
+  await replyToNthStatus(t, 5, 'this is my thread 5', 6)
+  const id5 = await getNthStatusId(6)()
+  await postReplyAs('admin', 'hey i am replying to 1 again', id1)
+  await t
+    .click(getNthStatus(6))
+    .expect(getUrl()).contains(id5)
+    .click(getNthStatus(1))
+    .expect(getUrl()).contains(id1)
+
+  await t
+    .click(getNthStatus(6))
+    .expect(getUrl()).contains(id5)
+  await replyToNthStatus(t, 5, 'this is my thread 6', 6)
+  await t
+    .click(getNthStatus(1))
+    .expect(getUrl()).contains(id1)
+
+  const contents = await getStatusContents()
+  const contentsToCounts = new Map()
+  for (const content of contents) {
+    contentsToCounts.set(content, 1 + (contentsToCounts.get(content) || 0))
+  }
+  const duplicates = [...contentsToCounts.entries()].filter(arr => arr[1] > 1).map(arr => arr[0])
+
+  // there should be no duplicates
+  await t
+    .expect(duplicates).eql([])
 })
