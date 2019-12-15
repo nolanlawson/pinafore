@@ -5,9 +5,9 @@ import { addStatusOrNotification } from '../addStatusOrNotification'
 const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation']
 
 export function processMessage (instanceName, timelineName, message) {
-  let { event, payload } = message
+  let { event, payload } = (message || {})
   if (!KNOWN_EVENTS.includes(event)) {
-    console.error("don't know how to handle event", message)
+    console.warn('ignoring message from server', message)
     return
   }
   mark('processMessage')
