@@ -1,6 +1,6 @@
 // "lite" version of the store used in the inline script.
 
-import { safeParse } from './safeParse'
+import { safeParse } from '../_utils/safeParse'
 import { testHasLocalStorage } from '../_utils/testStorage'
 
 const hasLocalStorage = testHasLocalStorage()

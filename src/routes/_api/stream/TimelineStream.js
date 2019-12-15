@@ -3,6 +3,7 @@ import { lifecycle } from '../../_utils/lifecycle'
 import { getStreamUrl } from './getStreamUrl'
 import { EventEmitter } from 'events-light'
 import { eventBus } from '../../_utils/eventBus'
+import { safeParse } from '../../_utils/safeParse'
 
 export class TimelineStream extends EventEmitter {
   constructor (streamingApi, accessToken, timeline) {
@@ -54,7 +55,7 @@ export class TimelineStream extends EventEmitter {
         this.emit('reconnect')
       }
     }
-    ws.onmessage = (e) => this.emit('message', JSON.parse(e.data))
+    ws.onmessage = (e) => this.emit('message', safeParse(e.data))
     ws.onclose = () => this.emit('close')
     // The ws "onreconnect" event seems unreliable. When the server goes down and comes back up,
     // it doesn't fire (but "open" does). When we freeze and unfreeze, it fires along with the
