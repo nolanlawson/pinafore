@@ -1,7 +1,7 @@
 import { Store } from 'svelte/store'
 import { safeLocalStorage as LS } from '../_utils/safeLocalStorage'
 import { lifecycle } from '../_utils/lifecycle'
-import { safeParse } from './safeParse'
+import { safeParse } from '../_utils/safeParse'
 
 export class LocalStorageStore extends Store {
   constructor (state, keysToWatch) {

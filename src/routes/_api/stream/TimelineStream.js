@@ -3,7 +3,7 @@ import { lifecycle } from '../../_utils/lifecycle'
 import { getStreamUrl } from './getStreamUrl'
 import { EventEmitter } from 'events-light'
 import { eventBus } from '../../_utils/eventBus'
-import { safeParse } from '../../_store/safeParse'
+import { safeParse } from '../../_utils/safeParse'
 
 export class TimelineStream extends EventEmitter {
   constructor (streamingApi, accessToken, timeline) {
