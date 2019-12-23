@@ -10,18 +10,13 @@
 //
 
 html {
-  // Firefox with scrollbar config changes as of 2018-11
-  scrollbar-face-color: var(--scrollbar-face-color);
-  scrollbar-track-color: var(--scrollbar-track-color);
-  // Firefox nightly as of 2018-11, new standard version
+  // Firefox 64+
   // https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color
   scrollbar-color: var(--scrollbar-face-color) var(--scrollbar-track-color);
 }
 
 body {
   // reset firefox styles so they don't cascade past HTML
-  scrollbar-face-color: initial;
-  scrollbar-track-color: initial;
   scrollbar-color: initial;
 }
 
@@ -29,28 +24,32 @@ body {
 // Chrome/Safari
 //
 
-body::-webkit-scrollbar {
-  width: var(--scrollbar-width);
-  height: var(--scrollbar-height);
-}
+body {
 
-body::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-face-color);
-  border-radius: var(--scrollbar-border-radius);
-}
+  &::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-height);
+  }
 
-body::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-face-color-hover);
-}
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-face-color);
+    border-radius: var(--scrollbar-border-radius);
+  }
 
-body::-webkit-scrollbar-thumb:active {
-  background: var(--scrollbar-face-color-active);
-}
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-face-color-hover);
+  }
 
-body::-webkit-scrollbar-track, ::-webkit-scrollbar-track:hover, ::-webkit-scrollbar-track:active {
-  background: var(--scrollbar-track-color);
-}
+  &::-webkit-scrollbar-thumb:active {
+    background: var(--scrollbar-face-color-active);
+  }
 
-body::-webkit-scrollbar-corner {
-  background: var(--scrollbar-background-color);
+  &::-webkit-scrollbar-track, &::-webkit-scrollbar-track:hover, &::-webkit-scrollbar-track:active {
+    background: var(--scrollbar-track-color);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: var(--scrollbar-background-color);
+  }
+
 }
