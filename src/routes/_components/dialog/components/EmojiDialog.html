@@ -99,21 +99,6 @@
   import { on } from '../../../_utils/eventBus'
   import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
 
-  // Consistency with Mastodon FE, taken from
-  // app/javascript/mastodon/features/compose/components/emoji_picker_dropdown.js
-  const categoriesSort = [
-    'recent',
-    'custom',
-    'people',
-    'nature',
-    'foods',
-    'activity',
-    'places',
-    'objects',
-    'symbols',
-    'flags'
-  ]
-
   export default {
     async oncreate () {
       onCreateDialog.call(this)
@@ -146,13 +131,13 @@
         ${$isVeryTinyMobileSize ? 'overflow-y: auto; overflow-x: hidden;' : ''}
       `),
       emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ perLine, custom }) => ({
+      emojiMartProps: ({ perLine, customEmoji, categoriesSorted }) => ({
         perLine,
-        custom,
+        custom: customEmoji,
         color: 'var(--nav-bg)',
         emoji: 'sailboat',
         title: 'Emoji',
-        include: categoriesSort,
+        include: categoriesSorted,
         showPreview: true
       }),
       perLine: ({ $isSmallMobileSize, $isTinyMobileSize, $isMobileSize, $isVeryTinyMobileSize }) => (
@@ -166,7 +151,31 @@
                 ? 9
                 : 10
       ),
-      custom: ({ $currentCustomEmoji, $autoplayGifs }) => {
+      categoriesSorted: ({ $currentCustomEmoji }) => {
+        // Consistency with Mastodon FE, taken from
+        // - app/javascript/mastodon/features/compose/components/emoji_picker_dropdown.js
+        // - app/javascript/mastodon/features/emoji/emoji.js
+        const customCategories = new Set(['custom'])
+        for (const emoji of $currentCustomEmoji) {
+          if (emoji.category) {
+            customCategories.add(`custom-${emoji.category}`)
+          }
+        }
+
+        return [
+          'recent',
+          ...Array.from(customCategories).sort(),
+          'people',
+          'nature',
+          'foods',
+          'activity',
+          'places',
+          'objects',
+          'symbols',
+          'flags'
+        ]
+      },
+      customEmoji: ({ $currentCustomEmoji, $autoplayGifs }) => {
         if (!$currentCustomEmoji) {
           return []
         }
@@ -176,7 +185,8 @@
           text: `:${emoji.shortcode}:`,
           emoticons: [],
           keywords: [emoji.shortcode],
-          imageUrl: $autoplayGifs ? emoji.url : emoji.static_url
+          imageUrl: $autoplayGifs ? emoji.url : emoji.static_url,
+          customCategory: emoji.category
         }))
       },
       // it's jarring on mobile if the emoji picker automatically pops open the keyboard
