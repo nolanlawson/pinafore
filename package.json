@@ -90,7 +90,6 @@
     "preact": "^10.1.0",
     "promise-worker": "^2.0.1",
     "prop-types": "^15.7.2",
-    "remount": "^0.11.0",
     "requestidlecallback": "^0.3.0",
     "rollup": "^1.27.13",
     "rollup-plugin-babel": "^4.3.3",

@@ -9,7 +9,7 @@
 >
   <div class="emoji-container" {style} ref:container >
     {#if loaded}
-      <emoji-mart props-json={emojiMartPropsJson} ></emoji-mart>
+      <div ref:emojiMartMountPoint></div>
     {:elseif error}
       <div>Failed to load emoji picker: {error}</div>
     {:else}
@@ -94,10 +94,14 @@
   import { show } from '../helpers/showDialog'
   import { close } from '../helpers/closeDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
-  import { define } from 'remount'
   import LoadingSpinner from '../../../_components/LoadingSpinner.html'
-  import { on } from '../../../_utils/eventBus'
-  import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
+  import { on, emit } from '../../../_utils/eventBus'
+import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
+import { observe } from 'svelte-extras'
+import * as ReactDOM from 'react-dom'
+import { isDarkTheme } from '../../../_utils/isDarkTheme'
+
+  const onEmojiSelect = emoji => emit('emoji-selected', emoji)
 
   export default {
     async oncreate () {
@@ -105,10 +109,17 @@
       on('emoji-selected', this, emoji => this.onEmojiSelected(emoji))
       try {
         const Picker = await createEmojiMartPicker()
-        if (!customElements.get('emoji-mart')) {
-          define({ 'emoji-mart': Picker })
-        }
         this.set({ loaded: true })
+        const { emojiMartMountPoint } = this.refs
+        this.observe('emojiMartProps', emojiMartProps => {
+          console.log('rendering react component')
+          const reactComponent = Picker(emojiMartProps)
+          ReactDOM.render(reactComponent, emojiMartMountPoint)
+        })
+        this.on('destroy', () => {
+          console.log('destroying react component')
+          ReactDOM.unmountComponentAtNode(emojiMartMountPoint)
+        })
       } catch (error) {
         this.set({ error }) // should never happen, but you never know
       }
@@ -130,16 +141,18 @@
         min-height: ${$isVeryTinyMobileSize ? 0 : $isSmallMobileSize ? 300 : 400}px;
         ${$isVeryTinyMobileSize ? 'overflow-y: auto; overflow-x: hidden;' : ''}
       `),
-      emojiMartPropsJson: ({ emojiMartProps }) => JSON.stringify(emojiMartProps),
-      emojiMartProps: ({ perLine, customEmoji, categoriesSorted }) => ({
-        perLine,
-        custom: customEmoji,
+      emojiMartProps: ({ perLine, customEmoji, categoriesSorted, darkMode }) => ({
         color: 'var(--nav-bg)',
         emoji: 'sailboat',
         title: 'Emoji',
+        showPreview: true,
+        onSelect: onEmojiSelect,
+        perLine,
+        custom: customEmoji,
         include: categoriesSorted,
-        showPreview: true
+        darkMode
       }),
+      darkMode: ({ $currentTheme }) => isDarkTheme($currentTheme),
       perLine: ({ $isSmallMobileSize, $isTinyMobileSize, $isMobileSize, $isVeryTinyMobileSize }) => (
         $isVeryTinyMobileSize
           ? 5
@@ -193,6 +206,7 @@
       autoFocus: ({ $isUserTouching }) => !$isUserTouching
     },
     methods: {
+      observe,
       show,
       close,
       onEmojiSelected (emoji) {

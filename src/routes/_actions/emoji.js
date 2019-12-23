@@ -14,7 +14,7 @@ async function syncEmojiForInstance (instanceName, syncMethod) {
     emoji => {
       const { customEmoji } = store.get()
       customEmoji[instanceName] = emoji
-      store.set({ customEmoji: customEmoji })
+      store.set({ customEmoji })
     }
   )
 }
