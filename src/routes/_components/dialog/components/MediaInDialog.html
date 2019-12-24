@@ -5,7 +5,8 @@
     src={url}
     {poster}
     controls
-    {intrinsicsize}
+    width={intrinsicWidth}
+    height={intrinsicHeight}
     ref:player
   />
 {:elseif type === 'audio'}
@@ -29,7 +30,8 @@
     loop
     webkit-playsinline
     playsinline
-    {intrinsicsize}
+    width={intrinsicWidth}
+    height={intrinsicHeight}
   />
 {:else}
   <img
@@ -37,7 +39,8 @@
     alt={description}
     title={description}
     src={url}
-    {intrinsicsize}
+    width={intrinsicWidth}
+    height={intrinsicHeight}
   />
 {/if}
 <style>
@@ -78,14 +81,10 @@
       description: ({ media }) => media.description || '',
       poster: ({ media }) => media.preview_url,
       static_url: ({ media }) => media.static_url,
-      intrinsicsize: ({ media }) => {
-        const width = get(media, ['meta', 'original', 'width'])
-        const height = get(media, ['meta', 'original', 'height'])
-        if (width && height) {
-          return `${width} x ${height}`
-        }
-        return '' // pleroma does not give us original width/height
-      }
+      // intrinsic width/height to avoid layout shifting https://chromestatus.com/feature/5695266130755584
+      // note pleroma does not give us intrinsic width/height
+      intrinsicWidth: ({ media }) => get(media, ['meta', 'original', 'width']),
+      intrinsicHeight: ({ media }) => get(media, ['meta', 'original', 'height'])
     },
     ondestroy () {
       const player = this.refs.player

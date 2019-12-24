@@ -4,7 +4,8 @@
 >
   <div class="media-focal-point-image-container" ref:container>
     <img
-      {intrinsicsize}
+      width={intrinsicWidth}
+      height={intrinsicHeight}
       class="media-focal-point-image"
       src={previewSrc}
       alt={shortName}
@@ -229,14 +230,10 @@
         // so fall back to the description if it was provided
         get(mediaItem, ['file', 'name']) || get(mediaItem, ['description']) || 'media'
       ),
-      intrinsicsize: ({ mediaItem }) => {
-        const width = get(mediaItem, ['data', 'meta', 'original', 'width'])
-        const height = get(mediaItem, ['data', 'meta', 'original', 'height'])
-        if (width && height) {
-          return `${width} x ${height}`
-        }
-        return '' // pleroma does not give us original width/height
-      },
+      // intrinsic width/height to avoid layout shifting https://chromestatus.com/feature/5695266130755584
+      // note pleroma does not give us intrinsic width/height
+      intrinsicWidth: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'width']),
+      intrinsicHeight: ({ mediaItem }) => get(mediaItem, ['data', 'meta', 'original', 'height']),
       scale: ({ nativeWidth, nativeHeight, containerWidth, containerHeight }) => (
         intrinsicScale(containerWidth, containerHeight, nativeWidth, nativeHeight)
       ),
