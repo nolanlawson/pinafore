@@ -95,30 +95,29 @@
   import { close } from '../helpers/closeDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import LoadingSpinner from '../../../_components/LoadingSpinner.html'
-  import { on, emit } from '../../../_utils/eventBus'
-import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
-import { observe } from 'svelte-extras'
-import * as ReactDOM from 'react-dom'
-import { isDarkTheme } from '../../../_utils/isDarkTheme'
-
-  const onEmojiSelect = emoji => emit('emoji-selected', emoji)
+  import { createEmojiMartPicker } from '../../../_react/createEmojiMartPicker'
+  import { observe } from 'svelte-extras'
+  import { render, unmountComponentAtNode } from 'react-dom'
+  import { isDarkTheme } from '../../../_utils/isDarkTheme'
 
   export default {
     async oncreate () {
       onCreateDialog.call(this)
-      on('emoji-selected', this, emoji => this.onEmojiSelected(emoji))
       try {
         const Picker = await createEmojiMartPicker()
         this.set({ loaded: true })
         const { emojiMartMountPoint } = this.refs
         this.observe('emojiMartProps', emojiMartProps => {
           console.log('rendering react component')
-          const reactComponent = Picker(emojiMartProps)
-          ReactDOM.render(reactComponent, emojiMartMountPoint)
+          const fullProps = Object.assign({
+            onSelect: this.onEmojiSelected.bind(this)
+          }, emojiMartProps)
+          const reactComponent = Picker(fullProps)
+          render(reactComponent, emojiMartMountPoint)
         })
         this.on('destroy', () => {
           console.log('destroying react component')
-          ReactDOM.unmountComponentAtNode(emojiMartMountPoint)
+          unmountComponentAtNode(emojiMartMountPoint)
         })
       } catch (error) {
         this.set({ error }) // should never happen, but you never know
@@ -146,7 +145,6 @@ import { isDarkTheme } from '../../../_utils/isDarkTheme'
         emoji: 'sailboat',
         title: 'Emoji',
         showPreview: true,
-        onSelect: onEmojiSelect,
         perLine,
         custom: customEmoji,
         include: categoriesSorted,

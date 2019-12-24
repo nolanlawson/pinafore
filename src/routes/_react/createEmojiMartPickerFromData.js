@@ -4,11 +4,11 @@
 // I just fire a global event here when an emoji is clicked.
 
 import NimblePicker from 'emoji-mart/dist-modern/components/picker/nimble-picker'
-import React from 'react'
+import { createElement } from 'react'
 
 export default function createEmojiMartPickerFromData (data) {
   return props => (
-    React.createElement(NimblePicker, Object.assign({
+    createElement(NimblePicker, Object.assign({
       set: 'twitter', // same as Mastodon frontend
       data, // same as Mastodon frontend
       native: true
