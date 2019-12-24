@@ -5,6 +5,7 @@ import {
 import { database } from '../_database/database'
 import { getCustomEmoji } from '../_api/emoji'
 import { store } from '../_store/store'
+import isEqual from 'lodash-es/isEqual'
 
 async function syncEmojiForInstance (instanceName, syncMethod) {
   await syncMethod(
@@ -13,8 +14,10 @@ async function syncEmojiForInstance (instanceName, syncMethod) {
     emoji => database.setCustomEmoji(instanceName, emoji),
     emoji => {
       const { customEmoji } = store.get()
-      customEmoji[instanceName] = emoji
-      store.set({ customEmoji: customEmoji })
+      if (!isEqual(customEmoji[instanceName], emoji)) { // avoid triggering updates if nothing's changed
+        customEmoji[instanceName] = emoji
+        store.set({ customEmoji })
+      }
     }
   )
 }

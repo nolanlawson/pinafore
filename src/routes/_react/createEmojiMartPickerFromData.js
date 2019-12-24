@@ -4,23 +4,14 @@
 // I just fire a global event here when an emoji is clicked.
 
 import NimblePicker from 'emoji-mart/dist-modern/components/picker/nimble-picker'
-import React from 'react'
-import { emit } from '../_utils/eventBus'
-import { store } from '../_store/store'
-import { isDarkTheme } from '../_utils/isDarkTheme'
-
-function onEmojiSelected (emoji) {
-  emit('emoji-selected', emoji)
-}
+import { createElement } from 'react'
 
 export default function createEmojiMartPickerFromData (data) {
   return props => (
-    React.createElement(NimblePicker, Object.assign({
+    createElement(NimblePicker, Object.assign({
       set: 'twitter', // same as Mastodon frontend
       data, // same as Mastodon frontend
-      native: true,
-      onSelect: onEmojiSelected,
-      darkMode: isDarkTheme(store.get().currentTheme)
+      native: true
     }, props))
   )
 }
