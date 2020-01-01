@@ -14,3 +14,12 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_dark.scss";
 @import "_dark_navbar.scss";
 @import "_dark_scrollbars.scss";
+
+:root {
+  --action-button-fill-color: #{lighten($main-theme-color, 5%)};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 12%)};
+  --action-button-fill-color-active: #{darken($main-theme-color, 15%)};
+  --action-button-fill-color-pressed: #{lighten($main-theme-color, 80%)};
+  --action-button-fill-color-pressed-hover: #{lighten($main-theme-color, 50%)};
+  --action-button-fill-color-pressed-active: #{lighten($main-theme-color, 80%)};
+}

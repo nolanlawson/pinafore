@@ -18,7 +18,7 @@ $compose-background: lighten($main-theme-color, 32%);
   --settings-list-item-text: #{$main-text-color};
   --settings-list-item-text-hover: #{$main-text-color};
 
-  --action-button-fill-color: #{lighten($main-theme-color, 30%)};
+  --action-button-fill-color: #{lighten($main-theme-color, 60%)};
   --action-button-fill-color-hover: #{lighten($main-theme-color, 35%)};
   --action-button-fill-color-active: #{lighten($main-theme-color, 40%)};
 

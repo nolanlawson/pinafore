@@ -23,6 +23,7 @@ $compose-background: darken($main-theme-color, 12%);
   --button-primary-bg-hover: #56a7e1;
   --button-primary-border: transparent;
 
+	--action-button-fill-color: #{lighten($main-theme-color, 18%)};
   --action-button-fill-color-pressed: #2b90d9;
   --action-button-fill-color-pressed-hover: #2b90d9;
 }

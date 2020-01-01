@@ -42,7 +42,7 @@
   --nav-svg-fill-hover: #{$secondary-text-color};
   --nav-text-color-hover: #{$secondary-text-color};
 
-  --action-button-fill-color: #{lighten($main-theme-color, 18%)};
+  --action-button-fill-color: #{#aaa};
   --action-button-fill-color-hover: #{lighten($main-theme-color, 22%)};
   --action-button-fill-color-active: #{lighten($main-theme-color, 5%)};
   --action-button-fill-color-pressed: #{darken($main-theme-color, 7%)};

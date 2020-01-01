@@ -29,7 +29,7 @@ $compose-background: darken($main-theme-color, 12%);
   --form-border: #{darken($border-color, 10%)};
 
 
-  --action-button-fill-color: #{lighten($main-theme-color, 5%)};
+  --action-button-fill-color: #{#555};
   --action-button-fill-color-hover: #{lighten($main-theme-color, 12%)};
   --action-button-fill-color-active: #{darken($main-theme-color, 15%)};
   --action-button-fill-color-pressed: #{lighten($main-theme-color, 20%)};
