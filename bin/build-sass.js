@@ -28,7 +28,7 @@ async function compileGlobalSass () {
 }
 
 async function compileThemesSass () {
-  const files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_'))
+  const files = (await readdir(themesScssDir)).filter(file => !path.basename(file).startsWith('_') && !path.basename(file).startsWith('.'))
   await Promise.all(files.map(async file => {
     let css = await renderCss(path.join(themesScssDir, file))
     css = cssDedoupe(new TextDecoder('utf-8').decode(css)) // remove duplicate custom properties
