@@ -90,6 +90,12 @@ const themes = [
     color: '#282C37'
   },
   {
+    name: 'oceanblue',
+    label: 'Ocean Blue',
+    dark: true,
+    color: '#03131b'
+  },
+  {
     name: 'pitchblack',
     label: 'Pitch Black',
     dark: true,

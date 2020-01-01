@@ -1,13 +1,13 @@
-$main-theme-color: rgb( 16,61,80);
-$body-bg-color: #03131b;
+$main-theme-color: #000;
+$body-bg-color: #000;
 $main-bg-color: #000;
-$anchor-color: lighten($main-theme-color, 20%);
+$anchor-color: lighten($main-theme-color, 90%);
 $main-text-color: #fafaff;
-$border-color: $body-bg-color;
+$border-color: #222;
 $secondary-text-color: #f6f6ff;
 $toast-border: lighten($body-bg-color, 4%);
 $toast-bg: lighten($body-bg-color, 4%);
-$focus-outline: lighten($main-theme-color, 10%);
+$focus-outline: lighten($main-theme-color, 50%);
 $compose-background: darken($main-theme-color, 12%);
 
 @import "_base.scss";
@@ -20,19 +20,24 @@ $compose-background: darken($main-theme-color, 12%);
   --settings-list-item-bg-active: #{darken($body-bg-color, 10%)};
   --settings-list-item-bg-hover: #{darken($body-bg-color, 2%)};
 
-  --button-bg: #{lighten($body-bg-color, 5%)};
+  --button-primary-bg: #{lighten($body-bg-color, 10%)};
+  --button-primary-border: #{$border-color};
+  --button-primary-bg-hover: #{lighten($body-bg-color, 15%)};
+  --button-primary-bg-active: #{lighten($body-bg-color, 15%)};
+
+  --button-bg: #{lighten($body-bg-color, 10%)};
   --button-border: #{$border-color};
-  --button-bg-hover: #{lighten($body-bg-color, 10%)};
+  --button-bg-hover: #{lighten($body-bg-color, 15%)};
   --button-bg-active: #{lighten($body-bg-color, 15%)};
 
   --form-bg: #{$body-bg-color};
   --form-border: #{darken($border-color, 10%)};
 
 
-  --action-button-fill-color: #{#555};
-  --action-button-fill-color-hover: #{lighten($main-theme-color, 12%)};
-  --action-button-fill-color-active: #{darken($main-theme-color, 15%)};
-  --action-button-fill-color-pressed: #{lighten($main-theme-color, 20%)};
-  --action-button-fill-color-pressed-hover: #{lighten($main-theme-color, 24%)};
-  --action-button-fill-color-pressed-active: #{lighten($main-theme-color, 7%)};
+  --action-button-fill-color: #{lighten($main-theme-color, 20%)};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 30%)};
+  --action-button-fill-color-active: #{darken($main-theme-color, 40%)};
+  --action-button-fill-color-pressed: #{lighten($main-theme-color, 85%)};
+  --action-button-fill-color-pressed-hover: #{lighten($main-theme-color, 100%)};
+  --action-button-fill-color-pressed-active: #{lighten($main-theme-color, 80%)};
 }
