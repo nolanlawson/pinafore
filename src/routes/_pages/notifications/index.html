@@ -21,8 +21,25 @@
   import TimelinePage from '../../_components/TimelinePage.html'
   import NotificationFilters from '../../_components/NotificationFilters.html'
 
+  class SomeObject {
+    constructor () {
+      this.dict = {}
+      for (let i = 0; i < 1000; i++) {
+        this.dict[Math.random()] = Math.random()
+      }
+    }
+  }
+
   export default {
     store: () => store,
+    oncreate () {
+      const someObject = new SomeObject()
+      const onMessage = () => {
+        this.foo = 'foo'
+        this.bar = someObject
+      }
+      window.addEventListener("message", onMessage)
+    },
     components: {
       FreeTextLayout,
       HiddenFromSSR,
