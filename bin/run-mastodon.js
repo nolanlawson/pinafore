@@ -4,11 +4,10 @@ import childProcessPromise from 'child-process-promise'
 import path from 'path'
 import fs from 'fs'
 import { waitForMastodonUiToStart, waitForMastodonApiToStart } from './wait-for-mastodon-to-start'
-import mkdirpCB from 'mkdirp'
+import mkdirp from 'mkdirp'
 
 const exec = childProcessPromise.exec
 const spawn = childProcessPromise.spawn
-const mkdirp = promisify(mkdirpCB)
 const stat = promisify(fs.stat)
 const writeFile = promisify(fs.writeFile)
 const dir = __dirname
