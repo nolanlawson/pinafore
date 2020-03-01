@@ -4,7 +4,7 @@
       {#each options as option}
         <li class="poll-choice option">
           <div class="option-text">
-            <strong>{option.share}%</strong> <span>{@html option.title}</span>
+            <strong>{option.share}%</strong> <span>{@html cleanTitle(option.title)}</span>
           </div>
           <svg aria-hidden="true">
             <line x1="0" y1="0" x2="{option.share}%" y2="0" />
@@ -23,7 +23,7 @@
                      value="{i}"
                      on:change="onChange()"
               >
-              <span>{@html option.title}</span>
+              <span>{@html cleanTitle(option.title)}</span>
             </label>
           </li>
         {/each}
@@ -360,6 +360,14 @@
         const { options } = this.get()
         const choices = getChoices(this.refs.form, options)
         this.set({ choices: choices })
+      }
+    },
+    helpers: {
+      cleanTitle (title) {
+        // Remove newlines and tabs.
+        // Mastodon UI doesn't care because in CSS it's formatted to be single-line, but we care
+        // if people somehow insert newlines, because it can really mess up the formatting.
+        return (title && title.replace(/[\n\t]+/g, ' ')) || ''
       }
     },
     components: {
