@@ -2467,6 +2467,11 @@ chalk@^2.0.0, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.0, chalk@^2.4.1, chalk@^2.4
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
+char-regex@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/char-regex/-/char-regex-1.0.2.tgz#d744358226217f981ed58f479b1d6bcc29545dcf"
+  integrity sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==
+
 chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
@@ -2605,10 +2610,17 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-clean-css@4.2.x, clean-css@^4.2.1:
+clean-css@4.2.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.1.tgz#2d411ef76b8569b6d0c84068dabe85b0aa5e5c17"
   integrity sha512-4ZxI6dy4lrY6FHzfiy1aEOXgu4LIsW2MhwG0VBKdcoGoH/XLFgaHSdLTGr4O8Be6A8r3MOphEiI8Gc1n0ecf3g==
+  dependencies:
+    source-map "~0.6.0"
+
+clean-css@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.3.tgz#507b5de7d97b48ee53d84adb0160ff6216380f78"
+  integrity sha512-VcMWDN54ZN/DS+g58HYL5/n4Zrqe8vHJpGA8KdgUXFU4fuP/aHNw8eld9SyEIyabIMJX/0RaY/fplOo5hYLSFA==
   dependencies:
     source-map "~0.6.0"
 
@@ -2951,7 +2963,7 @@ css-dedoupe@^0.1.1:
     css "^2.2.1"
     obj-to-css "^1.0.0"
 
-css-loader@^3.4.0:
+css-loader@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"
   integrity sha512-jYq4zdZT0oS0Iykt+fqnzVLRIeiPWhka+7BqPn+oSIpWJAHak5tmB/WZrJ2a21JhCeFyNnnlroSl8c+MtVndzA==
@@ -3442,6 +3454,11 @@ emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
+
+emojis-list@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
+  integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -4011,12 +4028,12 @@ file-entry-cache@^5.0.1:
   resolved "https://registry.yarnpkg.com/file-error/-/file-error-0.10.2.tgz#963b48b9273b3d4b84b400ee571bc78b1739724a"
   integrity sha1-ljtIuSc7PUuEtADuVxvHixc5cko=
 
-file-loader@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-5.0.2.tgz#7f3d8b4ac85a5e8df61338cfec95d7405f971caa"
-  integrity sha512-QMiQ+WBkGLejKe81HU8SZ9PovsU/5uaLo0JdTCEXOYv7i7jfAjHZi1tcwp9tSASJPOmmHZtbdCervFmXMH/Dcg==
+file-loader@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-5.1.0.tgz#cb56c070efc0e40666424309bd0d9e45ac6f2bb8"
+  integrity sha512-u/VkLGskw3Ue59nyOwUwXI/6nuBCo7KBkniB/l7ICwr/7cPNGsL1WCXUp3GB0qgOOKU1TiP49bv4DZF/LJqprg==
   dependencies:
-    loader-utils "^1.2.3"
+    loader-utils "^1.4.0"
     schema-utils "^2.5.0"
 
 file-type@^12.4.1:
@@ -4767,10 +4784,10 @@ indent-string@^4.0.0:
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"
   integrity sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==
 
-indexeddb-getall-shim@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/indexeddb-getall-shim/-/indexeddb-getall-shim-1.3.5.tgz#cdc8eda69a858d1c2534a288ceccf9ef53e818a7"
-  integrity sha512-Qy1szEOMDz3QZfsYEBqM7H27ukGUbVBmTEUQhVOYZAIp9b+OD2h+DJLUM6EHaa3owUTQN14iNVN7tQBY/VitYA==
+indexeddb-getall-shim@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/indexeddb-getall-shim/-/indexeddb-getall-shim-1.3.6.tgz#17258a5c268cfb43141e94b8a9381f3f5b38ebb5"
+  integrity sha512-BPkTHgaPKZnOX9y3Wx+NuthzddPB5z6f4jGV8QSefJt89/UNIdPpsNGfbAi8SAS8diqC9JZta8EyRf5jo6lj+w==
 
 indexes-of@^1.0.1:
   version "1.0.1"
@@ -5414,6 +5431,15 @@ loader-utils@^1.0.0, loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2
   dependencies:
     big.js "^5.2.2"
     emojis-list "^2.0.0"
+    json5 "^1.0.1"
+
+loader-utils@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.4.0.tgz#c579b5e34cb34b1a74edc6c1fb36bfa371d5a613"
+  integrity sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==
+  dependencies:
+    big.js "^5.2.2"
+    emojis-list "^3.0.0"
     json5 "^1.0.1"
 
 localstorage-memory@^1.0.3:
@@ -6771,10 +6797,10 @@ postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.23, postcss@^7.0.5, postcss@^7.0.
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-preact@^10.1.1:
-  version "10.2.1"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.2.1.tgz#b30eb4cdc455499ee2ff82e0fa1a16fc8e20f3a4"
-  integrity sha512-BUNvmQcVtNElku7mYHexIiM5JlGNSW2BY9O2t9xk1NqA43O8wbE0cah6PAlvT7PBHvyDRJ5TAj5Fewdi9DqLoQ==
+preact@^10.3.3:
+  version "10.3.3"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.3.3.tgz#31a949cdc89dd1cf72bc2b94f80ad55d1ac8c7e6"
+  integrity sha512-8EWUuHuLhX48uK0acnnXwBL/ZyrgeadnyhxG6hFI85BhwmquyGwWzfj2SylCNdEyltkdgbY3FZzQOM2mG1leAg==
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -7984,12 +8010,12 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-stringz@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/stringz/-/stringz-2.0.0.tgz#0a092bc64ed9b42eff2936d0401d2398393d54e9"
-  integrity sha512-pRWc5RGpedKEDvQ/ukYs8kS8tKj+cKu5ayOoyOvsavbpiLBcm1dGX6p1o5IagaN11cbfN8tKGpgQ4fHdEq5LBA==
+stringz@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/stringz/-/stringz-2.1.0.tgz#5896b4713eac31157556040fb90258fb02c1630c"
+  integrity sha512-KlywLT+MZ+v0IRepfMxRtnSvDCMc3nR1qqCs3m/qIbSOWkNZYT8XHQA31rS3TnKp0c5xjZu3M4GY/2aRKSi/6A==
   dependencies:
-    unicode-astral-regex "^1.0.1"
+    char-regex "^1.0.2"
 
 strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   version "3.0.1"
@@ -8225,7 +8251,7 @@ tesseract.js-core@^2.0.0:
   resolved "https://registry.yarnpkg.com/tesseract.js-core/-/tesseract.js-core-2.0.0.tgz#1d4073ab4d0234d4c231de06ddd8c55043ac2b1a"
   integrity sha512-Oi+V/0iuDQarM9OaLRso6y8U0lPZy9dDaLBoSWNd9c5FSsvgL6OoIDRS+Pum/noAQw7Q3V8vetlf+SgQNRdorA==
 
-tesseract.js@^2.0.1:
+tesseract.js@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-2.0.2.tgz#c415472198e0ba2910a6871a137e99bbd32ff34f"
   integrity sha512-LeZmvmYDDErqBbVSzvGHAujZUQSmjYB0iZkmwvbc+QbA840rf+0CYkCMURIuE54zDrv0Qms+QINZokQr78FkBA==
@@ -8686,11 +8712,6 @@ ultron@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
   integrity sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==
-
-unicode-astral-regex@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/unicode-astral-regex/-/unicode-astral-regex-1.0.1.tgz#2cab8529480646f9614ddbc7b62158ad05123feb"
-  integrity sha512-UP6cmDeiWi8bMDmkyXLRsDuVPTvPjh8Wsz+pHu1VkGgTBl4pUceYAdHXY0cdc6Q3+Z2q7QMzi/0E7L/S/yOvFw==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
