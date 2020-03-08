@@ -6176,10 +6176,10 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-now@^17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/now/-/now-17.0.0.tgz#c557fc624646539a79082c2bf13f5b3a23b5fb36"
-  integrity sha512-yK00BaD5dO4P3vhHwwa7Ne3D4w5YNmkZc8Hx/1TSyyKlRGXYSGNR9XuHhge4ZHzHzrWnas4UM6cgDe/N/kqIuw==
+now@^17.0.4:
+  version "17.0.4"
+  resolved "https://registry.yarnpkg.com/now/-/now-17.0.4.tgz#2204b84b3477937385835dbd975340935cf8151c"
+  integrity sha512-OP4DSlenZ+GJ3f9+dMRr1HL8naMbeU8qlPvprsqagKdrXDdtJRsQObCc7IVyyeTSQPAp3gg6nDP66/ml+dmmFQ==
 
 npm-run-all@^4.1.5:
   version "4.1.5"
