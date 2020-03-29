@@ -22,7 +22,7 @@ if [[ ! -z "$NOW_TOKEN" ]]; then
 fi
 
 # launch
-URL=$($NOW_COMMAND -e SAPPER_TIMESTAMP=$(date +%s%3N))
+URL=$($NOW_COMMAND --confirm -e SAPPER_TIMESTAMP=$(date +%s%3N))
 
 # fixes issues with now being unavailable immediately
 sleep 60
