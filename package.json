@@ -61,7 +61,7 @@
     "compression": "^1.7.4",
     "cross-env": "^7.0.0",
     "css-dedoupe": "^0.1.1",
-    "css-loader": "^3.4.2",
+    "css-loader": "^3.5.0",
     "emoji-mart": "nolanlawson/emoji-mart#8bb6fb6",
     "emoji-regex": "^8.0.0",
     "encoding": "^0.1.12",
