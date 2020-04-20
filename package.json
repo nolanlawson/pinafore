@@ -88,7 +88,7 @@
     "page-lifecycle": "^0.1.2",
     "performance-now": "^2.1.0",
     "pinch-zoom-element": "^1.1.1",
-    "preact": "^10.3.3",
+    "preact": "^10.4.1",
     "promise-worker": "^2.0.1",
     "prop-types": "^15.7.2",
     "requestidlecallback": "^0.3.0",
