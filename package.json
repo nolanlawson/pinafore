@@ -92,7 +92,7 @@
     "promise-worker": "^2.0.1",
     "prop-types": "^15.7.2",
     "requestidlecallback": "^0.3.0",
-    "rollup": "^2.0.0",
+    "rollup": "^2.7.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-terser": "^5.2.0",
     "sapper": "nolanlawson/sapper#for-pinafore-14",
