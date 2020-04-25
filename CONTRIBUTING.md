@@ -14,7 +14,7 @@ To run a dev server with hot reloading:
 
 Now it's running at `localhost:4002`.
 
-**Linux users:** for file changes to work, 
+**Linux users:** for file changes to work,
 you'll probably want to run `export CHOKIDAR_USEPOLLING=1`
 because of [this issue](https://github.com/paulmillr/chokidar/issues/237).
 
@@ -39,7 +39,7 @@ running on `localhost:3000`.
 
 The integration tests require running Mastodon itself,
 meaning the [Mastodon development guide](https://docs.joinmastodon.org/development/overview/)
-is relevant here. In particular, you'll need a recent 
+is relevant here. In particular, you'll need a recent
 version of Ruby, Redis, and Postgres running. For a full list of deps, see `bin/setup-mastodon-in-travis.sh`.
 
 Run integration tests, using headless Chrome by default:
@@ -96,7 +96,7 @@ There are two parts to the Mastodon data used for testing:
 1. A Postgres dump and a tgz containing the media files, located in `fixtures`
 2. A script that populates the Mastodon backend with test data (`restore-mastodon-data.js`).
 
-The reason we don't use a Postgres dump for everything 
+The reason we don't use a Postgres dump for everything
 is that Mastodon will ignore changes made after a certain period of time, and we
 don't want our tests to randomly start breaking one day. Running the script ensures that statuses,
 favorites, boosts, etc. are all "fresh".
