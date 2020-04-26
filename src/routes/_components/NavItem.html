@@ -92,7 +92,18 @@
 
   @media (max-width: 991px) {
     .main-nav-link .nav-link-label {
-      display: none;
+      /* Copied from the sr-only styles in global.scss
+       * the reason we explicitly leave this <span> in is because Voice Control on iOS does not
+       * understand aria-labels very well, but it understands hidden text just fine
+       */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
   }
 </style>
