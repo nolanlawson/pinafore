@@ -163,6 +163,7 @@
       "matchMedia",
       "performance",
       "postMessage",
+      "queueMicrotask",
       "requestAnimationFrame",
       "requestIdleCallback",
       "self",
