@@ -1,14 +1,10 @@
 import { emit } from '../../_utils/eventBus'
+import { normalizePageName } from '../../_utils/normalizePageName'
 
 export function navObservers (store) {
   function pageIsInNav (store, page) {
     const { navPages } = store.get()
     return navPages.find(_ => _.name === page)
-  }
-
-  function normalizePageName (page) {
-    // notifications/mentions are a special case; they show as selected in the nav
-    return page === 'notifications/mentions' ? 'notifications' : page
   }
 
   store.observe('currentPage', (currentPage, previousPage) => {

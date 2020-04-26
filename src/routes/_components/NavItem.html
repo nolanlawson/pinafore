@@ -114,6 +114,7 @@
   import { mark, stop } from '../_utils/marks'
   import { doubleRAF } from '../_utils/doubleRAF'
   import { scrollToTop } from '../_utils/scrollToTop'
+  import { normalizePageName } from '../_utils/normalizePageName'
 
   export default {
     oncreate () {
@@ -134,11 +135,7 @@
     },
     store: () => store,
     computed: {
-      selected: ({ page, name }) => {
-        return page === name ||
-          // special case – these should both highlight the notifications tab icon
-          (name === 'notifications' && page === 'notifications/mentions')
-      },
+      selected: ({ page, name }) => name === normalizePageName(page),
       ariaLabel: ({ selected, name, label, $numberOfNotifications, $numberOfFollowRequests }) => {
         let res = label
         if (selected) {
