@@ -43,28 +43,12 @@ async function decodeAllBlurhashes (statusOrNotification) {
     }))
     stop(`decodeBlurhash-${status.id}`)
   }
-  return statusOrNotification
 }
 
 export function createMakeProps (instanceName, timelineType, timelineValue) {
-  let taskCount = 0
-  let pending = []
+  let promiseChain = Promise.resolve()
 
   tryInitBlurhash() // start the blurhash worker a bit early to save time
-
-  // The worker-powered indexeddb promises can resolve in arbitrary order,
-  // causing the timeline to load in a jerky way. With this function, we
-  // wait for all promises to resolve before resolving them all in one go.
-  function awaitAllTasksComplete () {
-    return new Promise(resolve => {
-      taskCount--
-      pending.push(resolve)
-      if (taskCount === 0) {
-        pending.forEach(_ => _())
-        pending = []
-      }
-    })
-  }
 
   async function fetchFromIndexedDB (itemId) {
     mark(`fetchFromIndexedDB-${itemId}`)
@@ -78,13 +62,20 @@ export function createMakeProps (instanceName, timelineType, timelineValue) {
     }
   }
 
-  return (itemId) => {
-    taskCount++
+  async function getStatusOrNotification (itemId) {
+    const statusOrNotification = await fetchFromIndexedDB(itemId)
+    await decodeAllBlurhashes(statusOrNotification)
+    return statusOrNotification
+  }
 
-    return fetchFromIndexedDB(itemId)
-      .then(decodeAllBlurhashes)
-      .then(statusOrNotification => {
-        return awaitAllTasksComplete().then(() => statusOrNotification)
-      })
+  // The results from IndexedDB or the worker thread can return in random order,
+  // so we ensure consistent ordering based on the order this function is called in.
+  return itemId => {
+    const getStatusOrNotificationPromise = getStatusOrNotification(itemId) // start the promise ASAP
+    return new Promise((resolve, reject) => {
+      promiseChain = promiseChain
+        .then(() => getStatusOrNotificationPromise)
+        .then(resolve, reject)
+    })
   }
 }
