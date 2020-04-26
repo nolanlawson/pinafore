@@ -164,6 +164,7 @@
       "performance",
       "postMessage",
       "requestAnimationFrame",
+      "requestPostAnimationFrame",
       "requestIdleCallback",
       "self",
       "test"
