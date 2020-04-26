@@ -1,6 +1,6 @@
 import { loginAsFoobar } from '../roles'
 import { getNthStatus } from '../utils'
-import { postAs, postEmptyStatusWithMediaAs } from '../serverActions'
+import { createPollAs, postAs, postEmptyStatusWithMediaAs } from '../serverActions'
 
 fixture`120-status-aria-label.js`
   .page`http://localhost:4002`
@@ -11,7 +11,17 @@ test('aria-labels for statuses with no content text', async t => {
   await t
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
-      /foobar, (.+ ago|just now), @foobar, Public/i
+      /foobar, has media, (.+ ago|just now), @foobar, Public/i
+    )
+})
+
+test('aria-labels for statuses with polls', async t => {
+  await createPollAs('foobar', 'here is my poll', ['yolo', 'whatever'])
+  await loginAsFoobar(t)
+  await t
+    .hover(getNthStatus(1))
+    .expect(getNthStatus(1).getAttribute('aria-label')).match(
+      /foobar, here is my poll, has poll, (.+ ago|just now), @foobar, Public/i
     )
 })
 

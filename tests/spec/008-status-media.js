@@ -1,4 +1,11 @@
-import { closeDialogButton, getNthStatus, getNthStatusSelector, modalDialogContents, scrollToStatus } from '../utils'
+import {
+  closeDialogButton,
+  getNthStatus,
+  getNthStatusMediaButton,
+  getNthStatusSelector,
+  modalDialogContents,
+  scrollToStatus
+} from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
@@ -13,8 +20,10 @@ test('shows sensitive images and videos', async t => {
   const videoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
 
   await scrollToStatus(t, 1 + kittenIdx)
-  await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^blob:http:\/\/localhost/)
+  await t.expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src'))
+    .match(/^blob:http:\/\/localhost/)
     .click($(`${getNthStatusSelector(1 + kittenIdx)} .status-sensitive-media-button`))
+    .expect($(getNthStatusMediaButton(1 + kittenIdx)).getAttribute('aria-label')).eql('Show image: kitten')
     .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('alt')).eql('kitten')
     .expect($(`${getNthStatusSelector(1 + kittenIdx)} .status-media img`).getAttribute('src')).match(/^http:\/\//)
     .hover(getNthStatus(1 + videoIdx))
@@ -31,7 +40,9 @@ test('click and close image and video modals', async t => {
 
   await scrollToStatus(t, 1 + videoIdx)
   await t.expect(modalDialogContents.exists).notOk()
-    .click($(`${getNthStatusSelector(1 + videoIdx)} .play-video-button`))
+    .expect($(getNthStatusMediaButton(1 + videoIdx)).getAttribute('aria-label'))
+    .eql('Play video: kitten')
+    .click($(getNthStatusMediaButton(1 + videoIdx)))
     .expect(modalDialogContents.exists).ok()
     .expect($('.modal-dialog video').getAttribute('src')).contains('mp4')
     .expect($('.modal-dialog video').getAttribute('poster')).contains('png')
@@ -39,7 +50,9 @@ test('click and close image and video modals', async t => {
     .expect(modalDialogContents.exists).notOk()
     .hover(getNthStatus(1 + kittenIdx - 1))
     .hover(getNthStatus(1 + kittenIdx))
-    .click($(`${getNthStatusSelector(1 + kittenIdx)} .show-image-button`))
+    .expect($(getNthStatusMediaButton(1 + kittenIdx)).getAttribute('aria-label'))
+    .eql('Show animated image: kitten')
+    .click($(getNthStatusMediaButton(1 + kittenIdx)))
     .expect(modalDialogContents.exists).ok()
     .expect($('.modal-dialog video').getAttribute('src')).contains('mp4')
     .expect($('.modal-dialog video').getAttribute('poster')).contains('png')

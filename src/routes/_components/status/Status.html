@@ -280,11 +280,14 @@
       reblog: ({ status }) => status.reblog,
       ariaLabel: ({
         originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
-        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels
+        showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels,
+        showMedia, showPoll
       }) => (
         getAccessibleLabelForStatus(originalAccount, account, plainTextContent,
           timeagoFormattedDate, spoilerText, showContent,
-          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels)
+          reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels,
+          showMedia, showPoll
+        )
       ),
       showHeader: ({ notification, status, timelineType }) => (
         (notification && ['reblog', 'favourite', 'poll'].includes(notification.type)) ||
