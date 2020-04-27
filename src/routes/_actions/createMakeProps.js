@@ -2,6 +2,8 @@ import { database } from '../_database/database'
 import { decode as decodeBlurhash, init as initBlurhash } from '../_utils/blurhash'
 import { mark, stop } from '../_utils/marks'
 import { get } from '../_utils/lodash-lite'
+import { statusHtmlToPlainText } from '../_utils/statusHtmlToPlainText'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 async function getNotification (instanceName, timelineType, timelineValue, itemId) {
   return {
@@ -45,6 +47,24 @@ async function decodeAllBlurhashes (statusOrNotification) {
   }
 }
 
+async function calculatePlainTextContent (statusOrNotification) {
+  const status = statusOrNotification.status || statusOrNotification.notification.status
+  if (!status) {
+    return
+  }
+  const originalStatus = status.reblog ? status.reblog : status
+  const content = originalStatus.content || ''
+  const mentions = originalStatus.mentions || []
+  // Calculating the plaintext from the HTML is a non-trivial operation, so we might
+  // as well do it in advance, while blurhash is being decoded on the worker thread.
+  await new Promise(resolve => {
+    scheduleIdleTask(() => {
+      originalStatus.plainTextContent = statusHtmlToPlainText(content, mentions)
+      resolve()
+    })
+  })
+}
+
 export function createMakeProps (instanceName, timelineType, timelineValue) {
   let promiseChain = Promise.resolve()
 
@@ -64,7 +84,10 @@ export function createMakeProps (instanceName, timelineType, timelineValue) {
 
   async function getStatusOrNotification (itemId) {
     const statusOrNotification = await fetchFromIndexedDB(itemId)
-    await decodeAllBlurhashes(statusOrNotification)
+    await Promise.all([
+      decodeAllBlurhashes(statusOrNotification),
+      calculatePlainTextContent(statusOrNotification)
+    ])
     return statusOrNotification
   }
 
