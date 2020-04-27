@@ -81,6 +81,14 @@
     text-decoration: underline;
   }
 
+  /* Pixelfed seems to inject many <br>s instead of using <p> tags properly.
+   * This causes a ton of extra vertical whitespace, and the easiest fix is to just disallow <br> tags
+   * entirely, which looks much better.
+   */
+  :global(.status-content br) {
+    display: none;
+  }
+
   @media (max-width: 240px) {
     :global(
       .status-content p:last-child,
