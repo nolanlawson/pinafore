@@ -129,7 +129,6 @@
   import { absoluteDateFormatter } from '../../_utils/formatters'
   import { composeNewStatusMentioning } from '../../_actions/mention'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
-  import { statusHtmlToPlainText } from '../../_utils/statusHtmlToPlainText'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea', 'label'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -224,8 +223,7 @@
       originalAccountId: ({ originalAccount }) => originalAccount.id,
       accountForShortcut: ({ originalAccount, notification }) => notification ? notification.account : originalAccount,
       visibility: ({ originalStatus }) => originalStatus.visibility,
-      mentions: ({ originalStatus }) => originalStatus.mentions || [],
-      plainTextContent: ({ content, mentions }) => statusHtmlToPlainText(content, mentions),
+      plainTextContent: ({ originalStatus }) => originalStatus.plainTextContent || '',
       plainTextContentOverLength: ({ plainTextContent }) => (
         // measureText() is expensive, so avoid doing it when possible.
         // Also measureText() typically only makes text shorter, not longer, so we can measure the raw length
