@@ -12,6 +12,7 @@
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { createPriorityQueue } from '../../_utils/createPriorityQueue'
   import { isMobile } from '../../_utils/userAgent/isMobile'
+  import { store } from '../../_store/store'
 
   // In Svelte's implementation of lists, these VirtualListLazyItems can be
   // created in any order. By default in fact it seems to do it in reverse
@@ -25,6 +26,7 @@
   export default {
     async oncreate () {
       const { makeProps, key, index } = this.get()
+      const { reduceMotion } = this.store.get()
       if (makeProps) {
         await priorityQueue(index)
         const props = await makeProps(key)
@@ -33,23 +35,22 @@
           this.set({ props: props })
           stop('VirtualListLazyItem set props')
         }
-        // On mobile, render in rIC for maximum input responsiveness. The reason we do
-        // different behavior for desktop versus mobile is:
-        // 1. On desktop, the scrollbar is really distracting as it changes size. It may
-        //    even cause issues for people with vestibular disorders (see also prefers-reduced-motion).
-        // 2. On mobile, the CPU is generally slower, so we want better input responsiveness.
+        // On desktop, if prefers-reduced-motion is enabled, avoid using scheduleIdleTask
+        // here because it causes the scrollbar to grow in a way that may sicken
+        // people with vestibular disorders.
         // TODO: someday we can use isInputPending as a better way to break up work
         // https://www.chromestatus.com/feature/5719830432841728
-        if (isMobile()) {
-          scheduleIdleTask(setProps)
-        } else {
+        if (!isMobile() && reduceMotion) {
           setProps()
+        } else {
+          scheduleIdleTask(setProps)
         }
       }
     },
     data: () => ({
       props: undefined
     }),
+    store: () => store,
     components: {
       VirtualListItem
     }
