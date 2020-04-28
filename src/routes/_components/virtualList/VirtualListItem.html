@@ -29,6 +29,8 @@
   import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
   import { mark, stop } from '../../_utils/marks'
   import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
+  import { observe } from 'svelte-extras'
+  import { doubleRAF } from '../../_utils/doubleRAF'
 
   export default {
     oncreate () {
@@ -46,15 +48,26 @@
       })
       this.doRecalculateHeight = this.doRecalculateHeight.bind(this)
       registerResizeListener(this.doRecalculateHeight)
+      // this rAF delay is necessary in order to get the fade-in animation
+      // to consistently show
+      this.observe('shownBeforeRaf', shownBeforeRaf => {
+        doubleRAF(() => {
+          this.set({ shown: shownBeforeRaf })
+        })
+      })
     },
     ondestroy () {
       unregisterResizeListener(this.doRecalculateHeight)
     },
     store: () => virtualListStore,
+    data: () => ({
+      shown: false
+    }),
     computed: {
-      shown: ({ $itemHeights, key }) => $itemHeights[key] > 0
+      shownBeforeRaf: ({ $itemHeights, key }) => $itemHeights[key] > 0
     },
     methods: {
+      observe,
       doRecalculateHeight () {
         // Recalculate immediately because this is done on-demand, e.g.
         // when clicking the "More" button on a spoiler.
