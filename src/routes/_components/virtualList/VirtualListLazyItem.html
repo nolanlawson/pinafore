@@ -24,27 +24,30 @@
   const priorityQueue = createPriorityQueue()
 
   export default {
-    async oncreate () {
+    oncreate () {
       const { makeProps, key, index } = this.get()
       const { reduceMotion } = this.store.get()
       if (makeProps) {
-        await priorityQueue(index)
-        const props = await makeProps(key)
-        const setProps = () => {
-          mark('VirtualListLazyItem set props')
-          this.set({ props: props })
-          stop('VirtualListLazyItem set props')
-        }
-        // On desktop, if prefers-reduced-motion is enabled, avoid using scheduleIdleTask
-        // here because it causes the scrollbar to grow in a way that may sicken
-        // people with vestibular disorders.
-        // TODO: someday we can use isInputPending as a better way to break up work
-        // https://www.chromestatus.com/feature/5719830432841728
-        if (!isMobile() && reduceMotion) {
-          setProps()
-        } else {
-          scheduleIdleTask(setProps)
-        }
+        // TODO: I would use async/await here, but Firefox 68 for Android has a bug where
+        // these don't resolve in the proper order unless I use promises
+        priorityQueue(index).then(async () => {
+          const props = await makeProps(key)
+          const setProps = () => {
+            mark('VirtualListLazyItem set props')
+            this.set({ props: props })
+            stop('VirtualListLazyItem set props')
+          }
+          // On desktop, if prefers-reduced-motion is enabled, avoid using scheduleIdleTask
+          // here because it causes the scrollbar to grow in a way that may sicken
+          // people with vestibular disorders.
+          // TODO: someday we can use isInputPending as a better way to break up work
+          // https://www.chromestatus.com/feature/5719830432841728
+          if (!isMobile() && reduceMotion) {
+            setProps()
+          } else {
+            scheduleIdleTask(setProps)
+          }
+        })
       }
     },
     data: () => ({
