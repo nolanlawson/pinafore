@@ -41,17 +41,13 @@ addons:
       - redis-tools
       - zlib1g-dev
 before_install:
-  - npm install -g greenkeeper-lockfile@1
   - psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s
   - export PATH="$HOME/.yarn/bin:$PATH"
   - ./bin/setup-mastodon-in-travis.sh
-install: yarn # don't allow yarn --pure-lockfile because Greenkeeper needs to update
 before_script:
   - yarn run lint
-  - greenkeeper-lockfile-update
 after_script:
-  - greenkeeper-lockfile-upload
   - rm -f /home/travis/.rvm/gems/ruby-*/bin/posix-spawn-benchmark # file seems generated every time, breaks travis cache
 script: travis_retry yarn run $COMMAND
 env:
@@ -71,7 +67,6 @@ matrix:
 branches:
   only:
     - master
-    - /^greenkeeper/.*$/
 cache:
   yarn: true
   bundler: true

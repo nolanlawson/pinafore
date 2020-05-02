@@ -1,4 +1,4 @@
-# Pinafore [![Build Status](https://travis-ci.com/nolanlawson/pinafore.svg?branch=master)](https://travis-ci.com/nolanlawson/pinafore) [![Greenkeeper badge](https://badges.greenkeeper.io/nolanlawson/pinafore.svg)](https://greenkeeper.io/)
+# Pinafore [![Build Status](https://travis-ci.com/nolanlawson/pinafore.svg?branch=master)](https://travis-ci.com/nolanlawson/pinafore)
 
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 

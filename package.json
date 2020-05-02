@@ -174,12 +174,6 @@
     "mode": "auto",
     "cjs": "vars"
   },
-  "greenkeeper": {
-    "ignore": [
-      "sapper",
-      "svelte"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nolanlawson/pinafore.git"
