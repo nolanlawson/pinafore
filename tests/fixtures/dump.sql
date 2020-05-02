@@ -3516,6 +3516,7 @@ COPY public.oauth_access_tokens (id, token, refresh_token, expires_in, revoked_a
 7	39ed9aeffa4b25eda4940f22f29fea66e625c6282c2a8bf0430203c9779e9e98	\N	\N	\N	2018-03-15 04:07:55.095858	read write follow	1	6
 8	a2f0bc5a65d7d0e971bdd63c83f01948150f17739425890d154e20b528480ab8	\N	\N	\N	2018-03-15 04:33:24.989472	read write follow	1	6
 9	8ef64835d2d68769072d52b4771d86fc44fc0caeaca3040cb904a8f1f6904f92	\N	\N	\N	2018-03-15 04:58:42.550623	read write follow	1	6
+10	EVPzy_98EY8tPn2pYxY-3m0xy5EnZtq899sRGr6R9Kg	\N	\N	\N	2020-05-02 23:40:17.720209	read write follow	1	1
 \.
 
 
@@ -3879,6 +3880,7 @@ COPY public.session_activations (id, session_id, created_at, updated_at, user_ag
 7	f844efc7d2dbc81c1fe2151ac3d61bbe	2018-03-15 04:07:55.038088	2018-03-15 04:07:55.038088	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:59.0) Gecko/20100101 Firefox/59.0	127.0.0.1	7	6	\N
 8	635fcbad4a6fe81524ff3ac9a9b11e8a	2018-03-15 04:33:24.95958	2018-03-15 04:33:24.95958	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36	127.0.0.1	8	6	\N
 9	a8ef396160f8e1babdcc75ab903926a9	2018-03-15 04:58:42.504138	2018-03-15 04:58:42.504138	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:59.0) Gecko/20100101 Firefox/59.0	127.0.0.1	9	6	\N
+10	2b383eb83df38b7cc5633616b1fe107a	2020-05-02 23:40:17.696656	2020-05-02 23:40:17.696656	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36	127.0.0.1	10	1	\N
 \.
 
 
@@ -3889,6 +3891,37 @@ COPY public.session_activations (id, session_id, created_at, updated_at, user_ag
 COPY public.settings (id, var, value, thing_type, created_at, updated_at, thing_id) FROM stdin;
 1	notification_emails	---\nfollow: false\nreblog: false\nfavourite: false\nmention: false\nfollow_request: false\ndigest: true\n	User	2018-03-15 04:59:04.574423	2018-03-15 04:59:04.574423	6
 2	interactions	---\nmust_be_follower: false\nmust_be_following: false\nmust_be_following_dm: false\n	User	2018-03-15 04:59:04.605717	2018-03-15 04:59:04.605717	6
+3	site_contact_username	--- admin\n	\N	2020-05-02 23:40:58.285333	2020-05-02 23:40:58.285333	\N
+4	site_contact_email	--- admin@localhost:3000\n	\N	2020-05-02 23:40:58.290809	2020-05-02 23:40:58.290809	\N
+5	site_title	--- Mastodon\n	\N	2020-05-02 23:40:58.294363	2020-05-02 23:40:58.294363	\N
+6	site_short_description	--- ''\n	\N	2020-05-02 23:40:58.298423	2020-05-02 23:40:58.298423	\N
+7	site_description	--- ''\n	\N	2020-05-02 23:40:58.302097	2020-05-02 23:40:58.302097	\N
+8	site_extended_description	--- ''\n	\N	2020-05-02 23:40:58.305712	2020-05-02 23:40:58.305712	\N
+9	site_terms	--- ''\n	\N	2020-05-02 23:40:58.309636	2020-05-02 23:40:58.309636	\N
+10	registrations_mode	--- open\n	\N	2020-05-02 23:40:58.314461	2020-05-02 23:40:58.314461	\N
+11	closed_registrations_message	--- ''\n	\N	2020-05-02 23:40:58.319845	2020-05-02 23:40:58.319845	\N
+12	open_deletion	--- true\n	\N	2020-05-02 23:40:58.324914	2020-05-02 23:40:58.324914	\N
+13	timeline_preview	--- true\n	\N	2020-05-02 23:40:58.330247	2020-05-02 23:40:58.330247	\N
+14	show_staff_badge	--- true\n	\N	2020-05-02 23:40:58.334863	2020-05-02 23:40:58.334863	\N
+15	enable_bootstrap_timeline_accounts	--- true\n	\N	2020-05-02 23:40:58.339447	2020-05-02 23:40:58.339447	\N
+16	bootstrap_timeline_accounts	--- ''\n	\N	2020-05-02 23:40:58.344719	2020-05-02 23:40:58.344719	\N
+17	theme	--- default\n	\N	2020-05-02 23:40:58.349827	2020-05-02 23:40:58.349827	\N
+18	min_invite_role	--- admin\n	\N	2020-05-02 23:40:58.355039	2020-05-02 23:40:58.355039	\N
+19	activity_api_enabled	--- true\n	\N	2020-05-02 23:40:58.359181	2020-05-02 23:40:58.359181	\N
+20	peers_api_enabled	--- true\n	\N	2020-05-02 23:40:58.36713	2020-05-02 23:40:58.36713	\N
+21	show_known_fediverse_at_about_page	--- true\n	\N	2020-05-02 23:40:58.37091	2020-05-02 23:40:58.37091	\N
+22	preview_sensitive_media	--- false\n	\N	2020-05-02 23:40:58.374487	2020-05-02 23:40:58.374487	\N
+23	custom_css	--- ''\n	\N	2020-05-02 23:40:58.380219	2020-05-02 23:40:58.380219	\N
+24	profile_directory	--- true\n	\N	2020-05-02 23:40:58.385295	2020-05-02 23:40:58.385295	\N
+25	thumbnail	--- \n	\N	2020-05-02 23:40:58.390115	2020-05-02 23:40:58.390115	\N
+26	hero	--- \n	\N	2020-05-02 23:40:58.395057	2020-05-02 23:40:58.395057	\N
+27	mascot	--- \n	\N	2020-05-02 23:40:58.399751	2020-05-02 23:40:58.399751	\N
+28	spam_check_enabled	--- true\n	\N	2020-05-02 23:40:58.404804	2020-05-02 23:40:58.404804	\N
+29	trends	--- true\n	\N	2020-05-02 23:40:58.408754	2020-05-02 23:40:58.408754	\N
+30	trendable_by_default	--- true\n	\N	2020-05-02 23:40:58.413214	2020-05-02 23:40:58.413214	\N
+31	show_domain_blocks	--- disabled\n	\N	2020-05-02 23:40:58.417108	2020-05-02 23:40:58.417108	\N
+32	show_domain_blocks_rationale	--- disabled\n	\N	2020-05-02 23:40:58.420345	2020-05-02 23:40:58.420345	\N
+33	noindex	--- false\n	\N	2020-05-02 23:40:58.423584	2020-05-02 23:40:58.423584	\N
 \.
 
 
@@ -3961,12 +3994,12 @@ COPY public.user_invite_requests (id, user_id, text, created_at, updated_at) FRO
 --
 
 COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, admin, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, locale, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, consumed_timestep, otp_required_for_login, last_emailed_at, otp_backup_codes, filtered_languages, account_id, disabled, moderator, invite_id, remember_token, chosen_languages, created_by_application_id, approved) FROM stdin;
-1	admin@localhost:3000	2018-03-06 03:50:49.649613	2018-03-06 17:03:26.537681	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	\N	2	2018-03-06 16:53:21.708118	2018-03-06 04:56:52.178652	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	\N	\N	\N	t
 2	foobar@localhost:3000	2018-03-06 03:52:21.15566	2018-03-06 04:57:40.899388	$2a$10$uOJGEfYP4JcR6cdKASsuAe3EYc44ClEjY3IsL9cwupgAsKXNvsMB6	\N	\N	2018-03-06 04:57:40.898036	1	2018-03-06 04:57:40.87839	2018-03-06 04:57:40.87839	127.0.0.1	127.0.0.1	f	9tZRP_PZyyQ6hQmx88hX	2018-03-06 03:52:26.359	2018-03-06 03:52:21.156096	\N	en	\N	\N	\N	\N	f	\N	\N	{}	2	f	f	\N	\N	\N	\N	t
 3	quux@localhost:3000	2018-03-06 03:52:52.825436	2018-03-06 04:58:05.758893	$2a$10$nSVOaz2ACr7hizj57HbbCOnBgaj20teuuSBHYFQdKboPAE8o8AWtu	\N	\N	2018-03-06 04:58:05.757671	1	2018-03-06 04:58:05.7443	2018-03-06 04:58:05.7443	127.0.0.1	127.0.0.1	f	LZkd9hZPQby-DJR7q2xK	2018-03-06 03:52:56.722007	2018-03-06 03:52:52.825895	\N	en	\N	\N	\N	\N	f	\N	\N	{}	3	f	f	\N	\N	\N	\N	t
 4	externallinks@localhost:3000	2018-03-06 03:53:52.59743	2018-03-06 03:54:07.597338	$2a$10$j6UVhj3pm2ZivOrm9sGbcuPtw49kqvpggbyt.IcCX/sm9Mqr2W2lW	\N	\N	2018-03-06 03:54:07.592013	1	2018-03-06 03:54:07.569021	2018-03-06 03:54:07.569021	127.0.0.1	127.0.0.1	f	1wHx7PBsMfgkwz36yVSq	2018-03-06 03:53:56.002257	2018-03-06 03:53:52.597832	\N	en	\N	\N	\N	\N	f	\N	\N	{}	4	f	f	\N	\N	\N	\N	t
 5	baz@localhost:3000	2018-03-08 17:13:19.88529	2018-03-08 17:13:40.093697	$2a$10$eqGdrqmSUEfA4q.7qxjp1eFdMxSUGlNJMpnOG.zxE6ogyDUj9t8GO	\N	\N	2018-03-08 17:13:40.092268	1	2018-03-08 17:13:40.06976	2018-03-08 17:13:40.06976	127.0.0.1	127.0.0.1	f	K5TLBFADUUD-51oaCMfL	2018-03-08 17:13:29.253941	2018-03-08 17:13:19.885632	\N	en	\N	\N	\N	\N	f	\N	\N	{}	5	f	f	\N	\N	\N	\N	t
 6	lockedaccount@localhost:3000	2018-03-15 04:07:24.10397	2018-03-15 04:58:42.615377	$2a$10$PGDn6VtjTR0BSbK4MY/aR.T0qJZ/wtziTXH0ySJr7x3.3XsZ/1qwm	\N	\N	2018-03-15 04:07:55.142233	3	2018-03-15 04:58:42.60349	2018-03-15 04:33:25.042573	127.0.0.1	127.0.0.1	f	spRH4F8MUisS5i_uzTiS	2018-03-15 04:07:34.297881	2018-03-15 04:07:24.105731	\N	en	\N	\N	\N	\N	f	\N	\N	{}	6	f	f	\N	\N	\N	\N	t
+1	admin@localhost:3000	2018-03-06 03:50:49.649613	2020-05-02 23:40:17.754121	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	2020-05-02 23:40:17.753479	3	2020-05-02 23:40:17.735006	2018-03-06 16:53:21.708118	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	TNoemdjTzoPNkhoEoxaT	\N	\N	t
 \.
 
 
@@ -4288,7 +4321,7 @@ SELECT pg_catalog.setval('public.oauth_access_grants_id_seq', 1, false);
 -- Name: oauth_access_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
-SELECT pg_catalog.setval('public.oauth_access_tokens_id_seq', 9, true);
+SELECT pg_catalog.setval('public.oauth_access_tokens_id_seq', 10, true);
 
 
 --
@@ -4358,14 +4391,14 @@ SELECT pg_catalog.setval('public.scheduled_statuses_id_seq', 1, false);
 -- Name: session_activations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
-SELECT pg_catalog.setval('public.session_activations_id_seq', 9, true);
+SELECT pg_catalog.setval('public.session_activations_id_seq', 10, true);
 
 
 --
 -- Name: settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
-SELECT pg_catalog.setval('public.settings_id_seq', 2, true);
+SELECT pg_catalog.setval('public.settings_id_seq', 33, true);
 
 
 --
