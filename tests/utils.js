@@ -1,5 +1,6 @@
+import fs from 'fs'
+import path from 'path'
 import { ClientFunction as exec, Selector as $ } from 'testcafe'
-import * as images from './images'
 import * as blobUtils from './blobUtils'
 
 export const settingsButton = $('nav a[aria-label=Settings]')
@@ -219,21 +220,26 @@ export const getCurrentTheme = exec(() => {
   return 'default'
 })
 
-export const uploadKittenImage = i => (exec(() => {
-  const image = images[`kitten${i}`]
-  const blob = blobUtils.base64StringToBlob(image.data, 'image/png')
-  blob.name = image.name
-  const fileDrop = document.querySelector('file-drop')
-  const event = new Event('filedrop', { bubbles: false })
-  event.files = [blob]
-  fileDrop.dispatchEvent(event)
-}, {
-  dependencies: {
-    images,
-    blobUtils,
-    i
-  }
-}))
+export const uploadKittenImage = i => uploadImage(`kitten${i}.jpg`)
+
+export const uploadImage = filename => {
+  const base64 = fs.readFileSync(path.join(__dirname, './images', filename)).toString('base64')
+
+  return exec(() => {
+    const blob = blobUtils.base64StringToBlob(base64, 'image/png')
+    blob.name = filename
+    const fileDrop = document.querySelector('file-drop')
+    const event = new Event('filedrop', { bubbles: false })
+    event.files = [blob]
+    fileDrop.dispatchEvent(event)
+  }, {
+    dependencies: {
+      base64,
+      blobUtils,
+      filename
+    }
+  })
+}
 
 export const focus = (selector) => (exec(() => {
   document.querySelector(selector).focus()

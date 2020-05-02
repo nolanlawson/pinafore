@@ -57,7 +57,7 @@ const JSON_TEMPLATE = {
 
 const HTML_HEADERS = {
   'cache-control': 'public,max-age=3600',
-  'content-security-policy': 'script-src \'self\' ' +
+  'content-security-policy': 'default-src \'self\' http://localhost:45915; script-src \'self\' ' +
     `${[inlineScriptChecksum].concat(sapperInlineScriptChecksums).map(_ => `'sha256-${_}'`).join(' ')}; ` +
     'worker-src \'self\'; style-src \'self\' \'unsafe-inline\'; frame-src \'none\'; object-src \'none\'; manifest-src \'self\'',
   'referrer-policy': 'no-referrer',
