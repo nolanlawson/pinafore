@@ -1,7 +1,7 @@
 import {
   extractTextButton,
-  getNthMediaFocalPointButton, mediaAltInDialog,
-  uploadKittenImage
+  mediaAltInDialog,
+  uploadKittenImage, composeInput, getNthMediaEditButton
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
@@ -10,8 +10,11 @@ fixture`039-ocr.js`
 
 test('basic OCR works', async t => {
   await loginAsFoobar(t)
-  await uploadKittenImage(1)
-  await t.click(getNthMediaFocalPointButton(1))
+  await t
+     .hover(composeInput)
+     .typeText(composeInput, 'here is some stuff', { paste: true })
+  await uploadKittenImage(1)()
+  await t.click(getNthMediaEditButton(1))
   await t.click(extractTextButton)
   await t.expect(mediaAltInDialog.value).eql('foo', {
     timeout: 30000

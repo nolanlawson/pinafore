@@ -275,6 +275,10 @@ export function getNthMediaAltInput (n) {
   return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt textarea`)
 }
 
+export function getNthMediaEditButton (n) {
+  return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-focal-button`)
+}
+
 export function getNthComposeReplyInput (n) {
   return $(`${getNthStatusSelector(n)} .compose-box-input`)
 }

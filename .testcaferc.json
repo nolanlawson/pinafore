@@ -1,6 +1,5 @@
 {
   "hostname": "localhost",
-  "quarantineMode": true,
   "screenshots": {
     "takeOnFails": false
   },
