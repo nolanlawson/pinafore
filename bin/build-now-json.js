@@ -63,13 +63,13 @@ const SCRIPT_CHECKSUMS = [inlineScriptChecksum]
 const HTML_HEADERS = {
   'cache-control': 'public,max-age=3600',
   'content-security-policy': [
-    "default-src 'none'",
+    "default-src 'self'",
     `script-src 'self' ${SCRIPT_CHECKSUMS}`,
     "worker-src 'self'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' * data: blob:",
     "media-src 'self' *",
-    "connect-src 'self' * data:",
+    "connect-src 'self' * data: blob:",
     "frame-src 'none'",
     "frame-ancestors 'none'",
     "object-src 'none'",
