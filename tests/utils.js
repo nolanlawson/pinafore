@@ -100,6 +100,7 @@ export const focalPointXInput = $('.media-focal-point-inputs *:nth-child(1) inpu
 export const focalPointYInput = $('.media-focal-point-inputs *:nth-child(2) input')
 
 export const extractTextButton = $('.extract-text-button')
+export const mediaAltInDialog = $('.media-alt-input')
 
 export function getComposeModalNthMediaAltInput (n) {
   return $(`.modal-dialog .compose-media:nth-child(${n}) .compose-media-alt textarea`)
