@@ -12,9 +12,9 @@ const stat = promisify(fs.stat)
 const writeFile = promisify(fs.writeFile)
 const dir = __dirname
 
-const GIT_URL = 'https://github.com/nolanlawson/mastodon.git'
-const GIT_TAG_OR_COMMIT = '824ddcdbe'
-const GIT_BRANCH = 'v2.9.2-with-fuubar-fix'
+const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
+const GIT_TAG_OR_COMMIT = 'v3.1.3'
+const GIT_BRANCH = 'master'
 
 const DB_NAME = 'pinafore_development'
 const DB_USER = 'pinafore'

@@ -8,8 +8,8 @@ fi
 
 # install ruby
 source "$HOME/.rvm/scripts/rvm"
-rvm install 2.6.1
-rvm use 2.6.1
+rvm install 2.6.6
+rvm use 2.6.6
 
 # check versions
 ruby --version

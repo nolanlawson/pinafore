@@ -121,11 +121,12 @@ or
 1. Run `rm -fr mastodon` to clear out all Mastodon data
 1. Comment out `await restoreMastodonData()` in `run-mastodon.js` to avoid actually populating the database with statuses/favorites/etc.
 2. Update the `GIT_TAG_OR_BRANCH` in `run-mastodon.js` to whatever you want
-3. Run `yarn run run-mastodon`
-4. Run `yarn run backup-mastodon-data` to overwrite the data in `fixtures/`
-5. Uncomment `await restoreMastodonData()` in `run-mastodon.js`
-6. Commit all changed files
-7. Run `rm -fr mastodon/` and `yarn run run-mastodon` to confirm everything's working
+3. If the Ruby version changed, install it and update `setup-mastodon-in.travis.sh`
+4. Run `yarn run-mastodon`
+5. Run `yarn backup-mastodon-data` to overwrite the data in `fixtures/`
+6. Uncomment `await restoreMastodonData()` in `run-mastodon.js`
+7. Commit all changed files
+8. Run `rm -fr mastodon/` and `yarn run run-mastodon` to confirm everything's working
 
 Check `mastodon.log` if you have any issues.
 
