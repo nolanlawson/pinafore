@@ -69,7 +69,7 @@ const HTML_HEADERS = {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' * data: blob:",
     "media-src 'self' *",
-    "connect-src 'self' *",
+    "connect-src 'self' * data:",
     "frame-src 'none'",
     "frame-ancestors 'none'",
     "object-src 'none'",
