@@ -74,7 +74,8 @@ const HTML_HEADERS = {
     "frame-ancestors 'none'",
     "object-src 'none'",
     "manifest-src 'self'",
-    "form-action 'none'"
+    "form-action 'none'",
+    "base-uri 'self'"
   ].join(';'),
   'referrer-policy': 'no-referrer',
   'strict-transport-security': 'max-age=15552000; includeSubDomains',
