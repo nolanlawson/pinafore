@@ -71,6 +71,10 @@
         (await importShowComposeDialog())()
       },
       setupIntersectionObservers () {
+        const { showSticky } = this.get()
+        if (!showSticky) {
+          return // no need to set up observers if this button can never be sticky (e.g. dialogs)
+        }
         const sentinel = this.refs.sentinel
 
         this.__stickyObserver = new IntersectionObserver(entries => this.onObserve(entries))
