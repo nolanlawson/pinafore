@@ -55,16 +55,33 @@ const JSON_TEMPLATE = {
   ]
 }
 
+const SCRIPT_CHECKSUMS = [inlineScriptChecksum]
+  .concat(sapperInlineScriptChecksums)
+  .map(_ => `'sha256-${_}'`)
+  .join(' ')
+
 const HTML_HEADERS = {
   'cache-control': 'public,max-age=3600',
-  'content-security-policy': 'script-src \'self\' ' +
-    `${[inlineScriptChecksum].concat(sapperInlineScriptChecksums).map(_ => `'sha256-${_}'`).join(' ')}; ` +
-    'worker-src \'self\'; style-src \'self\' \'unsafe-inline\'; frame-src \'none\'; object-src \'none\'; manifest-src \'self\'',
+  'content-security-policy': [
+    "default-src 'self'",
+    `script-src 'self' ${SCRIPT_CHECKSUMS}`,
+    "worker-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' * data: blob:",
+    "media-src 'self' *",
+    "connect-src 'self' * data: blob:",
+    "frame-src 'none'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "manifest-src 'self'",
+    "form-action 'none'",
+    "base-uri 'self'"
+  ].join(';'),
   'referrer-policy': 'no-referrer',
   'strict-transport-security': 'max-age=15552000; includeSubDomains',
   'x-content-type-options': 'nosniff',
   'x-download-options': 'noopen',
-  'x-frame-options': 'SAMEORIGIN',
+  'x-frame-options': 'DENY',
   'x-xss-protection': '1; mode=block'
 }
 
