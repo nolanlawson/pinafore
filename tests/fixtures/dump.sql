@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.9 (Ubuntu 10.9-0ubuntu0.18.04.1)
--- Dumped by pg_dump version 10.9 (Ubuntu 10.9-0ubuntu0.18.04.1)
+-- Dumped from database version 10.12 (Ubuntu 10.12-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.12 (Ubuntu 10.12-0ubuntu0.18.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -82,6 +82,43 @@ ALTER FUNCTION public.timestamp_id(table_name text) OWNER TO pinafore;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: account_aliases; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.account_aliases (
+    id bigint NOT NULL,
+    account_id bigint,
+    acct character varying DEFAULT ''::character varying NOT NULL,
+    uri character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.account_aliases OWNER TO pinafore;
+
+--
+-- Name: account_aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.account_aliases_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_aliases_id_seq OWNER TO pinafore;
+
+--
+-- Name: account_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.account_aliases_id_seq OWNED BY public.account_aliases.id;
+
 
 --
 -- Name: account_conversations; Type: TABLE; Schema: public; Owner: pinafore
@@ -199,6 +236,44 @@ ALTER SEQUENCE public.account_identity_proofs_id_seq OWNED BY public.account_ide
 
 
 --
+-- Name: account_migrations; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.account_migrations (
+    id bigint NOT NULL,
+    account_id bigint,
+    acct character varying DEFAULT ''::character varying NOT NULL,
+    followers_count bigint DEFAULT 0 NOT NULL,
+    target_account_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.account_migrations OWNER TO pinafore;
+
+--
+-- Name: account_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.account_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_migrations_id_seq OWNER TO pinafore;
+
+--
+-- Name: account_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.account_migrations_id_seq OWNED BY public.account_migrations.id;
+
+
+--
 -- Name: account_moderation_notes; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -283,7 +358,8 @@ CREATE TABLE public.account_stats (
     followers_count bigint DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    last_status_at timestamp without time zone
+    last_status_at timestamp without time zone,
+    lock_version integer DEFAULT 0 NOT NULL
 );
 
 
@@ -355,7 +431,8 @@ CREATE TABLE public.account_warning_presets (
     id bigint NOT NULL,
     text text DEFAULT ''::text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    title character varying DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -466,7 +543,9 @@ CREATE TABLE public.accounts (
     discoverable boolean,
     also_known_as character varying[],
     silenced_at timestamp without time zone,
-    suspended_at timestamp without time zone
+    suspended_at timestamp without time zone,
+    trust_level integer,
+    hide_collections boolean
 );
 
 
@@ -545,6 +624,122 @@ ALTER SEQUENCE public.admin_action_logs_id_seq OWNED BY public.admin_action_logs
 
 
 --
+-- Name: announcement_mutes; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.announcement_mutes (
+    id bigint NOT NULL,
+    account_id bigint,
+    announcement_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.announcement_mutes OWNER TO pinafore;
+
+--
+-- Name: announcement_mutes_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.announcement_mutes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.announcement_mutes_id_seq OWNER TO pinafore;
+
+--
+-- Name: announcement_mutes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.announcement_mutes_id_seq OWNED BY public.announcement_mutes.id;
+
+
+--
+-- Name: announcement_reactions; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.announcement_reactions (
+    id bigint NOT NULL,
+    account_id bigint,
+    announcement_id bigint,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    custom_emoji_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.announcement_reactions OWNER TO pinafore;
+
+--
+-- Name: announcement_reactions_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.announcement_reactions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.announcement_reactions_id_seq OWNER TO pinafore;
+
+--
+-- Name: announcement_reactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.announcement_reactions_id_seq OWNED BY public.announcement_reactions.id;
+
+
+--
+-- Name: announcements; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.announcements (
+    id bigint NOT NULL,
+    text text DEFAULT ''::text NOT NULL,
+    published boolean DEFAULT false NOT NULL,
+    all_day boolean DEFAULT false NOT NULL,
+    scheduled_at timestamp without time zone,
+    starts_at timestamp without time zone,
+    ends_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    published_at timestamp without time zone,
+    status_ids bigint[]
+);
+
+
+ALTER TABLE public.announcements OWNER TO pinafore;
+
+--
+-- Name: announcements_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.announcements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.announcements_id_seq OWNER TO pinafore;
+
+--
+-- Name: announcements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.announcements_id_seq OWNED BY public.announcements.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -567,11 +762,11 @@ CREATE TABLE public.backups (
     user_id bigint,
     dump_file_name character varying,
     dump_content_type character varying,
-    dump_file_size integer,
     dump_updated_at timestamp without time zone,
     processed boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    dump_file_size bigint
 );
 
 
@@ -633,6 +828,42 @@ ALTER TABLE public.blocks_id_seq OWNER TO pinafore;
 --
 
 ALTER SEQUENCE public.blocks_id_seq OWNED BY public.blocks.id;
+
+
+--
+-- Name: bookmarks; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.bookmarks (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    status_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.bookmarks OWNER TO pinafore;
+
+--
+-- Name: bookmarks_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.bookmarks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bookmarks_id_seq OWNER TO pinafore;
+
+--
+-- Name: bookmarks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.bookmarks_id_seq OWNED BY public.bookmarks.id;
 
 
 --
@@ -705,6 +936,41 @@ ALTER SEQUENCE public.conversations_id_seq OWNED BY public.conversations.id;
 
 
 --
+-- Name: custom_emoji_categories; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.custom_emoji_categories (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.custom_emoji_categories OWNER TO pinafore;
+
+--
+-- Name: custom_emoji_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.custom_emoji_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.custom_emoji_categories_id_seq OWNER TO pinafore;
+
+--
+-- Name: custom_emoji_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.custom_emoji_categories_id_seq OWNED BY public.custom_emoji_categories.id;
+
+
+--
 -- Name: custom_emojis; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -721,7 +987,8 @@ CREATE TABLE public.custom_emojis (
     disabled boolean DEFAULT false NOT NULL,
     uri character varying,
     image_remote_url character varying,
-    visible_in_picker boolean DEFAULT true NOT NULL
+    visible_in_picker boolean DEFAULT true NOT NULL,
+    category_id bigint
 );
 
 
@@ -789,6 +1056,41 @@ ALTER SEQUENCE public.custom_filters_id_seq OWNED BY public.custom_filters.id;
 
 
 --
+-- Name: domain_allows; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.domain_allows (
+    id bigint NOT NULL,
+    domain character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.domain_allows OWNER TO pinafore;
+
+--
+-- Name: domain_allows_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.domain_allows_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.domain_allows_id_seq OWNER TO pinafore;
+
+--
+-- Name: domain_allows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.domain_allows_id_seq OWNED BY public.domain_allows.id;
+
+
+--
 -- Name: domain_blocks; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -799,7 +1101,9 @@ CREATE TABLE public.domain_blocks (
     updated_at timestamp without time zone NOT NULL,
     severity integer DEFAULT 0,
     reject_media boolean DEFAULT false NOT NULL,
-    reject_reports boolean DEFAULT false NOT NULL
+    reject_reports boolean DEFAULT false NOT NULL,
+    private_comment text,
+    public_comment text
 );
 
 
@@ -834,7 +1138,8 @@ CREATE TABLE public.email_domain_blocks (
     id bigint NOT NULL,
     domain character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    parent_id bigint
 );
 
 
@@ -1104,7 +1409,8 @@ CREATE TABLE public.invites (
     uses integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    autofollow boolean DEFAULT false NOT NULL
+    autofollow boolean DEFAULT false NOT NULL,
+    comment text
 );
 
 
@@ -1139,7 +1445,7 @@ CREATE TABLE public.list_accounts (
     id bigint NOT NULL,
     list_id bigint NOT NULL,
     account_id bigint NOT NULL,
-    follow_id bigint NOT NULL
+    follow_id bigint
 );
 
 
@@ -1203,6 +1509,44 @@ ALTER SEQUENCE public.lists_id_seq OWNED BY public.lists.id;
 
 
 --
+-- Name: markers; Type: TABLE; Schema: public; Owner: pinafore
+--
+
+CREATE TABLE public.markers (
+    id bigint NOT NULL,
+    user_id bigint,
+    timeline character varying DEFAULT ''::character varying NOT NULL,
+    last_read_id bigint DEFAULT 0 NOT NULL,
+    lock_version integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.markers OWNER TO pinafore;
+
+--
+-- Name: markers_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
+--
+
+CREATE SEQUENCE public.markers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.markers_id_seq OWNER TO pinafore;
+
+--
+-- Name: markers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
+--
+
+ALTER SEQUENCE public.markers_id_seq OWNED BY public.markers.id;
+
+
+--
 -- Name: media_attachments; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -1222,7 +1566,8 @@ CREATE TABLE public.media_attachments (
     account_id bigint,
     description text,
     scheduled_status_id bigint,
-    blurhash character varying
+    blurhash character varying,
+    processing integer
 );
 
 
@@ -1577,7 +1922,8 @@ CREATE TABLE public.polls (
     last_fetched_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    lock_version integer DEFAULT 0 NOT NULL
+    lock_version integer DEFAULT 0 NOT NULL,
+    voters_count bigint
 );
 
 
@@ -2043,7 +2389,8 @@ CREATE TABLE public.statuses (
     account_id bigint NOT NULL,
     application_id bigint,
     in_reply_to_account_id bigint,
-    poll_id bigint
+    poll_id bigint,
+    deleted_at timestamp without time zone
 );
 
 
@@ -2076,85 +2423,6 @@ CREATE TABLE public.statuses_tags (
 ALTER TABLE public.statuses_tags OWNER TO pinafore;
 
 --
--- Name: stream_entries; Type: TABLE; Schema: public; Owner: pinafore
---
-
-CREATE TABLE public.stream_entries (
-    id bigint NOT NULL,
-    activity_id bigint,
-    activity_type character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    hidden boolean DEFAULT false NOT NULL,
-    account_id bigint
-);
-
-
-ALTER TABLE public.stream_entries OWNER TO pinafore;
-
---
--- Name: stream_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
---
-
-CREATE SEQUENCE public.stream_entries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.stream_entries_id_seq OWNER TO pinafore;
-
---
--- Name: stream_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
---
-
-ALTER SEQUENCE public.stream_entries_id_seq OWNED BY public.stream_entries.id;
-
-
---
--- Name: subscriptions; Type: TABLE; Schema: public; Owner: pinafore
---
-
-CREATE TABLE public.subscriptions (
-    id bigint NOT NULL,
-    callback_url character varying DEFAULT ''::character varying NOT NULL,
-    secret character varying,
-    expires_at timestamp without time zone,
-    confirmed boolean DEFAULT false NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    last_successful_delivery_at timestamp without time zone,
-    domain character varying,
-    account_id bigint NOT NULL
-);
-
-
-ALTER TABLE public.subscriptions OWNER TO pinafore;
-
---
--- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: pinafore
---
-
-CREATE SEQUENCE public.subscriptions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.subscriptions_id_seq OWNER TO pinafore;
-
---
--- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pinafore
---
-
-ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
-
-
---
 -- Name: tags; Type: TABLE; Schema: public; Owner: pinafore
 --
 
@@ -2162,7 +2430,15 @@ CREATE TABLE public.tags (
     id bigint NOT NULL,
     name character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    usable boolean,
+    trendable boolean,
+    listable boolean,
+    reviewed_at timestamp without time zone,
+    requested_review_at timestamp without time zone,
+    last_status_at timestamp without time zone,
+    max_score double precision,
+    max_score_at timestamp without time zone
 );
 
 
@@ -2405,6 +2681,13 @@ ALTER SEQUENCE public.web_settings_id_seq OWNED BY public.web_settings.id;
 
 
 --
+-- Name: account_aliases id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_aliases ALTER COLUMN id SET DEFAULT nextval('public.account_aliases_id_seq'::regclass);
+
+
+--
 -- Name: account_conversations id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2423,6 +2706,13 @@ ALTER TABLE ONLY public.account_domain_blocks ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.account_identity_proofs ALTER COLUMN id SET DEFAULT nextval('public.account_identity_proofs_id_seq'::regclass);
+
+
+--
+-- Name: account_migrations id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_migrations ALTER COLUMN id SET DEFAULT nextval('public.account_migrations_id_seq'::regclass);
 
 
 --
@@ -2482,6 +2772,27 @@ ALTER TABLE ONLY public.admin_action_logs ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: announcement_mutes id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_mutes ALTER COLUMN id SET DEFAULT nextval('public.announcement_mutes_id_seq'::regclass);
+
+
+--
+-- Name: announcement_reactions id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_reactions ALTER COLUMN id SET DEFAULT nextval('public.announcement_reactions_id_seq'::regclass);
+
+
+--
+-- Name: announcements id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcements ALTER COLUMN id SET DEFAULT nextval('public.announcements_id_seq'::regclass);
+
+
+--
 -- Name: backups id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2493,6 +2804,13 @@ ALTER TABLE ONLY public.backups ALTER COLUMN id SET DEFAULT nextval('public.back
 --
 
 ALTER TABLE ONLY public.blocks ALTER COLUMN id SET DEFAULT nextval('public.blocks_id_seq'::regclass);
+
+
+--
+-- Name: bookmarks id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.bookmarks ALTER COLUMN id SET DEFAULT nextval('public.bookmarks_id_seq'::regclass);
 
 
 --
@@ -2510,6 +2828,13 @@ ALTER TABLE ONLY public.conversations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: custom_emoji_categories id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.custom_emoji_categories ALTER COLUMN id SET DEFAULT nextval('public.custom_emoji_categories_id_seq'::regclass);
+
+
+--
 -- Name: custom_emojis id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2521,6 +2846,13 @@ ALTER TABLE ONLY public.custom_emojis ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.custom_filters ALTER COLUMN id SET DEFAULT nextval('public.custom_filters_id_seq'::regclass);
+
+
+--
+-- Name: domain_allows id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.domain_allows ALTER COLUMN id SET DEFAULT nextval('public.domain_allows_id_seq'::regclass);
 
 
 --
@@ -2598,6 +2930,13 @@ ALTER TABLE ONLY public.list_accounts ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.lists ALTER COLUMN id SET DEFAULT nextval('public.lists_id_seq'::regclass);
+
+
+--
+-- Name: markers id; Type: DEFAULT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.markers ALTER COLUMN id SET DEFAULT nextval('public.markers_id_seq'::regclass);
 
 
 --
@@ -2741,20 +3080,6 @@ ALTER TABLE ONLY public.status_stats ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: stream_entries id; Type: DEFAULT; Schema: public; Owner: pinafore
---
-
-ALTER TABLE ONLY public.stream_entries ALTER COLUMN id SET DEFAULT nextval('public.stream_entries_id_seq'::regclass);
-
-
---
--- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: pinafore
---
-
-ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
-
-
---
 -- Name: tags id; Type: DEFAULT; Schema: public; Owner: pinafore
 --
 
@@ -2797,6 +3122,14 @@ ALTER TABLE ONLY public.web_settings ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Data for Name: account_aliases; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.account_aliases (id, account_id, acct, uri, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: account_conversations; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
@@ -2821,6 +3154,14 @@ COPY public.account_identity_proofs (id, account_id, provider, provider_username
 
 
 --
+-- Data for Name: account_migrations; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.account_migrations (id, account_id, acct, followers_count, target_account_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: account_moderation_notes; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
@@ -2840,13 +3181,13 @@ COPY public.account_pins (id, account_id, target_account_id, created_at, updated
 -- Data for Name: account_stats; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.account_stats (id, account_id, statuses_count, following_count, followers_count, created_at, updated_at, last_status_at) FROM stdin;
-1	2	0	1	0	2018-03-06 03:52:20.992567	2018-03-06 03:52:20.992567	\N
-2	3	0	1	0	2018-03-06 03:52:52.495982	2018-03-06 03:52:52.495982	\N
-3	4	0	1	0	2018-03-06 03:53:52.5107	2018-03-06 03:54:25.492347	\N
-4	5	0	1	0	2018-03-08 17:13:19.723561	2018-03-08 17:13:19.723561	\N
-5	1	0	0	5	2018-03-06 03:50:49.164137	2018-03-06 03:50:49.164137	\N
-6	6	0	1	0	2018-03-15 04:07:23.996029	2018-03-15 04:33:45.479283	\N
+COPY public.account_stats (id, account_id, statuses_count, following_count, followers_count, created_at, updated_at, last_status_at, lock_version) FROM stdin;
+1	2	0	1	0	2018-03-06 03:52:20.992567	2018-03-06 03:52:20.992567	\N	0
+2	3	0	1	0	2018-03-06 03:52:52.495982	2018-03-06 03:52:52.495982	\N	0
+3	4	0	1	0	2018-03-06 03:53:52.5107	2018-03-06 03:54:25.492347	\N	0
+4	5	0	1	0	2018-03-08 17:13:19.723561	2018-03-08 17:13:19.723561	\N	0
+5	1	0	0	5	2018-03-06 03:50:49.164137	2018-03-06 03:50:49.164137	\N	0
+6	6	0	1	0	2018-03-15 04:07:23.996029	2018-03-15 04:33:45.479283	\N	0
 \.
 
 
@@ -2862,7 +3203,7 @@ COPY public.account_tag_stats (id, tag_id, accounts_count, hidden, created_at, u
 -- Data for Name: account_warning_presets; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.account_warning_presets (id, text, created_at, updated_at) FROM stdin;
+COPY public.account_warning_presets (id, text, created_at, updated_at, title) FROM stdin;
 \.
 
 
@@ -2878,13 +3219,14 @@ COPY public.account_warnings (id, account_id, target_account_id, action, text, c
 -- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.accounts (id, username, domain, secret, private_key, public_key, remote_url, salmon_url, hub_url, created_at, updated_at, note, display_name, uri, url, avatar_file_name, avatar_content_type, avatar_file_size, avatar_updated_at, header_file_name, header_content_type, header_file_size, header_updated_at, avatar_remote_url, subscription_expires_at, locked, header_remote_url, last_webfingered_at, inbox_url, outbox_url, shared_inbox_url, followers_url, protocol, memorial, moved_to_account_id, featured_collection_url, fields, actor_type, discoverable, also_known_as, silenced_at, suspended_at) FROM stdin;
-2	foobar	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAoMmpjeV32Muoe7G9jtM1juQgFIWb+LVYb3Q+wDvcGui2u8ow\nlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOEcDxz32N9syfd+6I03PUfshtb5xPP\n7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCwRTgWX3FEVogOTYNXGBBL95vZn4U4\nksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besvi2HzP2839Va4ce4SF5gaVLNH3Lxz\nnQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6B2H3IJaKdVacnX9BZix1Uv9z0lib\nrJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2RwIDAQABAoIBAEzMZe8/xoHHrP8A\nA6GfonpQ3j3PH5Oo0sfRh1N8hAJaW0XRKmoqp98FhX1FVbJ3M92L330lTy7mZomr\nyOEJuI1/Yn014UlcZnwVmxhbALuqs7foz61mV2Zhs/dVfrhY/qZuFk+Bmbk7mUjk\n1H4GfpthUdZenJyUOfiuHkCBMDfg+ColWRPKohopvEPYpj3AT0KdeZt8y+ElYBgF\nkPlEr/NwzxoqPyyt007x2/mouqsDu23M11/WLJbYUKd8m8NXZMLrSqjcUjxkIkjV\nOCXbXJM7MULCAgX85H6ymf/xBnevwMtdXkP3pUjvVEBdROUPHpVh4bEjikAN4hvP\nZL2HwbECgYEA0MDcvkvIjVlRmHSappw1i6QF+3bBdiE9yRQLl3+g3a69VkAYPuOc\nF/tWBc/W+ZvdNY53cJms4EbiVO5zmJE87c1DlfG7d911DiI6lgTdlLdpbpdR49uH\n/yiZc1WbX4f+gBdyqFMrHJwC+ymk4CL7Ma5yoWELY4OxaC74Qr/HRBkCgYEAxS2t\n35ZBXco/X6zXhKw4hYeFXVMqCkbAwPdQsarTJXIG1hsC/SrHU9o38oobIjZoex7X\npwMBXfN8Aj5VipV8ttB/GI68fdKwRpL9wzOu+QAfGO3++ZN+h+cFzvW51VoHe4K2\nkcxDQjVQ2hvVE0AqTsz3m+wTyoHuJvfRYHvv2V8CgYA7fCmq5Edy19fjfJ6xCWRM\ntWGrBW0db11+1gJzmj/Jy8hSMpN2ID/TqaAaqd4VZK/FWiJ46KGViz1lfEleWUym\nas5uhOKpxmZbr69IHnzRqu4VQHNqXZ1EPVp0vhk3QLZp48SdaI2pal+DGJvN7snr\nn0005UVshxNfn7rIsoNiyQKBgECaFr2KnR/9g4X1Oydcxaf6HtfUx5FWXRDb9rQ/\nI67BDTxY3UHVIjl25Z2xYfJzoQe1szIk6e2+OIMDqUMedx3ucbW6DkerH9X/kuTB\nqjIquAWS9FcQ3APqzRxhpeEg/hKZYPej1OV8UmEjfUwxWas3vGh5kIJoz34084SJ\nFqxBAoGADPTjFA6dqZBxY8tO63/blR0+CgE+Z/BbsPxmtGKgAyQbnM2TQ7IqCzQw\nJxDF6p3bQqyZYVLfrQ0BLna2I0AFPVGn7fUNAAOT67HVtm3U58Cbdt457O51EQuW\nFSiCX7BuMU5uJT2S70fWSMFf3iwczxJiQwwOwBLIDjpkSanm9eM=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoMmpjeV32Muoe7G9jtM1\njuQgFIWb+LVYb3Q+wDvcGui2u8owlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOE\ncDxz32N9syfd+6I03PUfshtb5xPP7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCw\nRTgWX3FEVogOTYNXGBBL95vZn4U4ksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besv\ni2HzP2839Va4ce4SF5gaVLNH3LxznQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6\nB2H3IJaKdVacnX9BZix1Uv9z0librJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2\nRwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:20.992567	2018-03-06 03:52:20.992567				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N
-3	quux	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAuXdx5P91Cn1Sx+C4ihnk2r2L+q6Lalr/r9h9hQVRQaR5ZiHF\nj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBwTqqLhYcImjeiCTt2J69o+imI9x8p\n3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF9YAbKwGu/3H+DLOckauI7AeOcgrt\nfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCadxR4h58m2J+KZnOcCDK0x0tVhq1m\n6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEURCcr4jQa77ZWiNxjR6JmFWl5YKfZ\n8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26/wIDAQABAoIBAQCTI0DXdRdMqBo5\nen3NCjf2lbPsv/bY/LKmtjD2jD5nvm2VaiuLDfakUzqY/wgYEhO6ADuUIyOB1l77\nqXaVEx4mOsUPvQ5FEufZPTRCzbWR6cvAiheyfXBbuJXXG4bFBfrTGWnLFiLIHOjV\n6dZHvoYt+2ESYHaOL8hmGUSYiKbK4OYB8KzVLikm4DG2+Ck6JxaCNbkI3VxOBGD9\nypRWLIBefVPwntxCU8Kb8k5JJAJOMUkucZ7Mjj7TRzyq133kupq7oaOE0V4/o63U\nQVomtGfw1Q7HVuVsXm9dClIG8tRhDGfAO8QgqmHv4GfNt7IpaKHiBkp0e1R02LMK\nc4WeElgBAoGBAN5EaDXDmcyQ+4CBbNNGDG8h970W1ElvS9G6xTZkQ4KrnWZmKNw7\nzfA4TjvX88cUYbw1h0/YBO4bUe08N5bJihmLAxPBPpwkxhkzgisjBIIw5IEIM7Vo\nVmz+u8iCuEH2Uh89X354nxE5UWPm+jS7zN5Z3QGI7PFeksisNlGPbXQBAoGBANWd\nP55kDswWZ77UUbn4A1kiaD48/b0SkuvxA3HaZFbZJlHCrRfgn5yiO8IGoQCV2YQg\nZRfVIyDQWeCjGjmdYMX661OXsJDoxmGTPamgl5KB4dB92bZB09kTwJsoJz47jnGO\nkYHt+/zMeXiRrTCi+07vMPlZGnyW4WFqPZATTy7/AoGAUr7IxOsywJNg7fBA4U58\nporQvdZX5ZbHdSbA8ITXFThqeoqhv4uMGVf82A6HNKAD2pta6oCTJUmKcHUwhLQ2\n81drJ9mTQ3H1RcCFPyXkMcud5eN1zJ0xP5Z9tiHkErpuzC5+9IhXP4RFJpoAn80i\nccymmEGvZBQ/NPHXrvlkWAECgYEAy1ZUKMG2FC9/sfcJlKyxAzftYtFL956mnFFf\nphDtUn6CK3HUstXvGXqUx6zntVbvJwZvNLB+L84kv+CCJjXY2JxxRbEvMcFilZ9D\nIyTrI1rfSUeC5irjLc/Pl+Iw+NxYS2AawkN3irxZJJwG8DU0Y37sb26R9+bnw4MN\n9wdqaKECgYEAnLWO4wrhg7keBAVF6HFgRyjT5S6DHFM2BsEpjbqrxLN7M0pVimJa\nYxVJj70Clm3OdkZ8k8f9AaxNK4l38cTRNct+IhKlQB4Ryz+Gpc+T0HOAv9kk6qJ4\niJofJ1scmvubau+vOmtI6mfuyIsiSVZdW9jOEihkyzlLa2K5K5m1yww=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuXdx5P91Cn1Sx+C4ihnk\n2r2L+q6Lalr/r9h9hQVRQaR5ZiHFj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBw\nTqqLhYcImjeiCTt2J69o+imI9x8p3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF\n9YAbKwGu/3H+DLOckauI7AeOcgrtfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCa\ndxR4h58m2J+KZnOcCDK0x0tVhq1m6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEU\nRCcr4jQa77ZWiNxjR6JmFWl5YKfZ8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26\n/wIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:52.495982	2018-03-06 03:52:52.495982				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N
-4	ExternalLinks	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEArvTBpSQFmhlygPYMF0YTi5/Cd5mmKYlfu/nqR1bGUixefGWR\nV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52PpcKAm7L3RxHNXG2KuOgW0UkG2wqQY\nV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL13lYloKGNC5FGN6W0kwd25EE1oq9p\nhO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR50cPfSGXMAeyYg93njC1kfSdnaNuq\n/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3SC7Xnf0r1e+N2zFdzo1iuePv6tqkQ\nzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcYQwIDAQABAoIBAQCCZe5GdViviDPt\npnVQi2xZ7pL0rVJJNxhhdF2HGkfqSyOJN/JiLitbk+RKttEglxeaVKWHo7wR9o7O\nmQEdSzxcMyGP5dKIxyavRJdyq3nArTXYUJHMTwK3JqQQaopJO/pxaOJteMikwXN2\nWp0X1A2ozzBwTrhfXMGnDBxQUYntiOi/Hi+E4ZCBEoAhWFZSq4YH4hB5HOKUHUIZ\niKfKsFV8H5TqR0li6FbIZtR+fBY83FcRPsOA423wswrgTXPPZ3Mnv0rMtg3BijpB\nl88B5uLMprpckwLzRLRZO6KCACxjoKrrFIXy4apRG1jcIjd4Nr4j3Lus+pPNQRI3\nKsWxRpvRAoGBAOA05cfazBFhUQaRRxCmxc+mM30gAmd5IL4fGS+4DKtZz6DBr0ke\nfOS3wZ6ANo5Ovg9Js3fN9U09sRO5f4+QLeaE2f/EzdlkocnKqJGgWpNLsPAv/BrK\ngCBS3b7vXPTkiXQcuct+0dgP5tlCU+BRmH1yMTjKjaB+25mpOFZhsHJHAoGBAMfD\n+cAsAI/OwNyNAgF8gLJWdCMuYvoYlYGBAbhpFk3Xrg1FvAQbyeFDleGlaqBszq8P\nmk1hXLhX7aUZLc5g3wcmfGdFbJIjbBHxfmJqgy7iA8a60FxlD3wCtx7txD33tKSU\nt7NeMhR44YdwZ8XmPI/4vK/34bFJb1KLAvg4CswlAoGARjiLFzMx4uel5vatWUvC\nfKzDR5c06Y+Ib8Nxsf5lCW3Rl7nR2obP+xqKa8ggTiXfZQ5iRU2eXJjL0y+wAhjY\nJ3DIjlDnYAUinv74GNQuSh/UxQViYkm2I2mQxfJWHOVPH6y3jEKmGpOwa69YcdNc\nfT28qNrXzMKuqMvVN0jVaJUCgYBWpjgP1kZMGodnYzaKhIGiWYO4uuctyjoXWWjw\nn4yQKUyS7zuVoKQZtOIvZTvx6CBiqObqR6AbSfCH23sV+Mjk5hmyBdgJL5ox0kla\n0Q6j6F9w9Rlp6mAkD1106fdkVayicuuXvvUEEkbpI6WvnqWIYYEe5uubpdnGuQuJ\ntW1hjQKBgQC2CjJ35lntsCHoWud8uWnlMjtXAbEWSLkcTUXvY6TaMtHCMVvpUvCI\niacqlUVkVTS7uHNN9jre/z0+iEWM+jpByC303/NCWtvnmjHT7uJHrFNqmdfeuKGs\n4WTB0rMNvaLv7ikHyi9WGCpeD+q2pmxIdFNKCepeuuiBuygCOoFG0A==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvTBpSQFmhlygPYMF0YT\ni5/Cd5mmKYlfu/nqR1bGUixefGWRV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52Pp\ncKAm7L3RxHNXG2KuOgW0UkG2wqQYV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL1\n3lYloKGNC5FGN6W0kwd25EE1oq9phO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR5\n0cPfSGXMAeyYg93njC1kfSdnaNuq/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3S\nC7Xnf0r1e+N2zFdzo1iuePv6tqkQzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcY\nQwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:53:52.5107	2018-03-06 03:54:25.492347	Check out https://joinmastodon.org and #cat and #mastocats and also @quux is my friend	External Lonk		\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N
-5	baz	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA6MoozQ6aD0mGLXjepbLjRVITMiV/V6+Gv3hWBshGckO41bTn\nGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX+ficX5KM/cmwhxzH0nnwzxPr/Upl\nbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvTJmBIcaUr50aqfvdV2TGD+NGW+rYS\noK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm1u310KIWaIRhetAtSCkIkdUa3/8U\n6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF1tfEGD5Wchybb3ZNK3742HpR0E8m\n7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnXFQIDAQABAoIBAQDQDL1iZwZxWzi8\nMyZp2PMd5TiavMCO0aUQQrA/54ZuYPA0rzVK8VXqaIcuOcrhEQxhFcThGoUDy5cg\nkwI8pOac1gCLuiKgPz2xw5sjFTCPIjLrcS4sPksSEKpJVDe6PDMMjtS3L+z6visg\n7j8Txm50AeE9EG2oiZOfXdYwAvz7xkFLV8sUHI+Au37x61ulm0MMYrafCVkwIYIm\n3m8OPGLAFtN9nOJUdq7mExHu+A27s/3ypIae6GDu7zNyJW2TyiGpnw4UUgJQJhgy\nOP8keFcMyaMiPKyALKtjmHdFlebDyfH8btfpXiXErzRvH326JixJtg4M1xRWBra1\nl1NOUIaRAoGBAPgZUG9fWdPGTcUKsa1CJjSK0gwVldqeuxxh2Vkcai18XEXzTZ/z\ndVM/XDymUqOtIegjt52SNR2iF1ViomF5ur+74/xo1tXNf8vjMzeXJ7R0Nz5kd+ZN\nCWtVexeXvxtQO7lbJJwecjI+aLUv+9yWeZHIvSS+tHvC7zMa1DjKJIu3AoGBAPA0\nCIOTral3q9MOwDOBjCtvv72RjLx5cU93J2dca0xxYI/wa2IDl18WMEOhovB1knId\nzf2PhwakbWQ9axoq303L5muPMiVT9rkxBf90r/bUEdQPfZNRAQZ01v1uWUZnZCz7\nFJmRuk9YNbnYzp4ljU1iz7dL5YvA8gYSnma1yUuTAoGATNkqfRT/8gUe2cXyO0Se\nKPBHF88n18wLEUON23hduzEmM9SlWsJCuUKLA45RUrmyIwHNQlWjdkZbC+u9eIwI\nOJOujuS6hwdcan85wiJj/hVxdzYPnZqHLGQR+MDcRU2Y8lU1Bda4cK+8J0NxtGY3\nydxwGg2oQh2jkiThT6XtpAkCgYEAu5u4ZqRKiEla387umYv+YdK3TKXI6VBlCu8C\nzL0nZR5MkD/0bypk6TSYX8p4TB1YU18qC3g1ux9j/V3nMBn6LXYrMyk1vmf1FTHQ\nAHUwFrYOcrXim9Qx28wYOvscKVwJpwQ4U7W5cc1wsQZAYs7rrVyW5hAWanA52Dpk\nk846OZcCgYB4G8BOm7apwEfkjVzmPMazxZsV2COB2r32Wdbiuulu0hbtTVO0rZgw\nRJGCow3wEWHoO1hzVO0aFVsLB176NaRDKnEP/L2xn2y71cS3mo+FRIEHOwL9sBOL\n958bpX5AWw7KOMCPOcesFEffomMl8raaMcYkUabEABMjgNJHzL4ICA==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6MoozQ6aD0mGLXjepbLj\nRVITMiV/V6+Gv3hWBshGckO41bTnGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX\n+ficX5KM/cmwhxzH0nnwzxPr/UplbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvT\nJmBIcaUr50aqfvdV2TGD+NGW+rYSoK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm\n1u310KIWaIRhetAtSCkIkdUa3/8U6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF\n1tfEGD5Wchybb3ZNK3742HpR0E8m7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnX\nFQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-08 17:13:19.723561	2018-03-08 17:13:19.723561				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N
-1	admin	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAqhTaq3zCpRnFoQzHheYBfwcdjjczJ4pSKwsq1qJmydctdZM6\ngScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh/wJm8mqxx473L+noX8X49jhFuv5O\nsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8GKmX9Cg8W1G52dZlNq/HbEygg0W7\nvq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcrJyXli9+cLl9p4msiLgbP3x9mZ46s\njtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM/lax9x5CRcmDJLBwqZPFi1TnPJOr\nAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/pwIDAQABAoIBAQCIa/fFq2mY8iYR\n+uUjIo06raNoSiBu68Tin695v4PBDCZ7c19u7sTEzfH0CZlvmXg+BjJQEUSvYzLg\nNVJ15ZtWJ0AZ27jDf4oH1Y+9GleKbzKHPaoz/Ji5jAR0WgdRxYBeByOo4AZ62ShS\n9mXa4yiTw5yNi6R1/wSalRxUFARaeYBbRSZTawU24C4hyZZFEKO3QlxbhBaAfsJP\nDVGftkL9mdCHJLvA4/7IXZsmpErkhaXP98B1FaY3zE+qefGcLFRLYbAxjbCOAX6z\nAD3yjk3e66DKxHF1Wxva4u30aPZfODPCkCgPwxuZq8Tz+VNh4j5cS5C13etukBV4\nB31Brb8pAoGBAOFzZ8IMcz1GZxeIgarb5AQHbi0rZiPZwJF4/pLa9U4Bg0maj97t\nemWRomuVEtM/bI5Dva+YzQnei49pDPnTMAqPLRbfOeruFBlGxJlPbaKguR5qAQar\n2imkhvjOq3/bV7PonP6JE6hxqfwAoMtxpPYKuKymSDdZ+imFFNiu/fiNAoGBAMEg\nwjGyukiXppjKYPyXnjJOuzajvq1+o2h6l216tYMSlvRlbM8EINYbg6yKLia0yHDl\n9wVD4vEU6BYZ5OmXDT0hSF00+wx1lQi4YM2u+va00dthpgUDxXi/FUctlJZuRpOW\nzK1JKpFl/znIMxME6d+DN+yNqGMM2hMatQAVee4DAoGAKWeMcrLepy462LOVPM/N\nfH/w2BLUW1kuaIkUF9xmmMDmX6onKgXrKKQqdB+YqXtIcIg4WftyDJH2h4v/ehIz\nDH1nBoBQnrjCsDGzAYT42Zky5kcJkTQWiPdSYndyP7UE0mGyE30RQyo80a872KEy\nbo1hhTO0p5W6v81VGsZoljECgYBwzjmf3c2BaVMeG9faspTsvaAMokhV/opkFHcu\ns2YiUVFrH3MW2Ep1xUx8E5oxcZdCmpBWuvhr6NJHVoinCFvrQO2Lw85/0I5ksY2Z\nloNwZt3NTpQyialmhfZfxPfthiwjOQoEjaAXnYQetBlhGpWgwHyB55xbfr5COm9O\nxTybEQKBgALIfybfST7EfUZszLen+/PyXPfCHKybTwEHHYfwwwFHmiVuMLCbsXIR\nPjOPl29jHcSiSutMQZbnKDZ3UgNnx9O31lSzS7ygC50pK1QpzPBXKZMGGnS4UGSd\nTBa+FKJuFAeVeRnoDKnTRFSRIGwvu4vDKLmXBv1728XWKG3GHDot\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhTaq3zCpRnFoQzHheYB\nfwcdjjczJ4pSKwsq1qJmydctdZM6gScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh\n/wJm8mqxx473L+noX8X49jhFuv5OsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8\nGKmX9Cg8W1G52dZlNq/HbEygg0W7vq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcr\nJyXli9+cLl9p4msiLgbP3x9mZ46sjtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM\n/lax9x5CRcmDJLBwqZPFi1TnPJOrAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/\npwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:50:49.164137	2018-03-06 03:50:49.164137				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N
-6	LockedAccount	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpgIBAAKCAQEA6HayWvdAVUdIeabZBP8fpdvaBUWyFflzdHXU3lQ7ZtQpfWm0\nYTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWYxv4X6QP79CH4RVXJtJK9eGzVtNib\nzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8BeRORubkxU37kSphFiYNOi4/gkkD\n9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9qUlmeMXRrHeEdIHuIQrHCkqASZjMz\nA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+2WDcDU3bR/uQulIPddnjoNhMDXOd\n8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pOSQIDAQABAoIBAQC0EtaAjs2AAfML\ngYrVSwfqBE90DBQy34RnL6vQ+fD1692j79EyB5p/vgYKkP2iAaz2W0rqZrybDYxC\nIUK/Ou0ZINXGxDZVXEck9pqETbOF6ND3AWBWznF8OLj9wea9uC8aU89Fb28iteBg\nJUlfmXOw4LUeSVfn20vHnMuOS7WtXZGlbHt6KA29vLKOXCSSdlBkq+NJr+GwGy8Q\n6l1ZM7bOkMral2FHFd3LK2d94+F1lbKsNnA/IPgUk9EY0P8wjOMJ0ThRQu28s9G4\nX0GxXQ/+utO98yzdJ6vsKPLotsrW7DQizuo/h66USvHHrgiDmBo6vXOPASAUWWho\nvm1VKykxAoGBAP/vju1pSOySHqQU/b3QcLzHSVm7U47BVt7/eZzvydmAMFpCFX5I\n0woKBLQAXibwOaJu2avGbvmpckmWC/BjlQEDpGKWmZpgCORVYY8vjp/k0tLMgZfd\nJprjAwVFg03YObLsxDxNnLxlJar2gVbzFn82XfC4L+GIiHkP++D0bUSVAoGBAOiF\noWjsWFpAH5Zxx1lFggx6LESDmOWlo5WzXChP2l8iZEb/wNBJ3LKU14szIuJXCsQM\nOH3Yz8XwiU2bUz5pWpQNoitP349BNqzjuUXJ91by2KUOjvX5ycZ8hYfAnWgAv75A\nZy+CH+XUiS1wjV9MNdap7/GqvlrxqtSud697ceHlAoGBAO2B0G99bxErIIhAeqD1\nmEl33xgIgShPP2C+UItU80qGbVi1TuDckAwW8/pfBQC5maKloBaKlV3W45pqRjYV\nE6fXS2u6Ol1KlbXfjiOkjITRgtvgsLrPng3KcXko4wsQh6sFka4skDE85FHdZHXe\nLJhtSYwkQTrYy10dei9uZSBpAoGBAOeTHvwWVrAbqNn2mymHlkvC6Y+a2I3ud4tC\nRIhJbxzMbb5gPLG0vj6FCl4yIY32TlyOJzz+z389XiGSjkdcOb+2DErCk85ijoeF\njSG6UcGgvq80XqEPkytBHOPkq1/HTy+1iI7CM+57y9sbe1Dr37rZKIUxHcAJa6/B\nyqVUdkkZAoGBAIRLMM2TmPHH33tjYTR1WHtGR1/7D3cose5zOqGCu4zx2I0e9m+p\nMmaYl0gtr0CfFesQVtLTRuoTPXfDwaTECEuKpGrQTjUUHjC7MgEP0T6odmx2rlfQ\nmdNa6lJrZA8jscz5kcYoHjlr9KamkmtnaOSwPp+sQDWNB/kSoEMZxXyC\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6HayWvdAVUdIeabZBP8f\npdvaBUWyFflzdHXU3lQ7ZtQpfWm0YTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWY\nxv4X6QP79CH4RVXJtJK9eGzVtNibzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8\nBeRORubkxU37kSphFiYNOi4/gkkD9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9q\nUlmeMXRrHeEdIHuIQrHCkqASZjMzA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+\n2WDcDU3bR/uQulIPddnjoNhMDXOd8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pO\nSQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-15 04:07:23.996029	2018-03-15 04:33:45.479283				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N
+COPY public.accounts (id, username, domain, secret, private_key, public_key, remote_url, salmon_url, hub_url, created_at, updated_at, note, display_name, uri, url, avatar_file_name, avatar_content_type, avatar_file_size, avatar_updated_at, header_file_name, header_content_type, header_file_size, header_updated_at, avatar_remote_url, subscription_expires_at, locked, header_remote_url, last_webfingered_at, inbox_url, outbox_url, shared_inbox_url, followers_url, protocol, memorial, moved_to_account_id, featured_collection_url, fields, actor_type, discoverable, also_known_as, silenced_at, suspended_at, trust_level, hide_collections) FROM stdin;
+2	foobar	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAoMmpjeV32Muoe7G9jtM1juQgFIWb+LVYb3Q+wDvcGui2u8ow\nlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOEcDxz32N9syfd+6I03PUfshtb5xPP\n7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCwRTgWX3FEVogOTYNXGBBL95vZn4U4\nksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besvi2HzP2839Va4ce4SF5gaVLNH3Lxz\nnQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6B2H3IJaKdVacnX9BZix1Uv9z0lib\nrJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2RwIDAQABAoIBAEzMZe8/xoHHrP8A\nA6GfonpQ3j3PH5Oo0sfRh1N8hAJaW0XRKmoqp98FhX1FVbJ3M92L330lTy7mZomr\nyOEJuI1/Yn014UlcZnwVmxhbALuqs7foz61mV2Zhs/dVfrhY/qZuFk+Bmbk7mUjk\n1H4GfpthUdZenJyUOfiuHkCBMDfg+ColWRPKohopvEPYpj3AT0KdeZt8y+ElYBgF\nkPlEr/NwzxoqPyyt007x2/mouqsDu23M11/WLJbYUKd8m8NXZMLrSqjcUjxkIkjV\nOCXbXJM7MULCAgX85H6ymf/xBnevwMtdXkP3pUjvVEBdROUPHpVh4bEjikAN4hvP\nZL2HwbECgYEA0MDcvkvIjVlRmHSappw1i6QF+3bBdiE9yRQLl3+g3a69VkAYPuOc\nF/tWBc/W+ZvdNY53cJms4EbiVO5zmJE87c1DlfG7d911DiI6lgTdlLdpbpdR49uH\n/yiZc1WbX4f+gBdyqFMrHJwC+ymk4CL7Ma5yoWELY4OxaC74Qr/HRBkCgYEAxS2t\n35ZBXco/X6zXhKw4hYeFXVMqCkbAwPdQsarTJXIG1hsC/SrHU9o38oobIjZoex7X\npwMBXfN8Aj5VipV8ttB/GI68fdKwRpL9wzOu+QAfGO3++ZN+h+cFzvW51VoHe4K2\nkcxDQjVQ2hvVE0AqTsz3m+wTyoHuJvfRYHvv2V8CgYA7fCmq5Edy19fjfJ6xCWRM\ntWGrBW0db11+1gJzmj/Jy8hSMpN2ID/TqaAaqd4VZK/FWiJ46KGViz1lfEleWUym\nas5uhOKpxmZbr69IHnzRqu4VQHNqXZ1EPVp0vhk3QLZp48SdaI2pal+DGJvN7snr\nn0005UVshxNfn7rIsoNiyQKBgECaFr2KnR/9g4X1Oydcxaf6HtfUx5FWXRDb9rQ/\nI67BDTxY3UHVIjl25Z2xYfJzoQe1szIk6e2+OIMDqUMedx3ucbW6DkerH9X/kuTB\nqjIquAWS9FcQ3APqzRxhpeEg/hKZYPej1OV8UmEjfUwxWas3vGh5kIJoz34084SJ\nFqxBAoGADPTjFA6dqZBxY8tO63/blR0+CgE+Z/BbsPxmtGKgAyQbnM2TQ7IqCzQw\nJxDF6p3bQqyZYVLfrQ0BLna2I0AFPVGn7fUNAAOT67HVtm3U58Cbdt457O51EQuW\nFSiCX7BuMU5uJT2S70fWSMFf3iwczxJiQwwOwBLIDjpkSanm9eM=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoMmpjeV32Muoe7G9jtM1\njuQgFIWb+LVYb3Q+wDvcGui2u8owlsffsZl3f0RBIQXAfqkmB0j55ISg2Rlp+IOE\ncDxz32N9syfd+6I03PUfshtb5xPP7kDsrlWDbD/fI5SpepaIYAsRH6bpZDlS3BCw\nRTgWX3FEVogOTYNXGBBL95vZn4U4ksxo8QH8gKWaH9itYUOovvsbxARGKTU4Besv\ni2HzP2839Va4ce4SF5gaVLNH3LxznQU6qZk19kGN2+3k2Y80flmtSORLtjBywwZ6\nB2H3IJaKdVacnX9BZix1Uv9z0librJwF0/laDqNZvUDUjJfGoOq0Mn1VxXB1qgJ2\nRwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:20.992567	2018-03-06 03:52:20.992567				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3	quux	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAuXdx5P91Cn1Sx+C4ihnk2r2L+q6Lalr/r9h9hQVRQaR5ZiHF\nj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBwTqqLhYcImjeiCTt2J69o+imI9x8p\n3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF9YAbKwGu/3H+DLOckauI7AeOcgrt\nfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCadxR4h58m2J+KZnOcCDK0x0tVhq1m\n6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEURCcr4jQa77ZWiNxjR6JmFWl5YKfZ\n8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26/wIDAQABAoIBAQCTI0DXdRdMqBo5\nen3NCjf2lbPsv/bY/LKmtjD2jD5nvm2VaiuLDfakUzqY/wgYEhO6ADuUIyOB1l77\nqXaVEx4mOsUPvQ5FEufZPTRCzbWR6cvAiheyfXBbuJXXG4bFBfrTGWnLFiLIHOjV\n6dZHvoYt+2ESYHaOL8hmGUSYiKbK4OYB8KzVLikm4DG2+Ck6JxaCNbkI3VxOBGD9\nypRWLIBefVPwntxCU8Kb8k5JJAJOMUkucZ7Mjj7TRzyq133kupq7oaOE0V4/o63U\nQVomtGfw1Q7HVuVsXm9dClIG8tRhDGfAO8QgqmHv4GfNt7IpaKHiBkp0e1R02LMK\nc4WeElgBAoGBAN5EaDXDmcyQ+4CBbNNGDG8h970W1ElvS9G6xTZkQ4KrnWZmKNw7\nzfA4TjvX88cUYbw1h0/YBO4bUe08N5bJihmLAxPBPpwkxhkzgisjBIIw5IEIM7Vo\nVmz+u8iCuEH2Uh89X354nxE5UWPm+jS7zN5Z3QGI7PFeksisNlGPbXQBAoGBANWd\nP55kDswWZ77UUbn4A1kiaD48/b0SkuvxA3HaZFbZJlHCrRfgn5yiO8IGoQCV2YQg\nZRfVIyDQWeCjGjmdYMX661OXsJDoxmGTPamgl5KB4dB92bZB09kTwJsoJz47jnGO\nkYHt+/zMeXiRrTCi+07vMPlZGnyW4WFqPZATTy7/AoGAUr7IxOsywJNg7fBA4U58\nporQvdZX5ZbHdSbA8ITXFThqeoqhv4uMGVf82A6HNKAD2pta6oCTJUmKcHUwhLQ2\n81drJ9mTQ3H1RcCFPyXkMcud5eN1zJ0xP5Z9tiHkErpuzC5+9IhXP4RFJpoAn80i\nccymmEGvZBQ/NPHXrvlkWAECgYEAy1ZUKMG2FC9/sfcJlKyxAzftYtFL956mnFFf\nphDtUn6CK3HUstXvGXqUx6zntVbvJwZvNLB+L84kv+CCJjXY2JxxRbEvMcFilZ9D\nIyTrI1rfSUeC5irjLc/Pl+Iw+NxYS2AawkN3irxZJJwG8DU0Y37sb26R9+bnw4MN\n9wdqaKECgYEAnLWO4wrhg7keBAVF6HFgRyjT5S6DHFM2BsEpjbqrxLN7M0pVimJa\nYxVJj70Clm3OdkZ8k8f9AaxNK4l38cTRNct+IhKlQB4Ryz+Gpc+T0HOAv9kk6qJ4\niJofJ1scmvubau+vOmtI6mfuyIsiSVZdW9jOEihkyzlLa2K5K5m1yww=\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuXdx5P91Cn1Sx+C4ihnk\n2r2L+q6Lalr/r9h9hQVRQaR5ZiHFj61eST6y0k0KzZ3ALcpjZHZsjbbn/LGFjyBw\nTqqLhYcImjeiCTt2J69o+imI9x8p3A1tIWwMn3oQVvT5mXqj1cEDzqmgpByPA0xF\n9YAbKwGu/3H+DLOckauI7AeOcgrtfydFX7gsyv4kji/tfzg9D+8PwYXLKHIkjuCa\ndxR4h58m2J+KZnOcCDK0x0tVhq1m6gEX+5wMRrWEvC3tSUNFH+58q3ozNuNuhyEU\nRCcr4jQa77ZWiNxjR6JmFWl5YKfZ8Y+hNtRjF4VT+aW2T7UanEIxrabRvKL2aC26\n/wIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:52:52.495982	2018-03-06 03:52:52.495982				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4	ExternalLinks	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEArvTBpSQFmhlygPYMF0YTi5/Cd5mmKYlfu/nqR1bGUixefGWR\nV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52PpcKAm7L3RxHNXG2KuOgW0UkG2wqQY\nV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL13lYloKGNC5FGN6W0kwd25EE1oq9p\nhO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR50cPfSGXMAeyYg93njC1kfSdnaNuq\n/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3SC7Xnf0r1e+N2zFdzo1iuePv6tqkQ\nzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcYQwIDAQABAoIBAQCCZe5GdViviDPt\npnVQi2xZ7pL0rVJJNxhhdF2HGkfqSyOJN/JiLitbk+RKttEglxeaVKWHo7wR9o7O\nmQEdSzxcMyGP5dKIxyavRJdyq3nArTXYUJHMTwK3JqQQaopJO/pxaOJteMikwXN2\nWp0X1A2ozzBwTrhfXMGnDBxQUYntiOi/Hi+E4ZCBEoAhWFZSq4YH4hB5HOKUHUIZ\niKfKsFV8H5TqR0li6FbIZtR+fBY83FcRPsOA423wswrgTXPPZ3Mnv0rMtg3BijpB\nl88B5uLMprpckwLzRLRZO6KCACxjoKrrFIXy4apRG1jcIjd4Nr4j3Lus+pPNQRI3\nKsWxRpvRAoGBAOA05cfazBFhUQaRRxCmxc+mM30gAmd5IL4fGS+4DKtZz6DBr0ke\nfOS3wZ6ANo5Ovg9Js3fN9U09sRO5f4+QLeaE2f/EzdlkocnKqJGgWpNLsPAv/BrK\ngCBS3b7vXPTkiXQcuct+0dgP5tlCU+BRmH1yMTjKjaB+25mpOFZhsHJHAoGBAMfD\n+cAsAI/OwNyNAgF8gLJWdCMuYvoYlYGBAbhpFk3Xrg1FvAQbyeFDleGlaqBszq8P\nmk1hXLhX7aUZLc5g3wcmfGdFbJIjbBHxfmJqgy7iA8a60FxlD3wCtx7txD33tKSU\nt7NeMhR44YdwZ8XmPI/4vK/34bFJb1KLAvg4CswlAoGARjiLFzMx4uel5vatWUvC\nfKzDR5c06Y+Ib8Nxsf5lCW3Rl7nR2obP+xqKa8ggTiXfZQ5iRU2eXJjL0y+wAhjY\nJ3DIjlDnYAUinv74GNQuSh/UxQViYkm2I2mQxfJWHOVPH6y3jEKmGpOwa69YcdNc\nfT28qNrXzMKuqMvVN0jVaJUCgYBWpjgP1kZMGodnYzaKhIGiWYO4uuctyjoXWWjw\nn4yQKUyS7zuVoKQZtOIvZTvx6CBiqObqR6AbSfCH23sV+Mjk5hmyBdgJL5ox0kla\n0Q6j6F9w9Rlp6mAkD1106fdkVayicuuXvvUEEkbpI6WvnqWIYYEe5uubpdnGuQuJ\ntW1hjQKBgQC2CjJ35lntsCHoWud8uWnlMjtXAbEWSLkcTUXvY6TaMtHCMVvpUvCI\niacqlUVkVTS7uHNN9jre/z0+iEWM+jpByC303/NCWtvnmjHT7uJHrFNqmdfeuKGs\n4WTB0rMNvaLv7ikHyi9WGCpeD+q2pmxIdFNKCepeuuiBuygCOoFG0A==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvTBpSQFmhlygPYMF0YT\ni5/Cd5mmKYlfu/nqR1bGUixefGWRV89Z2YcEV7qhOtYQFjO3kkgn8e0S3O/d52Pp\ncKAm7L3RxHNXG2KuOgW0UkG2wqQYV/fx3Fj8xvCISOc1ZEbrem9pt9/XtNsBozL1\n3lYloKGNC5FGN6W0kwd25EE1oq9phO8Z+Wwh4hx1Qpg30FEW3OpVDGxEq96p4mR5\n0cPfSGXMAeyYg93njC1kfSdnaNuq/8ouMS1IzJlzr4N+CweCB+qKLbB7+05bpO3S\nC7Xnf0r1e+N2zFdzo1iuePv6tqkQzM7ppTU7eWGuTUozQrb7ROI59ML1eKcAuFcY\nQwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:53:52.5107	2018-03-06 03:54:25.492347	Check out https://joinmastodon.org and #cat and #mastocats and also @quux is my friend	External Lonk		\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5	baz	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA6MoozQ6aD0mGLXjepbLjRVITMiV/V6+Gv3hWBshGckO41bTn\nGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX+ficX5KM/cmwhxzH0nnwzxPr/Upl\nbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvTJmBIcaUr50aqfvdV2TGD+NGW+rYS\noK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm1u310KIWaIRhetAtSCkIkdUa3/8U\n6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF1tfEGD5Wchybb3ZNK3742HpR0E8m\n7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnXFQIDAQABAoIBAQDQDL1iZwZxWzi8\nMyZp2PMd5TiavMCO0aUQQrA/54ZuYPA0rzVK8VXqaIcuOcrhEQxhFcThGoUDy5cg\nkwI8pOac1gCLuiKgPz2xw5sjFTCPIjLrcS4sPksSEKpJVDe6PDMMjtS3L+z6visg\n7j8Txm50AeE9EG2oiZOfXdYwAvz7xkFLV8sUHI+Au37x61ulm0MMYrafCVkwIYIm\n3m8OPGLAFtN9nOJUdq7mExHu+A27s/3ypIae6GDu7zNyJW2TyiGpnw4UUgJQJhgy\nOP8keFcMyaMiPKyALKtjmHdFlebDyfH8btfpXiXErzRvH326JixJtg4M1xRWBra1\nl1NOUIaRAoGBAPgZUG9fWdPGTcUKsa1CJjSK0gwVldqeuxxh2Vkcai18XEXzTZ/z\ndVM/XDymUqOtIegjt52SNR2iF1ViomF5ur+74/xo1tXNf8vjMzeXJ7R0Nz5kd+ZN\nCWtVexeXvxtQO7lbJJwecjI+aLUv+9yWeZHIvSS+tHvC7zMa1DjKJIu3AoGBAPA0\nCIOTral3q9MOwDOBjCtvv72RjLx5cU93J2dca0xxYI/wa2IDl18WMEOhovB1knId\nzf2PhwakbWQ9axoq303L5muPMiVT9rkxBf90r/bUEdQPfZNRAQZ01v1uWUZnZCz7\nFJmRuk9YNbnYzp4ljU1iz7dL5YvA8gYSnma1yUuTAoGATNkqfRT/8gUe2cXyO0Se\nKPBHF88n18wLEUON23hduzEmM9SlWsJCuUKLA45RUrmyIwHNQlWjdkZbC+u9eIwI\nOJOujuS6hwdcan85wiJj/hVxdzYPnZqHLGQR+MDcRU2Y8lU1Bda4cK+8J0NxtGY3\nydxwGg2oQh2jkiThT6XtpAkCgYEAu5u4ZqRKiEla387umYv+YdK3TKXI6VBlCu8C\nzL0nZR5MkD/0bypk6TSYX8p4TB1YU18qC3g1ux9j/V3nMBn6LXYrMyk1vmf1FTHQ\nAHUwFrYOcrXim9Qx28wYOvscKVwJpwQ4U7W5cc1wsQZAYs7rrVyW5hAWanA52Dpk\nk846OZcCgYB4G8BOm7apwEfkjVzmPMazxZsV2COB2r32Wdbiuulu0hbtTVO0rZgw\nRJGCow3wEWHoO1hzVO0aFVsLB176NaRDKnEP/L2xn2y71cS3mo+FRIEHOwL9sBOL\n958bpX5AWw7KOMCPOcesFEffomMl8raaMcYkUabEABMjgNJHzL4ICA==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6MoozQ6aD0mGLXjepbLj\nRVITMiV/V6+Gv3hWBshGckO41bTnGLJ3vP/Qi93GCig78LHKbYtYyZ0hW5n7oLcX\n+ficX5KM/cmwhxzH0nnwzxPr/UplbHcN+GTTGHOrqAs/PQpfcnraIGROh1KSMxvT\nJmBIcaUr50aqfvdV2TGD+NGW+rYSoK8Txja2Yr4cEfZZydFZxVhePzlrwwwSVEZm\n1u310KIWaIRhetAtSCkIkdUa3/8U6gfObp/eZbdugFLjC9dOnbyuJWX7j587nZyF\n1tfEGD5Wchybb3ZNK3742HpR0E8m7wQQl5onxG7bJD25zxgb0E03G6kxv6o43ZnX\nFQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-08 17:13:19.723561	2018-03-08 17:13:19.723561				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1	admin	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAqhTaq3zCpRnFoQzHheYBfwcdjjczJ4pSKwsq1qJmydctdZM6\ngScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh/wJm8mqxx473L+noX8X49jhFuv5O\nsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8GKmX9Cg8W1G52dZlNq/HbEygg0W7\nvq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcrJyXli9+cLl9p4msiLgbP3x9mZ46s\njtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM/lax9x5CRcmDJLBwqZPFi1TnPJOr\nAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/pwIDAQABAoIBAQCIa/fFq2mY8iYR\n+uUjIo06raNoSiBu68Tin695v4PBDCZ7c19u7sTEzfH0CZlvmXg+BjJQEUSvYzLg\nNVJ15ZtWJ0AZ27jDf4oH1Y+9GleKbzKHPaoz/Ji5jAR0WgdRxYBeByOo4AZ62ShS\n9mXa4yiTw5yNi6R1/wSalRxUFARaeYBbRSZTawU24C4hyZZFEKO3QlxbhBaAfsJP\nDVGftkL9mdCHJLvA4/7IXZsmpErkhaXP98B1FaY3zE+qefGcLFRLYbAxjbCOAX6z\nAD3yjk3e66DKxHF1Wxva4u30aPZfODPCkCgPwxuZq8Tz+VNh4j5cS5C13etukBV4\nB31Brb8pAoGBAOFzZ8IMcz1GZxeIgarb5AQHbi0rZiPZwJF4/pLa9U4Bg0maj97t\nemWRomuVEtM/bI5Dva+YzQnei49pDPnTMAqPLRbfOeruFBlGxJlPbaKguR5qAQar\n2imkhvjOq3/bV7PonP6JE6hxqfwAoMtxpPYKuKymSDdZ+imFFNiu/fiNAoGBAMEg\nwjGyukiXppjKYPyXnjJOuzajvq1+o2h6l216tYMSlvRlbM8EINYbg6yKLia0yHDl\n9wVD4vEU6BYZ5OmXDT0hSF00+wx1lQi4YM2u+va00dthpgUDxXi/FUctlJZuRpOW\nzK1JKpFl/znIMxME6d+DN+yNqGMM2hMatQAVee4DAoGAKWeMcrLepy462LOVPM/N\nfH/w2BLUW1kuaIkUF9xmmMDmX6onKgXrKKQqdB+YqXtIcIg4WftyDJH2h4v/ehIz\nDH1nBoBQnrjCsDGzAYT42Zky5kcJkTQWiPdSYndyP7UE0mGyE30RQyo80a872KEy\nbo1hhTO0p5W6v81VGsZoljECgYBwzjmf3c2BaVMeG9faspTsvaAMokhV/opkFHcu\ns2YiUVFrH3MW2Ep1xUx8E5oxcZdCmpBWuvhr6NJHVoinCFvrQO2Lw85/0I5ksY2Z\nloNwZt3NTpQyialmhfZfxPfthiwjOQoEjaAXnYQetBlhGpWgwHyB55xbfr5COm9O\nxTybEQKBgALIfybfST7EfUZszLen+/PyXPfCHKybTwEHHYfwwwFHmiVuMLCbsXIR\nPjOPl29jHcSiSutMQZbnKDZ3UgNnx9O31lSzS7ygC50pK1QpzPBXKZMGGnS4UGSd\nTBa+FKJuFAeVeRnoDKnTRFSRIGwvu4vDKLmXBv1728XWKG3GHDot\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhTaq3zCpRnFoQzHheYB\nfwcdjjczJ4pSKwsq1qJmydctdZM6gScZfgObg0mY7Y1UrnlQDw5RB6Py8hFmGGEh\n/wJm8mqxx473L+noX8X49jhFuv5OsnWTDLMbo497hCaZoD5/7y/zlfgYzGp2Llt8\nGKmX9Cg8W1G52dZlNq/HbEygg0W7vq2LBPJvuTAE0RH2jxKU+JCsVhfaUzEFUlcr\nJyXli9+cLl9p4msiLgbP3x9mZ46sjtYl0tSSL7hPoF0uP0QQoB7n6TmQqhY6K2dM\n/lax9x5CRcmDJLBwqZPFi1TnPJOrAy/o9LeQoLSKzEcF0YtiwjghQi4cw+2oNbH/\npwIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-06 03:50:49.164137	2018-03-06 03:50:49.164137				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6	LockedAccount	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpgIBAAKCAQEA6HayWvdAVUdIeabZBP8fpdvaBUWyFflzdHXU3lQ7ZtQpfWm0\nYTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWYxv4X6QP79CH4RVXJtJK9eGzVtNib\nzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8BeRORubkxU37kSphFiYNOi4/gkkD\n9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9qUlmeMXRrHeEdIHuIQrHCkqASZjMz\nA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+2WDcDU3bR/uQulIPddnjoNhMDXOd\n8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pOSQIDAQABAoIBAQC0EtaAjs2AAfML\ngYrVSwfqBE90DBQy34RnL6vQ+fD1692j79EyB5p/vgYKkP2iAaz2W0rqZrybDYxC\nIUK/Ou0ZINXGxDZVXEck9pqETbOF6ND3AWBWznF8OLj9wea9uC8aU89Fb28iteBg\nJUlfmXOw4LUeSVfn20vHnMuOS7WtXZGlbHt6KA29vLKOXCSSdlBkq+NJr+GwGy8Q\n6l1ZM7bOkMral2FHFd3LK2d94+F1lbKsNnA/IPgUk9EY0P8wjOMJ0ThRQu28s9G4\nX0GxXQ/+utO98yzdJ6vsKPLotsrW7DQizuo/h66USvHHrgiDmBo6vXOPASAUWWho\nvm1VKykxAoGBAP/vju1pSOySHqQU/b3QcLzHSVm7U47BVt7/eZzvydmAMFpCFX5I\n0woKBLQAXibwOaJu2avGbvmpckmWC/BjlQEDpGKWmZpgCORVYY8vjp/k0tLMgZfd\nJprjAwVFg03YObLsxDxNnLxlJar2gVbzFn82XfC4L+GIiHkP++D0bUSVAoGBAOiF\noWjsWFpAH5Zxx1lFggx6LESDmOWlo5WzXChP2l8iZEb/wNBJ3LKU14szIuJXCsQM\nOH3Yz8XwiU2bUz5pWpQNoitP349BNqzjuUXJ91by2KUOjvX5ycZ8hYfAnWgAv75A\nZy+CH+XUiS1wjV9MNdap7/GqvlrxqtSud697ceHlAoGBAO2B0G99bxErIIhAeqD1\nmEl33xgIgShPP2C+UItU80qGbVi1TuDckAwW8/pfBQC5maKloBaKlV3W45pqRjYV\nE6fXS2u6Ol1KlbXfjiOkjITRgtvgsLrPng3KcXko4wsQh6sFka4skDE85FHdZHXe\nLJhtSYwkQTrYy10dei9uZSBpAoGBAOeTHvwWVrAbqNn2mymHlkvC6Y+a2I3ud4tC\nRIhJbxzMbb5gPLG0vj6FCl4yIY32TlyOJzz+z389XiGSjkdcOb+2DErCk85ijoeF\njSG6UcGgvq80XqEPkytBHOPkq1/HTy+1iI7CM+57y9sbe1Dr37rZKIUxHcAJa6/B\nyqVUdkkZAoGBAIRLMM2TmPHH33tjYTR1WHtGR1/7D3cose5zOqGCu4zx2I0e9m+p\nMmaYl0gtr0CfFesQVtLTRuoTPXfDwaTECEuKpGrQTjUUHjC7MgEP0T6odmx2rlfQ\nmdNa6lJrZA8jscz5kcYoHjlr9KamkmtnaOSwPp+sQDWNB/kSoEMZxXyC\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6HayWvdAVUdIeabZBP8f\npdvaBUWyFflzdHXU3lQ7ZtQpfWm0YTTA9/rTPUnZvc6GxRkfs5onWgwb5PBRFpWY\nxv4X6QP79CH4RVXJtJK9eGzVtNibzGrs/M8eH0TW9Lv+daOyh/QKrll7cGTR+vD8\nBeRORubkxU37kSphFiYNOi4/gkkD9Lz8R6IPMf3Mp3+tTJhTk8MRCW/GHNLTsY9q\nUlmeMXRrHeEdIHuIQrHCkqASZjMzA6pawaHw2B4RMWAsI3xj6FXUK5iaNHm9ad3+\n2WDcDU3bR/uQulIPddnjoNhMDXOd8pyHGIPeAhKPd6m22wXhw3H8YfZ+QpAYi8pO\nSQIDAQAB\n-----END PUBLIC KEY-----\n				2018-03-15 04:07:23.996029	2018-03-15 04:33:45.479283				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t		\N					0	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+-99	localhost:3000	\N		-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEArcZWuOaOs2V5bqL5jG3Odut9ipuA/XnmblIxxoFHN82jOLIc\ncWLvxYbkAFr1q/kie7DnoS3FTMB3ufv1pGOAeFFiFPGguzew0ilKxLNI9np4mnd8\nl/JPtaQ9sEdBFKN8vbic/3CwXmi7bpThmO0WrVI7/mgzlyzJizb04UtHJ5Y+bGkL\nomAS6qeP5QjRCGHjW6C1b+h/TYUFDB1AnQ+3Gsz6KTiKpt+AvfIIyy+F29RJsZNW\nbt3beYV8Hd1WMe23qdoPNmmWEWVclo0kDNxCaMWkQk+9fgVkAT69rwDj703FSfUH\nfSjlJIe8eT972qDeY5vWKSRBjp6IlSAfxaCMpQIDAQABAoIBABh2lXrOKkSjAmdK\n1iqowqoHGNNMdOo6IPBi7dLuHCKE9ndiy5JCxVJfXPWX2IHvPqV/D/ymvuHBLpmm\nGLydrVZCzrX4FhKFEoVjfr0WKC1arGPCcm3JlOMTTgPk5AqNwV/L/34OVSXVRJ2a\no++tYMXhj8SO0sRzb6QDhpG40TmHN4ed2NdEuETgWrN/qgpvXraKyHOG/VD821dP\nBoD1lj6KCzoK8Z4XnyHmG1dgGywF2KyX1iuk4Sqcva3jvo7KIu9fECIsS9uGHznb\n1RyRCPwrq9/BJRLHvRCB/qO4i+pB7BtG2+Raqhf0jibIT4IPmfSjhEiLApoKZwMh\n+7H4UgECgYEA5SbDYguwQrbtDNNEnXcemS6aNaan82VtkWKGHtwfjFSxSw3g/r2b\nZaAkHDxnnJEjEbKviVCQjtIWcx3nQGUYQzh0YoNVufxC95zGeg+7+7huvTZPuGps\n2bsWERyG4sgzZVpontzmuqZT20EFWY1+mfGWWO0w0nLdcxGrZ+2Op0ECgYEAwiKX\nYzCIM9PQuMr/7VzydOjkHrdXuFvn0+MEkui5zcKam7yNG+SR7pElEqRUE8wwrBRo\nafZtWm5U44XjNE7I3XQsB1g4Q4fmN3hU3yRpp0XTYJj8R1cOQAOzmkRAMD74dP2e\nFEuAa1mOxzXwX2QwaxBA1/en34NH2l5NSyFEkGUCgYEAnb+9qXVaddLwBXA7QBuM\n2O8YAe8kl44vi3JD2mK25Sg4lO6NAVEN9Tv1H+sFeOcBOWHFLcZkfa1q/vyLAe2W\nclAe7uJy1YIvp74pdEX4pyUkNuV4o/+/x3PfkRAOW3huyUsf0p1HyR5PhBSS1j9t\n9BQ36CgBAB9LC7gSQ41qMwECgYEAloKvEC2+S0A7ICnyhZp8N3uf8NiAX+SRNctZ\n7nQUKZxotblXRXrOUUGilnNk4/x499DSquRtH6FOmx9gaVtzi43X3NHevSyNpg/a\n7S2T5CXUnZ2+aajq2WKFSmMDyOPpSPqgJmfq5k+GzJfbBnnst/Tf8RCGzFlByeE2\n17qxJ6kCgYAFwUmN39gXMlb3y+y0aVhvAvGMntPJOrw+mFWf0ldPKpZrzr4R1Pb6\nvwI7XZfLqB7g4h7N9NHA/tO+F3/dyNH1GDarJZboZCW59yQjT7yaho+LsqcjPcD2\nnnxCIR4spwBxg2DUzAndYq0Yw7cJ+Z+EvT5ZNnlBhJJKk+iT8EyssA==\n-----END RSA PRIVATE KEY-----\n	-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArcZWuOaOs2V5bqL5jG3O\ndut9ipuA/XnmblIxxoFHN82jOLIccWLvxYbkAFr1q/kie7DnoS3FTMB3ufv1pGOA\neFFiFPGguzew0ilKxLNI9np4mnd8l/JPtaQ9sEdBFKN8vbic/3CwXmi7bpThmO0W\nrVI7/mgzlyzJizb04UtHJ5Y+bGkLomAS6qeP5QjRCGHjW6C1b+h/TYUFDB1AnQ+3\nGsz6KTiKpt+AvfIIyy+F29RJsZNWbt3beYV8Hd1WMe23qdoPNmmWEWVclo0kDNxC\naMWkQk+9fgVkAT69rwDj703FSfUHfSjlJIe8eT972qDeY5vWKSRBjp6IlSAfxaCM\npQIDAQAB\n-----END PUBLIC KEY-----\n				2020-05-02 22:27:10.296462	2020-05-02 22:27:10.296462				\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t		\N					0	f	\N	\N	\N	Application	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -2908,6 +3250,30 @@ COPY public.admin_action_logs (id, account_id, action, target_type, target_id, r
 
 
 --
+-- Data for Name: announcement_mutes; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.announcement_mutes (id, account_id, announcement_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: announcement_reactions; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.announcement_reactions (id, account_id, announcement_id, name, custom_emoji_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: announcements; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.announcements (id, text, published, all_day, scheduled_at, starts_at, ends_at, created_at, updated_at, published_at, status_ids) FROM stdin;
+\.
+
+
+--
 -- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
@@ -2920,7 +3286,7 @@ environment	development	2018-03-06 03:50:47.67559	2018-03-06 03:50:47.67559
 -- Data for Name: backups; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.backups (id, user_id, dump_file_name, dump_content_type, dump_file_size, dump_updated_at, processed, created_at, updated_at) FROM stdin;
+COPY public.backups (id, user_id, dump_file_name, dump_content_type, dump_updated_at, processed, created_at, updated_at, dump_file_size) FROM stdin;
 \.
 
 
@@ -2929,6 +3295,14 @@ COPY public.backups (id, user_id, dump_file_name, dump_content_type, dump_file_s
 --
 
 COPY public.blocks (id, created_at, updated_at, account_id, target_account_id, uri) FROM stdin;
+\.
+
+
+--
+-- Data for Name: bookmarks; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.bookmarks (id, account_id, status_id, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -2949,13 +3323,21 @@ COPY public.conversations (id, uri, created_at, updated_at) FROM stdin;
 
 
 --
+-- Data for Name: custom_emoji_categories; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.custom_emoji_categories (id, name, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: custom_emojis; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.custom_emojis (id, shortcode, domain, image_file_name, image_content_type, image_file_size, image_updated_at, created_at, updated_at, disabled, uri, image_remote_url, visible_in_picker) FROM stdin;
-1	blobpats	\N	blobpats.png	image/png	11087	2018-03-06 17:02:54.574428	2018-03-06 17:02:54.753665	2018-03-06 17:02:54.753665	f	\N	\N	t
-2	blobpeek	\N	blobpeek.png	image/png	9135	2018-03-06 17:03:10.272121	2018-03-06 17:03:10.360884	2018-03-06 17:03:10.360884	f	\N	\N	t
-3	blobnom	\N	blobnom.png	image/png	13053	2018-03-06 17:03:21.327244	2018-03-06 17:03:21.438791	2018-03-06 17:03:21.438791	f	\N	\N	t
+COPY public.custom_emojis (id, shortcode, domain, image_file_name, image_content_type, image_file_size, image_updated_at, created_at, updated_at, disabled, uri, image_remote_url, visible_in_picker, category_id) FROM stdin;
+1	blobpats	\N	blobpats.png	image/png	11087	2018-03-06 17:02:54.574428	2018-03-06 17:02:54.753665	2018-03-06 17:02:54.753665	f	\N	\N	t	\N
+2	blobpeek	\N	blobpeek.png	image/png	9135	2018-03-06 17:03:10.272121	2018-03-06 17:03:10.360884	2018-03-06 17:03:10.360884	f	\N	\N	t	\N
+3	blobnom	\N	blobnom.png	image/png	13053	2018-03-06 17:03:21.327244	2018-03-06 17:03:21.438791	2018-03-06 17:03:21.438791	f	\N	\N	t	\N
 \.
 
 
@@ -2968,10 +3350,18 @@ COPY public.custom_filters (id, account_id, expires_at, phrase, context, irrever
 
 
 --
+-- Data for Name: domain_allows; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.domain_allows (id, domain, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: domain_blocks; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.domain_blocks (id, domain, created_at, updated_at, severity, reject_media, reject_reports) FROM stdin;
+COPY public.domain_blocks (id, domain, created_at, updated_at, severity, reject_media, reject_reports, private_comment, public_comment) FROM stdin;
 \.
 
 
@@ -2979,7 +3369,7 @@ COPY public.domain_blocks (id, domain, created_at, updated_at, severity, reject_
 -- Data for Name: email_domain_blocks; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.email_domain_blocks (id, domain, created_at, updated_at) FROM stdin;
+COPY public.email_domain_blocks (id, domain, created_at, updated_at, parent_id) FROM stdin;
 \.
 
 
@@ -3040,7 +3430,7 @@ COPY public.imports (id, type, approved, created_at, updated_at, data_file_name,
 -- Data for Name: invites; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.invites (id, user_id, code, expires_at, max_uses, uses, created_at, updated_at, autofollow) FROM stdin;
+COPY public.invites (id, user_id, code, expires_at, max_uses, uses, created_at, updated_at, autofollow, comment) FROM stdin;
 \.
 
 
@@ -3061,10 +3451,18 @@ COPY public.lists (id, account_id, title, created_at, updated_at) FROM stdin;
 
 
 --
+-- Data for Name: markers; Type: TABLE DATA; Schema: public; Owner: pinafore
+--
+
+COPY public.markers (id, user_id, timeline, last_read_id, lock_version, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: media_attachments; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.media_attachments (id, status_id, file_file_name, file_content_type, file_file_size, file_updated_at, remote_url, created_at, updated_at, shortcode, type, file_meta, account_id, description, scheduled_status_id, blurhash) FROM stdin;
+COPY public.media_attachments (id, status_id, file_file_name, file_content_type, file_file_size, file_updated_at, remote_url, created_at, updated_at, shortcode, type, file_meta, account_id, description, scheduled_status_id, blurhash, processing) FROM stdin;
 \.
 
 
@@ -3118,6 +3516,7 @@ COPY public.oauth_access_tokens (id, token, refresh_token, expires_in, revoked_a
 7	39ed9aeffa4b25eda4940f22f29fea66e625c6282c2a8bf0430203c9779e9e98	\N	\N	\N	2018-03-15 04:07:55.095858	read write follow	1	6
 8	a2f0bc5a65d7d0e971bdd63c83f01948150f17739425890d154e20b528480ab8	\N	\N	\N	2018-03-15 04:33:24.989472	read write follow	1	6
 9	8ef64835d2d68769072d52b4771d86fc44fc0caeaca3040cb904a8f1f6904f92	\N	\N	\N	2018-03-15 04:58:42.550623	read write follow	1	6
+10	EVPzy_98EY8tPn2pYxY-3m0xy5EnZtq899sRGr6R9Kg	\N	\N	\N	2020-05-02 23:40:17.720209	read write follow	1	1
 \.
 
 
@@ -3150,7 +3549,7 @@ COPY public.poll_votes (id, account_id, poll_id, choice, created_at, updated_at,
 -- Data for Name: polls; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.polls (id, account_id, status_id, expires_at, options, cached_tallies, multiple, hide_totals, votes_count, last_fetched_at, created_at, updated_at, lock_version) FROM stdin;
+COPY public.polls (id, account_id, status_id, expires_at, options, cached_tallies, multiple, hide_totals, votes_count, last_fetched_at, created_at, updated_at, lock_version, voters_count) FROM stdin;
 \.
 
 
@@ -3426,6 +3825,45 @@ COPY public.schema_migrations (version) FROM stdin;
 20190511152737
 20190519130537
 20190529143559
+20180831171112
+20190403141604
+20190627222225
+20190627222826
+20190701022101
+20190705002136
+20190706233204
+20190715031050
+20190715164535
+20190726175042
+20190729185330
+20190805123746
+20190807135426
+20190815225426
+20190819134503
+20190820003045
+20190823221802
+20190901035623
+20190901040524
+20190904222339
+20190914202517
+20190915194355
+20190917213523
+20190927124642
+20190927232842
+20191001213028
+20191007013357
+20191031163205
+20191212003415
+20191212163405
+20191218153258
+20200113125135
+20200114113335
+20200119112504
+20200126203551
+20200306035625
+20200312144258
+20200312162302
+20200312185443
 \.
 
 
@@ -3442,6 +3880,7 @@ COPY public.session_activations (id, session_id, created_at, updated_at, user_ag
 7	f844efc7d2dbc81c1fe2151ac3d61bbe	2018-03-15 04:07:55.038088	2018-03-15 04:07:55.038088	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:59.0) Gecko/20100101 Firefox/59.0	127.0.0.1	7	6	\N
 8	635fcbad4a6fe81524ff3ac9a9b11e8a	2018-03-15 04:33:24.95958	2018-03-15 04:33:24.95958	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36	127.0.0.1	8	6	\N
 9	a8ef396160f8e1babdcc75ab903926a9	2018-03-15 04:58:42.504138	2018-03-15 04:58:42.504138	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:59.0) Gecko/20100101 Firefox/59.0	127.0.0.1	9	6	\N
+10	2b383eb83df38b7cc5633616b1fe107a	2020-05-02 23:40:17.696656	2020-05-02 23:40:17.696656	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36	127.0.0.1	10	1	\N
 \.
 
 
@@ -3452,6 +3891,37 @@ COPY public.session_activations (id, session_id, created_at, updated_at, user_ag
 COPY public.settings (id, var, value, thing_type, created_at, updated_at, thing_id) FROM stdin;
 1	notification_emails	---\nfollow: false\nreblog: false\nfavourite: false\nmention: false\nfollow_request: false\ndigest: true\n	User	2018-03-15 04:59:04.574423	2018-03-15 04:59:04.574423	6
 2	interactions	---\nmust_be_follower: false\nmust_be_following: false\nmust_be_following_dm: false\n	User	2018-03-15 04:59:04.605717	2018-03-15 04:59:04.605717	6
+3	site_contact_username	--- admin\n	\N	2020-05-02 23:40:58.285333	2020-05-02 23:40:58.285333	\N
+4	site_contact_email	--- admin@localhost:3000\n	\N	2020-05-02 23:40:58.290809	2020-05-02 23:40:58.290809	\N
+5	site_title	--- Mastodon\n	\N	2020-05-02 23:40:58.294363	2020-05-02 23:40:58.294363	\N
+6	site_short_description	--- ''\n	\N	2020-05-02 23:40:58.298423	2020-05-02 23:40:58.298423	\N
+7	site_description	--- ''\n	\N	2020-05-02 23:40:58.302097	2020-05-02 23:40:58.302097	\N
+8	site_extended_description	--- ''\n	\N	2020-05-02 23:40:58.305712	2020-05-02 23:40:58.305712	\N
+9	site_terms	--- ''\n	\N	2020-05-02 23:40:58.309636	2020-05-02 23:40:58.309636	\N
+10	registrations_mode	--- open\n	\N	2020-05-02 23:40:58.314461	2020-05-02 23:40:58.314461	\N
+11	closed_registrations_message	--- ''\n	\N	2020-05-02 23:40:58.319845	2020-05-02 23:40:58.319845	\N
+12	open_deletion	--- true\n	\N	2020-05-02 23:40:58.324914	2020-05-02 23:40:58.324914	\N
+13	timeline_preview	--- true\n	\N	2020-05-02 23:40:58.330247	2020-05-02 23:40:58.330247	\N
+14	show_staff_badge	--- true\n	\N	2020-05-02 23:40:58.334863	2020-05-02 23:40:58.334863	\N
+15	enable_bootstrap_timeline_accounts	--- true\n	\N	2020-05-02 23:40:58.339447	2020-05-02 23:40:58.339447	\N
+16	bootstrap_timeline_accounts	--- ''\n	\N	2020-05-02 23:40:58.344719	2020-05-02 23:40:58.344719	\N
+17	theme	--- default\n	\N	2020-05-02 23:40:58.349827	2020-05-02 23:40:58.349827	\N
+18	min_invite_role	--- admin\n	\N	2020-05-02 23:40:58.355039	2020-05-02 23:40:58.355039	\N
+19	activity_api_enabled	--- true\n	\N	2020-05-02 23:40:58.359181	2020-05-02 23:40:58.359181	\N
+20	peers_api_enabled	--- true\n	\N	2020-05-02 23:40:58.36713	2020-05-02 23:40:58.36713	\N
+21	show_known_fediverse_at_about_page	--- true\n	\N	2020-05-02 23:40:58.37091	2020-05-02 23:40:58.37091	\N
+22	preview_sensitive_media	--- false\n	\N	2020-05-02 23:40:58.374487	2020-05-02 23:40:58.374487	\N
+23	custom_css	--- ''\n	\N	2020-05-02 23:40:58.380219	2020-05-02 23:40:58.380219	\N
+24	profile_directory	--- true\n	\N	2020-05-02 23:40:58.385295	2020-05-02 23:40:58.385295	\N
+25	thumbnail	--- \n	\N	2020-05-02 23:40:58.390115	2020-05-02 23:40:58.390115	\N
+26	hero	--- \n	\N	2020-05-02 23:40:58.395057	2020-05-02 23:40:58.395057	\N
+27	mascot	--- \n	\N	2020-05-02 23:40:58.399751	2020-05-02 23:40:58.399751	\N
+28	spam_check_enabled	--- true\n	\N	2020-05-02 23:40:58.404804	2020-05-02 23:40:58.404804	\N
+29	trends	--- true\n	\N	2020-05-02 23:40:58.408754	2020-05-02 23:40:58.408754	\N
+30	trendable_by_default	--- true\n	\N	2020-05-02 23:40:58.413214	2020-05-02 23:40:58.413214	\N
+31	show_domain_blocks	--- disabled\n	\N	2020-05-02 23:40:58.417108	2020-05-02 23:40:58.417108	\N
+32	show_domain_blocks_rationale	--- disabled\n	\N	2020-05-02 23:40:58.420345	2020-05-02 23:40:58.420345	\N
+33	noindex	--- false\n	\N	2020-05-02 23:40:58.423584	2020-05-02 23:40:58.423584	\N
 \.
 
 
@@ -3483,7 +3953,7 @@ COPY public.status_stats (id, status_id, replies_count, reblogs_count, favourite
 -- Data for Name: statuses; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.statuses (id, uri, text, created_at, updated_at, in_reply_to_id, reblog_of_id, url, sensitive, visibility, spoiler_text, reply, language, conversation_id, local, account_id, application_id, in_reply_to_account_id, poll_id) FROM stdin;
+COPY public.statuses (id, uri, text, created_at, updated_at, in_reply_to_id, reblog_of_id, url, sensitive, visibility, spoiler_text, reply, language, conversation_id, local, account_id, application_id, in_reply_to_account_id, poll_id, deleted_at) FROM stdin;
 \.
 
 
@@ -3496,26 +3966,10 @@ COPY public.statuses_tags (status_id, tag_id) FROM stdin;
 
 
 --
--- Data for Name: stream_entries; Type: TABLE DATA; Schema: public; Owner: pinafore
---
-
-COPY public.stream_entries (id, activity_id, activity_type, created_at, updated_at, hidden, account_id) FROM stdin;
-\.
-
-
---
--- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: pinafore
---
-
-COPY public.subscriptions (id, callback_url, secret, expires_at, confirmed, created_at, updated_at, last_successful_delivery_at, domain, account_id) FROM stdin;
-\.
-
-
---
 -- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: pinafore
 --
 
-COPY public.tags (id, name, created_at, updated_at) FROM stdin;
+COPY public.tags (id, name, created_at, updated_at, usable, trendable, listable, reviewed_at, requested_review_at, last_status_at, max_score, max_score_at) FROM stdin;
 \.
 
 
@@ -3540,12 +3994,12 @@ COPY public.user_invite_requests (id, user_id, text, created_at, updated_at) FRO
 --
 
 COPY public.users (id, email, created_at, updated_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, admin, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, locale, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, consumed_timestep, otp_required_for_login, last_emailed_at, otp_backup_codes, filtered_languages, account_id, disabled, moderator, invite_id, remember_token, chosen_languages, created_by_application_id, approved) FROM stdin;
-1	admin@localhost:3000	2018-03-06 03:50:49.649613	2018-03-06 17:03:26.537681	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	\N	2	2018-03-06 16:53:21.708118	2018-03-06 04:56:52.178652	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	\N	\N	\N	t
 2	foobar@localhost:3000	2018-03-06 03:52:21.15566	2018-03-06 04:57:40.899388	$2a$10$uOJGEfYP4JcR6cdKASsuAe3EYc44ClEjY3IsL9cwupgAsKXNvsMB6	\N	\N	2018-03-06 04:57:40.898036	1	2018-03-06 04:57:40.87839	2018-03-06 04:57:40.87839	127.0.0.1	127.0.0.1	f	9tZRP_PZyyQ6hQmx88hX	2018-03-06 03:52:26.359	2018-03-06 03:52:21.156096	\N	en	\N	\N	\N	\N	f	\N	\N	{}	2	f	f	\N	\N	\N	\N	t
 3	quux@localhost:3000	2018-03-06 03:52:52.825436	2018-03-06 04:58:05.758893	$2a$10$nSVOaz2ACr7hizj57HbbCOnBgaj20teuuSBHYFQdKboPAE8o8AWtu	\N	\N	2018-03-06 04:58:05.757671	1	2018-03-06 04:58:05.7443	2018-03-06 04:58:05.7443	127.0.0.1	127.0.0.1	f	LZkd9hZPQby-DJR7q2xK	2018-03-06 03:52:56.722007	2018-03-06 03:52:52.825895	\N	en	\N	\N	\N	\N	f	\N	\N	{}	3	f	f	\N	\N	\N	\N	t
 4	externallinks@localhost:3000	2018-03-06 03:53:52.59743	2018-03-06 03:54:07.597338	$2a$10$j6UVhj3pm2ZivOrm9sGbcuPtw49kqvpggbyt.IcCX/sm9Mqr2W2lW	\N	\N	2018-03-06 03:54:07.592013	1	2018-03-06 03:54:07.569021	2018-03-06 03:54:07.569021	127.0.0.1	127.0.0.1	f	1wHx7PBsMfgkwz36yVSq	2018-03-06 03:53:56.002257	2018-03-06 03:53:52.597832	\N	en	\N	\N	\N	\N	f	\N	\N	{}	4	f	f	\N	\N	\N	\N	t
 5	baz@localhost:3000	2018-03-08 17:13:19.88529	2018-03-08 17:13:40.093697	$2a$10$eqGdrqmSUEfA4q.7qxjp1eFdMxSUGlNJMpnOG.zxE6ogyDUj9t8GO	\N	\N	2018-03-08 17:13:40.092268	1	2018-03-08 17:13:40.06976	2018-03-08 17:13:40.06976	127.0.0.1	127.0.0.1	f	K5TLBFADUUD-51oaCMfL	2018-03-08 17:13:29.253941	2018-03-08 17:13:19.885632	\N	en	\N	\N	\N	\N	f	\N	\N	{}	5	f	f	\N	\N	\N	\N	t
 6	lockedaccount@localhost:3000	2018-03-15 04:07:24.10397	2018-03-15 04:58:42.615377	$2a$10$PGDn6VtjTR0BSbK4MY/aR.T0qJZ/wtziTXH0ySJr7x3.3XsZ/1qwm	\N	\N	2018-03-15 04:07:55.142233	3	2018-03-15 04:58:42.60349	2018-03-15 04:33:25.042573	127.0.0.1	127.0.0.1	f	spRH4F8MUisS5i_uzTiS	2018-03-15 04:07:34.297881	2018-03-15 04:07:24.105731	\N	en	\N	\N	\N	\N	f	\N	\N	{}	6	f	f	\N	\N	\N	\N	t
+1	admin@localhost:3000	2018-03-06 03:50:49.649613	2020-05-02 23:40:17.754121	$2a$10$7DkNPkzyI1KdM8xDPE4LmuKz3VCDZGTiUVUSlX5De4RFBNfYmS27i	\N	\N	2020-05-02 23:40:17.753479	3	2020-05-02 23:40:17.735006	2018-03-06 16:53:21.708118	127.0.0.1	127.0.0.1	t	\N	2018-03-06 03:50:49.482892	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	{}	1	f	f	\N	TNoemdjTzoPNkhoEoxaT	\N	\N	t
 \.
 
 
@@ -3570,6 +4024,13 @@ COPY public.web_settings (id, data, created_at, updated_at, user_id) FROM stdin;
 
 
 --
+-- Name: account_aliases_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.account_aliases_id_seq', 1, false);
+
+
+--
 -- Name: account_conversations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3588,6 +4049,13 @@ SELECT pg_catalog.setval('public.account_domain_blocks_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.account_identity_proofs_id_seq', 1, false);
+
+
+--
+-- Name: account_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.account_migrations_id_seq', 1, false);
 
 
 --
@@ -3647,6 +4115,27 @@ SELECT pg_catalog.setval('public.admin_action_logs_id_seq', 3, true);
 
 
 --
+-- Name: announcement_mutes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.announcement_mutes_id_seq', 1, false);
+
+
+--
+-- Name: announcement_reactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.announcement_reactions_id_seq', 1, false);
+
+
+--
+-- Name: announcements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.announcements_id_seq', 1, false);
+
+
+--
 -- Name: backups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3658,6 +4147,13 @@ SELECT pg_catalog.setval('public.backups_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.blocks_id_seq', 1, false);
+
+
+--
+-- Name: bookmarks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.bookmarks_id_seq', 1, false);
 
 
 --
@@ -3675,6 +4171,13 @@ SELECT pg_catalog.setval('public.conversations_id_seq', 1, false);
 
 
 --
+-- Name: custom_emoji_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.custom_emoji_categories_id_seq', 1, false);
+
+
+--
 -- Name: custom_emojis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3686,6 +4189,13 @@ SELECT pg_catalog.setval('public.custom_emojis_id_seq', 3, true);
 --
 
 SELECT pg_catalog.setval('public.custom_filters_id_seq', 1, false);
+
+
+--
+-- Name: domain_allows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.domain_allows_id_seq', 1, false);
 
 
 --
@@ -3766,6 +4276,13 @@ SELECT pg_catalog.setval('public.lists_id_seq', 1, false);
 
 
 --
+-- Name: markers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
+--
+
+SELECT pg_catalog.setval('public.markers_id_seq', 1, false);
+
+
+--
 -- Name: media_attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
@@ -3804,7 +4321,7 @@ SELECT pg_catalog.setval('public.oauth_access_grants_id_seq', 1, false);
 -- Name: oauth_access_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
-SELECT pg_catalog.setval('public.oauth_access_tokens_id_seq', 9, true);
+SELECT pg_catalog.setval('public.oauth_access_tokens_id_seq', 10, true);
 
 
 --
@@ -3874,14 +4391,14 @@ SELECT pg_catalog.setval('public.scheduled_statuses_id_seq', 1, false);
 -- Name: session_activations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
-SELECT pg_catalog.setval('public.session_activations_id_seq', 9, true);
+SELECT pg_catalog.setval('public.session_activations_id_seq', 10, true);
 
 
 --
 -- Name: settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
 --
 
-SELECT pg_catalog.setval('public.settings_id_seq', 2, true);
+SELECT pg_catalog.setval('public.settings_id_seq', 33, true);
 
 
 --
@@ -3910,20 +4427,6 @@ SELECT pg_catalog.setval('public.status_stats_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.statuses_id_seq', 1, false);
-
-
---
--- Name: stream_entries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
---
-
-SELECT pg_catalog.setval('public.stream_entries_id_seq', 1, false);
-
-
---
--- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pinafore
---
-
-SELECT pg_catalog.setval('public.subscriptions_id_seq', 1, false);
 
 
 --
@@ -3969,6 +4472,14 @@ SELECT pg_catalog.setval('public.web_settings_id_seq', 4, true);
 
 
 --
+-- Name: account_aliases account_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_aliases
+    ADD CONSTRAINT account_aliases_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: account_conversations account_conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -3990,6 +4501,14 @@ ALTER TABLE ONLY public.account_domain_blocks
 
 ALTER TABLE ONLY public.account_identity_proofs
     ADD CONSTRAINT account_identity_proofs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account_migrations account_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_migrations
+    ADD CONSTRAINT account_migrations_pkey PRIMARY KEY (id);
 
 
 --
@@ -4057,6 +4576,30 @@ ALTER TABLE ONLY public.admin_action_logs
 
 
 --
+-- Name: announcement_mutes announcement_mutes_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_mutes
+    ADD CONSTRAINT announcement_mutes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: announcement_reactions announcement_reactions_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_reactions
+    ADD CONSTRAINT announcement_reactions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: announcements announcements_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcements
+    ADD CONSTRAINT announcements_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4081,6 +4624,14 @@ ALTER TABLE ONLY public.blocks
 
 
 --
+-- Name: bookmarks bookmarks_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.bookmarks
+    ADD CONSTRAINT bookmarks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: conversation_mutes conversation_mutes_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4097,6 +4648,14 @@ ALTER TABLE ONLY public.conversations
 
 
 --
+-- Name: custom_emoji_categories custom_emoji_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.custom_emoji_categories
+    ADD CONSTRAINT custom_emoji_categories_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: custom_emojis custom_emojis_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4110,6 +4669,14 @@ ALTER TABLE ONLY public.custom_emojis
 
 ALTER TABLE ONLY public.custom_filters
     ADD CONSTRAINT custom_filters_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: domain_allows domain_allows_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.domain_allows
+    ADD CONSTRAINT domain_allows_pkey PRIMARY KEY (id);
 
 
 --
@@ -4198,6 +4765,14 @@ ALTER TABLE ONLY public.list_accounts
 
 ALTER TABLE ONLY public.lists
     ADD CONSTRAINT lists_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: markers markers_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.markers
+    ADD CONSTRAINT markers_pkey PRIMARY KEY (id);
 
 
 --
@@ -4377,22 +4952,6 @@ ALTER TABLE ONLY public.statuses
 
 
 --
--- Name: stream_entries stream_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
---
-
-ALTER TABLE ONLY public.stream_entries
-    ADD CONSTRAINT stream_entries_pkey PRIMARY KEY (id);
-
-
---
--- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
---
-
-ALTER TABLE ONLY public.subscriptions
-    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
-
-
---
 -- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -4448,10 +5007,10 @@ CREATE UNIQUE INDEX account_activity ON public.notifications USING btree (accoun
 
 
 --
--- Name: hashtag_search_index; Type: INDEX; Schema: public; Owner: pinafore
+-- Name: index_account_aliases_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
-CREATE INDEX hashtag_search_index ON public.tags USING btree (lower((name)::text) text_pattern_ops);
+CREATE INDEX index_account_aliases_on_account_id ON public.account_aliases USING btree (account_id);
 
 
 --
@@ -4480,6 +5039,20 @@ CREATE UNIQUE INDEX index_account_domain_blocks_on_account_id_and_domain ON publ
 --
 
 CREATE INDEX index_account_identity_proofs_on_account_id ON public.account_identity_proofs USING btree (account_id);
+
+
+--
+-- Name: index_account_migrations_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_migrations_on_account_id ON public.account_migrations USING btree (account_id);
+
+
+--
+-- Name: index_account_migrations_on_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_account_migrations_on_target_account_id ON public.account_migrations USING btree (target_account_id);
 
 
 --
@@ -4609,6 +5182,55 @@ CREATE INDEX index_admin_action_logs_on_target_type_and_target_id ON public.admi
 
 
 --
+-- Name: index_announcement_mutes_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_announcement_mutes_on_account_id ON public.announcement_mutes USING btree (account_id);
+
+
+--
+-- Name: index_announcement_mutes_on_account_id_and_announcement_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_announcement_mutes_on_account_id_and_announcement_id ON public.announcement_mutes USING btree (account_id, announcement_id);
+
+
+--
+-- Name: index_announcement_mutes_on_announcement_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_announcement_mutes_on_announcement_id ON public.announcement_mutes USING btree (announcement_id);
+
+
+--
+-- Name: index_announcement_reactions_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_announcement_reactions_on_account_id ON public.announcement_reactions USING btree (account_id);
+
+
+--
+-- Name: index_announcement_reactions_on_account_id_and_announcement_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_announcement_reactions_on_account_id_and_announcement_id ON public.announcement_reactions USING btree (account_id, announcement_id, name);
+
+
+--
+-- Name: index_announcement_reactions_on_announcement_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_announcement_reactions_on_announcement_id ON public.announcement_reactions USING btree (announcement_id);
+
+
+--
+-- Name: index_announcement_reactions_on_custom_emoji_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_announcement_reactions_on_custom_emoji_id ON public.announcement_reactions USING btree (custom_emoji_id);
+
+
+--
 -- Name: index_blocks_on_account_id_and_target_account_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -4620,6 +5242,27 @@ CREATE UNIQUE INDEX index_blocks_on_account_id_and_target_account_id ON public.b
 --
 
 CREATE INDEX index_blocks_on_target_account_id ON public.blocks USING btree (target_account_id);
+
+
+--
+-- Name: index_bookmarks_on_account_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_bookmarks_on_account_id ON public.bookmarks USING btree (account_id);
+
+
+--
+-- Name: index_bookmarks_on_account_id_and_status_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_bookmarks_on_account_id_and_status_id ON public.bookmarks USING btree (account_id, status_id);
+
+
+--
+-- Name: index_bookmarks_on_status_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_bookmarks_on_status_id ON public.bookmarks USING btree (status_id);
 
 
 --
@@ -4637,6 +5280,13 @@ CREATE UNIQUE INDEX index_conversations_on_uri ON public.conversations USING btr
 
 
 --
+-- Name: index_custom_emoji_categories_on_name; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_custom_emoji_categories_on_name ON public.custom_emoji_categories USING btree (name);
+
+
+--
 -- Name: index_custom_emojis_on_shortcode_and_domain; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -4648,6 +5298,13 @@ CREATE UNIQUE INDEX index_custom_emojis_on_shortcode_and_domain ON public.custom
 --
 
 CREATE INDEX index_custom_filters_on_account_id ON public.custom_filters USING btree (account_id);
+
+
+--
+-- Name: index_domain_allows_on_domain; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_domain_allows_on_domain ON public.domain_allows USING btree (domain);
 
 
 --
@@ -4767,6 +5424,20 @@ CREATE INDEX index_list_accounts_on_list_id_and_account_id ON public.list_accoun
 --
 
 CREATE INDEX index_lists_on_account_id ON public.lists USING btree (account_id);
+
+
+--
+-- Name: index_markers_on_user_id; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_markers_on_user_id ON public.markers USING btree (user_id);
+
+
+--
+-- Name: index_markers_on_user_id_and_timeline; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_markers_on_user_id_and_timeline ON public.markers USING btree (user_id, timeline);
 
 
 --
@@ -5036,10 +5707,17 @@ CREATE UNIQUE INDEX index_status_stats_on_status_id ON public.status_stats USING
 
 
 --
--- Name: index_statuses_20180106; Type: INDEX; Schema: public; Owner: pinafore
+-- Name: index_statuses_20190820; Type: INDEX; Schema: public; Owner: pinafore
 --
 
-CREATE INDEX index_statuses_20180106 ON public.statuses USING btree (account_id, id DESC, visibility, updated_at);
+CREATE INDEX index_statuses_20190820 ON public.statuses USING btree (account_id, id DESC, visibility, updated_at) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_statuses_local_20190824; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_statuses_local_20190824 ON public.statuses USING btree (id DESC, account_id) WHERE ((local OR (uri IS NULL)) AND (deleted_at IS NULL) AND (visibility = 0) AND (reblog_of_id IS NULL) AND ((NOT reply) OR (in_reply_to_account_id = account_id)));
 
 
 --
@@ -5071,6 +5749,13 @@ CREATE UNIQUE INDEX index_statuses_on_uri ON public.statuses USING btree (uri);
 
 
 --
+-- Name: index_statuses_public_20200119; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE INDEX index_statuses_public_20200119 ON public.statuses USING btree (id DESC, account_id) WHERE ((deleted_at IS NULL) AND (visibility = 0) AND (reblog_of_id IS NULL) AND ((NOT reply) OR (in_reply_to_account_id = account_id)));
+
+
+--
 -- Name: index_statuses_tags_on_status_id; Type: INDEX; Schema: public; Owner: pinafore
 --
 
@@ -5085,31 +5770,10 @@ CREATE UNIQUE INDEX index_statuses_tags_on_tag_id_and_status_id ON public.status
 
 
 --
--- Name: index_stream_entries_on_account_id_and_activity_type_and_id; Type: INDEX; Schema: public; Owner: pinafore
+-- Name: index_tags_on_name_lower; Type: INDEX; Schema: public; Owner: pinafore
 --
 
-CREATE INDEX index_stream_entries_on_account_id_and_activity_type_and_id ON public.stream_entries USING btree (account_id, activity_type, id);
-
-
---
--- Name: index_stream_entries_on_activity_id_and_activity_type; Type: INDEX; Schema: public; Owner: pinafore
---
-
-CREATE INDEX index_stream_entries_on_activity_id_and_activity_type ON public.stream_entries USING btree (activity_id, activity_type);
-
-
---
--- Name: index_subscriptions_on_account_id_and_callback_url; Type: INDEX; Schema: public; Owner: pinafore
---
-
-CREATE UNIQUE INDEX index_subscriptions_on_account_id_and_callback_url ON public.subscriptions USING btree (account_id, callback_url);
-
-
---
--- Name: index_tags_on_name; Type: INDEX; Schema: public; Owner: pinafore
---
-
-CREATE UNIQUE INDEX index_tags_on_name ON public.tags USING btree (name);
+CREATE UNIQUE INDEX index_tags_on_name_lower ON public.tags USING btree (lower((name)::text));
 
 
 --
@@ -5166,6 +5830,13 @@ CREATE INDEX index_users_on_created_by_application_id ON public.users USING btre
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_remember_token; Type: INDEX; Schema: public; Owner: pinafore
+--
+
+CREATE UNIQUE INDEX index_users_on_remember_token ON public.users USING btree (remember_token);
 
 
 --
@@ -5276,14 +5947,6 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: stream_entries fk_5659b17554; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
---
-
-ALTER TABLE ONLY public.stream_entries
-    ADD CONSTRAINT fk_5659b17554 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
-
-
---
 -- Name: favourites fk_5eb6c2b873; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5361,14 +6024,6 @@ ALTER TABLE ONLY public.media_attachments
 
 ALTER TABLE ONLY public.mentions
     ADD CONSTRAINT fk_970d43f9d1 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
-
-
---
--- Name: subscriptions fk_9847d1cbb5; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
---
-
-ALTER TABLE ONLY public.subscriptions
-    ADD CONSTRAINT fk_9847d1cbb5 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -5500,6 +6155,14 @@ ALTER TABLE ONLY public.backups
 
 
 --
+-- Name: bookmarks fk_rails_11207ffcfd; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.bookmarks
+    ADD CONSTRAINT fk_rails_11207ffcfd FOREIGN KEY (status_id) REFERENCES public.statuses(id) ON DELETE CASCADE;
+
+
+--
 -- Name: account_conversations fk_rails_1491654f9f; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5612,6 +6275,14 @@ ALTER TABLE ONLY public.account_moderation_notes
 
 
 --
+-- Name: email_domain_blocks fk_rails_408efe0a15; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.email_domain_blocks
+    ADD CONSTRAINT fk_rails_408efe0a15 FOREIGN KEY (parent_id) REFERENCES public.email_domain_blocks(id) ON DELETE CASCADE;
+
+
+--
 -- Name: list_accounts fk_rails_40f9cc29f1; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5684,6 +6355,14 @@ ALTER TABLE ONLY public.account_conversations
 
 
 --
+-- Name: announcement_reactions fk_rails_7444ad831f; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_reactions
+    ADD CONSTRAINT fk_rails_7444ad831f FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: web_push_subscriptions fk_rails_751a9f390b; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5732,6 +6411,30 @@ ALTER TABLE ONLY public.statuses
 
 
 --
+-- Name: announcement_mutes fk_rails_9c99f8e835; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_mutes
+    ADD CONSTRAINT fk_rails_9c99f8e835 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: bookmarks fk_rails_9f6ac182a6; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.bookmarks
+    ADD CONSTRAINT fk_rails_9f6ac182a6 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: announcement_reactions fk_rails_a1226eaa5c; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_reactions
+    ADD CONSTRAINT fk_rails_a1226eaa5c FOREIGN KEY (announcement_id) REFERENCES public.announcements(id) ON DELETE CASCADE;
+
+
+--
 -- Name: account_pins fk_rails_a176e26c37; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5753,6 +6456,14 @@ ALTER TABLE ONLY public.account_warnings
 
 ALTER TABLE ONLY public.poll_votes
     ADD CONSTRAINT fk_rails_a6e6974b7e FOREIGN KEY (poll_id) REFERENCES public.polls(id) ON DELETE CASCADE;
+
+
+--
+-- Name: markers fk_rails_a7009bc2b6; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.markers
+    ADD CONSTRAINT fk_rails_a7009bc2b6 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -5788,6 +6499,22 @@ ALTER TABLE ONLY public.poll_votes
 
 
 --
+-- Name: announcement_reactions fk_rails_b742c91c0e; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_reactions
+    ADD CONSTRAINT fk_rails_b742c91c0e FOREIGN KEY (custom_emoji_id) REFERENCES public.custom_emojis(id) ON DELETE CASCADE;
+
+
+--
+-- Name: account_migrations fk_rails_c9f701caaf; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_migrations
+    ADD CONSTRAINT fk_rails_c9f701caaf FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: report_notes fk_rails_cae66353f3; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5804,6 +6531,14 @@ ALTER TABLE ONLY public.account_pins
 
 
 --
+-- Name: account_migrations fk_rails_d9a8dad070; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_migrations
+    ADD CONSTRAINT fk_rails_d9a8dad070 FOREIGN KEY (target_account_id) REFERENCES public.accounts(id) ON DELETE SET NULL;
+
+
+--
 -- Name: account_moderation_notes fk_rails_dd62ed5ac3; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
 --
 
@@ -5817,6 +6552,14 @@ ALTER TABLE ONLY public.account_moderation_notes
 
 ALTER TABLE ONLY public.statuses_tags
     ADD CONSTRAINT fk_rails_df0fe11427 FOREIGN KEY (status_id) REFERENCES public.statuses(id) ON DELETE CASCADE;
+
+
+--
+-- Name: announcement_mutes fk_rails_e35401adf1; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.announcement_mutes
+    ADD CONSTRAINT fk_rails_e35401adf1 FOREIGN KEY (announcement_id) REFERENCES public.announcements(id) ON DELETE CASCADE;
 
 
 --
@@ -5841,6 +6584,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.tombstones
     ADD CONSTRAINT fk_rails_f95b861449 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: account_aliases fk_rails_fc91575d08; Type: FK CONSTRAINT; Schema: public; Owner: pinafore
+--
+
+ALTER TABLE ONLY public.account_aliases
+    ADD CONSTRAINT fk_rails_fc91575d08 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
