@@ -109,12 +109,12 @@ async function runMastodon () {
     await writeFile(installedFile, '', 'utf8')
   }
   const promise = spawn('foreman', ['start'], { cwd, env })
+  // don't bother writing to mastodon.log in Travis; we can't read the file anyway
+  const logFile = process.env.TRAVIS === 'true' ? '/dev/null' : 'mastodon.log'
+  const log = fs.createWriteStream(logFile, { flags: 'a' })
   childProc = promise.childProcess
-  if (process.env.TRAVIS !== 'true') { // don't bother writing to mastodon.log in Travis
-    const log = fs.createWriteStream('mastodon.log', { flags: 'a' })
-    childProc.stdout.pipe(log)
-    childProc.stderr.pipe(log)
-  }
+  childProc.stdout.pipe(log)
+  childProc.stderr.pipe(log)
   promise.catch(err => {
     console.error('foreman start failed, see mastodon.log for details')
     console.error(err)
