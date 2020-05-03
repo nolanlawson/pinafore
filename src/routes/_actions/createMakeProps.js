@@ -29,8 +29,16 @@ function tryInitBlurhash () {
   }
 }
 
+function getActualStatus (statusOrNotification) {
+  return get(statusOrNotification, ['status']) ||
+    get(statusOrNotification, ['notification', 'status'])
+}
+
 async function decodeAllBlurhashes (statusOrNotification) {
-  const status = statusOrNotification.status || statusOrNotification.notification.status
+  const status = getActualStatus(statusOrNotification)
+  if (!status) {
+    return
+  }
   const mediaWithBlurhashes = get(status, ['media_attachments'], [])
     .concat(get(status, ['reblog', 'media_attachments'], []))
     .filter(_ => _.blurhash)
@@ -48,7 +56,7 @@ async function decodeAllBlurhashes (statusOrNotification) {
 }
 
 async function calculatePlainTextContent (statusOrNotification) {
-  const status = statusOrNotification.status || statusOrNotification.notification.status
+  const status = getActualStatus(statusOrNotification)
   if (!status) {
     return
   }
