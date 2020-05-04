@@ -1,6 +1,4 @@
-
-
-*:focus {
+:focus {
   outline: var(--focus-width) solid var(--focus-outline);
 }
 
@@ -72,4 +70,15 @@
     }
 
   }
+}
+
+//
+// :focus-visible styles
+//
+.js-focus-visible :focus:not(.focus-visible) { // polyfill
+  outline: none;
+}
+
+:focus:not(:focus-visible) { // standard version
+  outline: none;
 }
