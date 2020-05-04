@@ -6,6 +6,7 @@ import { observe } from 'svelte-extras'
 import { isKaiOS } from '../_utils/userAgent/isKaiOS'
 
 const persistedState = {
+  alwaysShowFocusRing: false,
   autoplayGifs: false,
   composeData: {},
   currentInstance: null,

@@ -17,3 +17,7 @@ export const importCustomElementsPolyfill = () => import(
 export const importIntl = () => import(
   /* webpackChunkName: '$polyfill$-intl' */ 'intl'
 )
+
+export const importFocusVisible = () => import(
+  /* webpackChunkName: '$polyfill$-focus-visible' */ 'focus-visible'
+)

@@ -28,6 +28,25 @@
     }
   </style>
 
+  <style id="theFocusVisibleStyle" media="all">
+    /*  :focus-visible styles */
+    /* polyfill */
+    .js-focus-visible :focus:not(.focus-visible) {
+      outline: none !important;
+    }
+    .js-focus-visible :focus:not(.focus-visible).focus-after::after {
+      display: none !important;
+    }
+
+    /* standard version */
+    :focus:not(:focus-visible) {
+      outline: none !important;
+    }
+    :focus:not(:focus-visible).focus-after::after {
+      display: none !important;
+    }
+  </style>
+
   <noscript>
     <style>
       .hidden-from-ssr {

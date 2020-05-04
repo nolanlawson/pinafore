@@ -7,6 +7,7 @@ import { setupLoggedInObservers } from './setupLoggedInObservers'
 import { logOutObservers } from './logOutObservers'
 import { touchObservers } from './touchObservers'
 import { grayscaleObservers } from './grayscaleObservers'
+import { focusRingObservers } from './focusRingObservers'
 import { leftRightFocusObservers } from './leftRightFocusObservers'
 
 export function observers (store) {
@@ -17,6 +18,7 @@ export function observers (store) {
   resizeObservers(store)
   touchObservers(store)
   logOutObservers(store)
+  focusRingObservers(store)
   grayscaleObservers(store)
   leftRightFocusObservers(store)
   setupLoggedInObservers(store)
