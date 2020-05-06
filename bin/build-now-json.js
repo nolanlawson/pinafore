@@ -82,7 +82,9 @@ const HTML_HEADERS = {
   'x-content-type-options': 'nosniff',
   'x-download-options': 'noopen',
   'x-frame-options': 'DENY',
-  'x-xss-protection': '1; mode=block'
+  'x-xss-protection': '1; mode=block',
+  'cross-origin-embedder-policy': 'require-corp',
+  'cross-origin-opener-policy': 'same-origin'
 }
 
 async function main () {
