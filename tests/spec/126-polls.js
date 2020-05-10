@@ -7,7 +7,7 @@ import {
   sleep,
   getNthStatusPollRefreshButton,
   getNthStatusPollVoteCount,
-  getNthStatusRelativeDate, getUrl, goBack
+  getNthStatusRelativeDate, getUrl, goBack, getNthStatusSpoiler, getNthShowOrHideButton
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { createPollAs, voteOnPollAs } from '../serverActions'
@@ -104,4 +104,20 @@ test('Poll results refresh everywhere', async t => {
     .expect(getNthStatusPollResult(1, 1).innerText).eql('100% yes')
     .expect(getNthStatusPollResult(1, 2).innerText).eql('0% no')
     .expect(getNthStatusPollVoteCount(1).innerText).eql('1 vote')
+})
+
+test('Polls with content warnings', async t => {
+  await createPollAs('admin', 'hidden poll!', ['oui', 'non'], false, 'this poll is hidden')
+  await sleep(2000)
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatusSpoiler(1).innerText).contains('this poll is hidden')
+    .expect(getNthStatusPollForm(1).visible).notOk()
+    .expect(getNthStatusContent(1).visible).notOk()
+    .click(getNthShowOrHideButton(1))
+    .expect(getNthStatusPollForm(1).visible).ok()
+    .expect(getNthStatusContent(1).visible).ok()
+    .click(getNthShowOrHideButton(1))
+    .expect(getNthStatusPollForm(1).visible).notOk()
+    .expect(getNthStatusContent(1).visible).notOk()
 })

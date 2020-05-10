@@ -71,8 +71,8 @@ export async function updateUserDisplayNameAs (username, displayName) {
   return updateCredentials(instanceName, users[username].accessToken, { display_name: displayName })
 }
 
-export async function createPollAs (username, content, options, multiple) {
-  return postStatus(instanceName, users[username].accessToken, content, null, null, false, null, 'public', {
+export async function createPollAs (username, content, options, multiple, spoilerText) {
+  return postStatus(instanceName, users[username].accessToken, content, null, null, false, spoilerText, 'public', {
     options,
     multiple,
     expires_in: POLL_EXPIRY_DEFAULT

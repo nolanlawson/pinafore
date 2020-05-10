@@ -65,6 +65,11 @@
     border: 1px solid var(--main-border);
     border-radius: 2px;
     transition: opacity 0.2s linear;
+    display: none;
+  }
+
+  .poll.shown {
+    display: block;
   }
 
   .poll.status-in-own-thread {
@@ -309,12 +314,13 @@
       ),
       formDisabled: ({ choices }) => !choices.length,
       votesText: ({ votesCount }) => `${votesCount} ${votesCount === 1 ? 'vote' : 'votes'}`,
-      computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading }) => (
+      computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading, shown }) => (
         classname(
           'poll',
           isStatusInNotification && 'status-in-notification',
           isStatusInOwnThread && 'status-in-own-thread',
-          loading && 'poll-loading'
+          loading && 'poll-loading',
+          shown && 'shown'
         )
       )
     },
