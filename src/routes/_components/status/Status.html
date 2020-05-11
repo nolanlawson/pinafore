@@ -21,7 +21,7 @@
   {#if !showContent}
     <StatusMentions {...params} />
   {/if}
-  {#if content && (showContent || contentPreloaded)}
+  {#if content && (showContent || preloadHiddenContent)}
     <StatusContent {...params} shown={showContent}/>
   {/if}
   {#if showCard }
@@ -30,8 +30,8 @@
   {#if showMedia }
     <StatusMediaAttachments {...params} on:recalculateHeight />
   {/if}
-  {#if showPoll}
-    <StatusPoll {...params} />
+  {#if showPoll && (showContent || preloadHiddenContent)}
+    <StatusPoll {...params} shown={showContent} />
   {/if}
   {#if isStatusInOwnThread}
     <StatusDetails {...params} {...timestampParams} />
@@ -147,7 +147,7 @@
         scheduleIdleTask(() => {
           // Perf optimization: lazily load the StatusContent when the user is idle so that
           // it's fast when they click the "show more" button
-          this.set({ contentPreloaded: true })
+          this.set({ preloadHiddenContent: true })
         })
       }
     },
@@ -171,7 +171,7 @@
     data: () => ({
       notification: undefined,
       replyVisibility: undefined,
-      contentPreloaded: false,
+      preloadHiddenContent: false,
       enableShortcuts: null
     }),
     store: () => store,
