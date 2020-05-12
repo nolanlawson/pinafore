@@ -1,7 +1,7 @@
-import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import {DEFAULT_TIMEOUT, get, paramsString} from '../../_utils/ajax'
+import {auth, basename} from '../utils'
 
-function getTimelineUrlPath (timeline) {
+export function getTimelineUrlPath (timeline) {
   switch (timeline) {
     case 'local':
     case 'federated':
@@ -25,7 +25,7 @@ function getTimelineUrlPath (timeline) {
   }
 }
 
-export async function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {
+async function getTimelineUrl(instanceName, timeline, maxId, since, limit) {
   const timelineUrlName = getTimelineUrlPath(timeline)
   let url = `${basename(instanceName)}/api/v1/${timelineUrlName}`
 
@@ -67,12 +67,10 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
   }
 
   url += '?' + paramsString(params)
+  return url
+}
 
-  console.log('fetching url', url)
-  const items = await get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
-
-  if (timeline === 'direct') {
-    return items.map(item => item.last_status)
-  }
-  return items
+export async function fetchTimeline(instanceName, accessToken, timeline, maxId, since, limit) {
+  const url = getTimelineUrl(instanceName, timeline, maxId, since, limit)
+  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 }
