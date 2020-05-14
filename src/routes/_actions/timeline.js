@@ -11,6 +11,9 @@ import { emit } from '../_utils/eventBus'
 import { TIMELINE_BATCH_SIZE } from '../_static/timelines'
 import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
 import uniqBy from 'lodash-es/uniqBy'
+import { addStatusesOrNotifications } from './addStatusOrNotification'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { sortItemSummariesForThread } from '../_utils/sortItemSummariesForThread'
 
 const byId = _ => _.id
 
@@ -26,13 +29,66 @@ async function storeFreshTimelineItemsInDatabase (instanceName, timelineName, it
   }
 }
 
+async function updateStatus (instanceName, accessToken, statusId) {
+  const status = await getStatus(instanceName, accessToken, statusId)
+  await database.insertStatus(instanceName, status)
+  emit('statusUpdated', status)
+  return status
+}
+
+async function updateStatusAndThread (instanceName, accessToken, timelineName, statusId) {
+  const [status, context] = await Promise.all([
+    updateStatus(instanceName, accessToken, statusId),
+    getStatusContext(instanceName, accessToken, statusId)
+  ])
+  await database.insertTimelineItems(
+    instanceName,
+    timelineName,
+    concat(context.ancestors, status, context.descendants)
+  )
+  addStatusesOrNotifications(instanceName, timelineName, concat(context.ancestors, context.descendants))
+}
+
+async function fetchFreshThreadFromNetwork (instanceName, accessToken, statusId) {
+  const [status, context] = await Promise.all([
+    getStatus(instanceName, accessToken, statusId),
+    getStatusContext(instanceName, accessToken, statusId)
+  ])
+  return concat(context.ancestors, status, context.descendants)
+}
+
+async function fetchThreadFromNetwork (instanceName, accessToken, timelineName) {
+  const statusId = timelineName.split('/').slice(-1)[0]
+
+  // For threads, we do several optimizations to make it a bit faster to load.
+  // The vast majority of statuses have no replies and aren't in reply to anything,
+  // so we want that to be as fast as possible.
+  const status = await database.getStatus(instanceName, statusId)
+  if (!status) {
+    // If for whatever reason the status is not cached, fetch everything from the network
+    // and wait for the result. This happens in very unlikely cases (e.g. loading /statuses/<id>
+    // where <id> is not cached locally) but is worth covering.
+    return fetchFreshThreadFromNetwork(instanceName, accessToken, statusId)
+  }
+
+  if (!status.in_reply_to_id) {
+    // status is not a reply to another status (fast path)
+    // Update the status and thread asynchronously, but return just the status for now
+    // Any replies to the status will load asynchronously
+    /* no await */ updateStatusAndThread(instanceName, accessToken, timelineName, statusId)
+    return [status]
+  }
+  // status is a reply to some other status, meaning we don't want some
+  // jerky behavior where it suddenly scrolls into place. Update the status asynchronously
+  // but grab the thread now
+  scheduleIdleTask(() => updateStatus(instanceName, accessToken, statusId))
+  const context = await getStatusContext(instanceName, accessToken, statusId)
+  return concat(context.ancestors, status, context.descendants)
+}
+
 async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelineName, lastTimelineItemId) {
   if (timelineName.startsWith('status/')) { // special case - this is a list of descendents and ancestors
-    const statusId = timelineName.split('/').slice(-1)[0]
-    const statusRequest = getStatus(instanceName, accessToken, statusId)
-    const contextRequest = getStatusContext(instanceName, accessToken, statusId)
-    const [status, context] = await Promise.all([statusRequest, contextRequest])
-    return concat(context.ancestors, status, context.descendants)
+    return fetchThreadFromNetwork(instanceName, accessToken, timelineName)
   } else { // normal timeline
     return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, null, TIMELINE_BATCH_SIZE)
   }
@@ -49,7 +105,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, last
     try {
       console.log('fetchTimelineItemsFromNetwork')
       items = await fetchTimelineItemsFromNetwork(instanceName, accessToken, timelineName, lastTimelineItemId)
-      /* no await */ storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
+      await storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
     } catch (e) {
       console.error(e)
       toast.say('Internet request failed. Showing offline content.')
@@ -160,9 +216,11 @@ export async function showMoreItemsForThread (instanceName, timelineName) {
       timelineItemSummaries.push(itemSummaryToAdd)
     }
   }
+  const statusId = timelineName.split('/').slice(-1)[0]
+  const sortedTimelineItemSummaries = await sortItemSummariesForThread(timelineItemSummaries, statusId)
   store.setForTimeline(instanceName, timelineName, {
     timelineItemSummariesToAdd: [],
-    timelineItemSummaries: timelineItemSummaries
+    timelineItemSummaries: sortedTimelineItemSummaries
   })
   stop('showMoreItemsForThread')
 }
