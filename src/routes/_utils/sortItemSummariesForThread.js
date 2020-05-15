@@ -25,15 +25,6 @@ export function sortItemSummariesForThread (summaries, statusId) {
 
   // Normally descendants are sorted in depth-first order, via normal ID sorting
   // but replies that come from the account they're actually replying to get promoted
-  const rootAccountId = status.accountId
-  const compareDescendants = (left, right) => {
-    if (left.accountId === rootAccountId && right.accountId !== rootAccountId) {
-      return -1
-    } else if (left.accountId !== rootAccountId && right.accountId === rootAccountId) {
-      return 1
-    }
-    return compareTimelineItemSummaries(left, right)
-  }
 
   // find descendants
   let stack = summaries.filter(_ => _.replyId === status.id).sort(compareDescendants)
@@ -44,7 +35,13 @@ export function sortItemSummariesForThread (summaries, statusId) {
     descendants.push(current)
   }
 
+  const rootAccountId = status.accountId
 
+  let currentReplyId = status.id
+  for (let i = 0; i < descendants.length; i++) {
+    const descendant = descendants[i]
+
+  }
 
   return concat(
     ancestors,
