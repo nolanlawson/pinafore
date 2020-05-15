@@ -8,7 +8,7 @@ import {
   getReblogsCount,
   getUrl,
   goBack,
-  sleep
+  sleep, validateTimeline
 } from '../utils'
 
 fixture`132-threads-and-updates.js`
@@ -130,4 +130,26 @@ test('updates the thread of a reply when you click on it', async t => {
     .expect(getAriaSetSize()).eql('4')
     .expect(getNthStatusContent(4).innerText).contains('quatro')
   await goBack()
+})
+
+test('complex thread is in completely correct order', async t => {
+  const { id: a } = await postAs('foobar', 'a')
+  const { id: b } = await postReplyAs('baz', 'b', a)
+  const { id: c } = await postReplyAs('baz', 'c', b)
+  const { id: a1 } = await postReplyAs('baz', 'a1', a)
+  const { id: d } = await postReplyAs('baz', 'd', c)
+  const { id: a2 } = await postReplyAs('baz', 'a2', a1)
+  const { id: b1 } = await postReplyAs('baz', 'b1', b)
+  const { id: a3 } = await postReplyAs('baz', 'a3', a2)
+  await postReplyAs('baz', 'e', d)
+  await postReplyAs('baz', 'b2', b1)
+  await postReplyAs('baz', 'a4', a3)
+  await postReplyAs('baz', 'a1a', a1)
+  await loginAsFoobar(t)
+  await t.click(getNthStatus(1))
+  const order = 'a b c d e b1 b2 a1 a2 a3 a4 a1a'.split(' ')
+
+  await validateTimeline(t, order.map(content => ({
+    content
+  })))
 })
