@@ -13,6 +13,7 @@ import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
 import uniqBy from 'lodash-es/uniqBy'
 import { addStatusesOrNotifications } from './addStatusOrNotification'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import {sortItemSummariesForThread} from '../_utils/sortItemSummariesForThread';
 
 const byId = _ => _.id
 
@@ -215,9 +216,11 @@ export async function showMoreItemsForThread (instanceName, timelineName) {
       timelineItemSummaries.push(itemSummaryToAdd)
     }
   }
+  const statusId = timelineName.split('/').slice(-1)[0]
+  const sortedTimelineItemSummaries = await sortItemSummariesForThread(timelineItemSummaries, statusId)
   store.setForTimeline(instanceName, timelineName, {
     timelineItemSummariesToAdd: [],
-    timelineItemSummaries: timelineItemSummaries
+    timelineItemSummaries: sortedTimelineItemSummaries
   })
   stop('showMoreItemsForThread')
 }
