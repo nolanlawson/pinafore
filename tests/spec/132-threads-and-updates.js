@@ -7,7 +7,7 @@ import {
   getNthStatusContent,
   getReblogsCount,
   getUrl,
-  goBack,
+  goBack, scrollToStatus,
   sleep, validateTimeline
 } from '../utils'
 
@@ -132,7 +132,7 @@ test('updates the thread of a reply when you click on it', async t => {
   await goBack()
 })
 
-test('complex thread is in completely correct order', async t => {
+test('complex thread is in correct order', async t => {
   const { id: a } = await postAs('foobar', 'a')
   const { id: b } = await postReplyAs('baz', 'b', a)
   const { id: c } = await postReplyAs('baz', 'c', b)
@@ -149,7 +149,28 @@ test('complex thread is in completely correct order', async t => {
   await t.click(getNthStatus(1))
   const order = 'a b c d e b1 b2 a1 a2 a3 a4 a1a'.split(' ')
 
-  await validateTimeline(t, order.map(content => ({
-    content
-  })))
+  await validateTimeline(t, order.map(content => ({ content })))
+})
+
+test('complex thread is in correct order - original poster involved', async t => {
+  const { id: a } = await postAs('foobar', 'a-original')
+  const { id: b } = await postReplyAs('baz', 'b', a)
+  const { id: c } = await postReplyAs('baz', 'c', b)
+  const { id: a1 } = await postReplyAs('foobar', 'a1', a)
+  const { id: d } = await postReplyAs('baz', 'd', c)
+  const { id: a2 } = await postReplyAs('foobar', 'a2', a1)
+  const { id: b1 } = await postReplyAs('baz', 'b1', b)
+  const { id: a3 } = await postReplyAs('foobar', 'a3', a2)
+  await postReplyAs('baz', 'e', d)
+  await postReplyAs('baz', 'b2', b1)
+  await postReplyAs('foobar', 'a4', a3)
+  await postReplyAs('baz', 'a1a', a1)
+  await loginAsFoobar(t)
+  await scrollToStatus(t, 5)
+  await t
+    .expect(getNthStatusContent(5).innerText).contains('a-original')
+    .click(getNthStatus(5))
+  const order = 'a-original a1 a2 a3 a4 b c d e b1 b2 a1a'.split(' ')
+
+  await validateTimeline(t, order.map(content => ({ content })))
 })
