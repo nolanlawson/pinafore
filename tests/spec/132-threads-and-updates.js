@@ -174,3 +174,55 @@ test('complex thread is in correct order - original poster involved', async t =>
 
   await validateTimeline(t, order.map(content => ({ content })))
 })
+
+test('complex thread is in correct order - with ancestors', async t => {
+  const { id: ancestor1 } = await postAs('foobar', 'ancestor1')
+  const { id: ancestor2 } = await postReplyAs('foobar', 'ancestor2', ancestor1)
+  const { id: a } = await postReplyAs('foobar', 'a-root', ancestor2)
+  const { id: b } = await postReplyAs('baz', 'b', a)
+  const { id: c } = await postReplyAs('baz', 'c', b)
+  const { id: a1 } = await postReplyAs('baz', 'a1', a)
+  const { id: d } = await postReplyAs('baz', 'd', c)
+  const { id: a2 } = await postReplyAs('baz', 'a2', a1)
+  const { id: b1 } = await postReplyAs('baz', 'b1', b)
+  const { id: a3 } = await postReplyAs('baz', 'a3', a2)
+  await postReplyAs('baz', 'e', d)
+  await postReplyAs('baz', 'b2', b1)
+  await postReplyAs('baz', 'a4', a3)
+  await postReplyAs('baz', 'a1a', a1)
+  await loginAsFoobar(t)
+  await scrollToStatus(t, 5)
+  await t
+    .expect(getNthStatusContent(1).innerText).contains('a-root')
+    .click(getNthStatus(1))
+  const order = 'ancestor1 ancestor2 a-root b c d e b1 b2 a1 a2 a3 a4 a1a'.split(' ')
+
+  await validateTimeline(t, order.map(content => ({ content })))
+})
+
+test('complex thread is in correct order - with mixed self-replies', async t => {
+  const { id: a } = await postAs('foobar', 'a')
+  const { id: b } = await postReplyAs('baz', 'b', a)
+  const { id: c } = await postReplyAs('baz', 'c', b)
+  const { id: a1 } = await postReplyAs('baz', 'a1', a)
+  const { id: d } = await postReplyAs('baz', 'd', c)
+  const { id: a2 } = await postReplyAs('baz', 'a2', a1)
+  const { id: b1 } = await postReplyAs('baz', 'b1', b)
+  const { id: a3 } = await postReplyAs('baz', 'a3', a2)
+  await postReplyAs('baz', 'e', d)
+  await postReplyAs('baz', 'b2', b1)
+  await postReplyAs('baz', 'a4', a3)
+  await postReplyAs('baz', 'a1a', a1)
+  // reply chain: foobar -> foobar -> baz -> foobar -> foobar
+  // when foobar replies to itself after replying to baz, is it promoted?
+  // see https://github.com/tootsuite/mastodon/pull/9320#issuecomment-440705662
+  const { id: mixed1 } = await postReplyAs('foobar', 'foobar-mixed1', a)
+  const { id: mixed2 } = await postReplyAs('baz', 'baz-mixed2', mixed1)
+  const { id: mixed3 } = await postReplyAs('foobar', 'foobar-mixed3', mixed2)
+  await postReplyAs('foobar', 'foobar-mixed4', mixed3)
+  await loginAsFoobar(t)
+  await t.click(getNthStatus(4))
+  const order = 'a foobar-mixed1 b c d e b1 b2 a1 a2 a3 a4 a1a baz-mixed2 foobar-mixed3 foobar-mixed4'.split(' ')
+
+  await validateTimeline(t, order.map(content => ({ content })))
+})
