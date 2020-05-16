@@ -28,12 +28,14 @@ export function sortItemSummariesForThread (summaries, statusId) {
 
   // find descendants
   // This mirrors the depth-first ordering used in the Postgres query in the Mastodon implementation
-  let stack = (summariesByReplyId.get(status.id) || []).sort(compareTimelineItemSummaries)
+  const stack = [status]
   while (stack.length) {
     const current = stack.shift()
     const newChildren = (summariesByReplyId.get(current.id) || []).sort(compareTimelineItemSummaries)
-    stack = concat(newChildren, stack)
-    descendants.push(current)
+    Array.prototype.unshift.apply(stack, newChildren)
+    if (current.id !== status.id) { // the status is not a descendant of itself
+      descendants.push(current)
+    }
   }
 
   // Normally descendants are sorted in depth-first order, via normal ID sorting
