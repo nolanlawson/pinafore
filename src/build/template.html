@@ -32,18 +32,18 @@
     /*  :focus-visible styles */
     /* polyfill */
     .js-focus-visible :focus:not(.focus-visible) {
-      outline: none !important;
+      outline: none !important; /* important to win the specificity war */
     }
     .js-focus-visible :focus:not(.focus-visible).focus-after::after {
-      display: none !important;
+      display: none;
     }
 
     /* standard version */
     :focus:not(:focus-visible) {
-      outline: none !important;
+      outline: none !important; /* important to win the specificity war */
     }
     :focus:not(:focus-visible).focus-after::after {
-      display: none !important;
+      display: none;
     }
   </style>
 
