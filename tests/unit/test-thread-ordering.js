@@ -1,6 +1,6 @@
 /* global describe, it */
 import assert from 'assert'
-import {sortItemSummariesForThread} from '../../src/routes/_utils/sortItemSummariesForThread'
+import { sortItemSummariesForThread } from '../../src/routes/_utils/sortItemSummariesForThread'
 
 describe('test-thread-ordering.js', () => {
   it('orders a complex thread correctly', () => {
@@ -274,49 +274,49 @@ describe('test-thread-ordering.js', () => {
 
   it('orders another complex thread correctly', () => {
     const summaries = [{
-      "id": "104179325085424124",
-      "accountId": "2",
-      "content": "this-is-my-thread-1"
+      id: '104179325085424124',
+      accountId: '2',
+      content: 'this-is-my-thread-1'
     }, {
-      "id": "104179325166234979",
-      "accountId": "2",
-      "replyId": "104179325085424124",
-      "content": "this-is-my-thread-2"
+      id: '104179325166234979',
+      accountId: '2',
+      replyId: '104179325085424124',
+      content: 'this-is-my-thread-2'
     }, {
-      "id": "104179325240180153",
-      "accountId": "2",
-      "replyId": "104179325166234979",
-      "content": "this-is-my-thread-3"
+      id: '104179325240180153',
+      accountId: '2',
+      replyId: '104179325166234979',
+      content: 'this-is-my-thread-3'
     }, {
-      "id": "104179325498778701",
-      "accountId": "2",
-      "replyId": "104179325240180153",
-      "content": "this-is-my-thread-4"
+      id: '104179325498778701',
+      accountId: '2',
+      replyId: '104179325240180153',
+      content: 'this-is-my-thread-4'
     }, {
-      "id": "104179325543709477",
-      "accountId": "2",
-      "replyId": "104179325498778701",
-      "content": "this-is-my-thread-5"
+      id: '104179325543709477',
+      accountId: '2',
+      replyId: '104179325498778701',
+      content: 'this-is-my-thread-5'
     }, {
-      "id": "104179325275861201",
-      "accountId": "1",
-      "replyId": "104179325240180153",
-      "content": "hey-i-am-replying-to-3"
+      id: '104179325275861201',
+      accountId: '1',
+      replyId: '104179325240180153',
+      content: 'hey-i-am-replying-to-3'
     }, {
-      "id": "104179325263377436",
-      "accountId": "3",
-      "replyId": "104179325085424124",
-      "content": "hey-i-am-replying-to-1"
+      id: '104179325263377436',
+      accountId: '3',
+      replyId: '104179325085424124',
+      content: 'hey-i-am-replying-to-1'
     }, {
-      "id": "104179325387035947",
-      "accountId": "3",
-      "replyId": "104179325085424124",
-      "content": "hey-check-this-reply"
+      id: '104179325387035947',
+      accountId: '3',
+      replyId: '104179325085424124',
+      content: 'hey-check-this-reply'
     }, {
-      "id": "104179325564606101",
-      "accountId": "1",
-      "replyId": "104179325085424124",
-      "content": "hey-i-am-replying-to-1-again"
+      id: '104179325564606101',
+      accountId: '1',
+      replyId: '104179325085424124',
+      content: 'hey-i-am-replying-to-1-again'
     }]
 
     const expected = [

@@ -158,13 +158,13 @@ test('no duplicates in threads', async t => {
   const id5 = await getNthStatusId(6)()
   await postReplyAs('admin', 'hey i am replying to 1 again', id1)
   await t
+    .expect(getNthStatusContent(6).innerText).contains('this is my thread 5')
     .click(getNthStatus(6))
     .expect(getUrl()).contains(id5)
     .click(getNthStatus(1))
     .expect(getUrl()).contains(id1)
-
-  await t
-    .click(getNthStatus(6))
+    .expect(getNthStatusContent(5).innerText).contains('this is my thread 5')
+    .click(getNthStatus(5))
     .expect(getUrl()).contains(id5)
   await replyToNthStatus(t, 5, 'this is my thread 6', 6)
   await t
