@@ -1,6 +1,6 @@
 /* global describe, it */
 import assert from 'assert'
-import { sortItemSummariesForThread } from '../../src/routes/_utils/sortItemSummariesForThread'
+import {sortItemSummariesForThread} from '../../src/routes/_utils/sortItemSummariesForThread'
 
 describe('test-thread-ordering.js', () => {
   it('orders a complex thread correctly', () => {
@@ -266,6 +266,70 @@ describe('test-thread-ordering.js', () => {
 
     const expected = ('a foobar-mixed1 foobar-mixed2a foobar-mixed1a foobar-mixed1b ' +
       'b c d e b1 b2 a1 a2 a3 a4 a1a baz-mixed2 foobar-mixed3 foobar-mixed4').split(' ')
+
+    const sorted = sortItemSummariesForThread(summaries, summaries[0].id)
+    const sortedContents = sorted.map(_ => _.content)
+    assert.deepStrictEqual(sortedContents, expected)
+  })
+
+  it('orders another complex thread correctly', () => {
+    const summaries = [{
+      "id": "104179325085424124",
+      "accountId": "2",
+      "content": "this-is-my-thread-1"
+    }, {
+      "id": "104179325166234979",
+      "accountId": "2",
+      "replyId": "104179325085424124",
+      "content": "this-is-my-thread-2"
+    }, {
+      "id": "104179325240180153",
+      "accountId": "2",
+      "replyId": "104179325166234979",
+      "content": "this-is-my-thread-3"
+    }, {
+      "id": "104179325498778701",
+      "accountId": "2",
+      "replyId": "104179325240180153",
+      "content": "this-is-my-thread-4"
+    }, {
+      "id": "104179325543709477",
+      "accountId": "2",
+      "replyId": "104179325498778701",
+      "content": "this-is-my-thread-5"
+    }, {
+      "id": "104179325275861201",
+      "accountId": "1",
+      "replyId": "104179325240180153",
+      "content": "hey-i-am-replying-to-3"
+    }, {
+      "id": "104179325263377436",
+      "accountId": "3",
+      "replyId": "104179325085424124",
+      "content": "hey-i-am-replying-to-1"
+    }, {
+      "id": "104179325387035947",
+      "accountId": "3",
+      "replyId": "104179325085424124",
+      "content": "hey-check-this-reply"
+    }, {
+      "id": "104179325564606101",
+      "accountId": "1",
+      "replyId": "104179325085424124",
+      "content": "hey-i-am-replying-to-1-again"
+    }]
+
+    const expected = [
+      'this-is-my-thread-1',
+      'this-is-my-thread-2',
+      'this-is-my-thread-3',
+      'this-is-my-thread-4',
+      'this-is-my-thread-5',
+      'hey-i-am-replying-to-3',
+      'hey-i-am-replying-to-1',
+      'hey-check-this-reply',
+      'hey-i-am-replying-to-1-again'
+    ]
 
     const sorted = sortItemSummariesForThread(summaries, summaries[0].id)
     const sortedContents = sorted.map(_ => _.content)
