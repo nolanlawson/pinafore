@@ -121,3 +121,11 @@ export async function insertTimelineItems (instanceName, timeline, timelineItems
     return insertTimelineStatuses(instanceName, timeline, timelineItems)
   }
 }
+
+export async function insertStatus (instanceName, status) {
+  cacheStatus(status, instanceName)
+  const db = await getDatabase(instanceName)
+  await dbPromise(db, [STATUSES_STORE, ACCOUNTS_STORE], 'readwrite', ([statusesStore, accountsStore]) => {
+    storeStatus(statusesStore, accountsStore, status)
+  })
+}
