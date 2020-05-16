@@ -69,6 +69,18 @@
       Reduce motion in UI animations
     </label>
     <label class="setting-group">
+      <input type="checkbox" id="choice-always-show-focus-ring"
+             bind:checked="$alwaysShowFocusRing" on:change="onChange(event)">
+      Always show
+      <Tooltip
+        text="focus ring"
+        tooltipText={
+          "The focus ring is the outline showing the currently focused element. By default, it's only " +
+          "shown when using the keyboard (not mouse or touch), but you may choose to always show it."
+        }
+      />
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-disable-tap-on-status"
              bind:checked="$disableTapOnStatus" on:change="onChange(event)">
       Disable tappable area on entire toot
