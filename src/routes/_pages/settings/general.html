@@ -4,12 +4,12 @@
   <h2>Media</h2>
   <form class="ui-settings">
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-never-mark-media-sensitive"
              bind:checked="$neverMarkMediaAsSensitive" on:change="onChange(event)">
       Show sensitive media by default
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-use-blurhash"
               bind:checked="$ignoreBlurhash" on:change="onChange(event)">
       Show a plain gray color for sensitive media
     </label>
@@ -19,12 +19,12 @@
       Treat all media as sensitive
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-large-inline-media"
              bind:checked="$largeInlineMedia" on:change="onChange(event)">
       Show large inline images and videos
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-autoplay-gif"
              bind:checked="$autoplayGifs" on:change="onChange(event)">
       Autoplay GIFs
     </label>
@@ -33,12 +33,12 @@
   <h2>UI</h2>
   <form class="ui-settings">
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-disable-custom-scrollbars"
              bind:checked="$disableCustomScrollbars" on:change="onChange(event)">
       Disable custom scrollbars
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-disable-infinite-scroll"
              bind:checked="$disableInfiniteScroll" on:change="onChange(event)">
       Disable
         <Tooltip
@@ -50,12 +50,12 @@
         />
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-hide-cards"
              bind:checked="$hideCards" on:change="onChange(event)">
       Hide link preview cards
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-underline-links"
              bind:checked="$underlineLinks" on:change="onChange(event)">
       Underline links in toots and profiles
     </label>
@@ -64,12 +64,12 @@
   <h2>Accessibility</h2>
   <form class="ui-settings">
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-reduce-motion"
              bind:checked="$reduceMotion" on:change="onChange(event)">
       Reduce motion in UI animations
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-always-show-focus-ring"
              bind:checked="$alwaysShowFocusRing" on:change="onChange(event)">
       Always show
       <Tooltip
@@ -81,17 +81,17 @@
       />
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-disable-tap-on-status"
              bind:checked="$disableTapOnStatus" on:change="onChange(event)">
       Disable tappable area on entire toot
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-omit-emoji-in-display-names"
              bind:checked="$omitEmojiInDisplayNames" on:change="onChange(event)">
       Remove emoji from user display names
     </label>
     <label class="setting-group">
-      <input type="checkbox"
+      <input type="checkbox" id="choice-disable-long-aria-labels"
              bind:checked="$disableLongAriaLabels" on:change="onChange(event)">
       Use short article ARIA labels
     </label>
