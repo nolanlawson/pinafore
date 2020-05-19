@@ -39,14 +39,6 @@
     .js-focus-visible :focus:not([data-focus-visible-added]).focus-after::after {
       display: none;
     }
-
-    /* standard version */
-    :focus:not(:focus-visible) {
-      outline: none !important; /* important to win the specificity war */
-    }
-    :focus:not(:focus-visible).focus-after::after {
-      display: none;
-    }
   </style>
 
   <noscript>
