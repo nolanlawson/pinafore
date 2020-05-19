@@ -30,7 +30,8 @@ const JSON_TEMPLATE = {
     {
       src: '^/service-worker\\.js$',
       headers: {
-        'cache-control': 'public,max-age=0'
+        'cache-control': 'public,max-age=0',
+        'cross-origin-resource-policy': 'same-origin'
       }
     },
     {
@@ -43,13 +44,15 @@ const JSON_TEMPLATE = {
     {
       src: '^/client/.*\\.(js|css|map|LICENSE)$',
       headers: {
-        'cache-control': 'public,max-age=31536000,immutable'
+        'cache-control': 'public,max-age=31536000,immutable',
+        'cross-origin-resource-policy': 'same-origin'
       }
     },
     {
       src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$',
       headers: {
-        'cache-control': 'public,max-age=3600'
+        'cache-control': 'public,max-age=3600',
+        'cross-origin-resource-policy': 'same-origin'
       }
     }
   ]
@@ -82,7 +85,9 @@ const HTML_HEADERS = {
   'x-content-type-options': 'nosniff',
   'x-download-options': 'noopen',
   'x-frame-options': 'DENY',
-  'x-xss-protection': '1; mode=block'
+  'x-xss-protection': '1; mode=block',
+  'cross-origin-opener-policy': 'same-origin',
+  'cross-origin-embedder-policy': 'require-corp'
 }
 
 async function main () {
