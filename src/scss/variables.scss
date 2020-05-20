@@ -16,34 +16,44 @@
 
   //
   // Nav and .main-content offset. This is important for things like the sticky header (ComposeStickyButton.html)
-  // as well as deciding how to scroll to the nth item in a list (List.html).
   //
 
+  --nav-font-size: 1rem;
+  --nav-indicator-height: 1px;
+  --nav-border-bottom: 1px;
   --nav-icon-pad-v: 15px;
   --nav-icon-pad-h: 20px;
-  --nav-icon-width: 20px;
-  --nav-icon-height: 20px;
-  --main-content-pad-top: 42px;
-  --sticky-pad-top: 10px;
+  --nav-icon-size: 20px;
+
+  --nav-total-height: calc(
+    (var(--nav-icon-pad-v) * 2) +
+    var(--nav-icon-size) +
+    var(--nav-indicator-height) +
+    var(--nav-border-bottom)
+  );
+
+  --main-content-gap-top: 20px;
+  --main-content-pad-top: calc(
+    var(--nav-total-height) +
+    var(--main-content-gap-top)
+  );
+
+  --main-margin-bottom: 15px;
+  --main-border-size: 1px;
 
   @media (max-width: 991px) {
     --nav-icon-pad-v: 20px;
     --nav-icon-pad-h: 10px;
-    --nav-icon-width: 25px;
-    --nav-icon-height: 25px;
-    --main-content-pad-top: 52px;
+    --nav-icon-size: 25px;
   }
 
   @media (max-width: 767px) {
-    --main-content-pad-top: 62px;
-    --sticky-pad-top: 0px;
+    --main-content-gap-top: 0px;
   }
 
   @media (max-width: 240px) {
     --nav-icon-pad-v: 10px;
     --nav-icon-pad-h: 0px;
-    --main-content-pad-top: 42px;
-    --sticky-pad-top: 0px;
   }
 
   //

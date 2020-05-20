@@ -20,11 +20,10 @@
   import { listStore } from './listStore'
   import { getScrollContainer } from '../../_utils/scrollContainer'
   import { observe } from 'svelte-extras'
+  import { mark, stop } from '../../_utils/marks'
 
   function getScrollTopOffset () {
-    const style = getComputedStyle(document.documentElement)
-    return parseInt(style.getPropertyValue('--main-content-pad-top'), 10) +
-      parseInt(style.getPropertyValue('--status-pad-v'), 10)
+    return document.getElementById('main-nav').getBoundingClientRect().height
   }
 
   export default {
@@ -59,9 +58,12 @@
           const element = document.getElementById(`list-item-${scrollToItem}`)
           requestAnimationFrame(() => {
             console.log('scrolling element into view')
-            element.scrollIntoView(true)
+            mark('scrollToElement')
             const scrollTopOffset = getScrollTopOffset()
+            element.scrollIntoView(true)
+            console.log('scrollTopOffset', scrollTopOffset)
             getScrollContainer().scrollTop -= scrollTopOffset
+            stop('scrollToElement')
             this.fire('initialized')
           })
         } else {
