@@ -83,7 +83,7 @@
     "lodash-webpack-plugin": "^0.11.5",
     "mkdirp": "^1.0.3",
     "node-fetch": "^2.6.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "npm-run-all": "^4.1.5",
     "p-any": "^3.0.0",
     "page-lifecycle": "^0.1.2",
