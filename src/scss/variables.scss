@@ -18,9 +18,9 @@
   // Nav and .main-content offset. This is important for things like the sticky header (ComposeStickyButton.html)
   //
 
+  --nav-font-size: 16px; // TODO: should probably be em/rem
   --nav-indicator-height: 1px;
   --nav-border-bottom: 1px;
-
   --nav-icon-pad-v: 15px;
   --nav-icon-pad-h: 20px;
   --nav-icon-size: 20px;
@@ -38,8 +38,7 @@
     var(--main-content-gap-top)
   );
 
-  --main-bg-margin-top: 0;
-  --main-bg-margin-bottom: 15px;
+  --main-margin-bottom: 15px;
   --main-border-size: 1px;
 
   @media (max-width: 991px) {
@@ -49,9 +48,6 @@
   }
 
   @media (max-width: 767px) {
-    --main-bg-margin-top: 0;
-    --main-bg-margin-bottom: 15px;
-
     --main-content-gap-top: 0px;
   }
 
