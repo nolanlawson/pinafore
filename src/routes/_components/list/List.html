@@ -22,9 +22,7 @@
   import { observe } from 'svelte-extras'
 
   function getScrollTopOffset () {
-    const style = getComputedStyle(document.documentElement)
-    return parseInt(style.getPropertyValue('--main-content-pad-top'), 10) +
-      parseInt(style.getPropertyValue('--status-pad-v'), 10)
+    return document.getElementById('main-nav').getBoundingClientRect().height
   }
 
   export default {
@@ -61,6 +59,7 @@
             console.log('scrolling element into view')
             element.scrollIntoView(true)
             const scrollTopOffset = getScrollTopOffset()
+            console.log('scrollTopOffset', scrollTopOffset)
             getScrollContainer().scrollTop -= scrollTopOffset
             this.fire('initialized')
           })
