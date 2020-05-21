@@ -19,8 +19,8 @@
   //
 
   --nav-font-size: 1rem;
-  --nav-indicator-height: 1px;
-  --nav-border-bottom: 1px;
+  --nav-indicator-height: 2px;
+  --nav-border-bottom: 0px;
   --nav-icon-pad-v: 15px;
   --nav-icon-pad-h: 20px;
   --nav-icon-size: 20px;
@@ -45,6 +45,8 @@
     --nav-icon-pad-v: 20px;
     --nav-icon-pad-h: 10px;
     --nav-icon-size: 25px;
+    --nav-indicator-height: 4px;
+    --nav-border-bottom: 0px;
   }
 
   @media (max-width: 767px) {

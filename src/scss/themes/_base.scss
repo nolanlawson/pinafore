@@ -34,6 +34,8 @@
   --nav-a-selected-active-bg: #{lighten($main-theme-color, 17%)};
   --nav-svg-fill: #{$secondary-text-color};
   --nav-text-color: #{$secondary-text-color};
+  --nav-indicator-bg: #{rgba($secondary-text-color, 0.8)};
+  --nav-indicator-bg-hover: #{rgba($secondary-text-color, 0.85)};
 
   --nav-a-selected-border-hover: #{$secondary-text-color};
   --nav-a-selected-bg-hover: #{lighten($main-theme-color, 15%)};
