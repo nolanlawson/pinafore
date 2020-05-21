@@ -12,7 +12,9 @@
     />
     <span class="nav-link-label">{label}</span>
   </div>
-  <div class="nav-indicator" ref:indicator></div>
+  <div class="nav-indicator-wrapper">
+    <div class="nav-indicator" ref:indicator></div>
+  </div>
 </a>
 <style>
   .main-nav-link {
@@ -40,9 +42,15 @@
     background: var(--nav-a-selected-bg-hover);
   }
 
-  .nav-indicator {
+  .nav-indicator-wrapper {
     width: 100%;
     height: var(--nav-indicator-height);
+    background: var(--nav-a-border);
+    display: flex;
+  }
+
+  .nav-indicator {
+    flex: 1;
     background: var(--nav-a-border);
     transform-origin: left;
   }
@@ -56,12 +64,16 @@
     background: var(--nav-a-border-hover);
   }
 
+  .main-nav-link.selected .nav-indicator-wrapper {
+    background: var(--nav-a-border-hover);
+  }
+
   .main-nav-link.selected .nav-indicator {
-    background: var(--nav-a-selected-border);
+    background: var(--nav-indicator-bg);
   }
 
   .main-nav-link.selected:hover .nav-indicator {
-    background: var(--nav-a-selected-border-hover);
+    background: var(--nav-indicator-bg-hover);
   }
 
   .main-nav-link:hover {
