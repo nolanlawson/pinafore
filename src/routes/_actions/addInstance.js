@@ -8,6 +8,13 @@ import { updateCustomEmojiForInstance } from './emoji'
 import { database } from '../_database/database'
 import { DOMAIN_BLOCKS } from '../_static/blocks'
 
+const GENERIC_ERROR = `
+  Is this a valid Mastodon instance? Is a browser extension
+  blocking the request? Are you in private browsing mode?
+  If you believe this is a problem with your instance, please send
+  <a href="https://github.com/nolanlawson/pinafore/blob/master/docs/Admin-Guide.md"
+    target="_blank" rel="noopener">this link</a> to the administrator of your instance.`
+
 function createKnownError (message) {
   const err = new Error(message)
   err.knownError = true
@@ -59,10 +66,7 @@ export async function logInToInstance () {
   } catch (err) {
     console.error(err)
     const error = `${err.message || err.name}. ` +
-      (err.knownError ? '' : (navigator.onLine
-        ? `Is this a valid Mastodon instance? Is a browser extension
-           blocking the request? Are you in private browsing mode?`
-        : 'Are you offline?'))
+      (err.knownError ? '' : (navigator.onLine ? GENERIC_ERROR : 'Are you offline?'))
     const { instanceNameInSearch } = store.get()
     store.set({
       logInToInstanceError: error,
