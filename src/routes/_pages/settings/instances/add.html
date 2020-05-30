@@ -14,7 +14,7 @@
 
       {#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}
         <div class="form-error form-error-user-error" role="alert">
-          Error: {$logInToInstanceError}
+          Error: {@html $logInToInstanceError}
         </div>
       {/if}
 
