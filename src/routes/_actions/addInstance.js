@@ -1,5 +1,5 @@
 import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../_api/oauth'
-import { getInstanceInfo } from '../_api/instance'
+import { getOnlineMode } from '../_api/instance'
 import { goto } from '../../../__sapper__/client'
 import { DEFAULT_THEME, switchToTheme } from '../_utils/themeEngine'
 import { store } from '../_store/store'
@@ -37,7 +37,7 @@ async function redirectToOauth () {
   }
   const redirectUri = getRedirectUri()
   const registrationPromise = registerApplication(instanceNameInSearch, redirectUri)
-  const instanceInfo = await getInstanceInfo(instanceNameInSearch)
+  const instanceInfo = await getOnlineMode(instanceNameInSearch)
   await database.setInstanceInfo(instanceNameInSearch, instanceInfo) // cache for later
   const instanceData = await registrationPromise
   store.set({
