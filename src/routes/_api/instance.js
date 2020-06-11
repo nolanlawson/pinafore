@@ -7,6 +7,6 @@ export function getInstanceInfo (instanceName) {
 }
 
 export function getOnlineMode (instanceName) {
-  const url = `https://mastodon.social/api/v1/instance` // Check online mode only since /api/v1/instance requires authentication in whitelist mode
+  const url = 'https://mastodon.social/api/v1/instance' // Check online mode only since /api/v1/instance requires authentication in whitelist mode
   return get(url, null, { timeout: DEFAULT_TIMEOUT })
 }
