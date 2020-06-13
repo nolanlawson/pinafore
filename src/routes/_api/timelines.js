@@ -1,4 +1,4 @@
-import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
+import { getWithHeaders, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
 import { auth, basename } from './utils'
 
 function getTimelineUrlPath (timeline) {
@@ -69,10 +69,10 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
   url += '?' + paramsString(params)
 
   console.log('fetching url', url)
-  const items = await get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
+  const { json: items, headers } = await getWithHeaders(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 
   if (timeline === 'direct') {
     return items.map(item => item.last_status)
   }
-  return items
+  return { items, headers }
 }
