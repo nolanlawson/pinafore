@@ -30,7 +30,7 @@ async function throwErrorIfInvalidResponse (response) {
   }
   const json = await response.json()
   if (response.status >= 200 && response.status < 300) {
-    return json
+    return { json, headers: response.headers }
   }
   if (json && json.error) {
     throw new Error(response.status + ': ' + json.error)
@@ -74,6 +74,12 @@ export async function patch (url, body, headers, options) {
 }
 
 export async function get (url, headers, options) {
+  const { json } = await _fetch(url, makeFetchOptions('GET', headers, options), options)
+  return json
+}
+
+/** @returns {json, headers} */
+export async function getWithHeaders (url, headers, options) {
   return _fetch(url, makeFetchOptions('GET', headers, options), options)
 }
 
