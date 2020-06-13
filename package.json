@@ -116,6 +116,7 @@
     "assert": "^2.0.0",
     "eslint-plugin-html": "^6.0.0",
     "fake-indexeddb": "^3.0.0",
+    "http-link-header": "^1.0.2",
     "mocha": "^7.1.0",
     "now": "^18.0.0",
     "standard": "^14.3.1",

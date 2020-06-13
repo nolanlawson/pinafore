@@ -14,6 +14,7 @@ import uniqBy from 'lodash-es/uniqBy'
 import { addStatusesOrNotifications } from './addStatusOrNotification'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { sortItemSummariesForThread } from '../_utils/sortItemSummariesForThread'
+import LinkHeader from 'http-link-header'
 
 const byId = _ => _.id
 
@@ -90,12 +91,44 @@ async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelin
   if (timelineName.startsWith('status/')) { // special case - this is a list of descendents and ancestors
     return fetchThreadFromNetwork(instanceName, accessToken, timelineName)
   } else { // normal timeline
-    return getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, null, TIMELINE_BATCH_SIZE)
+    const { items } = await getTimeline(instanceName, accessToken, timelineName, lastTimelineItemId, null, TIMELINE_BATCH_SIZE)
+    return items
+  }
+}
+async function addPagedTimelineItems (instanceName, timelineName, items) {
+  console.log('addPagedTimelineItems, length:', items.length)
+  mark('addPagedTimelineItemSummaries')
+  const newSummaries = items.map(timelineItemToSummary)
+  addPagedTimelineItemSummaries(instanceName, timelineName, newSummaries)
+  stop('addPagedTimelineItemSummaries')
+}
+
+export async function addPagedTimelineItemSummaries (instanceName, timelineName, newSummaries) {
+  const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
+
+  const mergedSummaries = uniqBy(concat(oldSummaries, newSummaries), byId)
+
+  if (!isEqual(oldSummaries, mergedSummaries)) {
+    store.setForTimeline(instanceName, timelineName, { timelineItemSummaries: mergedSummaries })
   }
 }
 
-async function fetchTimelineItems (instanceName, accessToken, timelineName, lastTimelineItemId, online) {
+async function fetchPagedItems (instanceName, accessToken, timelineName) {
+  const { timelineNextPageId } = store.get()
+  console.log('saved timelineNextPageId', timelineNextPageId)
+  const { items, headers } = await getTimeline(instanceName, accessToken, timelineName, timelineNextPageId, null, TIMELINE_BATCH_SIZE)
+  const linkHeader = headers.get('Link')
+  const next = LinkHeader.parse(linkHeader).rel('next')[0]
+  const nextId = next && next.uri && (new URL(next.uri)).searchParams.get('max_id')
+  console.log('new timelineNextPageId', nextId)
+  store.setForTimeline(instanceName, timelineName, { timelineNextPageId: nextId })
+  await storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
+  await addPagedTimelineItems(instanceName, timelineName, items)
+}
+
+async function fetchTimelineItems (instanceName, accessToken, timelineName, online) {
   mark('fetchTimelineItems')
+  const { lastTimelineItemId } = store.get()
   let items
   let stale = false
   if (!online) {
@@ -146,12 +179,15 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
     currentTimeline,
     currentInstance,
     accessToken,
-    lastTimelineItemId,
     online
   } = store.get()
 
-  const { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, lastTimelineItemId, online)
-  addTimelineItems(currentInstance, currentTimeline, items, stale)
+  if (currentTimeline === 'favorites') {
+    await fetchPagedItems(currentInstance, accessToken, currentTimeline)
+  } else {
+    const { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, online)
+    addTimelineItems(currentInstance, currentTimeline, items, stale)
+  }
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
 

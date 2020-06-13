@@ -56,6 +56,7 @@ export function timelineComputations (store) {
   computeForTimeline(store, 'showHeader', false)
   computeForTimeline(store, 'shouldShowHeader', false)
   computeForTimeline(store, 'timelineItemSummariesAreStale', false)
+  computeForTimeline(store, 'timelineNextPageId', null)
 
   store.compute('currentTimelineType', ['currentTimeline'], currentTimeline => (
     currentTimeline && currentTimeline.split('/')[0])
