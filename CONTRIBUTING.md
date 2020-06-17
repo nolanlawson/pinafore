@@ -176,10 +176,10 @@ preprocessor.
 Highly modular, highly functional, lots of single-function files. Tends to help with tree-shaking and
 code-splitting, as well as avoiding circular dependencies.
 
-### Preact is loaded dynamically
+### emoji-picker-element is loaded as a third-party bundle
 
-This is a Svelte project, but `emoji-mart` is used for the emoji picker, and it's written in React. So we
-lazy-load the React-compatible Preact library when we load `emoji-mart`.
+`emoji-picker-element` uses Svelte 3, whereas we use Svelte 2. So it's just imported
+as a bundled custom element, not as a Svelte component.
 
 ### Some third-party code is bundled
 

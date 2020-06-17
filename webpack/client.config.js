@@ -47,26 +47,6 @@ module.exports = {
           }
         }
       },
-      {
-        test: /\.m?js$/,
-        include: /node_modules\/emoji-mart/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            plugins: [
-              [
-                'transform-react-remove-prop-types',
-                {
-                  removeImport: true,
-                  additionalLibraries: [
-                    '../../utils/shared-props'
-                  ]
-                }
-              ]
-            ]
-          }
-        }
-      },
       process.env.LEGACY && legacyBabel(),
       {
         test: /\.html$/,

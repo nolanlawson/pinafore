@@ -31,7 +31,7 @@ export async function setupCustomEmojiForInstance (instanceName) {
 }
 
 export function insertEmoji (realm, emoji) {
-  const emojiText = emoji.custom ? emoji.colons : emoji.native
+  const emojiText = emoji.unicode || `:${emoji.name}:`
   const { composeSelectionStart } = store.get()
   const idx = composeSelectionStart || 0
   const oldText = store.getComposeData(realm, 'text') || ''

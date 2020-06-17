@@ -4,6 +4,7 @@ import { notificationObservers } from './notificationObservers'
 import { autosuggestObservers } from './autosuggestObservers'
 import { notificationPermissionObservers } from './notificationPermissionObservers'
 import { customScrollbarObservers } from './customScrollbarObservers'
+import { customEmojiObservers } from './customEmojiObservers'
 import { cleanup } from './cleanup'
 
 // These observers can be lazy-loaded when the user is actually logged in.
@@ -15,5 +16,6 @@ export function loggedInObservers () {
   autosuggestObservers()
   notificationPermissionObservers()
   customScrollbarObservers()
+  customEmojiObservers()
   cleanup()
 }

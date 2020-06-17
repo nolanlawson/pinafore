@@ -3,7 +3,8 @@
   <AccountProfileMovedBanner {account} />
 {/if}
 <div class={className}
-     style="background-image: url({headerImage});">
+     style="background-image: url({headerImage});"
+     ref:accountProfile>
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-grid">
       <AccountProfileHeader {account} {relationship} {verifyCredentials} />
@@ -64,7 +65,7 @@
     .account-profile {
       padding-top: 100px;
     }
-    
+
     .account-profile-grid {
       display: grid;
       grid-template-areas: "avatar     name          follow"
@@ -115,8 +116,13 @@
   import AccountProfileFilters from './AccountProfileFilters.html'
   import { store } from '../../_store/store'
   import { classname } from '../../_utils/classname'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { addEmojiTooltips } from '../../_utils/addEmojiTooltips'
 
   export default {
+    oncreate () {
+      scheduleIdleTask(() => addEmojiTooltips(this.refs.accountProfile))
+    },
     store: () => store,
     computed: {
       headerImageIsMissing: ({ account }) => account.header.endsWith('missing.png'),

@@ -6,7 +6,7 @@ export function createAutosuggestAccessibleLabel (
   const selected = searchResults[selectedIndex]
   let label
   if (autosuggestType === 'emoji') {
-    label = `${selected.shortcode}`
+    label = `${selected.unicode || selected.name}`
   } else if (autosuggestType === 'hashtag') {
     label = `#${selected.name}`
   } else { // account

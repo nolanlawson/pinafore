@@ -1,8 +1,16 @@
 import {
-  composeButton, composeInput, composeLengthIndicator, emojiButton, emojiSearchInput, getComposeSelectionStart,
-  getNthStatusContent, getUrl,
-  homeNavButton, modalDialog,
-  notificationsNavButton, sleep,
+  composeButton,
+  composeInput,
+  composeLengthIndicator,
+  emojiButton,
+  emojiSearchInput,
+  firstEmojiInPicker,
+  getComposeSelectionStart,
+  getNthStatusContent,
+  getUrl,
+  homeNavButton,
+  notificationsNavButton,
+  sleep,
   times
 } from '../utils'
 import { loginAsFoobar } from '../roles'
@@ -63,7 +71,9 @@ test('shows compose limits for custom emoji', async t => {
     .typeText(composeInput, 'hello world ')
     .click(emojiButton)
     .typeText(emojiSearchInput, 'blobnom')
-    .pressKey('enter')
+  await sleep(1000)
+  await t
+    .click(firstEmojiInPicker)
     .expect(composeInput.value).eql('hello world :blobnom: ')
     .expect(composeLengthIndicator.innerText).eql('478')
 })
@@ -76,18 +86,24 @@ test('inserts custom emoji correctly', async t => {
     .expect(getComposeSelectionStart()).eql(6)
     .click(emojiButton)
     .typeText(emojiSearchInput, 'blobpats')
-    .pressKey('enter')
+  await sleep(1000)
+  await t
+    .click(firstEmojiInPicker)
     .expect(composeInput.value).eql('hello :blobpats: world')
     .selectText(composeInput, 0, 0)
     .expect(getComposeSelectionStart()).eql(0)
     .click(emojiButton)
     .typeText(emojiSearchInput, 'blobnom')
-    .pressKey('enter')
+  await sleep(1000)
+  await t
+    .click(firstEmojiInPicker)
     .expect(composeInput.value).eql(':blobnom: hello :blobpats: world')
     .typeText(composeInput, ' foobar ')
     .click(emojiButton)
     .typeText(emojiSearchInput, 'blobpeek')
-    .pressKey('enter')
+  await sleep(1000)
+  await t
+    .click(firstEmojiInPicker)
     .expect(composeInput.value).eql(':blobnom: hello :blobpats: world foobar :blobpeek: ')
 })
 
@@ -96,13 +112,13 @@ test('inserts emoji without typing anything', async t => {
   await sleep(1000)
   await t
     .click(emojiButton)
-    .click(modalDialog.find('button[aria-label="blobpats"]'))
-    .expect(composeInput.value).eql(':blobpats: ')
+    .click(firstEmojiInPicker)
+    .expect(composeInput.value).eql(':blobnom: ')
   await sleep(1000)
   await t
     .click(emojiButton)
-    .click(modalDialog.find('button[aria-label="blobpeek"]'))
-    .expect(composeInput.value).eql(':blobpeek: :blobpats: ')
+    .click(firstEmojiInPicker)
+    .expect(composeInput.value).eql(':blobnom: :blobnom: ')
 })
 
 test('inserts native emoji without typing anything', async t => {
@@ -115,7 +131,7 @@ test('inserts native emoji without typing anything', async t => {
     .typeText(emojiSearchInput, 'pineapple', { paste: true })
   await sleep(1000)
   await t
-    .pressKey('enter')
+    .click(firstEmojiInPicker)
     .expect(composeInput.value).eql('\ud83c\udf4d ')
     .click(emojiButton)
   await sleep(1000)
@@ -124,7 +140,7 @@ test('inserts native emoji without typing anything', async t => {
     .typeText(emojiSearchInput, 'elephant', { paste: true })
   await sleep(1000)
   await t
-    .pressKey('enter')
+    .click(firstEmojiInPicker)
     .expect(composeInput.value).eql('\ud83d\udc18 \ud83c\udf4d ')
 })
 

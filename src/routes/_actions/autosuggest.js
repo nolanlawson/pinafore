@@ -1,6 +1,6 @@
 import { store } from '../_store/store'
 
-const emojiMapper = emoji => `:${emoji.shortcode}:`
+const emojiMapper = emoji => emoji.unicode ? emoji.unicode : `:${emoji.shortcodes[0]}:`
 const hashtagMapper = hashtag => `#${hashtag.name}`
 const accountMapper = account => `@${account.acct}`
 

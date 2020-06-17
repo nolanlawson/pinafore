@@ -56,7 +56,6 @@ export const disableUnreadNotifications = $('#choice-disable-unread-notification
 export const leftRightChangesFocus = $('#choice-left-right-focus')
 export const disableHotkeys = $('#choice-disable-hotkeys')
 export const dialogOptionsOption = $('.modal-dialog button')
-export const emojiSearchInput = $('.emoji-mart-search input')
 export const confirmationDialogOKButton = $('.confirmation-dialog-form-flex button:nth-child(1)')
 export const confirmationDialogCancelButton = $('.confirmation-dialog-form-flex button:nth-child(2)')
 
@@ -118,6 +117,16 @@ export const reblogsCountElement = $('.status-reblogs').addCustomDOMProperties({
 export const sleep = timeout => new Promise(resolve => setTimeout(resolve, timeout))
 
 export const getUrl = exec(() => window.location.href)
+
+/* global emojiPickerSelector */
+const emojiPicker = $('emoji-picker')
+export const emojiSearchInput = $(() => {
+  return emojiPickerSelector().shadowRoot.querySelector('input')
+}, { dependencies: { emojiPickerSelector: emojiPicker } })
+
+export const firstEmojiInPicker = $(() => {
+  return emojiPickerSelector().shadowRoot.querySelector('.emoji-menu button')
+}, { dependencies: { emojiPickerSelector: emojiPicker } })
 
 export const getNumSyntheticListeners = exec(() => {
   return Object.keys(window.__eventBus.$e).map(key => window.__eventBus.listenerCount(key))
