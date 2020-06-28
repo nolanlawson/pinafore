@@ -51,7 +51,7 @@
             </span>
           {/if}
           <span class="compose-autosuggest-list-display-name compose-autosuggest-list-display-name-single">
-              {':' + item.shortcodes[0] + ':'}
+              {item.shortcodes.map(_ => `:${_}:`).join(' ')}
           </span>
         {/if}
       </div>
