@@ -33,8 +33,6 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
-      - postgresql-10
-      - postgresql-client-10
       - postgresql-contrib-10
       - protobuf-compiler
       - redis-server
