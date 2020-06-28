@@ -1,6 +1,5 @@
 import Database from 'emoji-picker-element/database'
 import { lifecycle } from './lifecycle'
-import { closeDatabase } from '../_database/databaseLifecycle'
 
 let database
 
