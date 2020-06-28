@@ -5,6 +5,7 @@ dist: bionic
 sudo: false
 services:
   - redis-server
+  - postgresql
 addons:
   chrome: stable
   postgresql: "10"
