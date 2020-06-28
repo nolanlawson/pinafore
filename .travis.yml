@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - "10"
 dist: bionic
+group: dev
 sudo: false
 services:
   - redis-server
@@ -32,7 +33,6 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
-      - postgresql-10
       - postgresql-client-10
       - postgresql-contrib-10
       - protobuf-compiler
