@@ -1016,6 +1016,11 @@
   resolved "https://registry.yarnpkg.com/@webcomponents/custom-elements/-/custom-elements-1.4.1.tgz#9803aaa2286a13a4ba200a7a2ea767871598eb60"
   integrity sha512-vNCS1+3sxJOpoIsBjUQiXjGLngakEAGOD5Ale+6ikg6OZG5qI5O39frm3raPhud/IwnF4vec5ags05YBsgzcuA==
 
+"@webcomponents/shadydom@^1.7.3":
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/@webcomponents/shadydom/-/shadydom-1.7.3.tgz#cbb6b17be619d4cae2dd97f5d9bf1448523fabb9"
+  integrity sha512-wAQCuHX6x3pJHRNGbgGhKgY1kZoXwXwWNLe0FdyUpCeyHqmGI8Q8wthyHroUQQIsmoKzM09iTlqO/1JmPWZERg==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -1211,6 +1216,11 @@ array-find@^1.0.0:
   resolved "https://registry.yarnpkg.com/array-find/-/array-find-1.0.0.tgz#6c8e286d11ed768327f8e62ecee87353ca3e78b8"
   integrity sha1-bI4obRHtdoMn+OYuzuhzU8o+eLg=
 
+array-flat-polyfill@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/array-flat-polyfill/-/array-flat-polyfill-1.0.1.tgz#1e3a4255be619dfbffbfd1d635c1cf357cd034e7"
+  integrity sha512-hfJmKupmQN0lwi0xG6FQ5U8Rd97RnIERplymOv/qpq8AoNKPPAnxJadjFA23FNWm88wykh9HmpLJUUwUtNU/iw==
+
 array-flatten@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
@@ -1247,10 +1257,10 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-arrow-key-navigation@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/arrow-key-navigation/-/arrow-key-navigation-1.1.0.tgz#c0f7021d006593e2e34e79aa1f032714877d3a76"
-  integrity sha512-u73yfJRmKye5eZiMNrAUKaBIRt47/1NM8WEtVAPjjMDab/PVn0sKIuapvCxl7C+tI9nH0QOl1Tc2YL2aO9n9Zw==
+arrow-key-navigation@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/arrow-key-navigation/-/arrow-key-navigation-1.2.0.tgz#edefc5f8b4fc4e384e7c20ddecf81db7ffc970a9"
+  integrity sha512-ch4WOwtjXHFisaa7ey2duW1Qf2VJxoa+8llbsbWDP6wsCzm0DGAi8upv6GDhf5xGvbxhKW3Co9SDEhXq34xCtg==
 
 asar@^2.0.1:
   version "2.1.0"
@@ -1854,11 +1864,6 @@ babel-plugin-transform-object-rest-spread@^6.22.0:
   dependencies:
     babel-plugin-syntax-object-rest-spread "^6.8.0"
     babel-runtime "^6.26.0"
-
-babel-plugin-transform-react-remove-prop-types@^0.4.24:
-  version "0.4.24"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-remove-prop-types/-/babel-plugin-transform-react-remove-prop-types-0.4.24.tgz#f2edaf9b4c6a5fbe5c1d678bfb531078c1555f3a"
-  integrity sha512-eqj0hVcJUR57/Ug2zE1Yswsw4LhuqqHhD+8v120T1cl3kjg76QwtyBrdIk4WVwK+lAhBJVYCd/v+4nc4y+8JsA==
 
 babel-plugin-transform-regenerator@^6.22.0:
   version "6.26.0"
@@ -2618,7 +2623,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-clean-css@4.2.x, clean-css@^4.2.3:
+clean-css@4.2.x:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.3.tgz#507b5de7d97b48ee53d84adb0160ff6216380f78"
   integrity sha512-VcMWDN54ZN/DS+g58HYL5/n4Zrqe8vHJpGA8KdgUXFU4fuP/aHNw8eld9SyEIyabIMJX/0RaY/fplOo5hYLSFA==
@@ -3398,11 +3403,10 @@ emittery@^0.4.1:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
   integrity sha512-r4eRSeStEGf6M5SKdrQhhLK5bOwOBxQhIE3YSTnZE3GpKiLfnnhE+tPtrJE79+eDJgm39BM6LSoI8SCx4HbwlQ==
 
-emoji-mart@nolanlawson/emoji-mart#8bb6fb6:
-  version "2.11.2"
-  resolved "https://codeload.github.com/nolanlawson/emoji-mart/tar.gz/8bb6fb6622355ca33b570041005e0297f95e8a30"
-  dependencies:
-    prop-types "^15.6.0"
+emoji-picker-element@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/emoji-picker-element/-/emoji-picker-element-1.0.0.tgz#e2682a4cc66eaf5e9aa7105a3847644b25e4e9cb"
+  integrity sha512-duHgKHfKR1sNQ+n+zwvzlpw1ErwwhucL2fa2OEl+0Ei12y6asXVKEH31DH4YNU8GNNmlpsxckNCwdoAjSkG85A==
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -3418,6 +3422,11 @@ emoji-regex@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.0.0.tgz#48a2309cc8a1d2e9d23bc6a67c39b63032e76ea4"
   integrity sha512-6p1NII1Vm62wni/VR/cUMauVQoxmLVb9csqQlvLz+hO2gk8U2UYDfXHQSUYIBKmZwAKz867IDqG7B+u0mj+M6w==
+
+emojibase-data@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/emojibase-data/-/emojibase-data-5.0.1.tgz#ce6fe36b4affd3578e0be8779211018a2fdae960"
+  integrity sha512-rYWlogJ2q5P78U8Xx1vhsXHcYKu1wFnr7+o6z9QHssZ1SsJLTCkJINZIPHRFWuDreAUK457TkqHpdOXElu0fzA==
 
 emojis-list@^3.0.0:
   version "3.0.0"
@@ -6499,11 +6508,6 @@ postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.23, postcss@^7.0.5, postcss@^7.0.
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-preact@^10.3.3:
-  version "10.3.4"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.3.4.tgz#e1542a4d3eba3e7a37f312a2c331231b97052024"
-  integrity sha512-wMgzs/RGYf0I1PZf8ZFJdyU/3kCcwepJyVYe+N9FGajyQWarMoPrPfrQajcG0psPj6ySYv2cSuLYFCihvV/Qrw==
-
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -6551,7 +6555,7 @@ promisify-event@^1.0.0:
   dependencies:
     pinkie-promise "^2.0.0"
 
-prop-types@^15.6.0, prop-types@^15.7.2:
+prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==

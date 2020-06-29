@@ -5,6 +5,7 @@
          aria-setsize={length}
          aria-label={ariaLabel}
          on:recalculateHeight
+         ref:article
 >
   {#if showHeader}
     <StatusHeader {...params} />
@@ -129,6 +130,7 @@
   import { absoluteDateFormatter } from '../../_utils/formatters'
   import { composeNewStatusMentioning } from '../../_actions/mention'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
+  import { addEmojiTooltips } from '../../_utils/addEmojiTooltips'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea', 'label'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -150,6 +152,7 @@
           this.set({ preloadHiddenContent: true })
         })
       }
+      scheduleIdleTask(() => addEmojiTooltips(this.refs.article))
     },
     components: {
       StatusSidebar,

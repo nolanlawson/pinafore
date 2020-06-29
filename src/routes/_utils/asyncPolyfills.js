@@ -21,3 +21,11 @@ export const importIntl = () => import(
 export const importFocusVisible = () => import(
   /* webpackChunkName: '$polyfill$-focus-visible' */ 'focus-visible'
 )
+
+export const importShadowDomPolyfill = () => import(
+  /* webpackChunkName: '$polyfill$-shadydom' */ '@webcomponents/shadydom'
+)
+
+export const importArrayFlat = () => import(
+  /* webpackChunkName: '$polyfill$-array-flat' */ 'array-flat-polyfill'
+)

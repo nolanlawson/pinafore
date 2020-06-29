@@ -4,7 +4,8 @@ import { mark, stop } from '../../_utils/marks'
 const MIN_PREFIX_LENGTH = 2
 // Technically mastodon accounts allow dots, but it would be weird to do an autosuggest search if it ends with a dot.
 // Also this is rare. https://github.com/tootsuite/mastodon/pull/6844
-const VALID_CHARS = '\\w'
+// However for emoji search we allow some extra things (e.g. :+1:, :white_heart:)
+const VALID_CHARS = '[\\w\\+_\\-:]'
 const PREFIXES = '(?:@|:|#)'
 const REGEX = new RegExp(`(?:\\s|^)(${PREFIXES}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
 

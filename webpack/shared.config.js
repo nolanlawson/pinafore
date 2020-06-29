@@ -36,7 +36,13 @@ const resolve = {
       '../../_components/SvgIcon.html': '../../_components/SvgIconLegacy.html',
       '../../../_components/SvgIcon.html': '../../../_components/SvgIconLegacy.html'
     } : {
+      // these polyfills are only needed in legacy mode
+      'array-flat-polyfill': 'lodash/noop',
+      'indexeddb-getall-shim': 'lodash/noop',
       intl: 'lodash/noop',
+      'intersection-observer': 'lodash/noop',
+      '@webcomponents/custom-elements': 'lodash/noop',
+      '@webcomponents/shadydom': 'lodash/noop',
       './routes/_thirdparty/regenerator-runtime/runtime.js': 'lodash/noop',
       '../_thirdparty/regenerator-runtime/runtime.js': 'lodash/noop'
     })

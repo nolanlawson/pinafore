@@ -1,7 +1,8 @@
 language: node_js
 node_js:
   - "10"
-dist: xenial
+dist: bionic
+group: dev
 sudo: false
 services:
   - redis-server
@@ -20,8 +21,7 @@ addons:
       - gcc
       - imagemagick
       - libffi-dev
-      - libgdbm-dev
-      - libgdbm-dev
+      - libgdbm5
       - libicu-dev
       - libidn11-dev
       - libncurses5-dev
@@ -33,13 +33,13 @@ addons:
       - libxslt1-dev
       - libyaml-dev
       - pkg-config
-      - postgresql-10
       - postgresql-client-10
       - postgresql-contrib-10
       - protobuf-compiler
       - redis-server
       - redis-tools
       - zlib1g-dev
+      - fonts-noto-color-emoji # required for emoji-picker-element + Chrome on Linux
 before_install:
   - psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s

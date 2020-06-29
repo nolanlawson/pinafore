@@ -2,10 +2,12 @@
 // around a Chrome bug with sticky positioning (https://github.com/nolanlawson/pinafore/issues/671)
 // Original: https://unpkg.com/a11y-dialog@4.0.1/a11y-dialog.js
 
-var FOCUSABLE_ELEMENTS = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabindex]:not([tabindex^="-"])']
-var TAB_KEY = 9
-var ESCAPE_KEY = 27
-var focusedBeforeDialog
+const FOCUSABLE_ELEMENTS = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabindex]:not([tabindex^="-"])']
+const FOCUSABLE_ELEMENTS_QUERY = FOCUSABLE_ELEMENTS.join(',')
+const TAB_KEY = 9
+const ESCAPE_KEY = 27
+const shadowRoots = []
+let focusedBeforeDialog
 
 /**
    * Define the constructor to instantiate a dialog
@@ -335,6 +337,17 @@ function setFocusToFirstItem (node) {
   }
 }
 
+function isAncestor (node, ancestor) {
+  let parent = node
+  while (parent) {
+    parent = parent.parentElement
+    if (parent === ancestor) {
+      return true
+    }
+  }
+  return false
+}
+
 /**
    * Get the focusable children of the given element
    *
@@ -342,8 +355,18 @@ function setFocusToFirstItem (node) {
    * @return {Array<Element>}
    */
 function getFocusableChildren (node) {
-  return $$(FOCUSABLE_ELEMENTS.join(','), node).filter(function (child) {
-    return !!(child.offsetWidth || child.offsetHeight || child.getClientRects().length)
+  const candidateFocusableChildren = $$(FOCUSABLE_ELEMENTS_QUERY, node)
+  for (const shadowRoot of shadowRoots) {
+    if (isAncestor(shadowRoot.getRootNode().host, node)) {
+      // TODO: technically we should figure out the host's position in the DOM
+      // and insert the children there, but this works for the emoji picker dialog well
+      // enough, and that's our only shadow root, so it's fine for now.
+      candidateFocusableChildren.push(...shadowRoot.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY))
+    }
+  }
+  return candidateFocusableChildren.filter(child => {
+    return !!(child.offsetWidth || child.offsetHeight || child.getClientRects().length) &&
+      child.tabIndex !== -1
   })
 }
 
@@ -355,7 +378,14 @@ function getFocusableChildren (node) {
    */
 function trapTabKey (node, event) {
   var focusableChildren = getFocusableChildren(node)
-  var focusedItemIndex = focusableChildren.indexOf(document.activeElement)
+  let activeElement = document.activeElement
+  for (const shadowRoot of shadowRoots) {
+    if (shadowRoot.getRootNode().host === activeElement) {
+      activeElement = shadowRoot.activeElement
+      break
+    }
+  }
+  var focusedItemIndex = focusableChildren.indexOf(activeElement)
 
   // If the SHIFT key is being pressed while tabbing (moving backwards) and
   // the currently focused item is the first one, move the focus to the last
@@ -389,4 +419,17 @@ function getSiblings (node) {
   return siblings
 }
 
-export { A11yDialog }
+function registerShadowRoot (shadowRoot) {
+  if (!shadowRoots.includes(shadowRoot)) {
+    shadowRoots.push(shadowRoot)
+  }
+}
+
+function unregisterShadowRoot (shadowRoot) {
+  const index = shadowRoots.indexOf(shadowRoot)
+  if (index !== -1) {
+    shadowRoots.splice(index, 1)
+  }
+}
+
+export { A11yDialog, registerShadowRoot, unregisterShadowRoot }

@@ -3,7 +3,7 @@
     class="compose-autosuggest-list"
     role="listbox"
 >
-  {#each items as item, i (item.shortcode || item.id || item.name)}
+  {#each items as item, i (item.shortcodes ? `emoji-${item.unicode || item.name}` : item.id ? `account-${item.id}` : `hashtag-${item.name}`)}
   <li id="compose-autosuggest-active-item-{realm}-{i}"
       class="compose-autosuggest-list-item {i === selected ? 'selected' : ''}"
       role="option"
@@ -36,14 +36,22 @@
           <span class="compose-autosuggest-list-display-name compose-autosuggest-list-display-name-single">
             {item.name}
           </span>
-        {:else}
-          <img src={$autoplayGifs ? item.url : item.static_url}
-               class="compose-autosuggest-list-item-icon"
-               alt=""
-               aria-hidden="true"
-          />
+        {:else} <!-- emoji -->
+          {#if item.url}
+            <!-- custom emoji -->
+            <img src={item.url}
+                 class="compose-autosuggest-list-item-icon"
+                 alt=""
+                 aria-hidden="true"
+            />
+          {:else}
+            <!-- native emoji -->
+            <span class="compose-autosuggest-list-item-icon compose-autosuggest-list-item-native-emoji">
+              {item.unicode}
+            </span>
+          {/if}
           <span class="compose-autosuggest-list-display-name compose-autosuggest-list-display-name-single">
-              {':' + item.shortcode + ':'}
+              {item.shortcodes.map(_ => `:${_}:`).join(' ')}
           </span>
         {/if}
       </div>
@@ -89,6 +97,14 @@
     object-fit: contain;
     fill: var(--deemphasized-text-color);
   }
+  .compose-autosuggest-list-item-native-emoji {
+    font-family: PinaforeEmoji;
+    font-size: 32px;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .compose-autosuggest-list-display-name {
     grid-area: display-name;
     font-size: 1.1em;
@@ -128,6 +144,9 @@
     :global(.compose-autosuggest-list-item-icon) {
       width: 24px;
       height: 24px;
+    }
+    .compose-autosuggest-list-item-native-emoji {
+      font-size: 18px;
     }
   }
 </style>
