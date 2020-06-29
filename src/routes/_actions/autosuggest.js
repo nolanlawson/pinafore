@@ -61,7 +61,7 @@ export function selectAutosuggestItem (item) {
   const endIndex = composeSelectionStart
   if (item.acct) {
     /* no await */ insertUsername(currentComposeRealm, item, startIndex, endIndex)
-  } else if (item.shortcode) {
+  } else if (item.shortcodes) {
     /* no await */ insertEmojiAtPosition(currentComposeRealm, item, startIndex, endIndex)
   } else { // hashtag
     /* no await */ insertHashtag(currentComposeRealm, item, startIndex, endIndex)

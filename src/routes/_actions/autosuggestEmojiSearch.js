@@ -21,7 +21,7 @@ async function searchEmoji (searchText) {
     if (results.length === SEARCH_RESULTS_LIMIT) {
       break
     }
-    if (testEmojiSupported(emoji.unicode)) {
+    if (emoji.url || testEmojiSupported(emoji.unicode)) { // emoji.url is a custom emoji
       results.push(emoji)
     }
   }
