@@ -39,7 +39,7 @@ test('content warnings are not posted if removed', async t => {
 test('content warnings can have emoji', async t => {
   await loginAsFoobar(t)
   await t
-    .typeText(composeInput, 'I can: :blobnom:')
+    .typeText(composeInput, 'I can: :blobnom: ')
     .click(contentWarningButton)
     .typeText(composeContentWarning, 'can you feel the :blobpats: tonight')
     .click(composeButton)
