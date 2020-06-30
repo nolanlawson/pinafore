@@ -99,7 +99,7 @@ async function addPagedTimelineItems (instanceName, timelineName, items) {
   console.log('addPagedTimelineItems, length:', items.length)
   mark('addPagedTimelineItemSummaries')
   const newSummaries = items.map(timelineItemToSummary)
-  addPagedTimelineItemSummaries(instanceName, timelineName, newSummaries)
+  await addPagedTimelineItemSummaries(instanceName, timelineName, newSummaries)
   stop('addPagedTimelineItemSummaries')
 }
 
@@ -183,10 +183,12 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
   } = store.get()
 
   if (currentTimeline === 'favorites') {
+    // Always fetch favorites from the network, we currently don't have a good way of storing
+    // these in IndexedDB because of "internal ID" system Mastodon uses to paginate these
     await fetchPagedItems(currentInstance, accessToken, currentTimeline)
   } else {
     const { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, online)
-    addTimelineItems(currentInstance, currentTimeline, items, stale)
+    await addTimelineItems(currentInstance, currentTimeline, items, stale)
   }
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
