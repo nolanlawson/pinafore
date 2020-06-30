@@ -13,8 +13,8 @@ export async function fillStreamingGap (instanceName, accessToken, timelineName,
 
   do {
     numRequests++
-    newTimelineItems = await getTimeline(instanceName, accessToken,
-      timelineName, maxId, firstTimelineItemId, TIMELINE_GAP_BATCH_SIZE)
+    newTimelineItems = (await getTimeline(instanceName, accessToken,
+      timelineName, maxId, firstTimelineItemId, TIMELINE_GAP_BATCH_SIZE)).items
     if (newTimelineItems.length) {
       addStatusesOrNotifications(instanceName, timelineName, newTimelineItems)
       maxId = newTimelineItems[newTimelineItems.length - 1].id
