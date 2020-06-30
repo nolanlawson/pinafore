@@ -14,7 +14,7 @@ import uniqBy from 'lodash-es/uniqBy'
 import { addStatusesOrNotifications } from './addStatusOrNotification'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { sortItemSummariesForThread } from '../_utils/sortItemSummariesForThread'
-import LinkHeader from 'http-link-header'
+import li from 'li'
 
 const byId = _ => _.id
 
@@ -99,7 +99,7 @@ async function addPagedTimelineItems (instanceName, timelineName, items) {
   console.log('addPagedTimelineItems, length:', items.length)
   mark('addPagedTimelineItemSummaries')
   const newSummaries = items.map(timelineItemToSummary)
-  addPagedTimelineItemSummaries(instanceName, timelineName, newSummaries)
+  await addPagedTimelineItemSummaries(instanceName, timelineName, newSummaries)
   stop('addPagedTimelineItemSummaries')
 }
 
@@ -118,8 +118,9 @@ async function fetchPagedItems (instanceName, accessToken, timelineName) {
   console.log('saved timelineNextPageId', timelineNextPageId)
   const { items, headers } = await getTimeline(instanceName, accessToken, timelineName, timelineNextPageId, null, TIMELINE_BATCH_SIZE)
   const linkHeader = headers.get('Link')
-  const next = LinkHeader.parse(linkHeader).rel('next')[0]
-  const nextId = next && next.uri && (new URL(next.uri)).searchParams.get('max_id')
+  const parsedLinkHeader = li.parse(linkHeader)
+  const nextUrl = parsedLinkHeader && parsedLinkHeader.next
+  const nextId = nextUrl && (new URL(nextUrl)).searchParams.get('max_id')
   console.log('new timelineNextPageId', nextId)
   store.setForTimeline(instanceName, timelineName, { timelineNextPageId: nextId })
   await storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
@@ -183,10 +184,12 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
   } = store.get()
 
   if (currentTimeline === 'favorites') {
+    // Always fetch favorites from the network, we currently don't have a good way of storing
+    // these in IndexedDB because of "internal ID" system Mastodon uses to paginate these
     await fetchPagedItems(currentInstance, accessToken, currentTimeline)
   } else {
     const { items, stale } = await fetchTimelineItems(currentInstance, accessToken, currentTimeline, online)
-    addTimelineItems(currentInstance, currentTimeline, items, stale)
+    await addTimelineItems(currentInstance, currentTimeline, items, stale)
   }
   stop('fetchTimelineItemsAndPossiblyFallBack')
 }
