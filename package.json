@@ -62,7 +62,7 @@
     "cross-env": "^7.0.0",
     "css-dedoupe": "^0.1.1",
     "css-loader": "^3.4.2",
-    "emoji-picker-element": "^1.0.0",
+    "emoji-picker-element": "^1.0.1",
     "emoji-regex": "^9.0.0",
     "emojibase-data": "^5.0.1",
     "encoding": "^0.1.12",
