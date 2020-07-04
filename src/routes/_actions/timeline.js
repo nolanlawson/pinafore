@@ -14,7 +14,7 @@ import uniqBy from 'lodash-es/uniqBy'
 import { addStatusesOrNotifications } from './addStatusOrNotification'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { sortItemSummariesForThread } from '../_utils/sortItemSummariesForThread'
-import LinkHeader from 'http-link-header'
+import li from 'li'
 
 const byId = _ => _.id
 
@@ -118,8 +118,9 @@ async function fetchPagedItems (instanceName, accessToken, timelineName) {
   console.log('saved timelineNextPageId', timelineNextPageId)
   const { items, headers } = await getTimeline(instanceName, accessToken, timelineName, timelineNextPageId, null, TIMELINE_BATCH_SIZE)
   const linkHeader = headers.get('Link')
-  const next = LinkHeader.parse(linkHeader).rel('next')[0]
-  const nextId = next && next.uri && (new URL(next.uri)).searchParams.get('max_id')
+  const parsedLinkHeader = li.parse(linkHeader)
+  const nextUrl = parsedLinkHeader && parsedLinkHeader.next
+  const nextId = nextUrl && (new URL(nextUrl)).searchParams.get('max_id')
   console.log('new timelineNextPageId', nextId)
   store.setForTimeline(instanceName, timelineName, { timelineNextPageId: nextId })
   await storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
