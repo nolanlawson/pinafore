@@ -4,7 +4,6 @@
   {title}
   shrinkWidthToFit={true}
   background="var(--main-bg)"
-  className="emoji-dialog"
 >
   <div class="emoji-container" ref:container ></div>
 </ModalDialog>
@@ -37,6 +36,15 @@
       --emoji-size: 1.125rem;
       --emoji-padding: 0.125rem;
       height: 240px;
+    }
+  }
+
+  @media (max-height: 450px) {
+    :global(emoji-picker) {
+      height: 100%;
+    }
+    .emoji-container {
+      height: 100%;
     }
   }
 </style>
