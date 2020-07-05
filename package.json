@@ -115,11 +115,11 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "eslint-plugin-html": "^6.0.0",
-    "fake-indexeddb": "^3.0.0",
-    "mocha": "^7.1.0",
+    "eslint-plugin-html": "^6.0.2",
+    "fake-indexeddb": "^3.1.0",
+    "mocha": "^8.0.1",
     "now": "^18.0.0",
-    "standard": "^14.3.1",
+    "standard": "^14.3.4",
     "testcafe": "^1.8.3"
   },
   "engines": {
