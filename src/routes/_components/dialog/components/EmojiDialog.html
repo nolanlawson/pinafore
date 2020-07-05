@@ -41,10 +41,7 @@
 
   @media (max-height: 450px) {
     :global(emoji-picker) {
-      height: 100%;
-    }
-    .emoji-container {
-      height: 100%;
+      height: calc(100vh - 75px); /* leave room for the dialog bar */
     }
   }
 </style>
