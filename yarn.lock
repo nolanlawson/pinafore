@@ -8050,15 +8050,15 @@ terser@^4.7.0, terser@^4.8.0:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-tesseract.js-core@^2.0.0, tesseract.js-core@^2.2.0:
+tesseract.js-core@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/tesseract.js-core/-/tesseract.js-core-2.2.0.tgz#6ef78051272a381969fac3e45a226e85022cffef"
   integrity sha512-a8L+OJTbUipBsEDsJhDPlnLB0TY1MkTZqw5dqUwmiDSjUzwvU7HWLg/2+WDRulKUi4LE+7PnHlaBlW0k+V0U0w==
 
-tesseract.js@^2.0.2:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-2.1.0.tgz#97a7c81e3e4e299ee5617745dd3569d7ebf9ef2f"
-  integrity sha512-Uh6sVkpDsuT0DetBxBNST77lP+C/KHYA3rdJfzbnQmPTmf5ms0LwJlVrCnEecCJb6wONgMXc4CzgaH9jCYg9KQ==
+tesseract.js@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-2.1.1.tgz#5c50fc95542ce8d834cb952bfb75a8fc85f1441d"
+  integrity sha512-utg0A8UzT1KwBvZf+UMGmM8LU6izeol6yIem0Z44+7Qqd/YWgRVQ99XOG18ApTOXX48lGE++PDwlcZYkv0ygRQ==
   dependencies:
     bmp-js "^0.1.0"
     file-type "^12.4.1"
