@@ -1,23 +1,16 @@
 # Using Alpine to keep the images smaller
-FROM alpine:latest
+# Change to using the official NodeJS Alpine container
+FROM node:alpine
 
 # Pushing all files into image
 WORKDIR /app
-ADD . /app
+COPY . /app
 
-# Install updates and NodeJS+Dependencies
-RUN apk add --update --no-cache --virtual build-dependencies git python build-base clang \
-# Install updates and NodeJS+Dependencies
- && apk add --update --no-cache nodejs npm \
-# Install yarn
- && npm i yarn -g \
 # Install Pinafore
- && yarn --production --pure-lockfile \
- && yarn build \
- && yarn cache clean \
- && rm -rf ./src \
-# Cleanup
- && apk del build-dependencies
+RUN yarn --production --pure-lockfile && \
+    yarn build && \
+    yarn cache clean && \
+    rm -rf ./src ./docs ./tests ./bin
 
 # Expose port 4002
 EXPOSE 4002
