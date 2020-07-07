@@ -1,7 +1,7 @@
 {
   "name": "pinafore",
   "description": "Alternative web client for Mastodon",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "scripts": {
     "lint": "standard && standard --plugin html 'src/routes/**/*.html'",
     "lint-fix": "standard --fix && standard --fix --plugin html 'src/routes/**/*.html'",
