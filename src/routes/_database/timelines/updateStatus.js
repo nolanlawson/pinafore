@@ -51,3 +51,9 @@ export async function setStatusMuted (instanceName, statusId, muted) {
     status.muted = muted
   })
 }
+
+export async function setStatusBookmarked (instanceName, statusId, bookmarked) {
+  return updateStatus(instanceName, statusId, status => {
+    status.bookmarked = bookmarked
+  })
+}

@@ -18,6 +18,7 @@ import { close } from '../helpers/closeDialog'
 import { oncreate } from '../helpers/onCreateDialog'
 import { setAccountBlocked } from '../../../_actions/block'
 import { setStatusPinnedOrUnpinned } from '../../../_actions/pin'
+import { setStatusBookmarkedOrUnbookmarked } from '../../../_actions/bookmark'
 import { setConversationMuted } from '../../../_actions/muteConversation'
 import { copyText } from '../../../_actions/copyText'
 import { deleteAndRedraft } from '../../../_actions/deleteAndRedraft'
@@ -82,10 +83,11 @@ export default {
     muteConversationLabel: ({ mutingConversation }) => mutingConversation ? 'Unmute conversation' : 'Mute conversation',
     muteConversationIcon: ({ mutingConversation }) => mutingConversation ? '#fa-volume-up' : '#fa-volume-off',
     isPublicOrUnlisted: ({ visibility }) => visibility === 'public' || visibility === 'unlisted',
+    bookmarkLabel: ({ status }) => status.bookmarked ? 'Unbookmark' : 'Bookmark',
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
       following, followRequested, pinLabel, isUser, visibility, mentionsUser, mutingConversation,
-      muteConversationLabel, muteConversationIcon, supportsWebShare, isPublicOrUnlisted
+      muteConversationLabel, muteConversationIcon, supportsWebShare, isPublicOrUnlisted, bookmarkLabel
     }) => ([
       isUser && {
         key: 'delete',
@@ -136,6 +138,11 @@ export default {
         key: 'copy',
         label: 'Copy link to toot',
         icon: '#fa-link'
+      },
+      {
+        key: 'bookmark',
+        label: bookmarkLabel,
+        icon: '#fa-bookmark'
       }
     ].filter(Boolean))
   },
@@ -169,6 +176,8 @@ export default {
           return this.onShare()
         case 'report':
           return this.onReport()
+        case 'bookmark':
+          return this.onBookmark()
       }
     },
     async onDeleteClicked () {
@@ -221,6 +230,11 @@ export default {
       const { status, account } = this.get()
       this.close()
       await reportStatusOrAccount(({ status, account }))
+    },
+    async onBookmark () {
+      const { status } = this.get()
+      this.close()
+      await setStatusBookmarkedOrUnbookmarked(status.id, !status.bookmarked)
     }
   }
 }

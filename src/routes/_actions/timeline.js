@@ -183,7 +183,7 @@ async function fetchTimelineItemsAndPossiblyFallBack () {
     online
   } = store.get()
 
-  if (currentTimeline === 'favorites') {
+  if (currentTimeline === 'favorites' || currentTimeline === 'bookmarks') {
     // Always fetch favorites from the network, we currently don't have a good way of storing
     // these in IndexedDB because of "internal ID" system Mastodon uses to paginate these
     await fetchPagedItems(currentInstance, accessToken, currentTimeline)
