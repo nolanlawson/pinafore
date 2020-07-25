@@ -15,6 +15,8 @@ function getTimelineUrlPath (timeline) {
       return 'favourites'
     case 'direct':
       return 'conversations'
+    case 'bookmarks':
+      return 'bookmarks'
   }
   if (timeline.startsWith('tag/')) {
     return 'timelines/tag'
@@ -23,6 +25,7 @@ function getTimelineUrlPath (timeline) {
   } else if (timeline.startsWith('list/')) {
     return 'timelines/list'
   }
+  throw new Error(`Invalid timeline type: ${timeline}`)
 }
 
 export async function getTimeline (instanceName, accessToken, timeline, maxId, since, limit) {

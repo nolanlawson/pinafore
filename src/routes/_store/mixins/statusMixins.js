@@ -3,7 +3,8 @@ function getStatusModifications (store, instanceName) {
   statusModifications[instanceName] = statusModifications[instanceName] || {
     favorites: {},
     reblogs: {},
-    pins: {}
+    pins: {},
+    bookmarks: {}
   }
   return statusModifications
 }
@@ -25,5 +26,9 @@ export function statusMixins (Store) {
 
   Store.prototype.setStatusPinned = function (instanceName, statusId, pinned) {
     setStatusModification(this, instanceName, statusId, 'pins', pinned)
+  }
+
+  Store.prototype.setStatusBookmarked = function (instanceName, statusId, bookmarked) {
+    setStatusModification(this, instanceName, statusId, 'bookmarks', bookmarked)
   }
 }

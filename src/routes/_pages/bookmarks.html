@@ -1,0 +1,32 @@
+{#if $isUserLoggedIn}
+  <TimelinePage timeline="bookmarks">
+    {#if $pinnedPage !== '/bookmarks'}
+      <DynamicPageBanner title="Bookmarks" icon="#fa-bookmark"/>
+    {/if}
+  </TimelinePage>
+{:else}
+  <HiddenFromSSR>
+    <FreeTextLayout>
+      <h1>Bookmarks</h1>
+
+      <p>Your bookmarks will appear here when logged in.</p>
+    </FreeTextLayout>
+  </HiddenFromSSR>
+{/if}
+<script>
+  import TimelinePage from '../_components/TimelinePage.html'
+  import FreeTextLayout from '../_components/FreeTextLayout.html'
+  import { store } from '../_store/store.js'
+  import HiddenFromSSR from '../_components/HiddenFromSSR'
+  import DynamicPageBanner from '../_components/DynamicPageBanner.html'
+
+  export default {
+    store: () => store,
+    components: {
+      TimelinePage,
+      FreeTextLayout,
+      HiddenFromSSR,
+      DynamicPageBanner
+    }
+  }
+</script>
