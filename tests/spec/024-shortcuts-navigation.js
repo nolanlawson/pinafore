@@ -60,6 +60,14 @@ test('Shortcut s goes to the search page', async t => {
     .expect(getUrl()).contains('/search')
 })
 
+test('Shortcut / goes to the search page', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .pressKey('/')
+    .expect(getUrl()).contains('/search')
+})
+
 test('Shortcut backspace goes back from favorites', async t => {
   await loginAsFoobar(t)
   await t
