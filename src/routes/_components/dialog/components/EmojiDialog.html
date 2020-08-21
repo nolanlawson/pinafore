@@ -5,7 +5,15 @@
   shrinkWidthToFit={true}
   background="var(--main-bg)"
 >
-  <div class="emoji-container" ref:container ></div>
+  <div class="emoji-container">
+    <emoji-picker
+      ref:picker
+      data-source="/emoji-all-en.json"
+      class={darkMode ? 'dark' : 'light'}
+      on:emoji-click="onEmojiSelected(event)"
+      on:keydown="onPickerKeydown(event)"
+    ></emoji-picker>
+  </div>
 </ModalDialog>
 <style>
   :global(emoji-picker) {
@@ -54,7 +62,7 @@
   import { close } from '../helpers/closeDialog'
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import { isDarkTheme } from '../../../_utils/isDarkTheme'
-  import Picker from 'emoji-picker-element/picker'
+  import 'emoji-picker-element/picker'
   import 'focus-visible'
   import { registerShadowRoot, unregisterShadowRoot } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
   import { doubleRAF } from '../../../_utils/doubleRAF'
@@ -97,23 +105,11 @@
   export default {
     async oncreate () {
       onCreateDialog.call(this)
-      const { customEmoji, darkMode } = this.get()
+      const { customEmoji } = this.get()
       const { enableGrayscale, isUserTouching } = this.store.get()
-      const picker = new Picker({
-        dataSource: '/emoji-all-en.json',
-        customEmoji
-      })
-      picker.classList.add(darkMode ? 'dark' : 'light')
-      picker.addEventListener('emoji-click', this.onEmojiSelected.bind(this))
-      // workaround for shortcuts -- see acceptShortcutEvent() in shortcuts.js
-      picker.addEventListener('keydown', event => {
-        if (event.key === 'Backspace' &&
-        picker.shadowRoot.activeElement &&
-        picker.shadowRoot.activeElement.tagName === 'INPUT') {
-          event.stopPropagation() // prevent our hotkeys from activating when pressing backspace in the input
-        }
-      })
-      // break into shadow DOM to fix grayscale in Welness grayscale mode
+      const { picker } = this.refs
+      picker.customEmoji = customEmoji
+      // break into shadow DOM to fix grayscale in Wellness grayscale mode
       if (enableGrayscale) {
         const style = document.createElement('style')
         style.textContent = '.emoji { filter: grayscale(100%); }'
@@ -124,7 +120,6 @@
       if (process.env.LEGACY && !HTMLElement.prototype.attachShadow.toString().includes('[native code]')) {
         applyShadowDomPolyfill(picker)
       }
-      this.refs.container.appendChild(picker)
       this.on('destroy', () => unregisterShadowRoot(picker.shadowRoot))
       if (!isUserTouching) { // auto focus the input on desktop
         doubleRAF(() => { // triple rAF because a11y tries to focus as well
@@ -151,6 +146,14 @@
         const { realm } = this.get()
         insertEmoji(realm, event.detail.emoji)
         this.close()
+      },
+      onPickerKeydown (event) {
+        // workaround for shortcuts -- see acceptShortcutEvent() in shortcuts.js
+        if (event.key === 'Backspace' &&
+          event.target.shadowRoot.activeElement &&
+          event.target.shadowRoot.activeElement.tagName === 'INPUT') {
+          event.stopPropagation() // prevent our hotkeys from activating when pressing backspace in the input
+        }
       }
     }
   }
