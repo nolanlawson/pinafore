@@ -1,0 +1,46 @@
+$main-theme-color: #1DA1F2;
+$main-bg-color: #1B2836;
+$body-bg-color: #141D26;
+$main-text-color: #EEEEEE;
+$secondary-text-color: $main-text-color;
+$anchor-color: $main-theme-color;
+$border-color: black;
+$toast-border: lighten($body-bg-color, 4%);
+$toast-bg: lighten($body-bg-color, 4%);
+$focus-outline: lighten($main-theme-color, 50%);
+$compose-background: darken($main-theme-color, 12%);
+
+@import "_base.scss";
+@import "_dark.scss";
+@import "_dark_scrollbars.scss";
+
+:root {
+  --nav-bg: #{$main-bg-color};
+  --nav-active-bg: #{$main-bg-color};
+  --nav-a-selected-bg: #{$main-bg-color};
+  --nav-a-selected-bg-hover: #{$main-bg-color};
+  --nav-a-bg-hover: #{$main-bg-color};
+  --nav-a-border: none;
+
+  --nav-indicator-height: 5px;
+  --nav-indicator-bg: #{$main-theme-color};
+  --nav-indicator-bg-hover: #{$main-theme-color};
+
+  --nav-text-color-hover: #{$main-theme-color};
+
+  --nav-svg-fill-hover: #{$main-theme-color};
+  --svg-fill: #{lighten($main-theme-color, 30%)};
+
+  --action-button-fill-color: #{lighten($main-theme-color, 30%)};
+  --action-button-fill-color-hover: #{$main-theme-color};
+  --action-button-fill-color-active: #{darken($main-theme-color, 40%)};
+  --action-button-fill-color-pressed: #{$main-theme-color};
+  --action-button-fill-color-pressed-hover: #{lighten($main-theme-color, 100%)};
+  --action-button-fill-color-pressed-active: #{lighten($main-theme-color, 80%)};
+}
+
+.nav-link-badge {
+  color: #{$main-text-color} !important;
+  border: 2px solid #{$main-bg-color} !important;
+  background: #{$main-theme-color} !important;
+}

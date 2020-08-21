@@ -100,6 +100,12 @@ const themes = [
     label: 'Dark Grayscale',
     dark: true,
     color: '#666'
+  },
+  {
+    name: 'dark-twitter',
+    label: 'Dark Twitter',
+    dark: true,
+    color: '#1B2836'
   }
 ]
 
