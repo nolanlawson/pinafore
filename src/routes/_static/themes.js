@@ -48,6 +48,12 @@ const themes = [
     color: '#999999'
   },
   {
+    name: 'light-twitter',
+    label: 'Light Twitter',
+    dark: false,
+    color: '#1DA1F2'
+  },
+  {
     name: 'ozark',
     label: 'Ozark',
     dark: true,
