@@ -12,14 +12,14 @@ $compose-background: darken($main-theme-color, 12%);
 
 @import "_base.scss";
 @import "_dark.scss";
+@import "_dark_navbar.scss";
 @import "_dark_scrollbars.scss";
 
 :root {
-  --nav-bg: #{$main-bg-color};
-  --nav-active-bg: #{$main-bg-color};
-  --nav-a-selected-bg: #{$main-bg-color};
-  --nav-a-selected-bg-hover: #{$main-bg-color};
-  --nav-a-bg-hover: #{$main-bg-color};
+  --nav-a-bg-hover: none;
+  --nav-a-selected-bg: none;
+  --nav-a-selected-bg-hover: none;
+
   --nav-a-border: none;
 
   --nav-indicator-height: 5px;
