@@ -10,7 +10,7 @@
     "sapper-dev": "cross-env NODE_ENV=development PORT=4002 sapper dev",
     "before-build": "run-s build-template-html build-assets",
     "build": "cross-env NODE_ENV=production run-s build-steps",
-    "build-steps": "run-s before-build sapper-export build-now-json",
+    "build-steps": "run-s before-build sapper-export build-vercel-json",
     "sapper-build": "sapper build",
     "start": "node server.js",
     "build-and-start": "run-s build start",
@@ -40,7 +40,7 @@
     "export-steps": "run-s before-build sapper-export print-export-info",
     "export": "cross-env NODE_ENV=production run-s export-steps",
     "now-build": "run-s export",
-    "build-now-json": "node -r esm ./bin/build-now-json.js"
+    "build-vercel-json": "node -r esm bin/build-vercel-json.js"
   },
   "dependencies": {
     "@babel/core": "^7.10.5",
@@ -118,9 +118,9 @@
     "eslint-plugin-html": "^6.0.2",
     "fake-indexeddb": "^3.1.1",
     "mocha": "^8.0.1",
-    "now": "^18.0.0",
     "standard": "^14.3.4",
-    "testcafe": "^1.8.3"
+    "testcafe": "^1.8.3",
+    "vercel": "^20.0.0"
   },
   "engines": {
     "node": ">= 8"
