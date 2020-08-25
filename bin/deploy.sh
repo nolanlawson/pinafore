@@ -5,7 +5,7 @@ set -x
 
 PATH="$PATH:./node_modules/.bin"
 
-# need to build to update now.json
+# need to build to update vercel.json
 yarn run build
 
 # set up robots.txt
@@ -16,26 +16,26 @@ else
 fi
 
 # if in travis, use the $NOW_TOKEN
-NOW_COMMAND="now --scope nolanlawson"
+DEPLOY_COMMAND="vercel --scope nolanlawson"
 if [[ ! -z "$NOW_TOKEN" ]]; then
-  NOW_COMMAND="$NOW_COMMAND --token $NOW_TOKEN"
+  DEPLOY_COMMAND="$DEPLOY_COMMAND --token $NOW_TOKEN"
 fi
 
 # launch
-URL=$($NOW_COMMAND --confirm -e SAPPER_TIMESTAMP=$(date +%s%3N))
+URL=$($DEPLOY_COMMAND --confirm -e SAPPER_TIMESTAMP=$(date +%s%3N))
 
 # fixes issues with now being unavailable immediately
 sleep 60
 
 # choose the right alias
-NOW_ALIAS="dev.pinafore.social"
+DEPLOY_ALIAS="dev.pinafore.social"
 
 if [[ "$DEPLOY_TYPE" == "prod" ]]; then
-  NOW_ALIAS="pinafore.social"
+  DEPLOY_ALIAS="pinafore.social"
 fi
 
 # alias
-$NOW_COMMAND alias "$URL" "$NOW_ALIAS"
+$DEPLOY_COMMAND alias "$URL" "$DEPLOY_ALIAS"
 
 # cleanup
-$NOW_COMMAND rm pinafore --safe --yes
+$DEPLOY_COMMAND rm pinafore --safe --yes

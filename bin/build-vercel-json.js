@@ -1,6 +1,6 @@
-// create the now.json file
+// create the vercel.json file
 // Unfortunately this has to be re-run periodically, as AFAICT there is no way to
-// give Zeit a script and tell them to run that, instead of using a static now.json file.
+// give Zeit a script and tell them to run that, instead of using a static vercel.json file.
 
 import path from 'path'
 import fs from 'fs'
@@ -119,7 +119,7 @@ async function main () {
     headers: cloneDeep(HTML_HEADERS)
   })
 
-  await writeFile(path.resolve(__dirname, '../now.json'), JSON.stringify(json, null, '  '), 'utf8')
+  await writeFile(path.resolve(__dirname, '../vercel.json'), JSON.stringify(json, null, '  '), 'utf8')
 }
 
 main().catch(err => {

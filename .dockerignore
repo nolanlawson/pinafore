@@ -17,4 +17,4 @@ tests
 /static/emoji-all-en.json
 /src/inline-script/checksum.js
 yarn-error.log
-/now.json
+/vercel.json

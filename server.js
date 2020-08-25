@@ -3,13 +3,13 @@
 const path = require('path')
 const express = require('express')
 const compression = require('compression')
-const { routes: nowRoutes } = require('./now.json')
+const { routes: rawRoutes } = require('./vercel.json')
 
 const { PORT = 4002 } = process.env
 const app = express()
 const exportDir = path.resolve(__dirname, '__sapper__/export')
 
-const routes = nowRoutes.map(({ src, headers, dest }) => ({
+const routes = rawRoutes.map(({ src, headers, dest }) => ({
   regex: new RegExp(src),
   headers,
   dest
