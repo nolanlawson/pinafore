@@ -12,36 +12,14 @@
       </h2>
 
       <PageList label="Timelines">
-        <PageListItem href="/local"
-                      label="Local Timeline"
-                      icon="#fa-users"
-                      pinnable="true"
-                      pinIndex={0}
-        />
-        <PageListItem href="/federated"
-                      label="Federated Timeline"
-                      icon="#fa-globe"
-                      pinnable="true"
-                      pinIndex={1}
-        />
-        <PageListItem href="/favorites"
-                      label="Favorites"
-                      icon="#fa-star"
-                      pinnable="true"
-                      pinIndex={2}
-        />
-        <PageListItem href="/direct"
-                      label="Direct messages"
-                      icon="#fa-envelope"
-                      pinnable="true"
-                      pinIndex={3}
-        />
-        <PageListItem href="/bookmarks"
-          label="Bookmarks"
-          icon="#fa-bookmark"
-          pinnable="true"
-          pinIndex={4}
-        />
+        {#each staticPinnables as staticPinnable, i}
+          <PageListItem href={staticPinnable.href}
+                        label={staticPinnable.label}
+                        icon={staticPinnable.icon}
+                        pinnable="true"
+                        pinIndex={i}
+          />
+        {/each}
       </PageList>
 
       {#if listsLength}
@@ -56,7 +34,7 @@
                           label={list.title}
                           icon="#fa-bars"
                           pinnable="true"
-                          pinIndex={4 + i}
+                          pinIndex={staticPinnablesLength + i}
             />
           {/each}
         </PageList>
@@ -152,13 +130,43 @@
       RadioGroup,
       FocusRestoration
     },
+    data: () => ({
+      staticPinnables: [
+        {
+          href: '/local',
+          label: 'Local Timeline',
+          icon: '#fa-users'
+        },
+        {
+          href: '/federated',
+          label: 'Federated Timeline',
+          icon: '#fa-globe'
+        },
+        {
+          href: '/favorites',
+          label: 'Favorites',
+          icon: '#fa-star'
+        },
+        {
+          href: '/direct',
+          label: 'Direct messages',
+          icon: '#fa-envelope'
+        },
+        {
+          href: '/bookmarks',
+          label: 'Bookmarks',
+          icon: '#fa-bookmark'
+        }
+      ]
+    }),
     computed: {
       isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked,
       followRequestsLabel: ({ $hasFollowRequests, $numberOfFollowRequests }) => (
         `Follow requests${$hasFollowRequests ? ` (${$numberOfFollowRequests})` : ''}`
       ),
       listsLength: ({ $lists }) => $lists ? $lists.length : 0,
-      numPinnable: ({ listsLength }) => listsLength + 4 // 4 because of local/federated/favs/direct
+      staticPinnablesLength: ({ staticPinnables }) => staticPinnables.length,
+      numPinnable: ({ listsLength, staticPinnablesLength }) => listsLength + staticPinnablesLength
     }
   }
 </script>
