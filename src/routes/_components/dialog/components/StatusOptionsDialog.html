@@ -124,6 +124,11 @@ export default {
         label: 'Delete and redraft',
         icon: '#fa-pencil'
       },
+      {
+        key: 'bookmark',
+        label: bookmarkLabel,
+        icon: '#fa-bookmark'
+      },
       !isUser && {
         key: 'report',
         label: 'Report toot',
@@ -138,11 +143,6 @@ export default {
         key: 'copy',
         label: 'Copy link to toot',
         icon: '#fa-link'
-      },
-      {
-        key: 'bookmark',
-        label: bookmarkLabel,
-        icon: '#fa-bookmark'
       }
     ].filter(Boolean))
   },
