@@ -37,10 +37,10 @@
                       pinIndex={3}
         />
         <PageListItem href="/bookmarks"
-          label="Bookmarks"
-          icon="#fa-bookmark"
-          pinnable="true"
-          pinIndex={4}
+                      label="Bookmarks"
+                      icon="#fa-bookmark"
+                      pinnable="true"
+                      pinIndex={4}
         />
       </PageList>
 
@@ -52,11 +52,12 @@
 
         <PageList label="Lists">
           {#each $lists as list, i}
+            <!-- pinIndex needs to be manually kept in sync with pinIndex above, 5 is number of items above -->
             <PageListItem href="/lists/{list.id}"
                           label={list.title}
                           icon="#fa-bars"
                           pinnable="true"
-                          pinIndex={4 + i}
+                          pinIndex={5 + i}
             />
           {/each}
         </PageList>
