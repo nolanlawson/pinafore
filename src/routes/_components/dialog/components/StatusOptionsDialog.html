@@ -104,11 +104,6 @@ export default {
         label: followLabel,
         icon: followIcon
       },
-      {
-        key: 'bookmark',
-        label: bookmarkLabel,
-        icon: '#fa-bookmark'
-      },
       !isUser && {
         key: 'block',
         label: blockLabel,
@@ -128,6 +123,11 @@ export default {
         key: 'redraft',
         label: 'Delete and redraft',
         icon: '#fa-pencil'
+      },
+      {
+        key: 'bookmark',
+        label: bookmarkLabel,
+        icon: '#fa-bookmark'
       },
       !isUser && {
         key: 'report',
