@@ -11,6 +11,7 @@ import { reblogStatus } from '../src/routes/_api/reblog'
 import { submitMedia } from './submitMedia'
 import { voteOnPoll } from '../src/routes/_api/polls'
 import { POLL_EXPIRY_DEFAULT } from '../src/routes/_static/polls'
+import { createList, getLists } from '../src/routes/_api/lists'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -81,4 +82,12 @@ export async function createPollAs (username, content, options, multiple, spoile
 
 export async function voteOnPollAs (username, pollId, choices) {
   return voteOnPoll(instanceName, users[username].accessToken, pollId, choices.map(_ => _.toString()))
+}
+
+export async function createListAs (username, title) {
+  return createList(instanceName, users[username].accessToken, title)
+}
+
+export async function getListsAs (username) {
+  return getLists(instanceName, users[username].accessToken)
 }

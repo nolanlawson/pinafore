@@ -165,6 +165,15 @@ export const getActiveElementAriaLabel = exec(() => (
   (document.activeElement && document.activeElement.getAttribute('aria-label')) || ''
 ))
 
+export const getCommunityPinRadioButtonIds = exec(() => {
+  const buttons = document.querySelectorAll('.page-list-item button')
+  const res = []
+  for (let i = 0; i < buttons.length; i++) {
+    res.push(buttons[i].id)
+  }
+  return res
+})
+
 export const getActiveElementInsideNthStatus = exec(() => {
   let element = document.activeElement
   while (element) {
