@@ -37,9 +37,11 @@
 
   export default {
     async oncreate () {
+      const { node } = this.refs
       try {
-        await decodeImage(this.refs.node)
+        await decodeImage(node)
       } catch (e) {
+        console.error('Image decode error', node && node.src, e)
         this.set({ error: true })
       }
     },
