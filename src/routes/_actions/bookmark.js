@@ -12,14 +12,14 @@ export async function setStatusBookmarkedOrUnbookmarked (statusId, bookmarked) {
       await unbookmarkStatus(currentInstance, accessToken, statusId)
     }
     if (bookmarked) {
-      toast.say('Bookmarked status')
+      toast.say('Bookmarked toot')
     } else {
-      toast.say('Unbookmarked status')
+      toast.say('Unbookmarked toot')
     }
     store.setStatusBookmarked(currentInstance, statusId, bookmarked)
     await database.setStatusBookmarked(currentInstance, statusId, bookmarked)
   } catch (e) {
     console.error(e)
-    toast.say(`Unable to ${bookmarked ? 'bookmark' : 'unbookmark'} status: ` + (e.message || ''))
+    toast.say(`Unable to ${bookmarked ? 'bookmark' : 'unbookmark'} toot: ` + (e.message || ''))
   }
 }
