@@ -64,25 +64,19 @@
         this.store.setForRealm({ items: newItems })
         stop('set items')
       })
-      this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+      this.store.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
         this.calculateListOffset()
         if (allVisibleItemsHaveHeight) {
           this.fire('initializedVisibleItems')
         }
       })
 
-      let observedOnce = false
-
       this.observe('distanceFromBottom', (distanceFromBottom) => {
-        if (!observedOnce) {
-          observedOnce = true // TODO: the first time is always 0... need better way to handle this
-          return
-        }
         if (distanceFromBottom >= 0 &&
             distanceFromBottom <= DISTANCE_FROM_BOTTOM_TO_FIRE) {
           this.fireScrollToBottom()
         }
-      })
+      }, { init: false })
 
       this.observe('scrollTop', (scrollTop) => {
         this.fire('scrollTopChanged', scrollTop)
@@ -107,8 +101,6 @@
         return $scrollHeight - $scrollTop - $offsetHeight
       },
       scrollTop: ({ $scrollTop }) => $scrollTop,
-      // TODO: bug in svelte store, shouldn't need to do this
-      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight,
       visibleItemKeys: ({ $visibleItems }) => ($visibleItems || []).map(_ => _.key)
     },
     methods: {
