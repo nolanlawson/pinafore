@@ -1,4 +1,3 @@
-import { observe } from 'svelte-extras'
 import { mark, stop } from '../../_utils/marks'
 import { RealmStore } from '../../_utils/RealmStore'
 import { reselect } from '../../_utils/reselect'
@@ -25,8 +24,6 @@ class VirtualListStore extends RealmStore {
     this.set({ realms })
   }
 }
-
-VirtualListStore.prototype.observe = observe
 
 const virtualListStore = new VirtualListStore()
 
