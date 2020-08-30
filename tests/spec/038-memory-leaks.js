@@ -10,7 +10,7 @@ import {
   homeNavButton, modalDialog, notificationsNavButton,
   scrollToStatus,
   scrollToTop,
-  settingsNavButton, sleep
+  settingsNavButton, sleep, getNumStoreListeners
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { installDomListenerListener, getNumDomListeners } from '../spyDomListeners'
@@ -27,14 +27,17 @@ async function runMemoryLeakTest (t, firstStep, secondStep) {
   await sleep(1000)
   const numSyntheticListeners = await getNumSyntheticListeners()
   const numDomListeners = await getNumDomListeners()
+  const numStoreListeners = await getNumStoreListeners()
   await t
     .expect(numSyntheticListeners).typeOf('number')
     .expect(numDomListeners).typeOf('number')
+    .expect(numStoreListeners).typeOf('number')
   await secondStep()
   await sleep(1000)
   await t
     .expect(getNumSyntheticListeners()).eql(numSyntheticListeners)
     .expect(getNumDomListeners()).eql(numDomListeners)
+    .expect(getNumStoreListeners()).eql(numStoreListeners)
 }
 
 async function goToSettings (t) {

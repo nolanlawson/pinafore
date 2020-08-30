@@ -135,6 +135,19 @@ export const getNumSyntheticListeners = exec(() => {
     .reduce((a, b) => a + b, 0)
 })
 
+export const getNumStoreListeners = exec(() => {
+  function getStoreHandlers (storeName) {
+    return window[storeName] ? window[storeName]._handlers : {}
+  }
+
+  const values = 'values' // prevent Babel from transpiling Object.values
+  return Object[values](getStoreHandlers('__store'))
+    .concat(Object[values](getStoreHandlers('__listStore')))
+    .concat(Object[values](getStoreHandlers('__virtualListStore')))
+    .map(arr => arr.length)
+    .reduce((a, b) => a + b, 0)
+})
+
 export const getMediaScrollLeft = exec(() => document.querySelector('.media-scroll').scrollLeft || 0)
 
 export const getActiveElementClassList = exec(() =>
