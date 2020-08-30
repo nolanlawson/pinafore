@@ -64,7 +64,9 @@
         this.store.setForRealm({ items: newItems })
         stop('set items')
       })
-      this.store.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
+      // We observe on the component rather than the store to avoid a leak in store listeners
+      // (Svelte automatically removes component listeners, but not store listeners)
+      this.observe('allVisibleItemsHaveHeight', allVisibleItemsHaveHeight => {
         this.calculateListOffset()
         if (allVisibleItemsHaveHeight) {
           this.fire('initializedVisibleItems')
@@ -101,6 +103,7 @@
         return $scrollHeight - $scrollTop - $offsetHeight
       },
       scrollTop: ({ $scrollTop }) => $scrollTop,
+      allVisibleItemsHaveHeight: ({ $allVisibleItemsHaveHeight }) => $allVisibleItemsHaveHeight,
       visibleItemKeys: ({ $visibleItems }) => ($visibleItems || []).map(_ => _.key)
     },
     methods: {
