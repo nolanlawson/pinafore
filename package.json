@@ -117,6 +117,8 @@
     "assert": "^2.0.0",
     "eslint-plugin-html": "^6.0.2",
     "fake-indexeddb": "^3.1.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.13",
     "mocha": "^8.0.1",
     "standard": "^14.3.4",
     "testcafe": "^1.9.1",
@@ -187,5 +189,14 @@
   "bugs": {
     "url": "https://github.com/nolanlawson/pinafore/issues"
   },
-  "homepage": "https://github.com/nolanlawson/pinafore#readme"
+  "homepage": "https://github.com/nolanlawson/pinafore#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "standard --fix",
+    "*.html": "standard --fix --plugin html 'src/routes/**/*.html'"
+  }
 }
