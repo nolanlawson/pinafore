@@ -5,7 +5,7 @@
 <Shortcut key="g n" on:pressed="goto('/notifications')"/>
 <Shortcut key="g c" on:pressed="goto('/community')"/>
 <Shortcut key="g d" on:pressed="goto('/direct')"/>
-<Shortcut key="s|/" on:pressed="goto('/search')"/>
+<Shortcut key="s|/" on:pressed="goToSearch()"/>
 <Shortcut key="h|?" on:pressed="showShortcutHelpDialog()"/>
 <Shortcut key="c|7" on:pressed="showComposeDialog()"/>
 {#if !$leftRightChangesFocus}
@@ -23,6 +23,7 @@
   import { importShowComposeDialog } from './dialog/asyncDialogs/importShowComposeDialog'
   import { store } from '../_store/store'
   import { normalizePageName } from '../_utils/normalizePageName'
+  import { goToSearch } from '../_actions/goToSearch'
 
   export default {
     store: () => store,
@@ -34,6 +35,7 @@
         console.log('nav shortcuts')
       },
       goto,
+      goToSearch,
       async showShortcutHelpDialog () {
         const showShortcutHelpDialog = await importShowShortcutHelpDialog()
         showShortcutHelpDialog()
