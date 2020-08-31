@@ -104,9 +104,9 @@ async function addPagedTimelineItems (instanceName, timelineName, items) {
 }
 
 export async function addPagedTimelineItemSummaries (instanceName, timelineName, newSummaries) {
-  const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
+  const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
 
-  const mergedSummaries = uniqBy(concat(oldSummaries, newSummaries), byId)
+  const mergedSummaries = uniqBy(concat(oldSummaries || [], newSummaries), byId)
 
   if (!isEqual(oldSummaries, mergedSummaries)) {
     store.setForTimeline(instanceName, timelineName, { timelineItemSummaries: mergedSummaries })
@@ -160,10 +160,10 @@ async function addTimelineItems (instanceName, timelineName, items, stale) {
 }
 
 export async function addTimelineItemSummaries (instanceName, timelineName, newSummaries, newStale) {
-  const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []
+  const oldSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries')
   const oldStale = store.getForTimeline(instanceName, timelineName, 'timelineItemSummariesAreStale')
 
-  const mergedSummaries = uniqBy(mergeArrays(oldSummaries, newSummaries, compareTimelineItemSummaries), byId)
+  const mergedSummaries = uniqBy(mergeArrays(oldSummaries || [], newSummaries, compareTimelineItemSummaries), byId)
 
   if (!isEqual(oldSummaries, mergedSummaries)) {
     store.setForTimeline(instanceName, timelineName, { timelineItemSummaries: mergedSummaries })

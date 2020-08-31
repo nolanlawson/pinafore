@@ -2,6 +2,7 @@ import { ClientFunction as exec, Selector as $ } from 'testcafe'
 import * as images from './images'
 import * as blobUtils from './blobUtils'
 
+export const timeline = $('[role=feed]')
 export const settingsButton = $('nav a[aria-label=Settings]')
 export const instanceInput = $('#instanceInput')
 export const modalDialog = $('.modal-dialog')
