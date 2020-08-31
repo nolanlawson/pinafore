@@ -1,6 +1,7 @@
 <form class="search-input-form" on:submit="onSubmit(event)">
   <div class="search-input-wrapper">
-    <input type="search"
+    <input id="the-search-input"
+           type="search"
            class="search-input"
            placeholder="Search"
            aria-label="Search input"
@@ -61,8 +62,17 @@
   import { doSearch } from '../../_actions/search'
   import SearchResults from './SearchResults.html'
   import SvgIcon from '../SvgIcon.html'
+  import { on } from '../../_utils/eventBus'
+  import { tryToFocusElement } from '../../_utils/tryToFocusElement'
 
   export default {
+    oncreate () {
+      on('focusSearchInput', this, () => this.focusSearchInput()) // user typed hotkey on this page itself
+      if (this.store.get().focusSearchInput) { // we arrived here from a goto via the search hotkey
+        this.store.set({ focusSearchInput: false }) // reset
+        this.focusSearchInput()
+      }
+    },
     store: () => store,
     components: {
       LoadingPage,
@@ -70,9 +80,13 @@
       SvgIcon
     },
     methods: {
-      async onSubmit (e) {
+      onSubmit (e) {
         e.preventDefault()
-        doSearch()
+        e.stopPropagation()
+        /* no await */ doSearch()
+      },
+      focusSearchInput () {
+        tryToFocusElement('the-search-input')
       }
     }
   }
