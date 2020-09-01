@@ -42,6 +42,13 @@ export function navComputations (store) {
           svg: '#fa-star',
           label: 'Favorites'
         }
+      } else if (pinnedPage === '/bookmarks') {
+        pinnedPageObject = {
+          name: 'bookmarks',
+          href: '/bookmarks',
+          svg: '#fa-bookmark',
+          label: 'Bookmarks'
+        }
       } else if (pinnedPage.startsWith('/lists/')) {
         pinnedPageObject = {
           name: `lists/${pinnedPage.split('/').slice(-1)[0]}`,
