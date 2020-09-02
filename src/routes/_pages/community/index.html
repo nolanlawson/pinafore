@@ -78,17 +78,15 @@
     <p>Community options appear here when logged in.</p>
   </FreeTextLayout>
 </HiddenFromSSR>
-  <div style="display: none">
-    <!-- TODO: this is just a hack so that `sapper export` knows to crawl these files -->
-    <a href="/muted">Muted</a>
-    <a href="/blocked">Blocked</a>
-    <a href="/pinned">Pinned</a>
-    <a href="/requests">Requests</a>
-    <a href="/share">Share</a>
-    <a href="/federated">Federated</a>
-    <a href="/favorites">Favorites</a>
-    <a href="/direct">Conversations</a>
-  </div>
+<div style="display: none">
+  <!-- TODO: this is just a hack so that `sapper export` knows to crawl these files -->
+  <!-- Note that these links have to be spread out or else they result in ECONNRESET errors during crawling -->
+  <!-- See also search.html -->
+  <a href="/requests">Requests</a>
+  <a href="/muted">Muted</a>
+  <a href="/blocked">Blocked</a>
+  <a href="/pinned">Pinned</a>
+</div>
 {/if}
 <style>
   .community-page {
