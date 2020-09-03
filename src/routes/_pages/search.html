@@ -10,6 +10,17 @@
     <p>You can search once logged in to an instance.</p>
   </FreeTextLayout>
 </HiddenFromSSR>
+<div style="display: none">
+  <!-- TODO: this is just a hack so that `sapper export` knows to crawl these files -->
+  <!-- Note that these links have to be spread out or else they result in ECONNRESET errors during crawling -->
+  <!-- See also community/index.html -->
+  <a href="/local">Local</a>
+  <a href="/federated">Federated</a>
+  <a href="/favorites">Favorites</a>
+  <a href="/direct">Conversations</a>
+  <a href="/bookmarks">Bookmarks</a>
+  <a href="/share">Share</a>
+</div>
 {/if}
 <style>
   .search-page {
