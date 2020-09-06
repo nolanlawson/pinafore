@@ -1,4 +1,3 @@
-import './routes/_thirdparty/regenerator-runtime/runtime.js'
 import {
   assets as __assets__,
   shell as __shell__,

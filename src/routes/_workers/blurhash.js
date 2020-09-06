@@ -1,4 +1,3 @@
-import '../_thirdparty/regenerator-runtime/runtime.js'
 import { decode as decodeBlurHash } from 'blurhash'
 import registerPromiseWorker from 'promise-worker/register'
 import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'

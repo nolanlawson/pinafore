@@ -68,40 +68,6 @@
   import { doubleRAF } from '../../../_utils/doubleRAF'
   import { convertCustomEmojiToEmojiPickerFormat } from '../../../_utils/convertCustomEmojiToEmojiPickerFormat'
 
-  function applyShadowDomPolyfill (picker) {
-    // polyfill for :host, plus other fixes mostly targeted at KaiOS.
-    // We could use shadycss, but it doesn't really work for our use case (has to be injected
-    // into the web component's connectedCallback directly).
-    const style = picker.shadowRoot.querySelector('style')
-    style.remove()
-    if (!document.getElementById('emoji-picker-style')) {
-      let css = style.textContent
-      css = css.replace(/:host\(([.*?])\)/g, 'emoji-picker$1')
-      css = css.replace(/:host/g, 'emoji-picker')
-      css = css.replace(/\*/g, 'emoji-picker *')
-      css = css.replace(/\b(button|input|input\[type=search\])\s*\{/, 'emoji-picker $1{')
-      // fixes for KaiOS style bugs
-      css += `
-            emoji-picker .emoji-menu {
-              grid-template-columns: repeat(8, 1fr);
-            }
-
-            @media screen and (max-width: 320px) {
-              emoji-picker .emoji-menu {
-                grid-template-columns: repeat(6, 1fr);
-              }
-              .emoji-container {
-                width: calc(100% - 20px);
-              }
-            }
-          `
-      const newStyle = document.createElement('style')
-      newStyle.id = 'emoji-picker-style'
-      newStyle.textContent = css
-      document.head.appendChild(newStyle)
-    }
-  }
-
   export default {
     async oncreate () {
       onCreateDialog.call(this)
@@ -117,9 +83,6 @@
       }
       applyFocusVisiblePolyfill(picker.shadowRoot)
       registerShadowRoot(picker.shadowRoot)
-      if (process.env.LEGACY && !HTMLElement.prototype.attachShadow.toString().includes('[native code]')) {
-        applyShadowDomPolyfill(picker)
-      }
       this.on('destroy', () => unregisterShadowRoot(picker.shadowRoot))
       if (!isUserTouching) { // auto focus the input on desktop
         doubleRAF(() => { // triple rAF because a11y tries to focus as well

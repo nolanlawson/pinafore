@@ -20,24 +20,21 @@
     max={mediaAltCharLimit}
     style="width: 100%; text-align: right;"
   />
-  <!-- WASM is unlikely to work on older browsers and Tesseract.js is a big dependency -->
-  {#if !legacy}
-    <button class="extract-text-button" type="button"
-            on:click="onClick()"
-            disabled={extracting}
-            aria-label={extractButtonLabel}
-    >
-      <SvgIcon href="{extracting ? '#fa-spinner' : '#fa-magic'}"
-               className="extract-text-svg {extracting ? 'spin' : ''}"
-      />
-      <span>{extractButtonText}</span>
-    </button>
-    <LengthGauge
-      length={extractionProgress}
-      overLimit={false}
-      max={100}
+  <button class="extract-text-button" type="button"
+          on:click="onClick()"
+          disabled={extracting}
+          aria-label={extractButtonLabel}
+  >
+    <SvgIcon href="{extracting ? '#fa-spinner' : '#fa-magic'}"
+             className="extract-text-svg {extracting ? 'spin' : ''}"
     />
-  {/if}
+    <span>{extractButtonText}</span>
+  </button>
+  <LengthGauge
+    length={extractionProgress}
+    overLimit={false}
+    max={100}
+  />
 </div>
 <style>
   .media-alt-editor {
@@ -128,8 +125,7 @@
       mediaAltCharLimit: MEDIA_ALT_CHAR_LIMIT,
       extracting: false,
       className: '',
-      extractionProgress: 0,
-      legacy: process.env.LEGACY
+      extractionProgress: 0
     }),
     computed: {
       length: ({ rawText }) => length(rawText || ''),
