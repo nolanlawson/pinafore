@@ -27,7 +27,6 @@ const resolve = {
     'react-dom': 'preact/compat/dist/compat.module.js',
     ...(process.env.LEGACY ? {
       '../_utils/tesseractWorker.js': 'lodash/noop',
-      'emoji-mart/dist-modern/components/picker/nimble-picker': 'emoji-mart/dist-es/components/picker/nimble-picker',
       'emoji-regex/es2015/text': 'emoji-regex/text',
       'page-lifecycle/dist/lifecycle.mjs': 'page-lifecycle/dist/lifecycle.es5.js',
       './SvgIcon.html': './SvgIconLegacy.html',
@@ -42,7 +41,6 @@ const resolve = {
       intl: 'lodash/noop',
       'intersection-observer': 'lodash/noop',
       '@webcomponents/custom-elements': 'lodash/noop',
-      '@webcomponents/shadydom': 'lodash/noop',
       './routes/_thirdparty/regenerator-runtime/runtime.js': 'lodash/noop',
       '../_thirdparty/regenerator-runtime/runtime.js': 'lodash/noop'
     })

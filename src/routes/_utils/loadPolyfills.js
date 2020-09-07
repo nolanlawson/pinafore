@@ -4,8 +4,7 @@ import {
   importIndexedDBGetAllShim,
   importIntersectionObserver,
   importIntl,
-  importRequestIdleCallback,
-  importShadowDomPolyfill
+  importRequestIdleCallback
 } from './asyncPolyfills'
 
 export function loadPolyfills () {
@@ -16,7 +15,6 @@ export function loadPolyfills () {
     process.env.LEGACY && !IDBObjectStore.prototype.getAll && importIndexedDBGetAllShim(),
     process.env.LEGACY && typeof IntersectionObserver === 'undefined' && importIntersectionObserver(),
     process.env.LEGACY && typeof Intl === 'undefined' && importIntl(),
-    process.env.LEGACY && typeof customElements === 'undefined' && importCustomElementsPolyfill(),
-    process.env.LEGACY && !HTMLElement.prototype.attachShadow && importShadowDomPolyfill()
+    process.env.LEGACY && typeof customElements === 'undefined' && importCustomElementsPolyfill()
   ])
 }

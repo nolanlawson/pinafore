@@ -1,11 +1,13 @@
 <div class="compose-box-toolbar">
   <div class="compose-box-toolbar-items">
-    <IconButton
-      className="compose-toolbar-button"
-      label="Insert emoji"
-      href="#fa-smile"
-      on:click="onEmojiClick()"
-    />
+    {#if showEmoji}
+      <IconButton
+        className="compose-toolbar-button"
+        label="Insert emoji"
+        href="#fa-smile"
+        on:click="onEmojiClick()"
+      />
+    {/if}
     <IconButton
       className="compose-toolbar-button"
       svgClassName={$uploadingMedia ? 'spin' : ''}
@@ -85,7 +87,8 @@
       IconButton
     },
     data: () => ({
-      mediaAccept
+      mediaAccept,
+      showEmoji: !!HTMLElement.prototype.attachShadow // emoji-picker-element won't work without shadow DOM
     }),
     store: () => store,
     methods: {

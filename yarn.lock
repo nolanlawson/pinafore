@@ -1109,11 +1109,6 @@
   resolved "https://registry.yarnpkg.com/@webcomponents/custom-elements/-/custom-elements-1.4.1.tgz#9803aaa2286a13a4ba200a7a2ea767871598eb60"
   integrity sha512-vNCS1+3sxJOpoIsBjUQiXjGLngakEAGOD5Ale+6ikg6OZG5qI5O39frm3raPhud/IwnF4vec5ags05YBsgzcuA==
 
-"@webcomponents/shadydom@^1.7.3":
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/@webcomponents/shadydom/-/shadydom-1.7.3.tgz#cbb6b17be619d4cae2dd97f5d9bf1448523fabb9"
-  integrity sha512-wAQCuHX6x3pJHRNGbgGhKgY1kZoXwXwWNLe0FdyUpCeyHqmGI8Q8wthyHroUQQIsmoKzM09iTlqO/1JmPWZERg==
-
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -7839,7 +7834,7 @@ schema-utils@^2.6.5, schema-utils@^2.6.6:
     ajv "^6.12.2"
     ajv-keywords "^3.4.1"
 
-schema-utils@^2.7.1:
+schema-utils@^2.7.0, schema-utils@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.7.1.tgz#1ca4f32d1b24c590c203b8e7a50bf0ea4cd394d7"
   integrity sha512-SHiNtMOUGWBQJwzISiVYKu82GiV4QYGePp3odlY1tuKO7gPtphAT5R/py0fA6xtbgLL/RvtJZnU9b8s0F1q0Xg==
