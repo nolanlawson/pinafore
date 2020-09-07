@@ -29,7 +29,7 @@ module.exports = {
         use: {
           loader: 'worker-loader',
           options: {
-            name: dev ? '[hash]/blurhash.[name].[ext]' : 'blurhash.[contenthash].[name].[ext]'
+            filename: dev ? '[hash]/blurhash.[name].js' : 'blurhash.[contenthash].[name].js'
           }
         }
       },

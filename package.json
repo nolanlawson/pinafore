@@ -110,7 +110,7 @@
     "tiny-queue": "^0.2.1",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",
-    "worker-loader": "^2.0.0"
+    "worker-loader": "^3.0.2"
   },
   "devDependencies": {
     "assert": "^2.0.0",
