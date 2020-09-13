@@ -54,7 +54,6 @@
   }
 </style>
 <script>
-  /* global applyFocusVisiblePolyfill */
   import ModalDialog from './ModalDialog.html'
   import { store } from '../../../_store/store'
   import { insertEmoji } from '../../../_actions/emoji'
@@ -63,10 +62,11 @@
   import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
   import { isDarkTheme } from '../../../_utils/isDarkTheme'
   import 'emoji-picker-element/picker'
-  import 'focus-visible'
   import { registerShadowRoot, unregisterShadowRoot } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
   import { doubleRAF } from '../../../_utils/doubleRAF'
   import { convertCustomEmojiToEmojiPickerFormat } from '../../../_utils/convertCustomEmojiToEmojiPickerFormat'
+  import { supportsFocusVisible } from '../../../_utils/supportsFocusVisible'
+  import { importFocusVisible } from '../../../_utils/asyncPolyfills'
 
   export default {
     async oncreate () {
@@ -81,7 +81,6 @@
         style.textContent = '.emoji { filter: grayscale(100%); }'
         picker.shadowRoot.appendChild(style)
       }
-      applyFocusVisiblePolyfill(picker.shadowRoot)
       registerShadowRoot(picker.shadowRoot)
       this.on('destroy', () => unregisterShadowRoot(picker.shadowRoot))
       if (!isUserTouching) { // auto focus the input on desktop
@@ -90,6 +89,11 @@
             picker.shadowRoot.querySelector('input').focus()
           })
         })
+      }
+      if (!supportsFocusVisible()) {
+        await importFocusVisible()
+        /* global applyFocusVisiblePolyfill */
+        applyFocusVisiblePolyfill(picker.shadowRoot)
       }
     },
     components: {
