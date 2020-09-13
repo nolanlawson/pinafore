@@ -53,7 +53,7 @@
     "compression": "^1.7.4",
     "cross-env": "^7.0.2",
     "css-dedoupe": "^0.1.1",
-    "emoji-picker-element": "^1.1.0",
+    "emoji-picker-element": "^1.2.0",
     "emoji-regex": "^9.0.0",
     "emojibase-data": "^5.1.1",
     "encoding": "^0.1.13",
