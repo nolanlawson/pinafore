@@ -72,15 +72,9 @@
     async oncreate () {
       onCreateDialog.call(this)
       const { customEmoji } = this.get()
-      const { enableGrayscale, isUserTouching } = this.store.get()
+      const { isUserTouching } = this.store.get()
       const { picker } = this.refs
       picker.customEmoji = customEmoji
-      // break into shadow DOM to fix grayscale in Wellness grayscale mode
-      if (enableGrayscale) {
-        const style = document.createElement('style')
-        style.textContent = '.emoji { filter: grayscale(100%); }'
-        picker.shadowRoot.appendChild(style)
-      }
       applyFocusVisiblePolyfill(picker.shadowRoot)
       registerShadowRoot(picker.shadowRoot)
       this.on('destroy', () => unregisterShadowRoot(picker.shadowRoot))
