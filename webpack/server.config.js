@@ -15,6 +15,7 @@ const NOOP_MODULES = [
 ]
 
 const serverResolve = JSON.parse(JSON.stringify(resolve))
+serverResolve.alias = serverResolve.alias || {}
 NOOP_MODULES.forEach(mod => {
   serverResolve.alias[mod] = 'lodash-es/noop'
 })
@@ -52,8 +53,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
-      'process.env.ALL_SVGS': JSON.stringify(allSvgs),
-      'process.env.LEGACY': !!process.env.LEGACY
+      'process.env.ALL_SVGS': JSON.stringify(allSvgs)
     })
   ]
 }

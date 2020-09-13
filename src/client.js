@@ -1,4 +1,3 @@
-import './routes/_thirdparty/regenerator-runtime/runtime.js'
 import * as sapper from '../__sapper__/client.js'
 import './routes/_utils/serviceWorkerClient'
 import './routes/_utils/historyEvents'

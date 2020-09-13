@@ -138,12 +138,6 @@ updating the `fixtures/` should make that a no-op.
 There are also some unit tests that run in Node using Mocha. You can find them in `tests/unit` and
 run them using `yarn run test-unit`.
 
-## Legacy build
-
-Pinafore also offers a "legacy" build designed for older browsers. To build this version, use:
-
-    LEGACY=1 yarn build
-
 ## Debug build
 
 To disable minification in a production build (for debugging purposes), you can run:

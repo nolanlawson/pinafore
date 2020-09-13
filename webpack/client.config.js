@@ -4,7 +4,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
-const legacyBabel = require('./legacyBabel.config')
 const { mode, dev, resolve, inlineSvgs, allSvgs } = require('./shared.config')
 
 const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
@@ -47,7 +46,6 @@ module.exports = {
           }
         }
       },
-      process.env.LEGACY && legacyBabel(),
       {
         test: /\.html$/,
         use: {
@@ -87,8 +85,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
       'process.env.ALL_SVGS': JSON.stringify(allSvgs),
-      'process.env.URL_REGEX': urlRegex.toString(),
-      'process.env.LEGACY': !!process.env.LEGACY
+      'process.env.URL_REGEX': urlRegex.toString()
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs
