@@ -1,12 +1,11 @@
-const svgs = require('../bin/svgs')
-const fs = require('fs')
-const path = require('path')
-const $ = require('cheerio')
+import svgs from '../bin/svgs'
+import fs from 'fs'
+import $ from 'cheerio'
 
 const inlineSvgs = svgs.filter(_ => _.inline).map(_ => `#${_.id}`)
 const allSvgs = {}
-const $inlineHtml = $(fs.readFileSync(path.join(__dirname, '../src/template.html'), 'utf8'))
-const $externalSvgs = $(fs.readFileSync(path.join(__dirname, '../static/icons.svg'), 'utf8'))
+const $inlineHtml = $(fs.readFileSync('./src/template.html', 'utf8'))
+const $externalSvgs = $(fs.readFileSync('./static/icons.svg', 'utf8'))
 svgs.forEach(_ => {
   const $inlineSvg = $inlineHtml.find(`#${_.id}`)
   const $svg = $inlineSvg.length ? $inlineSvg : $externalSvgs.find(`#${_.id}`)
@@ -19,15 +18,9 @@ svgs.forEach(_ => {
 const mode = process.env.NODE_ENV || 'production'
 const dev = mode === 'development'
 
-const resolve = {
-  extensions: ['.js', '.json', '.html'],
-  mainFields: ['svelte', 'module', 'browser', 'main']
-}
-
-module.exports = {
+export {
   mode,
   dev,
-  resolve,
   inlineSvgs,
   allSvgs
 }

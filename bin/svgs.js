@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   { id: 'pinafore-logo', src: 'src/static/sailboat.svg', inline: true },
   { id: 'fa-bell', src: 'src/thirdparty/font-awesome-svg-png/white/svg/bell.svg', inline: true },
   { id: 'fa-users', src: 'src/thirdparty/font-awesome-svg-png/white/svg/users.svg', inline: true },

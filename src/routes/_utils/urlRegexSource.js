@@ -2,7 +2,7 @@
 
 /* eslint-disable */
 
-module.exports = () => {
+export default () => {
   const regexen = {};
 
   const regexSupplant = function(regex, flags) {
