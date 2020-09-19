@@ -5,6 +5,7 @@ import svelte from 'rollup-plugin-svelte'
 import cjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import json from '@rollup/plugin-json'
+import worker from 'rollup-plugin-web-worker-loader'
 import { dev, mode, inlineSvgs, allSvgs } from './shared.config.js'
 
 import urlRegex from '../src/routes/_utils/urlRegexSource.js'
@@ -29,6 +30,7 @@ export default {
     resolve(),
     cjs(),
     json(),
+    worker(),
     !dev && terser()
   ]
 }

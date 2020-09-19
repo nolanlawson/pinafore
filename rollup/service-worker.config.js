@@ -7,9 +7,8 @@ import json from '@rollup/plugin-json'
 import { mode, dev } from './shared.config.js'
 
 export default {
-  input: config.client.input(),
+  input: config.serviceworker.input(),
   output: config.serviceworker.output(),
-  mode,
   plugins: [
     replace({
       'process.browser': true,

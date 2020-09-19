@@ -60,10 +60,10 @@
 <script>
   import { mediaAccept } from '../../_static/media'
   import { doMediaUpload } from '../../_actions/media'
-  import 'file-drop-element'
 
   export default {
-    oncreate () {
+    async oncreate () {
+      await import('file-drop-element')
       this.onFileDrop = this.onFileDrop.bind(this)
       this.refs.fileDrop.addEventListener('filedrop', this.onFileDrop)
     },

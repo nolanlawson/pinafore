@@ -103,7 +103,7 @@
   import LengthGauge from '../../LengthGauge.html'
   import LengthIndicator from '../../LengthIndicator.html'
   import { length } from 'stringz'
-  import { runTesseract } from '../../../_utils/runTesseract'
+  // import { runTesseract } from '../../../_utils/runTesseract'
   import SvgIcon from '../../SvgIcon.html'
   import { toast } from '../../toast/toast'
   import { mediaUploadFileCache } from '../../../_utils/mediaUploadFileCache'
@@ -181,45 +181,45 @@
         autosize.update(this.refs.textarea)
       },
       async onClick () {
-        this.set({ extracting: true })
-        try {
-          const { url } = this.get()
-          const onProgress = progress => {
-            requestAnimationFrame(() => {
-              this.set({ extractionProgress: progress * 100 })
-            })
-          }
-          const file = mediaUploadFileCache.get(url)
-          let text
-          if (file) { // Avoid downloading from the network a file that the user *just* uploaded
-            const fileUrl = URL.createObjectURL(file)
-            try {
-              text = await runTesseract(fileUrl, onProgress)
-            } finally {
-              URL.revokeObjectURL(fileUrl)
-            }
-          } else {
-            text = await runTesseract(url, onProgress)
-          }
-          const { media, index, realm } = this.get()
-          if (media[index].description !== text) {
-            media[index].description = text
-            this.store.setComposeData(realm, { media })
-            this.store.save()
-          }
-        } catch (err) {
-          console.error(err)
-          /* no await */ toast.say(
-            'Unable to extract text. Ensure your instance supports cross-origin resource sharing (CORS) for images.'
-          )
-        } finally {
-          this.set({ extracting: false })
-          setTimeout(() => {
-            requestAnimationFrame(() => {
-              this.set({ extractionProgress: 0 })
-            })
-          }, 400)
-        }
+        // this.set({ extracting: true })
+        // try {
+        //   const { url } = this.get()
+        //   const onProgress = progress => {
+        //     requestAnimationFrame(() => {
+        //       this.set({ extractionProgress: progress * 100 })
+        //     })
+        //   }
+        //   const file = mediaUploadFileCache.get(url)
+        //   let text
+        //   if (file) { // Avoid downloading from the network a file that the user *just* uploaded
+        //     const fileUrl = URL.createObjectURL(file)
+        //     try {
+        //       text = await runTesseract(fileUrl, onProgress)
+        //     } finally {
+        //       URL.revokeObjectURL(fileUrl)
+        //     }
+        //   } else {
+        //     text = await runTesseract(url, onProgress)
+        //   }
+        //   const { media, index, realm } = this.get()
+        //   if (media[index].description !== text) {
+        //     media[index].description = text
+        //     this.store.setComposeData(realm, { media })
+        //     this.store.save()
+        //   }
+        // } catch (err) {
+        //   console.error(err)
+        //   /* no await */ toast.say(
+        //     'Unable to extract text. Ensure your instance supports cross-origin resource sharing (CORS) for images.'
+        //   )
+        // } finally {
+        //   this.set({ extracting: false })
+        //   setTimeout(() => {
+        //     requestAnimationFrame(() => {
+        //       this.set({ extractionProgress: 0 })
+        //     })
+        //   }, 400)
+        // }
       }
     },
     components: {
