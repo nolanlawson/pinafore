@@ -41,7 +41,7 @@ const JSON_TEMPLATE = {
       dest: 'client/$1'
     },
     {
-      src: '^/client/.*\\.(js|css|map|LICENSE)$',
+      src: '^/client/.*\\.(js|css|map|LICENSE|txt)$',
       headers: {
         'cache-control': 'public,max-age=31536000,immutable'
       }
