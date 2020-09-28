@@ -77,7 +77,7 @@ const HTML_HEADERS = {
     "form-action 'none'",
     "base-uri 'self'"
   ].join(';'),
-  'referrer-policy': 'no-referrer',
+  'referrer-policy': 'strict-origin',
   'strict-transport-security': 'max-age=15552000; includeSubDomains',
   'x-content-type-options': 'nosniff',
   'x-download-options': 'noopen',
