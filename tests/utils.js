@@ -301,6 +301,10 @@ export const getScrollTop = exec(() => {
   return document.scrollingElement.scrollTop || 0
 })
 
+export function getFirstModalMedia () {
+  return $('.modal-dialog .media-container img')
+}
+
 export function getNthMediaAltInput (n) {
   return $(`.compose-box .compose-media:nth-child(${n}) .compose-media-alt textarea`)
 }

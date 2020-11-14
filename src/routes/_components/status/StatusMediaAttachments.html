@@ -40,6 +40,9 @@
 {:else}
   <MediaAttachments {mediaAttachments} {sensitive} {sensitiveShown} {uuid} />
 {/if}
+{#if enableShortcuts}
+  <Shortcut scope={shortcutScope} key="i" on:pressed="showFirstMedia()" />
+{/if}
 <style>
   .status-sensitive-media-container {
     grid-area: media;
@@ -167,6 +170,7 @@
   import { store } from '../../_store/store'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { classname } from '../../_utils/classname'
+  import { importShowMediaDialog } from '../dialog/asyncDialogs/importShowMediaDialog'
 
   export default {
     oncreate () {
@@ -229,6 +233,11 @@
           })
         }
         return true
+      },
+      async showFirstMedia () {
+        const { mediaAttachments } = this.get()
+        const showMediaDialog = await importShowMediaDialog()
+        showMediaDialog(mediaAttachments, 0)
       }
     }
   }

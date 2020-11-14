@@ -9,7 +9,7 @@ import {
   getNthStatusSpoiler,
   getUrl, modalDialog,
   scrollToStatus,
-  isNthStatusActive, getActiveElementRectTop, scrollToTop, isActiveStatusPinned
+  isNthStatusActive, getActiveElementRectTop, scrollToTop, isActiveStatusPinned, getFirstModalMedia
 } from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
@@ -95,7 +95,7 @@ test('Shortcut x shows/hides spoilers', async t => {
     .expect(getNthStatusContent(1 + idx).hasClass('shown')).notOk()
 })
 
-test('Shortcut y shows/hides sensitive image', async t => {
+test('Shortcut y shows/hides sensitive image, i opens', async t => {
   const idx = homeTimeline.findIndex(_ => _.content === "here's a secret kitten")
   await loginAsFoobar(t)
   await t
@@ -109,6 +109,8 @@ test('Shortcut y shows/hides sensitive image', async t => {
     .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^http:\/\//)
     .pressKey('y')
     .expect(getNthStatusMediaImg(1 + idx).getAttribute('src')).match(/^blob:http:\/\/localhost/)
+    .pressKey('i')
+    .expect(getFirstModalMedia().getAttribute('alt')).eql('kitten')
 })
 
 test('Shortcut f toggles favorite status', async t => {
