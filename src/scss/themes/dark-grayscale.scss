@@ -14,3 +14,14 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_dark.scss";
 @import "_dark_navbar.scss";
 @import "_dark_scrollbars.scss";
+
+:root {
+  // like base.scss, but with $anchor-color instead of $main-theme-color
+  // <https://github.com/nolanlawson/pinafore/issues/1880>
+  --action-button-fill-color: #{lighten($anchor-color, 18%)};
+  --action-button-fill-color-hover: #{lighten($anchor-color, 22%)};
+  --action-button-fill-color-active: #{lighten($anchor-color, 5%)};
+  --action-button-fill-color-pressed: #{darken($anchor-color, 7%)};
+  --action-button-fill-color-pressed-hover: #{darken($anchor-color, 2%)};
+  --action-button-fill-color-pressed-active: #{darken($anchor-color, 15%)};
+}
