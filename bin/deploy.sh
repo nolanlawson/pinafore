@@ -15,10 +15,10 @@ else
   rm -f static/robots.txt
 fi
 
-# if in travis, use the $NOW_TOKEN
+# if in travis, use the $VERCEL_TOKEN
 DEPLOY_COMMAND="vercel --scope nolanlawson"
-if [[ ! -z "$NOW_TOKEN" ]]; then
-  DEPLOY_COMMAND="$DEPLOY_COMMAND --token $NOW_TOKEN"
+if [[ ! -z "$VERCEL_TOKEN" ]]; then
+  DEPLOY_COMMAND="$DEPLOY_COMMAND --token $VERCEL_TOKEN"
 fi
 
 # launch
