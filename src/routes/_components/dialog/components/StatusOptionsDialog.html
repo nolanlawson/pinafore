@@ -124,15 +124,15 @@ export default {
         label: 'Delete and redraft',
         icon: '#fa-pencil'
       },
-      {
-        key: 'bookmark',
-        label: bookmarkLabel,
-        icon: '#fa-bookmark'
-      },
       !isUser && {
         key: 'report',
         label: 'Report toot',
         icon: '#fa-flag'
+      },
+      {
+        key: 'bookmark',
+        label: bookmarkLabel,
+        icon: '#fa-bookmark'
       },
       isPublicOrUnlisted && supportsWebShare && {
         key: 'share',
