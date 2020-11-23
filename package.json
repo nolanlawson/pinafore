@@ -30,7 +30,6 @@
     "wait-for-mastodon-data": "node -r esm bin/wait-for-mastodon-data.js",
     "deploy-prod": "DEPLOY_TYPE=prod ./bin/deploy.sh",
     "deploy-dev": "DEPLOY_TYPE=dev ./bin/deploy.sh",
-    "deploy-all-travis": "./bin/deploy-all-travis.sh",
     "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
     "sapper-export": "cross-env PORT=22939 sapper export",
     "print-export-info": "node ./bin/print-export-info.js",
