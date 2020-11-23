@@ -44,12 +44,12 @@ jobs:
       - restore_cache:
           name: Restore bundler cache
           key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
-#      - run:
-#          name: lint
-#          command: yarn lint
-#      - run:
-#          name: unit tests
-#          command: yarn test-unit
+      - run:
+          name: lint
+          command: yarn lint
+      - run:
+          name: unit tests
+          command: yarn test-unit
       - run:
           name: Wait for postgres to be ready
           command: |
