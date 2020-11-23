@@ -78,7 +78,7 @@ async function runMastodon () {
   }
   const promise = spawn('foreman', ['start'], { cwd, env })
   // don't bother writing to mastodon.log in Travis; we can't read the file anyway
-  const logFile = process.env.TRAVIS === 'true' ? '/dev/null' : 'mastodon.log'
+  const logFile = process.env.CIRCLECI === 'true' ? '/dev/null' : 'mastodon.log'
   const log = fs.createWriteStream(logFile, { flags: 'a' })
   childProc = promise.childProcess
   childProc.stdout.pipe(log)
