@@ -27,6 +27,7 @@ jobs:
       - run:
           name: Install node
           command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 12 && nvm use 12 && nvm alias default 12
@@ -36,10 +37,18 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Yarn install
-          command: yarn install --immutable
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            node -v
+            yarn install --immutable
       - run:
           name: Clone mastodon
-          command: yarn clone-mastodon
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            node -v
+            yarn clone-mastodon
       - restore_cache:
           name: Restore bundler cache
           key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
@@ -74,7 +83,11 @@ jobs:
 #          command: psql -h 127.0.0.1 -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
       - run:
           name: Integration tests
-          command: yarn test
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            node -v
+            yarn test
       - save_cache:
           name: Save yarn cache
           key: dependency-cache-{{ checksum "package-lock.json" }}
