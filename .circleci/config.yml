@@ -21,9 +21,9 @@ jobs:
       - image: circleci/redis:5-alpine
     steps:
       - checkout
-      - run:
-          name: Check node version
-          command: node -v
+#      - run:
+#          name: Check node version
+#          command: node -v
       - restore_cache:
           name: Restore yarn cache
           key: dependency-cache-{{ checksum "yarn.lock" }}
