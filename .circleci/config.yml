@@ -41,10 +41,10 @@ jobs:
           name: Restore bundler cache
           key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
       - run:
-          name: lint
+          name: Lint
           command: yarn lint
       - run:
-          name: unit tests
+          name: Unit tests
           command: yarn test-unit
       - run:
           name: Wait for postgres to be ready
@@ -73,7 +73,7 @@ jobs:
             yarn test
       - save_cache:
           name: Save yarn cache
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - save_cache:
