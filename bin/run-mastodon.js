@@ -59,7 +59,7 @@ async function runMastodon () {
   const cwd = mastodonDir
   const cmds = [
     'gem install bundler foreman',
-    'bundle install',
+    'bundle install --frozen',
     'bundle exec rails db:migrate',
     'yarn --pure-lockfile'
   ]
