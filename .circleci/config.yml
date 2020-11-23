@@ -28,7 +28,7 @@ jobs:
           name: install system dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-client-12 postgresql-contrib-12  protobuf-compiler
+            sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
           name: clone mastodon
           command: yarn clone-mastodon
