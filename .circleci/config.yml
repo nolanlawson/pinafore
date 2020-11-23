@@ -63,7 +63,7 @@ jobs:
             echo Failed waiting for redis && exit 1
       - run:
           name: setup database
-          command: psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+          command: psql -h 127.0.0.1 -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
       - run:
           name: integration tests
           command: yarn test
