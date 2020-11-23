@@ -42,7 +42,7 @@ jobs:
           name: unit tests
           command: yarn test-unit
       - run:
-          name: Waiting for Postgres to be ready
+          name: wait for postgres to be ready
           command: |
             for i in `seq 1 10`;
             do
@@ -50,7 +50,17 @@ jobs:
               echo -n .
               sleep 1
             done
-            echo Failed waiting for Postgres && exit 1
+            echo Failed waiting for postgres && exit 1
+      - run:
+          name: wait for redis to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 6379 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for redis && exit 1
       - run:
           name: setup database
           command: psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
