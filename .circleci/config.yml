@@ -9,7 +9,8 @@ jobs:
   build_and_test:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby:2.6-buster-node
+        # see https://discuss.circleci.com/t/build-failed-the-engine-node-is-incompatible-with-this-module-expected-version-12-x-got-14-15-0/37921/7
+      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
@@ -25,30 +26,19 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
-          name: Install node
-          command: |
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
-            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-            echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            nvm install 12
-            nvm use 12
-            nvm alias default 12
-            node -v
+          name: Check node version
+          command: node -v
       - restore_cache:
           name: Restore yarn cache
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Yarn install
           command: |
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             node -v
             yarn install --immutable
       - run:
           name: Clone mastodon
           command: |
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             node -v
             yarn clone-mastodon
       - restore_cache:
@@ -86,8 +76,6 @@ jobs:
       - run:
           name: Integration tests
           command: |
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             node -v
             yarn test
       - save_cache:
