@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Wait for node to be ready
           command: |
-            for i in `seq 1 10`;
+            for i in `seq 1 100`;
             do
               node -v && echo Success && exit 0
               echo -n .
