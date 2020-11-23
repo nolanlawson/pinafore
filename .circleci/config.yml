@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  node: circleci/node@12.19.1
 
 workflows:
   version: 2
@@ -27,8 +25,12 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
-          name: Check node version
-          command: node -v
+          name: Install node
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install 12 && nvm use 12 && nvm alias default 12
+            node -v
       - restore_cache:
           name: Restore yarn cache
           key: dependency-cache-{{ checksum "yarn.lock" }}
