@@ -77,18 +77,29 @@ async function runMastodon () {
     await writeFile(installedFile, '', 'utf8')
   }
   const promise = spawn('foreman', ['start'], { cwd, env })
-  // don't bother writing to mastodon.log in Travis; we can't read the file anyway
-  const logFile = process.env.CIRCLECI === 'true' ? '/dev/null' : 'mastodon.log'
-  const log = fs.createWriteStream(logFile, { flags: 'a' })
+  // don't bother writing to mastodon.log in CI; we can't read the file anyway
+
   childProc = promise.childProcess
-  childProc.stdout.pipe(log)
-  childProc.stderr.pipe(log)
+  childProc.stdout.pipe(process.stdout)
+  childProc.stderr.pipe(process.stderr)
   promise.catch(err => {
     console.error('foreman start failed, see mastodon.log for details')
     console.error(err)
     shutdownMastodon()
     process.exit(1)
   })
+
+  // const logFile = process.env.CIRCLECI === 'true' ? '/dev/null' : 'mastodon.log'
+  // const log = fs.createWriteStream(logFile, { flags: 'a' })
+  // childProc = promise.childProcess
+  // childProc.stdout.pipe(log)
+  // childProc.stderr.pipe(log)
+  // promise.catch(err => {
+  //   console.error('foreman start failed, see mastodon.log for details')
+  //   console.error(err)
+  //   shutdownMastodon()
+  //   process.exit(1)
+  // })
 }
 
 async function main () {
