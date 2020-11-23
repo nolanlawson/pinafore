@@ -9,32 +9,41 @@ jobs:
   build_and_test:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby:2.5-buster-node
+      - image: circleci/ruby:2.6-buster-node
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
           POSTGRES_PASSWORD: pinafore
           POSTGRES_DB: pinafore_development
           BROWSER: chrome:headless
+          NODE_VERSION: "$NODE_VERSION"
       - image: circleci/redis:5-alpine
     steps:
       - checkout
+      - run:
+          name: Set node version
+          command: |
+            curl -sSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ "node-v${NODE_VERSION}-linux-x64" /bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
       - restore_cache:
-          name: restore yarn cache
+          name: Restore yarn cache
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: yarn install
+          name: Yarn install
           command: yarn install --immutable
       - run:
-          name: install system dependencies
+          name: Install system dependencies
           command: |
             sudo apt-get update
             sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
-          name: clone mastodon
+          name: Clone mastodon
           command: yarn clone-mastodon
       - restore_cache:
-          name: restore bundler cache
+          name: Restore bundler cache
           key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
 #      - run:
 #          name: lint
@@ -43,7 +52,7 @@ jobs:
 #          name: unit tests
 #          command: yarn test-unit
       - run:
-          name: wait for postgres to be ready
+          name: Wait for postgres to be ready
           command: |
             for i in `seq 1 10`;
             do
@@ -53,7 +62,7 @@ jobs:
             done
             echo Failed waiting for postgres && exit 1
       - run:
-          name: wait for redis to be ready
+          name: Wait for redis to be ready
           command: |
             for i in `seq 1 10`;
             do
@@ -66,15 +75,15 @@ jobs:
 #          name: setup database
 #          command: psql -h 127.0.0.1 -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
       - run:
-          name: integration tests
+          name: Integration tests
           command: yarn test
       - save_cache:
-          name: save yarn cache
+          name: Save yarn cache
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ~/.cache/yarn
       - save_cache:
-          name: save bundler cache
+          name: Save bundler cache
           key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
           paths:
             - mastodon/vendor/bundle
