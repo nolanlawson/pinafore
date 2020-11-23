@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  node: circleci/node@12.19.1
 
 workflows:
   version: 2
@@ -9,15 +11,13 @@ jobs:
   build_and_test:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby:2.6-buster
-      - image: circleci/node:12.19.0-browsers
+      - image: circleci/ruby:2.6-buster-node
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
           POSTGRES_PASSWORD: pinafore
           POSTGRES_DB: pinafore_development
           BROWSER: chrome:headless
-          NODE_VERSION: "$NODE_VERSION"
       - image: circleci/redis:5-alpine
     steps:
       - checkout
@@ -27,15 +27,8 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
-          name: Wait for node to be ready
-          command: |
-            for i in `seq 1 100`;
-            do
-              node -v && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for postgres && exit 1
+          name: Check node version
+          command: node -v
       - restore_cache:
           name: Restore yarn cache
           key: dependency-cache-{{ checksum "yarn.lock" }}
