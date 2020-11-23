@@ -9,7 +9,8 @@ jobs:
   build_and_test:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby:2.6-buster-node
+      - image: circleci/ruby:2.6-buster
+      - image: circleci/node:12.19.0-browsers
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
@@ -21,12 +22,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Set node version
-          command: |
-            curl -sSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ "node-v${NODE_VERSION}-linux-x64" /bin/node
-            curl https://www.npmjs.com/install.sh | sudo bash
-      - run:
-          name: Check current version of node
+          name: Check node version
           command: node -v
       - restore_cache:
           name: Restore yarn cache
