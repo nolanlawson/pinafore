@@ -24,7 +24,7 @@ jobs:
           name: Install system dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
+            sudo apt-get install -y ffmpeg fonts-noto-color-emoji libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
           name: Check node version
           command: node -v
