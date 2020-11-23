@@ -12,8 +12,9 @@ jobs:
       - image: circleci/ruby:2.7-buster-node
       - image: circleci/postgres:12.2
         environment:
-          POSTGRES_USER: root
-          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_USER: pinafore
+          POSTGRES_PASSWORD: pinafore
+          POSTGRES_DB: pinafore_development
           BROWSER: chrome:headless
       - image: circleci/redis:5-alpine
     steps:
@@ -35,12 +36,12 @@ jobs:
       - restore_cache:
           name: restore bundler cache
           key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
-      - run:
-          name: lint
-          command: yarn lint
-      - run:
-          name: unit tests
-          command: yarn test-unit
+#      - run:
+#          name: lint
+#          command: yarn lint
+#      - run:
+#          name: unit tests
+#          command: yarn test-unit
       - run:
           name: wait for postgres to be ready
           command: |
@@ -61,9 +62,9 @@ jobs:
               sleep 1
             done
             echo Failed waiting for redis && exit 1
-      - run:
-          name: setup database
-          command: psql -h 127.0.0.1 -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+#      - run:
+#          name: setup database
+#          command: psql -h 127.0.0.1 -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
       - run:
           name: integration tests
           command: yarn test
