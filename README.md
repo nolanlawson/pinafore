@@ -1,4 +1,4 @@
-# Pinafore [![Build Status](https://travis-ci.com/nolanlawson/pinafore.svg?branch=master)](https://travis-ci.com/nolanlawson/pinafore)
+# Pinafore [![Build status](https://circleci.com/gh/nolanlawson/pinafore.svg?style=svg)](https://app.circleci.com/pipelines/gh/nolanlawson/pinafore)
 
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 
@@ -91,10 +91,10 @@ To keep your version of Pinafore up to date, you can use `git` to check out the 
 
 ### Exporting
 
-Pinafore is a static site. When you run `yarn build`, static files will be 
+Pinafore is a static site. When you run `yarn build`, static files will be
 written to `__sapper__/export`.
 
-In theory you could host these static files yourself (e.g. using nginx or Apache), but 
+In theory you could host these static files yourself (e.g. using nginx or Apache), but
 it's not recommended, because:
 
 - You'd have to set the [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) headers yourself,
@@ -103,7 +103,7 @@ which are an important security feature.
 
 ## Developing and testing
 
-See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md) for 
+See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md) for
 how to run Pinafore in dev mode and run tests.
 
 ## Changelog

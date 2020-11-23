@@ -1,0 +1,83 @@
+version: 2.1
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_and_test
+jobs:
+  build_and_test:
+    working_directory: ~/pinafore
+    docker:
+        # see https://discuss.circleci.com/t/build-failed-the-engine-node-is-incompatible-with-this-module-expected-version-12-x-got-14-15-0/37921/7
+      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+      - image: circleci/postgres:12.2
+        environment:
+          POSTGRES_USER: pinafore
+          POSTGRES_PASSWORD: pinafore
+          POSTGRES_DB: pinafore_development
+          BROWSER: chrome:headless
+      - image: circleci/redis:5-alpine
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg fonts-noto-color-emoji libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
+      - run:
+          name: Check node version
+          command: node -v
+      - restore_cache:
+          name: Restore yarn cache
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Yarn install
+          command: yarn install --immutable
+      - run:
+          name: Clone mastodon
+          command: yarn clone-mastodon
+      - restore_cache:
+          name: Restore bundler cache
+          key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Unit tests
+          command: yarn test-unit
+      - run:
+          name: Wait for postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for postgres && exit 1
+      - run:
+          name: Wait for redis to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 6379 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for redis && exit 1
+      - run:
+          name: Integration tests
+          command: |
+            node -v
+            yarn test
+      - save_cache:
+          name: Save yarn cache
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          name: Save bundler cache
+          key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
+          paths:
+            - mastodon/vendor/bundle
