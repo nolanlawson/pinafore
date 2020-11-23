@@ -11,7 +11,6 @@
 /static/emoji-all-en.json
 /src/inline-script/checksum.js
 yarn-error.log
-/vercel.json
 
 .now
 .vercel

@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname $0)/_/husky.sh"
+
+set -e
+set -x
+
+PATH="$PATH:./node_modules/.bin"
+
+lint-staged
+run-s build-vercel-json
+git add vercel.json
