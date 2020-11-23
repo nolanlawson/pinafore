@@ -23,7 +23,7 @@
     "test-browser": "run-p --race run-mastodon build-and-start test-mastodon",
     "test-mastodon": "run-s wait-for-mastodon-to-start wait-for-mastodon-data testcafe",
     "testcafe": "run-s testcafe-suite0 testcafe-suite1",
-    "testcafe-suite0": "cross-env-shell testcafe -c 4 $BROWSER tests/spec/0*",
+    "testcafe-suite0": "cross-env-shell testcafe -c 2 $BROWSER tests/spec/0*",
     "testcafe-suite1": "cross-env-shell testcafe $BROWSER tests/spec/1*",
     "test-unit": "mocha -r esm -r bin/browser-shim.js tests/unit/",
     "wait-for-mastodon-to-start": "node -r esm bin/wait-for-mastodon-to-start.js",
