@@ -21,20 +21,27 @@ jobs:
       - image: circleci/redis:5-alpine
     steps:
       - checkout
-#      - run:
-#          name: Check node version
-#          command: node -v
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
+      - run:
+          name: Wait for node to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              node -v && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for postgres && exit 1
       - restore_cache:
           name: Restore yarn cache
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Yarn install
           command: yarn install --immutable
-      - run:
-          name: Install system dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
           name: Clone mastodon
           command: yarn clone-mastodon
