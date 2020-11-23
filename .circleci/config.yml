@@ -9,7 +9,7 @@ jobs:
   build_and_test:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby:2.4-buster-node
+      - image: circleci/ruby:2.5-buster-node
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
