@@ -28,9 +28,11 @@ jobs:
           name: Install node
           command: |
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm install 12 && nvm use 12 && nvm alias default 12
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+            nvm install 12
+            nvm use 12
+            nvm alias default 12
             node -v
       - restore_cache:
           name: Restore yarn cache
