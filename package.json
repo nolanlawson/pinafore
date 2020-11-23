@@ -17,6 +17,7 @@
     "build-template-html": "node -r esm ./bin/build-template-html.js",
     "build-template-html-watch": "node -r esm ./bin/build-template-html.js --watch",
     "build-assets": "node -r esm ./bin/build-assets.js",
+    "clone-mastodon": "node -r esm ./bin/clone-mastodon.js",
     "run-mastodon": "node -r esm ./bin/run-mastodon.js",
     "test": "cross-env BROWSER=chrome:headless run-s test-browser",
     "test-browser": "run-p --race run-mastodon build-and-start test-mastodon",

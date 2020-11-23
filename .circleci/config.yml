@@ -1,0 +1,62 @@
+version: 2.1
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_and_test
+jobs:
+  build_and_test:
+    working_directory: ~/pinafore
+    docker:
+      - image: circleci/ruby:2.7-buster-node
+      - image: circleci/postgres:12.2
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_HOST_AUTH_METHOD: trust
+          BROWSER: chrome:headless
+      - image: circleci/redis:5-alpine
+    steps:
+      - checkout
+      - restore_cache:
+          name: restore yarn cache
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: yarn install
+          command: yarn install --immutable
+      - run:
+          name: install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg libicu-dev libidn11-dev libprotobuf-dev postgresql-client-12 postgresql-contrib-12  protobuf-compiler
+      - run:
+          name: clone mastodon
+          command: yarn clone-mastodon
+      - restore_cache:
+          name: restore bundler cache
+          key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
+      - run:
+          name: lint
+          command: yarn lint
+      - run:
+          name: test unit
+          command: yarn test-unit
+      - run:
+          name: setup database
+          command: psql -d template1 -U postgres -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+      - run:
+          name: run readonly integration tests
+          command: yarn test-browser-suite0
+      - run:
+          name: run readwrite integration tests
+          command: yarn test-browser-suite1
+      - save_cache:
+          name: save yarn cache
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          name: save bundler cache
+          key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
+          paths:
+            - mastodon/vendor/bundle
