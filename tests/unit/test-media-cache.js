@@ -43,6 +43,7 @@ describe('test-database.js', function () {
 
   it('only stores up to 4 files', async () => {
     for (let i = 0; i < 10; i++) {
+      await new Promise(resolve => setTimeout(resolve, 4)) // delay to avoid timing collisions
       await setCachedMediaFile(i.toString(), i)
     }
     const ids = await getAllCachedFileIds()

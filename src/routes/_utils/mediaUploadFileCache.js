@@ -30,8 +30,8 @@ export async function getCachedMediaFile (id) {
   const allKeys = await getAllKeys()
 
   for (const key of allKeys) {
-    const thisUrl = keyToData(key)[1]
-    if (id === thisUrl) {
+    const otherId = keyToData(key)[1]
+    if (id === otherId) {
       return get(key)
     }
   }
@@ -66,8 +66,8 @@ export async function deleteCachedMediaFile (id) {
   const allKeys = await getAllKeys()
 
   for (const key of allKeys) {
-    const thisUrl = keyToData(key)[1]
-    if (thisUrl === id) {
+    const otherId = keyToData(key)[1]
+    if (otherId === id) {
       await del(key)
     }
   }
