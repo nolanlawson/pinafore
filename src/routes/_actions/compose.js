@@ -6,6 +6,8 @@ import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
 import { putMediaMetadata } from '../_api/media'
 import uniqBy from 'lodash-es/uniqBy'
+import { deleteCachedMediaFile } from '../_utils/mediaUploadFileCache'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 
 export async function insertHandleForReply (statusId) {
   const { currentInstance } = store.get()
@@ -58,6 +60,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     addStatusOrNotification(currentInstance, 'home', status)
     store.clearComposeData(realm)
     emit('postedStatus', realm, inReplyToUuid)
+    scheduleIdleTask(() => (mediaIds || []).forEach(mediaId => deleteCachedMediaFile(mediaId))) // clean up media cache
   } catch (e) {
     console.error(e)
     toast.say('Unable to post status: ' + (e.message || ''))
