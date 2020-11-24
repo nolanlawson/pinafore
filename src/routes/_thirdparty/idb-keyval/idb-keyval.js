@@ -1,5 +1,8 @@
 // Forked from https://github.com/jakearchibald/idb-keyval/commit/ea7d507
 // Adds a function for closing the database, ala https://github.com/jakearchibald/idb-keyval/pull/65
+// Also hooks it into the lifecycle frozen event
+import { lifecycle } from '../../_utils/lifecycle'
+
 class Store {
   constructor (dbName = 'keyval-store', storeName = 'keyval') {
     this.storeName = storeName
@@ -51,32 +54,37 @@ function getDefaultStore () {
   return store
 }
 
-function get (key, store = getDefaultStore()) {
+function get (key) {
+  const store = getDefaultStore()
   let req
   return store._withIDBStore('readonly', store => {
     req = store.get(key)
   }).then(() => req.result)
 }
 
-function set (key, value, store = getDefaultStore()) {
+function set (key, value) {
+  const store = getDefaultStore()
   return store._withIDBStore('readwrite', store => {
     store.put(value, key)
   })
 }
 
-function del (key, store = getDefaultStore()) {
+function del (key) {
+  const store = getDefaultStore()
   return store._withIDBStore('readwrite', store => {
     store.delete(key)
   })
 }
 
-function clear (store = getDefaultStore()) {
+function clear () {
+  const store = getDefaultStore()
   return store._withIDBStore('readwrite', store => {
     store.clear()
   })
 }
 
-function keys (store = getDefaultStore()) {
+function keys () {
+  const store = getDefaultStore()
   const keys = []
   return store._withIDBStore('readonly', store => {
     // This would be store.getAllKeys(), but it isn't supported by Edge or Safari.
@@ -91,8 +99,18 @@ function keys (store = getDefaultStore()) {
   }).then(() => keys)
 }
 
-function close (store = getDefaultStore()) {
+function close () {
+  const store = getDefaultStore()
   return store._close()
+}
+
+if (process.browser) {
+  lifecycle.addEventListener('statechange', async event => {
+    if (event.newState === 'frozen') { // page is frozen, close IDB connections
+      await close()
+      console.log('closed keyval DB')
+    }
+  })
 }
 
 export { Store, get, set, del, clear, keys, close }

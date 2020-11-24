@@ -106,7 +106,7 @@
   import { runTesseract } from '../../../_utils/runTesseract'
   import SvgIcon from '../../SvgIcon.html'
   import { toast } from '../../toast/toast'
-  import { mediaUploadFileCache } from '../../../_utils/mediaUploadFileCache'
+  import { getCachedMediaFile } from '../../../_utils/mediaUploadFileCache'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 
@@ -131,6 +131,7 @@
       length: ({ rawText }) => length(rawText || ''),
       overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit,
       url: ({ media, index }) => get(media, [index, 'data', 'url']),
+      mediaId: ({ media, index }) => get(media, [index, 'data', 'id']),
       extractButtonText: ({ extracting }) => extracting ? 'Extracting text…' : 'Extract text from image',
       extractButtonLabel: ({ extractButtonText, extractionProgress, extracting }) => {
         if (extracting) {
@@ -183,13 +184,13 @@
       async onClick () {
         this.set({ extracting: true })
         try {
-          const { url } = this.get()
+          const { url, mediaId } = this.get()
           const onProgress = progress => {
             requestAnimationFrame(() => {
               this.set({ extractionProgress: progress * 100 })
             })
           }
-          const file = mediaUploadFileCache.get(url)
+          const file = await getCachedMediaFile(mediaId)
           let text
           if (file) { // Avoid downloading from the network a file that the user *just* uploaded
             const fileUrl = URL.createObjectURL(file)
