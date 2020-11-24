@@ -30,7 +30,7 @@ jobs:
           command: node -v
       - restore_cache:
           name: Restore yarn cache
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}
       - run:
           name: Yarn install
           command: yarn install --immutable
@@ -39,7 +39,7 @@ jobs:
           command: yarn clone-mastodon
       - restore_cache:
           name: Restore bundler cache
-          key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
+          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
       - run:
           name: Lint
           command: yarn lint
@@ -73,11 +73,11 @@ jobs:
             yarn test
       - save_cache:
           name: Save yarn cache
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - save_cache:
           name: Save bundler cache
-          key: bundler-{{ checksum "mastodon/Gemfile.lock" }}
+          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
           paths:
             - mastodon/vendor/bundle
