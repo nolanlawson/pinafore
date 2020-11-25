@@ -12,5 +12,23 @@ export default {
          href="https://nolanlawson.com/2018/04/09/introducing-pinafore-for-mastodon/">introductory blog post</a>,
       or get started by logging in to an instance:
     </p>`,
-  logIn: 'Log in'
+  logIn: 'Log in',
+  navItemLabel: `
+    {label} {selected, select,
+      true {(current page)}
+      other {}
+    } {name, select,
+      notifications {{count, plural,
+        =0 {}
+        one {(1 notification)}
+        other {({count} notifications)}
+      }}
+      community {{count, plural,
+        =0 {}
+        one {(1 follow request)}
+        other {({count} follow requests)}
+      }}
+      other {}
+    }
+  `
 }
