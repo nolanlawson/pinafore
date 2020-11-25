@@ -1,3 +1,4 @@
+const path = require('path')
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -48,15 +49,20 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: {
-          loader: 'svelte-loader',
-          options: {
-            dev,
-            hydratable: true,
-            store: true,
-            hotReload: dev
+        use: [
+          {
+            loader: 'svelte-loader',
+            options: {
+              dev,
+              hydratable: true,
+              store: true,
+              hotReload: dev
+            }
+          },
+          {
+            loader: path.join(__dirname, './svelte-intl-loader.js')
           }
-        }
+        ]
       }
     ].filter(Boolean)
   },

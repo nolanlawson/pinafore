@@ -3730,6 +3730,19 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+format-message-formats@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/format-message-formats/-/format-message-formats-6.2.0.tgz#231c2a3d2806e3200331c7aa06430cb403f58792"
+  integrity sha512-QP0dl1O9P3fDCG5klj101nfizgiWiv0T+DMNBqwi25FvB1LIenQQW4PpULk5zO5PiOSvmMu5pW4HS542kJRAww==
+
+format-message-interpret@^6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/format-message-interpret/-/format-message-interpret-6.2.3.tgz#ee72fe924102c7d3f0c2d12797f53d8d93795810"
+  integrity sha512-OoOdB5yHLzW89RwDQW4fj+8p2Eay9Dtmx4B7Tz8C/QQl/j+aVjy65A5xasQhQD+4JumYU/OxMBdjYzBSR8+ivA==
+  dependencies:
+    format-message-formats "^6.2.0"
+    lookup-closest-locale "^6.2.0"
+
 "formdata@>= 0.10.0":
   version "0.10.4"
   resolved "https://registry.yarnpkg.com/formdata/-/formdata-0.10.4.tgz#9621fdc0cc361f4a0111de5d25b35f6a78dc55a0"
@@ -5091,6 +5104,11 @@ log-update@^4.0.0:
     cli-cursor "^3.1.0"
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
+
+lookup-closest-locale@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/lookup-closest-locale/-/lookup-closest-locale-6.2.0.tgz#57f665e604fd26f77142d48152015402b607bcf3"
+  integrity sha512-/c2kL+Vnp1jnV6K6RpDTHK3dgg0Tu2VVp+elEiJpjfS1UyY7AjOYHohRug6wT0OpoX2qFgNORndE9RqesfVxWQ==
 
 loose-envify@^1.0.0, loose-envify@^1.4.0:
   version "1.4.0"

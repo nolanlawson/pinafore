@@ -1,5 +1,5 @@
 import { format } from '../_thirdparty/timeago/timeago'
-import { mark, stop } from '../_utils/marks'
+import { mark, stop } from './marks'
 
 // Format a date in the past
 export function formatTimeagoDate (date, now) {
