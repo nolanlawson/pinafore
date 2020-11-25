@@ -1,3 +1,4 @@
+const path = require('path')
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
@@ -40,6 +41,9 @@ module.exports = {
             dev
           }
         }
+      },
+      {
+        loader: path.join(__dirname, './svelte-intl-loader.js')
       }
     ]
   },

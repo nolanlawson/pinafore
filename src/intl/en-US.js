@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   appName: 'Pinafore',
   homeDescription: `
     <p>
