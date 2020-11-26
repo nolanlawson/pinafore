@@ -1,3 +1,5 @@
+import { LOCALE } from '../src/routes/_static/intl'
+
 const path = require('path')
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
@@ -48,6 +50,12 @@ module.exports = {
         }
       },
       {
+        test: /timeago.js$/,
+        use: {
+          loader: path.join(__dirname, './svelte-intl-loader.js')
+        }
+      },
+      {
         test: /\.html$/,
         use: [
           {
@@ -91,7 +99,8 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
       'process.env.ALL_SVGS': JSON.stringify(allSvgs),
-      'process.env.URL_REGEX': urlRegex.toString()
+      'process.env.URL_REGEX': urlRegex.toString(),
+      'process.env.LOCALE': JSON.stringify(LOCALE)
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs

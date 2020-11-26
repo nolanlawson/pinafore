@@ -1,4 +1,6 @@
-export const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
+import { LOCALE } from '../_static/intl'
+
+export const absoluteDateFormatter = new Intl.DateTimeFormat(LOCALE, {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -6,7 +8,7 @@ export const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
   minute: '2-digit'
 })
 
-export const shortAbsoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
+export const shortAbsoluteDateFormatter = new Intl.DateTimeFormat(LOCALE, {
   year: 'numeric',
   month: 'short',
   day: 'numeric',

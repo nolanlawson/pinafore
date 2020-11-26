@@ -30,5 +30,6 @@ export default {
       }}
       other {}
     }
-  `
+  `,
+  justNow: 'just now'
 }

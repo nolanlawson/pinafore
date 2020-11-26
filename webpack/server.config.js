@@ -1,3 +1,5 @@
+import { LOCALE } from '../src/routes/_static/intl'
+
 const path = require('path')
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
@@ -57,7 +59,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
-      'process.env.ALL_SVGS': JSON.stringify(allSvgs)
+      'process.env.ALL_SVGS': JSON.stringify(allSvgs),
+      'process.env.LOCALE': JSON.stringify(LOCALE)
     })
   ]
 }

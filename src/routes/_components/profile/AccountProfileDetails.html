@@ -124,8 +124,9 @@
 <script>
   import IconButton from '../IconButton.html'
   import { importShowAccountProfileOptionsDialog } from '../dialog/asyncDialogs/importShowAccountProfileOptionsDialog.js'
+  import { LOCALE } from '../../_static/intl'
 
-  const numberFormat = new Intl.NumberFormat('en-US')
+  const numberFormat = new Intl.NumberFormat(LOCALE)
 
   export default {
     computed: {

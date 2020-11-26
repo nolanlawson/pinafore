@@ -1,8 +1,11 @@
-// Inject intl statements into a Svelte v2 HTML file
+// Inject intl statements into a Svelte v2 HTML file as well as some JS files like timeago.js
 // We do this for perf reasons, to make the output smaller and avoid needing to have a huge JSON file of translations
-import intl from '../src/intl/en-US'
 import { get as lodashGet } from 'lodash-es'
 import parse from 'format-message-parse'
+import { LOCALE } from '../src/routes/_static/intl'
+import path from 'path'
+
+const intl = require(path.join(__dirname, '../src/intl', LOCALE + '.js')).default
 
 function get (obj, path) {
   const res = lodashGet(obj, path)
@@ -29,7 +32,6 @@ export default function (source) {
     .replace(/'intl\.([^']+)'/, (match, p1) => {
       const text = trimWhitespace(get(intl, p1))
       const ast = parse(text)
-      console.log('ast', ast)
       return JSON.stringify(ast)
     })
 }
