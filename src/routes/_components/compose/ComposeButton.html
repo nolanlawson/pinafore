@@ -1,10 +1,10 @@
 <div class="compose-box-button-halo {sticky ? 'compose-box-button-halo-sticky' : ''}">
   <button class="primary compose-box-button"
           {disabled}
-          aria-label={sticky ? 'Compose' : 'Toot!'}
+          aria-label={sticky ? '{intl.composeStatus}' : '{intl.postStatus}'}
           on:click>
     <span class={$postingStatus || sticky ? 'hidden' : ''}>
-      Toot!
+      {intl.postStatus}
     </span>
     <div class="compose-box-button-spinner"
          aria-hidden="true">

@@ -140,5 +140,23 @@ export default {
     }
     other {}
   }`,
-  pinPage: 'Pin {label}'
+  pinPage: 'Pin {label}',
+  composeStatus: 'Compose toot',
+  postStatus: 'Toot!',
+  contentWarning: 'Content warning',
+  dropToUpload: 'Drop to upload',
+  invalidFileType: 'Invalid file type',
+  composeLabel: "What's on your mind?",
+  autocompleteDescription: 'When autocomplete results are available, press up or down arrows and enter to select.',
+  mediaUploads: 'Media uploads',
+  edit: 'Edit',
+  delete: 'Delete',
+  description: 'Description',
+  descriptionLabel: 'Describe for the visually impaired (image, video) or auditorily impaired (audio, video)',
+  markAsSensitive: 'Mark media as sensitive',
+  createPoll: 'Create poll',
+  removePollChoice: 'Remove choice {index}',
+  pollChoiceLabel: 'Choice {index}',
+  multipleChoice: 'Multiple choice',
+  pollDuration: 'Poll duration'
 }
