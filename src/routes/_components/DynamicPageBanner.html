@@ -1,5 +1,5 @@
 <div class="dynamic-page-banner {icon ? 'dynamic-page-with-icon' : ''}"
-     role="navigation" aria-label="Page header"
+     role="navigation" aria-label="{intl.pageHeader}"
 >
   {#if icon}
   <SvgIcon className="dynamic-page-banner-svg" href={icon} />
@@ -7,8 +7,8 @@
   <h1 class="dynamic-page-title" aria-label={ariaTitle}>{title}</h1>
   <button type="button"
           class="dynamic-page-go-back"
-          aria-label="Go back"
-          on:click|preventDefault="onGoBack()">Back</button>
+          aria-label="{intl.goBack}"
+          on:click|preventDefault="onGoBack()">{intl.back}</button>
 </div>
 <Shortcut key="Backspace" on:pressed="onGoBack()"/>
 <style>

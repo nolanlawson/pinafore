@@ -9,7 +9,7 @@
         id="pinnables"
         className="pinnable-button"
         checked={$pinnedPage === href}
-        label="Pin {label}"
+        label={pinLabel}
         index={pinIndex}
         on:click="onPinClick(event)"
       >
@@ -119,6 +119,7 @@
   import { store } from '../../_store/store'
   import SvgIcon from '../SvgIcon.html'
   import RadioGroupButton from '../../_components/radio/RadioGroupButton.html'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     store: () => store,
@@ -128,12 +129,13 @@
     }),
     computed: {
       ariaLabel: ({ label, pinnable, $pinnedPage, href }) => {
-        let res = label
-        if (pinnable) {
-          res += ' (' + ($pinnedPage === href ? 'Pinned page' : 'Unpinned page') + ')'
-        }
-        return res
-      }
+        return formatIntl('intl.pinLabel', {
+          label,
+          pinnable,
+          pinned: $pinnedPage === href
+        })
+      },
+      pinLabel: ({ label }) => formatIntl('intl.pinPage', { label })
     },
     components: {
       SvgIcon,

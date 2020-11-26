@@ -1,8 +1,9 @@
 <svelte:head>
-  <title>{notificationsIndicator}{instanceIndicator} · {name}</title>
+  <title>{title}</title>
 </svelte:head>
 <script>
   import { store } from '../_store/store'
+  import { formatIntl } from '../_utils/formatIntl'
 
   export default {
     data: () => ({
@@ -10,15 +11,18 @@
     }),
     store: () => store,
     computed: {
-      instanceIndicator: ({ $isUserLoggedIn, $currentInstance, settingsPage }) => (
-        // If the user is not logged in, or if they're on a settings page (which
-        // is more general than instance-specific), of if this is server-rendered, then
-        // show "Pinafore". Otherwise show the instance name.
-        `${($isUserLoggedIn && !settingsPage && $currentInstance) ? $currentInstance : 'Pinafore'}`
+      showInstanceName: ({ $isUserLoggedIn, settingsPage, $currentInstance }) => (
+        !!($isUserLoggedIn && !settingsPage && $currentInstance)
       ),
-      notificationsIndicator: ({ $hasNotifications, $numberOfNotifications }) => (
-        $hasNotifications ? `(${$numberOfNotifications}) ` : ''
-      )
+      title: ({ showInstanceName, $currentInstance, $hasNotifications, $numberOfNotifications, name }) => {
+        return formatIntl('intl.pageTitle', {
+          showInstanceName,
+          instanceName: $currentInstance,
+          hasNotifications: $hasNotifications,
+          count: $numberOfNotifications,
+          name
+        })
+      }
     }
   }
 </script>

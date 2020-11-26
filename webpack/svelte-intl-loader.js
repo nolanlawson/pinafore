@@ -29,7 +29,7 @@ export default function (source) {
       return `{@html ${JSON.stringify(html)}}`
     })
     // replace 'intl.foo', which should only be used in JS for plurals/complex strings
-    .replace(/'intl\.([^']+)'/, (match, p1) => {
+    .replace(/'intl\.([^']+)'/g, (match, p1) => {
       const text = trimWhitespace(get(intl, p1))
       const ast = parse(text)
       return JSON.stringify(ast)

@@ -7,6 +7,7 @@ import { buildInlineScript } from './build-inline-script'
 import { buildSvg } from './build-svg'
 import now from 'performance-now'
 import debounce from 'lodash-es/debounce'
+import applyIntl from '../webpack/svelte-intl-loader'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -78,7 +79,7 @@ function doWatch () {
 
 async function buildAll () {
   const start = now()
-  const html = (await Promise.all(partials.map(async partial => {
+  let html = (await Promise.all(partials.map(async partial => {
     if (typeof partial === 'string') {
       return partial
     }
@@ -88,6 +89,7 @@ async function buildAll () {
     return partial.result
   }))).join('')
 
+  html = applyIntl(html)
   await writeFile(path.resolve(__dirname, '../src/template.html'), html, 'utf8')
   const end = now()
   console.log(`Built template.html in ${(end - start).toFixed(2)}ms`)

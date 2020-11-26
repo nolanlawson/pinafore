@@ -50,7 +50,8 @@ module.exports = {
         }
       },
       {
-        test: /timeago.js$/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
           loader: path.join(__dirname, './svelte-intl-loader.js')
         }

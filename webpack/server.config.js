@@ -32,6 +32,13 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: path.join(__dirname, './svelte-intl-loader.js')
+        }
+      },
+      {
         test: /\.html$/,
         exclude: /node_modules/,
         use: {
