@@ -104,10 +104,10 @@
     store: () => store,
     helpers: {
       createLabel (i) {
-        return formatIntl('intl.pollChoiceLabel', i + 1)
+        return formatIntl('intl.pollChoiceLabel', { index: i + 1 })
       },
       createRemoveLabel (i) {
-        return formatIntl('intl.removePollChoice', i + 1)
+        return formatIntl('intl.removePollChoice', { index: i + 1 })
       }
     },
     methods: {

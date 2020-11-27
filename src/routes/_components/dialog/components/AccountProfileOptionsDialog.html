@@ -22,6 +22,7 @@ import { copyText } from '../../../_actions/copyText'
 import { composeNewStatusMentioning } from '../../../_actions/mention'
 import { toggleMute } from '../../../_actions/toggleMute'
 import { reportStatusOrAccount } from '../../../_actions/report'
+import { formatIntl } from '../../../_utils/formatIntl'
 
 export default {
   oncreate,
@@ -43,18 +44,22 @@ export default {
         return ''
       }
       return (following || followRequested)
-        ? `Unfollow @${username}`
-        : `Follow @${username}`
+        ? formatIntl('intl.unfollowAccount', { account: `@${username}` })
+        : formatIntl('intl.followAccount', { account: `@${username}` })
     },
     followIcon: ({ following, followRequested }) => (
       following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
     ),
     blockLabel: ({ blocking, username }) => (
-      blocking ? `Unblock @${username}` : `Block @${username}`
+      blocking
+        ? formatIntl('intl.unblockAccount', { account: `@${username}` })
+        : formatIntl('intl.blockAccount', { account: `@${username}` })
     ),
     blockIcon: ({ blocking }) => blocking ? '#fa-unlock' : '#fa-ban',
     muteLabel: ({ muting, username }) => (
-      muting ? `Unmute @${username}` : `Mute @${username}`
+      muting
+        ? formatIntl('intl.unmuteAccount', { account: `@${username}` })
+        : formatIntl('intl.muteAccount', { account: `@${username}` })
     ),
     muteIcon: ({ muting }) => muting ? '#fa-volume-up' : '#fa-volume-off',
     isUser: ({ accountId, verifyCredentialsId }) => accountId === verifyCredentialsId,
@@ -64,17 +69,19 @@ export default {
     showingReblogs: ({ relationship }) => relationship ? relationship.showing_reblogs : true,
     showReblogsLabel: ({ showingReblogs, username }) => (
       showingReblogs
-        ? `Hide boosts from @${username}`
-        : `Show boosts from @${username}`
+        ? formatIntl('intl.hideReblogsFromAccount', { account: `@${username}` })
+        : formatIntl('intl.showReblogsFromAccount', { account: `@${username}` })
     ),
     domain: ({ acct }) => acct.split('@')[1],
     blockingDomain: ({ relationship }) => relationship && relationship.domain_blocking,
     blockDomainLabel: ({ blockingDomain, domain }) => (
       blockingDomain
-        ? `Unhide ${domain}`
-        : `Hide ${domain}`
+        ? formatIntl('intl.showDomain', { domain })
+        : formatIntl('intl.hideDomain', { domain })
     ),
-    reportLabel: ({ username }) => `Report @${username}`,
+    reportLabel: ({ username }) => (
+      formatIntl('intl.reportAccount', { account: `@${username}` })
+    ),
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon,
       followLabel, followIcon, following, followRequested,
@@ -83,7 +90,7 @@ export default {
     }) => ([
       !isUser && {
         key: 'mention',
-        label: `Mention @${username}`,
+        label: formatIntl('intl.mentionAccount', { account: `@${username}` }),
         icon: '#fa-comments'
       },
       !isUser && !blocking && {
@@ -118,7 +125,7 @@ export default {
       },
       {
         key: 'copy',
-        label: 'Copy link to account',
+        label: 'intl.copyLinkToAccount',
         icon: '#fa-link'
       }
     ].filter(Boolean))

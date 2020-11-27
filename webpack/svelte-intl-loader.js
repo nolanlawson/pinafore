@@ -29,10 +29,15 @@ export default function (source) {
       const html = trimWhitespace(getIntl(p1))
       return `{@html ${JSON.stringify(html)}}`
     })
-    // replace 'intl.foo', which should only be used in JS for plurals/complex strings
-    .replace(/'intl\.([^']+)'/g, (match, p1) => {
+    // replace formatIntl('intl.foo' which requires the full AST object
+    .replace(/formatIntl\('intl\.([^']+)'/g, (match, p1) => {
       const text = trimWhitespace(getIntl(p1))
       const ast = parse(text)
-      return JSON.stringify(ast)
+      return `formatIntl(${JSON.stringify(ast)}`
+    })
+    // replace 'intl.foo', which doesn't require the AST, just the string
+    .replace(/'intl\.([^']+)'/g, (match, p1) => {
+      const text = trimWhitespace(getIntl(p1))
+      return JSON.stringify(text)
     })
 }
