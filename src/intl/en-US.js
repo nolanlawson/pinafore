@@ -185,5 +185,27 @@ export default {
   hideDomain: 'Hide {domain}',
   reportAccount: 'Report {account}',
   mentionAccount: 'Mention {account}',
-  copyLinkToAccount: 'Copy link to account'
+  copyLinkToAccount: 'Copy link to account',
+  okay: 'OK',
+  cancel: 'Cancel',
+  copiedToClipboard: 'Copied to clipboard',
+  altLabel: 'Describe for the visually impaired',
+  extractText: 'Extract text from image',
+  extractingText: 'Extracting text…',
+  extractingTextCompletion: 'Extracting text ({percent}% complete)…',
+  unableToExtractText: 'Unable to extract text.',
+  navigateMedia: 'Navigate media items',
+  showPreviousMedia: 'Show previous media',
+  showNextMedia: 'Show next media',
+  enterPinchZoom: 'Pinch-zoom mode',
+  exitPinchZoom: 'Exit pinch-zoom mode',
+  showMedia: `Show {index, select,
+    1 {first}
+    2 {second}
+    3 {third}
+    other {fourth}
+  } media {current, select,
+    true {(current)}
+    other {}
+  }`
 }

@@ -2,12 +2,12 @@
   <textarea
     id="the-media-alt-input-{realm}-{index}"
     class="media-alt-input"
-    placeholder="Describe for the visually impaired"
+    placeholder="{intl.altLabel}"
     ref:textarea
     bind:value=rawText
   ></textarea>
   <label for="the-media-alt-input-{realm}-{index}" class="sr-only">
-    Describe for the visually impaired
+    {intl.altLabel}
   </label>
   <LengthGauge
     {length}
@@ -107,6 +107,7 @@
   import SvgIcon from '../../SvgIcon.html'
   import { toast } from '../../toast/toast'
   import { getCachedMediaFile } from '../../../_utils/mediaUploadFileCache'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 
@@ -132,10 +133,10 @@
       overLimit: ({ mediaAltCharLimit, length }) => length > mediaAltCharLimit,
       url: ({ media, index }) => get(media, [index, 'data', 'url']),
       mediaId: ({ media, index }) => get(media, [index, 'data', 'id']),
-      extractButtonText: ({ extracting }) => extracting ? 'Extracting text…' : 'Extract text from image',
+      extractButtonText: ({ extracting }) => extracting ? 'intl.extractingText' : 'intl.extractText',
       extractButtonLabel: ({ extractButtonText, extractionProgress, extracting }) => {
         if (extracting) {
-          return `Extracting text (${Math.round(extractionProgress)}% complete)…`
+          return formatIntl('intl.extractingTextCompletion', { percent: Math.round(extractionProgress) })
         }
         return extractButtonText
       }
@@ -210,9 +211,7 @@
           }
         } catch (err) {
           console.error(err)
-          /* no await */ toast.say(
-            'Unable to extract text. Ensure your instance supports cross-origin resource sharing (CORS) for images.'
-          )
+          /* no await */ toast.say('intl.unableToExtractText')
         } finally {
           this.set({ extracting: false })
           setTimeout(() => {
