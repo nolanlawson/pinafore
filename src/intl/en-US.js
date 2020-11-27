@@ -365,6 +365,31 @@ export default {
   theme: 'Theme',
   themeForInstance: 'Theme for {instance}',
   disableCustomScrollbars: 'Disable custom scrollbars',
+  preferences: 'Preferences',
+  hotkeySettings: 'Hotkey settings',
+  disableHotkeys: 'Disable all hotkeys',
+  leftRightArrows: 'Left/right arrow keys change focus rather than columns/media',
+  guide: 'Guide',
+  reload: 'Reload',
+  // Wellness settings
+  wellness: 'Wellness',
+  wellnessSettings: 'Wellness settings',
+  wellnessDescription: `Wellness settings are designed to reduce the addictive or anxiety-inducing aspects of social media.
+    Choose any options that work well for you.`,
+  enableAll: 'Enable all',
+  metrics: 'Metrics',
+  hideFollowerCount: 'Hide follower counts (capped at 10)',
+  hideReblogCount: 'Hide boost counts',
+  hideFavoriteCount: 'Hide favorite counts',
+  hideUnread: 'Hide unread notifications count (i.e. the red dot)',
+  ui: 'UI',
+  grayscaleMode: 'Grayscale mode',
+  wellnessFooter: `These settings are partly based on guidelines from the
+    <a rel="noopener" target="_blank" href="https://humanetech.com">Center for Humane Technology</a>.`,
+  // This is a link: "You can filter or disable notifications in the _instance settings_"
+  filterNotificationsPre: 'You can filter or disable notifications in the',
+  filterNotificationsText: 'instance settings',
+  filterNotificationsPost: '',
   // Custom tooltips, like "Disable _infinite scroll_", where you can click _infinite scroll_
   // to see a description. It's hard to properly internationalize, so we just break up the strings.
   disableInfiniteScrollPre: 'Disable',
