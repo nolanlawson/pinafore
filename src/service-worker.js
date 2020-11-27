@@ -200,12 +200,12 @@ async function showRichNotification (data, notification) {
         isPublic && {
           action: 'reblog',
           icon: '/icon-push-fa-retweet.png', // generated manually from font-awesome-svg
-          title: 'Boost'
+          title: 'intl.reblog'
         },
         {
           action: 'favourite',
           icon: '/icon-push-fa-star.png', // generated manually from font-awesome-svg
-          title: 'Favorite'
+          title: 'intl.favorite'
         }
       ].filter(Boolean)
 

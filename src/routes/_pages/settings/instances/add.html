@@ -6,44 +6,42 @@
 
       {#if !hasIndexedDB || !hasLocalStorage}
         <div class="form-error form-error-user-error" role="alert">
-          It seems Pinafore cannot store data locally. Is your browser in private mode
-          or blocking cookies? Pinafore stores all data locally, and requires LocalStorage and
-          IndexedDB to work correctly.
+          {intl.storageError}
         </div>
       {/if}
 
       {#if $logInToInstanceError && $logInToInstanceErrorForText === $instanceNameInSearch}
         <div class="form-error form-error-user-error" role="alert">
-          Error: {@html $logInToInstanceError}
+          {intl.errorShort} {@html $logInToInstanceError}
         </div>
       {/if}
 
       <noscript>
         <div class="form-error" role="alert">
-          You must enable JavaScript to log in.
+          {intl.javaScriptError}
         </div>
       </noscript>
 
-      <label for="instanceInput">Instance:</label>
+      <label for="instanceInput">{intl.instanceColon}</label>
       <input type="text" inputmode="url" autocapitalize="none" spellcheck="false" id="instanceInput"
-             bind:value='$instanceNameInSearch' placeholder="Enter instance name" required
+             bind:value='$instanceNameInSearch' placeholder="{intl.enterInstanceName}" required
       >
       <button class="primary" type="submit" id="submitButton"
               disabled={!$instanceNameInSearch || $logInToInstanceLoading}>
-        Log in
+        {intl.logIn}
       </button>
     </form>
   </div>
 
   {#if !$isUserLoggedIn}
     <p>
-      Don't have an
+      {intl.getAnInstancePre}
       <Tooltip
-        text="instance"
-        tooltipText="An instance is your Mastodon home server, such as mastodon.social or cybre.space."
+        text="{intl.getAnInstanceText}"
+        tooltipText="{intl.getAnInstanceDescription}"
       />
-      ?
-      <a rel="noopener" target="_blank" href="https://joinmastodon.org">Join Mastodon!</a>
+      {intl.getAnInstancePost}
+      <a rel="noopener" target="_blank" href="https://joinmastodon.org">{intl.joinMastodon}</a>
     </p>
   {/if}
 </SettingsLayout>
@@ -110,7 +108,7 @@
       hasLocalStorage: true
     }),
     computed: {
-      pageLabel: ({ $isUserLoggedIn }) => $isUserLoggedIn ? 'Add instance' : 'Log in'
+      pageLabel: ({ $isUserLoggedIn }) => $isUserLoggedIn ? 'intl.addInstance' : 'intl.logIn'
     },
     methods: {
       onSubmitInstance (event) {

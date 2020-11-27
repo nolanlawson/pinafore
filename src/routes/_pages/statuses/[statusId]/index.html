@@ -1,13 +1,13 @@
 {#if $isUserLoggedIn}
   <TimelinePage timeline="status/{params.statusId}">
-    <DynamicPageBanner title="" ariaTitle="Status thread page" />
+    <DynamicPageBanner title="" ariaTitle="{intl.statusThreadPage}" />
   </TimelinePage>
 {:else}
   <HiddenFromSSR>
     <FreeTextLayout>
-      <h1>Status</h1>
+      <h1>{intl.status}</h1>
 
-      <p>A status thread will appear here when logged in.</p>
+      <p>{intl.statusNotLoggedIn}</p>
     </FreeTextLayout>
   </HiddenFromSSR>
 {/if}

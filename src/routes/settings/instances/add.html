@@ -1,4 +1,4 @@
-<Title name={$isUserLoggedIn ? 'Add instance' : 'Log in'} settingsPage={true} />
+<Title name={titleName} settingsPage={true} />
 
   <LazyPage {pageComponent} {params} />
 
@@ -15,6 +15,9 @@
     },
     data: () => ({
       pageComponent
-    })
+    }),
+    computed: {
+      titleName: ({ $isUserLoggedIn }) => $isUserLoggedIn ? 'intl.addInstance' : 'intl.logIn'
+    }
   }
 </script>

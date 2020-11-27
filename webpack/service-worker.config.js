@@ -1,3 +1,6 @@
+import { LOCALE } from '../src/routes/_static/intl'
+import path from 'path'
+
 const config = require('sapper/config/webpack.js')
 const terser = require('./terser.config')
 const webpack = require('webpack')
@@ -15,11 +18,23 @@ module.exports = {
       terser()
     ]
   },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: path.join(__dirname, './svelte-intl-loader.js')
+        }
+      }
+    ]
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
-      'process.env.SAPPER_TIMESTAMP': process.env.SAPPER_TIMESTAMP || Date.now()
+      'process.env.SAPPER_TIMESTAMP': process.env.SAPPER_TIMESTAMP || Date.now(),
+      'process.env.LOCALE': JSON.stringify(LOCALE)
     })
   ].filter(Boolean)
 }

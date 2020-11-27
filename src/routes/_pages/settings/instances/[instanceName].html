@@ -2,15 +2,15 @@
   <h1 class="instance-name-h1">{params.instanceName}</h1>
 
   {#if verifyCredentials}
-    <h2>Logged in as:</h2>
+    <h2>{intl.loggedInAs}</h2>
     <InstanceUserProfile {verifyCredentials} />
-    <h2>Home timeline filters</h2>
+    <h2>{intl.homeTimelineFilters}</h2>
     <HomeTimelineFilterSettings {instanceName} />
-    <h2>Notification filters</h2>
+    <h2>{intl.notificationFilters}</h2>
     <NotificationFilterSettings {instanceName} />
-    <h2>Push notifications</h2>
+    <h2>{intl.pushNotifications}</h2>
     <PushNotificationSettings {instanceName} />
-    <h2>Theme</h2>
+    <h2>{intl.theme}</h2>
     <ThemeSettings {instanceName} />
 
     <InstanceActions {instanceName} />

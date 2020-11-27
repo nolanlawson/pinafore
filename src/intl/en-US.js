@@ -34,6 +34,7 @@ export default {
   alert: 'Alert',
   close: 'Close',
   error: 'Error: {error}',
+  errorShort: 'Error:',
   // Relative timestamps
   justNow: 'just now',
   // Navigation, page titles
@@ -85,6 +86,9 @@ export default {
   lists: 'Lists',
   instanceSettings: 'Instance settings',
   notificationMentions: 'Notification mentions',
+  profileWithMedia: 'Profile with media',
+  profileWithReplies: 'Profile with replies',
+  hashtag: 'Hashtag',
   // not logged in
   profileNotLoggedIn: 'A user timeline will appear here when logged in.',
   bookmarksNotLoggedIn: 'Your bookmarks will appear here when logged in.',
@@ -97,6 +101,8 @@ export default {
   listNotLoggedIn: 'A list will appear here when logged in.',
   notificationsNotLoggedIn: 'Your notifications will appear here when logged in.',
   notificationMentionsNotLoggedIn: 'Your notification mentions will appear here when logged in.',
+  statusNotLoggedIn: 'A toot thread will appear here when logged in.',
+  tagNotLoggedIn: 'A hashtag timeline will appear here when logged in.',
   // Notification subpages
   filters: 'Filters',
   all: 'All',
@@ -310,6 +316,7 @@ export default {
   accountHasMoved: '{account} has moved:',
   profilePageForAccount: 'Profile page for {account}',
   // About page
+  about: 'About',
   aboutApp: 'About Pinafore',
   aboutAppDescription: `
   <p>
@@ -398,6 +405,36 @@ export default {
              the bottom or top of the timeline. Instead, buttons will allow you to
              load more content on demand.`,
   disableInfiniteScrollPost: '',
+  // Instance settings
+  loggedInAs: 'Logged in as',
+  homeTimelineFilters: 'Home timeline filters',
+  notificationFilters: 'Notification filters',
+  pushNotifications: 'Push notifications',
+  // Add instance page
+  storageError: `It seems Pinafore cannot store data locally. Is your browser in private mode
+          or blocking cookies? Pinafore stores all data locally, and requires LocalStorage and
+          IndexedDB to work correctly.`,
+  javaScriptError: 'You must enable JavaScript to log in.',
+  enterInstanceName: 'Enter instance name',
+  instanceColon: 'Instance:',
+  // Custom tooltip, concatenated together
+  getAnInstancePre: "Don't have an",
+  getAnInstanceText: 'instance',
+  getAnInstanceDescription: 'An instance is your Mastodon home server, such as mastodon.social or cybre.space.',
+  getAnInstancePost: '?',
+  joinMastodon: 'Join Mastodon!',
+  instancesYouveLoggedInTo: "Instances you've logged in to:",
+  addAnotherInstance: 'Add another instance',
+  youreNotLoggedIn: "You're not logged in to any instances.",
+  currentInstanceLabel: `{instance} {current, select,
+    true {(current instance)}
+    other {}
+  }`,
+  // Link text
+  logInToAnInstancePre: '',
+  logInToAnInstanceText: 'Log in to an instance',
+  logInToAnInstancePost: 'to start using Pinafore.',
+  // Another custom tooltip
   showRingPre: 'Always show',
   showRingText: 'focus ring',
   showRingDescription: `The focus ring is the outline showing the currently focused element. By default, it's only
@@ -408,6 +445,8 @@ export default {
   homeTimelineFilterSettings: 'Home timeline filter settings',
   switchOrLogOut: 'Switch to or log out of this instance',
   switchTo: 'Switch to this instance',
+  switchToInstance: 'Switch to instance',
+  switchToNameOfInstance: 'Switch to {instance}',
   logOut: 'Log out',
   logOutOfInstanceConfirm: 'Log out of {instance}?',
   notificationFilterSettings: 'Notification filter settings',
@@ -487,6 +526,8 @@ export default {
   loadingMore: 'Loading more…',
   loadMore: 'Load more',
   showCountMore: 'Show {count} more',
-  nothingToShow: 'Nothing to show.'
-
+  nothingToShow: 'Nothing to show.',
+  // status thread page
+  statusThreadPage: 'Toot thread page',
+  status: 'Toot'
 }

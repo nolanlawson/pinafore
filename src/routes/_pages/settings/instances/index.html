@@ -1,10 +1,10 @@
-<SettingsLayout page='settings/instances' label="Instances">
-  <h1>Instances</h1>
+<SettingsLayout page='settings/instances' label="{intl.instances}">
+  <h1>{intl.instances}</h1>
 
   {#if $isUserLoggedIn}
-    <p>Instances you've logged in to:</p>
-    <RadioGroup id="instance-switch" label="Switch to instance" length={numInstances}>
-      <SettingsList label="Instances">
+    <p>{intl.instancesYouveLoggedInTo}</p>
+    <RadioGroup id="instance-switch" label="{intl.switchToInstance}" length={numInstances}>
+      <SettingsList label="{intl.instances}">
         {#each instanceStates as instance}
         <SettingsListRow>
           <SettingsListButton className="instance-switcher-instance-name"
@@ -28,13 +28,14 @@
       </SettingsList>
     </RadioGroup>
     <p>
-      <a rel="prefetch" href="/settings/instances/add" id="log-in-link-1">Add another instance</a>
+      <a rel="prefetch" href="/settings/instances/add" id="log-in-link-1">{intl.addAnotherInstance}</a>
     </p>
   {:else}
-    <p>You're not logged in to any instances.</p>
+    <p>{intl.youreNotLoggedIn}</p>
     <p>
-      <a rel="prefetch" href="/settings/instances/add" id="log-in-link-2">Log in to an instance</a>
-      to start using Pinafore.
+      {intl.logInToAnInstancePre}
+      <a rel="prefetch" href="/settings/instances/add" id="log-in-link-2">{intl.logInToAnInstanceText}</a>
+      {intl.logInToAnInstancePost}
     </p>
   {/if}
 </SettingsLayout>
@@ -80,6 +81,7 @@
   import SvgIcon from '../../../_components/SvgIcon.html'
   import RadioGroup from '../../../_components/radio/RadioGroup.html'
   import RadioGroupButton from '../../../_components/radio/RadioGroupButton.html'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   export default {
     components: {
@@ -105,8 +107,8 @@
           index,
           name,
           current,
-          label: `${name} ${current ? '(current instance)' : ''}`,
-          switchLabel: `Switch to ${name}`
+          label: formatIntl('intl.currentInstanceLabel', { instance: name, current }),
+          switchLabel: formatIntl('intl.switchToNameOfInstance', { instance: name })
         }))
       ),
       numInstances: ({ $loggedInInstancesAsList }) => $loggedInInstancesAsList.length
