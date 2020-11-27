@@ -27,7 +27,7 @@ test('shows unread notification', async t => {
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (current page)')
     .expect(getTitleText()).eql('localhost:3000 · Notifications')
     .expect(getNthStatus(1).innerText).contains('somebody please favorite this to validate me')
-    .expect(getNthStatus(1).innerText).match(/admin\s+favorited your status/)
+    .expect(getNthStatus(1).innerText).match(/admin\s+favorited your toot/)
   await t
     .click(homeNavButton)
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
