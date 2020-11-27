@@ -2,7 +2,7 @@
      aria-live="assertive"
      aria-atomic="true"
      aria-hidden={!shown}
-     aria-label="Alert"
+     aria-label="{intl.alert}}"
 >
   <div class="snackbar-container">
     <span class="text">
@@ -12,7 +12,7 @@
       <button class="button" on:click="onClick(event)">
         {buttonText}
       </button>
-      <button class="button" aria-label="Close" on:click="close(event)">
+      <button class="button" aria-label="{intl.close}" on:click="close(event)">
         <SvgIcon className="close-snackbar-button" href="#fa-times" />
       </button>
     </div>

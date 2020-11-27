@@ -1,11 +1,11 @@
-<form class="instance-actions" aria-label="Switch to or log out of this instance">
+<form class="instance-actions" aria-label="{intl.switchOrLogOut}">
   {#if $loggedInInstancesInOrder.length > 1 && $currentInstance !== instanceName}
     <button class="primary"
             on:click="onSwitchToThisInstance(event)">
-      Switch to this instance
+      {intl.switchTo}
     </button>
   {/if}
-  <button on:click="onLogOut(event)">Log out</button>
+  <button on:click="onLogOut(event)">{intl.logOut}</button>
 </form>
 <style>
   .instance-actions {
@@ -23,6 +23,7 @@
   import { store } from '../../../_store/store'
   import { importShowTextConfirmationDialog } from '../../dialog/asyncDialogs/importShowTextConfirmationDialog.js'
   import { switchToInstance, logOutOfInstance } from '../../../_actions/instances'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   export default {
     store: () => store,
@@ -38,7 +39,7 @@
 
         const showTextConfirmationDialog = await importShowTextConfirmationDialog()
         showTextConfirmationDialog({
-          text: `Log out of ${instanceName}?`
+          text: formatIntl('intl.logOutOfInstanceConfirm', { instance: instanceName })
         }).on('positive', () => {
           // TODO: dumb timing hack because the modal navigates back while we're trying to navigate forward
           setTimeout(() => {

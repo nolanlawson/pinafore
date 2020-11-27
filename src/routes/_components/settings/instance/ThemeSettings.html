@@ -1,9 +1,9 @@
-<form class="theme-chooser" aria-label="Choose a theme">
+<form class="theme-chooser" aria-label="{intl.chooseTheme}">
   <div class="theme-groups">
     {#each themeGroups as themeGroup}
     <div class="theme-group">
       <h3>
-        {themeGroup.dark ? 'Dark background' : 'Light background' }
+        {themeGroup.dark ? 'intl.darkBackground' : 'intl.lightBackground' }
       </h3>
       {#each themeGroup.themes as theme}
       <div class="theme-picker">
@@ -15,7 +15,7 @@
                style="background-color: {theme.color};" >
           </div>
           <span class="theme-picker-label-span">
-            {theme.label} {theme.name === DEFAULT_THEME ? '(default)' : ''}
+            {createThemeLabel(theme)}
           </span>
         </label>
       </div>
@@ -93,6 +93,7 @@
   import { store } from '../../../_store/store'
   import { themes } from '../../../_static/themes'
   import { DEFAULT_THEME } from '../../../_utils/themeEngine'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   export default {
     async oncreate () {
@@ -119,6 +120,14 @@
           themes: themes.filter(_ => _.dark)
         }
       ])
+    },
+    helpers: {
+      createThemeLabel (theme) {
+        return formatIntl('intl.themeLabel', {
+          label: theme.label,
+          default: theme.name === DEFAULT_THEME
+        })
+      }
     },
     methods: {
       onThemeChange () {

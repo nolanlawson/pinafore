@@ -48,11 +48,11 @@
     store: () => store,
     computed: {
       navItemLabels: ({ $isUserLoggedIn }) => ({
-        settings: 'Settings',
-        'settings/about': 'About Pinafore',
-        'settings/general': 'General',
-        'settings/instances': 'Instances',
-        'settings/instances/add': $isUserLoggedIn ? 'Add instance' : 'Log in'
+        settings: 'intl.settings',
+        'settings/about': 'intl.aboutApp',
+        'settings/general': 'intl.general',
+        'settings/instances': 'intl.instances',
+        'settings/instances/add': $isUserLoggedIn ? 'intl.addInstance' : 'intl.logIn'
       }),
       navItems: ({ page, navItemLabels }) => {
         const res = []

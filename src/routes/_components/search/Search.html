@@ -1,14 +1,14 @@
 <form class="search-input-form" on:submit="onSubmit(event)">
+  <label class="sr-only" for="the-search-input">{intl.search}</label>
   <div class="search-input-wrapper">
     <input id="the-search-input"
            type="search"
            class="search-input"
-           placeholder="Search"
-           aria-label="Search input"
+           placeholder="{intl.search}"
            required
            bind:value="$queryInSearch">
   </div>
-  <button type="submit" class="primary search-button" aria-label="Search" disabled={$searchLoading}>
+  <button type="submit" class="primary search-button" aria-label="{intl.search}" disabled={$searchLoading}>
     <SvgIcon className="search-button-svg" href="#fa-search" />
   </button>
 </form>
