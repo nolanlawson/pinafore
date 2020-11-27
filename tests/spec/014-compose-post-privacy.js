@@ -29,7 +29,7 @@ test('Changes post privacy', async t => {
 test('can use privacy dialog within compose dialog', async t => {
   await loginAsFoobar(t)
   await scrollToStatus(t, 16)
-  await t.expect(composeButton.getAttribute('aria-label')).eql('Compose')
+  await t.expect(composeButton.getAttribute('aria-label')).eql('Compose toot')
   await sleep(2000)
   await t.click(composeButton)
     .click(composeModalPostPrivacyButton)
