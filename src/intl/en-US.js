@@ -1,5 +1,7 @@
 export default {
+  // Home page, basic <title> and <description>
   appName: 'Pinafore',
+  appDescription: 'An alternative web client for Mastodon, focused on speed and simplicity.',
   homeDescription: `
     <p>
       Pinafore is a web client for
@@ -13,6 +15,27 @@ export default {
       or get started by logging in to an instance:
     </p>`,
   logIn: 'Log in',
+  footer: `
+    <p>
+      Pinafore is
+      <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore">open-source software</a>
+      created by
+      <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+      and distributed under the
+      <a rel="noopener" target="_blank"
+         href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">AGPL License</a>.
+      Here is the <a href="/settings/about#privacy-policy" rel="prefetch">privacy policy</a>.
+    </p>
+  `,
+  // Generic UI
+  loading: 'Loading',
+  okay: 'OK',
+  cancel: 'Cancel',
+  alert: 'Alert',
+  close: 'Close',
+  // Relative timestamps
+  justNow: 'just now',
+  // Navigation, page titles
   navItemLabel: `
     {label} {selected, select,
       true {(current page)}
@@ -31,8 +54,6 @@ export default {
       other {}
     }
   `,
-  justNow: 'just now',
-  appDescription: 'An alternative web client for Mastodon, focused on speed and simplicity.',
   blockedUsers: 'Blocked users',
   bookmarks: 'Bookmarks',
   directMessages: 'Direct messages',
@@ -47,24 +68,12 @@ export default {
   pageHeader: 'Page header',
   goBack: 'Go back',
   back: 'Back',
-  footer: `
-    <p>
-      Pinafore is
-      <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore">open-source software</a>
-      created by
-      <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
-      and distributed under the
-      <a rel="noopener" target="_blank"
-         href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">AGPL License</a>.
-      Here is the <a href="/settings/about#privacy-policy" rel="prefetch">privacy policy</a>.
-    </p>
-  `,
-  overLimit: '{count} {count, plural, =1 {character} other {characters}} over limit',
-  underLimit: '{count} {count, plural, =1 {character} other {characters}} remaining',
-  loading: 'Loading',
+  // Notification subpages
   filters: 'Filters',
   all: 'All',
   mentions: 'Mentions',
+  // Hotkeys
+  hotkeys: 'Hotkeys',
   global: 'Global',
   timeline: 'Timeline',
   media: 'Media',
@@ -113,6 +122,7 @@ export default {
   mediaHotkeys: `
     <li><kbd>←</kbd> / <kbd>→</kbd> to go to next or previous</li>
   `,
+  // Community page, tabs
   tabLabel: `{label} {current, select,
     true {(Current)}
     other {}
@@ -139,6 +149,9 @@ export default {
     other {}
   }`,
   pinPage: 'Pin {label}',
+  // Status composition
+  overLimit: '{count} {count, plural, =1 {character} other {characters}} over limit',
+  underLimit: '{count} {count, plural, =1 {character} other {characters}} remaining',
   composeStatus: 'Compose toot',
   postStatus: 'Toot!',
   contentWarning: 'Content warning',
@@ -152,6 +165,7 @@ export default {
   description: 'Description',
   descriptionLabel: 'Describe for the visually impaired (image, video) or auditorily impaired (audio, video)',
   markAsSensitive: 'Mark media as sensitive',
+  // Polls
   createPoll: 'Create poll',
   removePollChoice: 'Remove choice {index}',
   pollChoiceLabel: 'Choice {index}',
@@ -171,6 +185,12 @@ export default {
   postPrivacyLabel: 'Adjust privacy (currently {label})',
   addContentWarning: 'Add content warning',
   removeContentWarning: 'Remove content warning',
+  altLabel: 'Describe for the visually impaired',
+  extractText: 'Extract text from image',
+  extractingText: 'Extracting text…',
+  extractingTextCompletion: 'Extracting text ({percent}% complete)…',
+  unableToExtractText: 'Unable to extract text.',
+  // Account options
   followAccount: 'Follow {account}',
   unfollowAccount: 'Unfollow {account}',
   blockAccount: 'Block {account}',
@@ -184,14 +204,8 @@ export default {
   reportAccount: 'Report {account}',
   mentionAccount: 'Mention {account}',
   copyLinkToAccount: 'Copy link to account',
-  okay: 'OK',
-  cancel: 'Cancel',
   copiedToClipboard: 'Copied to clipboard',
-  altLabel: 'Describe for the visually impaired',
-  extractText: 'Extract text from image',
-  extractingText: 'Extracting text…',
-  extractingTextCompletion: 'Extracting text ({percent}% complete)…',
-  unableToExtractText: 'Unable to extract text.',
+  // Media dialog
   navigateMedia: 'Navigate media items',
   showPreviousMedia: 'Show previous media',
   showNextMedia: 'Show next media',
@@ -213,6 +227,7 @@ export default {
   mute: 'Mute',
   zoomOut: 'Zoom out',
   zoomIn: 'Zoom in',
+  // Reporting
   reportingLabel: 'You are reporting {account} to the moderators of {instance}.',
   additionalComments: 'Additional comments',
   forwardDescription: 'Forward to the moderators of {instance} as well?',
@@ -221,7 +236,7 @@ export default {
   report: 'Report',
   noContent: '(No content)',
   noStatuses: 'No toots to report',
-  hotkeys: 'Hotkeys',
+  // Status options
   unpinFromProfile: 'Unpin from profile',
   pinToProfile: 'Pin to profile',
   muteConversation: 'Mute conversation',
@@ -232,6 +247,7 @@ export default {
   reportStatus: 'Report toot',
   shareStatus: 'Share toot',
   copyLinkToStatus: 'Copy link to toot',
+  // Account profile
   profileForAccount: 'Profile for {account}',
   statisticsAndMoreOptions: 'Stats and more options',
   statuses: 'Toots',
@@ -262,6 +278,7 @@ export default {
   profilePageForAccount: 'Profile page for {account}',
   profile: 'Profile',
   profileNotLoggedIn: 'A user timeline will appear here when logged in.',
+  // Settings
   settings: 'Settings',
   aboutApp: 'About Pinafore',
   general: 'General',
@@ -273,6 +290,7 @@ export default {
   logOut: 'Log out',
   logOutOfInstanceConfirm: 'Log out of {instance}?',
   notificationFilterSettings: 'Notification filter settings',
+  // Push notifications
   browserDoesNotSupportPush: "Your browser doesn't support push notifications.",
   deniedPush: 'You have denied permission to show notifications.',
   pushNotificationsNote: 'Note that you can only have push notifications for one instance at a time.',
@@ -282,6 +300,7 @@ export default {
   pollResults: 'Poll results',
   needToReauthenticate: 'You need to reauthenticate in order to enable push notification. Log out of {instance}?',
   failedToUpdatePush: 'Failed to update push notification settings: {error}',
+  // Themes
   chooseTheme: 'Choose a theme',
   darkBackground: 'Dark background',
   lightBackground: 'Light background',
@@ -289,8 +308,6 @@ export default {
     true {(default)}
     other {}
   }`,
-  alert: 'Alert',
-  close: 'Close',
   animatedImage: 'Animation image: {description}',
   showImage: `Show {animated, select,
     true {animated}
@@ -321,6 +338,7 @@ export default {
   showSensitiveMedia: 'Show sensitive media',
   hideSensitiveMedia: 'Hide sensitive media',
   clickToShowSensitive: 'Sensitive content. Click to show.',
+  // Polls
   voteOnPoll: 'Vote on poll',
   pollChoices: 'Poll choices',
   vote: 'Vote',
@@ -332,6 +350,7 @@ export default {
     one {1 vote}
     other {{count} votes}
   }`,
+  // Status interactions
   clickToShowThread: '{time} - click to show thread',
   showMore: 'Show more',
   showLess: 'Show less',
