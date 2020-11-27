@@ -7,14 +7,14 @@
 >
   <div class="mute-dialog">
     <p>
-      Mute @{account.acct} ?
+      {confirmMuteText}
     </p>
     <div class="mute-dialog-form">
       <input type="checkbox"
              id="mute-notifications"
              name="mute-notifications"
              bind:checked="muteNotifications">
-      <label for="mute-notifications">Mute notifications as well</label>
+      <label for="mute-notifications">{intl.muteNotifications}</label>
     </div>
   </div>
 </GenericConfirmationDialog>
@@ -32,14 +32,20 @@
   import { close } from '../helpers/closeDialog'
   import { oncreate } from '../helpers/onCreateDialog'
   import { setAccountMuted } from '../../../_actions/mute'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   export default {
     oncreate,
     data: () => ({
-      positiveText: 'Mute',
+      positiveText: 'intl.mute',
       title: '',
       muteNotifications: true
     }),
+    computed: {
+      confirmMuteText: ({ account }) => (
+        formatIntl('intl.muteAccountConfirm', { account: `@${account.acct}` })
+      )
+    },
     methods: {
       show,
       close,

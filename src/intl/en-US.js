@@ -207,5 +207,11 @@ export default {
   } media {current, select,
     true {(current)}
     other {}
-  }`
+  }`,
+  previewFocalPoint: 'Preview (focal point)',
+  enterFocalPoint: 'Enter the focal point (X, Y) for this media',
+  muteNotifications: 'Mute notifications as well',
+  muteAccountConfirm: 'Mute {account}?',
+  mute: 'Mute'
+
 }
