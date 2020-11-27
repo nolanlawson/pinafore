@@ -1,4 +1,4 @@
-<h1 class="sr-only">Profile for {accountName}</h1>
+<h1 class="sr-only">{profileForAccount}</h1>
 {#if moved}
   <AccountProfileMovedBanner {account} />
 {/if}
@@ -118,6 +118,7 @@
   import { classname } from '../../_utils/classname'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { addEmojiTooltips } from '../../_utils/addEmojiTooltips'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     oncreate () {
@@ -134,7 +135,10 @@
         moved && 'moved',
         headerImageIsMissing && 'header-image-is-missing',
         $underlineLinks && 'underline-links'
-      ))
+      )),
+      profileForAccount: ({ accountName }) => (
+        formatIntl('intl.profileForAccount', { account: accountName })
+      )
     },
     components: {
       AccountProfileHeader,

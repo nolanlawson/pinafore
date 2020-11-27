@@ -25,6 +25,7 @@ import { deleteAndRedraft } from '../../../_actions/deleteAndRedraft'
 import { shareStatus } from '../../../_actions/share'
 import { toggleMute } from '../../../_actions/toggleMute'
 import { reportStatusOrAccount } from '../../../_actions/report'
+import { formatIntl } from '../../../_utils/formatIntl'
 
 export default {
   oncreate,
@@ -57,33 +58,41 @@ export default {
         return ''
       }
       return (following || followRequested)
-        ? `Unfollow @${username}`
-        : `Follow @${username}`
+        ? formatIntl('intl.unfollowAccount', { account: `@${username}` })
+        : formatIntl('intl.followAccount', { account: `@${username}` })
     },
     followIcon: ({ following, followRequested }) => (
       following ? '#fa-user-times' : followRequested ? '#fa-hourglass' : '#fa-user-plus'
     ),
     blockLabel: ({ blocking, username }) => (
-      blocking ? `Unblock @${username}` : `Block @${username}`
+      blocking
+        ? formatIntl('intl.unblockAccount', { account: `@${username}` })
+        : formatIntl('intl.blockAccount', { account: `@${username}` })
     ),
     blockIcon: ({ blocking }) => blocking ? '#fa-unlock' : '#fa-ban',
     muteLabel: ({ muting, username }) => (
-      muting ? `Unmute @${username}` : `Mute @${username}`
+      muting
+        ? formatIntl('intl.unmuteAccount', { account: `@${username}` })
+        : formatIntl('intl.muteAccount', { account: `@${username}` })
     ),
     muteIcon: ({ muting }) => muting ? '#fa-volume-up' : '#fa-volume-off',
     isUser: ({ accountId, verifyCredentialsId }) => accountId === verifyCredentialsId,
     //
     // end copypasta (StatusOptionsDialog.html / AccountProfileOptionsDialog.html)
     //
-    pinLabel: ({ pinned, isUser }) => isUser ? (pinned ? 'Unpin from profile' : 'Pin to profile') : '',
+    pinLabel: ({ pinned, isUser }) => isUser ? (pinned ? 'intl.unpinFromProfile' : 'intl.pinToProfile') : '',
     visibility: ({ status }) => status.visibility,
     mentions: ({ status }) => status.mentions || [],
     mentionsUser: ({ mentions, verifyCredentialsId }) => !!mentions.find(_ => _.id === verifyCredentialsId),
     mutingConversation: ({ status }) => !!status.muted,
-    muteConversationLabel: ({ mutingConversation }) => mutingConversation ? 'Unmute conversation' : 'Mute conversation',
+    muteConversationLabel: ({ mutingConversation }) => (
+      mutingConversation
+        ? 'intl.unmuteConversation'
+        : 'intl.muteConversation'
+    ),
     muteConversationIcon: ({ mutingConversation }) => mutingConversation ? '#fa-volume-up' : '#fa-volume-off',
     isPublicOrUnlisted: ({ visibility }) => visibility === 'public' || visibility === 'unlisted',
-    bookmarkLabel: ({ status }) => status.bookmarked ? 'Unbookmark toot' : 'Bookmark toot',
+    bookmarkLabel: ({ status }) => status.bookmarked ? 'intl.unbookmarkStatus' : 'intl.bookmarkStatus',
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
       following, followRequested, pinLabel, isUser, visibility, mentionsUser, mutingConversation,
@@ -91,7 +100,7 @@ export default {
     }) => ([
       isUser && {
         key: 'delete',
-        label: 'Delete',
+        label: 'intl.delete',
         icon: '#fa-trash'
       },
       isPublicOrUnlisted && isUser && {
@@ -121,12 +130,12 @@ export default {
       },
       isUser && {
         key: 'redraft',
-        label: 'Delete and redraft',
+        label: 'intl.deleteAndRedraft',
         icon: '#fa-pencil'
       },
       !isUser && {
         key: 'report',
-        label: 'Report toot',
+        label: 'intl.reportStatus',
         icon: '#fa-flag'
       },
       {
@@ -136,12 +145,12 @@ export default {
       },
       isPublicOrUnlisted && supportsWebShare && {
         key: 'share',
-        label: 'Share toot',
+        label: 'intl.shareStatus',
         icon: '#fa-share-square-o'
       },
       isPublicOrUnlisted && {
         key: 'copy',
-        label: 'Copy link to toot',
+        label: 'intl.copyLinkToStatus',
         icon: '#fa-link'
       }
     ].filter(Boolean))
