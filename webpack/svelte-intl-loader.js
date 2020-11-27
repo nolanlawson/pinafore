@@ -21,7 +21,7 @@ function trimWhitespace (str) {
 }
 
 export default function (source) {
-  return source
+  const res = source
     // replace {@intl.foo}
     .replace(/{intl\.([^}]+)}/g, (match, p1) => trimWhitespace(getIntl(p1)))
     // replace {@html intl.foo}
@@ -40,4 +40,9 @@ export default function (source) {
       const text = trimWhitespace(getIntl(p1))
       return JSON.stringify(text)
     })
+  const match = res.match(/[^(][^']intl\.(\w+)/) || res.match(/formatIntl\('intl\.(\w+)/)
+  if (match) {
+    throw new Error('You probably made a typo with an intl string: ' + match[1])
+  }
+  return res
 }

@@ -290,5 +290,57 @@ export default {
     other {}
   }`,
   alert: 'Alert',
-  close: 'Close'
+  close: 'Close',
+  animatedImage: 'Animation image: {description}',
+  showImage: `Show {animated, select,
+    true {animated}
+    other {}
+  } image: {description}`,
+  playVideoOrAudio: `Play {audio, select,
+    true {audio}
+    other {video}
+  }: {description}`,
+  accountFollowedYou: '{name} followed you, {account}',
+  reblogCountsHidden: 'Boost counts hidden',
+  favoriteCountsHidden: 'Favorite counts hidden',
+  rebloggedTimes: `Boosted {count, plural,
+    one {1 time}
+    other {{count} times}
+  }`,
+  favoritedTimes: `Favorited {count, plural,
+    one {1 time}
+    other {{count} times}
+  }`,
+  pinnedStatus: 'Pinned toot',
+  rebloggedYou: 'boosted your toot',
+  favoritedYou: 'favorited your toot',
+  followedYou: 'followed you',
+  pollYouCreatedEnded: 'A poll you created has ended',
+  pollYouVotedEnded: 'A poll you voted on has ended',
+  reblogged: 'boosted',
+  showSensitiveMedia: 'Show sensitive media',
+  hideSensitiveMedia: 'Hide sensitive media',
+  clickToShowSensitive: 'Sensitive content. Click to show.',
+  voteOnPoll: 'Vote on poll',
+  pollChoices: 'Poll choices',
+  vote: 'Vote',
+  pollDetails: 'Poll details',
+  refresh: 'Refresh',
+  expires: 'Ends',
+  expired: 'Ended',
+  voteCount: `{count, plural,
+    one {1 vote}
+    other {{count} votes}
+  }`,
+  clickToShowThread: '{time} - click to show thread',
+  showMore: 'Show more',
+  showLess: 'Show less',
+  closeReply: 'Close reply',
+  cannotReblogFollowersOnly: 'Cannot be boosted because this is followers-only',
+  cannotReblogDirectMessage: 'Cannot be boosted because this is a direct message',
+  reblog: 'Boost',
+  reply: 'Reply',
+  replyToThread: 'Reply to thread',
+  favorite: 'Favorite',
+  unfavorite: 'Unfavorite'
 }
