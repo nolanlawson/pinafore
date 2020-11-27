@@ -21,7 +21,7 @@
     computed: {
       className: ({ page, name }) => page === name ? 'selected' : '',
       ariaLabel: ({ page, name, label }) => (
-        formatIntl('navItemLabel', {
+        formatIntl('intl.navItemLabel', {
           label,
           selected: page === name,
           name

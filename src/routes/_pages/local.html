@@ -1,15 +1,15 @@
 {#if $isUserLoggedIn}
   <TimelinePage timeline="local">
     {#if $pinnedPage !== '/local'}
-      <DynamicPageBanner title="Local Timeline" icon="#fa-users"/>
+      <DynamicPageBanner title="{intl.localTimeline}" icon="#fa-users"/>
     {/if}
   </TimelinePage>
 {:else}
   <HiddenFromSSR>
     <FreeTextLayout>
-      <h1>Local</h1>
+      <h1>{intl.local}</h1>
 
-      <p>Your local timeline will appear here when logged in.</p>
+      <p>{intl.localTimelineNotLoggedIn}</p>
     </FreeTextLayout>
   </HiddenFromSSR>
 {/if}

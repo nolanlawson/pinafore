@@ -1,15 +1,15 @@
 {#if $isUserLoggedIn}
   <TimelinePage timeline="bookmarks">
     {#if $pinnedPage !== '/bookmarks'}
-      <DynamicPageBanner title="Bookmarks" icon="#fa-bookmark"/>
+      <DynamicPageBanner title="{intl.bookmarks}" icon="#fa-bookmark"/>
     {/if}
   </TimelinePage>
 {:else}
   <HiddenFromSSR>
     <FreeTextLayout>
-      <h1>Bookmarks</h1>
+      <h1>{intl.bookmarks}</h1>
 
-      <p>Your bookmarks will appear here when logged in.</p>
+      <p>{intl.bookmarksNotLoggedIn}</p>
     </FreeTextLayout>
   </HiddenFromSSR>
 {/if}

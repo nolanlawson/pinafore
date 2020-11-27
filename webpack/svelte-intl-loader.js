@@ -10,7 +10,7 @@ const defaultIntl = require(path.join(__dirname, '../src/intl', DEFAULT_LOCALE +
 
 function getIntl (path) {
   const res = get(intl, path, get(defaultIntl, path))
-  if (!res) {
+  if (typeof res !== 'string') {
     throw new Error('Unknown intl string: ' + JSON.stringify(path))
   }
   return res
@@ -40,7 +40,7 @@ export default function (source) {
       const text = trimWhitespace(getIntl(p1))
       return JSON.stringify(text)
     })
-  const match = res.match(/[^(][^']intl\.(\w+)/) || res.match(/formatIntl\('intl\.(\w+)/)
+  const match = res.match(/[^(][^']intl\.([\w.]+)/) || res.match(/formatIntl\('([\w.]+)/)
   if (match) {
     throw new Error('You probably made a typo with an intl string: ' + match[1])
   }

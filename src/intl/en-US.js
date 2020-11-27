@@ -33,6 +33,7 @@ export default {
   cancel: 'Cancel',
   alert: 'Alert',
   close: 'Close',
+  error: 'Error: {error}',
   // Relative timestamps
   justNow: 'just now',
   // Navigation, page titles
@@ -61,17 +62,48 @@ export default {
   federated: 'Federated',
   home: 'Home',
   local: 'Local',
+  notifications: 'Notifications',
   mutedUsers: 'Muted users',
   pinnedStatuses: 'Pinned toots',
   followRequests: 'Follow requests',
+  followRequestsLabel: `Follow requests {hasFollowRequests, select,
+    true {({count})}
+    other {}
+  }`,
+  list: 'List',
   search: 'Search',
   pageHeader: 'Page header',
   goBack: 'Go back',
   back: 'Back',
+  profile: 'Profile',
+  federatedTimeline: 'Federated timeline',
+  localTimeline: 'Local Timeline',
+  // community page
+  community: 'Community',
+  pinnableTimelines: 'Pinnable timelines',
+  timelines: 'Timelines',
+  lists: 'Lists',
+  instanceSettings: 'Instance settings',
+  notificationMentions: 'Notification mentions',
+  // not logged in
+  profileNotLoggedIn: 'A user timeline will appear here when logged in.',
+  bookmarksNotLoggedIn: 'Your bookmarks will appear here when logged in.',
+  directMessagesNotLoggedIn: 'Your direct messages will appear here when logged in.',
+  favoritesNotLoggedIn: 'Your favorites will appear here when logged in.',
+  federatedTimelineNotLoggedIn: 'Your federated timeline will appear here when logged in.',
+  localTimelineNotLoggedIn: 'Your local timeline will appear here when logged in.',
+  searchNotLoggedIn: 'You can search once logged in to an instance.',
+  communityNotLoggedIn: 'Community options appear here when logged in.',
+  listNotLoggedIn: 'A list will appear here when logged in.',
+  notificationsNotLoggedIn: 'Your notifications will appear here when logged in.',
+  notificationMentionsNotLoggedIn: 'Your notification mentions will appear here when logged in.',
   // Notification subpages
   filters: 'Filters',
   all: 'All',
   mentions: 'Mentions',
+  // Follow requests
+  approve: 'Approve',
+  reject: 'Reject',
   // Hotkeys
   hotkeys: 'Hotkeys',
   global: 'Global',
@@ -100,7 +132,7 @@ export default {
     <li><kbd>g</kbd> + <kbd>l</kbd> to go to the local timeline</li>
     <li><kbd>g</kbd> + <kbd>t</kbd> to go to the federated timeline</li>
     <li><kbd>g</kbd> + <kbd>c</kbd> to go to the community page</li>
-    <li><kbd>g</kbd> + <kbd>d</kbd> to go to the conversations page</li>
+    <li><kbd>g</kbd> + <kbd>d</kbd> to go to the direct messages page</li>
     <li><kbd>h</kbd> or <kbd>?</kbd> to toggle the help dialog</li>
     <li><kbd>Backspace</kbd> to go back, close dialogs</li>
   `,
@@ -225,6 +257,7 @@ export default {
   muteNotifications: 'Mute notifications as well',
   muteAccountConfirm: 'Mute {account}?',
   mute: 'Mute',
+  unmute: 'Unmute',
   zoomOut: 'Zoom out',
   zoomIn: 'Zoom in',
   // Reporting
@@ -276,12 +309,75 @@ export default {
   fields: 'Fields',
   accountHasMoved: '{account} has moved:',
   profilePageForAccount: 'Profile page for {account}',
-  profile: 'Profile',
-  profileNotLoggedIn: 'A user timeline will appear here when logged in.',
+  // About page
+  aboutApp: 'About Pinafore',
+  aboutAppDescription: `
+  <p>
+    Pinafore is
+    <a rel="noopener" target="_blank"
+       href="https://github.com/nolanlawson/pinafore">free and open-source software</a>
+    created by
+    <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+    and distributed under the
+    <a rel="noopener" target="_blank"
+       href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">GNU Affero General Public License</a>.
+  </p>
+
+  <h2 id="privacy-policy">Privacy Policy</h2>
+
+  <p>
+    Pinafore does not store any personal information on its servers,
+    including but not limited to names, email addresses,
+    IP addresses, posts, and photos.
+  </p>
+
+  <p>
+    Pinafore is a static site. All data is stored locally in your browser and shared with the fediverse
+    instance(s) you connect to.
+  </p>
+
+  <h2>Credits</h2>
+
+  <p>
+    Icons provided by <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.
+  </p>
+
+  <p>
+    Logo thanks to "sailboat" by Gregor Cresnar from
+    <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.
+  </p>`,
   // Settings
   settings: 'Settings',
-  aboutApp: 'About Pinafore',
   general: 'General',
+  generalSettings: 'General settings',
+  showSensitive: 'Show sensitive media by default',
+  showPlain: 'Show a plain gray color for sensitive media',
+  allSensitive: 'Treat all media as sensitive',
+  largeMedia: 'Show large inline images and videos',
+  autoplayGifs: 'Autoplay animated GIFs',
+  hideCards: 'Hide link preview cards',
+  underlineLinks: 'Underline links in toots and profiles',
+  accessibility: 'Accessibility',
+  reduceMotion: 'Reduce motion in UI animations',
+  disableTappable: 'Disable tappable area on entire toot',
+  removeEmoji: 'Remove emoji from user display names',
+  shortAria: 'Use short article ARIA labels',
+  theme: 'Theme',
+  themeForInstance: 'Theme for {instance}',
+  disableCustomScrollbars: 'Disable custom scrollbars',
+  // Custom tooltips, like "Disable _infinite scroll_", where you can click _infinite scroll_
+  // to see a description. It's hard to properly internationalize, so we just break up the strings.
+  disableInfiniteScrollPre: 'Disable',
+  disableInfiniteScrollText: 'infinite scroll',
+  disableInfiniteScrollDescription: `When infinite scroll is disabled, new toots will not automatically appear at
+             the bottom or top of the timeline. Instead, buttons will allow you to
+             load more content on demand.`,
+  disableInfiniteScrollPost: '',
+  showRingPre: 'Always show',
+  showRingText: 'focus ring',
+  showRingDescription: `The focus ring is the outline showing the currently focused element. By default, it's only
+    shown when using the keyboard (not mouse or touch), but you may choose to always show it.`,
+  showRingPost: '',
   instances: 'Instances',
   addInstance: 'Add instance',
   homeTimelineFilterSettings: 'Home timeline filter settings',
@@ -361,5 +457,11 @@ export default {
   reply: 'Reply',
   replyToThread: 'Reply to thread',
   favorite: 'Favorite',
-  unfavorite: 'Unfavorite'
+  unfavorite: 'Unfavorite',
+  // timeline
+  loadingMore: 'Loading more…',
+  loadMore: 'Load more',
+  showCountMore: 'Show {count} more',
+  nothingToShow: 'Nothing to show.'
+
 }

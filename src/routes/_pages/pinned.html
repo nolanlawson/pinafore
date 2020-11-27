@@ -1,4 +1,4 @@
-<DynamicPageBanner title="Pinned toots" icon="#fa-thumb-tack" />
+<DynamicPageBanner title="{intl.pinnedStatuses}" icon="#fa-thumb-tack" />
 {#if $isUserLoggedIn }
   <div class="pinned-toots-page">
     {#if loading}
@@ -37,6 +37,7 @@
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
   import { getPinnedStatuses } from '../_api/pinnedStatuses'
   import { updateVerifyCredentialsForInstance } from '../_actions/instances'
+  import { formatIntl } from '../_utils/formatIntl'
 
   export default {
     async oncreate () {
@@ -47,7 +48,7 @@
         const statuses = await getPinnedStatuses(currentInstance, accessToken, currentVerifyCredentials.id)
         this.set({ statuses: statuses })
       } catch (e) {
-        toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
+        /* no await */ toast.say(formatIntl('intl.error', { error: (e.name || '') + ' ' + (e.message || '') }))
       } finally {
         this.set({ loading: false })
       }

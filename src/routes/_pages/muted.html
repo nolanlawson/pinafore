@@ -1,4 +1,4 @@
-<DynamicPageBanner title="Muted users" icon="#fa-volume-off" />
+<DynamicPageBanner title="{intl.mutedUsers}" icon="#fa-volume-off" />
 {#if $isUserLoggedIn }
   <AccountsListPage {accountsFetcher} {accountActions} />
 {/if}
@@ -14,7 +14,7 @@
       accountActions: [
         {
           icon: '#fa-volume-up',
-          label: 'Unmute',
+          label: 'intl.unmute',
           onclick: (accountId) => setAccountMuted(accountId,
             /* mute */ false,
             /* notifications */ false,
