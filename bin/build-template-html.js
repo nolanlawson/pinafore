@@ -8,6 +8,7 @@ import { buildSvg } from './build-svg'
 import now from 'performance-now'
 import debounce from 'lodash-es/debounce'
 import applyIntl from '../webpack/svelte-intl-loader'
+import { LOCALE } from '../src/routes/_static/intl'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -90,6 +91,7 @@ async function buildAll () {
   }))).join('')
 
   html = applyIntl(html)
+    .replace('{process.env.LOCALE}', LOCALE)
   await writeFile(path.resolve(__dirname, '../src/template.html'), html, 'utf8')
   const end = now()
   console.log(`Built template.html in ${(end - start).toFixed(2)}ms`)
