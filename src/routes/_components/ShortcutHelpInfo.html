@@ -10,14 +10,14 @@
   <h2>{intl.timeline}</h2>
   <div class="hotkey-group">
     <ul>
-      {@html intl.hotkeys.timeline}
+      {@html intl.timelineHotkeys}
     </ul>
   </div>
   {#if !$leftRightChangesFocus}
     <h2>{intl.media}</h2>
     <div class="hotkey-group">
       <ul>
-        {@html intl.hotkeys.media}
+        {@html intl.mediaHotkeys}
       </ul>
     </div>
   {/if}
@@ -70,7 +70,7 @@
     }),
     computed: {
       globalHotkeysText: ({ $leftRightChangesFocus }) => (
-        formatIntl('intl.hotkeys.global', { leftRightChangesFocus: $leftRightChangesFocus })
+        formatIntl('intl.globalHotkeys', { leftRightChangesFocus: $leftRightChangesFocus })
       )
     }
   }
