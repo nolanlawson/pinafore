@@ -3,6 +3,7 @@ import { toast } from '../_components/toast/toast'
 import { pinStatus, unpinStatus } from '../_api/pin'
 import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()
@@ -13,17 +14,16 @@ export async function setStatusPinnedOrUnpinned (statusId, pinned, toastOnSucces
       await unpinStatus(currentInstance, accessToken, statusId)
     }
     if (toastOnSuccess) {
-      if (pinned) {
-        toast.say('Pinned status')
-      } else {
-        toast.say('Unpinned status')
-      }
+      /* no await */ toast.say(pinned ? 'intl.pinnedStatus' : 'intl.unpinnedStatus')
     }
     store.setStatusPinned(currentInstance, statusId, pinned)
     await database.setStatusPinned(currentInstance, statusId, pinned)
     emit('updatePinnedStatuses')
   } catch (e) {
     console.error(e)
-    toast.say(`Unable to ${pinned ? 'pin' : 'unpin'} status: ` + (e.message || ''))
+    /* no await */ toast.say(pinned
+      ? formatIntl('intl.unableToPinStatus', { error: (e.message || '') })
+      : formatIntl('intl.unableToUnpinStatus', { error: (e.message || '') })
+    )
   }
 }

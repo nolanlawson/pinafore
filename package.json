@@ -104,6 +104,7 @@
     "eslint-plugin-html": "^6.1.0",
     "fake-indexeddb": "^3.1.2",
     "format-message-parse": "^6.2.3",
+    "globby": "^11.0.1",
     "husky": "^5.0.4",
     "lint-staged": "^10.3.0",
     "mocha": "^8.1.3",

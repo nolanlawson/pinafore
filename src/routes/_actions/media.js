@@ -25,7 +25,7 @@ export async function doMediaUpload (realm, file) {
     scheduleIdleTask(() => store.save())
   } catch (e) {
     console.error(e)
-    toast.say('Failed to upload media: ' + (e.message || ''))
+    /* no await */ toast.say('intl.failedToUploadMedia', { error: (e.message || '') })
   } finally {
     store.set({ uploadingMedia: false })
   }

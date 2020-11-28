@@ -2,11 +2,12 @@ import { store } from '../_store/store'
 import { toast } from '../_components/toast/toast'
 import { reblogStatus, unreblogStatus } from '../_api/reblog'
 import { database } from '../_database/database'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function setReblogged (statusId, reblogged) {
   const online = store.get()
   if (!online) {
-    toast.say(`You cannot ${reblogged ? 'boost' : 'unboost'} while offline.`)
+    /* no await */ toast.say(reblogged ? 'intl.cannotReblogOffline' : 'intl.cannotUnreblogOffline')
     return
   }
   const { currentInstance, accessToken } = store.get()
@@ -19,7 +20,10 @@ export async function setReblogged (statusId, reblogged) {
     await database.setStatusReblogged(currentInstance, statusId, reblogged)
   } catch (e) {
     console.error(e)
-    toast.say(`Failed to ${reblogged ? 'boost' : 'unboost'}. ` + (e.message || ''))
+    /* no await */ toast.say(reblogged
+      ? formatIntl('intl.failedToReblog', { error: (e.message || '') })
+      : formatIntl('intl.failedToUnreblog', { error: (e.message || '') })
+    )
     store.setStatusReblogged(currentInstance, statusId, !reblogged) // undo optimistic update
   }
 }

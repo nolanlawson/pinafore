@@ -9,7 +9,7 @@ let notifyCount = 0
 // debounce to avoid notifying for a short connection issue
 const notifyOffline = debounce(() => {
   if (process.browser && !navigator.onLine && ++notifyCount <= NOTIFY_OFFLINE_LIMIT) {
-    toast.say('You seem to be offline. You can still read toots while offline.')
+    toast.say('intl.youAreOffline')
   }
 }, OFFLINE_DELAY)
 

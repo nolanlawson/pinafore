@@ -1,6 +1,7 @@
 import { getPoll as getPollApi, voteOnPoll as voteOnPollApi } from '../_api/polls'
 import { store } from '../_store/store'
 import { toast } from '../_components/toast/toast'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function getPoll (pollId) {
   const { currentInstance, accessToken } = store.get()
@@ -9,7 +10,7 @@ export async function getPoll (pollId) {
     return poll
   } catch (e) {
     console.error(e)
-    toast.say('Unable to refresh poll: ' + (e.message || ''))
+    /* no await */ toast.say(formatIntl('intl.unableToRefreshPoll', { error: (e.message || '') }))
   }
 }
 
@@ -20,6 +21,6 @@ export async function voteOnPoll (pollId, choices) {
     return poll
   } catch (e) {
     console.error(e)
-    toast.say('Unable to vote in poll: ' + (e.message || ''))
+    /* no await */ toast.say(formatIntl('intl.unableToVoteInPoll', { error: (e.message || '') }))
   }
 }

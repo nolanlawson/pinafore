@@ -1,5 +1,6 @@
 import { toast } from '../_components/toast/toast'
 import { statusHtmlToPlainText } from '../_utils/statusHtmlToPlainText'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function shareStatus (status) {
   try {
@@ -9,6 +10,6 @@ export async function shareStatus (status) {
       url: status.url
     })
   } catch (e) {
-    toast.say('Unable to share: ' + (e.message || ''))
+    /* no await */ toast.say(formatIntl('intl.unableToShare', { error: (e.message || '') }))
   }
 }

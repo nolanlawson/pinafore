@@ -142,7 +142,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, onli
       await storeFreshTimelineItemsInDatabase(instanceName, timelineName, items)
     } catch (e) {
       console.error(e)
-      toast.say('Internet request failed. Showing offline content.')
+      /* no await */ toast.say('intl.showingOfflineContent')
       items = await database.getTimeline(instanceName, timelineName, lastTimelineItemId, TIMELINE_BATCH_SIZE)
       stale = true
     }

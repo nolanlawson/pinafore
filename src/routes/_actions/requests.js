@@ -2,6 +2,7 @@ import { store } from '../_store/store'
 import { approveFollowRequest, rejectFollowRequest } from '../_api/requests'
 import { emit } from '../_utils/eventBus'
 import { toast } from '../_components/toast/toast'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function setFollowRequestApprovedOrRejected (accountId, approved, toastOnSuccess) {
   const {
@@ -15,15 +16,14 @@ export async function setFollowRequestApprovedOrRejected (accountId, approved, t
       await rejectFollowRequest(currentInstance, accessToken, accountId)
     }
     if (toastOnSuccess) {
-      if (approved) {
-        toast.say('Approved follow request')
-      } else {
-        toast.say('Rejected follow request')
-      }
+      /* no await */ toast.say(approved ? 'intl.approvedFollowRequest' : 'intl.rejectedFollowRequest')
     }
     emit('refreshAccountsList')
   } catch (e) {
     console.error(e)
-    toast.say(`Unable to ${approved ? 'approve' : 'reject'} account: ` + (e.message || ''))
+    /* no await */ toast.say(approved
+      ? formatIntl('intl.unableToApproveFollowRequest', { error: (e.message || '') })
+      : formatIntl('intl.unableToRejectFollowRequest', { error: (e.message || '') })
+    )
   }
 }

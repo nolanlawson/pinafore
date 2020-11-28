@@ -3,6 +3,7 @@ import { blockAccount, unblockAccount } from '../_api/block'
 import { toast } from '../_components/toast/toast'
 import { updateLocalRelationship } from './accounts'
 import { emit } from '../_utils/eventBus'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function setAccountBlocked (accountId, block, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()
@@ -16,14 +17,17 @@ export async function setAccountBlocked (accountId, block, toastOnSuccess) {
     await updateLocalRelationship(currentInstance, accountId, relationship)
     if (toastOnSuccess) {
       if (block) {
-        toast.say('Blocked account')
+        /* no await */ toast.say('intl.blockedAccount')
       } else {
-        toast.say('Unblocked account')
+        /* no await */ toast.say('intl.unblockedAccount')
       }
     }
     emit('refreshAccountsList')
   } catch (e) {
     console.error(e)
-    toast.say(`Unable to ${block ? 'block' : 'unblock'} account: ` + (e.message || ''))
+    /* no await */ toast.say(block
+      ? formatIntl('intl.unableToBlock', { block: !!block, error: (e.message || '') })
+      : formatIntl('intl.unableToUnblock', { error: (e.message || '') })
+    )
   }
 }
