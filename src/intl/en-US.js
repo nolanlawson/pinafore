@@ -620,5 +620,7 @@ export default {
   unableToHideReblogs: 'Unable to hide boosts: {error}',
   unableToShare: 'Unable to share: {error}',
   showingOfflineContent: 'Internet request failed. Showing offline content.',
-  youAreOffline: 'You seem to be offline. You can still read toots while offline.'
+  youAreOffline: 'You seem to be offline. You can still read toots while offline.',
+  // Snackbar UI
+  updateAvailable: 'App update available.'
 }
