@@ -78,7 +78,7 @@ export default {
   back: 'Back',
   profile: 'Profile',
   federatedTimeline: 'Federated timeline',
-  localTimeline: 'Local Timeline',
+  localTimeline: 'Local timeline',
   // community page
   community: 'Community',
   pinnableTimelines: 'Pinnable timelines',
