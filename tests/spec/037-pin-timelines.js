@@ -10,8 +10,8 @@ fixture`037-pin-timelines.js`
 test('Can pin a timeline', async t => {
   await loginAsFoobar(t)
 
-  const pinLocal = $('button[aria-label="Pin Local Timeline"]')
-  const pinFederated = $('button[aria-label="Pin Federated Timeline"]')
+  const pinLocal = $('button[aria-label="Pin Local timeline"]')
+  const pinFederated = $('button[aria-label="Pin Federated timeline"]')
   const pinnedNav = $('.main-nav-li:nth-child(3)')
   const pinnedNavLink = $('.main-nav-li:nth-child(3) a')
 
