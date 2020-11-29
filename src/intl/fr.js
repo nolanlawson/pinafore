@@ -468,45 +468,45 @@ export default {
     true {(défaut)}
     other {}
   }`,
-  animatedImage: 'Animation image: {description}',
-  showImage: `Show {animated, select,
-    true {animated}
+  animatedImage: 'Image animée: {description}',
+  showImage: `Afficher l'image {animated, select,
+    true {animée}
     other {}
-  } image: {description}`,
-  playVideoOrAudio: `Play {audio, select,
-    true {audio}
-    other {video}
   }: {description}`,
-  accountFollowedYou: '{name} followed you, {account}',
-  reblogCountsHidden: 'Boost counts hidden',
-  favoriteCountsHidden: 'Favorite counts hidden',
-  rebloggedTimes: `Boosted {count, plural,
-    one {1 time}
-    other {{count} times}
+  playVideoOrAudio: `Repasser {audio, select,
+    true {l'audio}
+    other {la vidéo}
+  }: {description}`,
+  accountFollowedYou: '{name} vous a suivi(e), {account}',
+  reblogCountsHidden: 'Nombre de partages caché',
+  favoriteCountsHidden: 'nombre de mises en favori caché',
+  rebloggedTimes: `Partagé {count, plural,
+    one {une fois}
+    other {{count} fois}
   }`,
-  favoritedTimes: `Favorited {count, plural,
-    one {1 time}
-    other {{count} times}
+  favoritedTimes: `Mis en favori {count, plural,
+    one {une fois}
+    other {{count} fois}
   }`,
-  pinnedStatus: 'Pinned toot',
-  rebloggedYou: 'boosted your toot',
-  favoritedYou: 'favorited your toot',
+  pinnedStatus: 'Pouet épinglé',
+  rebloggedYou: 'a partagé votre pouet',
+  favoritedYou: 'a mis en favori votre pouet',
   followedYou: 'followed you',
-  pollYouCreatedEnded: 'A poll you created has ended',
-  pollYouVotedEnded: 'A poll you voted on has ended',
-  reblogged: 'boosted',
-  showSensitiveMedia: 'Show sensitive media',
-  hideSensitiveMedia: 'Hide sensitive media',
-  clickToShowSensitive: 'Sensitive content. Click to show.',
-  longPost: 'Long post',
+  pollYouCreatedEnded: 'Une enquête vous avez créée a terminée',
+  pollYouVotedEnded: 'Une enquête dans laquelle vous avez voté a terminée',
+  reblogged: 'partagé',
+  showSensitiveMedia: 'Afficher la média sensible',
+  hideSensitiveMedia: 'Cacher la média sensible',
+  clickToShowSensitive: 'Image sensible. Cliquer pour afficher.',
+  longPost: 'Pouet long',
   // Accessible status labels
-  accountRebloggedYou: '{account} boosted your toot',
-  accountFavoritedYou: '{account} favorited your toot',
-  rebloggedByAccount: 'Boosted by {account}',
-  contentWarningContent: 'Content warning: {spoiler}',
-  hasMedia: 'has media',
-  hasPoll: 'has poll',
-  shortStatusLabel: '{privacy} status by {account}',
+  accountRebloggedYou: '{account} a partagé votre pouet',
+  accountFavoritedYou: '{account} a mis votre pouet en favori',
+  rebloggedByAccount: 'Partagé par {account}',
+  contentWarningContent: 'Avertissement: {spoiler}',
+  hasMedia: 'média',
+  hasPoll: 'enquête',
+  shortStatusLabel: 'Pouet {privacy} par {account}',
   // Privacy types
   public: 'Public',
   unlisted: 'Unlisted',
