@@ -506,7 +506,7 @@ export default {
   contentWarningContent: 'Content warning: {spoiler}',
   hasMedia: 'has media',
   hasPoll: 'has poll',
-  shortStatusLabel: '{privacy} status by {account}',
+  shortStatusLabel: '{privacy} toot by {account}',
   // Privacy types
   public: 'Public',
   unlisted: 'Unlisted',
