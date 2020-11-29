@@ -85,7 +85,7 @@ test('can shorten aria-labels', async t => {
     .click(homeNavButton)
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
-      /Unlisted status by quux/
+      /Unlisted toot by quux/
     )
     .click(settingsNavButton)
     .click(generalSettingsButton)
