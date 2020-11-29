@@ -468,7 +468,7 @@ export default {
     true {(default)}
     other {}
   }`,
-  animatedImage: 'Animation image: {description}',
+  animatedImage: 'Animated image: {description}',
   showImage: `Show {animated, select,
     true {animated}
     other {}
