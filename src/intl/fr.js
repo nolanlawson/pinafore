@@ -320,152 +320,152 @@ export default {
   aboutApp: 'Infos sur Pinafore',
   aboutAppDescription: `
   <p>
-    Pinafore is
+    Pinafore est un logiciel
     <a rel="noopener" target="_blank"
-       href="https://github.com/nolanlawson/pinafore">free and open-source software</a>
-    created by
+       href="https://github.com/nolanlawson/pinafore">gratuit et open-source</a>
+    créé par
     <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
-    and distributed under the
+    et distribué sous le
     <a rel="noopener" target="_blank"
-       href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">GNU Affero General Public License</a>.
+       href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">License GNU Affero General Public (AGPL)</a>.
   </p>
 
-  <h2 id="privacy-policy">Privacy Policy</h2>
+  <h2 id="privacy-policy">Politique de confidentialité</h2>
 
   <p>
-    Pinafore does not store any personal information on its servers,
-    including but not limited to names, email addresses,
-    IP addresses, posts, and photos.
-  </p>
-
-  <p>
-    Pinafore is a static site. All data is stored locally in your browser and shared with the fediverse
-    instance(s) you connect to.
-  </p>
-
-  <h2>Credits</h2>
-
-  <p>
-    Icons provided by <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.
+    Pinafore ne garde pas d'informations personelles dans ses serveurs,
+    y compris les noms, addresses courriel, addresses IP, messages, et photos.
   </p>
 
   <p>
-    Logo thanks to "sailboat" by Gregor Cresnar from
-    <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.
+    Pinafore est un site statique. Tous données sont gardées en locale dans le navigateur, et sont partagée qu'avec
+    les instances auxquelles vous vous connectez.
+  </p>
+
+  <h2>Crédits</h2>
+
+  <p>
+    Icônes par <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.
+  </p>
+
+  <p>
+    Logo grâce à Gregor Cresnar du
+    <a rel="noopener" target="_blank" href="https://thenounproject.com/">Noun Project</a>.
   </p>`,
   // Settings
-  settings: 'Settings',
-  general: 'General',
-  generalSettings: 'General settings',
-  showSensitive: 'Show sensitive media by default',
-  showPlain: 'Show a plain gray color for sensitive media',
-  allSensitive: 'Treat all media as sensitive',
-  largeMedia: 'Show large inline images and videos',
-  autoplayGifs: 'Autoplay animated GIFs',
-  hideCards: 'Hide link preview cards',
-  underlineLinks: 'Underline links in toots and profiles',
-  accessibility: 'Accessibility',
-  reduceMotion: 'Reduce motion in UI animations',
-  disableTappable: 'Disable tappable area on entire toot',
-  removeEmoji: 'Remove emoji from user display names',
-  shortAria: 'Use short article ARIA labels',
-  theme: 'Theme',
-  themeForInstance: 'Theme for {instance}',
-  disableCustomScrollbars: 'Disable custom scrollbars',
-  preferences: 'Preferences',
-  hotkeySettings: 'Hotkey settings',
-  disableHotkeys: 'Disable all hotkeys',
-  leftRightArrows: 'Left/right arrow keys change focus rather than columns/media',
+  settings: 'Paramètres',
+  general: 'Général',
+  generalSettings: 'Paramètres générales',
+  showSensitive: 'Afficher les medias sensible par défaut',
+  showPlain: 'Afficher un simple gris pour les medias sensibles',
+  allSensitive: 'Considérer tous medias comme sensible',
+  largeMedia: 'Afficher de plus grands images et vidéos',
+  autoplayGifs: 'Repasser automatiquement les GIFs animés',
+  hideCards: 'Cacher les liens «cartes»',
+  underlineLinks: 'Souligner les liens dans les pouets et profils',
+  accessibility: 'Accessibilité',
+  reduceMotion: 'Reduire la motions dans les animations',
+  disableTappable: "Désactiver l'espace touchable sur un pouet entier",
+  removeEmoji: "Enlever les emojis des noms d'utilisateur",
+  shortAria: 'Utiliser des etiquettes courtes ARIA',
+  theme: 'Thème',
+  themeForInstance: 'Theème pour {instance}',
+  disableCustomScrollbars: 'Désactiver les scrollbars customisés',
+  preferences: 'Préférences',
+  hotkeySettings: 'Paramètres de raccourcis clavier',
+  disableHotkeys: 'Désactiver les raccourcis clavier',
+  leftRightArrows: 'Les flèches gauche/droit change de focus plutôt que les pages',
   guide: 'Guide',
-  reload: 'Reload',
+  reload: 'Recharger',
   // Wellness settings
-  wellness: 'Wellness',
-  wellnessSettings: 'Wellness settings',
-  wellnessDescription: `Wellness settings are designed to reduce the addictive or anxiety-inducing aspects of social media.
-    Choose any options that work well for you.`,
-  enableAll: 'Enable all',
-  metrics: 'Metrics',
-  hideFollowerCount: 'Hide follower counts (capped at 10)',
-  hideReblogCount: 'Hide boost counts',
-  hideFavoriteCount: 'Hide favorite counts',
-  hideUnread: 'Hide unread notifications count (i.e. the red dot)',
-  ui: 'UI',
-  grayscaleMode: 'Grayscale mode',
-  wellnessFooter: `These settings are partly based on guidelines from the
+  wellness: 'Bien-être',
+  wellnessSettings: 'Paramètres de bien-être',
+  wellnessDescription: `Les paramètres de bien-être sont dessinées pour rédruire les effets accrochants ou d'anxiété des réseaux sociaux.
+    Veuillez choisir les options qui marchent pour vous.`,
+  enableAll: 'Activer tous',
+  metrics: 'Métrics',
+  hideFollowerCount: 'Cacher le nombre de suivants (10 maximum)',
+  hideReblogCount: 'Cacher le nombre de partages',
+  hideFavoriteCount: 'Cacher le nombre de favoris',
+  hideUnread: "Cacher le nombre de notifications (c'est-à-dire le point rouge)",
+  ui: 'Interface Utilisateur',
+  grayscaleMode: 'Mode echelle de gris',
+  wellnessFooter: `Ces paramètres sont basé sur les recommendations du
     <a rel="noopener" target="_blank" href="https://humanetech.com">Center for Humane Technology</a>.`,
   // This is a link: "You can filter or disable notifications in the _instance settings_"
-  filterNotificationsPre: 'You can filter or disable notifications in the',
-  filterNotificationsText: 'instance settings',
+  filterNotificationsPre: 'Vous pouvez filtrer ou désactiver les notifications dans les',
+  filterNotificationsText: "paramètres d'instance",
   filterNotificationsPost: '',
   // Custom tooltips, like "Disable _infinite scroll_", where you can click _infinite scroll_
   // to see a description. It's hard to properly internationalize, so we just break up the strings.
-  disableInfiniteScrollPre: 'Disable',
-  disableInfiniteScrollText: 'infinite scroll',
-  disableInfiniteScrollDescription: `When infinite scroll is disabled, new toots will not automatically appear at
-             the bottom or top of the timeline. Instead, buttons will allow you to
-             load more content on demand.`,
+  disableInfiniteScrollPre: 'Désactiver le',
+  disableInfiniteScrollText: 'défilage infini',
+  disableInfiniteScrollDescription: `Quand le défilage infini est désactivé, les pouets nouveau ne
+             s'apparêtront pas automatique au haut ou au bas de l'historique. Plutôt, il y aura des boutons pour
+             charger sur demande.`,
   disableInfiniteScrollPost: '',
   // Instance settings
-  loggedInAs: 'Logged in as',
-  homeTimelineFilters: 'Home timeline filters',
-  notificationFilters: 'Notification filters',
-  pushNotifications: 'Push notifications',
+  loggedInAs: 'Connecté en tant que',
+  homeTimelineFilters: "Filtres d'historique de l'acceuil",
+  notificationFilters: 'Filtres de notifications',
+  pushNotifications: 'Filtres de notifications push',
   // Add instance page
-  storageError: `It seems Pinafore cannot store data locally. Is your browser in private mode
-          or blocking cookies? Pinafore stores all data locally, and requires LocalStorage and
-          IndexedDB to work correctly.`,
-  javaScriptError: 'You must enable JavaScript to log in.',
-  enterInstanceName: 'Enter instance name',
+  storageError: `Il semble que Pinafore ne peut pas stocker les données en locale. Est-ce que votre navigateur
+          est en mode privé, ou est-ce qu'il bloque les cookies? Pinafore garde tous ses données en locale et
+          ne peut pas fonctionner sans LocalStorage ou IndexedDB.`,
+  javaScriptError: 'Le JavaScript devrait être activé pour continuer.',
+  enterInstanceName: "Saisir le nom d'instance",
   instanceColon: 'Instance:',
   // Custom tooltip, concatenated together
-  getAnInstancePre: "Don't have an",
+  getAnInstancePre: "N'avez-vous pas d'",
   getAnInstanceText: 'instance',
-  getAnInstanceDescription: 'An instance is your Mastodon home server, such as mastodon.social or cybre.space.',
+  getAnInstanceDescription: 'Une instance est votre serveur Mastodon, par exemple mastodon.social ou cybre.space.',
   getAnInstancePost: '?',
-  joinMastodon: 'Join Mastodon!',
-  instancesYouveLoggedInTo: "Instances you've logged in to:",
-  addAnotherInstance: 'Add another instance',
-  youreNotLoggedIn: "You're not logged in to any instances.",
+  joinMastodon: 'Joignez-vous à Mastodon!',
+  instancesYouveLoggedInTo: 'Instances conntectées:',
+  addAnotherInstance: 'Ajouter une nouvelle instance',
+  youreNotLoggedIn: 'Vous êtes connecté(e) à aucune instance.',
   currentInstanceLabel: `{instance} {current, select,
-    true {(current instance)}
+    true {(instance actuelle)}
     other {}
   }`,
   // Link text
   logInToAnInstancePre: '',
-  logInToAnInstanceText: 'Log in to an instance',
-  logInToAnInstancePost: 'to start using Pinafore.',
+  logInToAnInstanceText: 'Se connecter à une instance',
+  logInToAnInstancePost: 'pour utiliser Pinafore.',
   // Another custom tooltip
-  showRingPre: 'Always show',
-  showRingText: 'focus ring',
-  showRingDescription: `The focus ring is the outline showing the currently focused element. By default, it's only
-    shown when using the keyboard (not mouse or touch), but you may choose to always show it.`,
+  showRingPre: 'Afficher toujours',
+  showRingText: "l'anneau de focus",
+  showRingDescription: `L'anneau de focus est le contour qui indique l'élément en focus actuel. Par défaut, ce n'est
+    affiché que quand on utilise le clavier (et ne pas la souris ou l'écran touche), mais vous pouvez choisr de
+    l'afficher toujours.`,
   showRingPost: '',
-  instances: 'Instances',
-  addInstance: 'Add instance',
-  homeTimelineFilterSettings: 'Home timeline filter settings',
-  switchOrLogOut: 'Switch to or log out of this instance',
-  switchTo: 'Switch to this instance',
-  switchToInstance: 'Switch to instance',
-  switchToNameOfInstance: 'Switch to {instance}',
-  logOut: 'Log out',
-  logOutOfInstanceConfirm: 'Log out of {instance}?',
-  notificationFilterSettings: 'Notification filter settings',
+  instances: 'Les instances',
+  addInstance: 'Ajouter une instance',
+  homeTimelineFilterSettings: "Paramètres de filtre d'historique",
+  switchOrLogOut: 'Changer ou se déconnecter de cette instance',
+  switchTo: "Changer d'instance à celle-ci",
+  switchToInstance: "Changer d'instance",
+  switchToNameOfInstance: "Faire {instance} l'instance actuelle",
+  logOut: 'Se déconnecter',
+  logOutOfInstanceConfirm: 'Déconnectez-vous de {instance}?',
+  notificationFilterSettings: 'Paramètres de filtre de notifications',
   // Push notifications
-  browserDoesNotSupportPush: "Your browser doesn't support push notifications.",
-  deniedPush: 'You have denied permission to show notifications.',
-  pushNotificationsNote: 'Note that you can only have push notifications for one instance at a time.',
-  pushSettings: 'Push notification settings',
-  newFollowers: 'New followers',
-  reblogs: 'Boosts',
-  pollResults: 'Poll results',
-  needToReauthenticate: 'You need to reauthenticate in order to enable push notification. Log out of {instance}?',
-  failedToUpdatePush: 'Failed to update push notification settings: {error}',
+  browserDoesNotSupportPush: 'Votre navigateur ne soutient pas les notifications push.',
+  deniedPush: 'Vous avez désactivé les notifications push.',
+  pushNotificationsNote: 'Veuillez noter que les notifications push ne peuvent être activées que pour une instance à la fois.',
+  pushSettings: 'Paramètres de notifications push',
+  newFollowers: 'Suivants nouveaux',
+  reblogs: 'Partages',
+  pollResults: "Résultats d'enquête",
+  needToReauthenticate: 'Vous devez ré-authentiquer pour activer les notifications push. Déconnectez-vous de {instance}?',
+  failedToUpdatePush: 'Impossible de mettre à jour les paramètres de notifications push: {error}',
   // Themes
-  chooseTheme: 'Choose a theme',
-  darkBackground: 'Dark background',
-  lightBackground: 'Light background',
+  chooseTheme: 'Choisir une thème',
+  darkBackground: 'Sombre',
+  lightBackground: 'Clair',
   themeLabel: `{label} {default, select,
-    true {(default)}
+    true {(défaut)}
     other {}
   }`,
   animatedImage: 'Animation image: {description}',
