@@ -1,3 +1,6 @@
+import { LOCALE } from '../src/routes/_static/intl'
+
+const path = require('path')
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -47,16 +50,28 @@ module.exports = {
         }
       },
       {
-        test: /\.html$/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
-          loader: 'svelte-loader',
-          options: {
-            dev,
-            hydratable: true,
-            store: true,
-            hotReload: dev
-          }
+          loader: path.join(__dirname, './svelte-intl-loader.js')
         }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'svelte-loader',
+            options: {
+              dev,
+              hydratable: true,
+              store: true,
+              hotReload: dev
+            }
+          },
+          {
+            loader: path.join(__dirname, './svelte-intl-loader.js')
+          }
+        ]
       }
     ].filter(Boolean)
   },
@@ -85,7 +100,8 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
       'process.env.ALL_SVGS': JSON.stringify(allSvgs),
-      'process.env.URL_REGEX': urlRegex.toString()
+      'process.env.URL_REGEX': urlRegex.toString(),
+      'process.env.LOCALE': JSON.stringify(LOCALE)
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs

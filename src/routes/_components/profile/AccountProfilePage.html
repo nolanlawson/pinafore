@@ -1,6 +1,6 @@
 {#if $isUserLoggedIn}
 <TimelinePage {timeline} >
-  <DynamicPageBanner title="" ariaTitle="Profile page for {accountName}"/>
+  <DynamicPageBanner title="" {ariaTitle} />
   {#if $currentAccountProfile && $currentVerifyCredentials}
   <AccountProfile account={$currentAccountProfile}
                   relationship={$currentAccountRelationship}
@@ -15,9 +15,9 @@
 {:else}
 <HiddenFromSSR>
   <FreeTextLayout>
-    <h1>Profile</h1>
+    <h1>{intl.profile}</h1>
 
-    <p>A user timeline will appear here when logged in.</p>
+    <p>{intl.profileNotLoggedIn}</p>
   </FreeTextLayout>
 </HiddenFromSSR>
 {/if}
@@ -30,6 +30,7 @@
   import { updateProfileAndRelationship, clearProfileAndRelationship } from '../../_actions/accounts'
   import AccountProfile from './AccountProfile.html'
   import PinnedStatuses from '../timeline/PinnedStatuses.html'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     oncreate () {
@@ -50,6 +51,9 @@
       },
       timeline: ({ accountId, filter }) => (
         `account/${accountId}` + (filter ? `/${filter}` : '')
+      ),
+      ariaTitle: ({ accountName }) => (
+        formatIntl('intl.profilePageForAccount', { account: accountName })
       )
     },
     components: {

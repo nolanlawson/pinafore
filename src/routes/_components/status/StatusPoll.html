@@ -1,6 +1,6 @@
 <div class={computedClass} aria-busy={loading} >
   {#if voted || expired }
-    <ul class="poll-choices" aria-label="Poll results">
+    <ul class="poll-choices" aria-label="{intl.pollResults}">
       {#each options as option}
         <li class="poll-choice option">
           <div class="option-text">
@@ -13,8 +13,8 @@
       {/each}
     </ul>
   {:else}
-    <form class="poll-form" aria-label="Vote on poll" on:submit="onSubmit(event)" ref:form>
-      <ul class="poll-choices" aria-label="Poll choices">
+    <form class="poll-form" aria-label="{intl.voteOnPoll}" on:submit="onSubmit(event)" ref:form>
+      <ul class="poll-choices" aria-label="{intl.pollChoices}">
         {#each options as option, i}
           <li class="poll-choice poll-form-option">
             <label>
@@ -28,10 +28,10 @@
           </li>
         {/each}
       </ul>
-      <button disabled={formDisabled} type="submit">Vote</button>
+      <button disabled={formDisabled} type="submit">{intl.vote}</button>
     </form>
   {/if}
-  <ul class="poll-details" aria-label="Poll details">
+  <ul class="poll-details" aria-label="{intl.pollDetails}">
     <li class="poll-stat {notification ? 'is-notification' : ''}">
       <SvgIcon className="poll-icon" href="#fa-bar-chart" />
       <span class="poll-stat-text">{votesText}</span>
@@ -48,10 +48,10 @@
     <li class="poll-stat {notification ? 'is-notification' : ''} {expired ? 'poll-expired' : ''}">
       <button id={refreshElementId}
               class="focus-fix"
-              aria-label="Refresh">
+              aria-label="{intl.refresh}">
         <SvgIcon className="poll-icon" href="#fa-refresh" />
         <span class="poll-stat-text poll-stat-text-refresh" aria-hidden="true">
-          Refresh
+          {intl.refresh}
         </span>
       </button>
     </li>
@@ -252,6 +252,7 @@
   import { getPoll, voteOnPoll } from '../../_actions/polls'
   import escapeHtml from 'escape-html'
   import { emojifyText } from '../../_utils/emojifyText'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   const REFRESH_MIN_DELAY = 1000
 
@@ -307,13 +308,15 @@
         expired ? formatTimeagoDate(expiresAtTS, $now) : formatTimeagoFutureDate(expiresAtTS, $now)
       ),
       expiresAtAbsoluteFormatted: ({ expiresAtTS }) => absoluteDateFormatter.format(expiresAtTS),
-      expiryText: ({ expired }) => expired ? 'Ended' : 'Ends',
+      expiryText: ({ expired }) => expired ? 'intl.expired' : 'intl.expires',
       refreshElementId: ({ uuid }) => `poll-refresh-${uuid}`,
       useNarrowSize: ({ $isMobileSize, expired, isStatusInOwnThread }) => (
         !isStatusInOwnThread && $isMobileSize && !expired
       ),
       formDisabled: ({ choices }) => !choices.length,
-      votesText: ({ votesCount }) => `${votesCount} ${votesCount === 1 ? 'vote' : 'votes'}`,
+      votesText: ({ votesCount }) => (
+        formatIntl('intl.voteCount', { count: votesCount })
+      ),
       computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading, shown }) => (
         classname(
           'poll',

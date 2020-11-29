@@ -1,3 +1,6 @@
+import { LOCALE } from '../src/routes/_static/intl'
+
+const path = require('path')
 const webpack = require('webpack')
 const config = require('sapper/config/webpack.js')
 const pkg = require('../package.json')
@@ -29,6 +32,13 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: path.join(__dirname, './svelte-intl-loader.js')
+        }
+      },
+      {
         test: /\.html$/,
         exclude: /node_modules/,
         use: {
@@ -40,6 +50,9 @@ module.exports = {
             dev
           }
         }
+      },
+      {
+        loader: path.join(__dirname, './svelte-intl-loader.js')
       }
     ]
   },
@@ -53,7 +66,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
-      'process.env.ALL_SVGS': JSON.stringify(allSvgs)
+      'process.env.ALL_SVGS': JSON.stringify(allSvgs),
+      'process.env.LOCALE': JSON.stringify(LOCALE)
     })
   ]
 }

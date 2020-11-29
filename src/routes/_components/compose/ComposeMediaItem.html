@@ -8,14 +8,14 @@
   />
   <div class="compose-media-buttons">
     <button class="compose-media-button compose-media-focal-button"
-            aria-label="Edit"
-            title="Edit"
+            aria-label="{intl.edit}"
+            title="{intl.edit}"
             on:click="onEdit()" >
       <SvgIcon className="compose-media-button-svg" href="#fa-pencil" />
     </button>
     <button class="compose-media-button compose-media-delete-button"
-            aria-label="Delete"
-            title="Delete"
+            aria-label="{intl.delete}"
+            title="{intl.delete}"
             on:click="onDeleteMedia()" >
       <SvgIcon className="compose-media-button-svg" href="#fa-times" />
     </button>
@@ -23,12 +23,12 @@
   <div class="compose-media-alt">
     <textarea id="compose-media-input-{uuid}"
            class="compose-media-alt-input"
-           placeholder="Description"
+           placeholder="{intl.description}"
            ref:textarea
            bind:value=rawText
     ></textarea>
     <label for="compose-media-input-{uuid}" class="sr-only">
-      Describe for the visually impaired (image, video) or auditorily impaired (audio, video)
+      {intl.descriptionLabel}
     </label>
   </div>
 </li>

@@ -1,7 +1,7 @@
 <textarea
   id="the-compose-box-input-{realm}"
   class="compose-box-input compose-box-input-realm-{realm}"
-  placeholder="What's on your mind?"
+  placeholder="{intl.composeLabel}"
   aria-describedby="compose-box-input-description-{realm}"
   aria-owns="compose-autosuggest-list-{realm}"
   aria-expanded={autosuggestShownForThisInput}
@@ -15,10 +15,10 @@
   on:keydown="onKeydown(event)"
 ></textarea>
 <label for="the-compose-box-input-{realm}" class="sr-only">
-  What's on your mind?
+  {intl.composeLabel}
 </label>
 <span id="compose-box-input-description-{realm}" class="sr-only">
-  When autocomplete results are available, press up or down arrows and enter to select.
+  {intl.autocompleteDescription}
 </span>
 <style>
   .compose-box-input {

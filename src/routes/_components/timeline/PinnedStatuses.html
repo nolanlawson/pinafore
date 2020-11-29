@@ -1,6 +1,6 @@
 {#if pinnedStatuses.length }
-  <h1 class="sr-only">Pinned statuses</h1>
-  <div role="feed" aria-label="Pinned statuses" class="pinned-statuses">
+  <h1 class="sr-only">{intl.pinnedStatuses}</h1>
+  <div role="feed" aria-label="{intl.pinnedStatuses}" class="pinned-statuses">
     {#each pinnedStatuses as status, index (status.id)}
       <div class="pinned-status-wrapper">
         <!-- empty div used because we assume the parent of the <article> gets the focus outline -->

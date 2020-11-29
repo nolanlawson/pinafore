@@ -1,6 +1,6 @@
 <div class="more-items-header">
   <button class="primary" type="button" on:click="onClick(event)">
-    Show {count} more
+    {showMoreLabel}
   </button>
 </div>
 <style>
@@ -12,6 +12,8 @@
   }
 </style>
 <script>
+  import { formatIntl } from '../../_utils/formatIntl'
+
   export default {
     methods: {
       onClick (event) {
@@ -20,6 +22,11 @@
           onClick(event)
         }
       }
+    },
+    computed: {
+      showMoreLabel: ({ count }) => (
+        formatIntl('intl.showCountMore', { count })
+      )
     }
   }
 </script>

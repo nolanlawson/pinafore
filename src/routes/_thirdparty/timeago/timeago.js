@@ -1,76 +1,43 @@
 // adapted from https://unpkg.com/timeago.js@4.0.0-beta.1/lib/index.js
-/**
- * Created by hustcc on 18/5/20.
- * Contract: i@hust.cc
- */
+import { LOCALE } from '../../_static/intl'
 
-var IndexMapEn = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year']
-var SEC_ARRAY = [60, 60, 24, 7, 365 / 7 / 12, 12]
+const IndexMapEn = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year']
+const SEC_ARRAY = [60, 60, 24, 7, 365 / 7 / 12, 12]
+const intlFormat = new Intl.RelativeTimeFormat(LOCALE)
 
-/**
- * Created by hustcc on 18/5/20.
- * Contract: i@hust.cc
- */
-
-function en (number, index) {
+function formatRelativeTime (number, index) {
   if (index === 0) {
-    return ['just now', 'right now']
+    if (process.env.NODE_ENV === 'test') {
+      return require('../../../intl/en-US').justNow // only used in mocha tests
+    }
+    return 'intl.justNow'
   }
-  var unit = IndexMapEn[Math.floor(index / 2)]
-  if (number > 1) {
-    unit += 's'
-  }
-  return [number + ' ' + unit + ' ago', 'in ' + number + ' ' + unit]
+  const unit = IndexMapEn[Math.floor(index / 2)]
+
+  return intlFormat.format(number, unit)
 }
 
-/**
- * Created by hustcc on 18/5/20.
- * Contract: i@hust.cc
- */
+function formatDiff (seconds) {
+  let i = 0
 
-/**
- * format the diff second to *** time ago, with setting locale
- * @param diff
- * @param locale
- * @param defaultLocale
- * @returns {string | void | *}
- */
-function formatDiff (diff) {
-  // if locale is not exist, use defaultLocale.
-  // if defaultLocale is not exist, use build-in `en`.
-  // be sure of no error when locale is not exist.
-  var i = 0
-
-  var agoin = diff < 0 ? 1 : 0
+  const pastDate = seconds < 0
 
   // timein or timeago
 
-  var totalSec = diff = Math.abs(diff)
+  seconds = Math.abs(seconds)
 
-  for (; diff >= SEC_ARRAY[i] && i < SEC_ARRAY.length; i++) {
-    diff /= SEC_ARRAY[i]
+  for (; seconds >= SEC_ARRAY[i] && i < SEC_ARRAY.length; i++) {
+    seconds /= SEC_ARRAY[i]
   }
-  diff = Math.floor(diff)
+  seconds = Math.floor(seconds)
   i *= 2
 
-  if (diff > (i === 0 ? 9 : 1)) i += 1
-  return en(diff, i, totalSec)[agoin].replace('%s', diff)
+  if (seconds > (i === 0 ? 9 : 1)) {
+    i += 1
+  }
+  return formatRelativeTime(pastDate ? -seconds : seconds, i)
 }
 
-/**
- * calculate the diff second between date to be formatted an now date.
- * @param date
- * @param nowDate
- * @returns {number}
- */
-function diffSec (date, now) {
-  return (now - date) / 1000
-}
-
-/**
- * Created by hustcc on 18/5/20.
- * Contract: i@hust.cc
- */
-export function format (date, now) {
-  return formatDiff(diffSec(date, now))
+export function format (milliseconds) {
+  return formatDiff(milliseconds / 1000)
 }

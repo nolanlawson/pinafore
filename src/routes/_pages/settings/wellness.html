@@ -1,66 +1,65 @@
-<SettingsLayout page='settings/wellness' label="Wellness">
-  <h1>Wellness Settings</h1>
+<SettingsLayout page='settings/wellness' label="{intl.wellness}">
+  <h1>{intl.wellnessSettings}</h1>
 
   <p>
-    Wellness settings are designed to reduce the addictive or anxiety-inducing aspects of social media.
-    Choose any options that work well for you.
+    {intl.wellnessDescription}
   </p>
 
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-check-all"
              on:change="onCheckAllChange(event)">
-      Enable all
+      {intl.enableAll}
     </label>
   </form>
 
-  <h2>Metrics</h2>
+  <h2>{intl.metrics}</h2>
 
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-follower-counts"
              bind:checked="$disableFollowerCounts" on:change="onChange(event)">
-      Hide follower counts (capped at 10)
+      {intl.hideFollowerCount}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-reblog-counts"
              bind:checked="$disableReblogCounts" on:change="onChange(event)">
-      Hide boost counts
+      {intl.hideReblogCount}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-fav-counts"
              bind:checked="$disableFavCounts" on:change="onChange(event)">
-      Hide favorite counts
+      {intl.hideFavoriteCount}
     </label>
   </form>
 
-  <h2>Notifications</h2>
+  <h2>{intl.notifications}</h2>
 
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-unread-notification-counts"
              bind:checked="$disableNotificationBadge" on:change="onChange(event)">
-      Hide unread notifications count (i.e. the red dot)
+      {intl.hideUnread}
     </label>
   </form>
 
   <InfoAside className="wellness-aside">
-    You can filter or disable notifications in the
-    <a rel="prefetch" href="/settings/instances{$currentInstance ? '/' + $currentInstance : ''}">instance settings</a>.
+    {intl.filterNotificationsPre}
+    <a rel="prefetch" href="/settings/instances{$currentInstance ? '/' + $currentInstance : ''}">{intl.filterNotificationsText}</a>.
+    {intl.filterNotificationsPost}
   </InfoAside>
 
-  <h2>UI</h2>
+  <h2>{intl.ui}</h2>
 
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-grayscale"
              bind:checked="$enableGrayscale" on:change="onChange(event)">
-      Grayscale mode
+      {intl.grayscaleMode}
     </label>
   </form>
   <p>
-    These settings are partly based on guidelines from the
-    <a rel="noopener" target="_blank" href="https://humanetech.com">Center for Humane Technology</a>.
+    {intl.wellnessFooter}
   </p>
 </SettingsLayout>
 <UISettingsStyles />

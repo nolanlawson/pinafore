@@ -2,11 +2,12 @@ import { favoriteStatus, unfavoriteStatus } from '../_api/favorite'
 import { store } from '../_store/store'
 import { toast } from '../_components/toast/toast'
 import { database } from '../_database/database'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function setFavorited (statusId, favorited) {
   const { online } = store.get()
   if (!online) {
-    toast.say(`You cannot ${favorited ? 'favorite' : 'unfavorite'} while offline.`)
+    /* no await */ toast.say(favorited ? 'intl.cannotFavoriteOffline' : 'intl.cannotUnfavoriteOffline')
     return
   }
   const { currentInstance, accessToken } = store.get()
@@ -19,7 +20,10 @@ export async function setFavorited (statusId, favorited) {
     await database.setStatusFavorited(currentInstance, statusId, favorited)
   } catch (e) {
     console.error(e)
-    toast.say(`Failed to ${favorited ? 'favorite' : 'unfavorite'}. ` + (e.message || ''))
+    /* no await */ toast.say(favorited
+      ? formatIntl('intl.unableToFavorite', { error: (e.message || '') })
+      : formatIntl('intl.unableToUnfavorite', { error: (e.message || '') })
+    )
     store.setStatusFavorited(currentInstance, statusId, !favorited) // undo optimistic update
   }
 }

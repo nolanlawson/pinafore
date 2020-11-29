@@ -17,6 +17,7 @@
   import { store } from '../_store/store'
   import { observe } from 'svelte-extras'
   import { throttleTimer } from '../_utils/throttleTimer'
+  import { formatIntl } from '../_utils/formatIntl'
 
   const updateDisplayedLength = process.browser && throttleTimer(requestAnimationFrame)
 
@@ -43,9 +44,9 @@
       lengthToDisplay: ({ length, max }) => max - length,
       lengthLabel: ({ overLimit, lengthToDisplayDeferred }) => {
         if (overLimit) {
-          return `${-lengthToDisplayDeferred} characters over limit`
+          return formatIntl('intl.overLimit', { count: -lengthToDisplayDeferred })
         } else {
-          return `${lengthToDisplayDeferred} characters remaining`
+          return formatIntl('intl.underLimit', { count: lengthToDisplayDeferred })
         }
       }
     },

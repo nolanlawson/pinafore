@@ -2,7 +2,7 @@
   <Avatar className="from-avatar" size="extra-small" {account} />
   <div class="moved-label">
     <SvgIcon className="moved-svg" href="#fa-suitcase" />
-    {accessibleName} has moved:
+    {hasMovedLabel}
   </div>
   <a class="moved-avatar" href="/accounts/{moved.id}">
     <Avatar account={moved} />
@@ -63,6 +63,7 @@
   import { removeEmoji } from '../../_utils/removeEmoji'
   import Avatar from '../Avatar.html'
   import SvgIcon from '../SvgIcon.html'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     computed: {
@@ -80,7 +81,10 @@
         return $omitEmojiInDisplayNames
           ? removeEmoji(movedDisplayName, movedEmojis) || movedDisplayName
           : movedDisplayName
-      }
+      },
+      hasMovedLabel: ({ accessibleName }) => (
+        formatIntl('intl.accountHasMoved', { account: accessibleName })
+      )
     },
     components: {
       Avatar,

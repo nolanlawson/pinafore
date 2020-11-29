@@ -2,7 +2,7 @@
   <IconButton
     className="status-toolbar-reply-button"
     label={replyLabel}
-    pressedLabel="Close reply"
+    pressedLabel="{intl.closeReply}"
     pressable={true}
     pressed={replyShown}
     href={replyIcon}
@@ -21,8 +21,8 @@
     ref:reblogIcon
   />
   <IconButton
-    label="Favorite"
-    pressedLabel="Unfavorite"
+    label="{intl.favorite}"
+    pressedLabel="{intl.unfavorite}"
     pressable={true}
     pressed={favorited}
     href="#fa-star"
@@ -31,7 +31,7 @@
     ref:favoriteIcon
     />
   <IconButton
-    label="Show more options"
+    label="{intl.moreOptions}"
     href="#fa-ellipsis-h"
     clickListener={false}
     elementId={optionsKey}
@@ -165,17 +165,17 @@
     }),
     computed: {
       replyLabel: ({ inReplyToId }) => (
-        inReplyToId ? 'Reply to thread' : 'Reply'
+        inReplyToId ? 'intl.replyToThread' : 'intl.reply'
       ),
       replyIcon: ({ inReplyToId }) => inReplyToId ? '#fa-reply-all' : '#fa-reply',
       reblogLabel: ({ visibility }) => {
         switch (visibility) {
           case 'private':
-            return 'Cannot be boosted because this is followers-only'
+            return 'intl.cannotReblogFollowersOnly'
           case 'direct':
-            return 'Cannot be boosted because this is a direct message'
+            return 'intl.cannotReblogDirectMessage'
           default:
-            return 'Boost'
+            return 'intl.reblog'
         }
       },
       reblogIcon: ({ visibility }) => {

@@ -3,30 +3,14 @@
     <div class="not-logged-in-home">
       <div class="banner">
         <SvgIcon className="not-logged-in-home-svg" href="#pinafore-logo" />
-        <h1>Pinafore</h1>
+        <h1>{intl.appName}</h1>
       </div>
-      <!-- Use raw HTML to make the output smaller -->
-      {@html `
-        <div>
-          <p>
-            Pinafore is a web client for
-            <a rel="noopener" target="_blank" href="https://joinmastodon.org">Mastodon</a>,
-            designed for speed and simplicity.
-          </p>
-
-          <p>
-            Read the
-            <a rel="noopener" target="_blank"
-               href="https://nolanlawson.com/2018/04/09/introducing-pinafore-for-mastodon/">introductory blog post</a>,
-            or get started by logging in to an instance:
-          </p>
-
-          <p style="text-align: right;">
-            <a class="button primary" rel="prefetch" href="/settings/instances/add">Log in</a>
-          </p>
-        </div>
-      `}
-    </div>
+      <div>
+        {@html intl.homeDescription}
+        <p style="text-align: right;">
+          <a class="button primary" rel="prefetch" href="/settings/instances/add">{intl.logIn}</a>
+        </p>
+      </div>
   </FreeTextLayout>
 </HiddenFromSSR>
 <style>

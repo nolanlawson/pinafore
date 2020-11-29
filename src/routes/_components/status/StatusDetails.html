@@ -2,7 +2,7 @@
   <ExternalLink className="status-absolute-date"
                 href={originalStatus.url}
                 showIcon={true}
-                ariaLabel="{displayAbsoluteFormattedDate} (opens in new window)"
+                ariaLabel={externalLinkLabel}
   >
     <time datetime={createdAtDate} title={absoluteFormattedDate}>
       {displayAbsoluteFormattedDate}
@@ -13,7 +13,7 @@
       <ExternalLink className="status-application"
                     href={applicationWebsite}
                     showIcon={false}
-                    ariaLabel="{applicationName} (opens in new window)">
+                    ariaLabel={applicationLinkLabel}>
         <span class="status-application-span">
           {applicationName}
         </span>
@@ -135,6 +135,7 @@
   import { absoluteDateFormatter, shortAbsoluteDateFormatter } from '../../_utils/formatters'
   import SvgIcon from '../SvgIcon.html'
   import { on } from '../../_utils/eventBus'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     oncreate () {
@@ -181,22 +182,22 @@
       ),
       reblogsLabel: ({ $disableReblogCounts, numReblogs }) => {
         if ($disableReblogCounts) {
-          return 'Boost counts hidden'
+          return 'intl.reblogCountsHidden'
         }
-        // TODO: intl
-        return numReblogs === 1
-          ? `Boosted ${numReblogs} time`
-          : `Boosted ${numReblogs} times`
+        return formatIntl('intl.rebloggedTimes', { count: numReblogs })
       },
       favoritesLabel: ({ $disableFavCounts, numFavs }) => {
         if ($disableFavCounts) {
-          return 'Favorite counts hidden'
+          return 'intl.favoriteCountsHidden'
         }
-        // TODO: intl
-        return numFavs === 1
-          ? `Favorited ${numFavs} time`
-          : `Favorited ${numFavs} times`
-      }
+        return formatIntl('intl.favoritedTimes', { count: numFavs })
+      },
+      externalLinkLabel: ({ displayAbsoluteFormattedDate }) => (
+        formatIntl('intl.opensInNewWindow', { label: displayAbsoluteFormattedDate })
+      ),
+      applicationLinkLabel: ({ applicationName }) => (
+        formatIntl('intl.opensInNewWindow', { label: applicationName })
+      )
     },
     components: {
       ExternalLink,

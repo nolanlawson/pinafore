@@ -1,15 +1,15 @@
 {#if $isUserLoggedIn}
   <TimelinePage timeline="direct">
     {#if $pinnedPage !== '/direct'}
-      <DynamicPageBanner title="Direct messages" icon="#fa-envelope"/>
+      <DynamicPageBanner title="{intl.directMessages}" icon="#fa-envelope"/>
     {/if}
   </TimelinePage>
 {:else}
   <HiddenFromSSR>
     <FreeTextLayout>
-      <h1>Conversations</h1>
+      <h1>{intl.directMessages}</h1>
 
-      <p>Your conversations will appear here when logged in.</p>
+      <p>{intl.directMessagesNotLoggedIn}</p>
     </FreeTextLayout>
   </HiddenFromSSR>
 {/if}

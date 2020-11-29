@@ -1,4 +1,4 @@
-<DynamicPageBanner title="Follow requests" icon="#fa-user-plus" />
+<DynamicPageBanner title="{intl.followRequests}" icon="#fa-user-plus" />
 {#if $isUserLoggedIn }
   <AccountsListPage {accountsFetcher} {accountActions} />
 {/if}
@@ -23,12 +23,12 @@
       accountActions: [
         {
           icon: '#fa-check',
-          label: 'Approve',
+          label: 'intl.approve',
           onclick: (accountId) => setFollowRequestApprovedOrRejected(accountId, true, true)
         },
         {
           icon: '#fa-times',
-          label: 'Reject',
+          label: 'intl.reject',
           onclick: (accountId) => setFollowRequestApprovedOrRejected(accountId, false, true)
         }
       ]

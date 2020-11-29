@@ -21,7 +21,12 @@ const dev = mode === 'development'
 
 const resolve = {
   extensions: ['.js', '.json', '.html'],
-  mainFields: ['svelte', 'module', 'browser', 'main']
+  mainFields: ['svelte', 'module', 'browser', 'main'],
+  alias: {
+    // All browsers we target support Intl.PluralRules, so format-message-interpret can fall back to that. This file is
+    // pretty big (9.83kB) and it's not needed.
+    './plurals': 'lodash-es/noop'
+  }
 }
 
 module.exports = {

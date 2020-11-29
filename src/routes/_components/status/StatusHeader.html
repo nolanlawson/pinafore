@@ -7,7 +7,7 @@
   <div class="status-header-content">
     {#if timelineType === 'pinned'}
       <span class="status-header-author">
-        Pinned toot
+        {intl.pinnedStatus}
       </span>
     {:elseif notificationType !== 'poll'}
       <a id={elementId}
@@ -130,19 +130,19 @@
       },
       actionText: ({ notificationType, status, $currentVerifyCredentials }) => {
         if (notificationType === 'reblog') {
-          return 'boosted your status'
+          return 'intl.rebloggedYou'
         } else if (notificationType === 'favourite') {
-          return 'favorited your status'
+          return 'intl.favoritedYou'
         } else if (notificationType === 'follow') {
-          return 'followed you'
+          return 'intl.followedYou'
         } else if (notificationType === 'poll') {
           if ($currentVerifyCredentials && status && $currentVerifyCredentials.id === status.account.id) {
-            return 'A poll you created has ended'
+            return 'intl.pollYouCreatedEnded'
           } else {
-            return 'A poll you voted on has ended'
+            return 'intl.pollYouVotedEnded'
           }
         } else if (status && status.reblog) {
-          return 'boosted'
+          return 'intl.reblogged'
         } else {
           return ''
         }

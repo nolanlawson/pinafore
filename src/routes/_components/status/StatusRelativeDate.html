@@ -5,7 +5,7 @@
    {tabindex}
 >
   <time datetime={createdAtDate} title={absoluteFormattedDate}
-        aria-label="{timeagoFormattedDate} – click to show thread">
+        aria-label={createdAtLabel}>
     {timeagoFormattedDate}
   </time>
 </a>
@@ -31,6 +31,8 @@
 
 </style>
 <script>
+  import { formatIntl } from '../../_utils/formatIntl'
+
   export default {
     computed: {
       elementId: ({ uuid }) => `status-relative-date-${uuid}`,
@@ -38,6 +40,9 @@
         // If you can't tap on the entire status, then you need some way to click on it. Otherwise it's
         // just a duplicate link in the focus order.
         $disableTapOnStatus ? '0' : '-1'
+      ),
+      createdAtLabel: ({ timeagoFormattedDate }) => (
+        formatIntl('intl.clickToShowThread', { time: timeagoFormattedDate })
       )
     }
   }

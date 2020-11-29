@@ -1,15 +1,15 @@
-<SettingsLayout page='settings/hotkeys' label="Hotkeys">
-  <h1>Hotkeys</h1>
+<SettingsLayout page='settings/hotkeys' label="{intl.hotkeys}">
+  <h1>{intl.hotkeys}</h1>
 
-  <h2 class="sr-only">Preferences</h2>
-  <form class="ui-settings" aria-label="Hotkey settings">
+  <h2 class="sr-only">{intl.preferences}</h2>
+  <form class="ui-settings" aria-label="{intl.hotkeySettings}">
     <label class="setting-group {allowChangeHotkeySetting ? '' : 'disabled-style'}">
       <input type="checkbox" id="choice-disable-hotkeys"
              bind:checked="$disableHotkeys"
              on:change="onChange()"
              disabled={!allowChangeHotkeySetting}
       >
-      Disable all hotkeys
+      {intl.disableHotkeys}
     </label>
     <label class="setting-group  {allowChangeLeftRightSetting ? '' : 'disabled-style'}">
       <input type="checkbox" id="choice-left-right-focus"
@@ -17,11 +17,11 @@
              on:change="onChange()"
              disabled={!allowChangeLeftRightSetting}
       >
-      Left/right arrow keys change focus rather than columns/media
+      {intl.leftRightArrows}
     </label>
   </form>
 
-  <h2 class="sr-only">Guide</h2>
+  <h2 class="sr-only">{intl.guide}</h2>
 
   <ShortcutHelpInfo />
 </SettingsLayout>

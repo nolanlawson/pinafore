@@ -5,21 +5,21 @@
 {:else}
 <HiddenFromSSR>
   <FreeTextLayout>
-    <h1>Search</h1>
+    <h1>{intl.search}</h1>
 
-    <p>You can search once logged in to an instance.</p>
+    <p>{intl.searchNotLoggedIn}</p>
   </FreeTextLayout>
 </HiddenFromSSR>
 <div style="display: none">
   <!-- TODO: this is just a hack so that `sapper export` knows to crawl these files -->
   <!-- Note that these links have to be spread out or else they result in ECONNRESET errors during crawling -->
   <!-- See also community/index.html -->
-  <a href="/local">Local</a>
-  <a href="/federated">Federated</a>
-  <a href="/favorites">Favorites</a>
-  <a href="/direct">Conversations</a>
-  <a href="/bookmarks">Bookmarks</a>
-  <a href="/share">Share</a>
+  <a href="/local">{intl.local}</a>
+  <a href="/federated">{intl.federated}</a>
+  <a href="/favorites">{intl.favorites}</a>
+  <a href="/direct">{intl.directMessages}</a>
+  <a href="/bookmarks">{intl.bookmarks}</a>
+  <a href="/share">{intl.shareStatus}</a>
 </div>
 {/if}
 <style>

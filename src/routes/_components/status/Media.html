@@ -34,7 +34,7 @@
   >
   {#if type === 'gifv' && $autoplayGifs && !blurhash}
     <AutoplayVideo
-      ariaLabel="Animated image: {description}"
+      ariaLabel={animatedLabel}
       poster={previewUrl}
       src={url}
       width={inlineWidth}
@@ -44,7 +44,7 @@
   {:elseif type === 'gifv'}
     <NonAutoplayGifv
       class={noNativeWidthHeight ? 'no-native-width-height' : ''}
-      label="Animated image: {description}"
+      label={animatedLabel}
       poster={previewUrl}
       {blurhash}
       src={url}
@@ -111,6 +111,7 @@
   import AutoplayVideo from '../AutoplayVideo.html'
   import { registerClickDelegate } from '../../_utils/delegate'
   import { convertCssPropertyToDataUrl } from '../../_utils/convertCssPropertyToDataUrl'
+  import { formatIntl } from '../../_utils/formatIntl'
 
 export default {
     async oncreate () {
@@ -168,10 +169,13 @@ export default {
       tabindex: ({ showAsSensitive }) => showAsSensitive ? '-1' : '0',
       ariaHidden: ({ showAsSensitive }) => showAsSensitive,
       imageButtonAriaLabel: ({ type, description }) => (
-        `Show ${type === 'gifv' ? 'animated image' : 'image'}: ${description}`
+        formatIntl('intl.showImage', { animated: type === 'gifv', description })
       ),
       videoOrAudioButtonLabel: ({ type, description }) => (
-        `Play ${type === 'video' ? 'video' : 'audio'}: ${description}`
+        formatIntl('intl.playVideoOrAudio', { audio: type === 'audio', description })
+      ),
+      animatedLabel: ({ description }) => (
+        formatIntl('intl.animatedImage', { description })
       )
     },
     methods: {

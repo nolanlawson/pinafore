@@ -5,7 +5,7 @@
   >
     <LoadingSpinner size={48} />
     <span class="loading-footer-info">
-      Loading more...
+      {intl.loadingMore}
     </span>
   </div>
   <div class="button-wrapper {showLoadButton ? 'shown' : ''}"
@@ -14,7 +14,7 @@
     <button type="button"
             class="primary"
             on:click="onClickLoadMore(event)">
-      Load more
+      {intl.loadMore}
     </button>
   </div>
 </div>

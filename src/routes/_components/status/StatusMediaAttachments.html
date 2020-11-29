@@ -5,7 +5,7 @@
       <button id={elementId}
               type="button"
               class="status-sensitive-media-button"
-              aria-label="Hide sensitive media"
+              aria-label="{intl.hideSensitiveMedia}"
               ref:hideSensitiveMedia
       >
         <div class="svg-wrapper">
@@ -17,13 +17,13 @@
       <button id={elementId}
               type="button"
               class="status-sensitive-media-button"
-              aria-label="Show sensitive media"
+              aria-label="{intl.showSensitiveMedia}"
               ref:showSensitiveMedia
       >
 
         <div class="status-sensitive-media-warning">
           <div class="status-sensitive-media-warning-text">
-            Sensitive content. Click to show.
+            {intl.clickToShowSensitive}
           </div>
         </div>
         <div class="svg-wrapper">

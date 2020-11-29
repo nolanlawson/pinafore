@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="{process.env.LOCALE}" dir="{process.env.LOCALE_DIRECTION}">
 <head>
   <meta charset='utf-8' >
   <meta name="viewport" content="width=device-width, viewport-fit=cover">
   <meta id='theThemeColor' name='theme-color' content='#4169e1' >
-  <meta name="description" content="An alternative web client for Mastodon, focused on speed and simplicity." >
+  <meta name="description" content="{intl.appDescription}" >
 
   %sapper.base%
 
@@ -15,7 +15,7 @@
        https://developers.google.com/web/fundamentals/native-hardware/fullscreen/ -->
   <meta name="mobile-web-app-capable" content="yes" >
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Pinafore" >
+  <meta name="apple-mobile-web-app-title" content="{intl.appName}" >
   <meta name="apple-mobile-web-app-status-bar-style" content="white" >
 
   <!-- inline CSS -->

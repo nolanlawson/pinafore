@@ -3,6 +3,7 @@ import { muteAccount, unmuteAccount } from '../_api/mute'
 import { toast } from '../_components/toast/toast'
 import { updateLocalRelationship } from './accounts'
 import { emit } from '../_utils/eventBus'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function setAccountMuted (accountId, mute, notifications, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()
@@ -15,15 +16,14 @@ export async function setAccountMuted (accountId, mute, notifications, toastOnSu
     }
     await updateLocalRelationship(currentInstance, accountId, relationship)
     if (toastOnSuccess) {
-      if (mute) {
-        toast.say('Muted account')
-      } else {
-        toast.say('Unmuted account')
-      }
+      /* no await */ toast.say(mute ? 'intl.mutedAccount' : 'intl.unmutedAccount')
     }
     emit('refreshAccountsList')
   } catch (e) {
     console.error(e)
-    toast.say(`Unable to ${mute ? 'mute' : 'unmute'} account: ` + (e.message || ''))
+    /* no await */ toast.say(mute
+      ? formatIntl('intl.unableToMute', { error: (e.message || '') })
+      : formatIntl('intl.unableToUnmute', { error: (e.message || '') })
+    )
   }
 }

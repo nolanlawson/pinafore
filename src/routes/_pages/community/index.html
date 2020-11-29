@@ -5,13 +5,13 @@
     <RadioGroup
       id="pinnables"
       length={numPinnable}
-      label="Pinnable timelines">
+      label="{intl.pinnableTimelines}">
 
       <h2 class="community-header">
-        Timelines
+        {intl.timelines}
       </h2>
 
-      <PageList label="Timelines">
+      <PageList label="{intl.timelines}">
         {#each staticPinnables as staticPinnable, i}
           <PageListItem href={staticPinnable.href}
                         label={staticPinnable.label}
@@ -25,10 +25,10 @@
       {#if listsLength}
 
         <h2 class="community-header">
-          Lists
+          {intl.lists}
         </h2>
 
-        <PageList label="Lists">
+        <PageList label="{intl.lists}">
           {#each $lists as list, i}
             <PageListItem href="/lists/{list.id}"
                           label={list.title}
@@ -47,7 +47,7 @@
       Instance settings
     </h2>
 
-    <PageList label="Instance settings">
+    <PageList label="{intl.instanceSettings}">
       {#if isLockedAccount}
       <PageListItem href="/requests"
                     label={followRequestsLabel}
@@ -55,15 +55,15 @@
        />
       {/if}
       <PageListItem href="/muted"
-                    label="Muted users"
+                    label="{intl.mutedUsers}"
                     icon="#fa-volume-off"
       />
       <PageListItem href="/blocked"
-                    label="Blocked users"
+                    label="{intl.blockedUsers}"
                     icon="#fa-ban"
       />
       <PageListItem href="/pinned"
-                    label="Pinned toots"
+                    label="{intl.pinnedStatuses}"
                     icon="#fa-thumb-tack"
       />
     </PageList>
@@ -73,19 +73,19 @@
 {:else}
 <HiddenFromSSR>
   <FreeTextLayout>
-    <h1>Community</h1>
+    <h1>{intl.community}</h1>
 
-    <p>Community options appear here when logged in.</p>
+    <p>{intl.communityNotLoggedIn}</p>
   </FreeTextLayout>
 </HiddenFromSSR>
 <div style="display: none">
   <!-- TODO: this is just a hack so that `sapper export` knows to crawl these files -->
   <!-- Note that these links have to be spread out or else they result in ECONNRESET errors during crawling -->
   <!-- See also search.html -->
-  <a href="/requests">Requests</a>
-  <a href="/muted">Muted</a>
-  <a href="/blocked">Blocked</a>
-  <a href="/pinned">Pinned</a>
+  <a href="/requests">{intl.followRequests}</a>
+  <a href="/muted">{intl.mutedUsers}</a>
+  <a href="/blocked">{intl.blockedUsers}</a>
+  <a href="/pinned">{intl.pinnedStatuses}</a>
 </div>
 {/if}
 <style>
@@ -108,6 +108,7 @@
   import { updateListsForInstance } from '../../_actions/lists'
   import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
   import FocusRestoration from '../../_components/FocusRestoration.html'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     async oncreate () {
@@ -132,27 +133,27 @@
       staticPinnables: [
         {
           href: '/local',
-          label: 'Local Timeline',
+          label: 'intl.localTimeline',
           icon: '#fa-users'
         },
         {
           href: '/federated',
-          label: 'Federated Timeline',
+          label: 'intl.federatedTimeline',
           icon: '#fa-globe'
         },
         {
           href: '/favorites',
-          label: 'Favorites',
+          label: 'intl.favorites',
           icon: '#fa-star'
         },
         {
           href: '/direct',
-          label: 'Direct messages',
+          label: 'intl.directMessages',
           icon: '#fa-envelope'
         },
         {
           href: '/bookmarks',
-          label: 'Bookmarks',
+          label: 'intl.bookmarks',
           icon: '#fa-bookmark'
         }
       ]
@@ -160,7 +161,10 @@
     computed: {
       isLockedAccount: ({ $currentVerifyCredentials }) => $currentVerifyCredentials && $currentVerifyCredentials.locked,
       followRequestsLabel: ({ $hasFollowRequests, $numberOfFollowRequests }) => (
-        `Follow requests${$hasFollowRequests ? ` (${$numberOfFollowRequests})` : ''}`
+        formatIntl('intl.followRequestsLabel', {
+          hasFollowRequests: $hasFollowRequests,
+          count: $numberOfFollowRequests
+        })
       ),
       listsLength: ({ $lists }) => $lists ? $lists.length : 0,
       staticPinnablesLength: ({ staticPinnables }) => staticPinnables.length,

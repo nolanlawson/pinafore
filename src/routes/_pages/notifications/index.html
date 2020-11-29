@@ -4,13 +4,13 @@
 {:else}
 <HiddenFromSSR>
   <FreeTextLayout>
-    <h1>Notifications</h1>
+    <h1>{intl.notifications}</h1>
 
-    <p>Your notifications will appear here when logged in.</p>
+    <p>{intl.notificationsNotLoggedIn}</p>
   </FreeTextLayout>
   <div style="display: none">
     <!-- TODO: this is just a hack so that `sapper export` knows to crawl these files -->
-    <a href="/notifications/mentions">Notification mentions</a>
+    <a href="/notifications/mentions">{intl.notificationMentions}</a>
   </div>
 </HiddenFromSSR>
 {/if}

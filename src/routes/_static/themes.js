@@ -1,103 +1,103 @@
 const themes = [
   {
     name: 'default',
-    label: 'Royal',
+    label: 'intl.themeRoyal',
     dark: false,
     color: 'royalblue'
   },
   {
     name: 'scarlet',
-    label: 'Scarlet',
+    label: 'intl.themeScarlet',
     dark: false,
     color: '#e04e41'
   },
   {
     name: 'seafoam',
-    label: 'Seafoam',
+    label: 'intl.themeSeafoam',
     dark: false,
     color: '#177380'
   },
   {
     name: 'hotpants',
-    label: 'Hotpants',
+    label: 'intl.themeHotpants',
     dark: false,
     color: 'hotpink'
   },
   {
     name: 'oaken',
-    label: 'Oaken',
+    label: 'intl.themeOaken',
     dark: false,
     color: 'saddlebrown'
   },
   {
     name: 'majesty',
-    label: 'Majesty',
+    label: 'intl.themeMajesty',
     dark: false,
     color: 'blueviolet'
   },
   {
     name: 'gecko',
-    label: 'Gecko',
+    label: 'intl.themeGecko',
     dark: false,
     color: '#4ab92f'
   },
   {
     name: 'grayscale',
-    label: 'Grayscale',
+    label: 'intl.themeGrayscale',
     dark: false,
     color: '#999999'
   },
   {
     name: 'ozark',
-    label: 'Ozark',
+    label: 'intl.themeOzark',
     dark: true,
     color: '#5263af'
   },
   {
     name: 'cobalt',
-    label: 'Cobalt',
+    label: 'intl.themeCobalt',
     dark: true,
     color: '#08439b'
   },
   {
     name: 'sorcery',
-    label: 'Sorcery',
+    label: 'intl.themeSorcery',
     dark: true,
     color: '#ae91e8'
   },
   {
     name: 'punk',
-    label: 'Punk',
+    label: 'intl.themePunk',
     dark: true,
     color: '#e04e41'
   },
   {
     name: 'riot',
-    label: 'Riot',
+    label: 'intl.themeRiot',
     dark: true,
     color: 'hotpink'
   },
   {
     name: 'hacker',
-    label: 'Hacker',
+    label: 'intl.themeHacker',
     dark: true,
     color: '#4ab92f'
   },
   {
     name: 'mastodon',
-    label: 'Mastodon',
+    label: 'intl.themeMastodon',
     dark: true,
     color: '#282C37'
   },
   {
     name: 'pitchblack',
-    label: 'Pitch Black',
+    label: 'intl.themePitchBlack',
     dark: true,
     color: '#000'
   },
   {
     name: 'dark-grayscale',
-    label: 'Dark Grayscale',
+    label: 'intl.themeDarkGrayscale',
     dark: true,
     color: '#666'
   }

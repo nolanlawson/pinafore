@@ -36,6 +36,7 @@
   import AccountSearchResult from './search/AccountSearchResult.html'
   import { toast } from './toast/toast'
   import { on } from '../_utils/eventBus'
+  import { formatIntl } from '../_utils/formatIntl'
 
   // TODO: paginate
   export default {
@@ -43,7 +44,7 @@
       try {
         await this.refreshAccounts()
       } catch (e) {
-        toast.say('Error: ' + (e.name || '') + ' ' + (e.message || ''))
+        /* no await */ toast.say(formatIntl('intl.error', { error: (e.message || '') }))
       } finally {
         this.set({ loading: false })
       }

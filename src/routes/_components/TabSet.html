@@ -2,7 +2,8 @@
   <ul>
     {#each tabs as tab (tab.name)}
     <li class="{currentTabName === tab.name ? 'current' : 'not-current'}">
-      <a aria-label="{tab.label} { currentTabName === tab.name ? '(Current)' : ''}"
+      <a aria-label={createAriaLabel(tab.label, tab.name, currentTabName)}
+         aria-current={tab.name === currentTabName}
          class="focus-fix"
          href={tab.href}
          rel="prefetch">
@@ -83,9 +84,19 @@
   }
 </style>
 <script>
+  import { formatIntl } from '../_utils/formatIntl'
+
   export default {
     data: () => ({
       className: ''
-    })
+    }),
+    helpers: {
+      createAriaLabel (tabLabel, tabName, currentTabName) {
+        return formatIntl('intl.tabLabel', {
+          label: tabLabel,
+          current: tabName === currentTabName
+        })
+      }
+    }
   }
 </script>

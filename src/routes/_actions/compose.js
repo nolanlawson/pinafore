@@ -8,6 +8,7 @@ import { putMediaMetadata } from '../_api/media'
 import uniqBy from 'lodash-es/uniqBy'
 import { deleteCachedMediaFile } from '../_utils/mediaUploadFileCache'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function insertHandleForReply (statusId) {
   const { currentInstance } = store.get()
@@ -31,7 +32,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
   const { currentInstance, accessToken, online } = store.get()
 
   if (!online) {
-    toast.say('You cannot post while offline')
+    /* no await */ toast.say('intl.cannotPostOffline')
     return
   }
 
@@ -63,7 +64,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     scheduleIdleTask(() => (mediaIds || []).forEach(mediaId => deleteCachedMediaFile(mediaId))) // clean up media cache
   } catch (e) {
     console.error(e)
-    toast.say('Unable to post status: ' + (e.message || ''))
+    /* no await */ toast.say(formatIntl('intl.unableToPost', { error: (e.message || '') }))
   } finally {
     store.set({ postingStatus: false })
   }

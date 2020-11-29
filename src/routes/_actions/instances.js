@@ -7,6 +7,7 @@ import { cacheFirstUpdateAfter } from '../_utils/sync'
 import { getInstanceInfo } from '../_api/instance'
 import { database } from '../_database/database'
 import { importVirtualListStore } from '../_utils/asyncModules/importVirtualListStore.js'
+import { formatIntl } from '../_utils/formatIntl'
 
 export function changeTheme (instanceName, newTheme) {
   const { instanceThemes } = store.get()
@@ -32,7 +33,8 @@ export function switchToInstance (instanceName) {
   switchToTheme(instanceThemes[instanceName], enableGrayscale)
 }
 
-export async function logOutOfInstance (instanceName, message = `Logged out of ${instanceName}`) {
+export async function logOutOfInstance (instanceName, message) {
+  message = message || formatIntl('intl.loggedOutOfInstance', { instance: instanceName })
   const {
     composeData,
     currentInstance,
@@ -123,7 +125,7 @@ export async function updateInstanceInfo (instanceName) {
 export function logOutOnUnauthorized (instanceName) {
   return async error => {
     if (error.message.startsWith('401:')) {
-      await logOutOfInstance(instanceName, `The access token was revoked, logged out of ${instanceName}`)
+      await logOutOfInstance(instanceName, formatIntl('intl.accessTokenRevoked', { instance: instanceName }))
     }
 
     throw error

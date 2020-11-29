@@ -52,11 +52,11 @@ test('aria-labels for notifications', async t => {
     .click(notificationsNavButton)
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
-      /admin favorited your status, foobar, this is unlisted, .* ago, @foobar, Unlisted/i
+      /admin favorited your toot, foobar, this is unlisted, .* ago, @foobar, Unlisted/i
     )
     .hover(getNthStatus(2))
     .expect(getNthStatus(2).getAttribute('aria-label')).match(
-      /admin boosted your status, foobar, this is unlisted, .* ago, @foobar, Unlisted/i
+      /admin boosted your toot, foobar, this is unlisted, .* ago, @foobar, Unlisted/i
     )
     .hover(getNthStatus(3))
     .expect(getNthStatus(3).getAttribute('aria-label')).match(
@@ -85,7 +85,7 @@ test('can shorten aria-labels', async t => {
     .click(homeNavButton)
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
-      /Unlisted status by quux/
+      /Unlisted toot by quux/
     )
     .click(settingsNavButton)
     .click(generalSettingsButton)

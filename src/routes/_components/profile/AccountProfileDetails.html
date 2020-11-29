@@ -1,8 +1,8 @@
-<h2 class="sr-only">Stats and more options</h2>
+<h2 class="sr-only">{intl.statisticsAndMoreOptions}</h2>
 <div class="account-profile-details">
   <div class="account-profile-details-item">
     <span class="account-profile-details-item-title">
-      Toots
+      {intl.statuses}
     </span>
     <span class="account-profile-details-item-datum">
       {numStatusesDisplay}
@@ -14,7 +14,7 @@
      rel="prefetch"
   >
     <span class="account-profile-details-item-title">
-      Follows
+      {intl.follows}
     </span>
     <span class="account-profile-details-item-datum">
       {numFollowingDisplay}
@@ -26,7 +26,7 @@
      rel="prefetch"
   >
     <span class="account-profile-details-item-title">
-      Followers
+      {intl.followers}
     </span>
     <span class="account-profile-details-item-datum">
       {numFollowersDisplay}
@@ -36,7 +36,7 @@
   {#if account && verifyCredentials && account.id !== verifyCredentials.id}
     <div class="account-profile-more-options">
       <IconButton
-        label="More options"
+        label="{intl.moreOptions}"
         href="#fa-bars"
         muted="true"
         on:click="onMoreOptionsClick()"
@@ -124,8 +124,10 @@
 <script>
   import IconButton from '../IconButton.html'
   import { importShowAccountProfileOptionsDialog } from '../dialog/asyncDialogs/importShowAccountProfileOptionsDialog.js'
+  import { LOCALE } from '../../_static/intl'
+  import { formatIntl } from '../../_utils/formatIntl'
 
-  const numberFormat = new Intl.NumberFormat('en-US')
+  const numberFormat = new Intl.NumberFormat(LOCALE)
 
   export default {
     computed: {
@@ -140,8 +142,12 @@
         }
         return numberFormat.format(numFollowers)
       },
-      followersLabel: ({ numFollowers }) => `Followed by ${numFollowers}`,
-      followingLabel: ({ numFollowing }) => `Follows ${numFollowing}`
+      followersLabel: ({ numFollowers }) => (
+        formatIntl('intl.followersLabel', { count: numFollowers })
+      ),
+      followingLabel: ({ numFollowing }) => (
+        formatIntl('intl.followingLabel', { count: numFollowing })
+      )
     },
     methods: {
       async onMoreOptionsClick () {

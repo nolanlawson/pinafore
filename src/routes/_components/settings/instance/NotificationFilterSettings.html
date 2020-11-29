@@ -1,7 +1,7 @@
 <GenericInstanceSettings
   {instanceName}
   {options}
-  label="Notification filter settings"
+  label="{intl.notificationFilterSettings}"
 />
 <script>
   import GenericInstanceSettings from './GenericInstanceSettings.html'
@@ -18,27 +18,27 @@
       options: [
         {
           key: NOTIFICATION_FOLLOWS,
-          label: 'New followers',
+          label: 'intl.newFollowers',
           defaultValue: true
         },
         {
           key: NOTIFICATION_FAVORITES,
-          label: 'Favorites',
+          label: 'intl.favorites',
           defaultValue: true
         },
         {
           key: NOTIFICATION_REBLOGS,
-          label: 'Boosts',
+          label: 'intl.reblogs',
           defaultValue: true
         },
         {
           key: NOTIFICATION_MENTIONS,
-          label: 'Mentions',
+          label: 'intl.mentions',
           defaultValue: true
         },
         {
           key: NOTIFICATION_POLLS,
-          label: 'Poll results',
+          label: 'intl.pollResults',
           defaultValue: true
         }
       ]

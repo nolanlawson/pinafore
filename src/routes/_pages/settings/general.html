@@ -1,32 +1,32 @@
-<SettingsLayout page='settings/general' label="General">
-  <h1>General Settings</h1>
+<SettingsLayout page='settings/general' label="{intl.general}">
+  <h1>{intl.generalSettings}</h1>
 
-  <h2>Media</h2>
+  <h2>{intl.media}}</h2>
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-never-mark-media-sensitive"
              bind:checked="$neverMarkMediaAsSensitive" on:change="onChange(event)">
-      Show sensitive media by default
+      {intl.showSensitive}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-use-blurhash"
               bind:checked="$ignoreBlurhash" on:change="onChange(event)">
-      Show a plain gray color for sensitive media
+      {intl.showPlain}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-mark-media-sensitive"
              bind:checked="$markMediaAsSensitive" on:change="onChange(event)">
-      Treat all media as sensitive
+      {intl.allSensitive}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-large-inline-media"
              bind:checked="$largeInlineMedia" on:change="onChange(event)">
-      Show large inline images and videos
+      {intl.largeMedia}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-autoplay-gif"
              bind:checked="$autoplayGifs" on:change="onChange(event)">
-      Autoplay GIFs
+      {intl.autoplayGifs}
     </label>
   </form>
 
@@ -35,65 +35,61 @@
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-custom-scrollbars"
              bind:checked="$disableCustomScrollbars" on:change="onChange(event)">
-      Disable custom scrollbars
+      {intl.disableCustomScrollbars}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-infinite-scroll"
              bind:checked="$disableInfiniteScroll" on:change="onChange(event)">
-      Disable
+      {intl.disableInfiniteScrollPre}
         <Tooltip
-          text="infinite scroll"
-          tooltipText={
-            "When infinite scroll is disabled, new toots will not automatically appear at the bottom " +
-            "or top of the timeline. Instead, buttons will allow you to load more content on demand."
-          }
+          text="{intl.disableInfiniteScrollText}"
+          tooltipText="{intl.disableInfiniteScrollDescription}"
         />
+      {intl.disableInfiniteScrollPost}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-hide-cards"
              bind:checked="$hideCards" on:change="onChange(event)">
-      Hide link preview cards
+      {intl.hideCards}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-underline-links"
              bind:checked="$underlineLinks" on:change="onChange(event)">
-      Underline links in toots and profiles
+      {intl.underlineLinks}
     </label>
   </form>
 
-  <h2>Accessibility</h2>
+  <h2>{intl.accessibility}</h2>
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-reduce-motion"
              bind:checked="$reduceMotion" on:change="onChange(event)">
-      Reduce motion in UI animations
+      {intl.reduceMotion}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-always-show-focus-ring"
              bind:checked="$alwaysShowFocusRing" on:change="onChange(event)">
-      Always show
+      {intl.showRingPre}
       <Tooltip
-        text="focus ring"
-        tooltipText={
-          "The focus ring is the outline showing the currently focused element. By default, it's only " +
-          "shown when using the keyboard (not mouse or touch), but you may choose to always show it."
-        }
+        text="{intl.showRingText}"
+        tooltipText="{intl.showRingDescription}"
       />
+      {intl.showRingPost}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-tap-on-status"
              bind:checked="$disableTapOnStatus" on:change="onChange(event)">
-      Disable tappable area on entire toot
+      {intl.disableTappable}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-omit-emoji-in-display-names"
              bind:checked="$omitEmojiInDisplayNames" on:change="onChange(event)">
-      Remove emoji from user display names
+      {intl.removeEmoji}
     </label>
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-long-aria-labels"
              bind:checked="$disableLongAriaLabels" on:change="onChange(event)">
-      Use short article ARIA labels
+      {intl.shortAria}
     </label>
   </form>
 
@@ -109,6 +105,7 @@
   import { store } from '../../_store/store'
   import Tooltip from '../../_components/Tooltip.html'
   import UISettingsStyles from '../../_components/settings/UISettingsStyles.html'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     components: {
@@ -135,7 +132,9 @@
     store: () => store,
     computed: {
       themeTitle: ({ $loggedInInstancesInOrder, $currentInstance }) => (
-        $loggedInInstancesInOrder.length > 1 ? `Theme for ${$currentInstance}` : 'Theme'
+        $loggedInInstancesInOrder.length > 1
+          ? formatIntl('intl.themeForInstance', { instance: $currentInstance })
+          : 'intl.theme'
       )
     }
   }

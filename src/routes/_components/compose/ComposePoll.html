@@ -1,14 +1,14 @@
-<section class="compose-poll" aria-label="Create poll">
+<section class="compose-poll" aria-label="{intl.createPoll}">
     {#each poll.options as option, i}
       <input id="poll-option-{realm}-{i}"
              type="text"
              maxlength="25"
              on:change="onChange(i)"
-             placeholder="Choice {i + 1}"
+             placeholder="{createLabel(i)}"
 
       >
       <IconButton
-        label="Remove choice {i + 1}"
+        label="{createRemoveLabel(i)}"
         href="#fa-times"
         muted={true}
         on:click="onDeleteClick(i)"
@@ -21,13 +21,13 @@
     >
     <label class="multiple-choice-label"
            for="poll-option-multiple-{realm}">
-      Multiple choice
+      {intl.multipleChoice}
     </label>
     <Select className="poll-expiry-select"
             options={pollExpiryOptions}
             defaultValue={pollExpiryDefaultValue}
             on:change="onExpiryChange(event)"
-            label="Poll duration"
+            label="{intl.pollDuration}"
     />
   </div>
   <IconButton
@@ -80,6 +80,7 @@
   import { store } from '../../_store/store'
   import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
   import { POLL_EXPIRY_DEFAULT, POLL_EXPIRY_OPTIONS } from '../../_static/polls'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   function flushPollOptionsToDom (poll, realm) {
     for (let i = 0; i < poll.options.length; i++) {
@@ -101,6 +102,14 @@
       pollExpiryDefaultValue: POLL_EXPIRY_DEFAULT
     }),
     store: () => store,
+    helpers: {
+      createLabel (i) {
+        return formatIntl('intl.pollChoiceLabel', { index: i + 1 })
+      },
+      createRemoveLabel (i) {
+        return formatIntl('intl.removePollChoice', { index: i + 1 })
+      }
+    },
     methods: {
       onChange (i) {
         scheduleIdleTask(() => {

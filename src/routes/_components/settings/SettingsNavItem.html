@@ -15,10 +15,18 @@
   }
 </style>
 <script>
+  import { formatIntl } from '../../_utils/formatIntl'
+
   export default {
     computed: {
       className: ({ page, name }) => page === name ? 'selected' : '',
-      ariaLabel: ({ page, name, label }) => page === name ? `${label} (current page)` : label
+      ariaLabel: ({ page, name, label }) => (
+        formatIntl('intl.navItemLabel', {
+          label,
+          selected: page === name,
+          name
+        })
+      )
     }
   }
 </script>

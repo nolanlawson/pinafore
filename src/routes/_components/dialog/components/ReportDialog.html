@@ -31,20 +31,20 @@
         {/if}
       </div>
       <div class="report-info">
-        <p>You are reporting @{account.acct} to the moderators of {$currentInstance}.</p>
-        <label class="sr-only" id="comments-label">Additional comments</label>
+        <p>{reportingLabel}</p>
+        <label class="sr-only" id="comments-label">{intl.additionalComments}</label>
         <textarea bind:value="comment"
-                  placeholder="Additional comments"
+                  placeholder="{intl.additionalComments}"
                   aria-labelledby="comments-label"
                   maxlength="1000"></textarea>
         {#if remoteInstance}
-          <p>Forward to the moderators of {remoteInstance} as well?</p>
+          <p>{forwardDescription}</p>
           <input type="checkbox"
                  id="report-forward"
                  name="report-forward"
                  bind:checked="forward">
           <label for="report-forward">
-            Forward to {remoteInstance}
+            {forwardLabel}
           </label>
         {/if}
       </div>
@@ -164,6 +164,7 @@
   import { toast } from '../../toast/toast'
   import { store } from '../../../_store/store'
   import { reportStatuses } from '../../../_actions/reportStatuses'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   export default {
     async oncreate () {
@@ -178,7 +179,7 @@
         this.set({ recentStatuses })
       } catch (err) {
         console.error(err)
-        toast.say('Unable to load recent statuses: ' + (err.message || ''))
+        /* no await */ toast.say(formatIntl('intl.unableToLoadStatuses', { error: (err.message || '') }))
       } finally {
         this.set({ loading: false })
       }
@@ -187,7 +188,7 @@
     data: () => ({
       account: undefined,
       status: undefined,
-      positiveText: 'Report',
+      positiveText: 'intl.report',
       reportMap: {},
       recentStatuses: [],
       loading: true,
@@ -198,14 +199,30 @@
       displayStatuses: ({ statuses, reportMap }) => (
         statuses.map(status => ({
           id: status.id,
-          text: statusHtmlToPlainText(status.content, status.mentions) || '(No content)',
+          text: statusHtmlToPlainText(status.content, status.mentions) || 'intl.noContent',
           report: reportMap[status.id]
         }))
       ),
       statuses: ({ status, recentStatuses }) => (
         [status].concat((recentStatuses || []).filter(({ id }) => (!status || id !== status.id))).filter(Boolean)
       ),
-      remoteInstance: ({ account }) => account.acct.split('@')[1]
+      remoteInstance: ({ account }) => account.acct.split('@')[1],
+      reportingLabel: ({ account, $currentInstance }) => (
+        formatIntl('intl.reportingLabel', {
+          account: `@${account.acct}`,
+          instance: $currentInstance
+        })
+      ),
+      forwardDescription: ({ remoteInstance }) => (
+        formatIntl('intl.forwardDescription', {
+          instance: remoteInstance
+        })
+      ),
+      forwardLabel: ({ remoteInstance }) => (
+        formatIntl('intl.forwardLabel', {
+          instance: remoteInstance
+        })
+      )
     },
     methods: {
       show,
@@ -219,7 +236,7 @@
         const { displayStatuses, account, comment, forward, reportMap } = this.get()
         const statusIds = displayStatuses.map(({ id }) => id).filter(id => reportMap[id])
         if (!statusIds.length) {
-          toast.say('No toots to report.')
+          toast.say('intl.noStatuses')
         } else {
           await reportStatuses(account, statusIds, comment, forward)
         }

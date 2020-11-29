@@ -128,6 +128,7 @@
   import { doubleRAF } from '../_utils/doubleRAF'
   import { scrollToTop } from '../_utils/scrollToTop'
   import { normalizePageName } from '../_utils/normalizePageName'
+  import { formatIntl } from '../_utils/formatIntl'
 
   export default {
     oncreate () {
@@ -150,16 +151,15 @@
     computed: {
       selected: ({ page, name }) => name === normalizePageName(page),
       ariaLabel: ({ selected, name, label, $numberOfNotifications, $numberOfFollowRequests }) => {
-        let res = label
-        if (selected) {
-          res += ' (current page)'
-        }
-        if (name === 'notifications' && $numberOfNotifications) {
-          res += ` (${$numberOfNotifications} notification${$numberOfNotifications === 1 ? '' : 's'})`
-        } else if (name === 'community' && $numberOfFollowRequests) {
-          res += ` (${$numberOfFollowRequests} follow request${$numberOfFollowRequests === 1 ? '' : 's'})`
-        }
-        return res
+        const count = name === 'notifications'
+          ? $numberOfNotifications
+          : (name === 'community' ? $numberOfFollowRequests : 0)
+        return formatIntl('intl.navItemLabel', {
+          label,
+          selected,
+          name,
+          count
+        })
       },
       showBadge: ({ name, $hasNotifications, $hasFollowRequests }) => (
         (name === 'notifications' && $hasNotifications) || (name === 'community' && $hasFollowRequests)

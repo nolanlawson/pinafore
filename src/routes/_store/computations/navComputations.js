@@ -26,28 +26,28 @@ export function navComputations (store) {
           name: 'federated',
           href: '/federated',
           svg: '#fa-globe',
-          label: 'Federated'
+          label: 'intl.federated'
         }
       } else if (pinnedPage === '/direct') {
         pinnedPageObject = {
           name: 'direct',
           href: '/direct',
           svg: '#fa-envelope',
-          label: 'Direct messages'
+          label: 'intl.directMessages'
         }
       } else if (pinnedPage === '/favorites') {
         pinnedPageObject = {
           name: 'favorites',
           href: '/favorites',
           svg: '#fa-star',
-          label: 'Favorites'
+          label: 'intl.favorites'
         }
       } else if (pinnedPage === '/bookmarks') {
         pinnedPageObject = {
           name: 'bookmarks',
           href: '/bookmarks',
           svg: '#fa-bookmark',
-          label: 'Bookmarks'
+          label: 'intl.bookmarks'
         }
       } else if (pinnedPage.startsWith('/lists/')) {
         pinnedPageObject = {
@@ -61,7 +61,7 @@ export function navComputations (store) {
           name: 'local',
           href: '/local',
           svg: '#fa-users',
-          label: 'Local'
+          label: 'intl.local'
         }
       }
 
@@ -70,32 +70,32 @@ export function navComputations (store) {
           name: 'home',
           href: '/',
           svg: '#pinafore-logo',
-          label: 'Home'
+          label: 'intl.home'
         },
         {
           name: 'notifications',
           href: '/notifications',
           svg: '#fa-bell',
-          label: 'Notifications'
+          label: 'intl.notifications'
         },
         pinnedPageObject,
         {
           name: 'community',
           href: '/community',
           svg: '#fa-comments',
-          label: 'Community'
+          label: 'intl.community'
         },
         {
           name: 'search',
           href: '/search',
           svg: '#fa-search',
-          label: 'Search'
+          label: 'intl.search'
         },
         {
           name: 'settings',
           href: '/settings',
           svg: '#fa-gear',
-          label: 'Settings'
+          label: 'intl.settings'
         }
       ]
     }

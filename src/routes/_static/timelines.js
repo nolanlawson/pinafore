@@ -1,7 +1,7 @@
 export const TIMELINE_BATCH_SIZE = 20
 
 export const timelines = {
-  home: { name: 'home', label: 'Home' },
-  local: { name: 'local', label: 'Local' },
-  federated: { name: 'federated', label: 'Federated' }
+  home: { name: 'home', label: 'intl.home' },
+  local: { name: 'local', label: 'intl.local' },
+  federated: { name: 'federated', label: 'intl.federated' }
 }

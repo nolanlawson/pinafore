@@ -21,7 +21,7 @@ test('can compose using a dialog', async t => {
   await loginAsFoobar(t)
   await scrollToStatus(t, 16)
   await t.expect(modalDialog.exists).notOk()
-    .expect(composeButton.getAttribute('aria-label')).eql('Compose')
+    .expect(composeButton.getAttribute('aria-label')).eql('Compose toot')
   await sleep(2000)
   await t.click(composeButton)
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
@@ -40,7 +40,7 @@ test('can compose using a dialog', async t => {
 test.skip('can use emoji dialog within compose dialog', async t => {
   await loginAsFoobar(t)
   await scrollToStatus(t, 16)
-  await t.expect(composeButton.getAttribute('aria-label')).eql('Compose')
+  await t.expect(composeButton.getAttribute('aria-label')).eql('Compose toot')
   await sleep(2000)
   await t.click(composeButton)
   await sleep(1000)

@@ -31,12 +31,12 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 - Progressive Web App features
 - Multi-instance support
 - Support latest versions of Chrome, Edge, Firefox, and Safari
+- Support non-Mastodon instances (e.g. Pleroma) as well as possible
+- Internationalization
 
 ### Secondary / possible future goals
 
-- Support for Pleroma or other non-Mastodon backends
 - Serve as an alternative frontend tied to a particular instance
-- Support for non-English languages (i18n)
 - Offline search
 
 ### Non-goals

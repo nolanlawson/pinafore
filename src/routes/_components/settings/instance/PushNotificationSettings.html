@@ -1,15 +1,15 @@
 <div class="push-notifications">
   {#if pushNotificationsSupport === false}
-    <p>Your browser doesn't support push notifications.</p>
+    <p>{intl.browserDoesNotSupportPush}</p>
   {:elseif $notificationPermission === "denied"}
-    <p role="alert">You have denied permission to show notifications.</p>
+    <p role="alert">{intl.deniedPush}</p>
   {:elseif $loggedInInstancesInOrder.length > 1}
-    <p>Note that you can only have push notifications for one instance at a time.</p>
+    <p>{intl.pushNotificationsNote}</p>
   {/if}
   <form id="push-notification-settings"
         disabled="{!pushNotificationsSupport}"
         ref:form
-        aria-label="Push notification settings">
+        aria-label="{intl.pushSettings}">
     {#each options as option, i (option.key)}
       {#if i > 0}
         <br>
@@ -46,6 +46,7 @@
   import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
   import { toast } from '../../toast/toast'
   import { get } from '../../../_utils/lodash-lite'
+  import { formatIntl } from '../../../_utils/formatIntl'
 
   export default {
     async oncreate () {
@@ -64,23 +65,23 @@
       options: [
         {
           key: 'follow',
-          label: 'New Followers'
+          label: 'intl.newFollowers'
         },
         {
           key: 'favourite',
-          label: 'Favorites'
+          label: 'intl.favorites'
         },
         {
           key: 'reblog',
-          label: 'Boosts'
+          label: 'intl.reblogs'
         },
         {
           key: 'mention',
-          label: 'Mentions'
+          label: 'intl.mentions'
         },
         {
           key: 'poll',
-          label: 'Poll results'
+          label: 'intl.pollResults'
         }
       ]
     }),
@@ -106,12 +107,14 @@
           if (err.message.startsWith('403:')) {
             const showTextConfirmationDialog = await importShowTextConfirmationDialog()
             showTextConfirmationDialog({
-              text: `You need to reauthenticate in order to enable push notification. Log out of ${instanceName}?`
+              text: formatIntl('intl.needToReauthenticate', { instance: instanceName })
             }).on('positive', () => {
               /* no await */ logOutOfInstance(instanceName)
             })
           } else {
-            toast.say(`Failed to update push notification settings: ${err.message}`)
+            toast.say(formatIntl('intl.failedToUpdatePush', {
+              error: err.message || ''
+            }))
           }
         }
       }

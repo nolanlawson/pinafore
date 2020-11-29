@@ -40,6 +40,7 @@
   import { store } from '../../_store/store'
   import { setAccountFollowed } from '../../_actions/follow'
   import { setAccountBlocked } from '../../_actions/block'
+  import { formatIntl } from '../../_utils/formatIntl'
 
   export default {
     methods: {
@@ -88,18 +89,15 @@
       followRequested: ({ relationship }) => {
         return relationship && relationship.requested
       },
-      labelExtraText: ({ blocking, following, followRequested }) => {
-        if (!blocking && !following && followRequested) {
-          return ' (follow requested)'
-        } else {
-          return ''
+      requested: ({ following, followRequested }) => !following && followRequested,
+      label: ({ blocking, requested }) => {
+        if (blocking) {
+          return 'intl.unblock'
         }
+        return formatIntl('intl.followLabel', { requested })
       },
-      label: ({ blocking, labelExtraText }) => {
-        return (blocking ? 'Unblock' : 'Follow') + labelExtraText
-      },
-      pressedLabel: ({ labelExtraText }) => {
-        return 'Unfollow' + labelExtraText
+      pressedLabel: ({ requested }) => {
+        return formatIntl('intl.unfollowLabel', { requested })
       },
       href: ({ blocking, following, followRequested }) => {
         if (blocking) {

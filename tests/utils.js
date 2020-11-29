@@ -533,11 +533,11 @@ export async function validateTimeline (t, timeline) {
     }
     if (status.rebloggedBy) {
       await t.expect(getNthStatusHeader(1 + i).innerText)
-        .match(new RegExp(status.rebloggedBy + '\\s+boosted your status'), { timeout })
+        .match(new RegExp(status.rebloggedBy + '\\s+boosted your toot'), { timeout })
     }
     if (status.favoritedBy) {
       await t.expect(getNthStatusHeader(1 + i).innerText)
-        .match(new RegExp(status.favoritedBy + '\\s+favorited your status'), { timeout })
+        .match(new RegExp(status.favoritedBy + '\\s+favorited your toot'), { timeout })
     }
   }
 }

@@ -1,61 +1,26 @@
 <div class="shortcut-help-info {inDialog ? 'in-dialog' : ''}"
      tabindex="{inDialog ? '0' : '-1'}"
 >
-  <!-- Svelte makes this file kind of ridiculously large for a static page (~17kB),
-       so just use raw HTML here to make it smaller -->
-{@html `
-  <h2>Global</h2>
+  <h2>{intl.global}</h2>
   <div class="hotkey-group">
-    ${$leftRightChangesFocus ?
-    `
+    <ul>
+      {@html globalHotkeysText}
+    </ul>
+  </div>
+  <h2>{intl.timeline}</h2>
+  <div class="hotkey-group">
+    <ul>
+      {@html intl.timelineHotkeys}
+    </ul>
+  </div>
+  {#if !$leftRightChangesFocus}
+    <h2>{intl.media}</h2>
+    <div class="hotkey-group">
       <ul>
-        <li><kbd>→</kbd> to go to the next focusable element</li>
-        <li><kbd>←</kbd> to go to the previous focusable element</li>
+        {@html intl.mediaHotkeys}
       </ul>
-    ` : ''}
-    <ul>
-      <li>
-        <kbd>1</kbd> - <kbd>6</kbd>
-        ${$leftRightChangesFocus ? '' : `or <kbd>←</kbd>/<kbd>→</kbd>`}
-        to switch columns
-      </li>
-      <li><kbd>7</kbd> or <kbd>c</kbd> to compose a new toot</li>
-      <li><kbd>s</kbd> or <kbd>/</kbd> to search</li>
-      <li><kbd>g</kbd> + <kbd>h</kbd> to go home</li>
-      <li><kbd>g</kbd> + <kbd>n</kbd> to go to notifications</li>
-      <li><kbd>g</kbd> + <kbd>l</kbd> to go to the local timeline</li>
-      <li><kbd>g</kbd> + <kbd>t</kbd> to go to the federated timeline</li>
-      <li><kbd>g</kbd> + <kbd>c</kbd> to go to the community page</li>
-      <li><kbd>g</kbd> + <kbd>d</kbd> to go to the conversations page</li>
-      <li><kbd>h</kbd> or <kbd>?</kbd> to toggle the help dialog</li>
-      <li><kbd>Backspace</kbd> to go back, close dialogs</li>
-    </ul>
-  </div>
-  <h2>Timeline</h2>
-  <div class="hotkey-group">
-    <ul>
-      <li><kbd>j</kbd> or <kbd>↓</kbd> to activate the next toot</li>
-      <li><kbd>k</kbd> or <kbd>↑</kbd> to activate the previous toot</li>
-      <li><kbd>.</kbd> to show more and scroll to top</li>
-      <li><kbd>o</kbd> to open</li>
-      <li><kbd>f</kbd> to favorite</li>
-      <li><kbd>b</kbd> to boost</li>
-      <li><kbd>r</kbd> to reply</li>
-      <li><kbd>i</kbd> to open images, video, or audio</li>
-      <li><kbd>y</kbd> to show or hide sensitive media</li>
-      <li><kbd>m</kbd> to mention the author</li>
-      <li><kbd>p</kbd> to open the author's profile</li>
-      <li><kbd>l</kbd> to open the card's link in a new tab</li>
-      <li><kbd>x</kbd> to show or hide text behind content warning</li>
-    </ul>
-  </div>
-  <h2>Media</h2>
-  <div class="hotkey-group">
-    <ul>
-      <li><kbd>←</kbd> / <kbd>→</kbd> to go to next or previous</li>
-    </ul>
-  </div>
-`}
+    </div>
+  {/if}
 </div>
 <style>
   .shortcut-help-info.in-dialog {
@@ -96,11 +61,17 @@
 </style>
 <script>
   import { store } from '../_store/store'
+  import { formatIntl } from '../_utils/formatIntl'
 
   export default {
     store: () => store,
     data: () => ({
       inDialog: false
-    })
+    }),
+    computed: {
+      globalHotkeysText: ({ $leftRightChangesFocus }) => (
+        formatIntl('intl.globalHotkeys', { leftRightChangesFocus: $leftRightChangesFocus })
+      )
+    }
   }
 </script>

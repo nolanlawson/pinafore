@@ -1,4 +1,4 @@
-<DynamicPageBanner title="Blocked users" icon="#fa-ban" />
+<DynamicPageBanner title="{intl.blockedUsers}" icon="#fa-ban" />
 {#if $isUserLoggedIn }
   <AccountsListPage {accountsFetcher} {accountActions} />
 {/if}
@@ -14,7 +14,7 @@
       accountActions: [
         {
           icon: '#fa-unlock',
-          label: 'Unblock',
+          label: 'intl.unblock',
           onclick: (accountId) => setAccountBlocked(accountId, false, true)
         }
       ]
