@@ -443,6 +443,8 @@ export default {
   instances: 'Les instances',
   addInstance: 'Ajouter une instance',
   homeTimelineFilterSettings: "Paramètres de filtre d'historique",
+  showReblogs: 'Afficher les partages',
+  showReplies: 'Afficher les réponses',
   switchOrLogOut: 'Changer ou se déconnecter de cette instance',
   switchTo: "Changer d'instance à celle-ci",
   switchToInstance: "Changer d'instance",

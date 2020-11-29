@@ -443,6 +443,8 @@ export default {
   instances: 'Instances',
   addInstance: 'Add instance',
   homeTimelineFilterSettings: 'Home timeline filter settings',
+  showReblogs: 'Show boosts',
+  showReplies: 'Show replies',
   switchOrLogOut: 'Switch to or log out of this instance',
   switchTo: 'Switch to this instance',
   switchToInstance: 'Switch to instance',
