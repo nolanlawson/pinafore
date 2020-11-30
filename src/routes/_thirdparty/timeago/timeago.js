@@ -8,7 +8,7 @@ const intlFormat = new Intl.RelativeTimeFormat(LOCALE)
 function formatRelativeTime (number, index) {
   if (index === 0) {
     if (process.env.NODE_ENV === 'test') {
-      return require('../../../intl/en-US').justNow // only used in mocha tests
+      return require('../../../intl/en-US').default.justNow // only used in mocha tests
     }
     return 'intl.justNow'
   }
