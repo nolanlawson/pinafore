@@ -1,4 +1,4 @@
-import { LOCALE } from '../src/routes/_static/intl'
+import { DEFAULT_LOCALE, LOCALE } from '../src/routes/_static/intl'
 
 const path = require('path')
 const webpack = require('webpack')
@@ -18,6 +18,9 @@ const output = Object.assign(config.client.output(), {
   filename: dev ? '[hash]/[id].js' : '[id].[contenthash].js',
   chunkFilename: dev ? '[hash]/[id].js' : '[id].[contenthash].js'
 })
+
+const emojiPickerI18n = LOCALE !== DEFAULT_LOCALE &&
+  require(path.join(__dirname, '../src/intl/emoji-picker/', `${LOCALE}.js`)).default
 
 module.exports = {
   entry: config.client.entry(),
@@ -101,7 +104,8 @@ module.exports = {
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
       'process.env.ALL_SVGS': JSON.stringify(allSvgs),
       'process.env.URL_REGEX': urlRegex.toString(),
-      'process.env.LOCALE': JSON.stringify(LOCALE)
+      'process.env.LOCALE': JSON.stringify(LOCALE),
+      'process.env.EMOJI_PICKER_I18N': emojiPickerI18n ? JSON.stringify(emojiPickerI18n) : 'undefined'
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs

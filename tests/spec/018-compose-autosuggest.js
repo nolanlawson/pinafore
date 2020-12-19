@@ -100,6 +100,16 @@ test('autosuggest handles works with regular emoji - clicking', async t => {
     .expect(composeInput.value).eql('\ud83c\udf4d @quux ')
 })
 
+test('autosuggest can suggest native emoji', async t => {
+  await loginAsFoobar(t)
+  await t
+    .hover(composeInput)
+    .typeText(composeInput, ':slight')
+    .expect(getNthAutosuggestionResult(1).innerText).contains(':slightly_smiling_face:', { timeout })
+    .click(getNthAutosuggestionResult(1))
+    .expect(composeInput.value).eql('\ud83d\ude42 ')
+})
+
 test('autosuggest only shows for one input', async t => {
   await loginAsFoobar(t)
   await t

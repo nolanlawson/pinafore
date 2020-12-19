@@ -1,5 +1,6 @@
 import Database from 'emoji-picker-element/database'
 import { lifecycle } from './lifecycle'
+import { emojiPickerLocale, emojiPickerDataSource } from '../_static/emojiPickerIntl'
 
 let database
 
@@ -23,7 +24,8 @@ function applySkinToneToEmoji (emoji, skinTone) {
 export function init () {
   if (!database) {
     database = new Database({
-      dataSource: '/emoji-all-en.json'
+      locale: emojiPickerLocale,
+      dataSource: emojiPickerDataSource
     })
   }
 }

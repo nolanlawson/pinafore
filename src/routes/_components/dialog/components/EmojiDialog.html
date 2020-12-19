@@ -8,7 +8,8 @@
   <div class="emoji-container">
     <emoji-picker
       ref:picker
-      data-source="/emoji-all-en.json"
+      locale={emojiPickerLocale}
+      data-source={emojiPickerDataSource}
       class={darkMode ? 'dark' : 'light'}
       on:emoji-click="onEmojiSelected(event)"
       on:keydown="onPickerKeydown(event)"
@@ -67,6 +68,7 @@
   import { convertCustomEmojiToEmojiPickerFormat } from '../../../_utils/convertCustomEmojiToEmojiPickerFormat'
   import { supportsFocusVisible } from '../../../_utils/supportsFocusVisible'
   import { importFocusVisible } from '../../../_utils/asyncPolyfills'
+  import { emojiPickerI18n, emojiPickerDataSource, emojiPickerLocale } from '../../../_static/emojiPickerIntl'
 
   export default {
     async oncreate () {
@@ -75,6 +77,9 @@
       const { enableGrayscale, isUserTouching } = this.store.get()
       const { picker } = this.refs
       picker.customEmoji = customEmoji
+      if (emojiPickerI18n) {
+        picker.i18n = emojiPickerI18n
+      }
       // break into shadow DOM to fix grayscale in Wellness grayscale mode
       if (enableGrayscale) {
         const style = document.createElement('style')
@@ -100,6 +105,10 @@
       ModalDialog
     },
     store: () => store,
+    data: () => ({
+      emojiPickerLocale,
+      emojiPickerDataSource
+    }),
     computed: {
       darkMode: ({ $currentTheme }) => isDarkTheme($currentTheme),
       customEmoji: ({ $currentCustomEmoji, $autoplayGifs }) => (
