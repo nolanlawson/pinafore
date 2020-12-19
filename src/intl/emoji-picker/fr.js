@@ -1,6 +1,6 @@
 export default {
   categoriesLabel: 'Catégories',
-  emojiUnsupportedMessage: 'Votre navigateur ne soutiens pas les emojis en couleur.',
+  emojiUnsupportedMessage: 'Votre navigateur ne soutient pas les emojis en couleur.',
   favoritesLabel: 'Favoris',
   loadingMessage: 'Chargement en cours…',
   networkErrorMessage: 'Impossible de charger les emojis. Veuillez essayer de recharger.',
