@@ -25,7 +25,8 @@ const resolve = {
   alias: {
     // All browsers we target support Intl.PluralRules, so format-message-interpret can fall back to that. This file is
     // pretty big (9.83kB) and it's not needed.
-    './plurals': 'lodash-es/noop'
+    './plurals': 'lodash-es/noop',
+    'lookup-closest-locale': 'lodash-es/noop' // small, but also not needed
   }
 }
 
