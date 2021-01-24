@@ -22,7 +22,7 @@ test('autosuggests hashtags', async t => {
     .expect(getNthAutosuggestionResult(1).find('.sr-only').innerText).contains('#blank', { timeout })
     .click(getNthAutosuggestionResult(1), { timeout })
     .expect(composeInput.value).eql('hey #blank ')
-    .typeText(composeInput, 'and also #BLANK')
+    .typeText(composeInput, 'and also #blank')
     .click(getNthAutosuggestionResult(1), { timeout })
     .expect(composeInput.value).eql('hey #blank and also #blank ')
     .typeText(composeInput, 'and also #blanka')

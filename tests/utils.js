@@ -548,15 +548,11 @@ export async function scrollToStatus (t, n) {
 
 export async function scrollFromStatusToStatus (t, start, end) {
   const timeout = 20000
-  for (let i = start; i < end; i++) {
-    await t.expect(getNthStatus(i).exists).ok({ timeout })
+  for (let i = start; i < end + 1; i++) {
+    await t
+      .expect(getNthStatus(i).exists).ok({ timeout })
       .hover(getNthStatus(i))
-      .expect($(`${getNthStatusSelector(i)} .status-toolbar`).exists).ok({ timeout })
-      .hover($(`${getNthStatusSelector(i)} .status-toolbar`))
   }
-  await t
-    .expect(getNthStatus(end).exists).ok({ timeout })
-    .hover(getNthStatus(end))
 }
 
 export async function clickToNotificationsAndBackHome (t) {

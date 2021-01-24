@@ -7,6 +7,7 @@ import {
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
+import { homeTimeline } from '../fixtures'
 
 fixture`036-disable-infinite-load.js`
   .page`http://localhost:4002`
@@ -28,12 +29,12 @@ test('Can disable loading items at bottom of timeline', async t => {
   await t
     .click(loadMoreButton)
     .expect(getActiveElementAriaPosInSet()).eql('40')
-    .expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql('47')
+    .expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql(homeTimeline.length.toString())
   await scrollFromStatusToStatus(t, 40, 47)
   await t
     .click(loadMoreButton)
   await sleep(1000)
   await t
     .expect(loadMoreButton.exists).ok()
-    .expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql('47')
+    .expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql(homeTimeline.length.toString())
 })
