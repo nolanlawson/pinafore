@@ -50,6 +50,7 @@ async function runMastodon () {
   const env = Object.assign({}, process.env, {
     RAILS_ENV: 'development',
     NODE_ENV: 'development',
+    BUNDLE_PATH: path.join(mastodonDir, 'vendor/bundle'),
     DB_NAME,
     DB_USER,
     DB_PASS,
@@ -58,8 +59,10 @@ async function runMastodon () {
   })
   const cwd = mastodonDir
   const cmds = [
+    'gem update --system',
     'gem install bundler foreman',
-    'bundle install --frozen --path vendor/bundle',
+    'bundle config set --local frozen \'true\'',
+    'bundle install',
     'bundle exec rails db:migrate',
     'yarn --pure-lockfile'
   ]
