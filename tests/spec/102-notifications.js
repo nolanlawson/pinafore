@@ -1,6 +1,6 @@
 import { loginAsFoobar } from '../roles'
 import {
-  getNthStatus, getNthStatusContent, getTitleText, getUrl, homeNavButton, notificationsNavButton, sleep
+  getNthStatus, getNthStatusContent, getTitleText, getUrl, homeNavButton, notificationsNavButton
 } from '../utils'
 import { favoriteStatusAs, postAs } from '../serverActions'
 
@@ -16,7 +16,6 @@ test('shows unread notification', async t => {
     .expect(getNthStatusContent(1).innerText).contains('somebody please favorite this to validate me', {
       timeout: 20000
     })
-  await sleep(500)
   await favoriteStatusAs('admin', id)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1 notification)', {
@@ -44,7 +43,6 @@ test('shows unread notifications, more than one', async t => {
     .expect(getNthStatusContent(1).innerText).contains('I need lots of favorites on this one', {
       timeout: 20000
     })
-  await sleep(500)
   await favoriteStatusAs('admin', id)
   await favoriteStatusAs('quux', id)
   await t
