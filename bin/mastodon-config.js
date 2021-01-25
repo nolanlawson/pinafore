@@ -14,3 +14,7 @@ DB_USER=${DB_USER}
 DB_NAME=${DB_NAME}
 DB_PASS=${DB_PASS}
 `
+
+// Need a Ruby version that CircleCI bundles with Node v12, not Node v14 which doesn't
+// work for streaming
+export const RUBY_VERSION = '2.6.6'

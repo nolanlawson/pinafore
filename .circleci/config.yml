@@ -10,6 +10,7 @@ jobs:
     working_directory: ~/pinafore
     docker:
         # see https://discuss.circleci.com/t/build-failed-the-engine-node-is-incompatible-with-this-module-expected-version-12-x-got-14-15-0/37921/7
+        # we want Node v12, not v14
       - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
       - image: circleci/postgres:12.2
         environment:

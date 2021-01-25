@@ -42,27 +42,40 @@ test('replying to posts with mentions', async t => {
 
 test('replies have same privacy as replied-to status by default', async t => {
   await loginAsFoobar(t)
+  const unlistedIdx = homeTimeline.findIndex(_ => _.content === 'notification of unlisted message')
+  const privateIdx = homeTimeline.findIndex(_ => _.content === 'notification of followers-only message')
+  const publicIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+
+  await t.hover(getNthStatus(1))
+  await scrollToStatus(t, 1 + unlistedIdx)
   await t
-    .hover(getNthStatus(1))
-    .hover(getNthStatus(2))
-    .click(getNthReplyButton(2))
-    .expect(getNthPostPrivacyButton(2).getAttribute('aria-label')).eql('Adjust privacy (currently Unlisted)')
-    .click(getNthReplyButton(2))
-    .hover(getNthStatus(3))
-    .click(getNthReplyButton(3))
-    .expect(getNthPostPrivacyButton(3).getAttribute('aria-label')).eql('Adjust privacy (currently Followers-only)')
-    .click(getNthReplyButton(3))
-    .hover(getNthStatus(4))
-    .hover(getNthStatus(5))
-    .hover(getNthStatus(6))
-    .click(getNthReplyButton(6))
-    .expect(getNthPostPrivacyButton(6).getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
-    .click(getNthReplyButton(6))
+    .click(getNthReplyButton(1 + unlistedIdx))
+    .expect(getNthPostPrivacyButton(1 + unlistedIdx).getAttribute('aria-label')).eql(
+      'Adjust privacy (currently Unlisted)'
+    )
+    .click(getNthReplyButton(1 + unlistedIdx))
+
+  await scrollToStatus(t, 1 + privateIdx)
+  await t
+    .click(getNthReplyButton(1 + privateIdx))
+    .expect(getNthPostPrivacyButton(1 + privateIdx).getAttribute('aria-label')).eql(
+      'Adjust privacy (currently Followers-only)'
+    )
+    .click(getNthReplyButton(1 + privateIdx))
+
+  await scrollToStatus(t, 1 + publicIdx)
+  await t
+    .click(getNthReplyButton(1 + publicIdx))
+    .expect(getNthPostPrivacyButton(1 + publicIdx).getAttribute('aria-label')).eql(
+      'Adjust privacy (currently Public)'
+    )
+    .click(getNthReplyButton(1 + publicIdx))
 })
 
 test('replies have same CW as replied-to status', async t => {
   await loginAsFoobar(t)
   const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
+  await t.hover(getNthStatus(1))
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
     .expect(getNthReplyContentWarningInput(1 + kittenIdx).value).eql('kitten CW')

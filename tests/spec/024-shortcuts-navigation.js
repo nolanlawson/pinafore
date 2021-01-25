@@ -131,7 +131,7 @@ test('Shortcut . scrolls to top and focuses', async t => {
   await scrollToStatus(t, 10)
   await t
     .pressKey('.')
-    .expect(isNthStatusActive(1)).ok()
+    .expect(isNthStatusActive(1)()).ok()
 })
 
 test('Shortcut left and right changes columns', async t => {

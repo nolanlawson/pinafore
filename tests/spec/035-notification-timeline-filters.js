@@ -16,8 +16,8 @@ fixture`035-notification-timeline-filters.js`
 
 function setSettingAndGoToNotifications (t, setting) {
   return t.click(settingsNavButton)
-    .click($('a').withText('Instances'))
-    .click($('a').withText('localhost:3000'))
+    .click($('a[href="/settings/instances"]'))
+    .click($('a[href="/settings/instances/localhost:3000"]'))
     .click(setting)
     .expect(setting.checked).notOk()
     .click(notificationsNavButton)
