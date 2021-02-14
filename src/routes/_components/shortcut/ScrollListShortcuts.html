@@ -18,6 +18,17 @@
   const elementToKey = element => element.getAttribute('id')
   const scope = 'global'
 
+  const shouldIgnoreEvent = event => {
+    // For accessibility reasons, do not override the arrowup/arrowdown behavior for radio buttons
+    // (e.g. in a poll). Up/down is supposed to change the radio value, not the current status.
+    const { target, key } = event
+    const isRadio = target &&
+    target.tagName === 'INPUT' &&
+    (target.type || '').toLowerCase() === 'radio'
+    const isArrow = key === 'ArrowUp' || key === 'ArrowDown'
+    return isRadio && isArrow
+  }
+
   export default {
     data: () => ({
       activeItemChangeTime: 0,
@@ -31,6 +42,9 @@
     },
     methods: {
       onKeyDown (event) {
+        if (shouldIgnoreEvent(event)) {
+          return
+        }
         if (event.key === 'j' || event.key === 'ArrowDown') {
           event.stopPropagation()
           event.preventDefault()
