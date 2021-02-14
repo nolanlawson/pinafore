@@ -17,6 +17,9 @@ const JSON_TEMPLATE = {
   env: {
     NODE_ENV: 'production'
   },
+  github: {
+    silent: true
+  },
   builds: [
     {
       src: 'package.json',
