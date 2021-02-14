@@ -20,7 +20,7 @@ export default {
       Pinafore ist
       <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore">quelloffene Software</a>,
       erstellt von <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
-      und und verteilt unter der
+      und verteilt unter der
       <a rel="noopener" target="_blank"
          href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">AGPL Lizenz</a>.
       Hier ist die <a href="/settings/about#privacy-policy" rel="prefetch">Datenschutzerklärung</a>.
