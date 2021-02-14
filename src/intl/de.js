@@ -399,7 +399,7 @@ export default {
   // to see a description. It's hard to properly internationalize, so we just break up the strings.
   disableInfiniteScrollPre: '',
   disableInfiniteScrollText: 'Unendliches Scrollen',
-  disableInfiniteScrollDescription: `Wenn unendliches Scrollen deaktiviert ist, erscheinen neue Tröts nicht automatisch am unteren oder oberen Ende der zeitleiste. Stattdessen kannst Du weitere Inhalte durch dafür vorgesehene Schaltflächen nachladen.`,
+  disableInfiniteScrollDescription: 'Wenn unendliches Scrollen deaktiviert ist, erscheinen neue Tröts nicht automatisch am unteren oder oberen Ende der zeitleiste. Stattdessen kannst Du weitere Inhalte durch dafür vorgesehene Schaltflächen nachladen.',
   disableInfiniteScrollPost: 'deaktivieren',
   // Instance settings
   loggedInAs: 'Eingeloggt als',
@@ -407,19 +407,19 @@ export default {
   notificationFilters: 'Filter für Benachrichtigungen',
   pushNotifications: 'Push-Benachrichtigungen',
   // Add instance page
-  storageError: `Es sieht so aus als ob Pinafore lokal keine Daten speichern kann. Ist Dein Browser im privaten Modus oder blockiert Cookies? Pinafore speichert alle Daten lokal und braucht zum ordnungsgemäßen Betrieb LocalStorage und IndexedDB.`,
+  storageError: 'Es sieht so aus als ob Pinafore lokal keine Daten speichern kann. Ist Dein Browser im privaten Modus oder blockiert Cookies? Pinafore speichert alle Daten lokal und braucht zum ordnungsgemäßen Betrieb LocalStorage und IndexedDB.',
   javaScriptError: 'Du musst zum Einloggen javaScript einschalten.',
   enterInstanceName: 'Namen der Instanz eingeben',
   instanceColon: 'Instanz:',
   // Custom tooltip, concatenated together
-  getAnInstancePre: "Hast Du noch keine",
+  getAnInstancePre: 'Hast Du noch keine',
   getAnInstanceText: 'instanz',
   getAnInstanceDescription: 'Eine Instanz ist Deine Heimat auf Mastodon, wie z.B. mastodon.social oder cybre.space.',
   getAnInstancePost: '?',
   joinMastodon: 'Tritt Mastodon bei!',
-  instancesYouveLoggedInTo: "Instanzen, in denen Du angemeldet bist:",
+  instancesYouveLoggedInTo: 'Instanzen, in denen Du angemeldet bist:',
   addAnotherInstance: 'Eine weitere Instanz hinzufügen',
-  youreNotLoggedIn: "Du bist bei keiner Instanz angemeldet.",
+  youreNotLoggedIn: 'Du bist bei keiner Instanz angemeldet.',
   currentInstanceLabel: `{instance} {current, select,
     true {(jetzige Instanz)}
     other {}
@@ -431,7 +431,7 @@ export default {
   // Another custom tooltip
   showRingPre: 'Immer einen',
   showRingText: 'Fokusring',
-  showRingDescription: `Der Fokusring ist der Rahmen, der um das fokussierte Element angezeigt wird, wenn Du mit der Tastatur navigierst. Standardmäßig wird er nicht angezeigt, wenn Du die maus oder einen Touchscreen verwendest. Hier kannst du einstellen, dass er immer angezeigt wird.`,
+  showRingDescription: 'Der Fokusring ist der Rahmen, der um das fokussierte Element angezeigt wird, wenn Du mit der Tastatur navigierst. Standardmäßig wird er nicht angezeigt, wenn Du die maus oder einen Touchscreen verwendest. Hier kannst du einstellen, dass er immer angezeigt wird.',
   showRingPost: 'anzeigen',
   instances: 'Instanzen',
   addInstance: 'Instanz hinzufügen',
@@ -446,7 +446,7 @@ export default {
   logOutOfInstanceConfirm: 'Von {instance} abmelden?',
   notificationFilterSettings: 'Einstellungen für die Filterung von Benachrichtigungen',
   // Push notifications
-  browserDoesNotSupportPush: "Dein Browser unterstützt keine Push-Benachrichtigungen.",
+  browserDoesNotSupportPush: 'Dein Browser unterstützt keine Push-Benachrichtigungen.',
   deniedPush: 'Du hast es abgelehnt, Push-Benachrichtigungen anzuzeigen.',
   pushNotificationsNote: 'Beachte, dass Du nur für jeweils eine Instanz Push-Benachrichtigungen anzeigen lassen kannst.',
   pushSettings: 'Einstellungen für Push-Benachrichtigungen',
