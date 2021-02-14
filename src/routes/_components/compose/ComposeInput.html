@@ -70,6 +70,7 @@
   import { on } from '../../_utils/eventBus'
   import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
   import { throttleTimer } from '../../_utils/throttleTimer'
+  import { isWebKit } from '../../_utils/userAgent/isWebKit'
 
   const updateComposeTextInStore = throttleTimer(scheduleIdleTask)
 
@@ -79,6 +80,7 @@
       this.setupSyncToStore()
       this.setupAutosize()
       this.setupResize()
+      this.setCursorIfNecessary()
     },
     ondestroy () {
       this.teardownAutosize()
@@ -257,6 +259,20 @@
             autosize.update(this.refs.textarea)
           }
         })
+      },
+      setCursorIfNecessary () {
+        const { realm } = this.get()
+        if (isWebKit() && realm !== 'dialog' && realm !== 'home') {
+          // Place the cursor at the end of the textarea in replies if this is WebKit.
+          // Works around a Safari/WebKit bug: https://github.com/nolanlawson/pinafore/issues/1921
+          // We only do this for replies (not dialog/home) because for dialog/home we don't want to
+          // also focus the textarea, which is a side effect of setting selectionStart.
+          // Potentially we could run this logic for all browsers, but I don't want to deal with the potential
+          // perf hit or bugs of running more code for browsers that don't need it.
+          requestAnimationFrame(() => {
+            this.refs.textarea.selectionStart = this.refs.textarea.value.length
+          })
+        }
       }
     },
     store: () => store,
