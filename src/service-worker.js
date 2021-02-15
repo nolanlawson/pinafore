@@ -17,6 +17,10 @@ const ON_DEMAND_CACHE = [
   {
     regex: /traineddata\.gz/,
     cache: ASSETS
+  },
+  {
+    regex: /\$polyfill\$/,
+    cache: WEBPACK_ASSETS
   }
 ]
 
@@ -35,6 +39,7 @@ const webpackAssets = __shell__
   .filter(filename => !filename.endsWith('.map')) // don't bother with sourcemaps
   .filter(filename => !filename.includes('tesseract-core.wasm')) // cache on-demand
   .filter(filename => !filename.includes('LICENSE')) // don't bother with license files
+  .filter(filename => !filename.includes('$polyfill$')) // polyfills are cached dynamically
 
 // `routes` is an array of `{ pattern: RegExp }` objects that
 // match the pages in your src
