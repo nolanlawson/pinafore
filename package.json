@@ -48,7 +48,7 @@
     "chokidar": "^3.5.1",
     "circular-dependency-plugin": "^5.2.0",
     "compression": "^1.7.4",
-    "cross-env": "^7.0.2",
+    "cross-env": "^7.0.3",
     "css-dedoupe": "^0.1.1",
     "emoji-picker-element": "^1.4.0",
     "emoji-picker-element-data": "^1.1.0",
