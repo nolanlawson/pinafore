@@ -3787,10 +3787,10 @@ file-api@^0.10.4:
     mime ">= 1.2.11"
     remedial ">= 1.0.7"
 
-file-drop-element@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/file-drop-element/-/file-drop-element-0.2.0.tgz#c9214515b9d6b11f32c7fcee299f3a671939409e"
-  integrity sha512-BGDdaJ4U2Cz0qhv6YGLnuhVtKcN8fp7F/4dS7lGSL1Fbe8m4cbGk+8awwHW0xcFqutMojxGchMVuWYQpEpP/Qg==
+file-drop-element@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/file-drop-element/-/file-drop-element-1.0.1.tgz#699d9aa47ef314a11f84fb92ef489cc0ce487aa1"
+  integrity sha512-na2cwntTVgMsR+BZ2YBr/XQk941DKDw2LJKbV7g6TRdGBQ3rx8V53oEviG8zPWoBOySwK9w/SlZ/gb/F/48I8A==
 
 file-entry-cache@^5.0.1:
   version "5.0.1"
