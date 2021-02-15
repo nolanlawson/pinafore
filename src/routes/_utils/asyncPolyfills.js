@@ -6,3 +6,7 @@ export const importRequestIdleCallback = () => import(
 export const importFocusVisible = () => import(
   /* webpackChunkName: '$polyfill$-focus-visible' */ 'focus-visible'
 )
+
+export const importRelativeTimeFormat = () => import(
+  /* webpackChunkName: '$polyfill$-relative-time-format' */ './relativeTimeFormatPolyfill'
+)
