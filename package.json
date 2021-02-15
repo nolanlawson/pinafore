@@ -56,7 +56,7 @@
     "events-light": "^1.0.5",
     "express": "^4.17.1",
     "file-api": "^0.10.4",
-    "file-drop-element": "0.2.0",
+    "file-drop-element": "^1.0.1",
     "file-loader": "^6.1.0",
     "focus-visible": "^5.1.0",
     "form-data": "^3.0.0",
