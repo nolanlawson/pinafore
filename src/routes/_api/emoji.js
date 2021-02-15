@@ -1,7 +1,7 @@
-import { basename } from './utils'
+import { auth, basename } from './utils'
 import { DEFAULT_TIMEOUT, get } from '../_utils/ajax'
 
-export async function getCustomEmoji (instanceName) {
+export function getCustomEmoji (instanceName, accessToken) {
   const url = `${basename(instanceName)}/api/v1/custom_emojis`
-  return get(url, null, { timeout: DEFAULT_TIMEOUT })
+  return get(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 }

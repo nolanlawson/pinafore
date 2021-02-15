@@ -9,7 +9,11 @@ import isEqual from 'lodash-es/isEqual'
 
 async function syncEmojiForInstance (instanceName, syncMethod) {
   await syncMethod(
-    () => getCustomEmoji(instanceName),
+    () => {
+      const { loggedInInstances } = store.get()
+      const accessToken = loggedInInstances[instanceName].access_token
+      return getCustomEmoji(instanceName, accessToken)
+    },
     () => database.getCustomEmoji(instanceName),
     emoji => database.setCustomEmoji(instanceName, emoji),
     emoji => {
