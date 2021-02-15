@@ -1,9 +1,13 @@
 // Forked from a11y-dialog 4.0.1, adding a small change to element.focus() to work
 // around a Chrome bug with sticky positioning (https://github.com/nolanlawson/pinafore/issues/671)
+// Now it also works around shadow DOM and video/audio with controls.
+// (video/audio with controls is not 100% fixable because we can't focus the elements inside, but
+// you can at least tab to the video/audio and use other controls, like space bar and left/right)
 // Original: https://unpkg.com/a11y-dialog@4.0.1/a11y-dialog.js
 
-const FOCUSABLE_ELEMENTS = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabindex]:not([tabindex^="-"])']
-const FOCUSABLE_ELEMENTS_QUERY = FOCUSABLE_ELEMENTS.join(',')
+const FOCUSABLE_ELEMENTS_QUERY = 'a[href], area[href], input, select, textarea, ' +
+  'button, iframe, object, embed, [contenteditable], [tabindex], ' +
+  'video[controls], audio[controls], summary'
 const TAB_KEY = 9
 const ESCAPE_KEY = 27
 const shadowRoots = []
@@ -365,8 +369,10 @@ function getFocusableChildren (node) {
     }
   }
   return candidateFocusableChildren.filter(child => {
-    return !!(child.offsetWidth || child.offsetHeight || child.getClientRects().length) &&
-      child.tabIndex !== -1
+    return !child.disabled &&
+    !/^-/.test(child.getAttribute('tabindex') || '') &&
+    !child.hasAttribute('inert') && // see https://github.com/GoogleChrome/inert-polyfill
+    (child.offsetWidth || child.offsetHeight || child.getClientRects().length)
   })
 }
 
