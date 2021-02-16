@@ -14,9 +14,8 @@ const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
 const output = Object.assign(config.client.output(), {
   // enables HMR in workers
   globalObject: 'this',
-  // Zeit does not like filenames with "$" in them, so just keep things simple
-  filename: dev ? '[hash]/[id].js' : '[id].[contenthash].js',
-  chunkFilename: dev ? '[hash]/[id].js' : '[id].[contenthash].js'
+  filename: dev ? '[hash]/[id].js' : '[id].[contenthash].[name].js',
+  chunkFilename: dev ? '[hash]/[id].js' : '[id].[contenthash].[name].js'
 })
 
 const emojiPickerI18n = LOCALE !== DEFAULT_LOCALE &&
@@ -93,8 +92,7 @@ module.exports = {
       chunks: 'async',
       minSize: 5000,
       maxAsyncRequests: Infinity,
-      maxInitialRequests: Infinity,
-      name: false // these chunk names can be annoyingly long
+      maxInitialRequests: Infinity
     }
   },
   plugins: [
