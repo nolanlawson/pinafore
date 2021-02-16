@@ -3,6 +3,7 @@ import { uploadMedia } from '../_api/media'
 import { toast } from '../_components/toast/toast'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { setCachedMediaFile } from '../_utils/mediaUploadFileCache'
+import { formatIntl } from '../_utils/formatIntl'
 
 export async function doMediaUpload (realm, file) {
   const { currentInstance, accessToken } = store.get()
@@ -25,7 +26,7 @@ export async function doMediaUpload (realm, file) {
     scheduleIdleTask(() => store.save())
   } catch (e) {
     console.error(e)
-    /* no await */ toast.say('intl.failedToUploadMedia', { error: (e.message || '') })
+    /* no await */ toast.say(formatIntl('intl.failedToUploadMedia', { error: (e.message || '') }))
   } finally {
     store.set({ uploadingMedia: false })
   }
