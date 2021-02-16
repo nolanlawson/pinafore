@@ -52,7 +52,7 @@
     "css-dedoupe": "^0.1.1",
     "emoji-picker-element": "^1.4.0",
     "emoji-picker-element-data": "^1.1.0",
-    "emoji-regex": "^9.0.0",
+    "emoji-regex": "^9.2.1",
     "encoding": "^0.1.13",
     "escape-html": "^1.0.3",
     "esm": "^3.2.25",
