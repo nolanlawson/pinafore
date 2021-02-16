@@ -43,6 +43,7 @@ test('Notification timeline filters correctly affect counts - favs', async t => 
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).innerText).contains('I do not care if you fav this')
+  await sleep(500)
   await favoriteStatusAs('admin', statusId)
   await t
     .expect(notificationBadge.innerText).eql('1', { timeout })
@@ -62,6 +63,7 @@ test('Notification timeline filters correctly affect counts - favs', async t => 
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).exists).ok()
+  await sleep(500)
   await postAs('admin', 'hey yo @foobar')
   await t
     .expect(notificationBadge.innerText).eql('1', { timeout })
@@ -81,6 +83,7 @@ test('Notification timeline filters correctly affect counts - follows', async t 
   await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).exists).ok()
+  await sleep(500)
   await followAs('ExternalLinks', 'foobar')
   await t
     .expect(notificationBadge.innerText).eql('1', { timeout })
