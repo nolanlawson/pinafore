@@ -10,7 +10,7 @@
 <script>
   import SettingsLayout from '../../_components/settings/SettingsLayout.html'
 
-  import { version } from '../../../../package.json'
+  const version = process.env.PINAFORE_VERSION
 
   export default {
     components: {
