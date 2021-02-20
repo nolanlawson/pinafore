@@ -60,9 +60,7 @@ module.exports = {
   performance: {
     hints: false // it doesn't matter if server.js is large
   },
-  optimization: dev ? {} : {
-    minimize: false
-  },
+  optimization: dev ? {} : { minimize: false },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),

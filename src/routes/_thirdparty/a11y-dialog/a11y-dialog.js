@@ -95,7 +95,7 @@ A11yDialog.prototype.show = function (event) {
   // attribute to `true`; in case they already have this attribute, keep a
   // reference of their original value to be able to restore it later
   this._targets.forEach(function (target) {
-    var original = target.getAttribute('aria-hidden')
+    const original = target.getAttribute('aria-hidden')
 
     if (original) {
       target.setAttribute('data-a11y-dialog-original', original)
@@ -142,7 +142,7 @@ A11yDialog.prototype.hide = function (event) {
   // Iterate over the targets to enable them by remove their `aria-hidden`
   // attribute or resetting them to their initial value
   this._targets.forEach(function (target) {
-    var original = target.getAttribute('data-a11y-dialog-original')
+    const original = target.getAttribute('data-a11y-dialog-original')
 
     if (original) {
       target.setAttribute('aria-hidden', original)
@@ -223,7 +223,7 @@ A11yDialog.prototype.on = function (type, handler) {
    * @param {Function} handler
    */
 A11yDialog.prototype.off = function (type, handler) {
-  var index = this._listeners[type].indexOf(handler)
+  const index = this._listeners[type].indexOf(handler)
 
   if (index > -1) {
     this._listeners[type].splice(index, 1)
@@ -241,7 +241,7 @@ A11yDialog.prototype.off = function (type, handler) {
    * @param {Event} event
    */
 A11yDialog.prototype._fire = function (type, event) {
-  var listeners = this._listeners[type] || []
+  const listeners = this._listeners[type] || []
 
   listeners.forEach(function (listener) {
     listener(this.node, event)
@@ -334,7 +334,7 @@ function collect (target) {
    * @param {Element} node
    */
 function setFocusToFirstItem (node) {
-  var focusableChildren = getFocusableChildren(node)
+  const focusableChildren = getFocusableChildren(node)
 
   if (focusableChildren.length) {
     focusableChildren[0].focus()
@@ -383,7 +383,7 @@ function getFocusableChildren (node) {
    * @param {Event} event
    */
 function trapTabKey (node, event) {
-  var focusableChildren = getFocusableChildren(node)
+  const focusableChildren = getFocusableChildren(node)
   let activeElement = document.activeElement
   for (const shadowRoot of shadowRoots) {
     if (shadowRoot.getRootNode().host === activeElement) {
@@ -391,7 +391,7 @@ function trapTabKey (node, event) {
       break
     }
   }
-  var focusedItemIndex = focusableChildren.indexOf(activeElement)
+  const focusedItemIndex = focusableChildren.indexOf(activeElement)
 
   // If the SHIFT key is being pressed while tabbing (moving backwards) and
   // the currently focused item is the first one, move the focus to the last
@@ -415,8 +415,8 @@ function trapTabKey (node, event) {
    * @return {Array<Element>}
    */
 function getSiblings (node) {
-  var nodes = toArray(node.parentNode.childNodes)
-  var siblings = nodes.filter(function (node) {
+  const nodes = toArray(node.parentNode.childNodes)
+  const siblings = nodes.filter(function (node) {
     return node.nodeType === 1
   })
 

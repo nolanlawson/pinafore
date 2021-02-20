@@ -80,21 +80,23 @@ module.exports = {
   node: {
     setImmediate: false
   },
-  optimization: dev ? {} : {
-    minimize: !process.env.DEBUG,
-    minimizer: [
-      terser()
-    ],
-    // TODO: we should be able to enable this, but Sapper breaks if we do so
-    // // isolate runtime chunk to avoid excessive cache invalidations https://webpack.js.org/guides/caching/
-    // runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'async',
-      minSize: 5000,
-      maxAsyncRequests: Infinity,
-      maxInitialRequests: Infinity
-    }
-  },
+  optimization: dev
+    ? {}
+    : {
+        minimize: !process.env.DEBUG,
+        minimizer: [
+          terser()
+        ],
+        // TODO: we should be able to enable this, but Sapper breaks if we do so
+        // // isolate runtime chunk to avoid excessive cache invalidations https://webpack.js.org/guides/caching/
+        // runtimeChunk: 'single',
+        splitChunks: {
+          chunks: 'async',
+          minSize: 5000,
+          maxAsyncRequests: Infinity,
+          maxInitialRequests: Infinity
+        }
+      },
   plugins: [
     new webpack.DefinePlugin({
       'process.browser': true,
@@ -115,18 +117,20 @@ module.exports = {
       failOnError: true,
       cwd: process.cwd()
     })
-  ].concat(dev ? [
-    new webpack.HotModuleReplacementPlugin({
-      requestTimeout: 120000
-    })
-  ] : [
+  ].concat(dev
+    ? [
+        new webpack.HotModuleReplacementPlugin({
+          requestTimeout: 120000
+        })
+      ]
+    : [
 
-    new BundleAnalyzerPlugin({ // generates report.html
-      analyzerMode: 'static',
-      openAnalyzer: false,
-      logLevel: 'silent'
-    })
-  ]),
+        new BundleAnalyzerPlugin({ // generates report.html
+          analyzerMode: 'static',
+          openAnalyzer: false,
+          logLevel: 'silent'
+        })
+      ]),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
     hints: dev ? false : (process.env.DEBUG ? 'warning' : 'error'),
