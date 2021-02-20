@@ -37,8 +37,7 @@ export function firstVisibleElementIndex (elements) {
     const rect = element.getBoundingClientRect()
     if (rect.top < offsetHeight && rect.bottom >= topOverlay) {
       first = i
-      firstComplete = (
-        rect.top < topOverlay && i < (len - 1)) ? i + 1 : i
+      firstComplete = (rect.top < topOverlay && i < (len - 1)) ? i + 1 : i
       break
     }
   }

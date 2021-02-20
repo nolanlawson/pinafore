@@ -103,13 +103,13 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "eslint-plugin-html": "^6.1.0",
+    "eslint-plugin-html": "^6.1.1",
     "fake-indexeddb": "^3.1.2",
     "globby": "^11.0.1",
     "husky": "^5.0.9",
     "lint-staged": "^10.5.4",
     "mocha": "^8.3.0",
-    "standard": "^14.3.4",
+    "standard": "^16.0.3",
     "testcafe": "^1.11.0",
     "vercel": "^20.1.0"
   },

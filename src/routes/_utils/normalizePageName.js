@@ -2,6 +2,9 @@
 // is highlighted/selected
 export function normalizePageName (page) {
   // notifications/mentions and settings/foo are a special case; they show as selected in the nav
-  return page === 'notifications/mentions' ? 'notifications'
-    : (page && page.startsWith('settings/')) ? 'settings' : page
+  return page === 'notifications/mentions'
+    ? 'notifications'
+    : (page && page.startsWith('settings/'))
+        ? 'settings'
+        : page
 }

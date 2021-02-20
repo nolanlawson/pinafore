@@ -101,6 +101,7 @@ test('Check status aria labels for de-emojified text', async t => {
     .click(homeNavButton)
     .click(displayNameInComposeBox)
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
+      // eslint-disable-next-line prefer-regex-literals
       new RegExp('foo, hey ho lotsa emojos, (.* ago|just now), @foobar, Public', 'i')
     )
     .click(settingsNavButton)

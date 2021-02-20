@@ -12,12 +12,14 @@ module.exports = {
   resolve,
   mode,
   devtool: dev ? 'inline-source-map' : 'source-map',
-  optimization: dev ? {} : {
-    minimize: !process.env.DEBUG,
-    minimizer: [
-      terser()
-    ]
-  },
+  optimization: dev
+    ? {}
+    : {
+        minimize: !process.env.DEBUG,
+        minimizer: [
+          terser()
+        ]
+      },
   module: {
     rules: [
       {
