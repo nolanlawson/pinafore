@@ -54,17 +54,17 @@ A11yDialog.prototype.create = function () {
   // Keep a collection of dialog openers, each of which will be bound a click
   // event listener to open the dialog
   this._openers = $$('[data-a11y-dialog-show="' + this.node.id + '"]')
-  this._openers.forEach(function (opener) {
+  this._openers.forEach(opener => {
     opener.addEventListener('click', this._show)
-  }.bind(this))
+  })
 
   // Keep a collection of dialog closers, each of which will be bound a click
   // event listener to close the dialog
   this._closers = $$('[data-a11y-dialog-hide]', this.node)
     .concat($$('[data-a11y-dialog-hide="' + this.node.id + '"]'))
-  this._closers.forEach(function (closer) {
+  this._closers.forEach((closer) => {
     closer.addEventListener('click', this._hide)
-  }.bind(this))
+  })
 
   // Execute all callbacks registered for the `create` event
   this._fire('create')
@@ -97,8 +97,6 @@ A11yDialog.prototype.show = function (event) {
   // Iterate over the targets to disable them by setting their `aria-hidden`
   // attribute to `true`; in case they already have this attribute, keep a
   // reference of their original value to be able to restore it later
-  // TODO: use inert when more widely available. For now, add tabindex=-1 to all
-  // focusable children.
   this._siblings.forEach(function (sibling) {
     const original = sibling.getAttribute('aria-hidden')
 
@@ -108,6 +106,8 @@ A11yDialog.prototype.show = function (event) {
 
     sibling.setAttribute('aria-hidden', 'true')
 
+    // TODO: use inert when more widely available. For now, add tabindex=-1 to all
+    // focusable children.
     for (const element of sibling.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY)) {
       const original = element.getAttribute('tabindex')
       if (original) {
