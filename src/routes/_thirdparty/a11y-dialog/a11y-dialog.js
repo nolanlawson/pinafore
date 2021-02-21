@@ -97,7 +97,7 @@ A11yDialog.prototype.show = function (event) {
   // Iterate over the targets to disable them by setting their `aria-hidden`
   // attribute to `true`; in case they already have this attribute, keep a
   // reference of their original value to be able to restore it later
-  this._siblings.forEach(function (sibling) {
+  for (const sibling of this._siblings) {
     const original = sibling.getAttribute('aria-hidden')
 
     if (original) {
@@ -115,7 +115,7 @@ A11yDialog.prototype.show = function (event) {
       }
       element.setAttribute('tabindex', '-1')
     }
-  })
+  }
 
   setFocusToFirstItem(this.node)
 
@@ -150,25 +150,22 @@ A11yDialog.prototype.hide = function (event) {
 
   // Iterate over the targets to enable them by remove their `aria-hidden`
   // attribute or resetting them to their initial value
-  this._siblings.forEach(function (sibling) {
+  for (const sibling of this._siblings) {
     const original = sibling.getAttribute('data-a11y-dialog-original')
 
     if (original) {
       sibling.setAttribute('aria-hidden', original)
       sibling.removeAttribute('data-a11y-dialog-original')
-    } else {
-      sibling.removeAttribute('aria-hidden')
     }
 
     for (const element of sibling.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY)) {
       const original = element.getAttribute('data-a11y-dialog-original-tabindex')
       if (original) {
         element.setAttribute('tabindex', original)
-      } else {
-        element.removeAttribute('tabindex')
+        element.removeAttribute('data-a11y-dialog-original-tabindex')
       }
     }
-  })
+  }
 
   // If their was a focused element before the dialog was opened, restore the
   // focus back to it
