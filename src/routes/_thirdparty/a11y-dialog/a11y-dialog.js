@@ -8,7 +8,6 @@
 const FOCUSABLE_ELEMENTS_QUERY = 'a[href], area[href], input, select, textarea, ' +
   'button, iframe, object, embed, [contenteditable], [tabindex], ' +
   'video[controls], audio[controls], summary'
-const TAB_KEY = 9
 const ESCAPE_KEY = 27
 const shadowRoots = []
 let focusedBeforeDialog
@@ -18,9 +17,8 @@ let focusedBeforeDialog
    *
    * @constructor
    * @param {Element} node
-   * @param {(NodeList | Element | string)} targets
    */
-function A11yDialog (node, targets) {
+function A11yDialog (node) {
   // Prebind the functions that will be bound in addEventListener and
   // removeEventListener to avoid losing references
   this._show = this.show.bind(this)
@@ -35,7 +33,7 @@ function A11yDialog (node, targets) {
   this._listeners = {}
 
   // Initialise everything needed for the dialog to work properly
-  this.create(targets)
+  this.create()
 }
 
 /**
@@ -44,9 +42,9 @@ function A11yDialog (node, targets) {
    * @param {(NodeList | Element | string)} targets
    * @return {this}
    */
-A11yDialog.prototype.create = function (targets) {
+A11yDialog.prototype.create = function () {
   // Keep a collection of nodes to disable/enable when toggling the dialog
-  this._targets = this._targets || collect(targets) || getSiblings(this.node)
+  this._siblings = this._siblings || getSiblings(this.node)
 
   // Make sure the dialog element is disabled on load, and that the `shown`
   // property is synced with its value
@@ -91,23 +89,34 @@ A11yDialog.prototype.show = function (event) {
   this.shown = true
   this.node.removeAttribute('aria-hidden')
 
-  // Iterate over the targets to disable them by setting their `aria-hidden`
-  // attribute to `true`; in case they already have this attribute, keep a
-  // reference of their original value to be able to restore it later
-  this._targets.forEach(function (target) {
-    const original = target.getAttribute('aria-hidden')
-
-    if (original) {
-      target.setAttribute('data-a11y-dialog-original', original)
-    }
-
-    target.setAttribute('aria-hidden', 'true')
-  })
-
   // Keep a reference to the currently focused element to be able to restore
   // it later, then set the focus to the first focusable child of the dialog
   // element
   focusedBeforeDialog = document.activeElement
+
+  // Iterate over the targets to disable them by setting their `aria-hidden`
+  // attribute to `true`; in case they already have this attribute, keep a
+  // reference of their original value to be able to restore it later
+  // TODO: use inert when more widely available. For now, add tabindex=-1 to all
+  // focusable children.
+  this._siblings.forEach(function (sibling) {
+    const original = sibling.getAttribute('aria-hidden')
+
+    if (original) {
+      sibling.setAttribute('data-a11y-dialog-original', original)
+    }
+
+    sibling.setAttribute('aria-hidden', 'true')
+
+    for (const element of sibling.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY)) {
+      const original = element.getAttribute('tabindex')
+      if (original) {
+        element.setAttribute('data-a11y-dialog-original-tabindex', original)
+      }
+      element.setAttribute('tabindex', '-1')
+    }
+  })
+
   setFocusToFirstItem(this.node)
 
   // Bind a focus event listener to the body element to make sure the focus
@@ -141,14 +150,23 @@ A11yDialog.prototype.hide = function (event) {
 
   // Iterate over the targets to enable them by remove their `aria-hidden`
   // attribute or resetting them to their initial value
-  this._targets.forEach(function (target) {
-    const original = target.getAttribute('data-a11y-dialog-original')
+  this._siblings.forEach(function (sibling) {
+    const original = sibling.getAttribute('data-a11y-dialog-original')
 
     if (original) {
-      target.setAttribute('aria-hidden', original)
-      target.removeAttribute('data-a11y-dialog-original')
+      sibling.setAttribute('aria-hidden', original)
+      sibling.removeAttribute('data-a11y-dialog-original')
     } else {
-      target.removeAttribute('aria-hidden')
+      sibling.removeAttribute('aria-hidden')
+    }
+
+    for (const element of sibling.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY)) {
+      const original = element.getAttribute('data-a11y-dialog-original-tabindex')
+      if (original) {
+        element.setAttribute('tabindex', original)
+      } else {
+        element.removeAttribute('tabindex')
+      }
     }
   })
 
@@ -262,12 +280,6 @@ A11yDialog.prototype._bindKeypress = function (event) {
     event.preventDefault()
     this.hide()
   }
-
-  // If the dialog is shown and the TAB key is being pressed, make sure the
-  // focus stays trapped within the dialog element
-  if (this.shown && event.which === TAB_KEY) {
-    trapTabKey(this.node, event)
-  }
 }
 
 /**
@@ -308,27 +320,6 @@ function $$ (selector, context) {
 }
 
 /**
-   * Return an array of Element based on given argument (NodeList, Element or
-   * string representing a selector)
-   *
-   * @param {(NodeList | Element | string)} target
-   * @return {Array<Element>}
-   */
-function collect (target) {
-  if (NodeList.prototype.isPrototypeOf(target)) { // eslint-disable-line no-prototype-builtins
-    return toArray(target)
-  }
-
-  if (Element.prototype.isPrototypeOf(target)) { // eslint-disable-line no-prototype-builtins
-    return [target]
-  }
-
-  if (typeof target === 'string') {
-    return $$(target)
-  }
-}
-
-/**
    * Set the focus to the first focusable child of the given element
    *
    * @param {Element} node
@@ -341,17 +332,6 @@ function setFocusToFirstItem (node) {
   }
 }
 
-function isAncestor (node, ancestor) {
-  let parent = node
-  while (parent) {
-    parent = parent.parentElement
-    if (parent === ancestor) {
-      return true
-    }
-  }
-  return false
-}
-
 /**
    * Get the focusable children of the given element
    *
@@ -361,7 +341,7 @@ function isAncestor (node, ancestor) {
 function getFocusableChildren (node) {
   const candidateFocusableChildren = $$(FOCUSABLE_ELEMENTS_QUERY, node)
   for (const shadowRoot of shadowRoots) {
-    if (isAncestor(shadowRoot.getRootNode().host, node)) {
+    if (node.contains(shadowRoot.getRootNode().host)) {
       // TODO: technically we should figure out the host's position in the DOM
       // and insert the children there, but this works for the emoji picker dialog well
       // enough, and that's our only shadow root, so it's fine for now.
@@ -374,38 +354,6 @@ function getFocusableChildren (node) {
     !child.hasAttribute('inert') && // see https://github.com/GoogleChrome/inert-polyfill
     (child.offsetWidth || child.offsetHeight || child.getClientRects().length)
   })
-}
-
-/**
-   * Trap the focus inside the given element
-   *
-   * @param {Element} node
-   * @param {Event} event
-   */
-function trapTabKey (node, event) {
-  const focusableChildren = getFocusableChildren(node)
-  let activeElement = document.activeElement
-  for (const shadowRoot of shadowRoots) {
-    if (shadowRoot.getRootNode().host === activeElement) {
-      activeElement = shadowRoot.activeElement
-      break
-    }
-  }
-  const focusedItemIndex = focusableChildren.indexOf(activeElement)
-
-  // If the SHIFT key is being pressed while tabbing (moving backwards) and
-  // the currently focused item is the first one, move the focus to the last
-  // focusable item from the dialog element
-  if (event.shiftKey && focusedItemIndex === 0) {
-    focusableChildren[focusableChildren.length - 1].focus()
-    event.preventDefault()
-    // If the SHIFT key is not being pressed (moving forwards) and the currently
-    // focused item is the last one, move the focus to the first focusable item
-    // from the dialog element
-  } else if (!event.shiftKey && focusedItemIndex === focusableChildren.length - 1) {
-    focusableChildren[0].focus()
-    event.preventDefault()
-  }
 }
 
 /**
