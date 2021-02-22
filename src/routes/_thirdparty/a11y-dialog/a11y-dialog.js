@@ -5,6 +5,10 @@
 // you can at least tab to the video/audio and use other controls, like space bar and left/right)
 // Original: https://unpkg.com/a11y-dialog@4.0.1/a11y-dialog.js
 
+const ARIA_HIDDEN = 'aria-hidden'
+const TABINDEX = 'tabindex'
+const ARIA_HIDDEN_REPLACEMENT = 'data-a11y-dialog-original-aria-hidden'
+const TABINDEX_REPLACEMENT = 'data-a11y-dialog-original-tabindex'
 const FOCUSABLE_ELEMENTS_QUERY = 'a[href], area[href], input, select, textarea, ' +
   'button, iframe, object, embed, [contenteditable], [tabindex], ' +
   'video[controls], audio[controls], summary'
@@ -48,7 +52,7 @@ A11yDialog.prototype.create = function () {
 
   // Make sure the dialog element is disabled on load, and that the `shown`
   // property is synced with its value
-  this.node.setAttribute('aria-hidden', true)
+  this.node.setAttribute(ARIA_HIDDEN, true)
   this.shown = false
 
   // Keep a collection of dialog openers, each of which will be bound a click
@@ -87,7 +91,7 @@ A11yDialog.prototype.show = function (event) {
   }
 
   this.shown = true
-  this.node.removeAttribute('aria-hidden')
+  this.node.removeAttribute(ARIA_HIDDEN)
 
   // Keep a reference to the currently focused element to be able to restore
   // it later, then set the focus to the first focusable child of the dialog
@@ -98,22 +102,17 @@ A11yDialog.prototype.show = function (event) {
   // attribute to `true`; in case they already have this attribute, keep a
   // reference of their original value to be able to restore it later
   for (const sibling of this._siblings) {
-    const original = sibling.getAttribute('aria-hidden')
+    const original = sibling.getAttribute(ARIA_HIDDEN)
 
-    if (original) {
-      sibling.setAttribute('data-a11y-dialog-original', original)
-    }
-
-    sibling.setAttribute('aria-hidden', 'true')
+    sibling.setAttribute(ARIA_HIDDEN_REPLACEMENT, original)
+    sibling.setAttribute(ARIA_HIDDEN, 'true')
 
     // TODO: use inert when more widely available. For now, add tabindex=-1 to all
     // focusable children.
     for (const element of sibling.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY)) {
-      const original = element.getAttribute('tabindex')
-      if (original) {
-        element.setAttribute('data-a11y-dialog-original-tabindex', original)
-      }
-      element.setAttribute('tabindex', '-1')
+      const original = element.getAttribute(TABINDEX)
+      element.setAttribute(TABINDEX_REPLACEMENT, original)
+      element.setAttribute(TABINDEX, '-1')
     }
   }
 
@@ -121,7 +120,7 @@ A11yDialog.prototype.show = function (event) {
 
   // Bind a focus event listener to the body element to make sure the focus
   // stays trapped inside the dialog while open, and start listening for some
-  // specific key presses (TAB and ESC)
+  // specific key presses (ESC)
   document.body.addEventListener('focus', this._maintainFocus, true)
   document.addEventListener('keydown', this._bindKeypress)
 
@@ -146,25 +145,22 @@ A11yDialog.prototype.hide = function (event) {
   }
 
   this.shown = false
-  this.node.setAttribute('aria-hidden', 'true')
+  this.node.setAttribute(ARIA_HIDDEN, 'true')
 
   // Iterate over the targets to enable them by remove their `aria-hidden`
   // attribute or resetting them to their initial value
-  for (const sibling of this._siblings) {
-    const original = sibling.getAttribute('data-a11y-dialog-original')
+  for (const element of document.querySelectorAll(`[${ARIA_HIDDEN_REPLACEMENT}]`)) {
+    const original = element.getAttribute(ARIA_HIDDEN_REPLACEMENT)
+    element.setAttribute(ARIA_HIDDEN, original)
+    element.removeAttribute(ARIA_HIDDEN_REPLACEMENT)
+  }
 
-    if (original) {
-      sibling.setAttribute('aria-hidden', original)
-      sibling.removeAttribute('data-a11y-dialog-original')
-    }
-
-    for (const element of sibling.querySelectorAll(FOCUSABLE_ELEMENTS_QUERY)) {
-      const original = element.getAttribute('data-a11y-dialog-original-tabindex')
-      if (original) {
-        element.setAttribute('tabindex', original)
-        element.removeAttribute('data-a11y-dialog-original-tabindex')
-      }
-    }
+  // TODO: use inert when more widely available. For now, add tabindex=-1 to all
+  // focusable children.
+  for (const element of document.querySelectorAll(`[${TABINDEX_REPLACEMENT}]`)) {
+    const original = element.getAttribute(TABINDEX_REPLACEMENT)
+    element.setAttribute(TABINDEX, original)
+    element.removeAttribute(TABINDEX_REPLACEMENT)
   }
 
   // If their was a focused element before the dialog was opened, restore the
@@ -347,7 +343,7 @@ function getFocusableChildren (node) {
   }
   return candidateFocusableChildren.filter(child => {
     return !child.disabled &&
-    !/^-/.test(child.getAttribute('tabindex') || '') &&
+    !/^-/.test(child.getAttribute(TABINDEX) || '') &&
     !child.hasAttribute('inert') && // see https://github.com/GoogleChrome/inert-polyfill
     (child.offsetWidth || child.offsetHeight || child.getClientRects().length)
   })
