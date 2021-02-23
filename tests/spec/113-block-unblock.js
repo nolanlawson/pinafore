@@ -1,7 +1,8 @@
 import {
   accountProfileFollowButton,
   accountProfileFollowedBy, accountProfileMoreOptionsButton, communityNavButton, getNthSearchResult,
-  getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog
+  getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog,
+  sleep
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { loginAsFoobar } from '../roles'
@@ -16,23 +17,35 @@ test('Can block and unblock an account from a status', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).innerText).contains(post, { timeout: 30000 })
+  await sleep(500)
+  await t
     .click(getNthStatusOptionsButton(1))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')
+  await sleep(500)
+  await t
     .click(getNthDialogOptionsOption(2))
     .expect(modalDialog.exists).notOk()
+  await sleep(500)
+  await t
     .click(communityNavButton)
     .click($('a[href="/blocked"]'))
     .expect(getNthSearchResult(1).innerText).contains('@admin')
+  await sleep(500)
+  await t
     .click(getNthSearchResult(1))
     .expect(getUrl()).contains('/accounts/1')
     .expect(accountProfileFollowedBy.innerText).match(/blocked/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unblock')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Unblock')
+  await sleep(500)
+  await t
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowedBy.innerText).contains('')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Follow')
+  await sleep(500)
+  await t
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Unfollow')
@@ -44,21 +57,31 @@ test('Can block and unblock an account from the account profile page', async t =
   await t
     .navigateTo('/accounts/5')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
+  await sleep(500)
+  await t
     .click(accountProfileMoreOptionsButton)
     .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @baz')
     .expect(getNthDialogOptionsOption(2).innerText).contains('Follow @baz')
     .expect(getNthDialogOptionsOption(3).innerText).contains('Block @baz')
+  await sleep(500)
+  await t
     .click(getNthDialogOptionsOption(3))
     .expect(accountProfileFollowedBy.innerText).match(/blocked/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unblock')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Unblock')
+  await sleep(500)
+  await t
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowedBy.innerText).contains('')
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Follow')
+  await sleep(500)
+  await t
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unfollow')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Unfollow')
+  await sleep(500)
+  await t
     .click(accountProfileFollowButton)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Follow')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Follow')
