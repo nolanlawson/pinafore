@@ -17,30 +17,29 @@
   </div>
 </ModalDialog>
 <style>
-  :global(emoji-picker) {
+  emoji-picker {
     --indicator-color: var(--main-theme-color);
     --outline-color: var(--focus-outline);
   }
 
   @media (max-width: 479px) {
-    :global(emoji-picker) {
-      --emoji-padding: 0.25rem;
-      --input-padding: 0.125rem;
-    }
-
-    .emoji-container, :global(emoji-picker) {
+    .emoji-container, emoji-picker {
       width: 100%;
     }
   }
 
   @media (max-width: 320px) {
-    :global(emoji-picker) {
+    emoji-picker {
+      --emoji-padding: 0.25rem;
+      --input-padding: 0.125rem;
+    }
+    emoji-picker {
       --num-columns: 6;
     }
   }
 
   @media (max-width: 240px) {
-    :global(emoji-picker) {
+    emoji-picker {
       --num-columns: 6;
       --emoji-size: 1.125rem;
       --emoji-padding: 0.125rem;
@@ -49,7 +48,7 @@
   }
 
   @media (max-height: 450px) {
-    :global(emoji-picker) {
+    emoji-picker {
       height: calc(100vh - 75px); /* leave room for the dialog bar */
     }
   }
