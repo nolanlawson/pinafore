@@ -23,17 +23,16 @@
   }
 
   @media (max-width: 479px) {
-    :global(emoji-picker) {
-      --emoji-padding: 0.25rem;
-      --input-padding: 0.125rem;
-    }
-
     .emoji-container, :global(emoji-picker) {
       width: 100%;
     }
   }
 
   @media (max-width: 320px) {
+    :global(emoji-picker) {
+      --emoji-padding: 0.25rem;
+      --input-padding: 0.125rem;
+    }
     :global(emoji-picker) {
       --num-columns: 6;
     }
