@@ -54,6 +54,11 @@ export async function postReplyAs (username, text, inReplyTo) {
     inReplyTo, null, false, null, 'public')
 }
 
+export async function postReplyWithSpoilerAs (username, text, inReplyTo, spoilerText) {
+  return postStatus(instanceName, users[username].accessToken, text,
+    inReplyTo, null, false, spoilerText, 'public')
+}
+
 export async function deleteAs (username, statusId) {
   return deleteStatus(instanceName, users[username].accessToken, statusId)
 }

@@ -156,6 +156,7 @@ export default {
     <li><kbd>p</kbd> pour voir le profile de l'auteur</li>
     <li><kbd>l</kbd> pour ouvrir un lien de carte dans un nouvel onglet</li>
     <li><kbd>x</kbd> pour afficher ou cacher le texte caché derrière une avertissement</li>
+    <li><kbd>z</kbd> pour afficher ou cacher toutes les avertissements</li>
   `,
   mediaHotkeys: `
     <li><kbd>←</kbd> / <kbd>→</kbd> pour voir la prochaine ou dernière image</li>

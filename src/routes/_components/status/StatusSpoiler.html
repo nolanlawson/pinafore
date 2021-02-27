@@ -52,12 +52,15 @@
   import { registerClickDelegate } from '../../_utils/delegate'
   import { mark, stop } from '../../_utils/marks'
   import { emojifyText } from '../../_utils/emojifyText'
+  import { on } from '../../_utils/eventBus'
   import escapeHtml from 'escape-html'
 
   export default {
     oncreate () {
+      this.toggleSpoilers = this.toggleSpoilers.bind(this)
       const { elementId } = this.get()
       registerClickDelegate(this, elementId, () => this.toggleSpoilers())
+      on('toggleAllSpoilers', this, this.toggleSpoilers)
     },
     store: () => store,
     components: {
@@ -71,13 +74,13 @@
       elementId: ({ uuid }) => `spoiler-${uuid}`
     },
     methods: {
-      toggleSpoilers () {
+      toggleSpoilers (shown) {
+        const { uuid } = this.get()
+        const { spoilersShown } = this.store.get()
+        spoilersShown[uuid] = typeof shown === 'undefined' ? !spoilersShown[uuid] : !!shown
+        this.store.set({ spoilersShown })
         requestAnimationFrame(() => {
           mark('clickSpoilerButton')
-          const { uuid } = this.get()
-          const { spoilersShown } = this.store.get()
-          spoilersShown[uuid] = !spoilersShown[uuid]
-          this.store.set({ spoilersShown })
           this.fire('recalculateHeight')
           stop('clickSpoilerButton')
         })
