@@ -6448,9 +6448,9 @@ sanitize-filename@^1.6.0:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-sapper@nolanlawson/sapper#for-pinafore-24:
+sapper@nolanlawson/sapper#for-pinafore-25:
   version "0.27.12"
-  resolved "https://codeload.github.com/nolanlawson/sapper/tar.gz/15ab2446a54eadb0a12881bc39cb73013c94c474"
+  resolved "https://codeload.github.com/nolanlawson/sapper/tar.gz/acf196a742b0b25c59b51d5280308d198f32a22e"
   dependencies:
     html-minifier "^3.5.20"
     http-link-header "^1.0.2"
