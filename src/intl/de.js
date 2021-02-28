@@ -155,6 +155,7 @@ export default {
     <li><kbd>p</kbd> das Profil des Verfassers öffnen</li>
     <li><kbd>l</kbd> den Link des aktuellen Tröts in einem neuen Tab öffnen</li>
     <li><kbd>x</kbd> den Text hinter der Inhaltswarnung anzeigen oder verbergen</li>
+    <li><kbd>z</kbd> den Text hinter der Inhaltswarnung anzeigen oder verbergen (alle)</li>
   `,
   mediaHotkeys: `
     <li><kbd>←</kbd> / <kbd>→</kbd> zum nächsten oder vorherigen Inhalt gehen</li>

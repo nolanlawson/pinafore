@@ -11,6 +11,8 @@
 } from '../../_utils/shortcuts'
   import { smoothScroll } from '../../_utils/smoothScroll'
   import { getScrollContainer } from '../../_utils/scrollContainer'
+  import { store } from '../../_store/store'
+  import { emit } from '../../_utils/eventBus'
 
   const VISIBILITY_CHECK_DELAY_MS = 600
 
@@ -32,8 +34,10 @@
   export default {
     data: () => ({
       activeItemChangeTime: 0,
-      elements: document.getElementsByClassName('shortcut-list-item')
+      elements: document.getElementsByClassName('shortcut-list-item'),
+      spoilersShown: false
     }),
+    store: () => store,
     oncreate () {
       addShortcutFallback(scope, this)
     },
@@ -43,6 +47,15 @@
     methods: {
       onKeyDown (event) {
         if (shouldIgnoreEvent(event)) {
+          return
+        }
+        if (event.key === 'z' && this.store.get().currentTimeline.startsWith('status/')) {
+          // if we're in a thread, toggle all content warnings on or off
+          event.stopPropagation()
+          event.preventDefault()
+          const { spoilersShown } = this.get()
+          emit('toggleAllSpoilers', !spoilersShown)
+          this.set({ spoilersShown: !spoilersShown })
           return
         }
         if (event.key === 'j' || event.key === 'ArrowDown') {

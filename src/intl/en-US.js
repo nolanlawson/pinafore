@@ -156,6 +156,7 @@ export default {
     <li><kbd>p</kbd> to open the author's profile</li>
     <li><kbd>l</kbd> to open the card's link in a new tab</li>
     <li><kbd>x</kbd> to show or hide text behind content warning</li>
+    <li><kbd>z</kbd> to show or hide all content warnings in a thread</li>
   `,
   mediaHotkeys: `
     <li><kbd>←</kbd> / <kbd>→</kbd> to go to next or previous</li>
