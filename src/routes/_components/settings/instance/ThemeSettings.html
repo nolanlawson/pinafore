@@ -1,4 +1,4 @@
-<form class="theme-chooser" aria-label="{intl.chooseTheme}">
+<form class="generic-instance-settings" aria-label="{intl.chooseTheme}">
   <div class="theme-groups">
     {#each themeGroups as themeGroup}
     <div class="theme-group">
@@ -24,15 +24,8 @@
     {/each}
   </div>
 </form>
+<GenericInstanceSettingsStyle/>
 <style>
-  .theme-chooser {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    display: block;
-    padding: 20px;
-    line-height: 2em;
-  }
   .theme-groups {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -89,6 +82,7 @@
   }
 </style>
 <script>
+  import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
   import { changeTheme } from '../../../_actions/instances'
   import { store } from '../../../_store/store'
   import { themes } from '../../../_static/themes'
@@ -134,6 +128,9 @@
         const { selectedTheme, instanceName } = this.get()
         changeTheme(instanceName, selectedTheme)
       }
+    },
+    components: {
+      GenericInstanceSettingsStyle
     }
   }
 </script>

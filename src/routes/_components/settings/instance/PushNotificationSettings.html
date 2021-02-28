@@ -1,4 +1,4 @@
-<div class="push-notifications">
+<div class="generic-instance-settings">
   {#if pushNotificationsSupport === false}
     <p>{intl.browserDoesNotSupportPush}</p>
   {:elseif $notificationPermission === "denied"}
@@ -23,15 +23,8 @@
     {/each}
   </form>
 </div>
+<GenericInstanceSettingsStyle/>
 <style>
-  .push-notifications {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    display: block;
-    padding: 20px;
-    line-height: 2em;
-  }
   form[disabled="true"] {
     opacity: 0.5;
   }
@@ -40,6 +33,7 @@
   }
 </style>
 <script>
+  import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
   import { store } from '../../../_store/store'
   import { importShowTextConfirmationDialog } from '../../dialog/asyncDialogs/importShowTextConfirmationDialog.js'
   import { logOutOfInstance } from '../../../_actions/instances'
@@ -118,6 +112,9 @@
           }
         }
       }
+    },
+    components: {
+      GenericInstanceSettingsStyle
     }
   }
 </script>

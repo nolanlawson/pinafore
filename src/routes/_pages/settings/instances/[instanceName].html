@@ -4,6 +4,8 @@
   {#if verifyCredentials}
     <h2>{intl.loggedInAs}</h2>
     <InstanceUserProfile {verifyCredentials} />
+    <h2>{intl.wordFilters}</h2>
+    <WordFilterSettings {instanceName} />
     <h2>{intl.homeTimelineFilters}</h2>
     <HomeTimelineFilterSettings {instanceName} />
     <h2>{intl.notificationFilters}</h2>
@@ -32,6 +34,7 @@
   import PushNotificationSettings from '../../../_components/settings/instance/PushNotificationSettings.html'
   import ThemeSettings from '../../../_components/settings/instance/ThemeSettings.html'
   import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
+  import WordFilterSettings from '../../../_components/settings/instance/WordFilterSettings.html'
   import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
 
   export default {
@@ -51,7 +54,8 @@
       ThemeSettings,
       InstanceActions,
       HomeTimelineFilterSettings,
-      NotificationFilterSettings
+      NotificationFilterSettings,
+      WordFilterSettings
     }
   }
 </script>

@@ -625,5 +625,8 @@ export default {
   showingOfflineContent: 'Internet request failed. Showing offline content.',
   youAreOffline: 'You seem to be offline. You can still read toots while offline.',
   // Snackbar UI
-  updateAvailable: 'App update available.'
+  updateAvailable: 'App update available.',
+  // Word/phrase filters
+  wordFilters: 'Word filters',
+  wordFiltersFormLabel: 'Word or phrase filter instance settings'
 }

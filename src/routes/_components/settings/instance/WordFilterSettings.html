@@ -1,0 +1,16 @@
+<div class="generic-instance-settings">
+  <form aria-label={label} ref:form>
+  </form>
+</div>
+<GenericInstanceSettingsStyle/>
+<script>
+  import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
+  export default {
+    data: () => ({
+      label: 'intl.wordFiltersFormLabel'
+    }),
+    components: {
+      GenericInstanceSettingsStyle
+    }
+  }
+</script>
