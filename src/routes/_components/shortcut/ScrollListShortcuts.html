@@ -26,7 +26,7 @@
     const { target, key } = event
     const isRadio = target &&
     target.tagName === 'INPUT' &&
-    (target.type || '').toLowerCase() === 'radio'
+    target.type === 'radio'
     const isArrow = key === 'ArrowUp' || key === 'ArrowDown'
     return isRadio && isArrow
   }
