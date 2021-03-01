@@ -628,5 +628,7 @@ export default {
   updateAvailable: 'App update available.',
   // Word/phrase filters
   wordFilters: 'Word filters',
-  wordFiltersFormLabel: 'Word or phrase filter instance settings'
+  noFilters: 'You don\'t have any word filters.',
+  wordOrPhrase: 'Word or phrase',
+  contexts: 'Contexts'
 }

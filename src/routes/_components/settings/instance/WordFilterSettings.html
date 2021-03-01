@@ -1,16 +1,55 @@
 <div class="generic-instance-settings">
-  <form aria-label={label} ref:form>
-  </form>
+  {#if filters.length}
+    <table>
+      <thead>
+        <tr>
+          <th>{intl.wordOrPhrase}</th>
+          <th>{intl.contexts}</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each filters as filter (filter.id)}
+          <tr>
+            <td>{filter.phrase}</td>
+            <td>{filter.context}</td>
+            <td>
+              <IconButton label="{intl.edit}" href="#fa-pencil" />
+            </td>
+            <td>
+              <IconButton label="{intl.delete}" href="#fa-trash" />
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {:else}
+    <p>{intl.noFilters}</p>
+  {/if}
 </div>
-<GenericInstanceSettingsStyle/>
+<GenericInstanceSettingsStyle />
+<style>
+  table {
+    width: 100%
+  }
+</style>
 <script>
   import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
+  import IconButton from '../../IconButton.html'
+  import { store } from '../../../_store/store'
+
   export default {
     data: () => ({
       label: 'intl.wordFiltersFormLabel'
     }),
+    store: () => store,
+    computed: {
+      filters: ({ $currentInstance, $instanceFilters }) => $instanceFilters[$currentInstance] || []
+    },
     components: {
-      GenericInstanceSettingsStyle
+      GenericInstanceSettingsStyle,
+      IconButton
     }
   }
 </script>

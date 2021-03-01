@@ -14,6 +14,7 @@ export function instanceComputations (store) {
   computeForInstance(store, 'currentInstanceInfo', 'instanceInfos', null)
   computeForInstance(store, 'pinnedPage', 'pinnedPages', '/local')
   computeForInstance(store, 'lists', 'instanceLists', [])
+  computeForInstance(store, 'filters', 'instanceFilters', [])
   computeForInstance(store, 'currentStatusModifications', 'statusModifications', null)
   computeForInstance(store, 'currentCustomEmoji', 'customEmoji', [])
   computeForInstance(store, 'currentComposeData', 'composeData', {})
