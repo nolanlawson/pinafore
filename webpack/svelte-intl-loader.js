@@ -8,10 +8,18 @@ import path from 'path'
 const intl = require(path.join(__dirname, '../src/intl', LOCALE + '.js')).default
 const defaultIntl = require(path.join(__dirname, '../src/intl', DEFAULT_LOCALE + '.js')).default
 
+function warningOrError (message) { // avoid crashing the whole server on `yarn dev`
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(message)
+  }
+  console.warn(message)
+  return '(Placeholder intl string)'
+}
+
 function getIntl (path) {
   const res = get(intl, path, get(defaultIntl, path))
   if (typeof res !== 'string') {
-    throw new Error('Unknown intl string: ' + JSON.stringify(path))
+    return warningOrError('Unknown intl string: ' + JSON.stringify(path))
   }
   return res
 }
@@ -42,7 +50,7 @@ export default function (source) {
     })
   const match = res.match(/[^(][^']intl\.([\w.]+)/) || res.match(/formatIntl\('([\w.]+)/)
   if (match) {
-    throw new Error('You probably made a typo with an intl string: ' + match[1])
+    return warningOrError('You probably made a typo with an intl string: ' + match[1])
   }
   return res
 }
