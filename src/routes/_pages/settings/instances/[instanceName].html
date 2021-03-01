@@ -36,11 +36,15 @@
   import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
   import WordFilterSettings from '../../../_components/settings/instance/WordFilterSettings.html'
   import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
+  import { updateFiltersForInstance } from '../../../_actions/filters'
 
   export default {
     async oncreate () {
       const { instanceName } = this.get()
-      await updateVerifyCredentialsForInstance(instanceName)
+      await Promise.all([
+        updateVerifyCredentialsForInstance(instanceName),
+        updateFiltersForInstance(instanceName)
+      ])
     },
     store: () => store,
     computed: {
