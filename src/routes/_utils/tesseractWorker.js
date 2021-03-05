@@ -4,7 +4,7 @@
 // We should explore this at a later date.
 import corePath from 'tesseract.js-core/tesseract-core.wasm.js'
 import workerPath from 'tesseract.js/dist/worker.min.js'
-import { createWorker } from 'tesseract.js'
+import createWorker from 'tesseract.js/src/createWorker.js'
 
 const { origin } = location
 
