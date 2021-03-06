@@ -74,7 +74,13 @@ async function runMastodon () {
     console.log('Installing Mastodon...')
     for (const cmd of installCommands) {
       console.log(cmd)
-      await exec(cmd, { cwd, env })
+      try {
+        await exec(cmd, { cwd, env })
+      } catch (err) {
+        console.log(err.stdout)
+        console.error(err.stderr)
+        throw err
+      }
     }
     await writeFile(installedFile, '', 'utf8')
   }
