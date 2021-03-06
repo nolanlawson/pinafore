@@ -15,7 +15,8 @@ const NOOP_MODULES = [
   'tesseract.js/dist/worker.min.js.map',
   'tesseract.js-core/tesseract-core.wasm',
   'tesseract.js-core/tesseract-core.wasm.js',
-  'tesseract.js'
+  'tesseract.js/src/createWorker.js',
+  'tesseract.js/src/createWorker.js.map'
 ]
 
 const serverResolve = JSON.parse(JSON.stringify(resolve))
