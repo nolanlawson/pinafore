@@ -1,6 +1,6 @@
-<div class="generic-instance-settings">
+<div class="generic-instance-settings word-filters">
   {#if filters.length}
-    <table>
+    <table class="word-filters-table">
       <thead>
         <tr>
           <th>{intl.wordOrPhrase}</th>
@@ -10,10 +10,10 @@
         </tr>
       </thead>
       <tbody>
-        {#each filters as filter (filter.id)}
+        {#each formattedFilters as filter (filter.id)}
           <tr>
             <td>{filter.phrase}</td>
-            <td>{filter.context}</td>
+            <td>{filter.formattedContexts}</td>
             <td>
               <IconButton label="{intl.edit}" href="#fa-pencil" />
             </td>
@@ -25,27 +25,50 @@
       </tbody>
     </table>
   {:else}
-    <p>{intl.noFilters}</p>
+    <p class="word-filters-p">{intl.noFilters}</p>
   {/if}
+  <button type="button">{intl.addFilter}</button>
 </div>
 <GenericInstanceSettingsStyle />
 <style>
-  table {
+  .word-filters-table {
     width: 100%
+  }
+  p.word-filters-p, .word-filters-table {
+    margin: 0 0 10px 0;
   }
 </style>
 <script>
   import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
   import IconButton from '../../IconButton.html'
   import { store } from '../../../_store/store'
+  import { LOCALE } from '../../../_static/intl'
 
-  export default {
-    data: () => ({
-      label: 'intl.wordFiltersFormLabel'
-    }),
+  const listFormat = new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' })
+
+export default {
     store: () => store,
     computed: {
-      filters: ({ $currentInstance, $instanceFilters }) => $instanceFilters[$currentInstance] || []
+      filters: ({ instanceName, $instanceFilters }) => $instanceFilters[instanceName] || [],
+      formattedFilters: ({ filters }) => filters.map(filter => ({
+        ...filter,
+        formattedContexts: listFormat.format(filter.context.map(context => {
+          switch (context) {
+            case 'home':
+              return 'intl.filterHome'
+            case 'notifications':
+              return 'intl.filterNotifications'
+            case 'public':
+              return 'intl.filterPublic'
+            case 'thread':
+              return 'intl.filterThread'
+            case 'account':
+              return 'intl.filterAccount'
+            default:
+              return 'intl.filterUnknown'
+          }
+        }))
+      }))
     },
     components: {
       GenericInstanceSettingsStyle,

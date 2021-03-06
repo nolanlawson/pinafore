@@ -630,5 +630,12 @@ export default {
   wordFilters: 'Word filters',
   noFilters: 'You don\'t have any word filters.',
   wordOrPhrase: 'Word or phrase',
-  contexts: 'Contexts'
+  contexts: 'Contexts',
+  addFilter: 'Add filter',
+  filterHome: 'Home and lists',
+  filterNotifications: 'Notifications',
+  filterPublic: 'Public timelines',
+  filterThread: 'Conversations',
+  filterAccount: 'Profiles',
+  filterUnknown: 'Unknown'
 }

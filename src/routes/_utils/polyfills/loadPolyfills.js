@@ -1,6 +1,7 @@
 import {
   importRequestIdleCallback,
-  importRelativeTimeFormat
+  importRelativeTimeFormat,
+  importListFormat
 } from './asyncPolyfills'
 
 export function loadPolyfills () {
@@ -10,6 +11,7 @@ export function loadPolyfills () {
       typeof Intl.RelativeTimeFormat !== 'function' ||
       typeof Intl.Locale !== 'function' ||
       typeof Intl.PluralRules !== 'function'
-    ) && importRelativeTimeFormat()
+    ) && importRelativeTimeFormat(),
+    typeof Intl.ListFormat !== 'function' && importListFormat()
   ])
 }

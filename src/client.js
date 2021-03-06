@@ -4,8 +4,8 @@ import './routes/_utils/historyEvents'
 import './routes/_utils/loadingMask'
 import './routes/_utils/forceOnline'
 import { mark, stop } from './routes/_utils/marks'
-import { loadPolyfills } from './routes/_utils/loadPolyfills'
-import { loadNonCriticalPolyfills } from './routes/_utils/loadNonCriticalPolyfills'
+import { loadPolyfills } from './routes/_utils/polyfills/loadPolyfills'
+import { loadNonCriticalPolyfills } from './routes/_utils/polyfills/loadNonCriticalPolyfills'
 
 mark('loadPolyfills')
 loadPolyfills().then(() => {

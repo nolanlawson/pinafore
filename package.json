@@ -39,6 +39,7 @@
     "build-vercel-json": "node -r esm bin/build-vercel-json.js"
   },
   "dependencies": {
+    "@formatjs/intl-listformat": "^5.0.10",
     "@formatjs/intl-locale": "^2.4.14",
     "@formatjs/intl-pluralrules": "^4.0.6",
     "@formatjs/intl-relativetimeformat": "^8.0.4",
