@@ -23,7 +23,9 @@ export async function buildInlineScript () {
         'process.browser': true,
         'process.env.THEME_COLORS': JSON.stringify(themeColors)
       }),
-      !process.env.DEBUG && terser(terserOptions)
+      // TODO: can't disable terser at all, it causes the CSP checksum to stop working
+      // because the HTML gets minified as some point so the checksums don't match.
+      terser({ ...terserOptions, mangle: !process.env.DEBUG })
     ]
   })
   const { output } = await bundle.generate({
