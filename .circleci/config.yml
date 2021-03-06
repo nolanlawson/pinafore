@@ -68,6 +68,9 @@ jobs:
             done
             echo Failed waiting for redis && exit 1
       - run:
+          name: Build
+          command: yarn build
+      - run:
           name: Integration tests
           command: |
             node -v
