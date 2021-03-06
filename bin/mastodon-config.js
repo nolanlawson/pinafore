@@ -1,3 +1,5 @@
+import path from 'path'
+
 export const DB_NAME = 'pinafore_development'
 export const DB_USER = 'pinafore'
 export const DB_PASS = 'pinafore'
@@ -18,3 +20,16 @@ DB_PASS=${DB_PASS}
 // Need a Ruby version that CircleCI bundles with Node v12, not Node v14 which doesn't
 // work for streaming
 export const RUBY_VERSION = '2.6.6'
+
+export const mastodonDir = path.join(__dirname, '../mastodon')
+
+export const env = Object.assign({}, process.env, {
+  RAILS_ENV: 'development',
+  NODE_ENV: 'development',
+  BUNDLE_PATH: path.join(mastodonDir, 'vendor/bundle'),
+  DB_NAME,
+  DB_USER,
+  DB_PASS,
+  DB_HOST,
+  DB_PORT
+})
