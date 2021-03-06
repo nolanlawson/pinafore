@@ -80,12 +80,9 @@ async function runMastodon () {
   }
   await exec('bundle exec rails db:migrate', { cwd, env })
   const promise = spawn('foreman', ['start'], { cwd, env })
-  // don't bother writing to mastodon.log in CI; we can't read the file anyway
-  const logFile = process.env.CIRCLECI ? '/dev/null' : 'mastodon.log'
-  const log = fs.createWriteStream(logFile, { flags: 'a' })
   childProc = promise.childProcess
-  childProc.stdout.pipe(log)
-  childProc.stderr.pipe(log)
+  childProc.stdout.pipe(process.stdout)
+  childProc.stderr.pipe(process.stderr)
   promise.catch(err => {
     console.error('foreman start failed, see mastodon.log for details')
     console.error(err)
