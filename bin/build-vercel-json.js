@@ -63,6 +63,8 @@ const SCRIPT_CHECKSUMS = [inlineScriptChecksum]
   .map(_ => `'sha256-${_}'`)
   .join(' ')
 
+const PERMISSIONS_POLICY = "sync-xhr 'none'; document-domain 'none';"
+
 const HTML_HEADERS = {
   'cache-control': 'public,max-age=3600',
   'content-security-policy': [
@@ -82,6 +84,8 @@ const HTML_HEADERS = {
   ].join(';'),
   'referrer-policy': 'no-referrer',
   'strict-transport-security': 'max-age=15552000; includeSubDomains',
+  'feature-policy': PERMISSIONS_POLICY,
+  'permissions-policy': PERMISSIONS_POLICY,
   'x-content-type-options': 'nosniff',
   'x-download-options': 'noopen',
   'x-frame-options': 'DENY',
