@@ -48,6 +48,9 @@ jobs:
           name: Unit tests
           command: yarn test-unit
       - run:
+          name: Install mastodon
+          command: yarn install-mastodon
+      - run:
           name: Wait for postgres to be ready
           command: |
             for i in `seq 1 10`;
@@ -68,10 +71,11 @@ jobs:
             done
             echo Failed waiting for redis && exit 1
       - run:
+          name: Build
+          command: yarn build
+      - run:
           name: Integration tests
-          command: |
-            node -v
-            yarn test
+          command: yarn test-in-ci
       - save_cache:
           name: Save yarn cache
           key: yarn-v1-{{ checksum "yarn.lock" }}
