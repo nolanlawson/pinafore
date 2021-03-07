@@ -4,17 +4,16 @@
   {#if verifyCredentials}
     <h2>{intl.loggedInAs}</h2>
     <InstanceUserProfile {verifyCredentials} />
-    <h2>{intl.wordFilters}</h2>
-    <WordFilterSettings {instanceName} />
+    <h2>{intl.theme}</h2>
+    <ThemeSettings {instanceName} />
     <h2>{intl.homeTimelineFilters}</h2>
     <HomeTimelineFilterSettings {instanceName} />
     <h2>{intl.notificationFilters}</h2>
     <NotificationFilterSettings {instanceName} />
+    <h2>{intl.wordFilters}</h2>
+    <WordFilterSettings {instanceName} />
     <h2>{intl.pushNotifications}</h2>
     <PushNotificationSettings {instanceName} />
-    <h2>{intl.theme}</h2>
-    <ThemeSettings {instanceName} />
-
     <InstanceActions {instanceName} />
   {/if}
 </SettingsLayout>
