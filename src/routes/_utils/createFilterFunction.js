@@ -4,11 +4,15 @@ function noFilter () {
   return true
 }
 
-export function createFilterFunction (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls) {
+export function createFilterFunction (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, regex) {
   if (showReblogs && showReplies && showFollows && showFavs && showMentions && showPolls) {
     return noFilter // fast path for the default setting
   }
   return item => {
+    if (regex && regex.test(item.searchIndex)) {
+      return false
+    }
+
     switch (item.type) {
       case 'poll':
         return showPolls

@@ -92,6 +92,7 @@ export function timelineComputations (store) {
   computeNotificationFilter(store, 'timelineNotificationShowMentions', NOTIFICATION_MENTIONS)
   computeNotificationFilter(store, 'timelineNotificationShowPolls', NOTIFICATION_POLLS)
 
+  // This one is based on whatever the current timeline is
   store.compute(
     'timelineFilterFunction',
     [
@@ -103,6 +104,8 @@ export function timelineComputations (store) {
     )
   )
 
+  // The reason there is a completely separate flow just for notifications is that we need to
+  // know which notifications are filtered at all times so that the little number badge is correct.
   store.compute(
     'timelineNotificationFilterFunction',
     [
