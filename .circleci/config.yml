@@ -80,6 +80,7 @@ jobs:
           name: Check vercel.json unchanged
           command: |
             if ! diff -q /tmp/vercel.json vercel.json &>/dev/null; then
+              diff /tmp/vercel.json vercel.json
               echo "vercel.json changed, run yarn build and make sure everything looks okay"
               exit 1
             fi
