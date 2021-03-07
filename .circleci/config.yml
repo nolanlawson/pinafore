@@ -71,8 +71,18 @@ jobs:
             done
             echo Failed waiting for redis && exit 1
       - run:
+          name: Copy vercel.json
+          command: cp vercel.json /tmp/vercel.json
+      - run:
           name: Build
           command: yarn build
+      - run:
+          name: Check vercel.json unchanged
+          command: |
+            if ! diff -q /tmp/vercel.json vercel.json &>/dev/null; then
+              echo "vercel.json changed, run yarn build and make sure everything looks okay"
+              exit 1
+            fi
       - run:
           name: Integration tests
           command: yarn test-in-ci
