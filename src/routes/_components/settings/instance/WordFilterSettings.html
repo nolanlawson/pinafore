@@ -15,7 +15,7 @@
             <td>{filter.phrase}</td>
             <td>{filter.formattedContexts}</td>
             <td>
-              <IconButton label="{intl.edit}" href="#fa-pencil" />
+              <IconButton label="{intl.edit}" href="#fa-pencil" on:click="edit(filter)" clickListener={true} />
             </td>
             <td>
               <IconButton label="{intl.delete}" href="#fa-trash" />
@@ -27,7 +27,7 @@
   {:else}
     <p class="word-filters-p">{intl.noFilters}</p>
   {/if}
-  <button type="button">{intl.addFilter}</button>
+  <button type="button" on:click="add()">{intl.addFilter}</button>
 </div>
 <GenericInstanceSettingsStyle />
 <style>
@@ -43,6 +43,7 @@
   import IconButton from '../../IconButton.html'
   import { store } from '../../../_store/store'
   import { LOCALE } from '../../../_static/intl'
+  import { importShowWordFilterDialog } from '../../dialog/asyncDialogs/importShowWordFilterDialog'
 
   const listFormat = new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' })
 
@@ -69,6 +70,18 @@ export default {
           }
         }))
       }))
+    },
+    methods: {
+      async add () {
+        const { instanceName } = this.get()
+        const showWordFilterDialog = await importShowWordFilterDialog()
+        await showWordFilterDialog({ instanceName })
+      },
+      async edit (filter) {
+        const { instanceName } = this.get()
+        const showWordFilterDialog = await importShowWordFilterDialog()
+        await showWordFilterDialog({ instanceName, filter })
+      }
     },
     components: {
       GenericInstanceSettingsStyle,
