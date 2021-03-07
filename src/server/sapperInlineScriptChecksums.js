@@ -19,5 +19,5 @@ const scriptsWithSW = baseScripts.map(script => (
 const scripts = [].concat(baseScripts).concat(scriptsWithSW)
 
 export const sapperInlineScriptChecksums = scripts.map(script => {
-  return crypto.createHash('sha256').update(script).digest('base64')
+  return crypto.createHash('sha256').update(script, 'utf8').digest('base64')
 })
