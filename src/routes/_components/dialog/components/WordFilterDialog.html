@@ -222,10 +222,10 @@
         filter.phrase = this.refs.wordInput.value
         const select = this.refs.expireSelectWrapper.querySelector('select')
         const selectValue = parseInt(select.value, 10)
-        // When creating a new filter or updating a filter, expires_at is the number of
-        // seconds from now that the filter expires.
-        // When reading, it's a string ISO timestamp.
-        filter.expires_at = !selectValue ? null : selectValue
+        // When creating a new filter or updating a filter, `expires_in` is the number of seconds from now
+        // that the filter expires. When reading, it's `expires_at` which is a string ISO timestamp.
+        // Also, if you added a timeout for a filter, you can't change it to Never for some reason.
+        filter.expires_in = selectValue || null
         filter.context = [...this.refs.contextCheckboxes.querySelectorAll('input')]
           .filter(input => input.checked)
           .map(input => input.value)

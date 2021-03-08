@@ -648,5 +648,6 @@ export default {
   save: 'Save',
   updatedFilter: 'Updated filter',
   createdFilter: 'Created filter',
-  failedToModifyFilter: 'Failed to modify filter: {error}'
+  failedToModifyFilter: 'Failed to modify filter: {error}',
+  deletedFilter: 'Deleted filter'
 }

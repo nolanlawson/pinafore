@@ -18,7 +18,7 @@
               <IconButton label="{intl.edit}" href="#fa-pencil" on:click="edit(filter)" clickListener={true} />
             </td>
             <td>
-              <IconButton label="{intl.delete}" href="#fa-trash" />
+              <IconButton label="{intl.delete}" href="#fa-trash" on:click="del(filter)" clickListener={true} />
             </td>
           </tr>
         {/each}
@@ -44,6 +44,7 @@
   import { store } from '../../../_store/store'
   import { LOCALE } from '../../../_static/intl'
   import { importShowWordFilterDialog } from '../../dialog/asyncDialogs/importShowWordFilterDialog'
+  import { deleteFilter } from '../../../_actions/filters'
 
   const listFormat = new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' })
 
@@ -81,6 +82,10 @@ export default {
         const { instanceName } = this.get()
         const showWordFilterDialog = await importShowWordFilterDialog()
         await showWordFilterDialog({ instanceName, filter })
+      },
+      async del (filter) {
+        const { instanceName } = this.get()
+        await deleteFilter(instanceName, filter.id)
       }
     },
     components: {

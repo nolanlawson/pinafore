@@ -7,11 +7,17 @@ if (process.browser) {
 }
 
 export function on (eventName, component, method) {
+  if (typeof method === 'undefined') {
+    method = component
+    component = undefined
+  }
   const callback = method.bind(component)
   eventBus.on(eventName, callback)
-  component.on('destroy', () => {
-    eventBus.removeListener(eventName, callback)
-  })
+  if (component) {
+    component.on('destroy', () => {
+      eventBus.removeListener(eventName, callback)
+    })
+  }
 }
 
 export const emit = eventBus.emit.bind(eventBus)
