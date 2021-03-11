@@ -99,3 +99,19 @@ test('Can delete filters on the fly', async t => {
   await t
     .expect(getNthStatusContent(1).innerText).eql('yoloyolo')
 })
+
+test('Can update filters when change comes from the server', async t => {
+  await postAs('admin', 'ohboyohboy')
+  await sleep(500)
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatusContent(1).innerText).eql('ohboyohboy')
+  await sleep(200)
+  await createWordFilterAs('foobar', {
+    phrase: 'ohboyohboy',
+    context: [...WORD_FILTER_CONTEXTS],
+    whole_word: false
+  })
+  await t
+    .expect(getNthStatusContent(1).innerText).notEql('ohboyohboy')
+})
