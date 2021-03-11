@@ -12,6 +12,7 @@ import { submitMedia } from './submitMedia'
 import { voteOnPoll } from '../src/routes/_api/polls'
 import { POLL_EXPIRY_DEFAULT } from '../src/routes/_static/polls'
 import { createList, getLists } from '../src/routes/_api/lists'
+import { createFilter, deleteFilter, getFilters } from '../src/routes/_api/filters'
 
 global.fetch = fetch
 global.File = FileApi.File
@@ -101,4 +102,15 @@ export async function createListAs (username, title) {
 
 export async function getListsAs (username) {
   return getLists(instanceName, users[username].accessToken)
+}
+
+export async function deleteAllWordFiltersAs (username) {
+  const accessToken = users[username].accessToken
+  const filters = await getFilters(instanceName, accessToken)
+  await Promise.all(filters.map(({ id }) => deleteFilter(instanceName, accessToken, id)))
+}
+
+export async function createWordFilterAs (username, filter) {
+  const accessToken = users[username].accessToken
+  await createFilter(instanceName, accessToken, filter)
 }

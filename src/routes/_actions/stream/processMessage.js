@@ -1,8 +1,9 @@
 import { mark, stop } from '../../_utils/marks'
 import { deleteStatus } from '../deleteStatuses'
 import { addStatusOrNotification } from '../addStatusOrNotification'
+import { emit } from '../../_utils/eventBus'
 
-const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation']
+const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation', 'filters_changed']
 
 export function processMessage (instanceName, timelineName, message) {
   let { event, payload } = (message || {})
@@ -35,6 +36,9 @@ export function processMessage (instanceName, timelineName, message) {
       //
       // It will add new DMs as new conversations instead of updating existing threads
       addStatusOrNotification(instanceName, timelineName, payload.last_status)
+      break
+    case 'filters_changed':
+      emit('wordFiltersChanged', instanceName)
       break
   }
   stop('processMessage')
