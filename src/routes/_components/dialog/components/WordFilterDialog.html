@@ -7,7 +7,11 @@
   on:positive="save()">
   <div class="word-filter-dialog">
     <div class="word-filter-keyword">
-      <label for="word-filter-word-or-phrase" class="word-filter-keyword-label">{intl.wordOrPhrase}</label>
+      <label for="word-filter-word-or-phrase" class="word-filter-keyword-label">
+        <span>{intl.wordOrPhrase}</span>
+        <!-- no need for aria-label="Required", the input is already marked as required -->
+        <span aria-hidden="true" class="required">*</span>
+      </label>
       <input type="text"
              required
              autocomplete="off"
@@ -26,9 +30,12 @@
               label="{intl.expireAfter}"
       />
     </div>
-    <section class="word-filter-where-to-filter" aria-label="{intl.whereToFilter}">
-      <span class="word-filter-label-like">{intl.whereToFilter}</span>
-      <ul class="word-filter-radio-list" ref:contextCheckboxes>
+    <div class="word-filter-where-to-filter">
+      <span class="word-filter-label-like" id="word-filter-where-to-filter-label">
+        <span>{intl.whereToFilter}</span>
+        <span aria-label="{intl.required}" class="required">*</span>
+      </span>
+      <ul class="word-filter-radio-list" aria-describedby="word-filter-where-to-filter-label" ref:contextCheckboxes>
         {#each filterContexts as context}
         <li>
           <input type="checkbox"
@@ -40,7 +47,7 @@
         </li>
         {/each}
       </ul>
-    </section>
+    </div>
     <div class="word-filter-irreversible">
       <input type="checkbox"
              name="irreversible"
@@ -73,6 +80,7 @@
 }
 .word-filter-radio-list {
   list-style: none;
+  margin-top: 5px;
 }
 .word-filter-keyword {
   grid-area: keyword;
@@ -91,6 +99,9 @@
 }
 .word-filter-keyword-label, .word-filter-expire-label {
   margin-right: 10px;
+}
+.required {
+  color: var(--warn-color);
 }
 @media (max-width: 479px) {
   .word-filter-dialog {

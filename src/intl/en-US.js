@@ -649,5 +649,6 @@ export default {
   updatedFilter: 'Updated filter',
   createdFilter: 'Created filter',
   failedToModifyFilter: 'Failed to modify filter: {error}',
-  deletedFilter: 'Deleted filter'
+  deletedFilter: 'Deleted filter',
+  required: 'Required'
 }
