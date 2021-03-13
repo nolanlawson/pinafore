@@ -2,7 +2,8 @@ let domParser
 
 // copy-pasta'd from
 // https://github.com/tootsuite/mastodon/blob/2ff01f7/app/javascript/mastodon/actions/importer/normalizer.js#L58-L75
-export const createSearchIndexFromStatus = status => {
+export const createSearchIndexFromStatusOrNotification = statusOrNotification => {
+  const status = statusOrNotification.status || statusOrNotification // status on a notification
   const originalStatus = status.reblog || status
   domParser = domParser || new DOMParser()
   const spoilerText = originalStatus.spoiler_text || ''

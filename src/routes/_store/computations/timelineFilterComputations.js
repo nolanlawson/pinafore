@@ -79,32 +79,16 @@ export function timelineFilterComputations (store) {
     }
   )
 
-  store.compute(
-    'timelineWordFilterRegex',
-    ['timelineWordFilterContext', 'currentFilterRegexes'],
-    (timelineWordFilterContext, currentFilterRegexes) => (
-      timelineWordFilterContext && currentFilterRegexes && currentFilterRegexes[timelineWordFilterContext]
-    )
-  )
-
-  store.compute(
-    'timelineNotificationWordFilterRegex',
-    ['currentFilterRegexes'],
-    (currentFilterRegexes) => (
-      currentFilterRegexes && currentFilterRegexes[WORD_FILTER_CONTEXT_NOTIFICATIONS]
-    )
-  )
-
   // This one is based on whatever the current timeline is
   store.compute(
     'timelineFilterFunction',
     [
       'timelineShowReblogs', 'timelineShowReplies', 'timelineShowFollows',
       'timelineShowFavs', 'timelineShowMentions', 'timelineShowPolls',
-      'timelineWordFilterRegex'
+      'timelineWordFilterContext'
     ],
-    (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterRegex) => (
-      createFilterFunction(showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterRegex)
+    (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterContext) => (
+      createFilterFunction(showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterContext)
     )
   )
 
@@ -115,10 +99,10 @@ export function timelineFilterComputations (store) {
     [
       'timelineNotificationShowReblogs', 'timelineNotificationShowFollows',
       'timelineNotificationShowFavs', 'timelineNotificationShowMentions',
-      'timelineNotificationShowPolls', 'timelineNotificationWordFilterRegex'
+      'timelineNotificationShowPolls'
     ],
-    (showReblogs, showFollows, showFavs, showMentions, showPolls, wordFilterRegex) => (
-      createFilterFunction(showReblogs, true, showFollows, showFavs, showMentions, showPolls, wordFilterRegex)
+    (showReblogs, showFollows, showFavs, showMentions, showPolls) => (
+      createFilterFunction(showReblogs, true, showFollows, showFavs, showMentions, showPolls, WORD_FILTER_CONTEXT_NOTIFICATIONS)
     )
   )
 

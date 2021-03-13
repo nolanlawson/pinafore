@@ -1,5 +1,4 @@
-import { createRegexFromFilters } from '../../_utils/createRegexFromFilters'
-import { WORD_FILTER_CONTEXTS } from '../../_static/wordFilters'
+import { createRegexFromFilter } from '../../_utils/createRegexFromFilter'
 
 export function wordFilterComputations (store) {
   // unexpiredInstanceFilters is calculated based on `now` and `instanceFilters`,
@@ -10,14 +9,13 @@ export function wordFilterComputations (store) {
     (unexpiredInstanceFilters, currentInstance) => unexpiredInstanceFilters[currentInstance] || []
   )
 
-  store.compute('currentFilterRegexes', ['currentFilters'], currentFilters => {
-    if (!currentFilters.length) {
-      return null
-    }
-    const res = {}
-    for (const filterType of WORD_FILTER_CONTEXTS) {
-      res[filterType] = createRegexFromFilters(currentFilters.filter(_ => _.context.includes(filterType)))
-    }
-    return res
+  store.compute('unexpiredInstanceFiltersWithRegexes', ['unexpiredInstanceFilters'], unexpiredInstanceFilters => {
+    return Object.fromEntries(Object.entries(unexpiredInstanceFilters).map(([instanceName, filters]) => {
+      const filtersWithRegexes = filters.map(filter => ({
+        ...filter,
+        regex: createRegexFromFilter(filter)
+      }))
+      return [instanceName, filtersWithRegexes]
+    }))
   })
 }
