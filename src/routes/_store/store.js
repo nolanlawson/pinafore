@@ -45,6 +45,7 @@ const persistedState = {
 
 const nonPersistedState = {
   customEmoji: {},
+  unexpiredInstanceFilters: {},
   followRequestCounts: {},
   instanceInfos: {},
   instanceLists: {},

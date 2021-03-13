@@ -1,4 +1,5 @@
 import { createSearchIndexFromStatus } from './createSearchIndexFromStatus'
+import { store } from '../_store/store'
 
 class TimelineSummary {
   constructor (item) {
@@ -7,10 +8,16 @@ class TimelineSummary {
     this.replyId = (item.in_reply_to_id) || undefined
     this.reblogId = (item.reblog && item.reblog.id) || undefined
     this.type = item.type || undefined
+
+    // This is admittedly a weird place to do the filtering logic. But there are a few reasons to do it here:
+    // 1. Avoid computing html-to-text (expensive) for users who don't have any filters (probably most users)
+    // 2. Avoiding keeping the entire html-to-text in memory at all times for all summaries
+    // 3. Filters probably change infrequently. When they do, we can just update the summaries
     this.searchIndex = createSearchIndexFromStatus(item)
   }
 }
 
 export function timelineItemToSummary (item) {
+  console.log('Would use filter:', store.get().currentFilterRegexes)
   return new TimelineSummary(item)
 }
