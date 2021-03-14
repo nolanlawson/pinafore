@@ -79,7 +79,7 @@ const HTML_HEADERS = {
     "frame-ancestors 'none'",
     "object-src 'none'",
     "manifest-src 'self'",
-    "form-action 'none'",
+    "form-action 'self'", // we need form-action for the Web Share Target API
     "base-uri 'self'"
   ].join(';'),
   'referrer-policy': 'no-referrer',

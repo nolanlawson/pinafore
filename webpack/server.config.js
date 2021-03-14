@@ -68,7 +68,8 @@ module.exports = {
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
       'process.env.ALL_SVGS': JSON.stringify(allSvgs),
       'process.env.LOCALE': JSON.stringify(LOCALE),
-      'process.env.PINAFORE_VERSION': JSON.stringify(version)
+      'process.env.PINAFORE_VERSION': JSON.stringify(version),
+      'process.env.IS_SERVICE_WORKER': 'false'
     })
   ]
 }

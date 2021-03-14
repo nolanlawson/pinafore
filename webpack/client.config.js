@@ -111,7 +111,8 @@ module.exports = {
       'process.env.URL_REGEX': urlRegex.toString(),
       'process.env.LOCALE': JSON.stringify(LOCALE),
       'process.env.EMOJI_PICKER_I18N': emojiPickerI18n ? JSON.stringify(emojiPickerI18n) : 'undefined',
-      'process.env.PINAFORE_VERSION': JSON.stringify(version)
+      'process.env.PINAFORE_VERSION': JSON.stringify(version),
+      'process.env.IS_SERVICE_WORKER': 'false'
     }),
     new webpack.NormalModuleReplacementPlugin(
       /\/_database\/database\.js$/, // this version plays nicer with IDEs

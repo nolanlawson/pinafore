@@ -4,6 +4,7 @@ import {
   routes as __routes__
 } from '../__sapper__/service-worker.js'
 import { get, post } from './routes/_utils/ajax'
+import { setWebShareData, closeKeyValIDBConnection } from './routes/_database/webShare'
 
 const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS = `assets_${timestamp}`
@@ -104,6 +105,18 @@ self.addEventListener('fetch', event => {
     const sameOrigin = url.origin === self.origin
 
     if (sameOrigin) {
+      if (req.method === 'POST' && url.pathname === '/share') {
+        // handle Web Share Target requests (see manifest.json)
+        const formData = await req.formData()
+        const title = formData.get('title')
+        const text = formData.get('text')
+        const url = formData.get('url')
+        const file = formData.get('file')
+        await setWebShareData({ title, text, url, file })
+        await closeKeyValIDBConnection() // don't need to keep the IDB connection open
+        return Response.redirect('/', 303) // 303 recommended by https://web.dev/web-share-target/
+      }
+
       // always serve webpack-generated resources and
       // static from the cache if possible
       const response = await caches.match(req)

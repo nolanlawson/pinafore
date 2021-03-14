@@ -63,8 +63,7 @@ const nonPersistedState = {
   sensitivesShown: {},
   spoilersShown: {},
   statusModifications: {},
-  verifyCredentials: {},
-  openShareDialog: false
+  verifyCredentials: {}
 }
 
 const state = Object.assign({}, persistedState, nonPersistedState)
