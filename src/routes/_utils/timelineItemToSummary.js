@@ -13,9 +13,9 @@ class TimelineSummary {
     // 1. Avoid computing html-to-text (expensive) for users who don't have any filters (probably most users)
     // 2. Avoiding keeping the entire html-to-text in memory at all times for all summaries
     // 3. Filters probably change infrequently. When they do, we can just update the summaries
-    const { unexpiredInstanceFiltersWithRegexes } = store.get()
-    const filtersWithRegexes = unexpiredInstanceFiltersWithRegexes[instanceName]
-    this.filterContexts = computeFilterContextsForStatusOrNotification(item, filtersWithRegexes)
+    const { unexpiredInstanceFilterRegexes } = store.get()
+    const contextsToRegex = unexpiredInstanceFilterRegexes[instanceName]
+    this.filterContexts = computeFilterContextsForStatusOrNotification(item, contextsToRegex)
   }
 }
 

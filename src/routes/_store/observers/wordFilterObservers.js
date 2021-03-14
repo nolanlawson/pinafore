@@ -40,8 +40,8 @@ export function wordFilterObservers () {
     updateUnexpiredInstanceFiltersIfUnchanged(now, instanceFilters)
   })
 
-  store.observe('unexpiredInstanceFiltersWithRegexes', async unexpiredInstanceFiltersWithRegexes => {
-    console.log('unexpiredInstanceFiltersWithRegexes changed, recomputing filterContexts')
+  store.observe('unexpiredInstanceFilterRegexes', async unexpiredInstanceFilterRegexes => {
+    console.log('unexpiredInstanceFilterRegexes changed, recomputing filterContexts')
     mark('update timeline item summary filter contexts')
     // Whenever the filters change, we need to re-compute the filterContexts on the TimelineSummaries.
     // This is a bit of an odd design, but we do it for perf. See timelineItemToSummary.js for details.
@@ -55,7 +55,7 @@ export function wordFilterObservers () {
 
     let somethingChanged = false
 
-    await Promise.all(Object.entries(unexpiredInstanceFiltersWithRegexes).map(async ([instanceName, filtersWithRegexes]) => {
+    await Promise.all(Object.entries(unexpiredInstanceFilterRegexes).map(async ([instanceName, contextsToRegex]) => {
       const timelinesToSummaries = timelineItemSummaries[instanceName] || {}
       const timelinesToSummariesToAdd = timelineItemSummariesToAdd[instanceName] || {}
       const summariesToUpdate = [
@@ -70,7 +70,7 @@ export function wordFilterObservers () {
             ? database.getNotification(instanceName, summary.id)
             : database.getStatus(instanceName, summary.id)
           )
-          const newFilterContexts = computeFilterContextsForStatusOrNotification(item, filtersWithRegexes)
+          const newFilterContexts = computeFilterContextsForStatusOrNotification(item, contextsToRegex)
           if (!isEqual(summary.filterContexts, newFilterContexts)) {
             somethingChanged = true
             summary.filterContexts = newFilterContexts
