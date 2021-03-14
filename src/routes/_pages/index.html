@@ -9,9 +9,11 @@
   import TimelineHomePage from '../_components/TimelineHomePage.html'
   import { observe } from 'svelte-extras'
   import { showShareDialogIfNecessary } from '../_actions/showShareDialogIfNecessary'
+  import { doQuickLoginIfNecessary } from '../_actions/doQuickLoginIfNecessary'
 
   export default {
     async oncreate () {
+      doQuickLoginIfNecessary()
       let observed = false
       this.observe('currentVerifyCredentials', verifyCredentials => {
         if (verifyCredentials && !observed) {

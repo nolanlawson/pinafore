@@ -3,7 +3,7 @@ import { users } from './users'
 
 // quick login using a secret page and a known access token (makes tests run faster)
 async function login (t, user) {
-  await t.navigateTo(`/settings/quick-login?instanceName=localhost:3000&accessToken=${user.accessToken}`)
+  await t.navigateTo(`/?instanceName=localhost:3000&accessToken=${user.accessToken}`)
     .expect(getUrl()).eql('http://localhost:4002/', { timeout: 30000 })
 }
 
