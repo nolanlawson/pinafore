@@ -4,6 +4,9 @@
   "name": "Pinafore for Mastodon",
   "short_name": "Pinafore",
   "description": "Alternative web client for Mastodon, focused on speed and simplicity.",
+  "categories": [
+    "social"
+  ],
   "display": "standalone",
   "start_url": "/?pwa=true",
   "share_target": {
@@ -107,6 +110,23 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-540-720-1.png",
+      "type": "image/png",
+      "sizes": "540x720"
+    },
+    {
+      "src": "screenshot-540-720-2.png",
+      "type": "image/jpeg",
+      "sizes": "540x720"
+    },
+    {
+      "src": "screenshot-540-720-3.png",
+      "type": "image/jpeg",
+      "sizes": "540x720"
     }
   ]
 }
