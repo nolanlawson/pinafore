@@ -36,7 +36,8 @@ module.exports = {
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.SAPPER_TIMESTAMP': process.env.SAPPER_TIMESTAMP || Date.now(),
-      'process.env.LOCALE': JSON.stringify(LOCALE)
+      'process.env.LOCALE': JSON.stringify(LOCALE),
+      'process.env.IS_SERVICE_WORKER': 'true'
     })
   ].filter(Boolean)
 }

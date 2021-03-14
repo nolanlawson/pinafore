@@ -3,7 +3,7 @@
 import { importPageLifecycle } from './asyncModules/importPageLifecycle.js'
 
 function addEventListener (event, func) {
-  if (process.browser) {
+  if (process.browser && !process.env.IS_SERVICE_WORKER) {
     importPageLifecycle().then(lifecycle => {
       lifecycle.addEventListener(event, func)
     })
@@ -11,7 +11,7 @@ function addEventListener (event, func) {
 }
 
 function removeEventListener (event, func) {
-  if (process.browser) {
+  if (process.browser && !process.env.IS_SERVICE_WORKER) {
     importPageLifecycle().then(lifecycle => {
       lifecycle.removeEventListener(event, func)
     })
