@@ -9,7 +9,7 @@
   <form class="confirmation-dialog-form">
     <slot></slot>
     <div class="confirmation-dialog-form-flex">
-      <button type="button" on:click="onPositive()">
+      <button type="button" disabled={confirmationButtonDisabled} on:click="onPositive()">
         {positiveText || 'OK'}
       </button>
       <button type="button" on:click="onNegative()">

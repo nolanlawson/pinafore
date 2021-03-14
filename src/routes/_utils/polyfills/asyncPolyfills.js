@@ -10,3 +10,7 @@ export const importFocusVisible = () => import(
 export const importRelativeTimeFormat = () => import(
   /* webpackChunkName: '$polyfill$-relative-time-format' */ './relativeTimeFormatPolyfill'
 )
+
+export const importListFormat = () => import(
+  /* webpackChunkName: '$polyfill$-list-format' */ './listFormatPolyfill'
+)

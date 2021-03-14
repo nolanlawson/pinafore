@@ -1,0 +1,96 @@
+<div class="generic-instance-settings word-filters">
+  {#if filters.length}
+    <table class="word-filters-table">
+      <thead>
+        <tr>
+          <th>{intl.wordOrPhrase}</th>
+          <th>{intl.contexts}</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each formattedFilters as filter (filter.id)}
+          <tr>
+            <td>{filter.phrase}</td>
+            <td>{filter.formattedContexts}</td>
+            <td>
+              <IconButton label="{intl.edit}" href="#fa-pencil" on:click="edit(filter)" clickListener={true} />
+            </td>
+            <td>
+              <IconButton label="{intl.delete}" href="#fa-trash" on:click="del(filter)" clickListener={true} />
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {:else}
+    <p class="word-filters-p">{intl.noFilters}</p>
+  {/if}
+  <button type="button" on:click="add()">{intl.addFilter}</button>
+</div>
+<GenericInstanceSettingsStyle />
+<style>
+  .word-filters-table {
+    width: 100%
+  }
+  p.word-filters-p, .word-filters-table {
+    margin: 0 0 10px 0;
+  }
+</style>
+<script>
+  import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
+  import IconButton from '../../IconButton.html'
+  import { store } from '../../../_store/store'
+  import { LOCALE } from '../../../_static/intl'
+  import { importShowWordFilterDialog } from '../../dialog/asyncDialogs/importShowWordFilterDialog'
+  import { deleteFilter } from '../../../_actions/filters'
+
+  const listFormat = new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' })
+
+export default {
+    store: () => store,
+    computed: {
+      filters: ({ instanceName, $instanceFilters }) => $instanceFilters[instanceName] || [],
+      formattedFilters: ({ filters }) => filters.map(filter => ({
+        ...filter,
+        formattedContexts: listFormat.format(filter.context.map(context => {
+          switch (context) {
+            case 'home':
+              return 'intl.filterHome'
+            case 'notifications':
+              return 'intl.filterNotifications'
+            case 'public':
+              return 'intl.filterPublic'
+            case 'thread':
+              return 'intl.filterThread'
+            case 'account':
+              return 'intl.filterAccount'
+            default:
+              return 'intl.filterUnknown'
+          }
+        }))
+      }))
+    },
+    methods: {
+      async add () {
+        const { instanceName } = this.get()
+        const showWordFilterDialog = await importShowWordFilterDialog()
+        await showWordFilterDialog({ instanceName })
+      },
+      async edit (filter) {
+        const { instanceName } = this.get()
+        const showWordFilterDialog = await importShowWordFilterDialog()
+        await showWordFilterDialog({ instanceName, filter })
+      },
+      async del (filter) {
+        const { instanceName } = this.get()
+        await deleteFilter(instanceName, filter.id)
+      }
+    },
+    components: {
+      GenericInstanceSettingsStyle,
+      IconButton
+    }
+  }
+</script>

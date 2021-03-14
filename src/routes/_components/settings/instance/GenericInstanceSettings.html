@@ -15,17 +15,9 @@
     {/each}
   </form>
 </div>
-<style>
-  .generic-instance-settings {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    display: block;
-    padding: 20px;
-    line-height: 2em;
-  }
-</style>
+<GenericInstanceSettingsStyle/>
 <script>
+  import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
   import { store } from '../../../_store/store'
 
   export default {
@@ -43,6 +35,9 @@
         this.store.setInstanceSetting(instanceName, target.name, target.checked)
       }
     },
-    store: () => store
+    store: () => store,
+    components: {
+      GenericInstanceSettingsStyle
+    }
   }
 </script>

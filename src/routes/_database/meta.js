@@ -63,3 +63,11 @@ export async function getFollowRequestCount (instanceName) {
 export async function setFollowRequestCount (instanceName, value) {
   return setMetaProperty(instanceName, 'followRequestCount', value)
 }
+
+export async function getFilters (instanceName) {
+  return getMetaProperty(instanceName, 'filters')
+}
+
+export async function setFilters (instanceName, value) {
+  return setMetaProperty(instanceName, 'filters', value)
+}

@@ -4,15 +4,16 @@
   {#if verifyCredentials}
     <h2>{intl.loggedInAs}</h2>
     <InstanceUserProfile {verifyCredentials} />
+    <h2>{intl.theme}</h2>
+    <ThemeSettings {instanceName} />
     <h2>{intl.homeTimelineFilters}</h2>
     <HomeTimelineFilterSettings {instanceName} />
     <h2>{intl.notificationFilters}</h2>
     <NotificationFilterSettings {instanceName} />
+    <h2>{intl.wordFilters}</h2>
+    <WordFilterSettings {instanceName} />
     <h2>{intl.pushNotifications}</h2>
     <PushNotificationSettings {instanceName} />
-    <h2>{intl.theme}</h2>
-    <ThemeSettings {instanceName} />
-
     <InstanceActions {instanceName} />
   {/if}
 </SettingsLayout>
@@ -32,12 +33,17 @@
   import PushNotificationSettings from '../../../_components/settings/instance/PushNotificationSettings.html'
   import ThemeSettings from '../../../_components/settings/instance/ThemeSettings.html'
   import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
+  import WordFilterSettings from '../../../_components/settings/instance/WordFilterSettings.html'
   import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
+  import { updateFiltersForInstance } from '../../../_actions/filters'
 
   export default {
     async oncreate () {
       const { instanceName } = this.get()
-      await updateVerifyCredentialsForInstance(instanceName)
+      await Promise.all([
+        updateVerifyCredentialsForInstance(instanceName),
+        updateFiltersForInstance(instanceName)
+      ])
     },
     store: () => store,
     computed: {
@@ -51,7 +57,8 @@
       ThemeSettings,
       InstanceActions,
       HomeTimelineFilterSettings,
-      NotificationFilterSettings
+      NotificationFilterSettings,
+      WordFilterSettings
     }
   }
 </script>

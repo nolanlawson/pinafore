@@ -31,9 +31,9 @@ async function insertUpdatesIntoTimeline (instanceName, timelineName, updates) {
   console.log('itemSummariesToAdd', JSON.parse(JSON.stringify(itemSummariesToAdd)))
   console.log('updates.map(timelineItemToSummary)', JSON.parse(JSON.stringify(updates.map(timelineItemToSummary))))
   console.log('concat(itemSummariesToAdd, updates.map(timelineItemToSummary))',
-    JSON.parse(JSON.stringify(concat(itemSummariesToAdd, updates.map(timelineItemToSummary)))))
+    JSON.parse(JSON.stringify(concat(itemSummariesToAdd, updates.map(item => timelineItemToSummary(item, instanceName))))))
   const newItemSummariesToAdd = uniqBy(
-    concat(itemSummariesToAdd, updates.map(timelineItemToSummary)),
+    concat(itemSummariesToAdd, updates.map(item => timelineItemToSummary(item, instanceName))),
     _ => _.id
   )
   if (!isEqual(itemSummariesToAdd, newItemSummariesToAdd)) {
@@ -78,7 +78,7 @@ async function insertUpdatesIntoThreads (instanceName, updates) {
       continue
     }
     const newItemSummariesToAdd = uniqBy(
-      concat(itemSummariesToAdd, validUpdates.map(timelineItemToSummary)),
+      concat(itemSummariesToAdd, validUpdates.map(item => timelineItemToSummary(item, instanceName))),
       _ => _.id
     )
     if (!isEqual(itemSummariesToAdd, newItemSummariesToAdd)) {

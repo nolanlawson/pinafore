@@ -1,14 +1,13 @@
 // create a function for filtering timeline item summaries
 
-function noFilter () {
-  return true
-}
-
-export function createFilterFunction (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls) {
-  if (showReblogs && showReplies && showFollows && showFavs && showMentions && showPolls) {
-    return noFilter // fast path for the default setting
-  }
+export const createFilterFunction = (
+  showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterContext
+) => {
   return item => {
+    if (item.filterContexts && item.filterContexts.includes(wordFilterContext)) {
+      return false
+    }
+
     switch (item.type) {
       case 'poll':
         return showPolls

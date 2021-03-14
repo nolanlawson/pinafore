@@ -98,7 +98,7 @@ async function fetchTimelineItemsFromNetwork (instanceName, accessToken, timelin
 async function addPagedTimelineItems (instanceName, timelineName, items) {
   console.log('addPagedTimelineItems, length:', items.length)
   mark('addPagedTimelineItemSummaries')
-  const newSummaries = items.map(timelineItemToSummary)
+  const newSummaries = items.map(item => timelineItemToSummary(item, instanceName))
   await addPagedTimelineItemSummaries(instanceName, timelineName, newSummaries)
   stop('addPagedTimelineItemSummaries')
 }
@@ -154,7 +154,7 @@ async function fetchTimelineItems (instanceName, accessToken, timelineName, onli
 async function addTimelineItems (instanceName, timelineName, items, stale) {
   console.log('addTimelineItems, length:', items.length)
   mark('addTimelineItemSummaries')
-  const newSummaries = items.map(timelineItemToSummary)
+  const newSummaries = items.map(item => timelineItemToSummary(item, instanceName))
   addTimelineItemSummaries(instanceName, timelineName, newSummaries, stale)
   stop('addTimelineItemSummaries')
 }

@@ -7,6 +7,7 @@ import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
 import { mark, stop } from '../../_utils/marks'
 import { store } from '../store'
 import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
+import { setupFiltersForInstance } from '../../_actions/filters'
 
 // stream to watch for home timeline updates and notifications
 let currentInstanceStream
@@ -44,6 +45,7 @@ async function refreshInstanceData (instanceName) {
   // these are all low-priority
   scheduleIdleTask(() => setupCustomEmojiForInstance(instanceName))
   scheduleIdleTask(() => setupListsForInstance(instanceName))
+  scheduleIdleTask(() => setupFiltersForInstance(instanceName))
   scheduleIdleTask(() => updatePushSubscriptionForInstance(instanceName))
 
   // these are the only critical ones

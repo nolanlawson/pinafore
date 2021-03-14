@@ -1,4 +1,4 @@
-<div class="acct-current-user">
+<div class="generic-instance-settings acct-current-user">
   <div class="acct-avatar">
     <Avatar account={verifyCredentials} size="big" />
   </div>
@@ -10,12 +10,10 @@
     <AccountDisplayName account={verifyCredentials} />
   </span>
 </div>
+<GenericInstanceSettingsStyle />
 <style>
   .acct-current-user {
-    background: var(--form-bg);
-    border: 1px solid var(--main-border);
-    border-radius: 4px;
-    padding: 20px;
+    line-height: 1.4;
     display: grid;
     align-items: center;
     font-size: 1.3em;
@@ -40,12 +38,14 @@
   import ExternalLink from '../../ExternalLink.html'
   import Avatar from '../../Avatar.html'
   import AccountDisplayName from '../../profile/AccountDisplayName.html'
+  import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
 
   export default {
     components: {
       Avatar,
       ExternalLink,
-      AccountDisplayName
+      AccountDisplayName,
+      GenericInstanceSettingsStyle
     }
   }
 </script>
