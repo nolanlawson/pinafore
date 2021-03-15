@@ -55,7 +55,7 @@ module.exports = {
         use: {
           loader: 'file-loader',
           options: {
-            name: dev ? '[fullhash]/tesseract-asset.[name].[ext]' : 'tesseract-asset.[contenthash].[name].[ext]'
+            name: dev ? 'tesseract-asset.[name].[ext]' : 'tesseract-asset.[contenthash].[name].[ext]'
           }
         }
       },
