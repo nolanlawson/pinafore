@@ -2,8 +2,8 @@ import { store } from '../_store/store'
 import { uploadMedia } from '../_api/media'
 import { toast } from '../_components/toast/toast'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { setCachedMediaFile } from '../_utils/mediaUploadFileCache'
 import { formatIntl } from '../_utils/formatIntl'
+import { database } from '../_database/database'
 
 export async function doMediaUpload (realm, file) {
   const { currentInstance, accessToken } = store.get()
@@ -14,7 +14,7 @@ export async function doMediaUpload (realm, file) {
     if (composeMedia.length === 4) {
       throw new Error('Only 4 media max are allowed')
     }
-    await setCachedMediaFile(response.id, file)
+    await database.setCachedMediaFile(response.id, file)
     composeMedia.push({
       data: response,
       file: { name: file.name },
