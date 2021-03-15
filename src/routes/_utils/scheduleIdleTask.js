@@ -15,9 +15,19 @@ function getRIC () {
   return typeof requestIdleCallback !== 'undefined' ? requestIdleCallback : liteRIC
 }
 
+function getIsInputPending () {
+  return process.browser && navigator.scheduling && navigator.scheduling.isInputPending
+    ? () => navigator.scheduling.isInputPending()
+    : () => false // just assume input is not pending on browsers that don't support this
+}
+
+const isInputPending = getIsInputPending()
+
 function runTasks (deadline) {
   mark('scheduleIdleTask:runTasks()')
-  while (taskQueue.length && deadline.timeRemaining() > 0) {
+  // Bail out early if our deadline has passed (probably ~50ms) or if there is input pending
+  // See https://web.dev/isinputpending/
+  while (taskQueue.length && deadline.timeRemaining() > 0 && !isInputPending()) {
     const task = taskQueue.shift()
     try {
       task()
