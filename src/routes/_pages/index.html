@@ -8,26 +8,13 @@
   import { store } from '../_store/store.js'
   import TimelineHomePage from '../_components/TimelineHomePage.html'
   import { observe } from 'svelte-extras'
-  import { showShareDialogIfNecessary } from '../_actions/showShareDialogIfNecessary'
   import { doQuickLoginIfNecessary } from '../_actions/doQuickLoginIfNecessary'
 
   export default {
     async oncreate () {
       doQuickLoginIfNecessary()
-      let observed = false
-      this.observe('currentVerifyCredentials', verifyCredentials => {
-        if (verifyCredentials && !observed) {
-          // when the verifyCredentials object is available, we can check to see
-          // if the user is trying to share something, then share it
-          observed = true
-          /* no await */ showShareDialogIfNecessary()
-        }
-      })
     },
     store: () => store,
-    computed: {
-      currentVerifyCredentials: ({ $currentVerifyCredentials }) => $currentVerifyCredentials
-    },
     methods: {
       observe
     },
