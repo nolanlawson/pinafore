@@ -12,8 +12,8 @@
       <tbody>
         {#each formattedFilters as filter (filter.id)}
           <tr>
-            <td>{filter.phrase}</td>
-            <td>{filter.formattedContexts}</td>
+            <td class="word-filters-break">{filter.phrase}</td>
+            <td class="word-filters-break">{filter.formattedContexts}</td>
             <td>
               <IconButton label="{intl.edit}" href="#fa-pencil" on:click="edit(filter)" clickListener={true} />
             </td>
@@ -37,6 +37,18 @@
   p.word-filters-p, .word-filters-table {
     margin: 0 0 10px 0;
   }
+
+  .word-filters-break {
+    word-break: break-word;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 767px) {
+    .word-filters-table {
+      table-layout: fixed;
+    }
+  }
+
 </style>
 <script>
   import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
