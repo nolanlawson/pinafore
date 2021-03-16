@@ -6,7 +6,6 @@ import { database } from '../_database/database'
 import { emit } from '../_utils/eventBus'
 import { putMediaMetadata } from '../_api/media'
 import uniqBy from 'lodash-es/uniqBy'
-import { deleteCachedMediaFile } from '../_utils/mediaUploadFileCache'
 import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
 import { formatIntl } from '../_utils/formatIntl'
 
@@ -61,7 +60,7 @@ export async function postStatus (realm, text, inReplyToId, mediaIds,
     addStatusOrNotification(currentInstance, 'home', status)
     store.clearComposeData(realm)
     emit('postedStatus', realm, inReplyToUuid)
-    scheduleIdleTask(() => (mediaIds || []).forEach(mediaId => deleteCachedMediaFile(mediaId))) // clean up media cache
+    scheduleIdleTask(() => (mediaIds || []).forEach(mediaId => database.deleteCachedMediaFile(mediaId))) // clean up media cache
   } catch (e) {
     console.error(e)
     /* no await */ toast.say(formatIntl('intl.unableToPost', { error: (e.message || '') }))

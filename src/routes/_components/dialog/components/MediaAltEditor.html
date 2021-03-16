@@ -106,8 +106,8 @@
   import { runTesseract } from '../../../_utils/runTesseract'
   import SvgIcon from '../../SvgIcon.html'
   import { toast } from '../../toast/toast'
-  import { getCachedMediaFile } from '../../../_utils/mediaUploadFileCache'
   import { formatIntl } from '../../../_utils/formatIntl'
+  import { database } from '../../../_database/database'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 
@@ -191,7 +191,7 @@
               this.set({ extractionProgress: progress * 100 })
             })
           }
-          const file = await getCachedMediaFile(mediaId)
+          const file = await database.getCachedMediaFile(mediaId)
           let text
           if (file) { // Avoid downloading from the network a file that the user *just* uploaded
             const fileUrl = URL.createObjectURL(file)

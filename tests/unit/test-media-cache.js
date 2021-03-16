@@ -3,8 +3,8 @@
 import '../indexedDBShims'
 import assert from 'assert'
 import {
-  getCachedMediaFile, setCachedMediaFile, deleteCachedMediaFile, getAllCachedFileIds, setDeleteAfter, DELETE_AFTER
-} from '../../src/routes/_utils/mediaUploadFileCache'
+  getCachedMediaFile, setCachedMediaFile, deleteCachedMediaFile, getAllCachedFileIds, setDeleteCachedMediaFilesAfter, DELETE_AFTER
+} from '../../src/routes/_database/mediaUploadFileCache'
 
 describe('test-database.js', function () {
   this.timeout(60000)
@@ -13,7 +13,7 @@ describe('test-database.js', function () {
     for (const key of await getAllCachedFileIds()) {
       await deleteCachedMediaFile(key)
     }
-    setDeleteAfter(DELETE_AFTER)
+    setDeleteCachedMediaFilesAfter(DELETE_AFTER)
   })
 
   it('can store media files', async () => {
@@ -51,7 +51,7 @@ describe('test-database.js', function () {
   })
 
   it('deletes old files during set()', async () => {
-    setDeleteAfter(0)
+    setDeleteCachedMediaFilesAfter(0)
     await setCachedMediaFile('woot', 'woot')
     await setCachedMediaFile('woot2', 'woot2')
     assert.deepStrictEqual(await getCachedMediaFile('woot'), undefined)

@@ -79,6 +79,6 @@ export async function getAllCachedFileIds () {
   return (await getAllKeys()).map(keyToData).map(_ => _[1])
 }
 
-export function setDeleteAfter (newDeleteAfter) {
+export function setDeleteCachedMediaFilesAfter (newDeleteAfter) {
   deleteAfter = newDeleteAfter
 }
