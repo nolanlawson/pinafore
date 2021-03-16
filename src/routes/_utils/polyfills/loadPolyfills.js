@@ -16,7 +16,7 @@ async function loadIntlPolyfillsIfNecessary () {
   }
   await Promise.all([
     typeof Intl.RelativeTimeFormat !== 'function' && importIntlRelativeTimeFormat(),
-    typeof typeof Intl.ListFormat !== 'function' && importIntlListFormat()
+    typeof Intl.ListFormat !== 'function' && importIntlListFormat()
   ])
 }
 
