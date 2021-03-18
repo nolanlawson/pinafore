@@ -115,7 +115,10 @@ self.addEventListener('fetch', event => {
         const file = formData.get('file')
         await setWebShareData({ title, text, url, file })
         await closeKeyValIDBConnection() // don't need to keep the IDB connection open
-        return Response.redirect('/', 303) // 303 recommended by https://web.dev/web-share-target/
+        return Response.redirect(
+          '/?pwa=true', // same as start_url in manifest.json. This can only be invoked from PWAs
+          303 // 303 recommended by https://web.dev/web-share-target/
+        )
       }
 
       // always serve webpack-generated resources and
