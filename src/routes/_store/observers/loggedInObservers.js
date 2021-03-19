@@ -8,6 +8,7 @@ import { customEmojiObservers } from './customEmojiObservers'
 import { cleanup } from './cleanup'
 import { wordFilterObservers } from './wordFilterObservers'
 import { showShareDialogObservers } from './showShareDialogObservers'
+import { badgeObservers } from './badgeObservers'
 
 // These observers can be lazy-loaded when the user is actually logged in.
 // Prevents circular dependencies and reduces the size of main.js
@@ -21,5 +22,6 @@ export function loggedInObservers () {
   customScrollbarObservers()
   customEmojiObservers()
   showShareDialogObservers()
+  badgeObservers()
   cleanup()
 }

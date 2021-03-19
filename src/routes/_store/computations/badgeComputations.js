@@ -25,4 +25,9 @@ export function badgeComputations (store) {
     ['numberOfFollowRequests'],
     (numberOfFollowRequests) => !!numberOfFollowRequests
   )
+
+  store.compute('badgeNumber',
+    ['numberOfFollowRequests', 'numberOfNotifications'],
+    (numberOfFollowRequests, numberOfNotifications) => (numberOfFollowRequests + numberOfNotifications)
+  )
 }
