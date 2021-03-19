@@ -4,7 +4,7 @@ export function badgeObservers () {
   if (!process.browser) {
     return
   }
-  if (typeof navigator.setAppBadge !== 'function' || typeof navigator.clearAppBadge !== 'function') {
+  if (!('setAppBadge' in navigator)) {
     return
   }
   store.observe('badgeNumber', badgeNumber => {
