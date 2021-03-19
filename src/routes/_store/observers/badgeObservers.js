@@ -1,10 +1,12 @@
 import { store } from '../store'
+import { isChromePre87 } from '../../_utils/userAgent/isChromePre87'
 
 export function badgeObservers () {
   if (!process.browser) {
     return
   }
-  if (!('setAppBadge' in navigator)) {
+  // Chrome 86 on Linux in Circle CI seems to throw an error just by checking for this... not worth supporting.
+  if (isChromePre87() || !('setAppBadge' in navigator)) {
     return
   }
   store.observe('badgeNumber', badgeNumber => {
