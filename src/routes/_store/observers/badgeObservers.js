@@ -5,7 +5,7 @@ export function badgeObservers () {
   if (!process.browser) {
     return
   }
-  // Chrome 86 on Linux in Circle CI seems to throw an error just by checking for this... not worth supporting.
+  // Chrome 86 on Linux in Circle CI seems to hang just by checking for this... not worth supporting.
   if (isChromePre87() || !('setAppBadge' in navigator)) {
     return
   }
