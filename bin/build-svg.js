@@ -4,6 +4,7 @@ import fs from 'fs'
 import { promisify } from 'util'
 import SVGO from 'svgo'
 import $ from 'cheerio'
+import { ASSET_VERSION } from '../src/routes/_static/assets'
 
 const svgo = new SVGO()
 const readFile = promisify(fs.readFile)
@@ -33,7 +34,7 @@ export async function buildSvg () {
   const inlineOutput = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${inlineSvgStrings}</svg>`
   const regularOutput = `<svg xmlns="http://www.w3.org/2000/svg">${regularSvgStrings}</svg>`
 
-  await writeFile(path.resolve(__dirname, '../static/icons.svg'), regularOutput, 'utf8')
+  await writeFile(path.resolve(__dirname, `../static/${ASSET_VERSION}/icons.svg`), regularOutput, 'utf8')
 
   return inlineOutput
 }

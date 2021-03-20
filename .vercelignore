@@ -4,9 +4,9 @@
 /mastodon
 /mastodon.log
 /src/template.html
-/static/*.css
-/static/icons.svg
-/static/inline-script.js.map
-/static/emoji-all-en.json
+/static/**/*.css
+/static/**/icons.svg
+/static/**/inline-script.js.map
+/static/**/emoji-*.json
 /src/inline-script/checksum.js
 yarn-error.log

@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
 import { LOCALE } from '../src/routes/_static/intl'
+import { ASSET_VERSION } from '../src/routes/_static/assets'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -42,7 +43,7 @@ async function main () {
   }
 
   await writeFile(
-    path.resolve(__dirname, `../static/emoji-${LOCALE}.json`),
+    path.resolve(__dirname, `../static/${ASSET_VERSION}/emoji-${LOCALE}.json`),
     JSON.stringify(json),
     'utf8'
   )

@@ -4,6 +4,7 @@ import fs from 'fs'
 import { promisify } from 'util'
 import cssDedoupe from 'css-dedoupe'
 import { TextDecoder } from 'text-encoding'
+import { ASSET_VERSION } from '../src/routes/_static/assets'
 
 const writeFile = promisify(fs.writeFile)
 const readdir = promisify(fs.readdir)
@@ -12,7 +13,7 @@ const globalScss = path.join(__dirname, '../src/scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../src/scss/themes/_default.scss')
 const customScrollbarScss = path.join(__dirname, '../src/scss/custom-scrollbars.scss')
 const themesScssDir = path.join(__dirname, '../src/scss/themes')
-const assetsDir = path.join(__dirname, '../static')
+const assetsDir = path.join(__dirname, `../static/${ASSET_VERSION}`)
 
 async function renderCss (file) {
   return sass.renderSync({ file, outputStyle: 'compressed' }).css

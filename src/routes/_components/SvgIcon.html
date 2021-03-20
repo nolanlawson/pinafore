@@ -4,11 +4,12 @@
   aria-hidden={!ariaLabel}
   aria-label={ariaLabel}
   ref:svg>
-  <use xlink:href="{inline ? '' : '/icons.svg'}{href}" />
+  <use xlink:href={xlinkHref} />
 </svg>
 <script>
   import { animate } from '../_utils/animate'
   import { store } from '../_store/store'
+  import { ASSET_VERSION } from '../_static/assets'
 
   export default {
     data: () => ({
@@ -18,7 +19,8 @@
     }),
     store: () => store,
     computed: {
-      inline: ({ href }) => process.env.INLINE_SVGS.includes(href)
+      inline: ({ href }) => process.env.INLINE_SVGS.includes(href),
+      xlinkHref: ({ href, inline }) => `${inline ? '' : `/${ASSET_VERSION}/icons.svg`}${href}`
     },
     methods: {
       animate (animation) {

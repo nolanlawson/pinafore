@@ -8,6 +8,7 @@ import replace from '@rollup/plugin-replace'
 import fromPairs from 'lodash-es/fromPairs'
 import { themes } from '../src/routes/_static/themes'
 import terserOptions from './terserOptions'
+import { ASSET_VERSION } from '../src/routes/_static/assets'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -35,12 +36,12 @@ export async function buildInlineScript () {
 
   const { code, map } = output[0]
 
-  const fullCode = `${code}//# sourceMappingURL=/inline-script.js.map`
+  const fullCode = `${code}//# sourceMappingURL=/${ASSET_VERSION}/inline-script.js.map`
   const checksum = crypto.createHash('sha256').update(fullCode, 'utf8').digest('base64')
 
   await writeFile(path.resolve(__dirname, '../src/inline-script/checksum.js'),
     `module.exports = ${JSON.stringify(checksum)}`, 'utf8')
-  await writeFile(path.resolve(__dirname, '../static/inline-script.js.map'),
+  await writeFile(path.resolve(__dirname, `../static/${ASSET_VERSION}/inline-script.js.map`),
     map.toString(), 'utf8')
 
   return '<script>' + fullCode + '</script>'

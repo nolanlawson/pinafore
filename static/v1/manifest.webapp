@@ -5,9 +5,9 @@
   "type": "web",
   "launch_path": "/",
   "icons": {
-    "48": "/icon-48.png",
-    "72": "/icon-72.png",
-    "96": "/icon-96.png"
+    "48": "./icon-48.png",
+    "72": "./icon-72.png",
+    "96": "./icon-96.png"
   },
   "developer": {
     "name": "Nolan Lawson",

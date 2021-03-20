@@ -1,6 +1,7 @@
 import { LOCALE } from './intl'
+import { ASSET_VERSION } from './assets'
 
-export const emojiPickerDataSource = `/emoji-${LOCALE}.json`
+export const emojiPickerDataSource = `/${ASSET_VERSION}/emoji-${LOCALE}.json`
 
 // this should be undefined for English; it's already bundled with emoji-picker-element
 export const emojiPickerI18n = process.env.EMOJI_PICKER_I18N

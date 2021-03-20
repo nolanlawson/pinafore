@@ -9,6 +9,7 @@ import { routes } from '../__sapper__/service-worker'
 import cloneDeep from 'lodash-es/cloneDeep'
 import inlineScriptChecksum from '../src/inline-script/checksum'
 import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChecksums'
+import { ASSET_VERSION } from '../src/routes/_static/assets'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -50,9 +51,9 @@ const JSON_TEMPLATE = {
       }
     },
     {
-      src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$',
+      src: `^/${ASSET_VERSION}/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$`,
       headers: {
-        'cache-control': 'public,max-age=3600'
+        'cache-control': 'public,max-age=31536000,immutable'
       }
     }
   ]

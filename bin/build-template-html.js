@@ -10,6 +10,10 @@ import debounce from 'lodash-es/debounce'
 import applyIntl from '../webpack/svelte-intl-loader'
 import { LOCALE } from '../src/routes/_static/intl'
 import { getLangDir } from 'rtl-detect'
+import { ASSET_VERSION } from '../src/routes/_static/assets'
+import replaceAllShim from 'string.prototype.replaceall/shim'
+
+replaceAllShim()
 
 const writeFile = promisify(fs.writeFile)
 const LOCALE_DIRECTION = getLangDir(LOCALE)
@@ -92,8 +96,9 @@ async function buildAll () {
   }))).join('')
 
   html = applyIntl(html)
-    .replace('{process.env.LOCALE}', LOCALE)
-    .replace('{process.env.LOCALE_DIRECTION}', LOCALE_DIRECTION)
+    .replaceAll('{process.env.LOCALE}', LOCALE)
+    .replaceAll('{process.env.LOCALE_DIRECTION}', LOCALE_DIRECTION)
+    .replaceAll('{process.env.ASSET_VERSION}', ASSET_VERSION)
   await writeFile(path.resolve(__dirname, '../src/template.html'), html, 'utf8')
   const end = now()
   console.log(`Built template.html in ${(end - start).toFixed(2)}ms`)
