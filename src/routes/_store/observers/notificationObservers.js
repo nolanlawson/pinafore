@@ -1,6 +1,7 @@
 import { setFavicon } from '../../_utils/setFavicon'
 import { runMediumPriorityTask } from '../../_utils/runMediumPriorityTask'
 import { store } from '../store'
+import { ASSET_VERSION } from '../../_static/assets'
 
 let currentFaviconHasNotifications = false
 
@@ -13,7 +14,7 @@ export function notificationObservers () {
       if (currentFaviconHasNotifications === hasNotifications) {
         return
       }
-      setFavicon(hasNotifications ? '/favicon-alert.png' : '/favicon.png')
+      setFavicon(`/${ASSET_VERSION}/favicon-${hasNotifications ? 'alert' : ''}.png`)
       currentFaviconHasNotifications = !currentFaviconHasNotifications
     })
   })
