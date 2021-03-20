@@ -5,12 +5,13 @@
 import corePath from 'tesseract.js-core/tesseract-core.wasm.js'
 import workerPath from 'tesseract.js/dist/worker.min.js'
 import createWorker from 'tesseract.js/src/createWorker.js'
+import { ASSET_VERSION } from '../_static/assets'
 
 const { origin } = location
 
 export default () => createWorker({
   workerPath: `${origin}/${workerPath}`,
-  langPath: `${origin}/`,
+  langPath: `${origin}/${ASSET_VERSION}`,
   corePath: `${origin}/${corePath}`,
   cacheMethod: 'none', // this file is 23.4MB ungzipped, so store in service worker instead (11MB gzipped)
   workerBlobURL: false,

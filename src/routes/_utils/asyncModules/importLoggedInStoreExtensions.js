@@ -1,3 +1,3 @@
 export const importLoggedInStoreExtensions = () => import(
-  /* webpackChunkName: 'loggedInStoreExtensions.js' */ '../../_store/loggedInStoreExtensions.js'
+  /* webpackChunkName: 'loggedInStoreExtensions' */ '../../_store/loggedInStoreExtensions.js'
 )
