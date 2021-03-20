@@ -242,9 +242,9 @@ export const getOpacity = selector => exec(() => window.getComputedStyle(documen
 })
 
 export const getCurrentTheme = exec(() => {
-  const themeLink = document.head.querySelector('link[rel=stylesheet][href^="/theme-"]')
+  const themeLink = document.head.querySelector('link[rel=stylesheet][href*="theme-"]')
   if (themeLink) {
-    return themeLink.getAttribute('href').match(/^\/theme-(.*)\.css$/, '')[1]
+    return themeLink.getAttribute('href').match(/theme-(.*)\.css$/, '')[1]
   }
   return 'default'
 })
