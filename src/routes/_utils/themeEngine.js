@@ -9,7 +9,7 @@ export const DEFAULT_DARK_THEME = 'ozark' // theme that is shown for prefers-col
 export const DEFAULT_THEME = prefersDarkTheme ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME
 
 function getExistingThemeLink () {
-  return document.head.querySelector('link[rel=stylesheet][href^="/theme-"]')
+  return document.head.querySelector(`link[rel=stylesheet][href^="/${ASSET_VERSION}/theme-"]`)
 }
 
 function resetExistingTheme () {
