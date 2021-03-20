@@ -392,6 +392,9 @@ export default {
   hideReblogCount: 'Hide boost counts',
   hideFavoriteCount: 'Hide favorite counts',
   hideUnread: 'Hide unread notifications count (i.e. the red dot)',
+  // The quality that makes something seem important or interesting because it seems to be happening now
+  immediacy: 'Immediacy',
+  showAbsoluteTimestamps: 'Show absolute timestamps instead of relative timestamps',
   ui: 'UI',
   grayscaleMode: 'Grayscale mode',
   wellnessFooter: `These settings are partly based on guidelines from the

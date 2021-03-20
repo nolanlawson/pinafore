@@ -4,9 +4,9 @@
    rel="prefetch"
    {tabindex}
 >
-  <time datetime={createdAtDate} title={absoluteFormattedDate}
+  <time datetime={createdAtDate} title={formattedDateTitle}
         aria-label={createdAtLabel}>
-    {timeagoFormattedDate}
+    {formattedDate}
   </time>
 </a>
 <style>
@@ -41,9 +41,23 @@
         // just a duplicate link in the focus order.
         $disableTapOnStatus ? '0' : '-1'
       ),
-      createdAtLabel: ({ timeagoFormattedDate }) => (
-        formatIntl('intl.clickToShowThread', { time: timeagoFormattedDate })
-      )
+      formattedDateTitle: ({ $disableRelativeTimestamps, absoluteFormattedDate }) => {
+        if ($disableRelativeTimestamps) {
+          return ''
+        } else {
+          return absoluteFormattedDate
+        }
+      },
+      createdAtLabel: ({ formattedDate }) => (
+        formatIntl('intl.clickToShowThread', { time: formattedDate })
+      ),
+      formattedDate: ({ $disableRelativeTimestamps, timeagoFormattedDate, absoluteFormattedDate }) => {
+        if ($disableRelativeTimestamps) {
+          return absoluteFormattedDate
+        } else {
+          return timeagoFormattedDate
+        }
+      }
     }
   }
 </script>
