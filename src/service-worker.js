@@ -5,6 +5,7 @@ import {
 } from '../__sapper__/service-worker.js'
 import { get, post } from './routes/_utils/ajax'
 import { setWebShareData, closeKeyValIDBConnection } from './routes/_database/webShare'
+import { ASSET_VERSION } from './routes/_static/assets'
 
 const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS_PREFIX = 'assets_'
@@ -191,7 +192,7 @@ async function showRichNotification (data, notification) {
   const { icon, body } = data
   const tag = notification.id
   const { origin } = self.location
-  const badge = '/icon-push-badge.png'
+  const badge = `/${ASSET_VERSION}/icon-push-badge.png`
 
   switch (notification.type) {
     case 'follow': {
@@ -225,12 +226,12 @@ async function showRichNotification (data, notification) {
       const actions = [
         isPublic && {
           action: 'reblog',
-          icon: '/icon-push-fa-retweet.png', // generated manually from font-awesome-svg
+          icon: `/${ASSET_VERSION}/icon-push-fa-retweet.png`, // generated manually from font-awesome-svg
           title: 'intl.reblog'
         },
         {
           action: 'favourite',
-          icon: '/icon-push-fa-star.png', // generated manually from font-awesome-svg
+          icon: `/${ASSET_VERSION}/icon-push-fa-star.png`, // generated manually from font-awesome-svg
           title: 'intl.favorite'
         }
       ].filter(Boolean)
