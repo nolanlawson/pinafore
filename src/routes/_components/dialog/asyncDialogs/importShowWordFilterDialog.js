@@ -1,3 +1,3 @@
 export const importShowWordFilterDialog = () => import(
-  /* webpackChunkName: 'showWordFilterDialog' */ '../creators/showWordFilterDialog'
+  '../creators/showWordFilterDialog'
 ).then(mod => mod.default)

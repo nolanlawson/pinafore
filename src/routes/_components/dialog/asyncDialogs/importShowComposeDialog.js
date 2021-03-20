@@ -1,3 +1,3 @@
 export const importShowComposeDialog = () => import(
-  /* webpackChunkName: 'showComposeDialog' */ '../creators/showComposeDialog'
+  '../creators/showComposeDialog'
 ).then(mod => mod.default)
