@@ -29,7 +29,7 @@ const ON_DEMAND_CACHE = [
   },
   {
     regex: /icon-.*?\.png/,
-    cache: WEBPACK_ASSETS
+    cache: ASSETS
   }
 ]
 
