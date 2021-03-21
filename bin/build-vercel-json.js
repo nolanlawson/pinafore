@@ -12,8 +12,7 @@ import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChe
 
 const writeFile = promisify(fs.writeFile)
 
-const HTML_EXPIRE = 3600 // 1 hour
-const STATIC_RESOURCES_EXPIRE = 14400 // 4 hours
+const ASSET_EXPIRE = 3600 // 1 hour
 const IMMUTABLE_EXPIRE = 31536000 // forever basically. See also: https://crbug.com/611416
 
 const JSON_TEMPLATE = {
@@ -43,7 +42,7 @@ const JSON_TEMPLATE = {
     {
       src: '^/(report\\.html|stats\\.json)$',
       headers: {
-        'cache-control': `public,max-age=${HTML_EXPIRE}`
+        'cache-control': `public,max-age=${ASSET_EXPIRE}`
       },
       dest: 'client/$1'
     },
@@ -53,10 +52,21 @@ const JSON_TEMPLATE = {
         'cache-control': `public,max-age=${IMMUTABLE_EXPIRE},immutable`
       }
     },
+    // generated with
+    // for file in *png; do
+    //   checksum=$(md5sum $file | awk '{print $1}');
+    //   mv $file $(echo $file | sed "s/.png/-${checksum:0:8}.png/");
+    // done
+    {
+      src: '^/immutable/.*',
+      headers: {
+        'cache-control': `public,max-age=${IMMUTABLE_EXPIRE},immutable`
+      }
+    },
     {
       src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$',
       headers: {
-        'cache-control': `public,max-age=${STATIC_RESOURCES_EXPIRE}`
+        'cache-control': `public,max-age=${ASSET_EXPIRE}`
       }
     }
   ]
@@ -70,7 +80,7 @@ const SCRIPT_CHECKSUMS = [inlineScriptChecksum]
 const PERMISSIONS_POLICY = 'sync-xhr=(),document-domain=()'
 
 const HTML_HEADERS = {
-  'cache-control': `public,max-age=${HTML_EXPIRE}`,
+  'cache-control': `public,max-age=${ASSET_EXPIRE}`,
   'content-security-policy': [
     "default-src 'self'",
     `script-src 'self' ${SCRIPT_CHECKSUMS}`,

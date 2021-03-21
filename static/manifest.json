@@ -31,82 +31,82 @@
   },
   "icons": [
     {
-      "src": "icon-48.png",
+      "src": "/immutable/icon-48-5d20283c.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "icon-72.png",
+      "src": "/immutable/icon-72-c49e6a9f.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "icon-96.png",
+      "src": "/immutable/icon-96-56355c0e.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "icon-144.png",
+      "src": "/immutable/icon-144-5fa21555.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "icon-192.png",
+      "src": "/immutable/icon-192-fe67f90e.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "/immutable/icon-512-2e376641.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "icon-44.png",
+      "src": "/immutable/icon-44-21929e25.png",
       "sizes": "44x44",
       "type": "image/png"
     },
     {
-      "src": "icon-50.png",
+      "src": "/immutable/icon-50-70f15a9c.png",
       "sizes": "50x50",
       "type": "image/png"
     },
     {
-      "src": "icon-150.png",
+      "src": "/immutable/icon-150-893ae3f5.png",
       "sizes": "150x150",
       "type": "image/png"
     },
     {
-      "src": "icon-48-maskable.png",
+      "src": "/immutable/icon-48-maskable-d1dfcb96.png",
       "sizes": "48x48",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-72-maskable.png",
+      "src": "/immutable/icon-72-maskable-72f4ed46.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-96-maskable.png",
+      "src": "/immutable/icon-96-maskable-56247bb6.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-144-maskable.png",
+      "src": "/immutable/icon-144-maskable-32755088.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-192-maskable.png",
+      "src": "/immutable/icon-192-maskable-76a8c622.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-512-maskable.png",
+      "src": "/immutable/icon-512-maskable-1ebd744a.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -114,17 +114,17 @@
   ],
   "screenshots": [
     {
-      "src": "screenshot-540-720-1.png",
+      "src": "/immutable/screenshot-540-720-1-0fb5e326.png",
       "type": "image/png",
       "sizes": "540x720"
     },
     {
-      "src": "screenshot-540-720-2.png",
+      "src": "/immutable/screenshot-540-720-2-fb82b178.png",
       "type": "image/jpeg",
       "sizes": "540x720"
     },
     {
-      "src": "screenshot-540-720-3.png",
+      "src": "/immutable/screenshot-540-720-3-d1a23655.png",
       "type": "image/jpeg",
       "sizes": "540x720"
     }

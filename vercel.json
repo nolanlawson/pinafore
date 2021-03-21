@@ -36,9 +36,15 @@
       }
     },
     {
+      "src": "^/immutable/.*",
+      "headers": {
+        "cache-control": "public,max-age=31536000,immutable"
+      }
+    },
+    {
       "src": "^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$",
       "headers": {
-        "cache-control": "public,max-age=14400"
+        "cache-control": "public,max-age=3600"
       }
     },
     {

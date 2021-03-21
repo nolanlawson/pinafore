@@ -13,7 +13,7 @@ export function notificationObservers () {
       if (currentFaviconHasNotifications === hasNotifications) {
         return
       }
-      setFavicon(hasNotifications ? '/favicon-alert.png' : '/favicon.png')
+      setFavicon(hasNotifications ? '/immutable/favicon-alert-5b434045.png' : '/immutable/favicon-7c042bc4.png')
       currentFaviconHasNotifications = !currentFaviconHasNotifications
     })
   })

@@ -187,7 +187,7 @@ async function showRichNotification (data, notification) {
   const { icon, body } = data
   const tag = notification.id
   const { origin } = self.location
-  const badge = '/icon-push-badge.png'
+  const badge = '/immutable/icon-push-badge-e50174bd.png'
 
   switch (notification.type) {
     case 'follow': {
@@ -221,12 +221,12 @@ async function showRichNotification (data, notification) {
       const actions = [
         isPublic && {
           action: 'reblog',
-          icon: '/icon-push-fa-retweet.png', // generated manually from font-awesome-svg
+          icon: '/immutable/icon-push-fa-retweet-96780129.png', // generated manually from font-awesome-svg
           title: 'intl.reblog'
         },
         {
           action: 'favourite',
-          icon: '/icon-push-fa-star.png', // generated manually from font-awesome-svg
+          icon: '/immutable/icon-push-fa-star-7e7cc4b1.png', // generated manually from font-awesome-svg
           title: 'intl.favorite'
         }
       ].filter(Boolean)
