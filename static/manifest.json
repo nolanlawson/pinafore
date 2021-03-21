@@ -132,7 +132,7 @@
       "url": "/notifications?pwa=true",
       "icons": [
         {
-          "src": "/icons/subscriptions.png",
+          "src": "/icon-shortcut-fa-bell.png",
           "sizes": "192x192"
         }
       ]
