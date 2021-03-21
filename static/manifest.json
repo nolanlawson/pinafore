@@ -112,6 +112,32 @@
       "purpose": "maskable"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Write a toot",
+      "short_name": "New toot",
+      "description": "Start composing a new toot",
+      "url": "/?pwa=true&compose=true",
+      "icons": [
+        {
+          "src": "/icon-shortcut-fa-pencil.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "View notifications",
+      "short_name": "Notifications",
+      "description": "View your new notifications",
+      "url": "/notifications?pwa=true",
+      "icons": [
+        {
+          "src": "/icon-shortcut-fa-bell.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
   "screenshots": [
     {
       "src": "screenshot-540-720-1.png",
