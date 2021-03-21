@@ -7,7 +7,7 @@ import { customScrollbarObservers } from './customScrollbarObservers'
 import { customEmojiObservers } from './customEmojiObservers'
 import { cleanup } from './cleanup'
 import { wordFilterObservers } from './wordFilterObservers'
-import { showShareDialogObservers } from './showShareDialogObservers'
+import { showComposeDialogObservers } from './showComposeDialogObservers'
 import { badgeObservers } from './badgeObservers'
 
 // These observers can be lazy-loaded when the user is actually logged in.
@@ -21,7 +21,7 @@ export function loggedInObservers () {
   notificationPermissionObservers()
   customScrollbarObservers()
   customEmojiObservers()
-  showShareDialogObservers()
+  showComposeDialogObservers()
   badgeObservers()
   cleanup()
 }

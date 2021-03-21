@@ -116,7 +116,7 @@ self.addEventListener('fetch', event => {
         await setWebShareData({ title, text, url, file })
         await closeKeyValIDBConnection() // don't need to keep the IDB connection open
         return Response.redirect(
-          '/?pwa=true', // same as start_url in manifest.json. This can only be invoked from PWAs
+          '/?pwa=true&compose=true', // pwa=true because this can only be invoked from a PWA
           303 // 303 recommended by https://web.dev/web-share-target/
         )
       }
