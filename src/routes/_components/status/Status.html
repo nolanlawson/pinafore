@@ -127,7 +127,7 @@
   import { formatTimeagoDate } from '../../_intl/formatTimeagoDate'
   import { measureText } from '../../_utils/measureText'
   import { LONG_POST_LENGTH, LONG_POST_TEXT } from '../../_static/statuses'
-  import { absoluteDateFormatter } from '../../_utils/formatters'
+  import { absoluteDateFormatter, dayOnlyAbsoluteDateFormatter } from '../../_utils/formatters'
   import { composeNewStatusMentioning } from '../../_actions/mention'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
   import { addEmojiTooltips } from '../../_utils/addEmojiTooltips'
@@ -277,15 +277,19 @@
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       createdAtDateTS: ({ createdAtDate }) => new Date(createdAtDate).getTime(),
       absoluteFormattedDate: ({ createdAtDateTS }) => absoluteDateFormatter.format(createdAtDateTS),
-      timeagoFormattedDate: ({ createdAtDateTS, $now }) => formatTimeagoDate(createdAtDateTS, $now),
+      shortInlineFormattedDate: ({ createdAtDateTS, $now, $disableRelativeTimestamps }) => (
+        $disableRelativeTimestamps
+          ? dayOnlyAbsoluteDateFormatter.format(createdAtDateTS)
+          : formatTimeagoDate(createdAtDateTS, $now)
+      ),
       reblog: ({ status }) => status.reblog,
       ariaLabel: ({
-        originalAccount, account, plainTextContent, timeagoFormattedDate, spoilerText,
+        originalAccount, account, plainTextContent, shortInlineFormattedDate, spoilerText,
         showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels,
         showMedia, showPoll
       }) => (
         getAccessibleLabelForStatus(originalAccount, account, plainTextContent,
-          timeagoFormattedDate, spoilerText, showContent,
+          shortInlineFormattedDate, spoilerText, showContent,
           reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels,
           showMedia, showPoll
         )
@@ -309,10 +313,10 @@
       showContent: ({ spoilerText, spoilerShown }) => !spoilerText || spoilerShown,
       // These timestamp params may change every 10 seconds due to now() polling, so keep them
       // separate from the generic `params` list to avoid costly recomputes.
-      timestampParams: ({ createdAtDate, createdAtDateTS, timeagoFormattedDate, absoluteFormattedDate }) => ({
+      timestampParams: ({ createdAtDate, createdAtDateTS, shortInlineFormattedDate, absoluteFormattedDate }) => ({
         createdAtDate,
         createdAtDateTS,
-        timeagoFormattedDate,
+        shortInlineFormattedDate,
         absoluteFormattedDate
       }),
       // This params list deliberately does *not* include `spoilersShown` or `replyShown`, because these

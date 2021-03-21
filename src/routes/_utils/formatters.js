@@ -15,3 +15,9 @@ export const shortAbsoluteDateFormatter = new Intl.DateTimeFormat(LOCALE, {
   hour: '2-digit',
   minute: '2-digit'
 })
+
+export const dayOnlyAbsoluteDateFormatter = new Intl.DateTimeFormat(LOCALE, {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+})
