@@ -12,6 +12,10 @@ import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChe
 
 const writeFile = promisify(fs.writeFile)
 
+const HTML_EXPIRE = 3600 // 1 hour
+const STATIC_RESOURCES_EXPIRE = 14400 // 4 hours
+const IMMUTABLE_EXPIRE = 31536000 // forever basically. See also: https://crbug.com/611416
+
 const JSON_TEMPLATE = {
   version: 2,
   env: {
@@ -39,20 +43,20 @@ const JSON_TEMPLATE = {
     {
       src: '^/(report\\.html|stats\\.json)$',
       headers: {
-        'cache-control': 'public,max-age=3600'
+        'cache-control': `public,max-age=${HTML_EXPIRE}`
       },
       dest: 'client/$1'
     },
     {
       src: '^/client/.*\\.(js|css|map|LICENSE|txt)$',
       headers: {
-        'cache-control': 'public,max-age=31536000,immutable'
+        'cache-control': `public,max-age=${IMMUTABLE_EXPIRE},immutable`
       }
     },
     {
       src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$',
       headers: {
-        'cache-control': 'public,max-age=3600'
+        'cache-control': `public,max-age=${STATIC_RESOURCES_EXPIRE}`
       }
     }
   ]
@@ -66,7 +70,7 @@ const SCRIPT_CHECKSUMS = [inlineScriptChecksum]
 const PERMISSIONS_POLICY = 'sync-xhr=(),document-domain=()'
 
 const HTML_HEADERS = {
-  'cache-control': 'public,max-age=3600',
+  'cache-control': `public,max-age=${HTML_EXPIRE}`,
   'content-security-policy': [
     "default-src 'self'",
     `script-src 'self' ${SCRIPT_CHECKSUMS}`,

@@ -38,7 +38,7 @@
     {
       "src": "^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$",
       "headers": {
-        "cache-control": "public,max-age=3600"
+        "cache-control": "public,max-age=14400"
       }
     },
     {
