@@ -1,3 +1,3 @@
 export const importShowStatusOptionsDialog = () => import(
-  /* webpackChunkName: 'showStatusOptionsDialog' */ '../creators/showStatusOptionsDialog'
+  '../creators/showStatusOptionsDialog'
 ).then(mod => mod.default)

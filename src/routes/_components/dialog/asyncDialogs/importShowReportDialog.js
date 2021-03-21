@@ -1,3 +1,3 @@
 export const importShowReportDialog = () => import(
-  /* webpackChunkName: 'showReportDialog' */ '../creators/showReportDialog'
+  '../creators/showReportDialog'
 ).then(mod => mod.default)

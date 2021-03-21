@@ -1,3 +1,3 @@
 export const importShowMediaEditDialog = () => import(
-  /* webpackChunkName: 'showMediaEditDialog' */ '../creators/showMediaEditDialog'
+  '../creators/showMediaEditDialog'
 ).then(mod => mod.default)
