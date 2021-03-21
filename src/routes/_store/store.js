@@ -21,6 +21,7 @@ const persistedState = {
   disableLongAriaLabels: false,
   disableNotificationBadge: false,
   disableReblogCounts: false,
+  disableRelativeTimestamps: false,
   disableTapOnStatus: false,
   enableGrayscale: false,
   hideCards: false,

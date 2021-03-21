@@ -33,13 +33,18 @@
     </label>
   </form>
 
-  <h2>{intl.notifications}</h2>
+  <h2>{intl.immediacy}</h2>
 
   <form class="ui-settings">
     <label class="setting-group">
       <input type="checkbox" id="choice-disable-unread-notification-counts"
              bind:checked="$disableNotificationBadge" on:change="onChange(event)">
       {intl.hideUnread}
+    </label>
+    <label class="settings-group">
+      <input type="checkbox" id="choice-disable-relative-timestamps"
+             bind:checked="$disableRelativeTimestamps" on:change="onChange(event)">
+      {intl.showAbsoluteTimestamps}
     </label>
   </form>
 
@@ -90,12 +95,14 @@
           disableReblogCounts,
           disableFavCounts,
           disableNotificationBadge,
+          disableRelativeTimestamps,
           enableGrayscale
         } = this.store.get()
         document.querySelector('#choice-check-all').checked = disableFollowerCounts &&
           disableReblogCounts &&
           disableFavCounts &&
           disableNotificationBadge &&
+          disableRelativeTimestamps &&
           enableGrayscale
       },
       onCheckAllChange (e) {
@@ -105,6 +112,7 @@
           disableReblogCounts: checked,
           disableFavCounts: checked,
           disableNotificationBadge: checked,
+          disableRelativeTimestamps: checked,
           enableGrayscale: checked
         })
         this.store.save()
