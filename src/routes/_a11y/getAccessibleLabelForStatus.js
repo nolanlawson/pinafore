@@ -35,7 +35,7 @@ function cleanupText (text) {
 }
 
 export function getAccessibleLabelForStatus (originalAccount, account, plainTextContent,
-  timeagoFormattedDate, spoilerText, showContent,
+  shortInlineFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames,
   disableLongAriaLabels, showMedia, showPoll) {
   const originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
@@ -58,7 +58,7 @@ export function getAccessibleLabelForStatus (originalAccount, account, plainText
     contentTextToShow,
     mediaTextToShow,
     pollTextToShow,
-    timeagoFormattedDate,
+    shortInlineFormattedDate,
     `@${originalAccount.acct}`,
     privacyText,
     getReblogText(reblog, account, omitEmojiInDisplayNames)

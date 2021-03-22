@@ -394,7 +394,7 @@ export default {
   hideUnread: 'Hide unread notifications count (i.e. the red dot)',
   // The quality that makes something seem important or interesting because it seems to be happening now
   immediacy: 'Immediacy',
-  showAbsoluteTimestamps: 'Show absolute timestamps instead of relative timestamps',
+  showAbsoluteTimestamps: 'Show absolute timestamps (e.g. "March 3rd") instead of relative timestamps (e.g. "5 minutes ago")',
   ui: 'UI',
   grayscaleMode: 'Grayscale mode',
   wellnessFooter: `These settings are partly based on guidelines from the

@@ -55,6 +55,7 @@ export const neverMarkMediaSensitiveInput = $('#choice-never-mark-media-sensitiv
 export const removeEmojiFromDisplayNamesInput = $('#choice-omit-emoji-in-display-names')
 export const disableInfiniteScroll = $('#choice-disable-infinite-scroll')
 export const disableUnreadNotifications = $('#choice-disable-unread-notification-counts')
+export const disableRelativeTimestamps = $('#choice-disable-relative-timestamps')
 export const leftRightChangesFocus = $('#choice-left-right-focus')
 export const disableHotkeys = $('#choice-disable-hotkeys')
 export const dialogOptionsOption = $('.modal-dialog button')
