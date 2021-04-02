@@ -307,7 +307,7 @@
       expiresAtTimeagoFormatted: ({ expiresAtTS, expired, $now }) => (
         expired ? formatTimeagoDate(expiresAtTS, $now) : formatTimeagoFutureDate(expiresAtTS, $now)
       ),
-      expiresAtAbsoluteFormatted: ({ expiresAtTS }) => absoluteDateFormatter.format(expiresAtTS),
+      expiresAtAbsoluteFormatted: ({ expiresAtTS }) => absoluteDateFormatter().format(expiresAtTS),
       expiryText: ({ expired }) => expired ? 'intl.expired' : 'intl.expires',
       refreshElementId: ({ uuid }) => `poll-refresh-${uuid}`,
       useNarrowSize: ({ $isMobileSize, expired, isStatusInOwnThread }) => (

@@ -126,21 +126,22 @@
   import { importShowAccountProfileOptionsDialog } from '../dialog/asyncDialogs/importShowAccountProfileOptionsDialog.js'
   import { LOCALE } from '../../_static/intl'
   import { formatIntl } from '../../_utils/formatIntl'
+  import { thunk } from '../../_utils/thunk'
 
-  const numberFormat = new Intl.NumberFormat(LOCALE)
+  const numberFormat = thunk(() => new Intl.NumberFormat(LOCALE))
 
   export default {
     computed: {
       numStatuses: ({ account }) => account.statuses_count || 0,
       numFollowing: ({ account }) => account.following_count || 0,
       numFollowers: ({ account }) => account.followers_count || 0,
-      numStatusesDisplay: ({ numStatuses }) => numberFormat.format(numStatuses),
-      numFollowingDisplay: ({ numFollowing }) => numberFormat.format(numFollowing),
+      numStatusesDisplay: ({ numStatuses }) => numberFormat().format(numStatuses),
+      numFollowingDisplay: ({ numFollowing }) => numberFormat().format(numFollowing),
       numFollowersDisplay: ({ numFollowers, $disableFollowerCounts }) => {
         if ($disableFollowerCounts && numFollowers >= 10) {
           return '10+'
         }
-        return numberFormat.format(numFollowers)
+        return numberFormat().format(numFollowers)
       },
       followersLabel: ({ numFollowers }) => (
         formatIntl('intl.followersLabel', { count: numFollowers })
