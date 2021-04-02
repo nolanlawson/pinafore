@@ -276,10 +276,10 @@
       },
       createdAtDate: ({ originalStatus }) => originalStatus.created_at,
       createdAtDateTS: ({ createdAtDate }) => new Date(createdAtDate).getTime(),
-      absoluteFormattedDate: ({ createdAtDateTS }) => absoluteDateFormatter.format(createdAtDateTS),
+      absoluteFormattedDate: ({ createdAtDateTS }) => absoluteDateFormatter().format(createdAtDateTS),
       shortInlineFormattedDate: ({ createdAtDateTS, $now, $disableRelativeTimestamps }) => (
         $disableRelativeTimestamps
-          ? dayOnlyAbsoluteDateFormatter.format(createdAtDateTS)
+          ? dayOnlyAbsoluteDateFormatter().format(createdAtDateTS)
           : formatTimeagoDate(createdAtDateTS, $now)
       ),
       reblog: ({ status }) => status.reblog,

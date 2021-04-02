@@ -1,9 +1,10 @@
 // adapted from https://unpkg.com/timeago.js@4.0.0-beta.1/lib/index.js
 import { LOCALE } from '../../_static/intl'
+import { thunk } from '../../_utils/thunk'
 
 const IndexMapEn = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year']
 const SEC_ARRAY = [60, 60, 24, 7, 365 / 7 / 12, 12]
-const intlFormat = new Intl.RelativeTimeFormat(LOCALE)
+const intlFormat = thunk(() => new Intl.RelativeTimeFormat(LOCALE))
 
 function formatRelativeTime (number, index) {
   if (index === 0) {
@@ -14,7 +15,7 @@ function formatRelativeTime (number, index) {
   }
   const unit = IndexMapEn[Math.floor(index / 2)]
 
-  return intlFormat.format(number, unit)
+  return intlFormat().format(number, unit)
 }
 
 function formatDiff (seconds) {

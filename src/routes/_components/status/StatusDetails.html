@@ -178,7 +178,7 @@
         return originalStatus.favourites_count || 0
       },
       displayAbsoluteFormattedDate: ({ createdAtDateTS, $isMobileSize }) => (
-        ($isMobileSize ? shortAbsoluteDateFormatter : absoluteDateFormatter).format(createdAtDateTS)
+        ($isMobileSize ? shortAbsoluteDateFormatter : absoluteDateFormatter)().format(createdAtDateTS)
       ),
       reblogsLabel: ({ $disableReblogCounts, numReblogs }) => {
         if ($disableReblogCounts) {

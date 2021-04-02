@@ -57,16 +57,17 @@
   import { LOCALE } from '../../../_static/intl'
   import { importShowWordFilterDialog } from '../../dialog/asyncDialogs/importShowWordFilterDialog'
   import { deleteFilter } from '../../../_actions/filters'
+  import { thunk } from '../../../_utils/thunk'
 
-  const listFormat = new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' })
+  const listFormat = thunk(() => new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' }))
 
-export default {
+  export default {
     store: () => store,
     computed: {
       filters: ({ instanceName, $instanceFilters }) => $instanceFilters[instanceName] || [],
       formattedFilters: ({ filters }) => filters.map(filter => ({
         ...filter,
-        formattedContexts: listFormat.format(filter.context.map(context => {
+        formattedContexts: listFormat().format(filter.context.map(context => {
           switch (context) {
             case 'home':
               return 'intl.filterHome'
