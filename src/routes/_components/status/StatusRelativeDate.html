@@ -41,8 +41,8 @@
         // just a duplicate link in the focus order.
         $disableTapOnStatus ? '0' : '-1'
       ),
-      createdAtLabel: ({ formattedDate }) => (
-        formatIntl('intl.clickToShowThread', { time: formattedDate })
+      createdAtLabel: ({ shortInlineFormattedDate }) => (
+        formatIntl('intl.clickToShowThread', { time: shortInlineFormattedDate })
       )
     }
   }

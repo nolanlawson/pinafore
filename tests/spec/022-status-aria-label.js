@@ -2,7 +2,7 @@ import { loginAsFoobar } from '../roles'
 import {
   generalSettingsButton,
   getNthShowOrHideButton,
-  getNthStatus, homeNavButton,
+  getNthStatus, getNthStatusRelativeDateTime, homeNavButton,
   notificationsNavButton,
   scrollToStatus,
   settingsNavButton
@@ -20,6 +20,9 @@ test('basic aria-labels for statuses', async t => {
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
       /quux, pinned toot 1, .+ ago, @quux, Unlisted, Boosted by admin/i
+    )
+    .expect(getNthStatusRelativeDateTime(1).getAttribute('aria-label')).match(
+      /.* ago - click to show thread/i
     )
     .hover(getNthStatus(1))
     .expect(getNthStatus(2).getAttribute('aria-label')).match(

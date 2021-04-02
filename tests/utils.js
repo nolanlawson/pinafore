@@ -466,6 +466,10 @@ export function getNthStatusRelativeDate (n) {
   return $(`${getNthStatusSelector(n)} .status-relative-date`)
 }
 
+export function getNthStatusRelativeDateTime (n) {
+  return $(`${getNthStatusSelector(n)} .status-relative-date time`)
+}
+
 export function getNthStatusMediaImg (n) {
   return $(`${getNthStatusSelector(n)} .status-media img`)
 }
