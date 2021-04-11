@@ -38,7 +38,7 @@ module.exports = {
     rules: [
       {
         test: input => {
-          return input.endsWith(path.join("_workers", "blurhash.js"));
+          return input.endsWith(path.join('_workers', 'blurhash.js'))
         },
         use: {
           loader: 'worker-loader',
@@ -50,11 +50,11 @@ module.exports = {
       {
         test: input => {
           return (
-            input.endsWith(path.join("tesseract.js", "dist", "worker.min.js")) ||
-            input.endsWith(path.join("tesseract.js", "dist", "worker.min.js.map")) ||
-            input.endsWith(path.join("tesseract.js-core", "tesseract-core.wasm")) ||
-            input.endsWith(path.join("tesseract.js-core", "tesseract-core.wasm.js"))
-          );
+            input.endsWith(path.join('tesseract.js', 'dist', 'worker.min.js')) ||
+            input.endsWith(path.join('tesseract.js', 'dist', 'worker.min.js.map')) ||
+            input.endsWith(path.join('tesseract.js-core', 'tesseract-core.wasm')) ||
+            input.endsWith(path.join('tesseract.js-core', 'tesseract-core.wasm.js'))
+          )
         },
         use: {
           loader: 'file-loader',
