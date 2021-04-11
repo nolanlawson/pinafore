@@ -5,7 +5,7 @@
 // you can at least tab to the video/audio and use other controls, like space bar and left/right)
 // Original: https://unpkg.com/a11y-dialog@4.0.1/a11y-dialog.js
 
-const FOCUSABLE_ELEMENTS_QUERY = 'a[href], area[href], input, select, textarea, ' +
+export const FOCUSABLE_ELEMENTS_QUERY = 'a[href], area[href], input, select, textarea, ' +
   'button, iframe, object, embed, [contenteditable], [tabindex], ' +
   'video[controls], audio[controls], summary'
 const TAB_KEY = 9
