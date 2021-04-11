@@ -3,6 +3,6 @@ import { showDialog } from './showDialog'
 
 export default function showTextConfirmationDialog (options) {
   return showDialog(TextConfirmationDialog, Object.assign({
-    label: 'Confirmation dialog'
+    label: 'intl.confirm'
   }, options))
 }

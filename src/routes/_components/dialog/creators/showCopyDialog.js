@@ -3,8 +3,8 @@ import { showDialog } from './showDialog'
 
 export default function showCopyDialog (text) {
   return showDialog(CopyDialog, {
-    label: 'Copy dialog',
-    title: 'Copy link',
+    label: 'intl.copyLink',
+    title: 'intl.copyLink',
     text
   })
 }
