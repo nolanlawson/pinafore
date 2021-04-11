@@ -16,7 +16,7 @@ describe('test-intl.js', () => {
   it('has no unused intl strings', async () => {
     const keys = Object.keys(enIntl)
 
-    const allSourceFilenames = (await globby([path.join(__dirname, '../../src/**/*.{js,html}')]))
+    const allSourceFilenames = (await globby([path.join(__dirname, '../../src/**/*.{js,html,json}')]))
       .filter(file => !file.includes('/intl/'))
     const allSourceFiles = await Promise.all(
       allSourceFilenames.map(async name => ({ name, content: await readFile(name, 'utf8') }))
