@@ -1,9 +1,9 @@
 {
   "background_color": "#ffffff",
   "theme_color": "#4169e1",
-  "name": "Pinafore for Mastodon",
-  "short_name": "Pinafore",
-  "description": "Alternative web client for Mastodon, focused on speed and simplicity.",
+  "name": "{intl.longAppName}",
+  "short_name": "{intl.appName}",
+  "description": "{intl.appDescription}",
   "categories": [
     "social"
   ],
@@ -114,9 +114,7 @@
   ],
   "shortcuts": [
     {
-      "name": "Write a toot",
-      "short_name": "New toot",
-      "description": "Start composing a new toot",
+      "name": "{intl.newStatus}",
       "url": "/?pwa=true&compose=true",
       "icons": [
         {
@@ -126,9 +124,7 @@
       ]
     },
     {
-      "name": "View notifications",
-      "short_name": "Notifications",
-      "description": "View your new notifications",
+      "name": "{intl.notifications}",
       "url": "/notifications?pwa=true",
       "icons": [
         {

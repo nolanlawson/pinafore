@@ -27,6 +27,9 @@ export default {
       Here is the <a href="/settings/about#privacy-policy" rel="prefetch">privacy policy</a>.
     </p>
   `,
+  // Manifest
+  longAppName: 'Pinafore for Mastodon',
+  newStatus: 'New toot',
   // Generic UI
   loading: 'Loading',
   okay: 'OK',

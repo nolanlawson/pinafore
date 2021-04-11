@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
 import { LOCALE } from '../src/routes/_static/intl'
+import { getIntl, trimWhitespace } from './getIntl'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -34,7 +35,7 @@ async function getFirstExistingEmojiI18nFile () {
   }
 }
 
-async function main () {
+async function buildEmojiI18nFile () {
   const json = await getFirstExistingEmojiI18nFile()
 
   if (!json) {
@@ -46,6 +47,26 @@ async function main () {
     JSON.stringify(json),
     'utf8'
   )
+}
+
+async function buildManifestJson () {
+  const template = await readFile(path.resolve(__dirname, '../src/build/manifest.json'), 'utf8')
+  // replace {@intl.foo}
+  const output = template
+    .replace(/{intl\.([^}]+)}/g, (match, p1) => trimWhitespace(getIntl(p1)))
+
+  await writeFile(
+    path.resolve(__dirname, '../static/manifest.json'),
+    JSON.stringify(JSON.parse(output)), // minify json
+    'utf8'
+  )
+}
+
+async function main () {
+  await Promise.all([
+    buildEmojiI18nFile(),
+    buildManifestJson()
+  ])
 }
 
 main().catch(err => {
