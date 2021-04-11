@@ -81,7 +81,7 @@ export const composePollAddButton = $('.compose-poll button:last-of-type')
 
 export const composeMediaSensitiveCheckbox = $('.compose-media-sensitive input')
 
-export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy dialog"] li:nth-child(2) button')
+export const postPrivacyDialogButtonUnlisted = $('[aria-label="Post privacy"] li:nth-child(2) button')
 
 export const accountProfileFilterStatuses = $('.account-profile-filters li:nth-child(1)')
 export const accountProfileFilterStatusesAndReplies = $('.account-profile-filters li:nth-child(2)')
