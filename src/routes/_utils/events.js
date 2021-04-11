@@ -43,3 +43,12 @@ export function resize (node, callback) {
     }
   }
 }
+
+export function documentKeydown (node, callback) {
+  document.addEventListener('keydown', callback)
+  return {
+    destroy () {
+      document.removeEventListener('keydown', callback)
+    }
+  }
+}
