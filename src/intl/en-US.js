@@ -653,5 +653,15 @@ export default {
   createdFilter: 'Created filter',
   failedToModifyFilter: 'Failed to modify filter: {error}',
   deletedFilter: 'Deleted filter',
-  required: 'Required'
+  required: 'Required',
+  // Dialogs
+  profileOptions: 'Profile options',
+  copyLink: 'Copy link',
+  emoji: 'Emoji',
+  editMedia: 'Edit media',
+  shortcutHelp: 'Shortcut help',
+  statusOptions: 'Status options',
+  confirm: 'Confirm',
+  closeDialog: 'Close dialog',
+  postPrivacy: 'Post privacy'
 }

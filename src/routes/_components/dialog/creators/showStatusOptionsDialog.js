@@ -3,7 +3,7 @@ import { showDialog } from './showDialog'
 
 export default function showStatusOptionsDialog (status) {
   return showDialog(StatusOptionsDialog, {
-    label: 'Status options dialog',
+    label: 'intl.statusOptions',
     title: '',
     status: status
   })

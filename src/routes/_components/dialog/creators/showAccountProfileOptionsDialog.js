@@ -3,7 +3,7 @@ import { showDialog } from './showDialog'
 
 export default function showAccountProfileOptionsDialog (account, relationship, verifyCredentials) {
   return showDialog(AccountProfileOptionsDialog, {
-    label: 'Profile options dialog',
+    label: 'intl.profileOptions',
     title: '',
     account: account,
     relationship: relationship,

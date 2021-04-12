@@ -3,6 +3,6 @@ import { showDialog } from './showDialog'
 
 export default function showShortcutHelpDialog (options) {
   return showDialog(ShortcutHelpDialog, Object.assign({
-    label: 'shortcut help dialog'
+    label: 'intl.shortcutHelp'
   }, options))
 }
