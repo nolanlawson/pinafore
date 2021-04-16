@@ -63,7 +63,7 @@ const SCRIPT_CHECKSUMS = [inlineScriptChecksum]
   .map(_ => `'sha256-${_}'`)
   .join(' ')
 
-const PERMISSIONS_POLICY = 'sync-xhr=(),document-domain=()'
+const PERMISSIONS_POLICY = 'sync-xhr=(),document-domain=(),interest-cohort=()'
 
 const HTML_HEADERS = {
   'cache-control': 'public,max-age=3600',
