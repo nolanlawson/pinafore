@@ -1,7 +1,7 @@
 import { thunk } from './thunk'
 import { supportsSelector } from './supportsSelector'
-import { isFirefox } from './userAgent/isFirefox'
+import { isFirefoxPre88 } from './userAgent/isFirefoxPre88'
 
-// TODO: remove the Firefox check once this bug is fixed
+// Firefox pre-88 had a focus-visible bug:
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1699154
-export const supportsFocusVisible = thunk(() => (!isFirefox() && supportsSelector(':focus-visible')))
+export const supportsFocusVisible = thunk(() => (!isFirefoxPre88() && supportsSelector(':focus-visible')))
