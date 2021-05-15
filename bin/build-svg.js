@@ -2,17 +2,16 @@ import svgs from './svgs'
 import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
-import SVGO from 'svgo'
+import { optimize } from 'svgo'
 import $ from 'cheerio'
 
-const svgo = new SVGO()
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
 async function readSvg (svg) {
   const filepath = path.join(__dirname, '../', svg.src)
   const content = await readFile(filepath, 'utf8')
-  const optimized = (await svgo.optimize(content))
+  const optimized = (await optimize(content, { multipass: true }))
   const $optimized = $(optimized.data)
   const $path = $optimized.find('path, circle').removeAttr('fill')
   const viewBox = $optimized.attr('viewBox') || `0 0 ${$optimized.attr('width')} ${$optimized.attr('height')}`
