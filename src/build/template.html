@@ -31,8 +31,7 @@
     }
   </style>
 
-  <style id="theFocusVisibleStyle" media="all">
-    /*  :focus-visible styles */
+  <style id="theFocusVisiblePolyfillStyle" media="only x">
     /* polyfill */
     /* Note we have to use [data-focus-visible-added] rather than .focus-visible because
      * Svelte overrides classes */
@@ -42,7 +41,8 @@
     .js-focus-visible :focus:not([data-focus-visible-added]).focus-after::after {
       display: none;
     }
-
+  </style>
+  <style id="theFocusVisibleStyle" media="only x">
     /* standard version */
     :focus:not(:focus-visible) {
       outline: none !important; /* important to win the specificity war */
