@@ -20,8 +20,11 @@ export async function buildInlineScript () {
     input: inlineScriptPath,
     plugins: [
       replace({
-        'process.browser': true,
-        'process.env.THEME_COLORS': JSON.stringify(themeColors)
+        values: {
+          'process.browser': true,
+          'process.env.THEME_COLORS': JSON.stringify(themeColors)
+        },
+        preventAssignment: true
       }),
       // TODO: can't disable terser at all, it causes the CSP checksum to stop working
       // because the HTML gets minified as some point so the checksums don't match.
