@@ -107,15 +107,14 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "eslint-plugin-html": "^6.1.1",
+    "eslint-plugin-html": "^6.1.2",
     "fake-indexeddb": "^3.1.2",
-    "globby": "^11.0.1",
-    "husky": "^5.0.9",
-    "lint-staged": "^10.5.4",
-    "mocha": "^8.3.0",
+    "globby": "^11.0.3",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "mocha": "^8.4.0",
     "standard": "^16.0.3",
-    "testcafe": "^1.11.0",
-    "vercel": "^20.1.0"
+    "testcafe": "^1.14.2"
   },
   "engines": {
     "node": ">= 8"
