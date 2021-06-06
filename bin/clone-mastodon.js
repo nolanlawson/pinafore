@@ -9,8 +9,8 @@ const stat = promisify(fs.stat)
 const writeFile = promisify(fs.writeFile)
 const dir = __dirname
 
-const GIT_URL = 'https://github.com/nolanlawson/mastodon.git'
-const GIT_TAG = 'tag-abad99f'
+const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
+const GIT_TAG = 'v3.4.1'
 
 const mastodonDir = path.join(dir, '../mastodon')
 
