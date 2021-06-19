@@ -3,6 +3,7 @@ import {
   importIntlLocale, importIntlPluralRules, importIntlRelativeTimeFormat,
   importRequestIdleCallback
 } from './asyncPolyfills'
+import { mark, stop } from '../marks'
 
 async function loadIntlPolyfillsIfNecessary () {
   // Have to chain these so that they load in the proper order.
@@ -20,9 +21,11 @@ async function loadIntlPolyfillsIfNecessary () {
   ])
 }
 
-export function loadPolyfills () {
-  return Promise.all([
+export async function loadPolyfills () {
+  mark('loadPolyfills')
+  await Promise.all([
     typeof requestIdleCallback !== 'function' && importRequestIdleCallback(),
     loadIntlPolyfillsIfNecessary()
   ])
+  stop('loadPolyfills')
 }
