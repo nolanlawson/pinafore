@@ -6,7 +6,7 @@ import './routes/_utils/forceOnline'
 import { mark, stop } from './routes/_utils/marks'
 import { loadPolyfills } from './routes/_utils/polyfills/loadPolyfills'
 import { loadNonCriticalPolyfills } from './routes/_utils/polyfills/loadNonCriticalPolyfills'
-import idbReady from 'safari-14-idb-fix'
+import { idbReady } from './routes/_utils/idbReady'
 
 Promise.all([idbReady(), loadPolyfills()]).then(() => {
   mark('sapperStart')
