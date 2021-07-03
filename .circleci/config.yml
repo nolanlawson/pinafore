@@ -131,6 +131,7 @@ jobs:
       - run:
           name: Yarn install
           command: yarn install --immutable
+      - save_yarn_cache
       - run:
           name: Lint
           command: yarn lint
