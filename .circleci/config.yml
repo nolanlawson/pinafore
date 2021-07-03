@@ -47,13 +47,13 @@ commands:
     steps:
       - restore_cache:
           name: Restore yarn cache
-          key: yarn-v1-{{ checksum "yarn.lock" }}
+          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ checksum "mastodon/yarn.lock" }}
   save_yarn_cache:
     description: Save yarn cache
     steps:
       - save_cache:
           name: Save yarn cache
-          key: yarn-v1-{{ checksum "yarn.lock" }}
+          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ checksum "mastodon/yarn.lock" }}
           paths:
             - ~/.cache/yarn
   restore_bundler_cache:
