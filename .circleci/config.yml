@@ -47,13 +47,27 @@ commands:
     steps:
       - restore_cache:
           name: Restore yarn cache
-          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ checksum "mastodon/yarn.lock" }}
+          key: yarn-v3-{{ checksum "yarn.lock" }}
   save_yarn_cache:
     description: Save yarn cache
     steps:
       - save_cache:
           name: Save yarn cache
-          key: yarn-v2-{{ checksum "yarn.lock" }}-{{ checksum "mastodon/yarn.lock" }}
+          key: yarn-v3-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+  restore_yarn_cache_mastodon:
+    description: Restore yarn cache for Mastodon
+    steps:
+      - restore_cache:
+          name: Restore yarn cache for Mastodon
+          key: yarn-v3-{{ checksum "mastodon/yarn.lock" }}
+  save_yarn_cache_mastodon:
+    description: Save yarn cache for Mastodon
+    steps:
+      - save_cache:
+          name: Save yarn cache for Mastodon
+          key: yarn-v3-{{ checksum "mastodon/yarn.lock" }}
           paths:
             - ~/.cache/yarn
   restore_bundler_cache:
@@ -81,12 +95,12 @@ commands:
       - run:
           name: Clone mastodon
           command: yarn clone-mastodon
-      - restore_yarn_cache
+      - restore_yarn_cache_mastodon
       - restore_bundler_cache
       - run:
           name: Install mastodon
           command: yarn install-mastodon
-      - save_yarn_cache
+      - save_yarn_cache_mastodon
       - save_bundler_cache
       - run:
           name: Wait for postgres to be ready
