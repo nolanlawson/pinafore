@@ -77,7 +77,7 @@
     "mkdirp": "^1.0.4",
     "node-fetch": "^2.6.1",
     "npm-run-all": "^4.1.5",
-    "p-any": "^4.0.0",
+    "p-any": "^3.0.0",
     "page-lifecycle": "^0.1.2",
     "performance-now": "^2.1.0",
     "pinch-zoom-element": "^1.1.1",
