@@ -2,11 +2,18 @@ version: 2.1
 
 workflows:
   version: 2
-  build:
+  build_and_test:
     jobs:
-      - build_and_test
-      - integration_test_readonly
-      - integration_test_readwrite
+      - build
+      - unit_test:
+          requires:
+            - build
+      - integration_test_readonly:
+          requires:
+            - build_and_test
+      - integration_test_readwrite:
+          requires:
+            - build_and_test
 executors:
   node:
     working_directory: ~/pinafore
@@ -85,12 +92,6 @@ jobs:
           paths:
             - ~/.cache/yarn
       - run:
-          name: Lint
-          command: yarn lint
-      - run:
-          name: Unit tests
-          command: yarn test-unit
-      - run:
           name: Copy vercel.json
           command: cp vercel.json vercel-old.json
       - run:
@@ -104,10 +105,17 @@ jobs:
               echo "vercel.json changed, run yarn build and make sure everything looks okay"
               exit 1
             fi
+  unit_test:
+    executor: node
+    steps:
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Unit tests
+          command: yarn test-unit
   integration_test_readonly:
     executor: node_and_ruby
-    requires:
-      - build
     steps:
       - install_mastodon
       - run:
@@ -115,8 +123,6 @@ jobs:
           command: test-in-ci-suite0
   integration_test_readwrite:
     executor: node_and_ruby
-    requires:
-      - build
     steps:
       - install_mastodon
       - run:
