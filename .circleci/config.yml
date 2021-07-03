@@ -10,10 +10,10 @@ workflows:
             - build
       - integration_test_readonly:
           requires:
-            - build_and_test
+            - build
       - integration_test_readwrite:
           requires:
-            - build_and_test
+            - build
 executors:
   node:
     working_directory: ~/pinafore
