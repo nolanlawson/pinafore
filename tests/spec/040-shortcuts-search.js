@@ -1,6 +1,5 @@
 import {
   getActiveElementTagName,
-  getNthStatus,
   getUrl,
   searchButton, searchInput, searchNavButton
 } from '../utils'
@@ -13,7 +12,6 @@ fixture`040-shortcuts-search.js`
 test('Pressing / goes to search and focuses input but does not prevent left/right hotkeys afterwards', async t => {
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatus(1).exists).ok()
     .pressKey('/')
     .expect(getUrl()).contains('/search')
     .expect(getActiveElementTagName()).match(/input/i)
