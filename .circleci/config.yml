@@ -33,6 +33,18 @@ executors:
           BROWSER: chrome:headless
       - image: circleci/redis:5-alpine
 commands:
+  save_workspace:
+    description: Persist workspace
+    steps:
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  load_workspace:
+    description: Load workspace
+    steps:
+      - attach_workspace:
+          at: ~/pinafore
   install_mastodon:
     description: Install Mastodon and set up Postgres/Redis
     steps:
@@ -105,9 +117,11 @@ jobs:
               echo "vercel.json changed, run yarn build and make sure everything looks okay"
               exit 1
             fi
+      - save_workspace
   unit_test:
     executor: node
     steps:
+      - load_workspace
       - run:
           name: Lint
           command: yarn lint
@@ -117,6 +131,7 @@ jobs:
   integration_test_readonly:
     executor: node_and_ruby
     steps:
+      - load_workspace
       - install_mastodon
       - run:
           name: Integration tests
@@ -124,6 +139,7 @@ jobs:
   integration_test_readwrite:
     executor: node_and_ruby
     steps:
+      - load_workspace
       - install_mastodon
       - run:
           name: Integration tests
