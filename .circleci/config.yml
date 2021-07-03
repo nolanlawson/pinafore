@@ -144,7 +144,7 @@ jobs:
       - install_mastodon
       - run:
           name: Integration tests
-          command: test-in-ci-suite0
+          command: yarn test-in-ci-suite0
   integration_test_readwrite:
     executor: node_and_ruby
     steps:
@@ -152,4 +152,4 @@ jobs:
       - install_mastodon
       - run:
           name: Integration tests
-          command: test-in-ci-suite1
+          command: yarn test-in-ci-suite1
