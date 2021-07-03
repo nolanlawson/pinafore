@@ -81,6 +81,7 @@ commands:
       - run:
           name: Clone mastodon
           command: yarn clone-mastodon
+      - restore_yarn_cache
       - restore_bundler_cache
       - run:
           name: Install mastodon
