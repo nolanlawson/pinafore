@@ -4,16 +4,13 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - unit_test:
-          requires:
-            - build
+      - build_and_unit_test
       - integration_test_readonly:
           requires:
-            - build
+            - build_and_unit_test
       - integration_test_readwrite:
           requires:
-            - build
+            - build_and_unit_test
 executors:
   node:
     working_directory: ~/pinafore
@@ -45,6 +42,34 @@ commands:
     steps:
       - attach_workspace:
           at: ~/pinafore
+  restore_yarn_cache:
+    description: Restore yarn cache
+    steps:
+      - restore_cache:
+          name: Restore yarn cache
+          key: yarn-v1-{{ checksum "yarn.lock" }}
+  save_yarn_cache:
+    description: Save yarn cache
+    steps:
+      - save_cache:
+          name: Save yarn cache
+          key: yarn-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+  restore_bundler_cache:
+    description: Restore bundler cache
+    steps:
+      - restore_cache:
+          name: Restore bundler cache
+          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
+  save_bundler_cache:
+    description: Save bundler cache
+    steps:
+      - save_cache:
+          name: Save bundler cache
+          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
+          paths:
+            - mastodon/vendor/bundle
   install_mastodon:
     description: Install Mastodon and set up Postgres/Redis
     steps:
@@ -56,17 +81,12 @@ commands:
       - run:
           name: Clone mastodon
           command: yarn clone-mastodon
-      - restore_cache:
-          name: Restore bundler cache
-          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
+      - restore_bundler_cache
       - run:
           name: Install mastodon
           command: yarn install-mastodon
-      - save_cache:
-          name: Save bundler cache
-          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
-          paths:
-            - mastodon/vendor/bundle
+      - save_yarn_cache
+      - save_bundler_cache
       - run:
           name: Wait for postgres to be ready
           command: |
@@ -88,21 +108,17 @@ commands:
             done
             echo Failed waiting for redis && exit 1
 jobs:
-  build:
+  build_and_unit_test:
     executor: node
     steps:
       - checkout
-      - restore_cache:
-          name: Restore yarn cache
-          key: yarn-v1-{{ checksum "yarn.lock" }}
+      - restore_yarn_cache
       - run:
           name: Yarn install
           command: yarn install --immutable
-      - save_cache:
-          name: Save yarn cache
-          key: yarn-v1-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
+      - run:
+          name: Lint
+          command: yarn lint
       - run:
           name: Copy vercel.json
           command: cp vercel.json vercel-old.json
@@ -117,17 +133,10 @@ jobs:
               echo "vercel.json changed, run yarn build and make sure everything looks okay"
               exit 1
             fi
-      - save_workspace
-  unit_test:
-    executor: node
-    steps:
-      - load_workspace
-      - run:
-          name: Lint
-          command: yarn lint
       - run:
           name: Unit tests
           command: yarn test-unit
+      - save_workspace
   integration_test_readonly:
     executor: node_and_ruby
     steps:
