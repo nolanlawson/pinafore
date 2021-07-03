@@ -143,7 +143,7 @@ jobs:
       - load_workspace
       - install_mastodon
       - run:
-          name: Integration tests
+          name: Read-only integration tests
           command: yarn test-in-ci-suite0
   integration_test_readwrite:
     executor: node_and_ruby
@@ -151,5 +151,5 @@ jobs:
       - load_workspace
       - install_mastodon
       - run:
-          name: Integration tests
+          name: Read-write integration tests
           command: yarn test-in-ci-suite1
