@@ -15,13 +15,11 @@ executors:
   node:
     working_directory: ~/pinafore
     docker:
-      # we want Node v12, not v14
-      # see https://discuss.circleci.com/t/build-failed-the-engine-node-is-incompatible-with-this-module-expected-version-12-x-got-14-15-0/37921/7
-      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+      - image: cimg/ruby:2.7.2-node-browsers
   node_and_ruby:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+      - image: cimg/ruby:2.7.2-node-browsers
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
@@ -30,6 +28,18 @@ executors:
           BROWSER: chrome:headless
       - image: circleci/redis:5-alpine
 commands:
+  use_node_12:
+    description: Set the Node version to Node 12
+    steps:
+      - run:
+          name: "Set node to v12"
+          command: |
+            curl -sSL "https://nodejs.org/dist/v12.22.2/node-v12.22.2-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v12.22.2-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
+
   save_workspace:
     description: Persist workspace
     steps:
@@ -127,6 +137,7 @@ jobs:
     executor: node
     steps:
       - checkout
+      - use_node_12
       - restore_yarn_cache
       - run:
           name: Yarn install
@@ -157,6 +168,7 @@ jobs:
     executor: node_and_ruby
     steps:
       - load_workspace
+      - use_node_12
       - install_mastodon
       - run:
           name: Read-only integration tests
@@ -165,6 +177,7 @@ jobs:
     executor: node_and_ruby
     steps:
       - load_workspace
+      - use_node_12
       - install_mastodon
       - run:
           name: Read-write integration tests
