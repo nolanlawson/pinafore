@@ -5,7 +5,7 @@ import { promisify } from 'util'
 import { buildSass } from './build-sass'
 import { buildInlineScript } from './build-inline-script'
 import { buildSvg } from './build-svg'
-import now from 'performance-now'
+import { performance } from 'perf_hooks'
 import debounce from 'lodash-es/debounce'
 import applyIntl from '../webpack/svelte-intl-loader'
 import { LOCALE } from '../src/routes/_static/intl'
@@ -80,7 +80,7 @@ function doWatch () {
 }
 
 async function buildAll () {
-  const start = now()
+  const start = performance.now()
   let html = (await Promise.all(partials.map(async partial => {
     if (typeof partial === 'string') {
       return partial
@@ -95,7 +95,7 @@ async function buildAll () {
     .replace('{process.env.LOCALE}', LOCALE)
     .replace('{process.env.LOCALE_DIRECTION}', LOCALE_DIRECTION)
   await writeFile(path.resolve(__dirname, '../src/template.html'), html, 'utf8')
-  const end = now()
+  const end = performance.now()
   console.log(`Built template.html in ${(end - start).toFixed(2)}ms`)
 }
 
