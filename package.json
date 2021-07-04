@@ -82,7 +82,6 @@
     "npm-run-all": "^4.1.5",
     "p-any": "^3.0.0",
     "page-lifecycle": "^0.1.2",
-    "performance-now": "^2.1.0",
     "pinch-zoom-element": "^1.1.1",
     "promise-worker": "^2.0.1",
     "prop-types": "^15.7.2",
