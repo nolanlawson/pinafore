@@ -9,7 +9,9 @@ import { performance } from 'perf_hooks'
 import { debounce } from '../src/routes/_thirdparty/lodash/timers.js'
 import applyIntl from '../webpack/svelte-intl-loader.js'
 import { LOCALE } from '../src/routes/_static/intl.js'
-import { getLangDir } from 'rtl-detect'
+import rtlDetectPackage from 'rtl-detect'
+
+const { getLangDir } = rtlDetectPackage
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const writeFile = promisify(fs.writeFile)
