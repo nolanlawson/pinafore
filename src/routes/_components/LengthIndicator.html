@@ -13,11 +13,11 @@
   }
 </style>
 <script>
-  import { mark, stop } from '../_utils/marks'
-  import { store } from '../_store/store'
+  import { mark, stop } from '../_utils/marks.js'
+  import { store } from '../_store/store.js'
   import { observe } from 'svelte-extras'
-  import { throttleTimer } from '../_utils/throttleTimer'
-  import { formatIntl } from '../_utils/formatIntl'
+  import { throttleTimer } from '../_utils/throttleTimer.js'
+  import { formatIntl } from '../_utils/formatIntl.js'
 
   const updateDisplayedLength = process.browser && throttleTimer(requestAnimationFrame)
 

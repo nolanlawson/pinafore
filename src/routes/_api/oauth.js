@@ -1,5 +1,5 @@
-import { post, paramsString, WRITE_TIMEOUT } from '../_utils/ajax'
-import { basename } from './utils'
+import { post, paramsString, WRITE_TIMEOUT } from '../_utils/ajax.js'
+import { basename } from './utils.js'
 
 const WEBSITE = 'https://pinafore.social'
 const SCOPES = 'read write follow push'

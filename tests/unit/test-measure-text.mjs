@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import assert from 'assert'
-import { measureText } from '../../src/routes/_utils/measureText'
+import { measureText } from '../../src/routes/_utils/measureText.js'
 
 describe('test-measure-text.js', () => {
   it('measures text correctly', () => {

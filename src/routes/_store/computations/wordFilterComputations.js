@@ -1,5 +1,5 @@
-import { createRegexFromFilters } from '../../_utils/createRegexFromFilters'
-import { WORD_FILTER_CONTEXTS } from '../../_static/wordFilters'
+import { createRegexFromFilters } from '../../_utils/createRegexFromFilters.js'
+import { WORD_FILTER_CONTEXTS } from '../../_static/wordFilters.js'
 
 export function wordFilterComputations (store) {
   // unexpiredInstanceFilters is calculated based on `now` and `instanceFilters`,

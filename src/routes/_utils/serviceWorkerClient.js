@@ -1,4 +1,4 @@
-import { snackbar } from '../_components/snackbar/snackbar'
+import { snackbar } from '../_components/snackbar/snackbar.js'
 
 async function skipWaiting () {
   const reg = await navigator.serviceWorker.getRegistration()

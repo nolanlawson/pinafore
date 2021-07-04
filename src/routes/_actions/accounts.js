@@ -1,7 +1,7 @@
-import { getAccount } from '../_api/user'
-import { getRelationship } from '../_api/relationships'
-import { database } from '../_database/database'
-import { store } from '../_store/store'
+import { getAccount } from '../_api/user.js'
+import { getRelationship } from '../_api/relationships.js'
+import { database } from '../_database/database.js'
+import { store } from '../_store/store.js'
 
 async function _updateAccount (accountId, instanceName, accessToken) {
   const localPromise = database.getAccount(instanceName, accountId)

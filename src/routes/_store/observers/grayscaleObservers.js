@@ -1,4 +1,4 @@
-import { switchToTheme } from '../../_utils/themeEngine'
+import { switchToTheme } from '../../_utils/themeEngine.js'
 
 const style = process.browser && document.getElementById('theGrayscaleStyle')
 

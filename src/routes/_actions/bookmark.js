@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { bookmarkStatus, unbookmarkStatus } from '../_api/bookmark'
-import { database } from '../_database/database'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { bookmarkStatus, unbookmarkStatus } from '../_api/bookmark.js'
+import { database } from '../_database/database.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setStatusBookmarkedOrUnbookmarked (statusId, bookmarked) {
   const { currentInstance, accessToken } = store.get()

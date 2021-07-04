@@ -1,8 +1,8 @@
-import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './statuses'
-import { store } from '../_store/store'
-import isEqual from 'lodash-es/isEqual'
-import { database } from '../_database/database'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { getIdsThatRebloggedThisStatus, getNotificationIdsForStatuses } from './statuses.js'
+import { store } from '../_store/store.js'
+import { isEqual } from '../_thirdparty/lodash/objects.js'
+import { database } from '../_database/database.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
 
 function filterItemIdsFromTimelines (instanceName, timelineFilter, idFilter) {
   const keys = ['timelineItemSummaries', 'timelineItemSummariesToAdd']

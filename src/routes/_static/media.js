@@ -1,4 +1,4 @@
-import { isIOSPre13 } from '../_utils/userAgent/isIOSPre13'
+import { isIOSPre13 } from '../_utils/userAgent/isIOSPre13.js'
 
 export const DEFAULT_MEDIA_WIDTH = 300
 export const DEFAULT_MEDIA_HEIGHT = 250

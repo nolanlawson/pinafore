@@ -174,14 +174,14 @@
   }
 </style>
 <script>
-  import { store } from '../../../_store/store'
-  import { get } from '../../../_utils/lodash-lite'
+  import { store } from '../../../_store/store.js'
+  import { get } from '../../../_utils/lodash-lite.js'
   import { observe } from 'svelte-extras'
-  import { scheduleIdleTask } from '../../../_utils/scheduleIdleTask'
-  import { coordsToPercent, percentToCoords } from '../../../_utils/coordsToPercent'
+  import { scheduleIdleTask } from '../../../_utils/scheduleIdleTask.js'
+  import { coordsToPercent, percentToCoords } from '../../../_utils/coordsToPercent.js'
   import SvgIcon from '../../SvgIcon.html'
-  import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale'
-  import { resize } from '../../../_utils/events'
+  import { intrinsicScale } from '../../../_thirdparty/intrinsic-scale/intrinsicScale.js'
+  import { resize } from '../../../_utils/events.js'
   import Draggable from '../../Draggable.html'
 
   const parseAndValidateFloat = rawText => {

@@ -1,10 +1,10 @@
 /* global it describe beforeEach */
 
-import '../indexedDBShims'
+import '../indexedDBShims.js'
 import assert from 'assert'
 import {
   getCachedMediaFile, setCachedMediaFile, deleteCachedMediaFile, getAllCachedFileIds, setDeleteCachedMediaFilesAfter, DELETE_AFTER
-} from '../../src/routes/_database/mediaUploadFileCache'
+} from '../../src/routes/_database/mediaUploadFileCache.js'
 
 describe('test-database.js', function () {
   this.timeout(60000)

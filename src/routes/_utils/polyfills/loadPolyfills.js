@@ -2,8 +2,8 @@ import {
   importIntlListFormat,
   importIntlLocale, importIntlPluralRules, importIntlRelativeTimeFormat,
   importRequestIdleCallback
-} from './asyncPolyfills'
-import { mark, stop } from '../marks'
+} from './asyncPolyfills.js'
+import { mark, stop } from '../marks.js'
 
 async function loadIntlPolyfillsIfNecessary () {
   // Have to chain these so that they load in the proper order.

@@ -1,4 +1,4 @@
-import { store } from '../_store/store'
+import { store } from '../_store/store.js'
 
 // A map of scopeKey to KeyMap
 let scopeKeyMaps

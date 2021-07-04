@@ -1,16 +1,21 @@
-import { DEFAULT_LOCALE, LOCALE } from '../src/routes/_static/intl'
+import { DEFAULT_LOCALE, LOCALE } from '../src/routes/_static/intl.js'
+import path from 'path'
+import webpack from 'webpack'
+import config from 'sapper/config/webpack.js'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import terser from './terser.config.js'
+import CircularDependencyPlugin from 'circular-dependency-plugin'
+import { mode, dev, resolve, inlineSvgs } from './shared.config.js'
+import { version } from '../package.json'
 
-const path = require('path')
-const webpack = require('webpack')
-const config = require('sapper/config/webpack.js')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const terser = require('./terser.config')
-const CircularDependencyPlugin = require('circular-dependency-plugin')
-const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
-const { version } = require('../package.json')
+import urlRegex from '../src/routes/_utils/urlRegexSource.js'
+// TODO: make it so we don't have to list these out explicitly
+import fr from '../src/intl/emoji-picker/fr.js'
+import de from '../src/intl/emoji-picker/de.js'
 
-const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
+const emojiPickerLocales = { fr, de }
+
+const emojiPickerI18n = LOCALE !== DEFAULT_LOCALE && emojiPickerLocales[LOCALE]
 
 const output = Object.assign(config.client.output(), {
   // enables HMR in workers
@@ -19,9 +24,6 @@ const output = Object.assign(config.client.output(), {
   chunkFilename: dev ? '[fullhash]/[id].js' : '[id].[contenthash].[name].js'
 })
 
-const emojiPickerI18n = LOCALE !== DEFAULT_LOCALE &&
-  require(path.join(__dirname, '../src/intl/emoji-picker/', `${LOCALE}.js`)).default
-
 process.on('unhandledRejection', err => {
   // TODO: seems to be a Webpack Bundle Analyzer error we can safely ignore
   if (!err.message.includes('Error: No such label \'done hook\' for WebpackLogger.timeEnd()')) {
@@ -29,7 +31,7 @@ process.on('unhandledRejection', err => {
   }
 })
 
-module.exports = {
+export default {
   entry: config.client.entry(),
   output,
   resolve,
@@ -67,7 +69,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: path.join(__dirname, './svelte-intl-loader.js')
+          loader: path.join(__dirname, './svelte-intl-loader.cjs')
         }
       },
       {
@@ -83,7 +85,7 @@ module.exports = {
             }
           },
           {
-            loader: path.join(__dirname, './svelte-intl-loader.js')
+            loader: path.join(__dirname, './svelte-intl-loader.cjs')
           }
         ]
       }
@@ -111,17 +113,12 @@ module.exports = {
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
-      'process.env.URL_REGEX': urlRegex.toString(),
+      'process.env.URL_REGEX': urlRegex().toString(),
       'process.env.LOCALE': JSON.stringify(LOCALE),
       'process.env.EMOJI_PICKER_I18N': emojiPickerI18n ? JSON.stringify(emojiPickerI18n) : 'undefined',
       'process.env.PINAFORE_VERSION': JSON.stringify(version),
       'process.env.IS_SERVICE_WORKER': 'false'
     }),
-    new webpack.NormalModuleReplacementPlugin(
-      /\/_database\/database\.js$/, // this version plays nicer with IDEs
-      './database.prod.js'
-    ),
-    new LodashModuleReplacementPlugin(),
     new CircularDependencyPlugin({
       exclude: /node_modules/,
       failOnError: true,

@@ -3,10 +3,10 @@
 // remove parent overflow checks, make page resizes more performant,
 // add deferredUpdate, and add perf marks.
 
-import { mark, stop } from '../../_utils/marks'
-import debounce from 'lodash-es/debounce'
-import { getScrollContainer } from '../../_utils/scrollContainer'
-import { throttleTimer } from '../../_utils/throttleTimer'
+import { mark, stop } from '../../_utils/marks.js'
+import { debounce } from '../../_thirdparty/lodash/timers.js'
+import { getScrollContainer } from '../../_utils/scrollContainer.js'
+import { throttleTimer } from '../../_utils/throttleTimer.js'
 
 const doUpdate = process.browser && throttleTimer(requestAnimationFrame)
 

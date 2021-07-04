@@ -17,10 +17,9 @@ DB_NAME=${DB_NAME}
 DB_PASS=${DB_PASS}
 `
 
-// Need a Ruby version that CircleCI bundles with Node v12, not Node v14 which doesn't
-// work for streaming
-export const RUBY_VERSION = '2.6.6'
+export const RUBY_VERSION = '2.7.2'
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 export const mastodonDir = path.join(__dirname, '../mastodon')
 
 export const env = Object.assign({}, process.env, {

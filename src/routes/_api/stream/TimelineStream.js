@@ -1,9 +1,9 @@
-import { WebSocketClient } from '../../_thirdparty/websocket/websocket'
-import { lifecycle } from '../../_utils/lifecycle'
-import { getStreamUrl } from './getStreamUrl'
+import { WebSocketClient } from '../../_thirdparty/websocket/websocket.js'
+import { lifecycle } from '../../_utils/lifecycle.js'
+import { getStreamUrl } from './getStreamUrl.js'
 import { EventEmitter } from 'events-light'
-import { eventBus } from '../../_utils/eventBus'
-import { safeParse } from '../../_utils/safeParse'
+import { eventBus } from '../../_utils/eventBus.js'
+import { safeParse } from '../../_utils/safeParse.js'
 
 export class TimelineStream extends EventEmitter {
   constructor (streamingApi, accessToken, timeline) {

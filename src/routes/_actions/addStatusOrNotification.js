@@ -1,11 +1,10 @@
-import { mark, stop } from '../_utils/marks'
-import { store } from '../_store/store'
-import uniqBy from 'lodash-es/uniqBy'
-import isEqual from 'lodash-es/isEqual'
-import { database } from '../_database/database'
-import { concat } from '../_utils/arrays'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { timelineItemToSummary } from '../_utils/timelineItemToSummary'
+import { mark, stop } from '../_utils/marks.js'
+import { store } from '../_store/store.js'
+import { uniqBy, isEqual } from '../_thirdparty/lodash/objects.js'
+import { database } from '../_database/database.js'
+import { concat } from '../_utils/arrays.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
+import { timelineItemToSummary } from '../_utils/timelineItemToSummary.js'
 
 function getExistingItemIdsSet (instanceName, timelineName) {
   const timelineItemSummaries = store.getForTimeline(instanceName, timelineName, 'timelineItemSummaries') || []

@@ -2,7 +2,7 @@
 // Using base62 for both works, since the first 10 characters of base62
 // are 0-9.
 
-import { padStart } from './lodash-lite'
+import { padStart } from './lodash-lite.js'
 
 // Pleroma uses the 0-9A-Za-z alphabet for base62, which is the same as ASCII, which
 // is the same as JavaScript sort order and IndexedDB order.

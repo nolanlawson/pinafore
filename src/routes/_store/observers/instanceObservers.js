@@ -1,13 +1,13 @@
-import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances'
-import { setupListsForInstance } from '../../_actions/lists'
-import { createStream } from '../../_actions/stream/streaming'
-import { updatePushSubscriptionForInstance } from '../../_actions/pushSubscription'
-import { setupCustomEmojiForInstance } from '../../_actions/emoji'
-import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-import { mark, stop } from '../../_utils/marks'
-import { store } from '../store'
-import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
-import { setupFiltersForInstance } from '../../_actions/filters'
+import { updateInstanceInfo, updateVerifyCredentialsForInstance } from '../../_actions/instances.js'
+import { setupListsForInstance } from '../../_actions/lists.js'
+import { createStream } from '../../_actions/stream/streaming.js'
+import { updatePushSubscriptionForInstance } from '../../_actions/pushSubscription.js'
+import { setupCustomEmojiForInstance } from '../../_actions/emoji.js'
+import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+import { mark, stop } from '../../_utils/marks.js'
+import { store } from '../store.js'
+import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests.js'
+import { setupFiltersForInstance } from '../../_actions/filters.js'
 
 // stream to watch for home timeline updates and notifications
 let currentInstanceStream

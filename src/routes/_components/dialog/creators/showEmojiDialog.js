@@ -1,5 +1,5 @@
 import EmojiDialog from '../components/EmojiDialog.html'
-import { showDialog } from './showDialog'
+import { showDialog } from './showDialog.js'
 
 export default function showEmojiDialog (realm) {
   return showDialog(EmojiDialog, {

@@ -1,5 +1,5 @@
-import { addStatusesOrNotifications } from '../addStatusOrNotification'
-import { getTimeline } from '../../_api/timelines'
+import { addStatusesOrNotifications } from '../addStatusOrNotification.js'
+import { getTimeline } from '../../_api/timelines.js'
 
 const TIMELINE_GAP_BATCH_SIZE = 20 // Mastodon timeline API maximum limit
 const MAX_NUM_REQUESTS = 15 // to avoid getting caught in an infinite loop somehow

@@ -104,14 +104,14 @@
   import ComposeAutosuggest from './ComposeAutosuggest.html'
   import ComposePoll from './ComposePoll.html'
   import ComposeMediaSensitive from './ComposeMediaSensitive.html'
-  import { measureText } from '../../_utils/measureText'
-  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses'
-  import { store } from '../../_store/store'
-  import { slide } from '../../_transitions/slide'
-  import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose'
-  import { classname } from '../../_utils/classname'
-  import { POLL_EXPIRY_DEFAULT } from '../../_static/polls'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { measureText } from '../../_utils/measureText.js'
+  import { POST_PRIVACY_OPTIONS } from '../../_static/statuses.js'
+  import { store } from '../../_store/store.js'
+  import { slide } from '../../_transitions/slide.js'
+  import { postStatus, insertHandleForReply, setReplySpoiler, setReplyVisibility } from '../../_actions/compose.js'
+  import { classname } from '../../_utils/classname.js'
+  import { POLL_EXPIRY_DEFAULT } from '../../_static/polls.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
 
   export default {
     oncreate () {

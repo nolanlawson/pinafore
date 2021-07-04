@@ -1,8 +1,8 @@
 import {
   getScrollContainer,
   getOffsetHeight
-} from './scrollContainer'
-import { smoothScroll } from './smoothScroll'
+} from './scrollContainer.js'
+import { smoothScroll } from './smoothScroll.js'
 
 let mainNavElement
 function getTopOverlay () {

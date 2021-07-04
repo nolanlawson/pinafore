@@ -1,5 +1,5 @@
-import { post, WRITE_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { post, WRITE_TIMEOUT } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export async function followAccount (instanceName, accessToken, accountId) {
   const url = `${basename(instanceName)}/api/v1/accounts/${accountId}/follow`

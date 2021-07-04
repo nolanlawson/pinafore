@@ -154,13 +154,13 @@
 <script>
   import Shortcut from '../../shortcut/Shortcut.html'
   import SvgIcon from '../../SvgIcon.html'
-  import { A11yDialog } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
-  import { classname } from '../../../_utils/classname'
-  import { on, emit } from '../../../_utils/eventBus'
+  import { A11yDialog } from '../../../_thirdparty/a11y-dialog/a11y-dialog.js'
+  import { classname } from '../../../_utils/classname.js'
+  import { on, emit } from '../../../_utils/eventBus.js'
   import {
     pushShortcutScope,
     popShortcutScope
-  } from '../../../_utils/shortcuts'
+  } from '../../../_utils/shortcuts.js'
 
   export default {
     oncreate () {

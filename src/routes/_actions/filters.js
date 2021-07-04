@@ -1,11 +1,11 @@
-import { store } from '../_store/store'
-import { createFilter, getFilters, updateFilter, deleteFilter as doDeleteFilter } from '../_api/filters'
-import { cacheFirstUpdateAfter, cacheFirstUpdateOnlyIfNotInCache } from '../_utils/sync'
-import { database } from '../_database/database'
-import { isEqual } from 'lodash-es'
-import { toast } from '../_components/toast/toast'
-import { formatIntl } from '../_utils/formatIntl'
-import { emit } from '../_utils/eventBus'
+import { store } from '../_store/store.js'
+import { createFilter, getFilters, updateFilter, deleteFilter as doDeleteFilter } from '../_api/filters.js'
+import { cacheFirstUpdateAfter, cacheFirstUpdateOnlyIfNotInCache } from '../_utils/sync.js'
+import { database } from '../_database/database.js'
+import { isEqual } from '../_thirdparty/lodash/objects.js'
+import { toast } from '../_components/toast/toast.js'
+import { formatIntl } from '../_utils/formatIntl.js'
+import { emit } from '../_utils/eventBus.js'
 
 async function syncFilters (instanceName, syncMethod) {
   const { loggedInInstances } = store.get()

@@ -1,5 +1,5 @@
 import CopyDialog from '../components/CopyDialog.html'
-import { showDialog } from './showDialog'
+import { showDialog } from './showDialog.js'
 
 export default function showCopyDialog (text) {
   return showDialog(CopyDialog, {

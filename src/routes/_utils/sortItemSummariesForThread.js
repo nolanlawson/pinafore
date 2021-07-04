@@ -1,9 +1,9 @@
 // This is designed to exactly mimic Mastodon's ordering for threads. As described by Gargron:
 // "statuses are ordered in the postgresql query and then any of OP's self-replies bubble to the top"
 // Source: https://github.com/tootsuite/mastodon/blob/ef15246/app/models/concerns/status_threading_concern.rb
-import { concat } from './arrays'
-import { compareTimelineItemSummaries } from './statusIdSorting'
-import { mapBy, multimapBy } from './maps'
+import { concat } from './arrays.js'
+import { compareTimelineItemSummaries } from './statusIdSorting.js'
+import { mapBy, multimapBy } from './maps.js'
 
 export function sortItemSummariesForThread (summaries, statusId) {
   const ancestors = []

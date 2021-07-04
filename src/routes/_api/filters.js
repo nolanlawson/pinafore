@@ -1,5 +1,5 @@
-import { get, DEFAULT_TIMEOUT, post, WRITE_TIMEOUT, put, del } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { get, DEFAULT_TIMEOUT, post, WRITE_TIMEOUT, put, del } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export function getFilters (instanceName, accessToken) {
   const url = `${basename(instanceName)}/api/v1/filters`

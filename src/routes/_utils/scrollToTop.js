@@ -1,5 +1,5 @@
-import { getScrollContainer } from './scrollContainer'
-import { smoothScroll } from './smoothScroll'
+import { getScrollContainer } from './scrollContainer.js'
+import { smoothScroll } from './smoothScroll.js'
 
 export function scrollToTop (smooth) {
   const scroller = getScrollContainer()

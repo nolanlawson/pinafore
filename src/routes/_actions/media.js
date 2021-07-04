@@ -1,9 +1,9 @@
-import { store } from '../_store/store'
-import { uploadMedia } from '../_api/media'
-import { toast } from '../_components/toast/toast'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { formatIntl } from '../_utils/formatIntl'
-import { database } from '../_database/database'
+import { store } from '../_store/store.js'
+import { uploadMedia } from '../_api/media.js'
+import { toast } from '../_components/toast/toast.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
+import { formatIntl } from '../_utils/formatIntl.js'
+import { database } from '../_database/database.js'
 
 export async function doMediaUpload (realm, file) {
   const { currentInstance, accessToken } = store.get()

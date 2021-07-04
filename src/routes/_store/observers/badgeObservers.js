@@ -1,5 +1,5 @@
-import { store } from '../store'
-import { isChromePre87 } from '../../_utils/userAgent/isChromePre87'
+import { store } from '../store.js'
+import { isChromePre87 } from '../../_utils/userAgent/isChromePre87.js'
 
 export function badgeObservers () {
   if (!process.browser) {

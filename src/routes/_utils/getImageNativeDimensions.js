@@ -1,4 +1,4 @@
-import { decodeImage } from './decodeImage'
+import { decodeImage } from './decodeImage.js'
 
 export async function getImageNativeDimensions (url) {
   const img = document.createElement('img')

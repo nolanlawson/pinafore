@@ -1,6 +1,6 @@
-import { get } from '../../_utils/lodash-lite'
-import { getFirstIdFromItemSummaries, getLastIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
-import { mark, stop } from '../../_utils/marks'
+import { get } from '../../_utils/lodash-lite.js'
+import { getFirstIdFromItemSummaries, getLastIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries.js'
+import { mark, stop } from '../../_utils/marks.js'
 
 function computeForTimeline (store, key, defaultValue) {
   store.compute(key,

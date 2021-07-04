@@ -1,7 +1,8 @@
 // Forked from https://github.com/sindresorhus/quick-lru/blob/16d15d470a8eb87c2a7dd5b80892d9b74f1acd3c/index.js
 // Adds the ability to listen for 'evict' events using an EventEmitter, also removes some unused code
 
-import { EventEmitter } from 'events-light'
+import eventsLightPackage from 'events-light'
+const { EventEmitter } = eventsLightPackage
 
 export class QuickLRU extends EventEmitter {
   constructor (options = {}) {

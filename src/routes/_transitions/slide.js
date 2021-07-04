@@ -1,6 +1,6 @@
 import { slide as svelteSlide } from 'svelte-transitions'
-import { store } from '../_store/store'
-import noop from 'lodash-es/noop'
+import { store } from '../_store/store.js'
+import { noop } from '../_utils/lodash-lite.js'
 
 // same as svelte-transitions, but respecting reduceMotion
 export function slide (node, ref) {

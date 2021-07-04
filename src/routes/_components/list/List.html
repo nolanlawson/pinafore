@@ -17,10 +17,10 @@
 </style>
 <script>
   import ListLazyItem from './ListLazyItem.html'
-  import { listStore } from './listStore'
-  import { getScrollContainer } from '../../_utils/scrollContainer'
+  import { listStore } from './listStore.js'
+  import { getScrollContainer } from '../../_utils/scrollContainer.js'
   import { observe } from 'svelte-extras'
-  import { mark, stop } from '../../_utils/marks'
+  import { mark, stop } from '../../_utils/marks.js'
 
   function getScrollTopOffset () {
     return document.getElementById('main-nav').getBoundingClientRect().height

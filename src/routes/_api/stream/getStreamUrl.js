@@ -1,4 +1,4 @@
-import { paramsString } from '../../_utils/ajax'
+import { paramsString } from '../../_utils/ajax.js'
 
 function getStreamName (timeline) {
   switch (timeline) {

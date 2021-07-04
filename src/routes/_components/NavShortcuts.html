@@ -17,13 +17,13 @@
 {/each}
 
 <script>
-  import Shortcut from './shortcut/Shortcut'
-  import { goto } from '../../../__sapper__/client'
-  import { importShowShortcutHelpDialog } from './dialog/asyncDialogs/importShowShortcutHelpDialog'
-  import { importShowComposeDialog } from './dialog/asyncDialogs/importShowComposeDialog'
-  import { store } from '../_store/store'
-  import { normalizePageName } from '../_utils/normalizePageName'
-  import { goToSearch } from '../_actions/goToSearch'
+  import Shortcut from './shortcut/Shortcut.html'
+  import { goto } from '../../../__sapper__/client.js'
+  import { importShowShortcutHelpDialog } from './dialog/asyncDialogs/importShowShortcutHelpDialog.js'
+  import { importShowComposeDialog } from './dialog/asyncDialogs/importShowComposeDialog.js'
+  import { store } from '../_store/store.js'
+  import { normalizePageName } from '../_utils/normalizePageName.js'
+  import { goToSearch } from '../_actions/goToSearch.js'
 
   export default {
     store: () => store,

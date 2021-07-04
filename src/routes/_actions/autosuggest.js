@@ -1,4 +1,4 @@
-import { store } from '../_store/store'
+import { store } from '../_store/store.js'
 
 const emojiMapper = emoji => emoji.unicode ? emoji.unicode : `:${emoji.shortcodes[0]}:`
 const hashtagMapper = hashtag => `#${hashtag.name}`

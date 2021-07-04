@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { reblogStatus, unreblogStatus } from '../_api/reblog'
-import { database } from '../_database/database'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { reblogStatus, unreblogStatus } from '../_api/reblog.js'
+import { database } from '../_database/database.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setReblogged (statusId, reblogged) {
   const online = store.get()

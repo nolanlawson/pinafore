@@ -1,13 +1,13 @@
-import { actions } from './mastodon-data'
-import { users } from '../tests/users'
-import { postStatus } from '../src/routes/_api/statuses'
-import { followAccount } from '../src/routes/_api/follow'
-import { favoriteStatus } from '../src/routes/_api/favorite'
-import { reblogStatus } from '../src/routes/_api/reblog'
+import { actions } from './mastodon-data.js'
+import { users } from '../tests/users.js'
+import { postStatus } from '../src/routes/_api/statuses.js'
+import { followAccount } from '../src/routes/_api/follow.js'
+import { favoriteStatus } from '../src/routes/_api/favorite.js'
+import { reblogStatus } from '../src/routes/_api/reblog.js'
 import fetch from 'node-fetch'
 import FileApi from 'file-api'
-import { pinStatus } from '../src/routes/_api/pin'
-import { submitMedia } from '../tests/submitMedia'
+import { pinStatus } from '../src/routes/_api/pin.js'
+import { submitMedia } from '../tests/submitMedia.js'
 
 global.File = FileApi.File
 global.FormData = FileApi.FormData

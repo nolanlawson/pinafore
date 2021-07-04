@@ -1,9 +1,9 @@
-import { store } from '../_store/store'
-import { cacheFirstUpdateAfter } from '../_utils/sync'
-import { database } from '../_database/database'
+import { store } from '../_store/store.js'
+import { cacheFirstUpdateAfter } from '../_utils/sync.js'
+import { database } from '../_database/database.js'
 import {
   getPinnedStatuses
-} from '../_api/pinnedStatuses'
+} from '../_api/pinnedStatuses.js'
 
 export async function updatePinnedStatusesForAccount (accountId) {
   const { currentInstance, accessToken } = store.get()

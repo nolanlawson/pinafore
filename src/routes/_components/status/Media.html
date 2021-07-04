@@ -101,17 +101,17 @@
   }
 </style>
 <script>
-  import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media'
+  import { DEFAULT_MEDIA_WIDTH, DEFAULT_MEDIA_HEIGHT, ONE_TRANSPARENT_PIXEL } from '../../_static/media.js'
   import { importShowMediaDialog } from '../dialog/asyncDialogs/importShowMediaDialog.js'
-  import { mouseover } from '../../_utils/events'
+  import { mouseover } from '../../_utils/events.js'
   import NonAutoplayGifv from '../NonAutoplayGifv.html'
   import PlayVideoIcon from '../PlayVideoIcon.html'
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import LazyImage from '../LazyImage.html'
   import AutoplayVideo from '../AutoplayVideo.html'
-  import { registerClickDelegate } from '../../_utils/delegate'
-  import { convertCssPropertyToDataUrl } from '../../_utils/convertCssPropertyToDataUrl'
-  import { formatIntl } from '../../_utils/formatIntl'
+  import { registerClickDelegate } from '../../_utils/delegate.js'
+  import { convertCssPropertyToDataUrl } from '../../_utils/convertCssPropertyToDataUrl.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
 export default {
     async oncreate () {

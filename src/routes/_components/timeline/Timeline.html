@@ -25,31 +25,31 @@
 <Shortcut scope="global" key="." on:pressed="showMoreAndScrollToTop()" />
 <ScrollListShortcuts />
 <script>
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import Status from '../status/Status.html'
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
   import ScrollListShortcuts from '../shortcut/ScrollListShortcuts.html'
   import Shortcut from '../shortcut/Shortcut.html'
-  import { importVirtualList } from '../../_utils/asyncModules/importVirtualList'
-  import { importList } from '../../_utils/asyncModules/importList'
-  import { importStatusVirtualListItem } from '../../_utils/asyncModules/importStatusVirtualListItem'
-  import { importNotificationVirtualListItem } from '../../_utils/asyncModules/importNotificationVirtualListItem'
-  import { timelines } from '../../_static/timelines'
+  import { importVirtualList } from '../../_utils/asyncModules/importVirtualList.js'
+  import { importList } from '../../_utils/asyncModules/importList.js'
+  import { importStatusVirtualListItem } from '../../_utils/asyncModules/importStatusVirtualListItem.js'
+  import { importNotificationVirtualListItem } from '../../_utils/asyncModules/importNotificationVirtualListItem.js'
+  import { timelines } from '../../_static/timelines.js'
   import {
     fetchMoreItemsAtBottomOfTimeline,
     setupTimeline,
     showMoreItemsForTimeline,
     showMoreItemsForThread,
     showMoreItemsForCurrentTimeline
-  } from '../../_actions/timeline'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { mark, stop } from '../../_utils/marks'
-  import isEqual from 'lodash-es/isEqual'
-  import { doubleRAF } from '../../_utils/doubleRAF'
+  } from '../../_actions/timeline.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+  import { mark, stop } from '../../_utils/marks.js'
+  import { isEqual } from '../../_thirdparty/lodash/objects.js'
+  import { doubleRAF } from '../../_utils/doubleRAF.js'
   import { observe } from 'svelte-extras'
-  import { createMakeProps } from '../../_actions/createMakeProps'
-  import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop'
+  import { createMakeProps } from '../../_actions/createMakeProps.js'
+  import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop.js'
   import FocusRestoration from '../FocusRestoration.html'
 
   export default {

@@ -1,5 +1,5 @@
-import { pickBy, get } from '../../_utils/lodash-lite'
-import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries'
+import { pickBy, get } from '../../_utils/lodash-lite.js'
+import { getFirstIdFromItemSummaries } from '../../_utils/getIdFromItemSummaries.js'
 
 export function timelineMixins (Store) {
   Store.prototype.setForTimeline = function (instanceName, timelineName, obj) {

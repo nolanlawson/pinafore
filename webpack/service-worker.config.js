@@ -1,12 +1,12 @@
 import { LOCALE } from '../src/routes/_static/intl'
 import path from 'path'
 
-const config = require('sapper/config/webpack.js')
-const terser = require('./terser.config')
-const webpack = require('webpack')
-const { mode, dev, resolve } = require('./shared.config')
+import config from 'sapper/config/webpack.js'
+import terser from './terser.config'
+import webpack from 'webpack'
+import { mode, dev, resolve } from './shared.config'
 
-module.exports = {
+export default {
   entry: config.serviceworker.entry(),
   output: config.serviceworker.output(),
   resolve,
@@ -26,7 +26,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: path.join(__dirname, './svelte-intl-loader.js')
+          loader: path.join(__dirname, './svelte-intl-loader.cjs')
         }
       }
     ]

@@ -1,4 +1,4 @@
-import { get } from '../../_utils/lodash-lite'
+import { get } from '../../_utils/lodash-lite.js'
 
 export function autosuggestMixins (Store) {
   Store.prototype.setForAutosuggest = function (instanceName, realm, obj) {

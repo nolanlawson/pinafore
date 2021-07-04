@@ -1,5 +1,5 @@
-import { post, WRITE_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { post, WRITE_TIMEOUT } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export async function pinStatus (instanceName, accessToken, statusId) {
   const url = `${basename(instanceName)}/api/v1/statuses/${statusId}/pin`

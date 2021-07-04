@@ -1,4 +1,4 @@
-import { get } from '../../_utils/lodash-lite'
+import { get } from '../../_utils/lodash-lite.js'
 
 export function composeMixins (Store) {
   Store.prototype.setComposeData = function (realm, obj) {

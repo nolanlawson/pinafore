@@ -1,8 +1,8 @@
-import { favoriteStatus, unfavoriteStatus } from '../_api/favorite'
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { database } from '../_database/database'
-import { formatIntl } from '../_utils/formatIntl'
+import { favoriteStatus, unfavoriteStatus } from '../_api/favorite.js'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { database } from '../_database/database.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setFavorited (statusId, favorited) {
   const { online } = store.get()

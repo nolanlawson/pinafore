@@ -1,5 +1,5 @@
-import { emojifyText } from './emojifyText'
-import { massageStatusPlainText } from './massageStatusPlainText'
+import { emojifyText } from './emojifyText.js'
+import { massageStatusPlainText } from './massageStatusPlainText.js'
 
 export function massageUserText (text, emojis, $autoplayGifs) {
   text = text || ''

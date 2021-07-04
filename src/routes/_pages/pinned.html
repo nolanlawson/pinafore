@@ -30,14 +30,14 @@
   }
 </style>
 <script>
-  import { store } from '../_store/store'
+  import { store } from '../_store/store.js'
   import LoadingPage from '../_components/LoadingPage.html'
   import StatusSearchResult from '../_components/search/StatusSearchResult.html'
-  import { toast } from '../_components/toast/toast'
+  import { toast } from '../_components/toast/toast.js'
   import DynamicPageBanner from '../_components/DynamicPageBanner.html'
-  import { getPinnedStatuses } from '../_api/pinnedStatuses'
-  import { updateVerifyCredentialsForInstance } from '../_actions/instances'
-  import { formatIntl } from '../_utils/formatIntl'
+  import { getPinnedStatuses } from '../_api/pinnedStatuses.js'
+  import { updateVerifyCredentialsForInstance } from '../_actions/instances.js'
+  import { formatIntl } from '../_utils/formatIntl.js'
 
   export default {
     async oncreate () {

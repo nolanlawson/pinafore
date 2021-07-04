@@ -8,8 +8,8 @@ import {
   STATUS_TIMELINES_STORE,
   STATUSES_STORE, THREADS_STORE,
   TIMESTAMP, USERNAME_LOWERCASE
-} from './constants'
-import { toReversePaddedBigInt } from '../_utils/statusIdSorting'
+} from './constants.js'
+import { toReversePaddedBigInt } from '../_utils/statusIdSorting.js'
 
 function initialMigration (db, tx, done) {
   function createObjectStore (name, init, indexes) {

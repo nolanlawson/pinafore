@@ -1,11 +1,11 @@
-import { database } from '../_database/database'
-import { store } from '../_store/store'
-import { search } from '../_api/search'
-import { SEARCH_RESULTS_LIMIT } from '../_static/autosuggest'
-import { concat } from '../_utils/arrays'
-import uniqBy from 'lodash-es/uniqBy'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { RequestThrottler } from '../_utils/RequestThrottler'
+import { database } from '../_database/database.js'
+import { store } from '../_store/store.js'
+import { search } from '../_api/search.js'
+import { SEARCH_RESULTS_LIMIT } from '../_static/autosuggest.js'
+import { concat } from '../_utils/arrays.js'
+import { uniqBy } from '../_thirdparty/lodash/objects.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
+import { RequestThrottler } from '../_utils/RequestThrottler.js'
 
 const DATABASE_SEARCH_RESULTS_LIMIT = 30
 

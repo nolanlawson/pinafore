@@ -1,6 +1,6 @@
 /* global describe, it */
 import assert from 'assert'
-import { unescape } from '../../src/routes/_thirdparty/unescape/unescape'
+import { unescape } from '../../src/routes/_thirdparty/unescape/unescape.js'
 
 describe('test-unescape.js', () => {
   it('unescapes html correctly', () => {

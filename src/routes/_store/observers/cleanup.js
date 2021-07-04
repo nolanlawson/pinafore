@@ -1,7 +1,7 @@
-import { store } from '../store'
-import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../../_static/database'
-import { scheduleInterval } from '../../_utils/scheduleInterval'
+import { store } from '../store.js'
+import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../../_static/database.js'
+import { scheduleInterval } from '../../_utils/scheduleInterval.js'
 
 function doCleanup () {
   // Periodically clean up drafts in localStorage, so they don't grow without bound.

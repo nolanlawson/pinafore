@@ -156,15 +156,15 @@
 <script>
   import GenericConfirmationDialog from './GenericConfirmationDialog.html'
   import LoadingSpinner from '../../LoadingSpinner.html'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
-  import { getRecentStatusesForAccount } from '../../../_actions/getRecentStatusesForAccount'
-  import { statusHtmlToPlainText } from '../../../_utils/statusHtmlToPlainText'
-  import { toast } from '../../toast/toast'
-  import { store } from '../../../_store/store'
-  import { reportStatuses } from '../../../_actions/reportStatuses'
-  import { formatIntl } from '../../../_utils/formatIntl'
+  import { show } from '../helpers/showDialog.js'
+  import { close } from '../helpers/closeDialog.js'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog.js'
+  import { getRecentStatusesForAccount } from '../../../_actions/getRecentStatusesForAccount.js'
+  import { statusHtmlToPlainText } from '../../../_utils/statusHtmlToPlainText.js'
+  import { toast } from '../../toast/toast.js'
+  import { store } from '../../../_store/store.js'
+  import { reportStatuses } from '../../../_actions/reportStatuses.js'
+  import { formatIntl } from '../../../_utils/formatIntl.js'
 
   export default {
     async oncreate () {

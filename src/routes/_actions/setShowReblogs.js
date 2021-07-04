@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { setShowReblogs as setShowReblogsApi } from '../_api/showReblogs'
-import { toast } from '../_components/toast/toast'
-import { updateLocalRelationship } from './accounts'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { setShowReblogs as setShowReblogsApi } from '../_api/showReblogs.js'
+import { toast } from '../_components/toast/toast.js'
+import { updateLocalRelationship } from './accounts.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setShowReblogs (accountId, showReblogs, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()

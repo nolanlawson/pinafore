@@ -24,12 +24,12 @@
   }
 </style>
 <script>
-  import { virtualListStore } from './virtualListStore'
-  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
-  import { mark, stop } from '../../_utils/marks'
-  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
+  import { virtualListStore } from './virtualListStore.js'
+  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize.js'
+  import { mark, stop } from '../../_utils/marks.js'
+  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame.js'
   import { observe } from 'svelte-extras'
-  import { doubleRAF } from '../../_utils/doubleRAF'
+  import { doubleRAF } from '../../_utils/doubleRAF.js'
 
   export default {
     oncreate () {

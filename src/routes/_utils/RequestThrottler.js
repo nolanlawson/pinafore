@@ -1,5 +1,5 @@
 // Throttle network requests to be a good citizen and not issue an HTTP request on every keystroke
-import { PromiseThrottler } from './PromiseThrottler'
+import { PromiseThrottler } from './PromiseThrottler.js'
 
 const promiseThrottler = new PromiseThrottler(200) // Mastodon FE also uses 200ms
 

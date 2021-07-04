@@ -1,5 +1,5 @@
-import { RealmStore } from '../../_utils/RealmStore'
-import { PAGE_HISTORY_SIZE } from '../../_static/pages'
+import { RealmStore } from '../../_utils/RealmStore.js'
+import { PAGE_HISTORY_SIZE } from '../../_static/pages.js'
 
 class ListStore extends RealmStore {
   constructor (state) {

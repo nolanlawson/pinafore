@@ -53,11 +53,11 @@
 <script>
   import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
   import IconButton from '../../IconButton.html'
-  import { store } from '../../../_store/store'
-  import { LOCALE } from '../../../_static/intl'
-  import { importShowWordFilterDialog } from '../../dialog/asyncDialogs/importShowWordFilterDialog'
-  import { deleteFilter } from '../../../_actions/filters'
-  import { thunk } from '../../../_utils/thunk'
+  import { store } from '../../../_store/store.js'
+  import { LOCALE } from '../../../_static/intl.js'
+  import { importShowWordFilterDialog } from '../../dialog/asyncDialogs/importShowWordFilterDialog.js'
+  import { deleteFilter } from '../../../_actions/filters.js'
+  import { thunk } from '../../../_utils/thunk.js'
 
   const listFormat = thunk(() => new Intl.ListFormat(LOCALE, { style: 'long', type: 'conjunction' }))
 

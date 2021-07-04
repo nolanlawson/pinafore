@@ -1,5 +1,5 @@
-import { computeFilterContextsForStatusOrNotification } from './computeFilterContextsForStatusOrNotification'
-import { store } from '../_store/store'
+import { computeFilterContextsForStatusOrNotification } from './computeFilterContextsForStatusOrNotification.js'
+import { store } from '../_store/store.js'
 
 class TimelineSummary {
   constructor (item, instanceName) {

@@ -1,9 +1,10 @@
 import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
-import { LOCALE } from '../src/routes/_static/intl'
-import { getIntl, trimWhitespace } from './getIntl'
+import { LOCALE } from '../src/routes/_static/intl.js'
+import { getIntl, trimWhitespace } from './getIntl.js'
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 

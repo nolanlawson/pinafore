@@ -1,9 +1,9 @@
-import { database } from '../_database/database'
-import { decode as decodeBlurhash, init as initBlurhash } from '../_utils/blurhash'
-import { mark, stop } from '../_utils/marks'
-import { get } from '../_utils/lodash-lite'
-import { statusHtmlToPlainText } from '../_utils/statusHtmlToPlainText'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+import { database } from '../_database/database.js'
+import { decode as decodeBlurhash, init as initBlurhash } from '../_utils/blurhash.js'
+import { mark, stop } from '../_utils/marks.js'
+import { get } from '../_utils/lodash-lite.js'
+import { statusHtmlToPlainText } from '../_utils/statusHtmlToPlainText.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
 
 async function getNotification (instanceName, timelineType, timelineValue, itemId) {
   return {

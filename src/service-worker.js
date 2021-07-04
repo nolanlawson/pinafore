@@ -3,8 +3,8 @@ import {
   shell as __shell__,
   routes as __routes__
 } from '../__sapper__/service-worker.js'
-import { get, post } from './routes/_utils/ajax'
-import { setWebShareData, closeKeyValIDBConnection } from './routes/_database/webShare'
+import { get, post } from './routes/_utils/ajax.js'
+import { setWebShareData, closeKeyValIDBConnection } from './routes/_database/webShare.js'
 
 const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS = `assets_${timestamp}`

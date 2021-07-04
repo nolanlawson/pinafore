@@ -1,4 +1,4 @@
-import { removeEmoji } from './removeEmoji'
+import { removeEmoji } from './removeEmoji.js'
 
 export function createAutosuggestAccessibleLabel (
   autosuggestType, $omitEmojiInDisplayNames,

@@ -3,7 +3,7 @@
 
 /* global describe it */
 
-import enIntl from '../../src/intl/en-US'
+import enIntl from '../../src/intl/en-US.js'
 import globby from 'globby'
 import path from 'path'
 import { promisify } from 'util'
@@ -11,6 +11,7 @@ import fs from 'fs'
 import assert from 'assert'
 
 const readFile = promisify(fs.readFile)
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
 describe('test-intl.js', () => {
   it('has no unused intl strings', async () => {

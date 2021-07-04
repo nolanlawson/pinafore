@@ -1,10 +1,10 @@
-import { DB_VERSION_CURRENT } from './constants'
-import { addKnownInstance, deleteKnownInstance } from './knownInstances'
-import { migrations } from './migrations'
-import { clearAllCaches } from './cache'
-import { lifecycle } from '../_utils/lifecycle'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { del } from '../_thirdparty/idb-keyval/idb-keyval'
+import { DB_VERSION_CURRENT } from './constants.js'
+import { addKnownInstance, deleteKnownInstance } from './knownInstances.js'
+import { migrations } from './migrations.js'
+import { clearAllCaches } from './cache.js'
+import { lifecycle } from '../_utils/lifecycle.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
+import { del } from '../_thirdparty/idb-keyval/idb-keyval.js'
 
 const openReqs = {}
 const databaseCache = {}

@@ -1,12 +1,12 @@
 import * as sapper from '../__sapper__/client.js'
-import './routes/_utils/serviceWorkerClient'
-import './routes/_utils/historyEvents'
-import './routes/_utils/loadingMask'
-import './routes/_utils/forceOnline'
-import { mark, stop } from './routes/_utils/marks'
-import { loadPolyfills } from './routes/_utils/polyfills/loadPolyfills'
-import { loadNonCriticalPolyfills } from './routes/_utils/polyfills/loadNonCriticalPolyfills'
-import { idbReady } from './routes/_utils/idbReady'
+import './routes/_utils/serviceWorkerClient.js'
+import './routes/_utils/historyEvents.js'
+import './routes/_utils/loadingMask.js'
+import './routes/_utils/forceOnline.js'
+import { mark, stop } from './routes/_utils/marks.js'
+import { loadPolyfills } from './routes/_utils/polyfills/loadPolyfills.js'
+import { loadNonCriticalPolyfills } from './routes/_utils/polyfills/loadNonCriticalPolyfills.js'
+import { idbReady } from './routes/_utils/idbReady.js'
 
 Promise.all([idbReady(), loadPolyfills()]).then(() => {
   mark('sapperStart')
@@ -17,6 +17,6 @@ Promise.all([idbReady(), loadPolyfills()]).then(() => {
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 
-if (module.hot) {
-  module.hot.accept()
+if (import.meta.webpackHot) {
+  import.meta.webpackHot.accept()
 }

@@ -1,12 +1,12 @@
-import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../_api/oauth'
-import { getInstanceInfo } from '../_api/instance'
-import { goto } from '../../../__sapper__/client'
-import { DEFAULT_THEME, switchToTheme } from '../_utils/themeEngine'
-import { store } from '../_store/store'
-import { updateVerifyCredentialsForInstance } from './instances'
-import { updateCustomEmojiForInstance } from './emoji'
-import { database } from '../_database/database'
-import { DOMAIN_BLOCKS } from '../_static/blocks'
+import { getAccessTokenFromAuthCode, registerApplication, generateAuthLink } from '../_api/oauth.js'
+import { getInstanceInfo } from '../_api/instance.js'
+import { goto } from '../../../__sapper__/client.js'
+import { DEFAULT_THEME, switchToTheme } from '../_utils/themeEngine.js'
+import { store } from '../_store/store.js'
+import { updateVerifyCredentialsForInstance } from './instances.js'
+import { updateCustomEmojiForInstance } from './emoji.js'
+import { database } from '../_database/database.js'
+import { DOMAIN_BLOCKS } from '../_static/blocks.js'
 
 const GENERIC_ERROR = `
   Is this a valid Mastodon instance? Is a browser extension

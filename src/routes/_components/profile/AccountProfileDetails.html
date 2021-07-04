@@ -124,9 +124,9 @@
 <script>
   import IconButton from '../IconButton.html'
   import { importShowAccountProfileOptionsDialog } from '../dialog/asyncDialogs/importShowAccountProfileOptionsDialog.js'
-  import { LOCALE } from '../../_static/intl'
-  import { formatIntl } from '../../_utils/formatIntl'
-  import { thunk } from '../../_utils/thunk'
+  import { LOCALE } from '../../_static/intl.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
+  import { thunk } from '../../_utils/thunk.js'
 
   const numberFormat = thunk(() => new Intl.NumberFormat(LOCALE))
 

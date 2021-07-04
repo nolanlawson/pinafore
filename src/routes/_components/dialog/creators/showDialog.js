@@ -1,5 +1,5 @@
-import { createDialogElement } from '../helpers/createDialogElement'
-import { createDialogId } from '../helpers/createDialogId'
+import { createDialogElement } from '../helpers/createDialogElement.js'
+import { createDialogId } from '../helpers/createDialogId.js'
 
 export function showDialog (Dialog, data) {
   const dialog = new Dialog({

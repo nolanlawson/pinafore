@@ -34,13 +34,13 @@
 </style>
 <script>
   import GenericInstanceSettingsStyle from './GenericInstanceSettingsStyle.html'
-  import { store } from '../../../_store/store'
+  import { store } from '../../../_store/store.js'
   import { importShowTextConfirmationDialog } from '../../dialog/asyncDialogs/importShowTextConfirmationDialog.js'
-  import { logOutOfInstance } from '../../../_actions/instances'
-  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription'
-  import { toast } from '../../toast/toast'
-  import { get } from '../../../_utils/lodash-lite'
-  import { formatIntl } from '../../../_utils/formatIntl'
+  import { logOutOfInstance } from '../../../_actions/instances.js'
+  import { updatePushSubscriptionForInstance, updateAlerts } from '../../../_actions/pushSubscription.js'
+  import { toast } from '../../toast/toast.js'
+  import { get } from '../../../_utils/lodash-lite.js'
+  import { formatIntl } from '../../../_utils/formatIntl.js'
 
   export default {
     async oncreate () {

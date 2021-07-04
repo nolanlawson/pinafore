@@ -16,10 +16,9 @@
 </style>
 <script>
   import ComposeBox from '../compose/ComposeBox.html'
-  import { store } from '../../_store/store'
-  import debounce from 'lodash-es/debounce'
-  import throttle from 'lodash-es/throttle'
-  import { on } from '../../_utils/eventBus'
+  import { store } from '../../_store/store.js'
+  import { debounce, throttle } from '../../_thirdparty/lodash/timers.js'
+  import { on } from '../../_utils/eventBus.js'
   import { observe } from 'svelte-extras'
 
   const DEBOUNCE_DELAY = 400

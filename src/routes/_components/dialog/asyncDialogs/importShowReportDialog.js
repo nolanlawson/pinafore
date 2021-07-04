@@ -1,3 +1,3 @@
 export const importShowReportDialog = () => import(
-  '../creators/showReportDialog'
+  '../creators/showReportDialog.js'
 ).then(mod => mod.default)

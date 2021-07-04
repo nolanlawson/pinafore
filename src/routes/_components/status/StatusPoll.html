@@ -244,15 +244,15 @@
 </style>
 <script>
   import SvgIcon from '../SvgIcon.html'
-  import { store } from '../../_store/store'
-  import { formatTimeagoFutureDate, formatTimeagoDate } from '../../_intl/formatTimeagoDate'
-  import { absoluteDateFormatter } from '../../_utils/formatters'
-  import { registerClickDelegate } from '../../_utils/delegate'
-  import { classname } from '../../_utils/classname'
-  import { getPoll, voteOnPoll } from '../../_actions/polls'
+  import { store } from '../../_store/store.js'
+  import { formatTimeagoFutureDate, formatTimeagoDate } from '../../_intl/formatTimeagoDate.js'
+  import { absoluteDateFormatter } from '../../_utils/formatters.js'
+  import { registerClickDelegate } from '../../_utils/delegate.js'
+  import { classname } from '../../_utils/classname.js'
+  import { getPoll, voteOnPoll } from '../../_actions/polls.js'
   import escapeHtml from 'escape-html'
-  import { emojifyText } from '../../_utils/emojifyText'
-  import { formatIntl } from '../../_utils/formatIntl'
+  import { emojifyText } from '../../_utils/emojifyText.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
   const REFRESH_MIN_DELAY = 1000
 

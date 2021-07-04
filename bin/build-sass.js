@@ -3,10 +3,12 @@ import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
 import cssDedoupe from 'css-dedoupe'
-import { TextDecoder } from 'text-encoding'
+import textEncodingPackage from 'text-encoding'
+const { TextDecoder } = textEncodingPackage
 
 const writeFile = promisify(fs.writeFile)
 const readdir = promisify(fs.readdir)
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
 const globalScss = path.join(__dirname, '../src/scss/global.scss')
 const defaultThemeScss = path.join(__dirname, '../src/scss/themes/_default.scss')

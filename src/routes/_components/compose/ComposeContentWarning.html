@@ -14,10 +14,10 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { store } from '../../_store/store.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
   import { observe } from 'svelte-extras'
-  import { throttleTimer } from '../../_utils/throttleTimer'
+  import { throttleTimer } from '../../_utils/throttleTimer.js'
 
   const updateContentWarningInStore = throttleTimer(scheduleIdleTask)
 

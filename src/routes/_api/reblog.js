@@ -1,5 +1,5 @@
-import { post } from '../_utils/ajax'
-import { basename, auth } from './utils'
+import { post } from '../_utils/ajax.js'
+import { basename, auth } from './utils.js'
 
 export async function reblogStatus (instanceName, accessToken, statusId) {
   const url = `${basename(instanceName)}/api/v1/statuses/${statusId}/reblog`

@@ -1,8 +1,8 @@
 /* global describe, it */
 
-import { toPaddedBigInt, toReversePaddedBigInt } from '../../src/routes/_utils/statusIdSorting'
+import { toPaddedBigInt, toReversePaddedBigInt } from '../../src/routes/_utils/statusIdSorting.js'
 import assert from 'assert'
-import times from 'lodash-es/times'
+import { times } from '../../src/routes/_utils/lodash-lite.js'
 
 function lt (a, b) {
   assert(a < b, `Failed: ${a} < ${b}`)

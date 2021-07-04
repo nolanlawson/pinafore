@@ -1,3 +1,3 @@
 export const importShowAccountProfileOptionsDialog = () => import(
-  '../creators/showAccountProfileOptionsDialog'
+  '../creators/showAccountProfileOptionsDialog.js'
 ).then(mod => mod.default)

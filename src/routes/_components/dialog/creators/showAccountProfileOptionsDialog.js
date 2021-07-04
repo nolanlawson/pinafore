@@ -1,5 +1,5 @@
 import AccountProfileOptionsDialog from '../components/AccountProfileOptionsDialog.html'
-import { showDialog } from './showDialog'
+import { showDialog } from './showDialog.js'
 
 export default function showAccountProfileOptionsDialog (account, relationship, verifyCredentials) {
   return showDialog(AccountProfileOptionsDialog, {

@@ -1,7 +1,7 @@
-const TerserWebpackPlugin = require('terser-webpack-plugin')
-const terserOptions = require('../bin/terserOptions')
+import TerserWebpackPlugin from 'terser-webpack-plugin'
+import terserOptions from '../bin/terserOptions'
 
-module.exports = () => new TerserWebpackPlugin({
+export default () => new TerserWebpackPlugin({
   exclude: /(tesseract-asset|page-lifecycle)/, // tesseract causes problems, page-lifecycle is pre-minified
   parallel: true,
   terserOptions

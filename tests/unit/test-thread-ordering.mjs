@@ -1,6 +1,6 @@
 /* global describe, it */
 import assert from 'assert'
-import { sortItemSummariesForThread } from '../../src/routes/_utils/sortItemSummariesForThread'
+import { sortItemSummariesForThread } from '../../src/routes/_utils/sortItemSummariesForThread.js'
 
 describe('test-thread-ordering.js', () => {
   it('orders a complex thread correctly', () => {

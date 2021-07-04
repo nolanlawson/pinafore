@@ -1,18 +1,18 @@
 <slot></slot>
 <script>
-  import { virtualListStore } from './virtualListStore'
-  import throttle from 'lodash-es/throttle'
-  import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../../_utils/fullscreen'
-  import { mark, stop } from '../../_utils/marks'
-  import { doubleRAF } from '../../_utils/doubleRAF'
+  import { virtualListStore } from './virtualListStore.js'
+  import { throttle } from '../../_thirdparty/lodash/timers.js'
+  import { isFullscreen, attachFullscreenListener, detachFullscreenListener } from '../../_utils/fullscreen.js'
+  import { mark, stop } from '../../_utils/marks.js'
+  import { doubleRAF } from '../../_utils/doubleRAF.js'
   import { observe } from 'svelte-extras'
   import {
     addScrollListener,
     removeScrollListener,
     getScrollContainer,
     getOffsetHeight
-  } from '../../_utils/scrollContainer'
-  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
+  } from '../../_utils/scrollContainer.js'
+  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize.js'
 
   const SCROLL_EVENT_DELAY = 300
 

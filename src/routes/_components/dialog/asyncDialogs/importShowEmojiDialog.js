@@ -1,3 +1,3 @@
 export const importShowEmojiDialog = () => import(
-  '../creators/showEmojiDialog'
+  '../creators/showEmojiDialog.js'
 ).then(mod => mod.default)

@@ -1,4 +1,4 @@
-import { set, keys, del } from '../_thirdparty/idb-keyval/idb-keyval'
+import { set, keys, del } from '../_thirdparty/idb-keyval/idb-keyval.js'
 
 const PREFIX = 'known-instance-'
 

@@ -1,8 +1,8 @@
-import { showMoreItemsForCurrentTimeline } from './timeline'
-import { scrollToTop } from '../_utils/scrollToTop'
-import { createStatusOrNotificationUuid } from '../_utils/createStatusOrNotificationUuid'
-import { store } from '../_store/store'
-import { tryToFocusElement } from '../_utils/tryToFocusElement'
+import { showMoreItemsForCurrentTimeline } from './timeline.js'
+import { scrollToTop } from '../_utils/scrollToTop.js'
+import { createStatusOrNotificationUuid } from '../_utils/createStatusOrNotificationUuid.js'
+import { store } from '../_store/store.js'
+import { tryToFocusElement } from '../_utils/tryToFocusElement.js'
 
 export function showMoreAndScrollToTop () {
   // Similar to Twitter, pressing "." will click the "show more" button and select

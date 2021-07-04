@@ -1,4 +1,4 @@
-import debounce from 'lodash-es/debounce'
+import { debounce } from '../_thirdparty/lodash/timers.js'
 
 const DEBOUNCE_DELAY = 700
 

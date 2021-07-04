@@ -1,5 +1,5 @@
-import { auth, basename } from './utils'
-import { DEFAULT_TIMEOUT, get, post, WRITE_TIMEOUT } from '../_utils/ajax'
+import { auth, basename } from './utils.js'
+import { DEFAULT_TIMEOUT, get, post, WRITE_TIMEOUT } from '../_utils/ajax.js'
 
 export async function postStatus (instanceName, accessToken, text, inReplyToId, mediaIds,
   sensitive, spoilerText, visibility, poll) {

@@ -1,4 +1,4 @@
-import { removeEmoji } from '../_utils/removeEmoji'
+import { removeEmoji } from '../_utils/removeEmoji.js'
 
 export function getAccountAccessibleName (account, omitEmojiInDisplayNames) {
   const emojis = account.emojis

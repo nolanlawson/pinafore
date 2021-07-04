@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { search } from '../_api/search'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { search } from '../_api/search.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function doSearch () {
   const { currentInstance, accessToken, queryInSearch } = store.get()

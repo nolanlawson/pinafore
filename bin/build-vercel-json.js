@@ -5,11 +5,12 @@
 import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
-import { routes } from '../__sapper__/service-worker'
-import cloneDeep from 'lodash-es/cloneDeep'
-import inlineScriptChecksum from '../src/inline-script/checksum'
-import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChecksums'
+import { routes } from '../__sapper__/service-worker.js'
+import { cloneDeep } from '../src/routes/_utils/lodash-lite.js'
+import inlineScriptChecksum from '../src/inline-script/checksum.js'
+import { sapperInlineScriptChecksums } from '../src/server/sapperInlineScriptChecksums.js'
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const writeFile = promisify(fs.writeFile)
 
 const JSON_TEMPLATE = {

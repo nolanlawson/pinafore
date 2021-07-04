@@ -1,5 +1,5 @@
-import { DEFAULT_TIMEOUT, get, paramsString } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { DEFAULT_TIMEOUT, get, paramsString } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export async function getBlockedAccounts (instanceName, accessToken, limit = 80) {
   let url = `${basename(instanceName)}/api/v1/blocks`

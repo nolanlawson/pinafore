@@ -1,4 +1,4 @@
-import { dbPromise, getDatabase } from './databaseLifecycle'
+import { dbPromise, getDatabase } from './databaseLifecycle.js'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
@@ -9,15 +9,15 @@ import {
   STATUSES_STORE,
   THREADS_STORE,
   TIMESTAMP
-} from './constants'
-import debounce from 'lodash-es/debounce'
-import { mark, stop } from '../_utils/marks'
-import { deleteAll } from './utils'
-import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys'
-import { getKnownInstances } from './knownInstances'
-import noop from 'lodash-es/noop'
-import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../_static/database'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
+} from './constants.js'
+import { debounce } from '../_thirdparty/lodash/timers.js'
+import { mark, stop } from '../_utils/marks.js'
+import { deleteAll } from './utils.js'
+import { createPinnedStatusKeyRange, createThreadKeyRange } from './keys.js'
+import { getKnownInstances } from './knownInstances.js'
+import { noop } from '../_utils/lodash-lite.js'
+import { CLEANUP_DELAY, CLEANUP_TIME_AGO } from '../_static/database.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
 
 const BATCH_SIZE = 20
 

@@ -1,5 +1,5 @@
-import { get, post, DEFAULT_TIMEOUT, WRITE_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { get, post, DEFAULT_TIMEOUT, WRITE_TIMEOUT } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export async function getPoll (instanceName, accessToken, pollId) {
   const url = `${basename(instanceName)}/api/v1/polls/${pollId}`

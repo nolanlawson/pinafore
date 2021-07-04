@@ -37,13 +37,13 @@
 </style>
 <script>
   import VirtualListContainer from './VirtualListContainer.html'
-  import VirtualListLazyItem from './VirtualListLazyItem'
+  import VirtualListLazyItem from './VirtualListLazyItem.html'
   import VirtualListFooter from './VirtualListFooter.html'
   import VirtualListHeader from './VirtualListHeader.html'
-  import { virtualListStore } from './virtualListStore'
-  import throttle from 'lodash-es/throttle'
-  import { mark, stop } from '../../_utils/marks'
-  import isEqual from 'lodash-es/isEqual'
+  import { virtualListStore } from './virtualListStore.js'
+  import { isEqual } from '../../_thirdparty/lodash/objects.js'
+  import { throttle } from '../../_thirdparty/lodash/timers.js'
+  import { mark, stop } from '../../_utils/marks.js'
   import { observe } from 'svelte-extras'
 
   const DISTANCE_FROM_BOTTOM_TO_FIRE = 800
