@@ -126,21 +126,17 @@ module.exports = {
       exclude: /node_modules/,
       failOnError: true,
       cwd: process.cwd()
+    }),
+    dev && new webpack.HotModuleReplacementPlugin({
+      requestTimeout: 120000
+    }),
+    // generates report.html, somewhat expensive to compute, so avoid in CircleCI tests
+    !dev && !process.env.CIRCLECI && new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      logLevel: 'silent'
     })
-  ].concat(dev
-    ? [
-        new webpack.HotModuleReplacementPlugin({
-          requestTimeout: 120000
-        })
-      ]
-    : [
-
-        new BundleAnalyzerPlugin({ // generates report.html
-          analyzerMode: 'static',
-          openAnalyzer: false,
-          logLevel: 'silent'
-        })
-      ]),
+  ].filter(Boolean),
   devtool: dev ? 'inline-source-map' : 'source-map',
   performance: {
     hints: dev ? false : (process.env.DEBUG ? 'warning' : 'error'),
