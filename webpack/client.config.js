@@ -7,7 +7,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const terser = require('./terser.config')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
-const { mode, dev, resolve, inlineSvgs, allSvgs } = require('./shared.config')
+const { mode, dev, resolve, inlineSvgs } = require('./shared.config')
 const { version } = require('../package.json')
 
 const urlRegex = require('../src/routes/_utils/urlRegexSource.js')()
@@ -111,7 +111,6 @@ module.exports = {
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.INLINE_SVGS': JSON.stringify(inlineSvgs),
-      'process.env.ALL_SVGS': JSON.stringify(allSvgs),
       'process.env.URL_REGEX': urlRegex.toString(),
       'process.env.LOCALE': JSON.stringify(LOCALE),
       'process.env.EMOJI_PICKER_I18N': emojiPickerI18n ? JSON.stringify(emojiPickerI18n) : 'undefined',

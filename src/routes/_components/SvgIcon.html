@@ -10,6 +10,8 @@
   import { animate } from '../_utils/animate'
   import { store } from '../_store/store'
 
+  const inlineSvgs = new Set(process.env.INLINE_SVGS)
+
   export default {
     data: () => ({
       className: '',
@@ -18,7 +20,7 @@
     }),
     store: () => store,
     computed: {
-      inline: ({ href }) => process.env.INLINE_SVGS.includes(href)
+      inline: ({ href }) => inlineSvgs.has(href)
     },
     methods: {
       animate (animation) {
