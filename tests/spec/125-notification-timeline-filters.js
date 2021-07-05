@@ -40,9 +40,12 @@ test('Notification timeline filters correctly affect counts - boosts', async t =
 test('Notification timeline filters correctly affect counts - favs', async t => {
   const timeout = 20000
   const { id: statusId } = await postAs('foobar', 'I do not care if you fav this')
+  await sleep(500)
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(1).innerText).contains('I do not care if you fav this')
+    .expect(getNthStatusContent(1).innerText).contains('I do not care if you fav this', {
+      timeout
+    })
   await sleep(500)
   await favoriteStatusAs('admin', statusId)
   await t
@@ -58,11 +61,11 @@ test('Notification timeline filters correctly affect counts - favs', async t => 
     .expect(notificationBadge.innerText).eql('1', { timeout })
 })
 
-test('Notification timeline filters correctly affect counts - favs', async t => {
+test('Notification timeline filters correctly affect counts - mentions', async t => {
   const timeout = 20000
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(1).exists).ok()
+    .expect(getNthStatusContent(1).exists).ok({ timeout })
   await sleep(500)
   await postAs('admin', 'hey yo @foobar')
   await t
@@ -82,7 +85,7 @@ test('Notification timeline filters correctly affect counts - follows', async t 
   const timeout = 20000
   await loginAsFoobar(t)
   await t
-    .expect(getNthStatusContent(1).exists).ok()
+    .expect(getNthStatusContent(1).exists).ok({ timeout })
   await sleep(500)
   await followAs('ExternalLinks', 'foobar')
   await t
