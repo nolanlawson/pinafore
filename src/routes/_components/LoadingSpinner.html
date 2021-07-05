@@ -1,4 +1,4 @@
-<SvgIcon className="loading-spinner-icon spin {maskStyle ? 'mask-style' : ''}"
+<SvgIcon className="loading-spinner-icon {animate ? 'spin' : ''} {maskStyle ? 'mask-style' : ''}"
          style="width: {size}px; height: {size}px;"
          href="#fa-spinner"
          ariaLabel="{intl.loading}"
@@ -18,7 +18,8 @@
   export default {
     data: () => ({
       maskStyle: false,
-      size: 64
+      size: 64,
+      animate: true
     }),
     components: {
       SvgIcon
