@@ -3,11 +3,11 @@ import {
   composeInput,
   getNthStatus, getNthStatusSelector
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`112-status-links.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('External links, hashtags, and mentions have correct attributes', async t => {
   const text = 'Why hello there @admin and @baz and @quux ' +
@@ -17,7 +17,6 @@ test('External links, hashtags, and mentions have correct attributes', async t =
 
   const nthAnchor = n => $(`${getNthStatusSelector(1)} .status-content a`).nth(n)
 
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, text, { paste: true })
     .click(composeButton)

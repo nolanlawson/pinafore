@@ -6,15 +6,14 @@ import {
   getUrl,
   showMoreButton, getNthStatusContent
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { postAs } from '../serverActions'
 
 fixture`128-disable-infinite-load.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can disable loading items at top of timeline', async t => {
-  await loginAsFoobar(t)
   await t.click(settingsNavButton)
     .click($('a').withText('General'))
     .click(disableInfiniteScroll)

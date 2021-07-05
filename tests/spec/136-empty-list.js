@@ -2,14 +2,13 @@ import {
   getNthStatus, sleep,
   timeline
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { postStatusWithMediaAs } from '../serverActions'
 
 fixture`136-empty-list.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('An empty list can become non-empty as results stream in', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok()
     .navigateTo('/tags/sweetkitty')

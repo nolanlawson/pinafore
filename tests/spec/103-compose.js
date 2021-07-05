@@ -1,4 +1,4 @@
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import {
   composeInput, getNthComposeReplyButton, getNthComposeReplyInput, getNthReplyButton, getNthStatus, getUrl,
   homeNavButton, notificationsNavButton,
@@ -6,10 +6,9 @@ import {
 } from '../utils'
 
 fixture`103-compose.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('statuses show up in home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'hello world', { paste: true })
     .click(postStatusButton)
@@ -24,7 +23,6 @@ test('statuses show up in home timeline', async t => {
 })
 
 test('statuses in threads show up in right order', async t => {
-  await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/5')
     .click(getNthStatus(3))

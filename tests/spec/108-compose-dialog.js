@@ -11,14 +11,13 @@ import {
   composeModalInput,
   composeModalComposeButton, emojiSearchInput, firstEmojiInPicker
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`108-compose-dialog.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('can compose using a dialog', async t => {
-  await loginAsFoobar(t)
   await scrollToStatus(t, 16)
   await t.expect(modalDialog.exists).notOk()
     .expect(composeButton.getAttribute('aria-label')).eql('Compose toot')
@@ -38,7 +37,6 @@ test('can compose using a dialog', async t => {
 // Skipped because TestCafé seems to believe the elements are not visible when they are.
 // Tested manually and it's fine; probably a TestCafé bug.
 test.skip('can use emoji dialog within compose dialog', async t => {
-  await loginAsFoobar(t)
   await scrollToStatus(t, 16)
   await t.expect(composeButton.getAttribute('aria-label')).eql('Compose toot')
   await sleep(2000)

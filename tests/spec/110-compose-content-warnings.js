@@ -2,14 +2,13 @@ import {
   composeButton, composeContentWarning, composeInput, contentWarningButton,
   getNthShowOrHideButton, getNthStatus, getNthStatusSelector
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`110-compose-content-warnings.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('content warnings are posted', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'hello this is a toot', { paste: true })
     .click(contentWarningButton)
@@ -23,7 +22,6 @@ test('content warnings are posted', async t => {
 })
 
 test('content warnings are not posted if removed', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'hi this is another toot', { paste: true })
     .click(contentWarningButton)
@@ -37,7 +35,6 @@ test('content warnings are not posted if removed', async t => {
 })
 
 test('content warnings can have emoji', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'I can: :blobnom: ')
     .click(contentWarningButton)
@@ -52,7 +49,6 @@ test('content warnings can have emoji', async t => {
 test('no XSS in content warnings or text', async t => {
   const pwned1 = '<script>alert("pwned!")</script>'
   const pwned2 = '<script>alert("pwned from CW!")</script>'
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, pwned1)
     .click(contentWarningButton)

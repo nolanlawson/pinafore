@@ -1,4 +1,4 @@
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import {
   forceOffline,
   forceOnline,
@@ -16,12 +16,11 @@ import {
 } from '../serverActions'
 
 fixture`107-streaming-gap.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 const timeout = 30000
 
 test('fills timeline gap while away from local timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .click(localTimelineNavButton)
     .expect(getNthStatus(1).exists).ok({ timeout })
@@ -41,7 +40,6 @@ test('fills timeline gap while away from local timeline', async t => {
 })
 
 test('fills timeline gap while away from home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok({ timeout })
     .hover(getNthStatus(1))
@@ -56,7 +54,6 @@ test('fills timeline gap while away from home timeline', async t => {
 })
 
 test('fills timeline gap while away from notifications timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .expect(getNthStatus(1).exists).ok({ timeout })
@@ -72,7 +69,6 @@ test('fills timeline gap while away from notifications timeline', async t => {
 })
 
 test('fills timeline gap while away from notifications timeline - badge updates', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok({ timeout })
     .hover(getNthStatus(1))
@@ -91,7 +87,6 @@ test('fills timeline gap while away from notifications timeline - badge updates'
 })
 
 test('fills a large gap while away from home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok({ timeout })
     .hover(getNthStatus(1))

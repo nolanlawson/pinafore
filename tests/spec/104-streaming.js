@@ -1,14 +1,13 @@
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import {
   getNthStatus, scrollToTop, showMoreButton, sleep
 } from '../utils'
 import { postAs } from '../serverActions'
 
 fixture`104-streaming.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('new incoming statuses show up immediately', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
   await postAs('admin', 'hello my baby hello my honey')
@@ -16,7 +15,6 @@ test('new incoming statuses show up immediately', async t => {
 })
 
 test('new incoming toots show a button if scrolled down', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .hover(getNthStatus(3))

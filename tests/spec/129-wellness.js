@@ -6,15 +6,14 @@ import {
   getUrl,
   notificationsNavButton, getTitleText, sleep
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { postAs } from '../serverActions'
 
 fixture`129-wellness.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can disable unread notification counts', async t => {
-  await loginAsFoobar(t)
   await t.click(settingsNavButton)
     .click($('a').withText('Wellness'))
     .click(disableUnreadNotifications)

@@ -15,14 +15,13 @@ import {
   sleep,
   getNthStatus
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { POLL_EXPIRY_DEFAULT } from '../../src/routes/_static/polls'
 
 fixture`127-compose-polls.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can add and remove poll', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok()
     .expect(composePoll.exists).notOk()
@@ -43,7 +42,6 @@ test('Can add and remove poll', async t => {
 })
 
 test('Can add and remove poll options', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok()
     .expect(composePoll.exists).notOk()
@@ -86,7 +84,6 @@ test('Can add and remove poll options', async t => {
 })
 
 test('Properly escapes HTML and emojos in polls', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok()
     .click(pollButton)

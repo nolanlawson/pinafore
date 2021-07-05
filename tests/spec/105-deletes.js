@@ -1,4 +1,4 @@
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import {
   clickToNotificationsAndBackHome, forceOffline, forceOnline, getNthStatus, getUrl, homeNavButton,
   notificationsNavButton
@@ -6,11 +6,10 @@ import {
 import { deleteAs, postAs, postReplyAs } from '../serverActions'
 
 fixture`105-deletes.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('deleted statuses are removed from the timeline', async t => {
   const timeout = 20000
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
   const status = await postAs('admin', "I'm gonna delete this")
@@ -31,7 +30,6 @@ test('deleted statuses are removed from the timeline', async t => {
 
 test('deleted statuses are removed from threads', async t => {
   const timeout = 20000
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
   const status = await postAs('admin', "I won't delete this")
@@ -56,7 +54,6 @@ test('deleted statuses are removed from threads', async t => {
 
 test('deleted statuses result in deleted notifications', async t => {
   const timeout = 20000
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')

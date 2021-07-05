@@ -12,14 +12,13 @@ import {
   confirmationDialogOKButton, sleep
 } from '../utils'
 import { Selector as $ } from 'testcafe'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { postAs } from '../serverActions'
 
 fixture`114-mute-unmute.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can mute and unmute an account', async t => {
-  await loginAsFoobar(t)
   const post = 'blah blah blah'
   await postAs('admin', post)
 

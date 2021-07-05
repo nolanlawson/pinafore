@@ -13,13 +13,12 @@ import {
   getNthStatusContent,
   getNthStatusAndImage
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`130-focal-point.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can set a focal point', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'here is a focal point')
     .click(mediaButton)
