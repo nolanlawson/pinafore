@@ -9,13 +9,12 @@ import {
   getUrl,
   reblogsCountElement
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`011-reblog-favorites-count.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('shows favorites', async t => {
-  await loginAsFoobar(t)
   await t
     .click(getNthStatus(1))
     .expect(getUrl()).contains('/statuses/')
@@ -32,7 +31,6 @@ test('shows favorites', async t => {
 })
 
 test('shows boosts', async t => {
-  await loginAsFoobar(t)
   await t
     .click(getNthStatus(1))
     .expect(getUrl()).contains('/statuses/')

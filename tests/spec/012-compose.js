@@ -13,13 +13,12 @@ import {
   sleep,
   times
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`012-compose.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('shows compose limits', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .expect(composeLengthIndicator.innerText).eql('500')
@@ -46,7 +45,6 @@ test('shows compose limits', async t => {
 })
 
 test('shows compose limits for URLs/handles', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(composeLengthIndicator.innerText).eql('500')
     .expect(composeButton.hasAttribute('disabled')).notOk()
@@ -58,7 +56,6 @@ test('shows compose limits for URLs/handles', async t => {
 })
 
 test('shows compose limits for emoji', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'hello world \ud83c\ude01 \ud83d\udc6a')
     .expect(composeLengthIndicator.innerText).eql('485')
@@ -66,7 +63,6 @@ test('shows compose limits for emoji', async t => {
 })
 
 test('shows compose limits for custom emoji', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'hello world ')
     .click(emojiButton)
@@ -79,7 +75,6 @@ test('shows compose limits for custom emoji', async t => {
 })
 
 test('inserts custom emoji correctly', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'hello world')
     .selectText(composeInput, 6, 6)
@@ -108,7 +103,6 @@ test('inserts custom emoji correctly', async t => {
 })
 
 test('inserts emoji without typing anything', async t => {
-  await loginAsFoobar(t)
   await sleep(1000)
   await t
     .click(emojiButton)
@@ -122,7 +116,6 @@ test('inserts emoji without typing anything', async t => {
 })
 
 test('inserts native emoji without typing anything', async t => {
-  await loginAsFoobar(t)
   await t
     .click(emojiButton)
   await sleep(1000)
@@ -145,7 +138,6 @@ test('inserts native emoji without typing anything', async t => {
 })
 
 test('cannot post an empty status', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatusContent(1).innerText).contains('pinned toot 1')
     .click(composeButton)

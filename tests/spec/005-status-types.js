@@ -1,12 +1,11 @@
 import { getNthStatusSelector } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`005-status-types.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('shows followers-only vs regular in home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect($(`${getNthStatusSelector(2)} .status-content`).innerText).contains('notification of unlisted message')
     .expect($(`${getNthStatusSelector(2)} .status-toolbar button:nth-child(2)`).getAttribute('aria-label'))
@@ -19,7 +18,6 @@ test('shows followers-only vs regular in home timeline', async t => {
 })
 
 test('shows direct vs followers-only vs regular in notifications', async t => {
-  await loginAsFoobar(t)
   await t
     .navigateTo('/notifications')
     .expect($(`${getNthStatusSelector(3)} .status-content`).innerText).contains('notification of unlisted message')

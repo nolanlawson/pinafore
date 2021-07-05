@@ -12,16 +12,15 @@ import {
   scrollToTop,
   settingsNavButton, sleep, getNumStoreListeners
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { installDomListenerListener, getNumDomListeners } from '../spyDomListeners'
 import { homeTimeline } from '../fixtures'
 import { Selector as $ } from 'testcafe'
 
 fixture`038-memory-leaks.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 async function runMemoryLeakTest (t, firstStep, secondStep) {
-  await loginAsFoobar(t)
   await installDomListenerListener()
   await firstStep()
   await sleep(1000)

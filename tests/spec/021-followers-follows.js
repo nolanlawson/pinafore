@@ -3,14 +3,13 @@ import {
   followsButton, getNthSearchResult,
   getNthStatusSelector, getUrl, goBack
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`021-followers-follows.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('shows followers and follows', async t => {
-  await loginAsFoobar(t)
   await t
     .click($(`${getNthStatusSelector(1)} .status-author-name`))
     .expect(getUrl()).match(/\/accounts\/3$/)

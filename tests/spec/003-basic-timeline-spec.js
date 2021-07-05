@@ -5,13 +5,12 @@ import {
   validateTimeline
 } from '../utils'
 import { homeTimeline, notifications, localTimeline, favorites, directMessages } from '../fixtures'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`003-basic-timeline-spec.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Shows the home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
@@ -26,7 +25,6 @@ test('Shows the home timeline', async t => {
 })
 
 test('Shows notifications', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
@@ -37,7 +35,6 @@ test('Shows notifications', async t => {
 })
 
 test('Shows the local timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
@@ -48,7 +45,6 @@ test('Shows the local timeline', async t => {
 })
 
 test('Shows the federated timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
@@ -61,7 +57,6 @@ test('Shows the federated timeline', async t => {
 })
 
 test('Shows favorites', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
@@ -74,7 +69,6 @@ test('Shows favorites', async t => {
 })
 
 test('Shows direct messages', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })

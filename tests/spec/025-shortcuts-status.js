@@ -12,12 +12,12 @@ import {
   isNthStatusActive, getActiveElementRectTop, scrollToTop, isActiveStatusPinned, getFirstModalMedia
 } from '../utils'
 import { homeTimeline } from '../fixtures'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 import { Selector as $ } from 'testcafe'
 
 fixture`025-shortcuts-status.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 async function activateStatus (t, idx) {
   const timeout = 20000
@@ -29,7 +29,6 @@ async function activateStatus (t, idx) {
 }
 
 test('Shortcut j/k change the active status', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
@@ -54,7 +53,6 @@ test('Shortcut j/k change the active status', async t => {
 })
 
 test('Shortcut j goes to the first visible status', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
   await scrollToStatus(t, 11)
@@ -65,7 +63,6 @@ test('Shortcut j goes to the first visible status', async t => {
 })
 
 test('Shortcut o opens active status, backspace goes back', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(3).exists).ok({ timeout: 30000 })
@@ -81,7 +78,6 @@ test('Shortcut o opens active status, backspace goes back', async t => {
 
 test('Shortcut x shows/hides spoilers', async t => {
   const idx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
   await activateStatus(t, idx)
@@ -97,7 +93,6 @@ test('Shortcut x shows/hides spoilers', async t => {
 
 test('Shortcut y shows/hides sensitive image, i opens', async t => {
   const idx = homeTimeline.findIndex(_ => _.content === "here's a secret kitten")
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
   await activateStatus(t, idx)
@@ -115,7 +110,6 @@ test('Shortcut y shows/hides sensitive image, i opens', async t => {
 
 test('Shortcut f toggles favorite status', async t => {
   const idx = homeTimeline.findIndex(_ => _.content === 'this is unlisted')
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1 + idx).exists).ok({ timeout: 30000 })
@@ -130,7 +124,6 @@ test('Shortcut f toggles favorite status', async t => {
 
 test('Shortcut p toggles profile', async t => {
   const idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1 + idx).exists).ok({ timeout: 30000 })
@@ -142,7 +135,6 @@ test('Shortcut p toggles profile', async t => {
 
 test('Shortcut m toggles mention', async t => {
   const idx = homeTimeline.findIndex(_ => _.content === 'pinned toot 1')
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getNthStatus(1 + idx).exists).ok({ timeout: 30000 })
@@ -155,7 +147,6 @@ test('Shortcut m toggles mention', async t => {
 })
 
 test('Shortcut j/k change the active status on a thread', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('a').withText('quux'))
   await scrollToStatus(t, 3)
@@ -187,7 +178,6 @@ test('Shortcut j/k change the active status on a thread', async t => {
 })
 
 test('Shortcut j/k change the active status on pinned statuses', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('a').withText('quux'))
     .expect(getUrl()).contains('/accounts')

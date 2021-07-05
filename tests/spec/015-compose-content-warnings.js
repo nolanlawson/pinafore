@@ -2,13 +2,12 @@ import {
   composeContentWarning, composeInput, composeLengthIndicator, contentWarningButton, homeNavButton,
   notificationsNavButton
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`015-compose-content-warnings.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Changes content warnings', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(composeContentWarning.exists).notOk()
     .expect(contentWarningButton.getAttribute('aria-label')).eql('Add content warning')
@@ -38,7 +37,6 @@ test('Changes content warnings', async t => {
 })
 
 test('Considers content warnings for length limits', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(composeLengthIndicator.innerText).eql('500')
     .click(contentWarningButton)
@@ -55,7 +53,6 @@ test('Considers content warnings for length limits', async t => {
 })
 
 test('Content warning goes away if you hide it', async t => {
-  await loginAsFoobar(t)
   await t
     .click(contentWarningButton)
     .expect(composeContentWarning.value).eql('')

@@ -6,14 +6,13 @@ import {
   getUrl, modalDialog, notificationsNavButton,
   isNthStatusActive, goBack
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`026-shortcuts-notification.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Shortcut f toggles favorite status in notification', async t => {
   const idx = 0
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)
@@ -30,7 +29,6 @@ test('Shortcut f toggles favorite status in notification', async t => {
 
 test('Shortcut p toggles profile in a follow notification', async t => {
   const idx = 5 // "@quux followed you"
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)
@@ -47,7 +45,6 @@ test('Shortcut p toggles profile in a follow notification', async t => {
 
 test('Shortcut m toggles mention in a follow notification', async t => {
   const idx = 5 // "@quux followed you"
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)
@@ -63,7 +60,6 @@ test('Shortcut m toggles mention in a follow notification', async t => {
 
 test('Shortcut p refers to booster in a boost notification', async t => {
   const idx = 1 // "@admin boosted your status"
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)
@@ -77,7 +73,6 @@ test('Shortcut p refers to booster in a boost notification', async t => {
 
 test('Shortcut m refers to favoriter in a favorite notification', async t => {
   const idx = 0 // "@admin favorited your status"
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)

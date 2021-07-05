@@ -19,15 +19,14 @@ import {
   sleep,
   visibleModalDialog
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
 
 fixture`029-back-button-modal.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Back button dismisses the modal', async t => {
-  await loginAsFoobar(t)
   const idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
@@ -43,7 +42,6 @@ test('Back button dismisses the modal', async t => {
 })
 
 test('Back button dismisses a nested modal', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getNthStatus(1))
@@ -60,7 +58,6 @@ test('Back button dismisses a nested modal', async t => {
 })
 
 test('Forward and back buttons', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getNthStatus(1))
@@ -78,7 +75,6 @@ test('Forward and back buttons', async t => {
 })
 
 test('Closing dialog pops history state', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click(getNthStatus(1))
@@ -95,7 +91,6 @@ test('Closing dialog pops history state', async t => {
 })
 
 test('Pressing backspace pops history state', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click(getNthStatus(1))
@@ -114,7 +109,6 @@ test('Pressing backspace pops history state', async t => {
 })
 
 test('Pressing Esc pops history state', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click(getNthStatus(1))
@@ -133,7 +127,6 @@ test('Pressing Esc pops history state', async t => {
 })
 
 test('Clicking outside dialog pops history state', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click(getNthStatus(1))
@@ -153,7 +146,6 @@ test('Clicking outside dialog pops history state', async t => {
 })
 
 test('Closing nested modal pops history state', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click(getNthStatus(1))
@@ -175,7 +167,6 @@ test('Closing nested modal pops history state', async t => {
 })
 
 test('History works correctly for nested modal', async t => {
-  await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .click(homeNavButton)
@@ -203,7 +194,6 @@ test('History works correctly for nested modal', async t => {
 })
 
 test('History works correctly for nested modal 2', async t => {
-  await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .click(homeNavButton)
@@ -232,7 +222,6 @@ test('History works correctly for nested modal 2', async t => {
 })
 
 test('History works correctly for nested modal 3', async t => {
-  await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .click(homeNavButton)
@@ -261,7 +250,6 @@ test('History works correctly for nested modal 3', async t => {
 })
 
 test('History and scroll position work correctly for link in compose dialog', async t => {
-  await loginAsFoobar(t)
   await scrollToStatus(t, 10)
   await t
     .expect(getScrollTop()).notEql(0)

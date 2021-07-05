@@ -3,13 +3,12 @@ import {
   getNthStatus, getNthStatusOptionsButton,
   modalDialog, sleep, visibleModalDialog
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`032-mute-dialog.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can open the mute dialog twice', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
     .hover(getNthStatus(1))

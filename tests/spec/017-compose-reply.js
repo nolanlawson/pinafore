@@ -5,14 +5,13 @@ import {
   getNthReplyContentWarningInput, getNthReplyPostPrivacyButton,
   getNthStatus, getNthStatusRelativeDate, getUrl, homeNavButton, notificationsNavButton, scrollToStatus
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { homeTimeline } from '../fixtures'
 
 fixture`017-compose-reply.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('account handle populated correctly for replies', async t => {
-  await loginAsFoobar(t)
   await t
     .click(getNthReplyButton(1))
     .expect(getNthComposeReplyInput(1).value).eql('@quux ')
@@ -31,7 +30,6 @@ test('account handle populated correctly for replies', async t => {
 })
 
 test('replying to posts with mentions', async t => {
-  await loginAsFoobar(t)
   await t
     .click(getNthReplyButton(2))
     .expect(getNthComposeReplyInput(2).value).eql('@admin ')
@@ -41,7 +39,6 @@ test('replying to posts with mentions', async t => {
 })
 
 test('replies have same privacy as replied-to status by default', async t => {
-  await loginAsFoobar(t)
   const unlistedIdx = homeTimeline.findIndex(_ => _.content === 'notification of unlisted message')
   const privateIdx = homeTimeline.findIndex(_ => _.content === 'notification of followers-only message')
   const publicIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
@@ -73,7 +70,6 @@ test('replies have same privacy as replied-to status by default', async t => {
 })
 
 test('replies have same CW as replied-to status', async t => {
-  await loginAsFoobar(t)
   const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await t.hover(getNthStatus(1))
   await scrollToStatus(t, 1 + kittenIdx)
@@ -86,7 +82,6 @@ test('replies have same CW as replied-to status', async t => {
 })
 
 test('replies save deletions of CW', async t => {
-  await loginAsFoobar(t)
   const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
@@ -100,7 +95,6 @@ test('replies save deletions of CW', async t => {
 })
 
 test('replies save changes to CW', async t => {
-  await loginAsFoobar(t)
   const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t.click(getNthReplyButton(1 + kittenIdx))
@@ -114,7 +108,6 @@ test('replies save changes to CW', async t => {
 })
 
 test('replies save changes to post privacy', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .hover(getNthStatus(2))
@@ -130,7 +123,6 @@ test('replies save changes to post privacy', async t => {
 })
 
 test('replies are the same whatever thread they are in', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .hover(getNthStatus(2))

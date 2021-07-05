@@ -6,13 +6,12 @@ import {
   scrollToStatus,
   sleep
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`014-compose-post-privacy.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Changes post privacy', async t => {
-  await loginAsFoobar(t)
   await sleep(2000)
   await t
     .expect(postPrivacyButton.getAttribute('aria-label')).eql('Adjust privacy (currently Public)')
@@ -27,7 +26,6 @@ test('Changes post privacy', async t => {
 })
 
 test('can use privacy dialog within compose dialog', async t => {
-  await loginAsFoobar(t)
   await scrollToStatus(t, 16)
   await t.expect(composeButton.getAttribute('aria-label')).eql('Compose toot')
   await sleep(2000)

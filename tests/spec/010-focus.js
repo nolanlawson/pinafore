@@ -16,17 +16,15 @@ import {
   getNthStatusSensitiveMediaButton,
   getActiveElementAriaLabel, settingsNavButton, getActiveElementHref, communityNavButton
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 import { homeTimeline } from '../fixtures'
 
 fixture`010-focus.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('modal preserves focus', async t => {
-  await loginAsFoobar(t)
-
   const idx = homeTimeline.findIndex(_ => _.content === "here's a video")
 
   await scrollToStatus(t, 1 + idx)
@@ -41,7 +39,6 @@ test('modal preserves focus', async t => {
 })
 
 test('timeline preserves focus', async t => {
-  await loginAsFoobar(t)
   // explicitly hover-focus-click
   await t.hover(getNthStatus(1))
   await focus(getNthStatusSelector(1))()
@@ -56,7 +53,6 @@ test('timeline preserves focus', async t => {
 })
 
 test('timeline link preserves focus', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok({ timeout: 20000 })
     .click($(`${getNthStatusSelector(1)} .status-header a`))
@@ -74,7 +70,6 @@ test('timeline link preserves focus', async t => {
 })
 
 test('notification timeline preserves focus', async t => {
-  await loginAsFoobar(t)
   await t
     .navigateTo('/notifications')
   await scrollToStatus(t, 6)
@@ -90,7 +85,6 @@ test('notification timeline preserves focus', async t => {
 test('thread preserves focus', async t => {
   const timeout = 30000
 
-  await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/3')
     .expect(getNthStatus(1).exists).ok({ timeout })
@@ -116,7 +110,6 @@ test('thread preserves focus', async t => {
 })
 
 test('reply preserves focus and moves focus to the text input', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getNthStatus(2).exists).ok({ timeout: 20000 })
     .click(getNthReplyButton(2))
@@ -128,7 +121,6 @@ test('focus main content element on index page load', async t => {
 })
 
 test('clicking sensitive button returns focus to sensitive button', async t => {
-  await loginAsFoobar(t)
   const sensitiveKittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, sensitiveKittenIdx + 1)
   await t
@@ -139,7 +131,6 @@ test('clicking sensitive button returns focus to sensitive button', async t => {
 })
 
 test('preserves focus two levels deep', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click($('.status-author-name').withText(('admin')))
@@ -157,7 +148,6 @@ test('preserves focus two levels deep', async t => {
 })
 
 test('preserves focus on settings page', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click($('a[href="/settings/instances"]'))
@@ -184,7 +174,6 @@ test('preserves focus on settings page', async t => {
 })
 
 test('preserves focus on community page', async t => {
-  await loginAsFoobar(t)
   await t
     .click(communityNavButton)
     .expect(getUrl()).contains('/community')

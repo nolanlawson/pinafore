@@ -2,13 +2,12 @@ import {
   accountProfileMoreOptionsButton, closeDialogButton, composeModalInput,
   getNthDialogOptionsOption, modalDialog
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`019-mention.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('can mention from account profile', async t => {
-  await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/5')
     .click(accountProfileMoreOptionsButton)

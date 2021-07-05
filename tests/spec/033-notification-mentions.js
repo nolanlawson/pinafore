@@ -2,14 +2,13 @@ import {
   getUrl, notificationsTabAll, notificationsTabMentions,
   notificationsNavButton, validateTimeline
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { notificationsMentions, notifications } from '../fixtures'
 
 fixture`033-notification-mentions.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Shows notification mentions', async t => {
-  await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .expect(getUrl()).match(/\/notifications$/)

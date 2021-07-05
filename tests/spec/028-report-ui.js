@@ -4,14 +4,13 @@ import {
   getNthStatusOptionsButton,
   modalDialog
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`028-report-ui.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can open a report UI from a status', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .click(getNthStatusOptionsButton(1))
@@ -25,7 +24,6 @@ test('Can open a report UI from a status', async t => {
 })
 
 test('Can open a report UI from an account', async t => {
-  await loginAsFoobar(t)
   await t
     .navigateTo('/accounts/3')
     .click(accountProfileMoreOptionsButton)

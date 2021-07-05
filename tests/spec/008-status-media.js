@@ -6,16 +6,14 @@ import {
   modalDialogContents,
   scrollToStatus
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
 
 fixture`008-status-media.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('shows sensitive images and videos', async t => {
-  await loginAsFoobar(t)
-
   const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   const videoIdx = homeTimeline.findIndex(_ => _.content === 'secret video')
 
@@ -33,8 +31,6 @@ test('shows sensitive images and videos', async t => {
 })
 
 test('click and close image and video modals', async t => {
-  await loginAsFoobar(t)
-
   const videoIdx = homeTimeline.findIndex(_ => _.content === "here's a video")
   const kittenIdx = homeTimeline.findIndex(_ => _.content === "here's an animated kitten gif")
 

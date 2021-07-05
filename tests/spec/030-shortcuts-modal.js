@@ -3,15 +3,14 @@ import {
   getNthStatusMediaButton, getNthStatusOptionsButton,
   modalDialog, scrollToStatus, sleep
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 import { homeTimeline } from '../fixtures'
 
 fixture`030-shortcuts-modal.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Backspace dismisses modal', async t => {
-  await loginAsFoobar(t)
   await t
     .click(getNthStatusOptionsButton(1))
     .expect(modalDialog.hasAttribute('aria-hidden')).notOk()
@@ -22,7 +21,6 @@ test('Backspace dismisses modal', async t => {
 })
 
 test('Backspace dismisses media modal', async t => {
-  await loginAsFoobar(t)
   const idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t
@@ -35,7 +33,6 @@ test('Backspace dismisses media modal', async t => {
 })
 
 test('Left/right changes active media in modal', async t => {
-  await loginAsFoobar(t)
   const idx = homeTimeline.findIndex(_ => (_.content || '').includes('2 kitten photos'))
   await scrollToStatus(t, idx + 1)
   await t

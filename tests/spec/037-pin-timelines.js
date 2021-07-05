@@ -1,15 +1,13 @@
 import {
   communityNavButton, getUrl, goBack, reload
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`037-pin-timelines.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can pin a timeline', async t => {
-  await loginAsFoobar(t)
-
   const pinLocal = $('button[aria-label="Pin Local timeline"]')
   const pinFederated = $('button[aria-label="Pin Federated timeline"]')
   const pinnedNav = $('.main-nav-li:nth-child(3)')

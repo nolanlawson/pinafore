@@ -2,14 +2,13 @@ import {
   composeModalInput, getComposeModalNthMediaListItem,
   getUrl, modalDialogContents, simulateWebShare
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { ONE_TRANSPARENT_PIXEL } from '../../src/routes/_static/media'
 
 fixture`027-web-share-and-web-shortcuts.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can take a shortcut directly to a compose dialog', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .navigateTo('http://localhost:4002/?compose=true')
@@ -19,7 +18,6 @@ test('Can take a shortcut directly to a compose dialog', async t => {
 })
 
 test('Can share title/text using Web Share', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
   await (simulateWebShare({ title: 'my title', url: undefined, text: 'my text' })())
@@ -31,7 +29,6 @@ test('Can share title/text using Web Share', async t => {
 })
 
 test('Can share a file using Web Share', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
   await (simulateWebShare({ title: undefined, url: undefined, text: undefined, file: ONE_TRANSPARENT_PIXEL })())

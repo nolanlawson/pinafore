@@ -5,14 +5,13 @@ import {
   getUrl,
   disableRelativeTimestamps, getNthStatus, getNthStatusRelativeDate
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`041-wellness.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can disable relative time stamps', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getFirstVisibleStatus().exists).ok()
     .expect(getNthStatusRelativeDate(1).innerText).match(/\bago\b/i)

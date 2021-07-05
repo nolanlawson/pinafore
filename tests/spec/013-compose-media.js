@@ -11,13 +11,12 @@ import {
   sleep,
   uploadKittenImage
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`013-compose-media.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('inserts media', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(mediaButton.hasAttribute('disabled')).notOk()
   await (uploadKittenImage(1)())
@@ -45,7 +44,6 @@ test('inserts media', async t => {
 })
 
 test('removes media', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
@@ -61,7 +59,6 @@ test('removes media', async t => {
 })
 
 test('does not add URLs as media is added/removed', async t => {
-  await loginAsFoobar(t)
   await t
     .typeText(composeInput, 'this is a toot')
     .expect(mediaButton.exists).ok()
@@ -78,7 +75,6 @@ test('does not add URLs as media is added/removed', async t => {
 })
 
 test('keeps media descriptions as media is removed', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
@@ -97,7 +93,6 @@ test('keeps media descriptions as media is removed', async t => {
 })
 
 test('keeps media in local storage', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())
@@ -131,7 +126,6 @@ test('keeps media in local storage', async t => {
 })
 
 test('resets sensitive settings when deleting media', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(mediaButton.exists).ok()
   await (uploadKittenImage(1)())

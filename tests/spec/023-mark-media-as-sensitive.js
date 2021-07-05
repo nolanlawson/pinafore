@@ -1,4 +1,4 @@
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import {
   generalSettingsButton,
   getNthStatus, getNthStatusMediaImg, getNthStatusSensitiveMediaButton, homeNavButton, markMediaSensitiveInput,
@@ -8,7 +8,7 @@ import {
 import { homeTimeline } from '../fixtures'
 
 fixture`023-mark-media-as-sensitive.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 async function checkSensitivityForStatus (t, idx, sensitive) {
   if (sensitive) {
@@ -67,12 +67,10 @@ async function doNeverMarkMediaAsSensitive (t, checked) {
 }
 
 test('default sensitive settings', async t => {
-  await loginAsFoobar(t)
   await checkSensitivity(t, sensitive => sensitive)
 })
 
 test('always mark media sensitive', async t => {
-  await loginAsFoobar(t)
   await doMarkMediaAsSensitive(t, true)
   await checkSensitivity(t, () => true)
   // cleanup
@@ -80,7 +78,6 @@ test('always mark media sensitive', async t => {
 })
 
 test('never mark media sensitive', async t => {
-  await loginAsFoobar(t)
   await doNeverMarkMediaAsSensitive(t, true)
   await checkSensitivity(t, () => false)
   // cleanup
@@ -88,7 +85,6 @@ test('never mark media sensitive', async t => {
 })
 
 test('settings are mutually exclusive', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click(generalSettingsButton)

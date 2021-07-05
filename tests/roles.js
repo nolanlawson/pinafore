@@ -1,6 +1,8 @@
 import { getUrl } from './utils'
 import { users } from './users'
 
+export const foobarURL = `http://localhost:4002/?instanceName=localhost:3000&accessToken=${users.foobar.accessToken}`
+
 // quick login using a secret page and a known access token (makes tests run faster)
 async function login (t, user) {
   await t.navigateTo(`/?instanceName=localhost:3000&accessToken=${user.accessToken}`)

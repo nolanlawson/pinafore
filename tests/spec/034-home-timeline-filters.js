@@ -1,15 +1,14 @@
 import {
   validateTimeline, settingsNavButton, instanceSettingHomeReblogs, homeNavButton
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { homeTimeline } from '../fixtures'
 import { Selector as $ } from 'testcafe'
 
 fixture`034-home-timeline-filters.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Filters reblogs from home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click($('a').withText('Instances'))

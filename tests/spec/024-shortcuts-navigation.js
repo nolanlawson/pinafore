@@ -6,14 +6,13 @@ import {
   modalDialogContents,
   notificationsNavButton, scrollToStatus, settingsNavButton, sleep
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`024-shortcuts-navigation.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Shortcut g+l goes to the local timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('g l')
@@ -21,7 +20,6 @@ test('Shortcut g+l goes to the local timeline', async t => {
 })
 
 test('Shortcut g+t goes to the federated timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('g t')
@@ -29,7 +27,6 @@ test('Shortcut g+t goes to the federated timeline', async t => {
 })
 
 test('Shortcut g+h goes back to the home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)
@@ -37,7 +34,6 @@ test('Shortcut g+h goes back to the home timeline', async t => {
 })
 
 test('Shortcut g+f goes to the favorites', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('g f')
@@ -45,7 +41,6 @@ test('Shortcut g+f goes to the favorites', async t => {
 })
 
 test('Shortcut g+c goes to the community page', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('g c')
@@ -53,7 +48,6 @@ test('Shortcut g+c goes to the community page', async t => {
 })
 
 test('Shortcut s goes to the search page', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('s')
@@ -61,7 +55,6 @@ test('Shortcut s goes to the search page', async t => {
 })
 
 test('Shortcut / goes to the search page', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('/')
@@ -69,7 +62,6 @@ test('Shortcut / goes to the search page', async t => {
 })
 
 test('Shortcut backspace goes back from favorites', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('g t')
@@ -81,7 +73,6 @@ test('Shortcut backspace goes back from favorites', async t => {
 })
 
 test('Shortcut h toggles shortcut help dialog', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('h')
@@ -92,7 +83,6 @@ test('Shortcut h toggles shortcut help dialog', async t => {
 })
 
 test('Global shortcut has no effects while in modal dialog', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('g f')
@@ -108,7 +98,6 @@ test('Global shortcut has no effects while in modal dialog', async t => {
 })
 
 test('Shortcut 1 goes to the home timeline', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('1')
@@ -116,7 +105,6 @@ test('Shortcut 1 goes to the home timeline', async t => {
 })
 
 test('Shortcut 6 goes to the settings', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .pressKey('6')
@@ -124,7 +112,6 @@ test('Shortcut 6 goes to the settings', async t => {
 })
 
 test('Shortcut . scrolls to top and focuses', async t => {
-  await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .hover(getNthStatus(1))
@@ -135,8 +122,6 @@ test('Shortcut . scrolls to top and focuses', async t => {
 })
 
 test('Shortcut left and right changes columns', async t => {
-  await loginAsFoobar(t)
-
   const steps = [
     ['right', 'notifications'],
     ['right', 'local'],
@@ -162,7 +147,6 @@ test('Shortcut left and right changes columns', async t => {
 })
 
 test('Shortcut left and right can change focus', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click($('a[href="/settings/hotkeys"]'))
@@ -180,7 +164,6 @@ test('Shortcut left and right can change focus', async t => {
 })
 
 test('Shortcuts can be disabled', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click($('a[href="/settings/hotkeys"]'))
@@ -198,7 +181,6 @@ test('Shortcuts can be disabled', async t => {
 })
 
 test('Shortcut left/right works on settings page', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click($('a[href="/settings/hotkeys"]'))

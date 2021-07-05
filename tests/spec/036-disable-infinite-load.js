@@ -5,15 +5,14 @@ import {
   scrollToStatus,
   loadMoreButton, getFirstVisibleStatus, scrollFromStatusToStatus, sleep, getActiveElementAriaPosInSet
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
 
 fixture`036-disable-infinite-load.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Can disable loading items at bottom of timeline', async t => {
-  await loginAsFoobar(t)
   await t.click(settingsNavButton)
     .click($('a').withText('General'))
     .click(disableInfiniteScroll)

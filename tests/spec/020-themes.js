@@ -2,14 +2,13 @@ import {
   getCurrentTheme,
   settingsNavButton
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { Selector as $ } from 'testcafe'
 
 fixture`020-themes.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('can set a theme', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click($('a[href="/settings/instances"]'))

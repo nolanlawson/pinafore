@@ -8,15 +8,14 @@ import {
   sleep
 } from '../utils'
 import { Selector as $ } from 'testcafe'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`018-compose-autosuggest.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 const timeout = 30000
 
 test('autosuggests user handles', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
   await sleep(1000)
@@ -39,7 +38,6 @@ test('autosuggests user handles', async t => {
 })
 
 test('autosuggests custom emoji', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, ':blob')
@@ -61,7 +59,6 @@ test('autosuggests custom emoji', async t => {
 })
 
 test('autosuggest custom emoji works with regular emoji - keyboard', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d :blobno')
@@ -71,7 +68,6 @@ test('autosuggest custom emoji works with regular emoji - keyboard', async t => 
 })
 
 test('autosuggest custom emoji works with regular emoji - clicking', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d :blobno')
@@ -81,7 +77,6 @@ test('autosuggest custom emoji works with regular emoji - clicking', async t => 
 })
 
 test('autosuggest handles works with regular emoji - keyboard', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d @quu')
@@ -91,7 +86,6 @@ test('autosuggest handles works with regular emoji - keyboard', async t => {
 })
 
 test('autosuggest handles works with regular emoji - clicking', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '\ud83c\udf4d @quu')
@@ -101,7 +95,6 @@ test('autosuggest handles works with regular emoji - clicking', async t => {
 })
 
 test('autosuggest can suggest native emoji', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, ':slight')
@@ -111,7 +104,6 @@ test('autosuggest can suggest native emoji', async t => {
 })
 
 test('autosuggest only shows for one input', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '@quu')
@@ -124,7 +116,6 @@ test('autosuggest only shows for one input', async t => {
 })
 
 test('autosuggest only shows for one input part 2', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '@adm')
@@ -141,7 +132,6 @@ test('autosuggest only shows for one input part 2', async t => {
 })
 
 test('autocomplete disappears on blur', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(composeInput)
     .typeText(composeInput, '@adm')

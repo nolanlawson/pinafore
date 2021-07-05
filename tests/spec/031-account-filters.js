@@ -5,13 +5,12 @@ import {
   getNthPinnedStatus, getNthStatus,
   getUrl
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 
 fixture`031-account-filters.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Basic account filters test', async t => {
-  await loginAsFoobar(t)
   await t
     .click(avatarInComposeBox)
     .expect(getUrl()).contains('/accounts/2')

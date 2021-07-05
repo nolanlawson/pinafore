@@ -3,14 +3,13 @@ import {
   getNthStatus, getUrl, validateTimeline, getFirstVisibleStatus,
   goBack, forceOffline, forceOnline, searchNavButton, searchInput, getNthSearchResult, scrollToStatus
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { bazThreadRelativeTo2, bazThreadRelativeTo2b, bazThreadRelativeTo2B2, quuxThread } from '../fixtures'
 
 fixture`009-threads.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('Shows a thread', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('a').withText('quux'))
 
@@ -26,7 +25,6 @@ test('Shows a thread', async t => {
 })
 
 test('Scrolls to proper point in thread', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('a').withText('quux'))
     .hover(getNthStatus(1))
@@ -72,7 +70,6 @@ async function validateForkedThread (t) {
 }
 
 test('Forked threads look correct online and offline', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getFirstVisibleStatus())
   await navigateToBazAccount(t)

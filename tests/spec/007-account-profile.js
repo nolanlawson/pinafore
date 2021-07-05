@@ -4,14 +4,13 @@ import {
   accountProfileFollowedBy, accountProfileName, accountProfileUsername, getUrl,
   validateTimeline
 } from '../utils'
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import { quuxStatuses } from '../fixtures'
 
 fixture`007-account-profile.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('shows account profile', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('.status-author-name').withText(('quux')))
     .expect(getUrl()).contains('/accounts/3')
@@ -22,7 +21,6 @@ test('shows account profile', async t => {
 })
 
 test('shows account profile 2', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('.status-author-name').withText(('admin')))
     .expect(getUrl()).contains('/accounts/1')
@@ -34,7 +32,6 @@ test('shows account profile 2', async t => {
 })
 
 test('shows account profile 3', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('.mention').withText(('foobar')))
     .expect(getUrl()).contains('/accounts/2')
@@ -46,7 +43,6 @@ test('shows account profile 3', async t => {
 })
 
 test('shows account profile statuses', async t => {
-  await loginAsFoobar(t)
   await t
     .click($('.status-author-name').withText(('quux')))
     .expect(getUrl()).contains('/accounts/3')

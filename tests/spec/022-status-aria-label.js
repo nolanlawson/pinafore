@@ -1,4 +1,4 @@
-import { loginAsFoobar } from '../roles'
+import { foobarURL } from '../roles'
 import {
   generalSettingsButton,
   getNthShowOrHideButton,
@@ -12,10 +12,9 @@ import { Selector as $ } from 'testcafe'
 import { homeTimeline } from '../fixtures'
 
 fixture`022-status-aria-label.js`
-  .page`http://localhost:4002`
+  .page`${foobarURL}`
 
 test('basic aria-labels for statuses', async t => {
-  await loginAsFoobar(t)
   await t
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
@@ -31,7 +30,6 @@ test('basic aria-labels for statuses', async t => {
 })
 
 test('aria-labels for CWed statuses', async t => {
-  await loginAsFoobar(t)
   const kittenIdx = homeTimeline.findIndex(_ => _.spoiler === 'kitten CW')
   await scrollToStatus(t, 1 + kittenIdx)
   await t
@@ -50,7 +48,6 @@ test('aria-labels for CWed statuses', async t => {
 })
 
 test('aria-labels for notifications', async t => {
-  await loginAsFoobar(t)
   await t
     .click(notificationsNavButton)
     .hover(getNthStatus(1))
@@ -80,7 +77,6 @@ test('aria-labels for notifications', async t => {
 })
 
 test('can shorten aria-labels', async t => {
-  await loginAsFoobar(t)
   await t
     .click(settingsNavButton)
     .click(generalSettingsButton)
