@@ -1,17 +1,16 @@
 /* global it describe beforeEach afterEach */
 
-import '../indexedDBShims'
+import '../indexedDBShims.js'
 import assert from 'assert'
-import { closeDatabase, deleteDatabase, getDatabase } from '../../src/routes/_database/databaseLifecycle'
-import * as dbApi from '../../src/routes/_database/databaseApis'
-import times from 'lodash-es/times'
-import cloneDeep from 'lodash-es/cloneDeep'
+import { closeDatabase, deleteDatabase, getDatabase } from '../../src/routes/_database/databaseLifecycle.js'
+import * as dbApi from '../../src/routes/_database/databaseApis.js'
+import { cloneDeep, times } from '../../src/routes/_utils/lodash-lite.js'
 import {
   TIMESTAMP, ACCOUNT_ID, STATUS_ID, REBLOG_ID, USERNAME_LOWERCASE,
   CURRENT_TIME, DB_VERSION_CURRENT, DB_VERSION_SEARCH_ACCOUNTS, DB_VERSION_SNOWFLAKE_IDS
-} from '../../src/routes/_database/constants'
-import { cleanup } from '../../src/routes/_database/cleanup'
-import { CLEANUP_TIME_AGO } from '../../src/routes/_static/database'
+} from '../../src/routes/_database/constants.js'
+import { cleanup } from '../../src/routes/_database/cleanup.js'
+import { CLEANUP_TIME_AGO } from '../../src/routes/_static/database.js'
 
 const INSTANCE_NAME = 'localhost:3000'
 

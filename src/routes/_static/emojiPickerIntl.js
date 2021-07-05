@@ -1,4 +1,4 @@
-import { LOCALE } from './intl'
+import { LOCALE } from './intl.js'
 
 export const emojiPickerDataSource = `/emoji-${LOCALE}.json`
 

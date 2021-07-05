@@ -1,6 +1,6 @@
-import Database from 'emoji-picker-element/database'
-import { lifecycle } from './lifecycle'
-import { emojiPickerLocale, emojiPickerDataSource } from '../_static/emojiPickerIntl'
+import Database from 'emoji-picker-element/database.js'
+import { lifecycle } from './lifecycle.js'
+import { emojiPickerLocale, emojiPickerDataSource } from '../_static/emojiPickerIntl.js'
 
 let database
 

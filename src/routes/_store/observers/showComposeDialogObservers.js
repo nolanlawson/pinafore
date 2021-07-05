@@ -1,5 +1,5 @@
-import { store } from '../store'
-import { showComposeDialog } from '../../_actions/showComposeDialog'
+import { store } from '../store.js'
+import { showComposeDialog } from '../../_actions/showComposeDialog.js'
 
 // If the user is logged in, and if the Service Worker handled a POST and set special data
 // in IndexedDB, then we want to handle it on the home page.

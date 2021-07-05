@@ -1,5 +1,5 @@
-import { post, WRITE_TIMEOUT } from '../_utils/ajax'
-import { basename, auth } from './utils'
+import { post, WRITE_TIMEOUT } from '../_utils/ajax.js'
+import { basename, auth } from './utils.js'
 
 export async function favoriteStatus (instanceName, accessToken, statusId) {
   const url = `${basename(instanceName)}/api/v1/statuses/${statusId}/favourite`

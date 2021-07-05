@@ -1,4 +1,4 @@
-import { mark, stop } from '../../_utils/marks'
+import { mark, stop } from '../../_utils/marks.js'
 
 export function navComputations (store) {
   mark('navComputations')

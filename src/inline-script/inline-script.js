@@ -3,12 +3,12 @@
 // To allow CSP to work correctly, we also calculate a sha256 hash during
 // the build process and write it to checksum.js.
 
-import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine'
-import { basename } from '../routes/_api/utils'
-import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut'
-import { storeLite } from '../routes/_store/storeLite'
-import { isIOSPre12Point2 } from '../routes/_utils/userAgent/isIOSPre12Point2'
-import { isMac } from '../routes/_utils/userAgent/isMac'
+import { INLINE_THEME, DEFAULT_THEME, switchToTheme } from '../routes/_utils/themeEngine.js'
+import { basename } from '../routes/_api/utils.js'
+import { onUserIsLoggedOut } from '../routes/_actions/onUserIsLoggedOut.js'
+import { storeLite } from '../routes/_store/storeLite.js'
+import { isIOSPre12Point2 } from '../routes/_utils/userAgent/isIOSPre12Point2.js'
+import { isMac } from '../routes/_utils/userAgent/isMac.js'
 
 window.__themeColors = process.env.THEME_COLORS
 

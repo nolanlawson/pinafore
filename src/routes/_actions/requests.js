@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { approveFollowRequest, rejectFollowRequest } from '../_api/requests'
-import { emit } from '../_utils/eventBus'
-import { toast } from '../_components/toast/toast'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { approveFollowRequest, rejectFollowRequest } from '../_api/requests.js'
+import { emit } from '../_utils/eventBus.js'
+import { toast } from '../_components/toast/toast.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setFollowRequestApprovedOrRejected (accountId, approved, toastOnSuccess) {
   const {

@@ -1,7 +1,7 @@
-import { TimelineStream } from '../../_api/stream/TimelineStream'
-import { processMessage } from './processMessage'
-import { fillStreamingGap } from './fillStreamingGap'
-import { store } from '../../_store/store'
+import { TimelineStream } from '../../_api/stream/TimelineStream.js'
+import { processMessage } from './processMessage.js'
+import { fillStreamingGap } from './fillStreamingGap.js'
+import { store } from '../../_store/store.js'
 
 export function createStream (api, instanceName, accessToken, timelineName, firstStatusId, firstNotificationId) {
   console.log(`streaming ${instanceName} ${timelineName}: createStream`, 'firstStatusId', firstStatusId,

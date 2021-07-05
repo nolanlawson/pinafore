@@ -1,6 +1,6 @@
-import { scheduleIdleTask } from './scheduleIdleTask'
-import { store } from '../_store/store'
-import { isMobile } from './userAgent/isMobile'
+import { scheduleIdleTask } from './scheduleIdleTask.js'
+import { store } from '../_store/store.js'
+import { isMobile } from './userAgent/isMobile.js'
 
 // Rough guess at whether this is a "mobile" device or not, for the purposes
 // of "device class" estimations

@@ -55,19 +55,19 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import { store } from '../../../_store/store'
-  import { insertEmoji } from '../../../_actions/emoji'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
-  import { isDarkTheme } from '../../../_utils/isDarkTheme'
+  import { store } from '../../../_store/store.js'
+  import { insertEmoji } from '../../../_actions/emoji.js'
+  import { show } from '../helpers/showDialog.js'
+  import { close } from '../helpers/closeDialog.js'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog.js'
+  import { isDarkTheme } from '../../../_utils/isDarkTheme.js'
   import 'emoji-picker-element/picker'
-  import { registerShadowRoot, unregisterShadowRoot } from '../../../_thirdparty/a11y-dialog/a11y-dialog'
-  import { doubleRAF } from '../../../_utils/doubleRAF'
-  import { convertCustomEmojiToEmojiPickerFormat } from '../../../_utils/convertCustomEmojiToEmojiPickerFormat'
-  import { supportsFocusVisible } from '../../../_utils/supportsFocusVisible'
-  import { importFocusVisible } from '../../../_utils/polyfills/asyncPolyfills'
-  import { emojiPickerI18n, emojiPickerDataSource, emojiPickerLocale } from '../../../_static/emojiPickerIntl'
+  import { registerShadowRoot, unregisterShadowRoot } from '../../../_thirdparty/a11y-dialog/a11y-dialog.js'
+  import { doubleRAF } from '../../../_utils/doubleRAF.js'
+  import { convertCustomEmojiToEmojiPickerFormat } from '../../../_utils/convertCustomEmojiToEmojiPickerFormat.js'
+  import { supportsFocusVisible } from '../../../_utils/supportsFocusVisible.js'
+  import { importFocusVisible } from '../../../_utils/polyfills/asyncPolyfills.js'
+  import { emojiPickerI18n, emojiPickerDataSource, emojiPickerLocale } from '../../../_static/emojiPickerIntl.js'
 
   export default {
     async oncreate () {

@@ -1,5 +1,5 @@
-import { get, set, close, del } from '../_thirdparty/idb-keyval/idb-keyval'
-import { WEB_SHARE_TARGET_DATA_IDB_KEY } from '../_static/share'
+import { get, set, close, del } from '../_thirdparty/idb-keyval/idb-keyval.js'
+import { WEB_SHARE_TARGET_DATA_IDB_KEY } from '../_static/share.js'
 
 export function deleteWebShareData () {
   return del(WEB_SHARE_TARGET_DATA_IDB_KEY)

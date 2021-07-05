@@ -44,3 +44,9 @@ export function times (n, func) {
   }
   return res
 }
+
+export function noop () {}
+
+export function cloneDeep (obj) {
+  return JSON.parse(JSON.stringify(obj))
+}

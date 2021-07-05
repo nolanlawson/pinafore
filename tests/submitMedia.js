@@ -1,11 +1,11 @@
 import FormData from 'form-data'
-import fs from 'fs'
-import path from 'path'
-import { auth } from '../src/routes/_api/utils'
+import { auth } from '../src/routes/_api/utils.js'
+import * as loadMediaPackage from './loadMedia.cjs'
+const { loadMedia } = loadMediaPackage
 
 export async function submitMedia (accessToken, filename, alt) {
   const form = new FormData()
-  form.append('file', fs.createReadStream(path.join(__dirname, 'images', filename)))
+  form.append('file', loadMedia(filename))
   form.append('description', alt)
   return new Promise((resolve, reject) => {
     form.submit({
@@ -23,7 +23,20 @@ export async function submitMedia (accessToken, filename, alt) {
         data += chunk
       })
 
-      res.on('end', () => resolve(JSON.parse(data)))
+      res.on('error', err => {
+        console.error(err)
+        reject(err)
+      })
+
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data)
+          resolve(parsed)
+        } catch (err) {
+          console.error('Malformed response, expected JSON: ' + data)
+          reject(err)
+        }
+      })
     })
   })
 }

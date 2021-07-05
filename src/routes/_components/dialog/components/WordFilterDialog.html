@@ -123,10 +123,10 @@
 <script>
   import GenericConfirmationDialog from './GenericConfirmationDialog.html'
   import Select from '../../Select.html'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
-  import { store } from '../../../_store/store'
+  import { show } from '../helpers/showDialog.js'
+  import { close } from '../helpers/closeDialog.js'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog.js'
+  import { store } from '../../../_store/store.js'
   import {
     WORD_FILTER_CONTEXT_ACCOUNT,
     WORD_FILTER_CONTEXT_HOME,
@@ -136,8 +136,8 @@
     WORD_FILTER_CONTEXTS,
     WORD_FILTER_EXPIRY_DEFAULT,
     WORD_FILTER_EXPIRY_OPTIONS
-  } from '../../../_static/wordFilters'
-  import { createOrUpdateFilter } from '../../../_actions/filters'
+  } from '../../../_static/wordFilters.js'
+  import { createOrUpdateFilter } from '../../../_actions/filters.js'
 
   export default {
     async oncreate () {

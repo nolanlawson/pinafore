@@ -1,5 +1,5 @@
-import { get } from '../../_utils/lodash-lite'
-import { mark, stop } from '../../_utils/marks'
+import { get } from '../../_utils/lodash-lite.js'
+import { mark, stop } from '../../_utils/marks.js'
 
 const MIN_PREFIX_LENGTH = 2
 // Technically mastodon accounts allow dots, but it would be weird to do an autosuggest search if it ends with a dot.

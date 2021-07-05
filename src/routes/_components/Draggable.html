@@ -35,10 +35,10 @@
 </style>
 <script>
   import { observe } from 'svelte-extras'
-  import { throttleTimer } from '../_utils/throttleTimer'
-  import { pointerUp, pointerDown, pointerLeave, pointerMove } from '../_utils/pointerEvents'
-  import { requestPostAnimationFrame } from '../_utils/requestPostAnimationFrame'
-  import { classname } from '../_utils/classname'
+  import { throttleTimer } from '../_utils/throttleTimer.js'
+  import { pointerUp, pointerDown, pointerLeave, pointerMove } from '../_utils/pointerEvents.js'
+  import { requestPostAnimationFrame } from '../_utils/requestPostAnimationFrame.js'
+  import { classname } from '../_utils/classname.js'
 
   // ensure DOM writes only happen once after a rAF
   const updateIndicatorStyle = throttleTimer(requestAnimationFrame)

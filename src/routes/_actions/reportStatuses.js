@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { report } from '../_api/report'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { report } from '../_api/report.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function reportStatuses (account, statusIds, comment, forward) {
   const { currentInstance, accessToken } = store.get()

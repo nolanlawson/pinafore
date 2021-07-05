@@ -2,8 +2,8 @@
 // Used in the integration tests. Can't see a problem with exposing this publicly
 // since you would have to know the access token anyway.
 
-import { store } from '../_store/store'
-import { goto } from '../../../__sapper__/client'
+import { store } from '../_store/store.js'
+import { goto } from '../../../__sapper__/client.js'
 
 export function doQuickLoginIfNecessary () {
   const params = new URLSearchParams(location.search)

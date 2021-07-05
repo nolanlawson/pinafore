@@ -1,8 +1,8 @@
-import { timelineMixins } from './timelineMixins'
-import { statusMixins } from './statusMixins'
-import { autosuggestMixins } from './autosuggestMixins'
-import { composeMixins } from './composeMixins'
-import { PinaforeStore as Store } from '../store'
+import { timelineMixins } from './timelineMixins.js'
+import { statusMixins } from './statusMixins.js'
+import { autosuggestMixins } from './autosuggestMixins.js'
+import { composeMixins } from './composeMixins.js'
+import { PinaforeStore as Store } from '../store.js'
 
 export function loggedInMixins () {
   composeMixins(Store)

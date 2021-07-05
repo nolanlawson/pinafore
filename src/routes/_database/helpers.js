@@ -1,8 +1,8 @@
-import { dbPromise, getDatabase } from './databaseLifecycle'
-import { getInCache, hasInCache, setInCache } from './cache'
+import { dbPromise, getDatabase } from './databaseLifecycle.js'
+import { getInCache, hasInCache, setInCache } from './cache.js'
 import {
   ACCOUNT_ID, REBLOG_ID, STATUS_ID, TIMESTAMP, USERNAME_LOWERCASE, CURRENT_TIME
-} from './constants'
+} from './constants.js'
 
 export async function getGenericEntityWithId (store, cache, instanceName, id) {
   if (hasInCache(cache, instanceName, id)) {

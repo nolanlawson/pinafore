@@ -1,4 +1,4 @@
-import { thunk } from './thunk'
+import { thunk } from './thunk.js'
 
 export const urlRegex = thunk(() => {
   // this is provided at build time to avoid having a lot of runtime code just to build

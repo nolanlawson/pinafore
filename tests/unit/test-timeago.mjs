@@ -1,7 +1,7 @@
 /* global it describe */
 
 import assert from 'assert'
-import { formatTimeagoDate, formatTimeagoFutureDate } from '../../src/routes/_intl/formatTimeagoDate'
+import { formatTimeagoDate, formatTimeagoFutureDate } from '../../src/routes/_intl/formatTimeagoDate.js'
 
 describe('test-timeago.js', () => {
   it('test past date', () => {

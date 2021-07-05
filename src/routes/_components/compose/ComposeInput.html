@@ -56,21 +56,21 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import { autosize } from '../../_thirdparty/autosize/autosize'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { mark, stop } from '../../_utils/marks'
-  import { selectionChange } from '../../_utils/events'
+  import { store } from '../../_store/store.js'
+  import { autosize } from '../../_thirdparty/autosize/autosize.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+  import { mark, stop } from '../../_utils/marks.js'
+  import { selectionChange } from '../../_utils/events.js'
   import {
     clickSelectedAutosuggestionUsername,
     clickSelectedAutosuggestionEmoji, clickSelectedAutosuggestionHashtag
-  } from '../../_actions/autosuggest'
+  } from '../../_actions/autosuggest.js'
   import { observe } from 'svelte-extras'
-  import { get } from '../../_utils/lodash-lite'
-  import { on } from '../../_utils/eventBus'
-  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
-  import { throttleTimer } from '../../_utils/throttleTimer'
-  import { isWebKit } from '../../_utils/userAgent/isWebKit'
+  import { get } from '../../_utils/lodash-lite.js'
+  import { on } from '../../_utils/eventBus.js'
+  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame.js'
+  import { throttleTimer } from '../../_utils/throttleTimer.js'
+  import { isWebKit } from '../../_utils/userAgent/isWebKit.js'
 
   const updateComposeTextInStore = throttleTimer(scheduleIdleTask)
 

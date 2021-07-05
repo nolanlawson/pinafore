@@ -1,10 +1,12 @@
 // A store where you can divide data into "realms" that are backed with an LRU cache.
 // Each realm has self-contained data that you can set with setForRealm() and compute
 // with computeForRealm(). The maxSize determines how many realms to keep in the LRU cache.
-import { Store } from 'svelte/store.js'
-import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru'
-import { mark, stop } from './marks'
-import { requestPostAnimationFrame } from './requestPostAnimationFrame'
+import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru.js'
+import { mark, stop } from './marks.js'
+import { requestPostAnimationFrame } from './requestPostAnimationFrame.js'
+import * as storePackage from 'svelte/store.umd.js'
+
+const { Store } = storePackage
 
 export class RealmStore extends Store {
   constructor (init, maxSize) {

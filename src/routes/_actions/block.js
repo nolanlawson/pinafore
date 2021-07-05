@@ -1,9 +1,9 @@
-import { store } from '../_store/store'
-import { blockAccount, unblockAccount } from '../_api/block'
-import { toast } from '../_components/toast/toast'
-import { updateLocalRelationship } from './accounts'
-import { emit } from '../_utils/eventBus'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { blockAccount, unblockAccount } from '../_api/block.js'
+import { toast } from '../_components/toast/toast.js'
+import { updateLocalRelationship } from './accounts.js'
+import { emit } from '../_utils/eventBus.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setAccountBlocked (accountId, block, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()

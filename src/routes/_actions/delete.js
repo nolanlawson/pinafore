@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { deleteStatus } from '../_api/delete'
-import { toast } from '../_components/toast/toast'
-import { deleteStatus as deleteStatusLocally } from './deleteStatuses'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { deleteStatus } from '../_api/delete.js'
+import { toast } from '../_components/toast/toast.js'
+import { deleteStatus as deleteStatusLocally } from './deleteStatuses.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function doDeleteStatus (statusId) {
   const { currentInstance, accessToken } = store.get()

@@ -1,3 +1,3 @@
 export const importShowCopyDialog = () => import(
-  '../creators/showCopyDialog'
+  '../creators/showCopyDialog.js'
 ).then(mod => mod.default)

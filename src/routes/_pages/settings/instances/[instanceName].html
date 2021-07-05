@@ -25,7 +25,7 @@
   }
 </style>
 <script>
-  import { store } from '../../../_store/store'
+  import { store } from '../../../_store/store.js'
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
   import InstanceUserProfile from '../../../_components/settings/instance/InstanceUserProfile.html'
   import HomeTimelineFilterSettings from '../../../_components/settings/instance/HomeTimelineFilterSettings.html'
@@ -34,8 +34,8 @@
   import ThemeSettings from '../../../_components/settings/instance/ThemeSettings.html'
   import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
   import WordFilterSettings from '../../../_components/settings/instance/WordFilterSettings.html'
-  import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
-  import { updateFiltersForInstance } from '../../../_actions/filters'
+  import { updateVerifyCredentialsForInstance } from '../../../_actions/instances.js'
+  import { updateFiltersForInstance } from '../../../_actions/filters.js'
 
   export default {
     async oncreate () {

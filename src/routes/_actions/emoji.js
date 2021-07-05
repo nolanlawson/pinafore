@@ -1,11 +1,11 @@
 import {
   cacheFirstUpdateAfter,
   cacheFirstUpdateOnlyIfNotInCache
-} from '../_utils/sync'
-import { database } from '../_database/database'
-import { getCustomEmoji } from '../_api/emoji'
-import { store } from '../_store/store'
-import isEqual from 'lodash-es/isEqual'
+} from '../_utils/sync.js'
+import { database } from '../_database/database.js'
+import { getCustomEmoji } from '../_api/emoji.js'
+import { store } from '../_store/store.js'
+import { isEqual } from '../_thirdparty/lodash/objects.js'
 
 async function syncEmojiForInstance (instanceName, syncMethod) {
   await syncMethod(

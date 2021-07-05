@@ -1,19 +1,19 @@
-import { dbPromise, getDatabase } from '../databaseLifecycle'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
 import {
   deleteFromCache, notificationsCache,
   statusesCache
-} from '../cache'
+} from '../cache.js'
 import {
   NOTIFICATION_TIMELINES_STORE,
   NOTIFICATIONS_STORE, PINNED_STATUSES_STORE,
   STATUS_TIMELINES_STORE,
   STATUSES_STORE,
   THREADS_STORE
-} from '../constants'
+} from '../constants.js'
 import {
   createThreadKeyRange
-} from '../keys'
-import { deleteAll } from '../utils'
+} from '../keys.js'
+import { deleteAll } from '../utils.js'
 
 export async function deleteStatusesAndNotifications (instanceName, statusIds, notificationIds) {
   for (const statusId of statusIds) {

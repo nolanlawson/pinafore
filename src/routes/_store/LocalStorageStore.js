@@ -1,7 +1,9 @@
-import { Store } from 'svelte/store'
-import { safeLocalStorage as LS } from '../_utils/safeLocalStorage'
-import { lifecycle } from '../_utils/lifecycle'
-import { safeParse } from '../_utils/safeParse'
+import { safeLocalStorage as LS } from '../_utils/safeLocalStorage.js'
+import { lifecycle } from '../_utils/lifecycle.js'
+import { safeParse } from '../_utils/safeParse.js'
+import * as storePackage from 'svelte/store.umd.js'
+
+const { Store } = storePackage
 
 export class LocalStorageStore extends Store {
   constructor (state, keysToWatch) {

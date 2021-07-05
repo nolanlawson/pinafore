@@ -1,5 +1,5 @@
 // try 5 times to wait for the element to be rendered and then focus it
-import { scheduleIdleTask } from './scheduleIdleTask'
+import { scheduleIdleTask } from './scheduleIdleTask.js'
 
 const RETRIES = 5
 const TIMEOUT = 50

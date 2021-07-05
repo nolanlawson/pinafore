@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { cacheFirstUpdateAfter } from '../_utils/sync'
-import { database } from '../_database/database'
-import { getFollowRequests } from '../_api/followRequests'
-import { get } from '../_utils/lodash-lite'
+import { store } from '../_store/store.js'
+import { cacheFirstUpdateAfter } from '../_utils/sync.js'
+import { database } from '../_database/database.js'
+import { getFollowRequests } from '../_api/followRequests.js'
+import { get } from '../_utils/lodash-lite.js'
 
 export async function updateFollowRequestCountIfLockedAccount (instanceName) {
   const { verifyCredentials, loggedInInstances } = store.get()

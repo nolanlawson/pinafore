@@ -21,10 +21,10 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import Status from '../status/Status.html'
-  import { updatePinnedStatusesForAccount } from '../../_actions/pinnedStatuses'
-  import { on } from '../../_utils/eventBus'
+  import { updatePinnedStatusesForAccount } from '../../_actions/pinnedStatuses.js'
+  import { on } from '../../_utils/eventBus.js'
 
   export default {
     async oncreate () {

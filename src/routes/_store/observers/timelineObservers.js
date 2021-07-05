@@ -1,6 +1,6 @@
-import { updateInstanceInfo } from '../../_actions/instances'
-import { createStream } from '../../_actions/stream/streaming'
-import { store } from '../store'
+import { updateInstanceInfo } from '../../_actions/instances.js'
+import { createStream } from '../../_actions/stream/streaming.js'
+import { store } from '../store.js'
 
 export function timelineObservers () {
   // stream to watch for local/federated/etc. updates. home and notification

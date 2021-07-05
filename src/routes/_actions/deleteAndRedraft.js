@@ -1,7 +1,7 @@
-import { statusHtmlToPlainText } from '../_utils/statusHtmlToPlainText'
+import { statusHtmlToPlainText } from '../_utils/statusHtmlToPlainText.js'
 import { importShowComposeDialog } from '../_components/dialog/asyncDialogs/importShowComposeDialog.js'
-import { doDeleteStatus } from './delete'
-import { store } from '../_store/store'
+import { doDeleteStatus } from './delete.js'
+import { store } from '../_store/store.js'
 
 export async function deleteAndRedraft (status) {
   const deleteStatusPromise = doDeleteStatus(status.id)

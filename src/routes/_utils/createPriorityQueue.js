@@ -1,6 +1,6 @@
 // Promise-based implementation that waits a microtask tick
 // and executes the resolve() functions in priority order
-import { queueMicrotask } from './queueMicrotask'
+import { queueMicrotask } from './queueMicrotask.js'
 
 export function createPriorityQueue () {
   const tasks = []

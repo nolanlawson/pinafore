@@ -1,6 +1,6 @@
-import { getAccountAccessibleName } from './getAccountAccessibleName'
-import { POST_PRIVACY_OPTIONS } from '../_static/statuses'
-import { formatIntl } from '../_utils/formatIntl'
+import { getAccountAccessibleName } from './getAccountAccessibleName.js'
+import { POST_PRIVACY_OPTIONS } from '../_static/statuses.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 function getNotificationText (notification, omitEmojiInDisplayNames) {
   if (!notification) {

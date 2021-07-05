@@ -2,11 +2,13 @@ import { promisify } from 'util'
 import childProcessPromise from 'child-process-promise'
 import path from 'path'
 import fs from 'fs'
-import { envFile, RUBY_VERSION } from './mastodon-config'
+import { envFile, RUBY_VERSION } from './mastodon-config.js'
+import esMain from 'es-main'
 
 const exec = childProcessPromise.exec
 const stat = promisify(fs.stat)
 const writeFile = promisify(fs.writeFile)
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const dir = __dirname
 
 const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
@@ -25,7 +27,7 @@ export default async function cloneMastodon () {
   }
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   cloneMastodon().catch(err => {
     console.error(err)
     process.exit(1)

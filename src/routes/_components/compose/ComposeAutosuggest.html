@@ -8,14 +8,14 @@
 </style>
 <script>
   import ComposeAutosuggestContainer from './ComposeAutosuggestContainer.html'
-  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame'
+  import { requestPostAnimationFrame } from '../../_utils/requestPostAnimationFrame.js'
   import { observe } from 'svelte-extras'
-  import { throttleTimer } from '../../_utils/throttleTimer'
-  import { on } from '../../_utils/eventBus'
-  import { store } from '../../_store/store'
-  import { addScrollListener, getScrollContainer, removeScrollListener } from '../../_utils/scrollContainer'
-  import { get } from '../../_utils/lodash-lite'
-  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize'
+  import { throttleTimer } from '../../_utils/throttleTimer.js'
+  import { on } from '../../_utils/eventBus.js'
+  import { store } from '../../_store/store.js'
+  import { addScrollListener, getScrollContainer, removeScrollListener } from '../../_utils/scrollContainer.js'
+  import { get } from '../../_utils/lodash-lite.js'
+  import { registerResizeListener, unregisterResizeListener } from '../../_utils/resize.js'
 
   const updatePosition = process.browser && throttleTimer(requestAnimationFrame)
 

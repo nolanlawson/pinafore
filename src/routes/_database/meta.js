@@ -1,6 +1,6 @@
-import { dbPromise, getDatabase } from './databaseLifecycle'
-import { META_STORE } from './constants'
-import { metaCache, hasInCache, getInCache, setInCache } from './cache'
+import { dbPromise, getDatabase } from './databaseLifecycle.js'
+import { META_STORE } from './constants.js'
+import { metaCache, hasInCache, getInCache, setInCache } from './cache.js'
 
 async function getMetaProperty (instanceName, key) {
   if (hasInCache(metaCache, instanceName, key)) {

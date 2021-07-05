@@ -28,11 +28,11 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog'
-  import { toast } from '../../toast/toast'
-  import { doubleRAF } from '../../../_utils/doubleRAF'
+  import { show } from '../helpers/showDialog.js'
+  import { close } from '../helpers/closeDialog.js'
+  import { oncreate as onCreateDialog } from '../helpers/onCreateDialog.js'
+  import { toast } from '../../toast/toast.js'
+  import { doubleRAF } from '../../../_utils/doubleRAF.js'
 
   function copyFromInput (input) {
     // workarounds for iOS, via https://stackoverflow.com/a/34046084

@@ -1,6 +1,6 @@
 import {
   accountsCache, setInCache, statusesCache
-} from '../cache'
+} from '../cache.js'
 
 export function cacheStatus (status, instanceName) {
   setInCache(statusesCache, instanceName, status.id, status)

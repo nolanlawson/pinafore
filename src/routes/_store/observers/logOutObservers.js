@@ -1,4 +1,4 @@
-import { onUserIsLoggedOut } from '../../_actions/onUserIsLoggedOut'
+import { onUserIsLoggedOut } from '../../_actions/onUserIsLoggedOut.js'
 
 export function logOutObservers (store) {
   if (!process.browser) {

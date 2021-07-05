@@ -1,8 +1,8 @@
-import { store } from '../_store/store'
-import { followAccount, unfollowAccount } from '../_api/follow'
-import { toast } from '../_components/toast/toast'
-import { updateLocalRelationship } from './accounts'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { followAccount, unfollowAccount } from '../_api/follow.js'
+import { toast } from '../_components/toast/toast.js'
+import { updateLocalRelationship } from './accounts.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function setAccountFollowed (accountId, follow, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()

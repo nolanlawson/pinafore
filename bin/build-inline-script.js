@@ -5,13 +5,12 @@ import path from 'path'
 import { rollup } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import replace from '@rollup/plugin-replace'
-import fromPairs from 'lodash-es/fromPairs'
-import { themes } from '../src/routes/_static/themes'
-import terserOptions from './terserOptions'
+import { themes } from '../src/routes/_static/themes.js'
+import terserOptions from './terserOptions.js'
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const writeFile = promisify(fs.writeFile)
-
-const themeColors = fromPairs(themes.map(_ => ([_.name, _.color])))
+const themeColors = Object.fromEntries(themes.map(_ => ([_.name, _.color])))
 
 export async function buildInlineScript () {
   const inlineScriptPath = path.join(__dirname, '../src/inline-script/inline-script.js')
@@ -42,7 +41,7 @@ export async function buildInlineScript () {
   const checksum = crypto.createHash('sha256').update(fullCode, 'utf8').digest('base64')
 
   await writeFile(path.resolve(__dirname, '../src/inline-script/checksum.js'),
-    `module.exports = ${JSON.stringify(checksum)}`, 'utf8')
+    `export default ${JSON.stringify(checksum)}`, 'utf8')
   await writeFile(path.resolve(__dirname, '../static/inline-script.js.map'),
     map.toString(), 'utf8')
 

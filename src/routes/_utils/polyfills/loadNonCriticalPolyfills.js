@@ -1,5 +1,5 @@
-import { importFocusVisible } from './asyncPolyfills'
-import { supportsFocusVisible } from '../supportsFocusVisible'
+import { importFocusVisible } from './asyncPolyfills.js'
+import { supportsFocusVisible } from '../supportsFocusVisible.js'
 
 export function loadNonCriticalPolyfills () {
   return Promise.all([

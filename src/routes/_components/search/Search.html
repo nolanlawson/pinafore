@@ -57,13 +57,13 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
+  import { store } from '../../_store/store.js'
   import LoadingPage from '../LoadingPage.html'
-  import { doSearch } from '../../_actions/search'
+  import { doSearch } from '../../_actions/search.js'
   import SearchResults from './SearchResults.html'
   import SvgIcon from '../SvgIcon.html'
-  import { on } from '../../_utils/eventBus'
-  import { tryToFocusElement } from '../../_utils/tryToFocusElement'
+  import { on } from '../../_utils/eventBus.js'
+  import { tryToFocusElement } from '../../_utils/tryToFocusElement.js'
 
   export default {
     oncreate () {

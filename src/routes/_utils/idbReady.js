@@ -1,5 +1,5 @@
 import safariIdbReady from 'safari-14-idb-fix'
-import { isWebKit } from './userAgent/isWebKit'
+import { isWebKit } from './userAgent/isWebKit.js'
 
 // workaround for a safari 14 bug, see https://github.com/jakearchibald/safari-14-idb-fix
 export async function idbReady () {

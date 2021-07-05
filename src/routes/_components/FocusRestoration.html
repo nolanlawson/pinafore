@@ -5,9 +5,9 @@
   <slot></slot>
 </div>
 <script>
-  import { PAGE_HISTORY_SIZE } from '../_static/pages'
-  import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru'
-  import { tryToFocusElement } from '../_utils/tryToFocusElement'
+  import { PAGE_HISTORY_SIZE } from '../_static/pages.js'
+  import { QuickLRU } from '../_thirdparty/quick-lru/quick-lru.js'
+  import { tryToFocusElement } from '../_utils/tryToFocusElement.js'
 
   const cache = new QuickLRU({ maxSize: PAGE_HISTORY_SIZE })
 

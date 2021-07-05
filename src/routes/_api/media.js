@@ -1,5 +1,5 @@
-import { auth, basename } from './utils'
-import { post, put, MEDIA_WRITE_TIMEOUT, WRITE_TIMEOUT } from '../_utils/ajax'
+import { auth, basename } from './utils.js'
+import { post, put, MEDIA_WRITE_TIMEOUT, WRITE_TIMEOUT } from '../_utils/ajax.js'
 
 export async function uploadMedia (instanceName, accessToken, file, description) {
   const formData = new FormData()

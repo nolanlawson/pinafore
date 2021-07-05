@@ -1,6 +1,6 @@
 // adapted from https://unpkg.com/timeago.js@4.0.0-beta.1/lib/index.js
-import { LOCALE } from '../../_static/intl'
-import { thunk } from '../../_utils/thunk'
+import { LOCALE } from '../../_static/intl.js'
+import { thunk } from '../../_utils/thunk.js'
 
 const IndexMapEn = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year']
 const SEC_ARRAY = [60, 60, 24, 7, 365 / 7 / 12, 12]
@@ -9,7 +9,7 @@ const intlFormat = thunk(() => new Intl.RelativeTimeFormat(LOCALE))
 function formatRelativeTime (number, index) {
   if (index === 0) {
     if (process.env.NODE_ENV === 'test') {
-      return require('../../../intl/en-US').default.justNow // only used in mocha tests
+      return 'just now' // only used in mocha tests
     }
     return 'intl.justNow'
   }

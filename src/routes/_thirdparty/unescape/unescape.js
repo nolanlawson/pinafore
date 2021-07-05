@@ -1,7 +1,7 @@
 //
 // Originally via https://github.com/jonschlinkert/unescape/blob/98d1e52/index.js
 //
-import { thunk } from '../../_utils/thunk'
+import { thunk } from '../../_utils/thunk.js'
 
 // via https://www.htmlhelp.com/reference/html40/entities/special.html
 // plus some more known entities like pound, nbsp, etc

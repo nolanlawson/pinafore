@@ -1,7 +1,7 @@
-import { store } from '../_store/store'
-import { importShowComposeDialog } from '../_components/dialog/asyncDialogs/importShowComposeDialog'
-import { database } from '../_database/database'
-import { doMediaUpload } from './media'
+import { store } from '../_store/store.js'
+import { importShowComposeDialog } from '../_components/dialog/asyncDialogs/importShowComposeDialog.js'
+import { database } from '../_database/database.js'
+import { doMediaUpload } from './media.js'
 
 // show a compose dialog, typically invoked by the Web Share API or a PWA shortcut
 export async function showComposeDialog () {

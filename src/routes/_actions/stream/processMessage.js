@@ -1,7 +1,7 @@
-import { mark, stop } from '../../_utils/marks'
-import { deleteStatus } from '../deleteStatuses'
-import { addStatusOrNotification } from '../addStatusOrNotification'
-import { emit } from '../../_utils/eventBus'
+import { mark, stop } from '../../_utils/marks.js'
+import { deleteStatus } from '../deleteStatuses.js'
+import { addStatusOrNotification } from '../addStatusOrNotification.js'
+import { emit } from '../../_utils/eventBus.js'
 
 const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation', 'filters_changed']
 

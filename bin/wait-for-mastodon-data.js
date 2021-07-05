@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'
-import { actions } from './mastodon-data'
+import { actions } from './mastodon-data.js'
+import esMain from 'es-main'
 
 const numStatuses = actions
   .map(_ => _.post || _.boost)
@@ -26,7 +27,7 @@ async function waitForMastodonData () {
   console.log('Mastodon data populated')
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   waitForMastodonData().catch(err => {
     console.error(err)
     process.exit(1)

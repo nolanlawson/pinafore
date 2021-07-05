@@ -1,13 +1,13 @@
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { postStatus as postStatusToServer } from '../_api/statuses'
-import { addStatusOrNotification } from './addStatusOrNotification'
-import { database } from '../_database/database'
-import { emit } from '../_utils/eventBus'
-import { putMediaMetadata } from '../_api/media'
-import uniqBy from 'lodash-es/uniqBy'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { formatIntl } from '../_utils/formatIntl'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { postStatus as postStatusToServer } from '../_api/statuses.js'
+import { addStatusOrNotification } from './addStatusOrNotification.js'
+import { database } from '../_database/database.js'
+import { emit } from '../_utils/eventBus.js'
+import { putMediaMetadata } from '../_api/media.js'
+import { uniqBy } from '../_thirdparty/lodash/objects.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function insertHandleForReply (statusId) {
   const { currentInstance } = store.get()

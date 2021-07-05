@@ -1,4 +1,4 @@
-import { createSearchIndexFromStatusOrNotification } from './createSearchIndexFromStatusOrNotification'
+import { createSearchIndexFromStatusOrNotification } from './createSearchIndexFromStatusOrNotification.js'
 
 export function computeFilterContextsForStatusOrNotification (statusOrNotification, contextsToRegex) {
   if (!contextsToRegex || !Object.keys(contextsToRegex).length) {

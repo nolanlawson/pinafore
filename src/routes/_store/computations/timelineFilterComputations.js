@@ -4,15 +4,15 @@ import {
   NOTIFICATION_FAVORITES,
   NOTIFICATION_FOLLOWS, NOTIFICATION_MENTIONS, NOTIFICATION_POLLS,
   NOTIFICATION_REBLOGS
-} from '../../_static/instanceSettings'
+} from '../../_static/instanceSettings.js'
 import {
   WORD_FILTER_CONTEXT_ACCOUNT,
   WORD_FILTER_CONTEXT_HOME,
   WORD_FILTER_CONTEXT_NOTIFICATIONS,
   WORD_FILTER_CONTEXT_PUBLIC, WORD_FILTER_CONTEXT_THREAD
-} from '../../_static/wordFilters'
-import { createFilterFunction } from '../../_utils/createFilterFunction'
-import { get } from '../../_utils/lodash-lite'
+} from '../../_static/wordFilters.js'
+import { createFilterFunction } from '../../_utils/createFilterFunction.js'
+import { get } from '../../_utils/lodash-lite.js'
 
 // Compute just the boolean, e.g. 'showPolls', so that we can use that boolean as
 // the input to the timelineFilterFunction computations. This should reduce the need to

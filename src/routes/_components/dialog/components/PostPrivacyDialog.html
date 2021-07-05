@@ -9,13 +9,13 @@
 </ModalDialog>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import { store } from '../../../_store/store'
-  import { POST_PRIVACY_OPTIONS } from '../../../_static/statuses'
-  import { setPostPrivacy } from '../../../_actions/postPrivacy'
+  import { store } from '../../../_store/store.js'
+  import { POST_PRIVACY_OPTIONS } from '../../../_static/statuses.js'
+  import { setPostPrivacy } from '../../../_actions/postPrivacy.js'
   import GenericDialogList from './GenericDialogList.html'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate } from '../helpers/onCreateDialog'
+  import { show } from '../helpers/showDialog.js'
+  import { close } from '../helpers/closeDialog.js'
+  import { oncreate } from '../helpers/onCreateDialog.js'
 
   export default {
     oncreate,

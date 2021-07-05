@@ -69,14 +69,14 @@
 <script>
   import IconButton from '../IconButton.html'
   import Shortcut from '../shortcut/Shortcut.html'
-  import { store } from '../../_store/store'
-  import { registerClickDelegates } from '../../_utils/delegate'
-  import { setFavorited } from '../../_actions/favorite'
-  import { setReblogged } from '../../_actions/reblog'
+  import { store } from '../../_store/store.js'
+  import { registerClickDelegates } from '../../_utils/delegate.js'
+  import { setFavorited } from '../../_actions/favorite.js'
+  import { setReblogged } from '../../_actions/reblog.js'
   import { importShowStatusOptionsDialog } from '../dialog/asyncDialogs/importShowStatusOptionsDialog.js'
-  import { updateProfileAndRelationship } from '../../_actions/accounts'
-  import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations'
-  import { on } from '../../_utils/eventBus'
+  import { updateProfileAndRelationship } from '../../_actions/accounts.js'
+  import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations.js'
+  import { on } from '../../_utils/eventBus.js'
 
   export default {
     oncreate () {

@@ -8,7 +8,7 @@ import { authorizeFollowRequest, getFollowRequests } from '../src/routes/_api/fo
 import { followAccount, unfollowAccount } from '../src/routes/_api/follow'
 import { updateCredentials } from '../src/routes/_api/updateCredentials'
 import { reblogStatus } from '../src/routes/_api/reblog'
-import { submitMedia } from './submitMedia'
+import { submitMedia } from './submitMedia.js'
 import { voteOnPoll } from '../src/routes/_api/polls'
 import { POLL_EXPIRY_DEFAULT } from '../src/routes/_static/polls'
 import { createList, getLists } from '../src/routes/_api/lists'

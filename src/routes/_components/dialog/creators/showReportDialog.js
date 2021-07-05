@@ -1,6 +1,6 @@
 import ReportDialog from '../components/ReportDialog.html'
-import { showDialog } from './showDialog'
-import { formatIntl } from '../../../_utils/formatIntl'
+import { showDialog } from './showDialog.js'
+import { formatIntl } from '../../../_utils/formatIntl.js'
 
 export default function showReportDialog ({ account, status }) {
   const label = formatIntl('intl.reportAccount', { account: `@${account.acct}` })

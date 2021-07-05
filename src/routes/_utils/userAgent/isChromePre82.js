@@ -1,8 +1,8 @@
 // checking for Chrome 82 because that's when this bug was fixed
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1053477
 
-import { thunk } from '../thunk'
-import { isChrome } from './isChrome'
+import { thunk } from '../thunk.js'
+import { isChrome } from './isChrome.js'
 
 function getChromeVersion () {
   try {

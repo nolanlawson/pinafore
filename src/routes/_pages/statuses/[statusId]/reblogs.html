@@ -1,9 +1,9 @@
 <DynamicPageBanner title="{intl.reblogs}" icon="#fa-retweet" />
 <AccountsListPage {accountsFetcher} />
 <script>
-  import { getReblogs } from '../../../_api/reblogsAndFavs'
+  import { getReblogs } from '../../../_api/reblogsAndFavs.js'
   import AccountsListPage from '../../../_components/AccountsListPage.html'
-  import { store } from '../../../_store/store'
+  import { store } from '../../../_store/store.js'
   import DynamicPageBanner from '../../../_components/DynamicPageBanner.html'
 
   export default {

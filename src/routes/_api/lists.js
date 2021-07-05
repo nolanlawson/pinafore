@@ -1,5 +1,5 @@
-import { get, DEFAULT_TIMEOUT, post, WRITE_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { get, DEFAULT_TIMEOUT, post, WRITE_TIMEOUT } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export function getLists (instanceName, accessToken) {
   const url = `${basename(instanceName)}/api/v1/lists`

@@ -1,5 +1,5 @@
-import { post, WRITE_TIMEOUT, paramsString, del } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { post, WRITE_TIMEOUT, paramsString, del } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 export async function blockDomain (instanceName, accessToken, domain) {
   const url = `${basename(instanceName)}/api/v1/domain_blocks?${paramsString({ domain })}`

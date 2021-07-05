@@ -92,22 +92,22 @@
   }
 </style>
 <script>
-  import { requestPostAnimationFrame } from '../../../_utils/requestPostAnimationFrame'
-  import { mark, stop } from '../../../_utils/marks'
-  import { autosize } from '../../../_thirdparty/autosize/autosize'
+  import { requestPostAnimationFrame } from '../../../_utils/requestPostAnimationFrame.js'
+  import { mark, stop } from '../../../_utils/marks.js'
+  import { autosize } from '../../../_thirdparty/autosize/autosize.js'
   import { observe } from 'svelte-extras'
-  import { throttleTimer } from '../../../_utils/throttleTimer'
-  import { get } from '../../../_utils/lodash-lite'
-  import { store } from '../../../_store/store'
-  import { MEDIA_ALT_CHAR_LIMIT } from '../../../_static/media'
+  import { throttleTimer } from '../../../_utils/throttleTimer.js'
+  import { get } from '../../../_utils/lodash-lite.js'
+  import { store } from '../../../_store/store.js'
+  import { MEDIA_ALT_CHAR_LIMIT } from '../../../_static/media.js'
   import LengthGauge from '../../LengthGauge.html'
   import LengthIndicator from '../../LengthIndicator.html'
   import { length } from 'stringz'
-  import { runTesseract } from '../../../_utils/runTesseract'
+  import { runTesseract } from '../../../_utils/runTesseract.js'
   import SvgIcon from '../../SvgIcon.html'
-  import { toast } from '../../toast/toast'
-  import { formatIntl } from '../../../_utils/formatIntl'
-  import { database } from '../../../_database/database'
+  import { toast } from '../../toast/toast.js'
+  import { formatIntl } from '../../../_utils/formatIntl.js'
+  import { database } from '../../../_database/database.js'
 
   const updateRawTextInStore = throttleTimer(requestPostAnimationFrame)
 

@@ -121,17 +121,17 @@
   }
 </style>
 <script>
-  import { store } from '../../_store/store'
-  import { deleteMedia } from '../../_actions/media'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
+  import { store } from '../../_store/store.js'
+  import { deleteMedia } from '../../_actions/media.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
   import { observe } from 'svelte-extras'
   import SvgIcon from '../SvgIcon.html'
-  import { autosize } from '../../_thirdparty/autosize/autosize'
-  import { ONE_TRANSPARENT_PIXEL } from '../../_static/media'
-  import { get } from '../../_utils/lodash-lite'
-  import { coordsToPercent } from '../../_utils/coordsToPercent'
+  import { autosize } from '../../_thirdparty/autosize/autosize.js'
+  import { ONE_TRANSPARENT_PIXEL } from '../../_static/media.js'
+  import { get } from '../../_utils/lodash-lite.js'
+  import { coordsToPercent } from '../../_utils/coordsToPercent.js'
   import { importShowMediaEditDialog } from '../dialog/asyncDialogs/importShowMediaEditDialog.js'
-  import { throttleTimer } from '../../_utils/throttleTimer'
+  import { throttleTimer } from '../../_utils/throttleTimer.js'
 
   const updateMediaInStore = throttleTimer(scheduleIdleTask)
   const resizeTextarea = process.browser && throttleTimer(requestAnimationFrame)

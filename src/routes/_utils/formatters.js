@@ -1,5 +1,5 @@
-import { LOCALE } from '../_static/intl'
-import { thunk } from './thunk'
+import { LOCALE } from '../_static/intl.js'
+import { thunk } from './thunk.js'
 
 export const absoluteDateFormatter = thunk(() => new Intl.DateTimeFormat(LOCALE, {
   year: 'numeric',

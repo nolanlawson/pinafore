@@ -1,3 +1,3 @@
 export const importShowStatusOptionsDialog = () => import(
-  '../creators/showStatusOptionsDialog'
+  '../creators/showStatusOptionsDialog.js'
 ).then(mod => mod.default)

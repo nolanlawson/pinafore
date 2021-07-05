@@ -1,5 +1,5 @@
 import TextConfirmationDialog from '../components/TextConfirmationDialog.html'
-import { showDialog } from './showDialog'
+import { showDialog } from './showDialog.js'
 
 export default function showTextConfirmationDialog (options) {
   return showDialog(TextConfirmationDialog, Object.assign({

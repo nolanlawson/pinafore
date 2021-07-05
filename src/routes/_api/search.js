@@ -1,5 +1,5 @@
-import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax'
-import { auth, basename } from './utils'
+import { get, paramsString, DEFAULT_TIMEOUT } from '../_utils/ajax.js'
+import { auth, basename } from './utils.js'
 
 function doSearch (version, instanceName, accessToken, query, resolve, limit, excludeUnreviewed, signal) {
   const url = `${basename(instanceName)}/api/${version}/search?` + paramsString({

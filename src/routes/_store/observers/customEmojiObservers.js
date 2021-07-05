@@ -1,6 +1,6 @@
-import { store } from '../store'
-import * as emojiDatabase from '../../_utils/emojiDatabase'
-import { convertCustomEmojiToEmojiPickerFormat } from '../../_utils/convertCustomEmojiToEmojiPickerFormat'
+import { store } from '../store.js'
+import * as emojiDatabase from '../../_utils/emojiDatabase.js'
+import { convertCustomEmojiToEmojiPickerFormat } from '../../_utils/convertCustomEmojiToEmojiPickerFormat.js'
 
 export function customEmojiObservers () {
   if (!process.browser) {

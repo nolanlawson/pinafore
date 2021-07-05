@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   ecma: 8,
   mangle: true,
   compress: {

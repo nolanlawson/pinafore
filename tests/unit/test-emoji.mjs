@@ -1,6 +1,6 @@
 /* global describe, it */
 
-import { replaceEmoji } from '../../src/routes/_utils/replaceEmoji'
+import { replaceEmoji } from '../../src/routes/_utils/replaceEmoji.js'
 import assert from 'assert'
 
 const mindBlown = String.fromCodePoint(0x1F92F)

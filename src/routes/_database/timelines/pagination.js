@@ -1,4 +1,4 @@
-import { dbPromise, getDatabase } from '../databaseLifecycle'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
 import {
   ACCOUNTS_STORE,
   NOTIFICATION_TIMELINES_STORE,
@@ -6,14 +6,14 @@ import {
   STATUS_TIMELINES_STORE,
   STATUSES_STORE,
   THREADS_STORE
-} from '../constants'
+} from '../constants.js'
 import {
   createThreadKeyRange,
   createTimelineKeyRange
-} from '../keys'
-import { fetchStatus } from './fetchStatus'
-import { fetchNotification } from './fetchNotification'
-import { TIMELINE_BATCH_SIZE } from '../../_static/timelines'
+} from '../keys.js'
+import { fetchStatus } from './fetchStatus.js'
+import { fetchNotification } from './fetchNotification.js'
+import { TIMELINE_BATCH_SIZE } from '../../_static/timelines.js'
 
 async function getNotificationTimeline (instanceName, timeline, maxId, limit) {
   const storeNames = [NOTIFICATION_TIMELINES_STORE, NOTIFICATIONS_STORE, STATUSES_STORE, ACCOUNTS_STORE]

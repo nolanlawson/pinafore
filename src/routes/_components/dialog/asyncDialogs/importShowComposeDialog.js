@@ -1,3 +1,3 @@
 export const importShowComposeDialog = () => import(
-  '../creators/showComposeDialog'
+  '../creators/showComposeDialog.js'
 ).then(mod => mod.default)

@@ -1,5 +1,5 @@
-import { store } from '../_store/store'
-import { getTimeline } from '../_api/timelines'
+import { store } from '../_store/store.js'
+import { getTimeline } from '../_api/timelines.js'
 
 export async function getRecentStatusesForAccount (accountId) {
   const { currentInstance, accessToken } = store.get()

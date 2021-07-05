@@ -1,7 +1,7 @@
-import { getPoll as getPollApi, voteOnPoll as voteOnPollApi } from '../_api/polls'
-import { store } from '../_store/store'
-import { toast } from '../_components/toast/toast'
-import { formatIntl } from '../_utils/formatIntl'
+import { getPoll as getPollApi, voteOnPoll as voteOnPollApi } from '../_api/polls.js'
+import { store } from '../_store/store.js'
+import { toast } from '../_components/toast/toast.js'
+import { formatIntl } from '../_utils/formatIntl.js'
 
 export async function getPoll (pollId) {
   const { currentInstance, accessToken } = store.get()

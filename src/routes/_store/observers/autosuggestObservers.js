@@ -1,7 +1,7 @@
-import { store } from '../store'
-import { doEmojiSearch } from '../../_actions/autosuggestEmojiSearch'
-import { doAccountSearch } from '../../_actions/autosuggestAccountSearch'
-import { doHashtagSearch } from '../../_actions/autosuggestHashtagSearch'
+import { store } from '../store.js'
+import { doEmojiSearch } from '../../_actions/autosuggestEmojiSearch.js'
+import { doAccountSearch } from '../../_actions/autosuggestAccountSearch.js'
+import { doHashtagSearch } from '../../_actions/autosuggestHashtagSearch.js'
 
 function resetAutosuggest () {
   store.setForCurrentAutosuggest({

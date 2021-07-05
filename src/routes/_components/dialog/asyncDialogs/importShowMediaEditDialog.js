@@ -1,3 +1,3 @@
 export const importShowMediaEditDialog = () => import(
-  '../creators/showMediaEditDialog'
+  '../creators/showMediaEditDialog.js'
 ).then(mod => mod.default)

@@ -7,12 +7,12 @@
   />
 {/if}
 <script>
-  import VirtualListItem from './VirtualListItem'
-  import { mark, stop } from '../../_utils/marks'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { createPriorityQueue } from '../../_utils/createPriorityQueue'
-  import { isMobile } from '../../_utils/userAgent/isMobile'
-  import { store } from '../../_store/store'
+  import VirtualListItem from './VirtualListItem.html'
+  import { mark, stop } from '../../_utils/marks.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+  import { createPriorityQueue } from '../../_utils/createPriorityQueue.js'
+  import { isMobile } from '../../_utils/userAgent/isMobile.js'
+  import { store } from '../../_store/store.js'
 
   // In Svelte's implementation of lists, these VirtualListLazyItems can be
   // created in any order. By default in fact it seems to do it in reverse

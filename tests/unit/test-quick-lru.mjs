@@ -1,6 +1,6 @@
 /* global describe, it */
 
-import { QuickLRU } from '../../src/routes/_thirdparty/quick-lru/quick-lru'
+import { QuickLRU } from '../../src/routes/_thirdparty/quick-lru/quick-lru.js'
 import assert from 'assert'
 
 describe('test-quick-lru.js', () => {

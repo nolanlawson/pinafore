@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+import esMain from 'es-main'
 
 export async function waitForMastodonUiToStart () {
   while (true) {
@@ -30,7 +31,7 @@ export async function waitForMastodonApiToStart () {
   console.log('Mastodon API started up')
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   Promise.resolve()
     .then(waitForMastodonApiToStart)
     .then(waitForMastodonUiToStart).catch(err => {

@@ -1,4 +1,4 @@
-import { get } from '../../_utils/lodash-lite'
+import { get } from '../../_utils/lodash-lite.js'
 
 export function instanceMixins (Store) {
   Store.prototype.getInstanceSetting = function (instanceName, settingName, defaultValue) {

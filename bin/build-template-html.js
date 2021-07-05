@@ -2,15 +2,18 @@ import chokidar from 'chokidar'
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
-import { buildSass } from './build-sass'
-import { buildInlineScript } from './build-inline-script'
-import { buildSvg } from './build-svg'
+import { buildSass } from './build-sass.js'
+import { buildInlineScript } from './build-inline-script.js'
+import { buildSvg } from './build-svg.js'
 import { performance } from 'perf_hooks'
-import debounce from 'lodash-es/debounce'
-import applyIntl from '../webpack/svelte-intl-loader'
-import { LOCALE } from '../src/routes/_static/intl'
-import { getLangDir } from 'rtl-detect'
+import { debounce } from '../src/routes/_thirdparty/lodash/timers.js'
+import applyIntl from '../webpack/svelte-intl-loader.js'
+import { LOCALE } from '../src/routes/_static/intl.js'
+import rtlDetectPackage from 'rtl-detect'
 
+const { getLangDir } = rtlDetectPackage
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const writeFile = promisify(fs.writeFile)
 const LOCALE_DIRECTION = getLangDir(LOCALE)
 const DEBOUNCE = 500

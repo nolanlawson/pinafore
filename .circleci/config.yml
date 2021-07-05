@@ -1,5 +1,7 @@
 version: 2.1
 
+orbs:
+  browser-tools: circleci/browser-tools@1.1.3
 workflows:
   version: 2
   build_and_test:
@@ -15,13 +17,11 @@ executors:
   node:
     working_directory: ~/pinafore
     docker:
-      # we want Node v12, not v14
-      # see https://discuss.circleci.com/t/build-failed-the-engine-node-is-incompatible-with-this-module-expected-version-12-x-got-14-15-0/37921/7
-      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+      - image: cimg/ruby:2.7.2-browsers
   node_and_ruby:
     working_directory: ~/pinafore
     docker:
-      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+      - image: cimg/ruby:2.7.2-browsers
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
@@ -30,6 +30,45 @@ executors:
           BROWSER: chrome:headless
       - image: circleci/redis:5-alpine
 commands:
+  install_mastodon_system_dependencies:
+    description: Install system dependencies that Mastodon requires
+    steps:
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y \
+              ffmpeg \
+              fonts-noto-color-emoji \
+              imagemagick \
+              libicu-dev \
+              libidn11-dev \
+              libprotobuf-dev \
+              postgresql-contrib \
+              protobuf-compiler
+  install_browsers:
+    description: Install browsers and tools
+    steps:
+      - browser-tools/install-chrome:
+          chrome-version: 91.0.4472.114
+      - browser-tools/install-chromedriver
+      - run:
+          name: "Check browser version"
+          command: |
+            google-chrome --version
+  install_node:
+    description: Install Node.js
+    steps:
+      - run:
+          name: "Install Node.js"
+          # via https://circleci.com/docs/2.0/circleci-images/#notes-on-pinning-images
+          command: |
+            curl -sSL "https://nodejs.org/dist/v12.22.2/node-v12.22.2-linux-x64.tar.xz" \
+            | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v12.22.2-linux-x64/bin/node
+      - run:
+          name: Check current version of node
+          command: node -v
+
   save_workspace:
     description: Persist workspace
     steps:
@@ -47,13 +86,13 @@ commands:
     steps:
       - restore_cache:
           name: Restore yarn cache
-          key: yarn-v3-{{ checksum "yarn.lock" }}
+          key: yarn-v4-{{ checksum "yarn.lock" }}
   save_yarn_cache:
     description: Save yarn cache
     steps:
       - save_cache:
           name: Save yarn cache
-          key: yarn-v3-{{ checksum "yarn.lock" }}
+          key: yarn-v4-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
   restore_yarn_cache_mastodon:
@@ -61,13 +100,13 @@ commands:
     steps:
       - restore_cache:
           name: Restore yarn cache for Mastodon
-          key: yarn-v3-{{ checksum "mastodon/yarn.lock" }}
+          key: yarn-v4-{{ checksum "mastodon/yarn.lock" }}
   save_yarn_cache_mastodon:
     description: Save yarn cache for Mastodon
     steps:
       - save_cache:
           name: Save yarn cache for Mastodon
-          key: yarn-v3-{{ checksum "mastodon/yarn.lock" }}
+          key: yarn-v4-{{ checksum "mastodon/yarn.lock" }}
           paths:
             - ~/.cache/yarn
   restore_bundler_cache:
@@ -75,23 +114,18 @@ commands:
     steps:
       - restore_cache:
           name: Restore bundler cache
-          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
+          key: bundler-v4-{{ checksum "mastodon/Gemfile.lock" }}
   save_bundler_cache:
     description: Save bundler cache
     steps:
       - save_cache:
           name: Save bundler cache
-          key: bundler-v2-{{ checksum "mastodon/Gemfile.lock" }}
+          key: bundler-v4-{{ checksum "mastodon/Gemfile.lock" }}
           paths:
             - mastodon/vendor/bundle
   install_mastodon:
     description: Install Mastodon and set up Postgres/Redis
     steps:
-      - run:
-          name: Install system dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y ffmpeg fonts-noto-color-emoji libicu-dev libidn11-dev libprotobuf-dev postgresql-contrib protobuf-compiler
       - run:
           name: Clone mastodon
           command: yarn clone-mastodon
@@ -127,6 +161,7 @@ jobs:
     executor: node
     steps:
       - checkout
+      - install_node
       - restore_yarn_cache
       - run:
           name: Yarn install
@@ -156,6 +191,9 @@ jobs:
   integration_test_readonly:
     executor: node_and_ruby
     steps:
+      - install_mastodon_system_dependencies
+      - install_browsers
+      - install_node
       - load_workspace
       - install_mastodon
       - run:
@@ -164,6 +202,9 @@ jobs:
   integration_test_readwrite:
     executor: node_and_ruby
     steps:
+      - install_mastodon_system_dependencies
+      - install_browsers
+      - install_node
       - load_workspace
       - install_mastodon
       - run:

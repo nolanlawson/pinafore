@@ -1,5 +1,5 @@
 import { importShowCopyDialog } from '../_components/dialog/asyncDialogs/importShowCopyDialog.js'
-import { toast } from '../_components/toast/toast'
+import { toast } from '../_components/toast/toast.js'
 
 export async function copyText (text) {
   if (navigator.clipboard) { // not supported in all browsers

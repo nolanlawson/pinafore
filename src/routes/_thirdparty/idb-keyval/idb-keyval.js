@@ -1,7 +1,7 @@
 // Forked from https://github.com/jakearchibald/idb-keyval/commit/ea7d507
 // Adds a function for closing the database, ala https://github.com/jakearchibald/idb-keyval/pull/65
 // Also hooks it into the lifecycle frozen event
-import { lifecycle } from '../../_utils/lifecycle'
+import { lifecycle } from '../../_utils/lifecycle.js'
 
 class Store {
   constructor (dbName = 'keyval-store', storeName = 'keyval') {

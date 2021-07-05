@@ -71,15 +71,15 @@
 </style>
 <script>
   import IconButton from '../IconButton.html'
-  import { store } from '../../_store/store'
-  import { importShowEmojiDialog } from '../dialog/asyncDialogs/importShowEmojiDialog'
-  import { importShowPostPrivacyDialog } from '../dialog/asyncDialogs/importShowPostPrivacyDialog'
-  import { doMediaUpload } from '../../_actions/media'
-  import { toggleContentWarningShown } from '../../_actions/contentWarnings'
-  import { mediaAccept } from '../../_static/media'
-  import { enablePoll, disablePoll } from '../../_actions/composePoll'
-  import { updateCustomEmojiForInstance } from '../../_actions/emoji'
-  import { formatIntl } from '../../_utils/formatIntl'
+  import { store } from '../../_store/store.js'
+  import { importShowEmojiDialog } from '../dialog/asyncDialogs/importShowEmojiDialog.js'
+  import { importShowPostPrivacyDialog } from '../dialog/asyncDialogs/importShowPostPrivacyDialog.js'
+  import { doMediaUpload } from '../../_actions/media.js'
+  import { toggleContentWarningShown } from '../../_actions/contentWarnings.js'
+  import { mediaAccept } from '../../_static/media.js'
+  import { enablePoll, disablePoll } from '../../_actions/composePoll.js'
+  import { updateCustomEmojiForInstance } from '../../_actions/emoji.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
   export default {
     components: {

@@ -2,12 +2,14 @@ import { promisify } from 'util'
 import childProcessPromise from 'child-process-promise'
 import path from 'path'
 import fs from 'fs'
-import { DB_NAME, DB_PASS, DB_USER, mastodonDir, env } from './mastodon-config'
+import { DB_NAME, DB_PASS, DB_USER, mastodonDir, env } from './mastodon-config.js'
 import mkdirp from 'mkdirp'
+import esMain from 'es-main'
 
 const exec = childProcessPromise.exec
 const stat = promisify(fs.stat)
 const writeFile = promisify(fs.writeFile)
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const dir = __dirname
 
 async function setupMastodonDatabase () {
@@ -69,7 +71,7 @@ export default async function installMastodon () {
   await installMastodonDependencies()
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   installMastodon().catch(err => {
     console.error(err)
     process.exit(1)

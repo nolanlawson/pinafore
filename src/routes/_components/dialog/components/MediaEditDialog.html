@@ -93,13 +93,13 @@
 </style>
 <script>
   import ModalDialog from './ModalDialog.html'
-  import { show } from '../helpers/showDialog'
-  import { close } from '../helpers/closeDialog'
-  import { oncreate } from '../helpers/onCreateDialog'
+  import { show } from '../helpers/showDialog.js'
+  import { close } from '../helpers/closeDialog.js'
+  import { oncreate } from '../helpers/onCreateDialog.js'
   import MediaFocalPointEditor from '../components/MediaFocalPointEditor.html'
   import MediaAltEditor from '../components/MediaAltEditor.html'
-  import { store } from '../../../_store/store'
-  import { get } from '../../../_utils/lodash-lite'
+  import { store } from '../../../_store/store.js'
+  import { get } from '../../../_utils/lodash-lite.js'
 
   export default {
     oncreate,

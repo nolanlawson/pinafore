@@ -1,9 +1,16 @@
 #!/usr/bin/env node
+import fs from 'fs'
+import path from 'path'
+import express from 'express'
+import compression from 'compression'
 
-const path = require('path')
-const express = require('express')
-const compression = require('compression')
-const { routes: rawRoutes } = require('./vercel.json')
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
+
+// JSON files not supported in ESM yet
+// https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c#how-can-i-import-json
+const vercelJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'vercel.json'), 'utf8'))
+
+const { routes: rawRoutes } = vercelJson
 
 const { PORT = 4002 } = process.env
 const app = express()

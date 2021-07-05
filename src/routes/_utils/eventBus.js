@@ -1,4 +1,5 @@
-import EventEmitter from 'events-light'
+import eventsLightPackage from 'events-light'
+const { EventEmitter } = eventsLightPackage
 
 export const eventBus = new EventEmitter()
 

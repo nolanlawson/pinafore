@@ -1,7 +1,7 @@
 import { decode as decodeBlurHash } from 'blurhash'
-import registerPromiseWorker from 'promise-worker/register'
-import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash'
-import { isChromePre82 } from '../_utils/userAgent/isChromePre82'
+import registerPromiseWorker from 'promise-worker/register.js'
+import { BLURHASH_RESOLUTION as RESOLUTION } from '../_static/blurhash.js'
+import { isChromePre82 } from '../_utils/userAgent/isChromePre82.js'
 
 // Disabled in Chrome because convertToBlob() is slow
 // https://github.com/nolanlawson/pinafore/issues/1396

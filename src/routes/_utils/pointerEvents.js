@@ -1,4 +1,4 @@
-import { get } from './lodash-lite'
+import { get } from './lodash-lite.js'
 
 const hasPointerEvents = process.browser && typeof PointerEvent === 'function'
 

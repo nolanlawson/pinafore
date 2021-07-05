@@ -1,4 +1,4 @@
-import { registerResizeListener, unregisterResizeListener } from './resize'
+import { registerResizeListener, unregisterResizeListener } from './resize.js'
 
 export function mouseover (node, callback) {
   function onMouseEnter () {

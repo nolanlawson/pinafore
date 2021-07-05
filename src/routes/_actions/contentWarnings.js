@@ -1,4 +1,4 @@
-import { store } from '../_store/store'
+import { store } from '../_store/store.js'
 
 export function toggleContentWarningShown (realm) {
   const shown = store.getComposeData(realm, 'contentWarningShown')

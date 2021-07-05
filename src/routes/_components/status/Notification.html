@@ -36,13 +36,13 @@
   import Status from './Status.html'
   import StatusHeader from './StatusHeader.html'
   import Shortcut from '../shortcut/Shortcut.html'
-  import { store } from '../../_store/store'
-  import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName'
-  import { goto } from '../../../../__sapper__/client'
-  import { composeNewStatusMentioning } from '../../_actions/mention'
-  import { classname } from '../../_utils/classname'
-  import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid'
-  import { formatIntl } from '../../_utils/formatIntl'
+  import { store } from '../../_store/store.js'
+  import { getAccountAccessibleName } from '../../_a11y/getAccountAccessibleName.js'
+  import { goto } from '../../../../__sapper__/client.js'
+  import { composeNewStatusMentioning } from '../../_actions/mention.js'
+  import { classname } from '../../_utils/classname.js'
+  import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
   export default {
     components: {

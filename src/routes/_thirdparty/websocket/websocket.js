@@ -1,6 +1,6 @@
 // forked from https://github.com/gamestdio/websocket/blob/4111bfa/src/index.js
 
-import { Backoff } from './backoff'
+import { Backoff } from './backoff.js'
 
 export class WebSocketClient {
   /**

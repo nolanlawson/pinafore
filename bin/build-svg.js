@@ -1,10 +1,13 @@
-import svgs from './svgs'
+import svgs from './svgs.js'
 import path from 'path'
 import fs from 'fs'
 import { promisify } from 'util'
 import { optimize } from 'svgo'
-import $ from 'cheerio'
+import cheerioPackage from 'cheerio'
 
+const { default: $ } = cheerioPackage
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 

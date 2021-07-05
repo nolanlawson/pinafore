@@ -1,10 +1,10 @@
-import { restoreMastodonData } from './restore-mastodon-data'
+import { restoreMastodonData } from './restore-mastodon-data.js'
 import childProcessPromise from 'child-process-promise'
 import fs from 'fs'
-import { waitForMastodonUiToStart, waitForMastodonApiToStart } from './wait-for-mastodon-to-start'
-import cloneMastodon from './clone-mastodon'
-import installMastodon from './install-mastodon'
-import { mastodonDir, env } from './mastodon-config'
+import { waitForMastodonUiToStart, waitForMastodonApiToStart } from './wait-for-mastodon-to-start.js'
+import cloneMastodon from './clone-mastodon.js'
+import installMastodon from './install-mastodon.js'
+import { mastodonDir, env } from './mastodon-config.js'
 
 const spawn = childProcessPromise.spawn
 

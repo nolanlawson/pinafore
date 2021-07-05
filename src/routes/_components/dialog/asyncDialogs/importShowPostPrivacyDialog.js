@@ -1,3 +1,3 @@
 export const importShowPostPrivacyDialog = () => import(
-  '../creators/showPostPrivacyDialog'
+  '../creators/showPostPrivacyDialog.js'
 ).then(mod => mod.default)

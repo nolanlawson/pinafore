@@ -1,5 +1,5 @@
-import { store } from '../_store/store'
-import { emit } from './eventBus'
+import { store } from '../_store/store.js'
+import { emit } from './eventBus.js'
 
 // Force online/offline state. Needed for integration tests.
 // It would be nice not to actually ship this in production, but *shrug*

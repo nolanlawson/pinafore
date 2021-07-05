@@ -1,7 +1,7 @@
 // Inject intl statements into a Svelte v2 HTML file as well as some JS files like timeago.js
 // We do this for perf reasons, to make the output smaller and avoid needing to have a huge JSON file of translations
 import parse from 'format-message-parse'
-import { getIntl, warningOrError, trimWhitespace } from '../bin/getIntl'
+import { getIntl, warningOrError, trimWhitespace } from '../bin/getIntl.js'
 
 export default function (source) {
   const res = source
@@ -24,7 +24,7 @@ export default function (source) {
       return JSON.stringify(text)
     })
   const match = res.match(/[^(][^']intl\.([\w.]+)/) || res.match(/formatIntl\('([\w.]+)/)
-  if (match) {
+  if (match && match[1] !== 'js') { // don't warn on `import { formatIntl } from 'intl.js'`
     return warningOrError('You probably made a typo with an intl string: ' + match[1])
   }
   return res

@@ -1,10 +1,10 @@
-import { on } from '../../_utils/eventBus'
-import { updateFiltersForInstance } from '../../_actions/filters'
-import { store } from '../store'
-import { isEqual } from 'lodash-es'
-import { computeFilterContextsForStatusOrNotification } from '../../_utils/computeFilterContextsForStatusOrNotification'
-import { database } from '../../_database/database'
-import { mark, stop } from '../../_utils/marks'
+import { on } from '../../_utils/eventBus.js'
+import { updateFiltersForInstance } from '../../_actions/filters.js'
+import { store } from '../store.js'
+import { isEqual } from '../../_thirdparty/lodash/objects.js'
+import { computeFilterContextsForStatusOrNotification } from '../../_utils/computeFilterContextsForStatusOrNotification.js'
+import { database } from '../../_database/database.js'
+import { mark, stop } from '../../_utils/marks.js'
 
 export function wordFilterObservers () {
   if (!process.browser) {

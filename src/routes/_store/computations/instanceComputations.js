@@ -1,5 +1,5 @@
-import { DEFAULT_THEME } from '../../_utils/themeEngine'
-import { mark, stop } from '../../_utils/marks'
+import { DEFAULT_THEME } from '../../_utils/themeEngine.js'
+import { mark, stop } from '../../_utils/marks.js'
 
 function computeForInstance (store, computedKey, key, defaultValue) {
   store.compute(computedKey,

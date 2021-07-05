@@ -1,5 +1,5 @@
-import { mark, stop } from './marks'
-import { massageStatusPlainText } from './massageStatusPlainText'
+import { mark, stop } from './marks.js'
+import { massageStatusPlainText } from './massageStatusPlainText.js'
 
 const domParser = process.browser && new DOMParser()
 

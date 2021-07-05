@@ -1,5 +1,5 @@
-import { auth, basename } from './utils'
-import { post } from '../_utils/ajax'
+import { auth, basename } from './utils.js'
+import { post } from '../_utils/ajax.js'
 
 export async function report (instanceName, accessToken, accountId, statusIds, comment, forward) {
   const url = `${basename(instanceName)}/api/v1/reports`

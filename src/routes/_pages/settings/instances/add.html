@@ -82,9 +82,9 @@
 </style>
 <script>
   import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
-  import { store } from '../../../_store/store'
-  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
-  import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
+  import { store } from '../../../_store/store.js'
+  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance.js'
+  import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage.js'
   import Tooltip from '../../../_components/Tooltip.html'
 
   export default {

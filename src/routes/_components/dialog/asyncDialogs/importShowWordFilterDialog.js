@@ -1,3 +1,3 @@
 export const importShowWordFilterDialog = () => import(
-  '../creators/showWordFilterDialog'
+  '../creators/showWordFilterDialog.js'
 ).then(mod => mod.default)

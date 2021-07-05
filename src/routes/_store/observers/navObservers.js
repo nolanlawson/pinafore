@@ -1,5 +1,5 @@
-import { emit } from '../../_utils/eventBus'
-import { normalizePageName } from '../../_utils/normalizePageName'
+import { emit } from '../../_utils/eventBus.js'
+import { normalizePageName } from '../../_utils/normalizePageName.js'
 
 export function navObservers (store) {
   function pageIsInNav (store, page) {

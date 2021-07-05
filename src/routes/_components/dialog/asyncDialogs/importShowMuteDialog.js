@@ -1,3 +1,3 @@
 export const importShowMuteDialog = () => import(
-  '../creators/showMuteDialog'
+  '../creators/showMuteDialog.js'
 ).then(mod => mod.default)

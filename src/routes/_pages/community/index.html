@@ -101,14 +101,14 @@
 <script>
   import FreeTextLayout from '../../_components/FreeTextLayout.html'
   import { store } from '../../_store/store.js'
-  import HiddenFromSSR from '../../_components/HiddenFromSSR'
+  import HiddenFromSSR from '../../_components/HiddenFromSSR.html'
   import PageList from '../../_components/community/PageList.html'
   import PageListItem from '../../_components/community/PageListItem.html'
   import RadioGroup from '../../_components/radio/RadioGroup.html'
-  import { updateListsForInstance } from '../../_actions/lists'
-  import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests'
+  import { updateListsForInstance } from '../../_actions/lists.js'
+  import { updateFollowRequestCountIfLockedAccount } from '../../_actions/followRequests.js'
   import FocusRestoration from '../../_components/FocusRestoration.html'
-  import { formatIntl } from '../../_utils/formatIntl'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
   export default {
     async oncreate () {

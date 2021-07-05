@@ -1,4 +1,4 @@
-import * as emojiDatabase from './emojiDatabase'
+import * as emojiDatabase from './emojiDatabase.js'
 
 // Add a nice little tooltip to native emoji showing the shortcodes you can type to search for them
 // TODO: titles are not accessible to keyboard users or touch users, and also they don't show up

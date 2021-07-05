@@ -77,10 +77,10 @@
 <script>
   import IconButton from '../IconButton.html'
   import Select from '../Select.html'
-  import { store } from '../../_store/store'
-  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask'
-  import { POLL_EXPIRY_DEFAULT, POLL_EXPIRY_OPTIONS } from '../../_static/polls'
-  import { formatIntl } from '../../_utils/formatIntl'
+  import { store } from '../../_store/store.js'
+  import { scheduleIdleTask } from '../../_utils/scheduleIdleTask.js'
+  import { POLL_EXPIRY_DEFAULT, POLL_EXPIRY_OPTIONS } from '../../_static/polls.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
   function flushPollOptionsToDom (poll, realm) {
     for (let i = 0; i < poll.options.length; i++) {

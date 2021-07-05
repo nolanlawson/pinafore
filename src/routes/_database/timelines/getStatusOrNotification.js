@@ -1,12 +1,12 @@
-import { dbPromise, getDatabase } from '../databaseLifecycle'
-import { getInCache, hasInCache, notificationsCache, setInCache, statusesCache } from '../cache'
+import { dbPromise, getDatabase } from '../databaseLifecycle.js'
+import { getInCache, hasInCache, notificationsCache, setInCache, statusesCache } from '../cache.js'
 import {
   ACCOUNTS_STORE,
   NOTIFICATIONS_STORE,
   STATUSES_STORE
-} from '../constants'
-import { fetchStatus } from './fetchStatus'
-import { fetchNotification } from './fetchNotification'
+} from '../constants.js'
+import { fetchStatus } from './fetchStatus.js'
+import { fetchNotification } from './fetchNotification.js'
 
 export async function getStatus (instanceName, id) {
   if (hasInCache(statusesCache, instanceName, id)) {

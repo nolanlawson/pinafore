@@ -1,4 +1,4 @@
-import { store } from '../store'
+import { store } from '../store.js'
 
 const theScrollbarStyle = process.browser && document.getElementById('theScrollbarStyle')
 

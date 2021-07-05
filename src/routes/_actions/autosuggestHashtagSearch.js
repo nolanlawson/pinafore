@@ -1,9 +1,9 @@
-import { search } from '../_api/search'
-import { store } from '../_store/store'
-import { scheduleIdleTask } from '../_utils/scheduleIdleTask'
-import { SEARCH_RESULTS_LIMIT } from '../_static/autosuggest'
-import { RequestThrottler } from '../_utils/RequestThrottler'
-import { sum } from '../_utils/lodash-lite'
+import { search } from '../_api/search.js'
+import { store } from '../_store/store.js'
+import { scheduleIdleTask } from '../_utils/scheduleIdleTask.js'
+import { SEARCH_RESULTS_LIMIT } from '../_static/autosuggest.js'
+import { RequestThrottler } from '../_utils/RequestThrottler.js'
+import { sum } from '../_utils/lodash-lite.js'
 
 const HASHTAG_SEARCH_LIMIT = 10
 
