@@ -5922,7 +5922,7 @@ svelte-extras@^2.0.2:
   resolved "https://registry.yarnpkg.com/svelte-extras/-/svelte-extras-2.0.2.tgz#2b7e2826b27c9bf3c12b745494f11be835dc7f69"
   integrity sha512-yoxNehbDxGEHxJBTWq2RpIPDTHlNNy6eGR7RPSK7qsh8hoyOXbji8uF//l4+I/l2fLP+E8pQTJYrduPXrW3wsw==
 
-svelte-loader@^2.13.6:
+svelte-loader@2.13.6:
   version "2.13.6"
   resolved "https://registry.yarnpkg.com/svelte-loader/-/svelte-loader-2.13.6.tgz#3d5efd5886c2bab034606d5af0cce659da3ee555"
   integrity sha512-7uf7ZQdPAl+lwb1ldUYJFY/raZRUCuaNx7lMJ+F16jrVwN1+c35C2pBMGIY0mCqdKm5sm45jqELJJLGM3UG9Pw==
@@ -5966,7 +5966,7 @@ svelte-transitions@^1.2.0:
     svelte-transitions-fly "^1.0.1"
     svelte-transitions-slide "^1.0.0"
 
-svelte@^2.16.1:
+svelte@2.16.1:
   version "2.16.1"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-2.16.1.tgz#559a68452029e72280311ccc8dfd2ff10d0a5f18"
   integrity sha512-TpXdfukSkmWkMnH6PPVm7FRW8SSFcTyqBiP+6VN8rtZJ7Lp1Xbf/e3oz73eQBxF0UPZw1aAn1b91lX2XTeD3zg==
