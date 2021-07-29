@@ -193,5 +193,9 @@
   "lint-staged": {
     "*.js": "standard --fix",
     "*.html": "standard --fix --plugin html 'src/routes/**/*.html'"
+  },
+  "volta": {
+    "node": "14.17.3",
+    "yarn": "1.22.11"
   }
 }
