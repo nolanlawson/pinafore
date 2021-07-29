@@ -63,8 +63,8 @@ commands:
           name: "Install Node.js"
           # via https://circleci.com/docs/2.0/circleci-images/#notes-on-pinning-images
           command: |
-            curl -sSL "https://nodejs.org/dist/v12.22.2/node-v12.22.2-linux-x64.tar.xz" \
-            | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v12.22.2-linux-x64/bin/node
+            curl -sSL "https://nodejs.org/dist/v12.22.3/node-v12.22.3-linux-x64.tar.xz" \
+            | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v12.22.3-linux-x64/bin/node
       - run:
           name: Check current version of node
           command: node -v
