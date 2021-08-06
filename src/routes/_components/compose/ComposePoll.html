@@ -2,7 +2,7 @@
     {#each poll.options as option, i}
       <input id="poll-option-{realm}-{i}"
              type="text"
-             maxlength="25"
+             maxlength="50"
              on:change="onChange(i)"
              placeholder="{createLabel(i)}"
 
