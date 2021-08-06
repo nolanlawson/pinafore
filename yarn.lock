@@ -2533,10 +2533,10 @@ emoji-picker-element-data@^1.2.0:
   resolved "https://registry.yarnpkg.com/emoji-picker-element-data/-/emoji-picker-element-data-1.2.0.tgz#755790b7e3ff5f62ae51220692b0359b704f4fd1"
   integrity sha512-ziHcTY/7SFbk4KI0rQ6cb/KZo9A5ow0N3QT9bPTGGRxYAJd5gFQjShaM0OkW12rpLlKekOSOMT2hOlJB5QGqWQ==
 
-emoji-picker-element@^1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/emoji-picker-element/-/emoji-picker-element-1.6.4.tgz#618db8e2d9bb4420f6cecf0e94e91c1f526df578"
-  integrity sha512-KSSj9ri/0mOUv6Hylg/UU00lXVSuNPLRT8Cy7K2ktbkk7YZYcCnt4jSLuOAFnLiNQvCRpnvxVtgM+g81tc0JGA==
+emoji-picker-element@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/emoji-picker-element/-/emoji-picker-element-1.7.0.tgz#d21fbd950c434d6c6cd59e68f796b9d7bab38a96"
+  integrity sha512-s16zyK5yaW5G25MzdBRXOUMMepbur5GtZCuUm2xxftHWEopSedjmk5tX6/ZdjXDPMeb5NfKUi7V9DgAPTwIpWg==
 
 emoji-regex@^7.0.1:
   version "7.0.3"
