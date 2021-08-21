@@ -15,3 +15,7 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_dark.scss";
 @import "_dark_navbar.scss";
 @import "_dark_scrollbars.scss";
+
+:root {
+  accent-color: #{darken($main-theme-color, 5%)};
+}
