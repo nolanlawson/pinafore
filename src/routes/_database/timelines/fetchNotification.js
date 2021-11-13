@@ -6,6 +6,9 @@ export function fetchNotification (notificationsStore, statusesStore, accountsSt
   notificationsStore.get(id).onsuccess = e => {
     const notification = e.target.result
     callback(notification)
+    if (!notification) {
+      return
+    }
     fetchAccount(accountsStore, notification[ACCOUNT_ID], account => {
       notification.account = account
     })
