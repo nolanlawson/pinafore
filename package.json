@@ -1,7 +1,7 @@
 {
   "name": "pinafore",
   "description": "Alternative web client for Mastodon",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
