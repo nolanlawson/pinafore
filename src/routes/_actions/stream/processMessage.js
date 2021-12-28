@@ -35,7 +35,10 @@ export function processMessage (instanceName, timelineName, message) {
       // reproduce what is done for statuses for the conversation.
       //
       // It will add new DMs as new conversations instead of updating existing threads
-      addStatusOrNotification(instanceName, timelineName, payload.last_status)
+      if (payload.last_status) {
+        // If the last_status doesn't exist, just ignore it. There's not much we can do in that case
+        addStatusOrNotification(instanceName, timelineName, payload.last_status)
+      }
       break
     case 'filters_changed':
       emit('wordFiltersChanged', instanceName)
