@@ -75,7 +75,7 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
   let { json: items, headers } = await getWithHeaders(url, auth(accessToken), { timeout: DEFAULT_TIMEOUT })
 
   if (timeline === 'direct') {
-    items = items.map(item => item.last_status)
+    items = items.map(item => item.last_status).filter(Boolean) // ignore falsy last_status'es
   }
   return { items, headers }
 }
