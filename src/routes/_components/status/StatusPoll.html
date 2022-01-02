@@ -292,13 +292,13 @@
     computed: {
       pollId: ({ originalStatus }) => originalStatus.poll.id,
       poll: ({ originalStatus, $polls, pollId }) => $polls[pollId] || originalStatus.poll,
-      options: ({ poll, originalStatusEmojis, $autoplayGifs }) => (
-        poll.options.map(({ title, votes_count: votesCount }) => ({
+      options: ({ poll, originalStatusEmojis, $autoplayGifs, votersCount }) => (
+        poll.options.map(({ title, votes_count: optionsVotesCount }) => ({
           title: emojifyText(escapeHtml(title), originalStatusEmojis, $autoplayGifs),
-          share: poll.votes_count ? Math.round(votesCount / poll.votes_count * 100) : 0
+          share: votersCount ? Math.round(optionsVotesCount / votersCount * 100) : 0
         }))
       ),
-      votesCount: ({ poll }) => poll.votes_count,
+      votersCount: ({ poll }) => poll.voters_count,
       voted: ({ poll }) => poll.voted,
       multiple: ({ poll }) => poll.multiple,
       expired: ({ poll }) => poll.expired,
@@ -314,8 +314,8 @@
         !isStatusInOwnThread && $isMobileSize && !expired
       ),
       formDisabled: ({ choices }) => !choices.length,
-      votesText: ({ votesCount }) => (
-        formatIntl('intl.voteCount', { count: votesCount })
+      votesText: ({ votersCount }) => (
+        formatIntl('intl.voteCount', { count: votersCount })
       ),
       computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading, shown }) => (
         classname(

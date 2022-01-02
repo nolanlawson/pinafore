@@ -50,10 +50,10 @@ test('Can vote on multiple-choice polls', async t => {
   await t
     .click(getNthStatusPollVoteButton(1))
     .expect(getNthStatusPollForm(1).exists).notOk({ timeout: 20000 })
-    .expect(getNthStatusPollResult(1, 1).innerText).eql('50% yes')
+    .expect(getNthStatusPollResult(1, 1).innerText).eql('100% yes')
     .expect(getNthStatusPollResult(1, 2).innerText).eql('0% no')
-    .expect(getNthStatusPollResult(1, 3).innerText).eql('50% maybe')
-    .expect(getNthStatusPollVoteCount(1).innerText).eql('2 votes')
+    .expect(getNthStatusPollResult(1, 3).innerText).eql('100% maybe')
+    .expect(getNthStatusPollVoteCount(1).innerText).eql('1 vote')
 })
 
 test('Can update poll results', async t => {
@@ -120,4 +120,33 @@ test('Polls with content warnings', async t => {
     .click(getNthShowOrHideButton(1))
     .expect(getNthStatusPollForm(1).visible).notOk()
     .expect(getNthStatusContent(1).visible).notOk()
+})
+
+test('Percent total can exceed 100% on multi-choice polls', async t => {
+  const { poll } = await createPollAs('admin', 'please vote a whole lot', ['yes', 'no', 'maybe', 'huh'], true)
+  const { id: pollId } = poll
+  await voteOnPollAs('baz', pollId, [0, 1, 2])
+  await voteOnPollAs('ExternalLinks', pollId, [0, 1, 2, 3])
+  await sleep(2000)
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatusContent(1).innerText).contains('please vote a whole lot')
+  await sleep(1000)
+  await t
+    .click(getNthStatusPollOption(1, 1))
+  await sleep(1000)
+  await t
+    .click(getNthStatusPollOption(1, 2))
+  await sleep(1000)
+  await t
+    .click(getNthStatusPollOption(1, 3))
+  await sleep(1000)
+  await t
+    .click(getNthStatusPollVoteButton(1))
+    .expect(getNthStatusPollForm(1).exists).notOk({ timeout: 20000 })
+    .expect(getNthStatusPollResult(1, 1).innerText).eql('100% yes')
+    .expect(getNthStatusPollResult(1, 2).innerText).eql('100% no')
+    .expect(getNthStatusPollResult(1, 3).innerText).eql('100% maybe')
+    .expect(getNthStatusPollResult(1, 4).innerText).eql('33% huh')
+    .expect(getNthStatusPollVoteCount(1).innerText).eql('3 votes')
 })
