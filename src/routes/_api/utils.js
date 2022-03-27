@@ -1,5 +1,5 @@
 function targetIsLocalhost (instanceName) {
-  return true // instanceName.startsWith('localhost:') || instanceName.startsWith('127.0.0.1:')
+  return instanceName.startsWith('localhost:') || instanceName.startsWith('127.0.0.1:')
 }
 
 export function basename (instanceName) {
