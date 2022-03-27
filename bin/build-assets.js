@@ -7,6 +7,7 @@ import { getIntl, trimWhitespace } from './getIntl.js'
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
+const copyFile = promisify(fs.copyFile)
 
 // Try 'en-US' first, then 'en' if that doesn't exist
 const PREFERRED_LOCALES = [LOCALE, LOCALE.split('-')[0]]
@@ -63,10 +64,20 @@ async function buildManifestJson () {
   )
 }
 
+async function buildFlagEmojiFile () {
+  await copyFile(path.resolve(
+    __dirname,
+    '../node_modules/country-flag-emoji-polyfill/dist/TwemojiCountryFlags.woff2'
+  ), path.resolve(
+    __dirname, '../static/TwemojiCountryFlags.woff2'
+  ))
+}
+
 async function main () {
   await Promise.all([
     buildEmojiI18nFile(),
-    buildManifestJson()
+    buildManifestJson(),
+    buildFlagEmojiFile()
   ])
 }
 

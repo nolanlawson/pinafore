@@ -22,6 +22,10 @@ const ON_DEMAND_CACHE = [
   {
     regex: /\$polyfill\$/,
     cache: WEBPACK_ASSETS
+  },
+  {
+    regex: /TwemojiCountryFlags\.woff2/,
+    cache: ASSETS
   }
 ]
 
