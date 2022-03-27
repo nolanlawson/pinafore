@@ -21,6 +21,8 @@ export function countryFlagEmojiPolyfill () {
         }
       `
       document.head.appendChild(style)
+      // "Twemoji Mozilla" is for emoji-picker-element, since it lists that font first.
+      // "CountryFlagEmojiPolyfill" is for us so we can set it before everything else in our own font family lists.
     }
     store.set({ polyfilledCountryFlagEmoji: polyfillActivated })
   }
