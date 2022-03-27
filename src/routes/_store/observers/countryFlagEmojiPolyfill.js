@@ -12,6 +12,16 @@ export function countryFlagEmojiPolyfill () {
     const numStylesAfter = document.head.querySelectorAll('style').length
     // if a style was added, then the polyfill was activated
     const polyfillActivated = numStylesAfter !== numStylesBefore
-    store.set({ 'polyfilledCountryFlagEmoji': polyfillActivated })
+    if (polyfillActivated) {
+      const style = document.createElement('style')
+      style.textContent = `
+        @font-face {
+          font-family: CountryFlagEmojiPolyfill;
+          src: url(${JSON.stringify(COUNTRY_FLAG_FONT_URL)});
+        }
+      `
+      document.head.appendChild(style)
+    }
+    store.set({ polyfilledCountryFlagEmoji: polyfillActivated })
   }
 }
