@@ -61,6 +61,7 @@
     "chokidar": "^3.5.3",
     "circular-dependency-plugin": "^5.2.2",
     "compression": "^1.7.4",
+    "country-flag-emoji-polyfill": "^0.1.1",
     "cross-env": "^7.0.3",
     "css-dedoupe": "^0.1.1",
     "emoji-picker-element": "^1.11.1",
