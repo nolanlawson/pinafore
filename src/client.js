@@ -7,6 +7,7 @@ import { mark, stop } from './routes/_utils/marks.js'
 import { loadPolyfills } from './routes/_utils/polyfills/loadPolyfills.js'
 import { loadNonCriticalPolyfills } from './routes/_utils/polyfills/loadNonCriticalPolyfills.js'
 import idbReady from 'safari-14-idb-fix/dist/esm'
+import { snackbar } from './routes/_components/snackbar/snackbar.js'
 
 Promise.all([idbReady(), loadPolyfills()]).then(() => {
   mark('sapperStart')
@@ -20,3 +21,11 @@ console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept()
 }
+
+const showSnackbar = () => {
+  snackbar.announce('la la la this is a snackbar', 'show again', () => {
+    setTimeout(showSnackbar, 1000)
+  })
+}
+
+showSnackbar()
