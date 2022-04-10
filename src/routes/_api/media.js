@@ -20,7 +20,7 @@ export async function uploadMedia (instanceName, accessToken, file, description)
   try {
     return (await doUploadMedia('v2', instanceName, accessToken, file, description))
   } catch (err) {
-    if (err && err.status === 404) { // fall back to old search API
+    if (err && err.status === 404) { // fall back to old v1 API
       return doUploadMedia('v1', instanceName, accessToken, file, description)
     } else {
       throw err
@@ -32,7 +32,7 @@ export async function putMediaMetadata (instanceName, accessToken, mediaId, desc
   try {
     return (await doPutMediaMetadata('v2', instanceName, accessToken, mediaId, description, focus))
   } catch (err) {
-    if (err && err.status === 404) { // fall back to old search API
+    if (err && err.status === 404) { // fall back to old v1 API
       return doPutMediaMetadata('v1', instanceName, accessToken, mediaId, description, focus)
     } else {
       throw err
