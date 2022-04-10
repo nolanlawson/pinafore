@@ -97,10 +97,6 @@ input, textarea {
   color: inherit;
 }
 
-textarea {
-  font-family: system-ui, -apple-system, PinaforeRegular, sans-serif, PinaforeEmoji;
-}
-
 button, .button {
   font-size: 1.2em;
   background: var(--button-bg);
@@ -164,7 +160,7 @@ input:required, input:invalid {
 }
 
 textarea {
-  font-family: inherit;
+  font-family: CountryFlagEmojiPolyfill, system-ui, -apple-system, PinaforeRegular, sans-serif, PinaforeEmoji;
   font-size: inherit;
   box-sizing: border-box;
 }
@@ -208,5 +204,5 @@ textarea {
 }
 
 .inline-emoji {
-  font-family: PinaforeEmoji, sans-serif;
+  font-family: CountryFlagEmojiPolyfill, PinaforeEmoji, sans-serif;
 }

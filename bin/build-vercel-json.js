@@ -51,7 +51,7 @@ const JSON_TEMPLATE = {
       }
     },
     {
-      src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp)$',
+      src: '^/.*\\.(png|css|json|svg|jpe?g|map|txt|gz|webapp|woff|woff2)$',
       headers: {
         'cache-control': 'public,max-age=3600'
       }
