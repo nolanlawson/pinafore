@@ -18,7 +18,8 @@ const {
   disableCustomScrollbars,
   enableGrayscale,
   pushSubscription,
-  loggedInInstancesInOrder
+  loggedInInstancesInOrder,
+  centerNav
 } = storeLite.get()
 
 const theme = (instanceThemes && instanceThemes[currentInstance]) || DEFAULT_THEME
@@ -50,6 +51,11 @@ if (!currentInstance) {
 if (disableCustomScrollbars) {
   document.getElementById('theScrollbarStyle')
     .setAttribute('media', 'only x') // disables the style
+}
+
+if (centerNav) {
+  document.getElementById('theCenterNavStyle')
+    .setAttribute('media', 'all') // enables the style
 }
 
 // hack to make the scrollbars rounded only on macOS

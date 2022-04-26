@@ -57,6 +57,11 @@
              bind:checked="$underlineLinks" on:change="onChange(event)">
       {intl.underlineLinks}
     </label>
+    <label class="setting-group">
+      <input type="checkbox" id="choice-center-nav"
+             bind:checked="$centerNav" on:change="onChange(event)">
+      {intl.centerNav}
+    </label>
   </form>
 
   <h2>{intl.accessibility}</h2>
