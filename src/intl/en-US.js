@@ -309,6 +309,10 @@ export default {
     true {(follow requested)}
     other {}
   }`,
+  notifyLabel: `Subscribe`,
+  denotifyLabel: `Unsubscribe`,
+  subscribedAccount: 'Subscribed to account',
+  unsubscribedAccount: 'Unsubscribed to account',
   unblock: 'Unblock',
   nameAndFollowing: 'Name and following',
   clickToSeeAvatar: 'Click to see avatar',
@@ -631,6 +635,8 @@ export default {
   unableToShowReblogs: 'Unable to show boosts: {error}',
   unableToHideReblogs: 'Unable to hide boosts: {error}',
   unableToShare: 'Unable to share: {error}',
+  unableToSubscribe: 'Unable to subscribe: {error}',
+  unableToUnsubscribe: 'Unable to unsubscribe: {error}',
   showingOfflineContent: 'Internet request failed. Showing offline content.',
   youAreOffline: 'You seem to be offline. You can still read toots while offline.',
   // Snackbar UI

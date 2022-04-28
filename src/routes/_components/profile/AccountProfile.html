@@ -8,6 +8,7 @@
   <div class="account-profile-grid-wrapper">
     <div class="account-profile-grid">
       <AccountProfileHeader {account} {relationship} {verifyCredentials} />
+      <AccountProfileNotify {account} {relationship} {verifyCredentials} />
       <AccountProfileFollow {account} {relationship} {verifyCredentials} />
       <AccountProfileNote {account} />
       <AccountProfileMeta {account} />
@@ -37,7 +38,7 @@
     display: grid;
     grid-template-areas: "avatar     name        label     followed-by   follow"
                          "avatar     username    username  username      follow"
-                         "avatar     note        note      note          follow"
+                         "avatar     note        note      note          notify"
                          "meta       meta        meta      meta          meta"
                          "details    details     details   details       details";
     grid-template-columns: min-content auto 1fr 1fr min-content;
@@ -71,7 +72,7 @@
       grid-template-areas: "avatar     name          follow"
                            "avatar     label         follow"
                            "avatar     username      follow"
-                           "avatar     followed-by   follow"
+                           "avatar     followed-by   notify"
                            "note       note          note"
                            "meta       meta          meta"
                            "details    details       details";
@@ -97,6 +98,7 @@
                            "username    username"
                            "followed-by followed-by"
                            "follow      follow"
+                           "notify      notify"
                            "note        note"
                            "meta        meta"
                            "details     details";
@@ -108,6 +110,7 @@
 </style>
 <script>
   import AccountProfileHeader from './AccountProfileHeader.html'
+  import AccountProfileNotify from './AccountProfileNotify.html'
   import AccountProfileFollow from './AccountProfileFollow.html'
   import AccountProfileNote from './AccountProfileNote.html'
   import AccountProfileMeta from './AccountProfileMeta.html'
@@ -144,6 +147,7 @@
       AccountProfileHeader,
       AccountProfileFollow,
       AccountProfileNote,
+      AccountProfileNotify,
       AccountProfileMeta,
       AccountProfileDetails,
       AccountProfileMovedBanner,

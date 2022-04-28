@@ -1,0 +1,92 @@
+<div class="account-profile-notify {shown ? 'shown' : ''}">
+  <!--
+    The bell notification button (Mastodon 3.3+)
+    Shows if we're getting notifications or not.
+    It is not possible to turn on notifications for accounts you don't follow.
+    Also the instance can just have no support for this feature.
+  -->
+  <IconButton
+    className="account-profile-notify-icon-button"
+    {label}
+    pressedLabel="{intl.denotifyLabel}"
+    {href}
+    big={!$isVeryTinyMobileSize}
+    on:click="onNotifyButtonClick(event)"
+    ref:icon
+  />
+</div>
+<style>
+  .account-profile-notify {
+    grid-area: notify;
+    align-self: flex-start;
+    display: none;
+  }
+  .account-profile-notify.shown {
+    display: block;
+  }
+
+  @media (max-width: 240px) {
+    .account-profile-notify {
+      justify-self: flex-end;
+    }
+  }
+</style>
+<script>
+  import IconButton from '../IconButton.html'
+  import { FOLLOW_BUTTON_ANIMATION } from '../../_static/animations.js'
+  import { store } from '../../_store/store.js'
+  import { setAccountNotify } from '../../_actions/notify.js'
+  import { formatIntl } from '../../_utils/formatIntl.js'
+
+  export default {
+    methods: {
+      oncreate () {
+        if (process.browser) {
+          window.__button = this
+        }
+      },
+      async onNotifyButtonClick (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        const {
+          account,
+          accountId,
+          notifying
+        } = this.get()
+        if (notifying) { // unblock
+          await setAccountNotify(accountId, false)
+        } else { // follow/unfollow
+          this.refs.icon.animate(FOLLOW_BUTTON_ANIMATION)
+          await setAccountNotify(accountId, true)
+        }
+      }
+    },
+    store: () => store,
+    data: () => ({
+    }),
+    computed: {
+      accountId: ({ account }) => account.id,
+      notifying: ({ relationship }) => {
+        return relationship && relationship.notifying
+      },
+      href: ({ notifying }) => {
+        if (notifying) {
+          return '#fa-bell-ringing'
+        }
+        return '#fa-bell-o'
+      },
+      label: ({ notifying }) => {
+        if (notifying) {
+          return formatIntl('intl.notifyLabel')
+        }
+        return formatIntl('intl.denotifyLabel')
+      },
+      shown: ({ verifyCredentials, relationship }) => (
+        verifyCredentials && relationship && verifyCredentials.id !== relationship.id && relationship.following
+      ),
+    },
+    components: {
+      IconButton
+    }
+  }
+</script>
