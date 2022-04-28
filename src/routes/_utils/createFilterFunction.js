@@ -1,7 +1,8 @@
 // create a function for filtering timeline item summaries
 
 export const createFilterFunction = (
-  showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterContext
+  showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls,
+  showSubscriptions, wordFilterContext
 ) => {
   return item => {
     if (item.filterContexts && item.filterContexts.includes(wordFilterContext)) {
@@ -19,6 +20,8 @@ export const createFilterFunction = (
         return showMentions
       case 'follow':
         return showFollows
+      case 'status':
+        return showSubscriptions
     }
     if (item.reblogId) {
       return showReblogs

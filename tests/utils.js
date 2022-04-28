@@ -522,6 +522,10 @@ export function getNthStatusOptionsButton (n) {
   return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(4)`)
 }
 
+export function getNthStatusAccountLink (n) {
+  return $(`${getNthStatusSelector(n)} .status-author-name`)
+}
+
 export function getNthFavoritedLabel (n) {
   return getNthFavoriteButton(n).getAttribute('aria-label')
 }
@@ -544,6 +548,10 @@ export function getNthRebloggedLabel (n) {
 
 export function getNthDialogOptionsOption (n) {
   return $(`.modal-dialog li:nth-child(${n}) button`)
+}
+
+export function getDialogOptionWithText (text) {
+  return $('.modal-dialog li button').withText(text)
 }
 
 export function getReblogsCount () {

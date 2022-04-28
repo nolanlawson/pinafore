@@ -26,6 +26,7 @@ import { shareStatus } from '../../../_actions/share.js'
 import { toggleMute } from '../../../_actions/toggleMute.js'
 import { reportStatusOrAccount } from '../../../_actions/report.js'
 import { formatIntl } from '../../../_utils/formatIntl.js'
+import { setAccountNotified } from '../../../_actions/setAccountNotified.js'
 
 export default {
   oncreate,
@@ -53,6 +54,7 @@ export default {
     username: ({ account }) => account.username,
     muting: ({ relationship }) => relationship.muting,
     blocking: ({ relationship }) => relationship.blocking,
+    notifying: ({ relationship }) => relationship && relationship.notifying,
     followLabel: ({ following, followRequested, account, username }) => {
       if (typeof following === 'undefined' || !account) {
         return ''
@@ -96,7 +98,8 @@ export default {
     items: ({
       blockLabel, blocking, blockIcon, muteLabel, muteIcon, followLabel, followIcon,
       following, followRequested, pinLabel, isUser, visibility, mentionsUser, mutingConversation,
-      muteConversationLabel, muteConversationIcon, supportsWebShare, isPublicOrUnlisted, bookmarkLabel
+      muteConversationLabel, muteConversationIcon, supportsWebShare, isPublicOrUnlisted, bookmarkLabel,
+      username, notifying
     }) => ([
       isUser && {
         key: 'delete',
@@ -112,6 +115,16 @@ export default {
         key: 'follow',
         label: followLabel,
         icon: followIcon
+      },
+      !isUser && following && notifying === false && { // notifying could be undefined for old servers
+        key: 'notify',
+        label: formatIntl('intl.notify', { account: `@${username}` }),
+        icon: '#fa-bell'
+      },
+      !isUser && following && notifying === true && { // notifying could be undefined for old servers
+        key: 'denotify',
+        label: formatIntl('intl.denotify', { account: `@${username}` }),
+        icon: '#fa-bell-o'
       },
       !isUser && {
         key: 'block',
@@ -187,6 +200,10 @@ export default {
           return this.onReport()
         case 'bookmark':
           return this.onBookmark()
+        case 'notify':
+          return this.onNotifyClicked()
+        case 'denotify':
+          return this.onDenotifyClicked()
       }
     },
     async onDeleteClicked () {
@@ -244,6 +261,16 @@ export default {
       const { status } = this.get()
       this.close()
       await setStatusBookmarkedOrUnbookmarked(status.id, !status.bookmarked)
+    },
+    async onNotifyClicked () {
+      const { accountId } = this.get()
+      this.close()
+      await setAccountNotified(accountId, /* notify */ true, /* toastOnSuccess */ true)
+    },
+    async onDenotifyClicked () {
+      const { accountId } = this.get()
+      this.close()
+      await setAccountNotified(accountId, /* notify */ false, /* toastOnSuccess */ true)
     }
   }
 }

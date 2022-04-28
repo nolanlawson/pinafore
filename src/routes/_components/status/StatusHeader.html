@@ -125,6 +125,8 @@
           return '#fa-user-plus'
         } else if (notificationType === 'poll') {
           return '#fa-bar-chart'
+        } else if (notificationType === 'status') {
+          return '#fa-comment'
         }
         return '#fa-star'
       },
@@ -135,6 +137,8 @@
           return 'intl.favoritedYou'
         } else if (notificationType === 'follow') {
           return 'intl.followedYou'
+        } else if (notificationType === 'status') {
+          return 'intl.posted'
         } else if (notificationType === 'poll') {
           if ($currentVerifyCredentials && status && $currentVerifyCredentials.id === status.account.id) {
             return 'intl.pollYouCreatedEnded'

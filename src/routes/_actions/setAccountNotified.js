@@ -4,7 +4,7 @@ import { toast } from '../_components/toast/toast.js'
 import { updateLocalRelationship } from './accounts.js'
 import { formatIntl } from '../_utils/formatIntl.js'
 
-export async function setAccountNotify (accountId, notify, toastOnSuccess) {
+export async function setAccountNotified (accountId, notify, toastOnSuccess) {
   const { currentInstance, accessToken } = store.get()
   try {
     let relationship
@@ -15,11 +15,11 @@ export async function setAccountNotify (accountId, notify, toastOnSuccess) {
     }
     await updateLocalRelationship(currentInstance, accountId, relationship)
     if (toastOnSuccess) {
-      /* no await */ toast.say(follow ? 'intl.subscribedAccount' : 'intl.unsubscribedAccount')
+      /* no await */ toast.say(notify ? 'intl.subscribedAccount' : 'intl.unsubscribedAccount')
     }
   } catch (e) {
     console.error(e)
-    /* no await */ toast.say(follow
+    /* no await */ toast.say(notify
       ? formatIntl('intl.unableToSubscribe', { error: (e.message || '') })
       : formatIntl('intl.unableToUnsubscribe', { error: (e.message || '') })
     )

@@ -5,11 +5,10 @@ import {
   getNthSearchResult,
   getNthStatus,
   getNthStatusOptionsButton,
-  getNthDialogOptionsOption,
   getUrl,
   modalDialog,
   closeDialogButton,
-  confirmationDialogOKButton, sleep
+  confirmationDialogOKButton, sleep, getDialogOptionWithText
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { loginAsFoobar } from '../roles'
@@ -25,12 +24,9 @@ test('Can mute and unmute an account', async t => {
 
   await t.expect(getNthStatus(1).innerText).contains(post, { timeout: 20000 })
     .click(getNthStatusOptionsButton(1))
-    .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')
-    .expect(getNthDialogOptionsOption(3).innerText).contains('Mute @admin')
   await sleep(1000)
   await t
-    .click(getNthDialogOptionsOption(3))
+    .click(getDialogOptionWithText('Mute @admin'))
   await sleep(1000)
   await t
     .click(confirmationDialogOKButton)
@@ -43,20 +39,13 @@ test('Can mute and unmute an account', async t => {
     .click(getNthSearchResult(1))
     .expect(getUrl()).contains('/accounts/1')
     .click(accountProfileMoreOptionsButton)
-    .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @admin')
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Unfollow @admin')
-    .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
-    .expect(getNthDialogOptionsOption(4).innerText).contains('Unmute @admin')
   await sleep(1000)
   await t
-    .click(getNthDialogOptionsOption(4))
+    .click(getDialogOptionWithText('Unmute @admin'))
   await sleep(1000)
   await t
     .click(accountProfileMoreOptionsButton)
-    .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @admin')
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Unfollow @admin')
-    .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
-    .expect(getNthDialogOptionsOption(4).innerText).contains('Mute @admin')
+    .expect(getDialogOptionWithText('Mute @admin').exists).ok()
   await sleep(1000)
   await t
     .click(closeDialogButton)

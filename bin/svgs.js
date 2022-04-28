@@ -1,6 +1,7 @@
 export default [
   { id: 'pinafore-logo', src: 'src/static/sailboat.svg', inline: true },
   { id: 'fa-bell', src: 'src/thirdparty/font-awesome-svg-png/white/svg/bell.svg', inline: true },
+  { id: 'fa-bell-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/bell-o.svg' },
   { id: 'fa-users', src: 'src/thirdparty/font-awesome-svg-png/white/svg/users.svg', inline: true },
   { id: 'fa-globe', src: 'src/thirdparty/font-awesome-svg-png/white/svg/globe.svg' },
   { id: 'fa-gear', src: 'src/thirdparty/font-awesome-svg-png/white/svg/gear.svg', inline: true },
@@ -22,6 +23,7 @@ export default [
   { id: 'fa-user-plus', src: 'src/thirdparty/font-awesome-svg-png/white/svg/user-plus.svg' },
   { id: 'fa-external-link', src: 'src/thirdparty/font-awesome-svg-png/white/svg/external-link.svg' },
   { id: 'fa-search', src: 'src/thirdparty/font-awesome-svg-png/white/svg/search.svg', inline: true },
+  { id: 'fa-comment', src: 'src/thirdparty/font-awesome-svg-png/white/svg/comment.svg' },
   { id: 'fa-comments', src: 'src/thirdparty/font-awesome-svg-png/white/svg/comments.svg', inline: true },
   { id: 'fa-paperclip', src: 'src/thirdparty/font-awesome-svg-png/white/svg/paperclip.svg' },
   { id: 'fa-thumb-tack', src: 'src/thirdparty/font-awesome-svg-png/white/svg/thumb-tack.svg' },

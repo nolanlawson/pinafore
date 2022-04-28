@@ -309,10 +309,10 @@ export default {
     true {(follow requested)}
     other {}
   }`,
-  notifyLabel: `Subscribe`,
-  denotifyLabel: `Unsubscribe`,
+  notify: 'Subscribe to {account}',
+  denotify: 'Unsubscribe from {account}',
   subscribedAccount: 'Subscribed to account',
-  unsubscribedAccount: 'Unsubscribed to account',
+  unsubscribedAccount: 'Unsubscribed from account',
   unblock: 'Unblock',
   nameAndFollowing: 'Name and following',
   clickToSeeAvatar: 'Click to see avatar',
@@ -474,6 +474,7 @@ export default {
   newFollowers: 'New followers',
   reblogs: 'Boosts',
   pollResults: 'Poll results',
+  subscriptions: 'Subscribed toots',
   needToReauthenticate: 'You need to reauthenticate in order to enable push notification. Log out of {instance}?',
   failedToUpdatePush: 'Failed to update push notification settings: {error}',
   // Themes
@@ -508,6 +509,7 @@ export default {
   rebloggedYou: 'boosted your toot',
   favoritedYou: 'favorited your toot',
   followedYou: 'followed you',
+  posted: 'posted',
   pollYouCreatedEnded: 'A poll you created has ended',
   pollYouVotedEnded: 'A poll you voted on has ended',
   reblogged: 'boosted',
