@@ -295,7 +295,7 @@
         )
       ),
       showHeader: ({ notification, status, timelineType }) => (
-        (notification && ['reblog', 'favourite', 'poll'].includes(notification.type)) ||
+        (notification && ['reblog', 'favourite', 'poll', 'status'].includes(notification.type)) ||
         status.reblog ||
         timelineType === 'pinned'
       ),

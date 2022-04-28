@@ -3,7 +3,7 @@ import {
   HOME_REPLIES,
   NOTIFICATION_FAVORITES,
   NOTIFICATION_FOLLOWS, NOTIFICATION_MENTIONS, NOTIFICATION_POLLS,
-  NOTIFICATION_REBLOGS
+  NOTIFICATION_REBLOGS, NOTIFICATION_SUBSCRIPTIONS
 } from '../../_static/instanceSettings.js'
 import {
   WORD_FILTER_CONTEXT_ACCOUNT,
@@ -46,12 +46,14 @@ export function timelineFilterComputations (store) {
   computeTimelineFilter(store, 'timelineShowFavs', { notifications: NOTIFICATION_FAVORITES })
   computeTimelineFilter(store, 'timelineShowMentions', { notifications: NOTIFICATION_MENTIONS })
   computeTimelineFilter(store, 'timelineShowPolls', { notifications: NOTIFICATION_POLLS })
+  computeTimelineFilter(store, 'timelineShowSubscriptions', { notifications: NOTIFICATION_SUBSCRIPTIONS })
 
   computeNotificationFilter(store, 'timelineNotificationShowReblogs', NOTIFICATION_REBLOGS)
   computeNotificationFilter(store, 'timelineNotificationShowFollows', NOTIFICATION_FOLLOWS)
   computeNotificationFilter(store, 'timelineNotificationShowFavs', NOTIFICATION_FAVORITES)
   computeNotificationFilter(store, 'timelineNotificationShowMentions', NOTIFICATION_MENTIONS)
   computeNotificationFilter(store, 'timelineNotificationShowPolls', NOTIFICATION_POLLS)
+  computeNotificationFilter(store, 'timelineNotificationShowSubscriptions', NOTIFICATION_SUBSCRIPTIONS)
 
   store.compute(
     'timelineWordFilterContext',
@@ -85,10 +87,10 @@ export function timelineFilterComputations (store) {
     [
       'timelineShowReblogs', 'timelineShowReplies', 'timelineShowFollows',
       'timelineShowFavs', 'timelineShowMentions', 'timelineShowPolls',
-      'timelineWordFilterContext'
+      'timelineShowSubscriptions', 'timelineWordFilterContext'
     ],
-    (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterContext) => (
-      createFilterFunction(showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, wordFilterContext)
+    (showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, showSubscriptions, wordFilterContext) => (
+      createFilterFunction(showReblogs, showReplies, showFollows, showFavs, showMentions, showPolls, showSubscriptions, wordFilterContext)
     )
   )
 
@@ -99,10 +101,10 @@ export function timelineFilterComputations (store) {
     [
       'timelineNotificationShowReblogs', 'timelineNotificationShowFollows',
       'timelineNotificationShowFavs', 'timelineNotificationShowMentions',
-      'timelineNotificationShowPolls'
+      'timelineNotificationShowPolls', 'timelineNotificationShowSubscriptions'
     ],
-    (showReblogs, showFollows, showFavs, showMentions, showPolls) => (
-      createFilterFunction(showReblogs, true, showFollows, showFavs, showMentions, showPolls, WORD_FILTER_CONTEXT_NOTIFICATIONS)
+    (showReblogs, showFollows, showFavs, showMentions, showPolls, showSubscriptions) => (
+      createFilterFunction(showReblogs, true, showFollows, showFavs, showMentions, showPolls, showSubscriptions, WORD_FILTER_CONTEXT_NOTIFICATIONS)
     )
   )
 

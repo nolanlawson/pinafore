@@ -214,6 +214,7 @@ async function showRichNotification (data, notification) {
     }
     case 'reblog':
     case 'favourite':
+    case 'status':
     case 'poll': {
       await self.registration.showNotification(data.title, {
         badge,

@@ -2,7 +2,7 @@ import {
   accountProfileFollowButton,
   accountProfileFollowedBy, accountProfileMoreOptionsButton, communityNavButton, getNthSearchResult,
   getNthStatus, getNthStatusOptionsButton, getNthDialogOptionsOption, getUrl, modalDialog,
-  sleep
+  sleep, getDialogOptionWithText
 } from '../utils'
 import { Selector as $ } from 'testcafe'
 import { loginAsFoobar } from '../roles'
@@ -21,10 +21,10 @@ test('Can block and unblock an account from a status', async t => {
   await t
     .click(getNthStatusOptionsButton(1))
     .expect(getNthDialogOptionsOption(1).innerText).contains('Unfollow @admin')
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Block @admin')
+    .expect(getNthDialogOptionsOption(3).innerText).contains('Block @admin')
   await sleep(500)
   await t
-    .click(getNthDialogOptionsOption(2))
+    .click(getDialogOptionWithText('Block @admin'))
     .expect(modalDialog.exists).notOk()
   await sleep(500)
   await t
@@ -60,12 +60,9 @@ test('Can block and unblock an account from the account profile page', async t =
   await sleep(500)
   await t
     .click(accountProfileMoreOptionsButton)
-    .expect(getNthDialogOptionsOption(1).innerText).contains('Mention @baz')
-    .expect(getNthDialogOptionsOption(2).innerText).contains('Follow @baz')
-    .expect(getNthDialogOptionsOption(3).innerText).contains('Block @baz')
   await sleep(500)
   await t
-    .click(getNthDialogOptionsOption(3))
+    .click(getDialogOptionWithText('Block @baz'))
     .expect(accountProfileFollowedBy.innerText).match(/blocked/i)
     .expect(accountProfileFollowButton.getAttribute('aria-label')).eql('Unblock')
     .expect(accountProfileFollowButton.getAttribute('title')).eql('Unblock')

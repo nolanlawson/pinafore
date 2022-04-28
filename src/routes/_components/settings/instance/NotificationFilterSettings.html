@@ -10,7 +10,8 @@
     NOTIFICATION_FAVORITES,
     NOTIFICATION_FOLLOWS,
     NOTIFICATION_MENTIONS,
-    NOTIFICATION_POLLS
+    NOTIFICATION_POLLS,
+    NOTIFICATION_SUBSCRIPTIONS
   } from '../../../_static/instanceSettings.js'
 
   export default {
@@ -39,6 +40,11 @@
         {
           key: NOTIFICATION_POLLS,
           label: 'intl.pollResults',
+          defaultValue: true
+        },
+        {
+          key: NOTIFICATION_SUBSCRIPTIONS,
+          label: 'intl.subscriptions',
           defaultValue: true
         }
       ]
