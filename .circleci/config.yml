@@ -17,11 +17,11 @@ executors:
   node:
     working_directory: ~/pinafore
     docker:
-      - image: cimg/ruby:2.7.2-browsers
+      - image: cimg/ruby:3.0.3-browsers
   node_and_ruby:
     working_directory: ~/pinafore
     docker:
-      - image: cimg/ruby:2.7.2-browsers
+      - image: cimg/ruby:3.0.3-browsers
       - image: circleci/postgres:12.2
         environment:
           POSTGRES_USER: pinafore
