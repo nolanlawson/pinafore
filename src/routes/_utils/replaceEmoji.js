@@ -11,7 +11,7 @@ export function replaceEmoji (string, replacer) {
   const emojiRegex = getEmojiRegex()
 
   function safeReplacer (substring) {
-    // emoji regex matches digits and pound sign https://git.io/fpl6J
+    // emoji regex matches digits and pound sign https://github.com/mathiasbynens/emoji-regex/issues/33#issuecomment-373674579
     if (substring.match(NON_EMOJI_REGEX)) {
       return substring
     }
