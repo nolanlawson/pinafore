@@ -52,7 +52,7 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Building
 
-Pinafore requires [Node.js](https://nodejs.org/en/) v8+ and [Yarn](https://yarnpkg.com).
+Pinafore requires [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com).
 
 To build Pinafore for production, first install dependencies:
 
