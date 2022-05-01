@@ -15,6 +15,7 @@ DB_PORT=${DB_PORT}
 DB_USER=${DB_USER}
 DB_NAME=${DB_NAME}
 DB_PASS=${DB_PASS}
+BIND=0.0.0.0
 `
 
 export const RUBY_VERSION = '3.0.3'
