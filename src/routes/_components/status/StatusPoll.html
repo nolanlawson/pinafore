@@ -292,13 +292,16 @@
     computed: {
       pollId: ({ originalStatus }) => originalStatus.poll.id,
       poll: ({ originalStatus, $polls, pollId }) => $polls[pollId] || originalStatus.poll,
-      options: ({ poll, originalStatusEmojis, $autoplayGifs, votersCount }) => (
+      options: ({ poll, originalStatusEmojis, $autoplayGifs, votersOrVotesCount }) => (
         poll.options.map(({ title, votes_count: optionsVotesCount }) => ({
           title: emojifyText(escapeHtml(title), originalStatusEmojis, $autoplayGifs),
-          share: votersCount ? Math.round(optionsVotesCount / votersCount * 100) : 0
+          share: votersOrVotesCount ? Math.round(optionsVotesCount / votersOrVotesCount * 100) : 0
         }))
       ),
       votersCount: ({ poll }) => poll.voters_count,
+      votesCount: ({ poll }) => poll.votes_count,
+      // Misskey reports the "voters_count" as null, so just use the "votes_count"
+      votersOrVotesCount: ({ votersCount, votesCount }) => typeof votersCount === 'number' ? votersCount : votesCount,
       voted: ({ poll }) => poll.voted,
       multiple: ({ poll }) => poll.multiple,
       expired: ({ poll }) => poll.expired,
@@ -314,8 +317,8 @@
         !isStatusInOwnThread && $isMobileSize && !expired
       ),
       formDisabled: ({ choices }) => !choices.length,
-      votesText: ({ votersCount }) => (
-        formatIntl('intl.voteCount', { count: votersCount })
+      votesText: ({ votersOrVotesCount }) => (
+        formatIntl('intl.voteCount', { count: votersOrVotesCount })
       ),
       computedClass: ({ isStatusInNotification, isStatusInOwnThread, loading, shown }) => (
         classname(
