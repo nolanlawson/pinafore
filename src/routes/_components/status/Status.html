@@ -25,7 +25,9 @@
   {#if content && (showContent || preloadHiddenContent)}
     <StatusContent {...params} shown={showContent}/>
   {/if}
-  {#if showCard }
+  <!-- Apparently it's possible for spoilered content to sometimes have embeds, but I can't figure out how.
+       Don't bother optimizing this with the preloadHiddenContent. -->
+  {#if showCard && showContent}
     <StatusCard {...params} />
   {/if}
   {#if showMedia }
