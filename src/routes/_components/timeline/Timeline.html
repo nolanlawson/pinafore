@@ -23,6 +23,7 @@
   </div>
 </FocusRestoration>
 <Shortcut scope="global" key="." on:pressed="showMoreAndScrollToTop()" />
+<Shortcut scope="global" key="," on:pressed="showMoreWithoutScrollingToTop()" />
 <ScrollListShortcuts />
 <script>
   import { store } from '../../_store/store.js'
@@ -50,6 +51,7 @@
   import { observe } from 'svelte-extras'
   import { createMakeProps } from '../../_actions/createMakeProps.js'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop.js'
+  import { showMoreWithoutScrollingToTop } from '../../_actions/showMoreWithoutScrollingToTop.js'
   import FocusRestoration from '../FocusRestoration.html'
 
   export default {
@@ -227,7 +229,8 @@
         console.log('timeline preinitialized')
         this.store.set({ timelinePreinitialized: true })
       },
-      showMoreAndScrollToTop
+      showMoreAndScrollToTop,
+      showMoreWithoutScrollingToTop
     },
     components: {
       ScrollListShortcuts,

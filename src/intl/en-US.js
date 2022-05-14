@@ -149,6 +149,7 @@ export default {
     <li><kbd>j</kbd> or <kbd>↓</kbd> to activate the next toot</li>
     <li><kbd>k</kbd> or <kbd>↑</kbd> to activate the previous toot</li>
     <li><kbd>.</kbd> to show more and scroll to top</li>
+    <li><kbd>,</kbd> to show more without scrolling</li>
     <li><kbd>o</kbd> to open</li>
     <li><kbd>f</kbd> to favorite</li>
     <li><kbd>b</kbd> to boost</li>
