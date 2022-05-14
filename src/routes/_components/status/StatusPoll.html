@@ -306,7 +306,8 @@
       multiple: ({ poll }) => poll.multiple,
       expired: ({ poll }) => poll.expired,
       expiresAt: ({ poll }) => poll.expires_at,
-      expiresAtTS: ({ expiresAt }) => new Date(expiresAt).getTime(),
+      // Misskey can have polls that never end. These give expiresAt as null
+      expiresAtTS: ({ expiresAt }) => typeof expiresAt === 'number' ? new Date(expiresAt).getTime() : null,
       expiresAtTimeagoFormatted: ({ expiresAtTS, expired, $now }) => (
         expired ? formatTimeagoDate(expiresAtTS, $now) : formatTimeagoFutureDate(expiresAtTS, $now)
       ),
