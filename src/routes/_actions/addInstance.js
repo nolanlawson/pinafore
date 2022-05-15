@@ -37,8 +37,16 @@ async function redirectToOauth () {
   }
   const redirectUri = getRedirectUri()
   const registrationPromise = registerApplication(instanceNameInSearch, redirectUri)
-  const instanceInfo = await getInstanceInfo(instanceNameInSearch)
-  await database.setInstanceInfo(instanceNameInSearch, instanceInfo) // cache for later
+  try {
+    const instanceInfo = await getInstanceInfo(instanceNameInSearch)
+    await database.setInstanceInfo(instanceNameInSearch, instanceInfo) // cache for later
+  } catch (err) {
+    // We get a 401 in limited federation mode, so we can just skip setting the instance info in that case.
+    // It will be fetched automatically later.
+    if (err.status !== 401) {
+      throw err // this is a good way to test for typos in the instance name or some other problem
+    }
+  }
   const instanceData = await registrationPromise
   store.set({
     currentRegisteredInstanceName: instanceNameInSearch,
