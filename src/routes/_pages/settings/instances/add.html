@@ -89,14 +89,16 @@
 
   export default {
     async oncreate () {
-      const codeMatch = location.search.match(/code=([^&]+)/)
-      if (codeMatch) {
-        return handleOauthCode(codeMatch[1])
+      const params = new URLSearchParams(location.search)
+      const code = params.get('code')
+      if (code) {
+        await handleOauthCode(code)
+      } else {
+        this.set({
+          hasIndexedDB: await testHasIndexedDB(),
+          hasLocalStorage: testHasLocalStorage()
+        })
       }
-      this.set({
-        hasIndexedDB: await testHasIndexedDB(),
-        hasLocalStorage: testHasLocalStorage()
-      })
     },
     components: {
       SettingsLayout,

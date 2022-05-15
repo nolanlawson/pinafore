@@ -1,7 +1,9 @@
 import { get, DEFAULT_TIMEOUT } from '../_utils/ajax.js'
-import { basename } from './utils.js'
+import { auth, basename } from './utils.js'
 
-export function getInstanceInfo (instanceName) {
+export function getInstanceInfo (instanceName, accessToken) {
   const url = `${basename(instanceName)}/api/v1/instance`
-  return get(url, null, { timeout: DEFAULT_TIMEOUT })
+  // accessToken is required in limited federation mode, but elsewhere we don't need it (e.g. during login)
+  const headers = accessToken ? auth(accessToken) : null
+  return get(url, headers, { timeout: DEFAULT_TIMEOUT })
 }

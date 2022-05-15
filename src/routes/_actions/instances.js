@@ -111,7 +111,11 @@ export async function updateVerifyCredentialsForCurrentInstance () {
 
 export async function updateInstanceInfo (instanceName) {
   await cacheFirstUpdateAfter(
-    () => getInstanceInfo(instanceName),
+    () => {
+      const { loggedInInstances } = store.get()
+      const accessToken = loggedInInstances[instanceName] && loggedInInstances[instanceName].access_token
+      return getInstanceInfo(instanceName, accessToken)
+    },
     () => database.getInstanceInfo(instanceName),
     info => database.setInstanceInfo(instanceName, info),
     info => {
