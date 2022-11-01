@@ -16,6 +16,7 @@ const {
   currentInstance,
   instanceThemes,
   disableCustomScrollbars,
+  bottomNav,
   enableGrayscale,
   pushSubscription,
   loggedInInstancesInOrder,
@@ -52,6 +53,8 @@ if (disableCustomScrollbars) {
   document.getElementById('theScrollbarStyle')
     .setAttribute('media', 'only x') // disables the style
 }
+
+document.body.classList.toggle('bottom-nav', bottomNav);
 
 if (centerNav) {
   document.getElementById('theCenterNavStyle')
