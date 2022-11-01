@@ -1,6 +1,6 @@
 <Nav {page} />
 
-<div class="main-content">
+<div class="main-content {bottomNav ? 'bottom-nav' : ''}">
   <main class="{infiniteScrollPage ? 'infinite-scroll-page' : ''}">
     <svelte:component this={child.component} {...child.props} />
   </main>
@@ -12,6 +12,12 @@
   /* this avoids a flash of the background color when switching timelines */
   .infinite-scroll-page {
     min-height: 100vh;
+  }
+
+  .bottom-nav.main-content,
+  .bottom-nav .main-content {
+    padding-block-start: 0;
+    padding-block-end: var(--main-content-pad-top);
   }
 </style>
 <script>
