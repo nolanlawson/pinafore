@@ -38,9 +38,9 @@
   />
 </div>
 {#if enableShortcuts}
-  <Shortcut scope={shortcutScope} key="f" on:pressed="toggleFavorite()"/>
+  <Shortcut scope={shortcutScope} key="f" on:pressed="toggleFavorite(true)"/>
   <Shortcut scope={shortcutScope} key="r" on:pressed="reply()"/>
-  <Shortcut scope={shortcutScope} key="b" on:pressed="reblog()"/>
+  <Shortcut scope={shortcutScope} key="b" on:pressed="reblog(true)"/>
 {/if}
 <style>
   .status-toolbar {
@@ -77,6 +77,7 @@
   import { updateProfileAndRelationship } from '../../_actions/accounts.js'
   import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations.js'
   import { on } from '../../_utils/eventBus.js'
+  import { announceAriaLivePolite } from '../../_utils/announceAriaLivePolite.js'
 
   export default {
     oncreate () {
@@ -112,20 +113,26 @@
     },
     store: () => store,
     methods: {
-      toggleFavorite () {
+      toggleFavorite (announce) {
         const { originalStatusId, favorited } = this.get()
         const newFavoritedValue = !favorited
         /* no await */ setFavorited(originalStatusId, newFavoritedValue)
         if (newFavoritedValue) {
           this.refs.favoriteIcon.animate(FAVORITE_ANIMATION)
         }
+        if (announce) {
+          announceAriaLivePolite(newFavoritedValue ? 'intl.favorited' : 'intl.unfavorited')
+        }
       },
-      reblog () {
+      reblog (announce) {
         const { originalStatusId, reblogged } = this.get()
         const newRebloggedValue = !reblogged
         /* no await */ setReblogged(originalStatusId, newRebloggedValue)
         if (newRebloggedValue) {
           this.refs.reblogIcon.animate(REBLOG_ANIMATION)
+        }
+        if (announce) {
+          announceAriaLivePolite(newRebloggedValue ? 'intl.reblogged' : 'intl.unreblogged')
         }
       },
       reply () {
