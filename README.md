@@ -94,12 +94,13 @@ To keep your version of Pinafore up to date, you can use `git` to check out the 
 Pinafore is a static site. When you run `yarn build`, static files will be
 written to `__sapper__/export`.
 
-In theory you could host these static files yourself (e.g. using nginx or Apache), but
-it's not recommended, because:
+It is _not_ recommended to directly expose these files when self-hosting. Instead, you should use `node server.js` (e.g. with an
+nginx or Apache proxy in front). This adds several things you don't get from the raw static files:
 
-- You'd have to set the [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) headers yourself,
-which are an important security feature.
-- Some routes are dynamic and need to be routed to the correct static file.
+- [CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (important for security)
+- Certain dynamic routes (less important because of Service Worker managing routing, but certain things could break if Service Workers are disabled in the user's browser)
+
+Having an [nginx config generator](https://github.com/nolanlawson/pinafore/issues/1878) is currently an open issue.
 
 ## Developing and testing
 
