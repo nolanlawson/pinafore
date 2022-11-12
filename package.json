@@ -196,7 +196,7 @@
     "*.html": "standard --fix --plugin html 'src/routes/**/*.html'"
   },
   "volta": {
-    "node": "12.22.3",
-    "yarn": "1.22.11"
+    "node": "12.22.12",
+    "yarn": "1.22.19"
   }
 }
