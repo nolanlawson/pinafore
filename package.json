@@ -31,7 +31,7 @@
     "test-mastodon-suite0": "run-s wait-for-mastodon-to-start wait-for-mastodon-data testcafe-suite0",
     "test-mastodon-suite1": "run-s wait-for-mastodon-to-start wait-for-mastodon-data testcafe-suite1",
     "testcafe": "run-s testcafe-suite0 testcafe-suite1",
-    "testcafe-suite0": "cross-env-shell testcafe -c 2 $BROWSER tests/spec/0*",
+    "testcafe-suite0": "cross-env-shell testcafe $BROWSER tests/spec/0*",
     "testcafe-suite1": "cross-env-shell testcafe $BROWSER tests/spec/1*",
     "test-unit": "NODE_ENV=test mocha -r bin/browser-shim.js tests/unit/",
     "test-in-ci-suite0": "cross-env BROWSER=chrome:headless run-p --race run-mastodon start test-mastodon-suite0",
