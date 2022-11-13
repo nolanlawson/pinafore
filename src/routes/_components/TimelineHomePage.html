@@ -3,6 +3,7 @@
      without a div wrapper due to sticky-positioned compose button.
      TODO: this is a bit hacky due to code duplication
  -->
+<h1 class="sr-only">{headingLabel}</h1>
 <div class="timeline-home-page" aria-busy={hideTimeline}>
   {#if hidePage}
     <LoadingPage />
@@ -30,6 +31,7 @@
   import { store } from '../_store/store.js'
   import LoadingPage from './LoadingPage.html'
   import LazyComposeBox from './compose/LazyComposeBox.html'
+  import { formatIntl } from '../_utils/formatIntl.js'
 
   export default {
     oncreate () {
@@ -40,7 +42,8 @@
     },
     computed: {
       hidePage: ({ $timelineInitialized, $timelinePreinitialized }) => !$timelineInitialized && !$timelinePreinitialized,
-      hideTimeline: ({ $timelineInitialized }) => !$timelineInitialized
+      hideTimeline: ({ $timelineInitialized }) => !$timelineInitialized,
+      headingLabel: ({ $currentInstance }) => formatIntl('intl.homeOnInstance', { instance: $currentInstance })
     },
     store: () => store,
     components: {

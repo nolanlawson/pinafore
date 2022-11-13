@@ -1,0 +1,5 @@
+{#if level === 2}
+  <h2 class={className || ''}><slot></slot></h2>
+{:else}
+  <h1 class={className || ''}><slot></slot></h1>
+{/if}
