@@ -680,5 +680,12 @@ export default {
   statusOptions: 'Status options',
   confirm: 'Confirm',
   closeDialog: 'Close dialog',
-  postPrivacy: 'Post privacy'
+  postPrivacy: 'Post privacy',
+  homeOnInstance: 'Home on {instance}',
+  statusesTimelineOnInstance: 'Statuses: {timeline} timeline on {instance}',
+  statusesHashtag: 'Statuses: #{hashtag} hashtag',
+  statusesThread: 'Statuses: thread',
+  statusesAccountTimeline: 'Statuses: account timeline',
+  statusesList: 'Statuses: list',
+  notificationsOnInstance: 'Notifications on {instance}'
 }

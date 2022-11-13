@@ -1,4 +1,4 @@
-<h1 class="sr-only">{label}</h1>
+<DynamicHeading className="sr-only" level={headingLevel}>{label}</DynamicHeading>
 <FocusRestoration realm={focusRealm}>
   <div class="timeline" role="feed">
     {#if components}
@@ -26,6 +26,7 @@
 <ScrollListShortcuts />
 <script>
   import { store } from '../../_store/store.js'
+  import DynamicHeading from '../DynamicHeading.html'
   import Status from '../status/Status.html'
   import LoadingFooter from './LoadingFooter.html'
   import MoreHeaderVirtualWrapper from './MoreHeaderVirtualWrapper.html'
@@ -51,6 +52,7 @@
   import { createMakeProps } from '../../_actions/createMakeProps.js'
   import { showMoreAndScrollToTop } from '../../_actions/showMoreAndScrollToTop.js'
   import FocusRestoration from '../FocusRestoration.html'
+  import { formatIntl } from '../../_utils/formatIntl.js'
 
   export default {
     oncreate () {
@@ -89,20 +91,23 @@
       ),
       label: ({ timeline, $currentInstance, timelineType, timelineValue }) => {
         if (timelines[timeline]) {
-          return `Statuses: ${timelines[timeline].label} timeline on ${$currentInstance}`
+          return formatIntl('intl.statusesTimelineOnInstance', {
+            timeline: timelines[timeline].label,
+            instance: $currentInstance
+          })
         }
 
         switch (timelineType) {
           case 'tag':
-            return `Statuses: #${timelineValue} hashtag`
+            return formatIntl('intl.statusesHashtag', { hashtag: timelineValue })
           case 'status':
-            return 'Statuses: thread'
+            return 'intl.statusesThread'
           case 'account':
-            return 'Statuses: account timeline'
+            return 'intl.statusesAccountTimeline'
           case 'list':
-            return 'Statuses: list'
+            return 'intl.statusesList'
           case 'notifications':
-            return `Notifications on ${$currentInstance}`
+            return formatIntl('intl.notificationsOnInstance', { instance: $currentInstance })
         }
       },
       timelineType: ({ $currentTimelineType }) => $currentTimelineType,
@@ -127,7 +132,8 @@
           onClick: showMoreItemsForCurrentTimeline
         }
       },
-      focusRealm: ({ $currentInstance, timeline }) => `${$currentInstance}-${timeline}`
+      focusRealm: ({ $currentInstance, timeline }) => `${$currentInstance}-${timeline}`,
+      headingLevel: ({ timeline, timelineType }) => timeline === 'home' || timelineType === 'status' ? 2 : 1
     },
     store: () => store,
     methods: {
@@ -232,7 +238,8 @@
     components: {
       ScrollListShortcuts,
       Shortcut,
-      FocusRestoration
+      FocusRestoration,
+      DynamicHeading
     }
   }
 </script>

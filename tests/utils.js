@@ -570,6 +570,12 @@ export function getNthPinnedStatusFavoriteButton (n) {
   return $(`${getNthPinnedStatusSelector(n)} .status-toolbar button:nth-child(3)`)
 }
 
+export const getNumElementsMatchingSelector = (selector) => (exec(() => {
+  return document.querySelectorAll(selector).length
+}, {
+  dependencies: { selector }
+}))
+
 export async function validateTimeline (t, timeline) {
   const timeout = 30000
   for (let i = 0; i < timeline.length; i++) {
