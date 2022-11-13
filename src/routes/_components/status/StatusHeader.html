@@ -127,6 +127,8 @@
           return '#fa-bar-chart'
         } else if (notificationType === 'status') {
           return '#fa-comment'
+        } else if (notificationType === 'admin.sign_up') {
+          return '#fa-user-plus'
         }
         return '#fa-star'
       },
@@ -135,6 +137,8 @@
           return 'intl.rebloggedYou'
         } else if (notificationType === 'favourite') {
           return 'intl.favoritedYou'
+        } else if (notificationType === 'admin.sign_up') {
+          return 'intl.signedUp'
         } else if (notificationType === 'follow') {
           return 'intl.followedYou'
         } else if (notificationType === 'status') {
