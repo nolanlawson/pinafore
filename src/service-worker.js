@@ -200,7 +200,8 @@ async function showRichNotification (data, notification) {
   const badge = '/icon-push-badge.png'
 
   switch (notification.type) {
-    case 'follow': {
+    case 'follow':
+    case 'admin.sign_up': {
       await self.registration.showNotification(data.title, {
         badge,
         icon,

@@ -495,6 +495,7 @@ export default {
     other {video}
   }: {description}`,
   accountFollowedYou: '{name} followed you, {account}',
+  accountSignedUp: '{name} signed up, {account}',
   reblogCountsHidden: 'Boost counts hidden',
   favoriteCountsHidden: 'Favorite counts hidden',
   rebloggedTimes: `Boosted {count, plural,
@@ -509,6 +510,7 @@ export default {
   rebloggedYou: 'boosted your toot',
   favoritedYou: 'favorited your toot',
   followedYou: 'followed you',
+  signedUp: 'signed up',
   posted: 'posted',
   pollYouCreatedEnded: 'A poll you created has ended',
   pollYouVotedEnded: 'A poll you voted on has ended',

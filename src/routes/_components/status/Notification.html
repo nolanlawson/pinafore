@@ -58,6 +58,7 @@
       account: ({ notification }) => notification.account,
       accountId: ({ account }) => account.id,
       notificationId: ({ notification }) => notification.id,
+      notificationType: ({ notification }) => notification.type,
       status: ({ notification }) => notification.status,
       statusId: ({ status }) => status && status.id,
       uuid: ({ $currentInstance, timelineType, timelineValue, notificationId, statusId }) => (
@@ -65,12 +66,20 @@
       ),
       elementId: ({ uuid }) => uuid,
       shortcutScope: ({ elementId }) => elementId,
-      ariaLabel: ({ status, account, $omitEmojiInDisplayNames }) => (
-        !status && formatIntl('intl.accountFollowedYou', {
+      ariaLabel: ({ status, account, $omitEmojiInDisplayNames, notificationType }) => {
+        if (status) {
+          return undefined // aria-label not needed if there's a status
+        }
+        const params = {
           name: getAccountAccessibleName(account, $omitEmojiInDisplayNames),
           account: `@${account.acct}`
-        })
-      ),
+        }
+        if (notificationType === 'admin.sign_up') {
+          return formatIntl('intl.accountSignedUp', params)
+        } else { // 'follow'
+          return formatIntl('intl.accountFollowedYou', params)
+        }
+      },
       className: ({ $underlineLinks }) => (classname(
         'notification-article',
         'shortcut-list-item',
