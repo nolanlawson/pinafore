@@ -6,7 +6,7 @@ Pinafore is available at [pinafore.social](https://pinafore.social). Beta releas
 
 See the [user guide](https://github.com/nolanlawson/pinafore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/nolanlawson/pinafore/blob/master/docs/Admin-Guide.md) if Pinafore cannot connect to your instance.
 
-For updates and support, follow [@pinafore@mastodon.technology](https://mastodon.technology/@pinafore).
+For updates and support, follow [@pinafore@fosstodon.org](https://fosstodon.org/@pinafore).
 
 ## Browser support
 
