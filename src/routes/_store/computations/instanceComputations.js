@@ -1,5 +1,6 @@
 import { DEFAULT_THEME } from '../../_utils/themeEngine.js'
 import { mark, stop } from '../../_utils/marks.js'
+import { MAX_STATUS_CHARS } from '../../_static/statuses.js'
 
 function computeForInstance (store, computedKey, key, defaultValue) {
   store.compute(computedKey,
@@ -57,10 +58,18 @@ export function instanceComputations (store) {
   store.compute(
     'maxStatusChars',
     ['currentInstanceInfo'],
-    (currentInstanceInfo) => (
-      // unofficial api used in glitch-soc and pleroma
-      (currentInstanceInfo && currentInstanceInfo.max_toot_chars) || 500
-    )
+    (currentInstanceInfo) => {
+      if (currentInstanceInfo) {
+        if (currentInstanceInfo.max_toot_chars) {
+          // unofficial api used in glitch-soc and pleroma
+          return currentInstanceInfo.max_toot_chars
+        }
+        if (currentInstanceInfo.configuration && currentInstanceInfo.configuration.statuses && currentInstanceInfo.configuration.statuses.max_characters) {
+          return currentInstanceInfo.configuration.statuses.max_characters
+        }
+      }
+      return MAX_STATUS_CHARS
+    }
   )
 
   stop('instanceComputations')
