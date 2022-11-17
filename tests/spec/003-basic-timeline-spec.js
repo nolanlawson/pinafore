@@ -25,7 +25,7 @@ test('Shows the home timeline', async t => {
   await t.expect(getFirstVisibleStatus().getAttribute('aria-setsize')).eql(homeTimeline.length.toString())
 })
 
-test('Shows notifications', async t => {
+test.skip('Shows notifications', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
