@@ -118,6 +118,6 @@ export function addStatusesOrNotifications (instanceName, timelineName, newStatu
   let freshUpdates = store.getForTimeline(instanceName, timelineName, 'freshUpdates') || []
   freshUpdates = concat(freshUpdates, newStatusesOrNotifications)
   freshUpdates = uniqBy(freshUpdates, _ => _.id)
-  store.setForTimeline(instanceName, timelineName, { freshUpdates: freshUpdates })
+  store.setForTimeline(instanceName, timelineName, { freshUpdates })
   lazilyProcessFreshUpdates(instanceName, timelineName)
 }

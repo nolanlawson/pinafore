@@ -147,7 +147,7 @@
         const { currentInstance, pinnedPages } = this.store.get()
         const { href } = this.get()
         pinnedPages[currentInstance] = href
-        this.store.set({ pinnedPages: pinnedPages })
+        this.store.set({ pinnedPages })
         this.store.save()
       }
     }

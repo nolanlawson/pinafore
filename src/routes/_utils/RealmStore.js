@@ -11,7 +11,7 @@ const { Store } = storePackage
 export class RealmStore extends Store {
   constructor (init, maxSize) {
     super(init)
-    this.set({ realms: new QuickLRU({ maxSize: maxSize }) })
+    this.set({ realms: new QuickLRU({ maxSize }) })
     this._batches = {}
   }
 
@@ -22,7 +22,7 @@ export class RealmStore extends Store {
   setForRealm (obj) {
     const { currentRealm, realms } = this.get()
     realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, obj))
-    this.set({ realms: realms })
+    this.set({ realms })
   }
 
   computeForRealm (key, defaultValue) {
@@ -67,7 +67,7 @@ export class RealmStore extends Store {
       delete this._batches[currentRealm][key]
       const { realms } = this.get()
       realms.set(currentRealm, Object.assign(realms.get(currentRealm) || {}, { [key]: obj }))
-      this.set({ realms: realms })
+      this.set({ realms })
       stop('batchUpdate')
     })
   }

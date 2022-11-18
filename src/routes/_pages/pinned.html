@@ -46,7 +46,7 @@
         await updateVerifyCredentialsForInstance(currentInstance)
         const { accessToken, currentVerifyCredentials } = this.store.get()
         const statuses = await getPinnedStatuses(currentInstance, accessToken, currentVerifyCredentials.id)
-        this.set({ statuses: statuses })
+        this.set({ statuses })
       } catch (e) {
         /* no await */ toast.say(formatIntl('intl.error', { error: (e.name || '') + ' ' + (e.message || '') }))
       } finally {

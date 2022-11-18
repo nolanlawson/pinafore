@@ -34,7 +34,7 @@
           const props = await makeProps(key)
           const setProps = () => {
             mark('VirtualListLazyItem set props')
-            this.set({ props: props })
+            this.set({ props })
             stop('VirtualListLazyItem set props')
           }
           // On desktop, if prefers-reduced-motion is enabled, avoid using scheduleIdleTask

@@ -59,12 +59,12 @@
       }, SCROLL_EVENT_THROTTLE)
       this.observe('showFooter', showFooter => {
         mark('set showFooter')
-        this.store.setForRealm({ showFooter: showFooter })
+        this.store.setForRealm({ showFooter })
         mark('set showFooter')
       })
       this.observe('showHeader', showHeader => {
         mark('set showHeader')
-        this.store.setForRealm({ showHeader: showHeader })
+        this.store.setForRealm({ showHeader })
         stop('set showHeader')
       })
       this.observe('items', (newItems, oldItems) => {

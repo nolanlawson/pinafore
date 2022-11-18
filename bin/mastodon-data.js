@@ -9,11 +9,11 @@ function unrollThread (user, prefix, privacy, thread) {
     }
     for (const key of Object.keys(node)) {
       res.push({
-        user: user,
+        user,
         post: {
           internalId: prefix + key,
           text: key,
-          privacy: privacy,
+          privacy,
           inReplyTo: parentKey && (prefix + parentKey)
         }
       })

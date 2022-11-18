@@ -334,7 +334,7 @@
         }
       },
       scrollToItem (scrolledItem, smooth) {
-        this.set({ scrolledItem: scrolledItem })
+        this.set({ scrolledItem })
         const { length } = this.get()
         const { scroller } = this.refs
         const { scrollWidth } = scroller

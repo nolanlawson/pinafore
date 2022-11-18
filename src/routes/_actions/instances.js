@@ -12,7 +12,7 @@ import { formatIntl } from '../_utils/formatIntl.js'
 export function changeTheme (instanceName, newTheme) {
   const { instanceThemes } = store.get()
   instanceThemes[instanceName] = newTheme
-  store.set({ instanceThemes: instanceThemes })
+  store.set({ instanceThemes })
   store.save()
   const { currentInstance } = store.get()
   if (instanceName === currentInstance) {
@@ -90,7 +90,7 @@ export async function logOutOfInstance (instanceName, message) {
 function setStoreVerifyCredentials (instanceName, thisVerifyCredentials) {
   const { verifyCredentials } = store.get()
   verifyCredentials[instanceName] = thisVerifyCredentials
-  store.set({ verifyCredentials: verifyCredentials })
+  store.set({ verifyCredentials })
 }
 
 export async function updateVerifyCredentialsForInstance (instanceName) {
@@ -121,7 +121,7 @@ export async function updateInstanceInfo (instanceName) {
     info => {
       const { instanceInfos } = store.get()
       instanceInfos[instanceName] = info
-      store.set({ instanceInfos: instanceInfos })
+      store.set({ instanceInfos })
     }
   )
 }

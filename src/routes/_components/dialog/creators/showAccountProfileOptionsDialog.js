@@ -5,8 +5,8 @@ export default function showAccountProfileOptionsDialog (account, relationship, 
   return showDialog(AccountProfileOptionsDialog, {
     label: 'intl.profileOptions',
     title: '',
-    account: account,
-    relationship: relationship,
-    verifyCredentials: verifyCredentials
+    account,
+    relationship,
+    verifyCredentials
   })
 }
