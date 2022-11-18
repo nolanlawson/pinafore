@@ -119,7 +119,7 @@
       close,
       onEmojiSelected (event) {
         const { realm } = this.get()
-        insertEmoji(realm, event.detail.emoji)
+        insertEmoji(realm, event.detail)
         this.close()
       },
       onPickerKeydown (event) {
