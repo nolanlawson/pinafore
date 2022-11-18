@@ -67,13 +67,13 @@ describe('test-emoji.js', function () {
       'it\'s over #9000'
     )
     assert.strictEqual(
-      replaceEmoji('woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®', replacer),
-      'woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®'
+      replaceEmoji('woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®©', replacer),
+      'woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®©'
     )
 
     assert.strictEqual(
-      replaceEmoji('woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®', replacer),
-      'woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®'
+      replaceEmoji('woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®©', replacer),
+      'woot !@#$%^&*()~' + '`' + '{[}]:;"\'<,>.?/£™℠®©'
     )
 
     // hidden VARIATION SELECTOR character is in here
