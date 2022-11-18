@@ -71,7 +71,7 @@ virtualListStore.compute('rawVisibleItems',
       }
       visibleItems.push({
         offset: currentOffset,
-        key: key,
+        key,
         index: i
       })
     }

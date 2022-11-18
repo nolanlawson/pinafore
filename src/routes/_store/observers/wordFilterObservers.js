@@ -89,6 +89,7 @@ export function wordFilterObservers () {
       console.log('Word filters changed, forcing an update')
       // eslint-disable-next-line camelcase
       const { timelineData_timelineItemSummaries, timelineData_timelineItemSummariesToAdd } = store.get()
+      // eslint-disable-next-line camelcase
       store.set({ timelineData_timelineItemSummaries, timelineData_timelineItemSummariesToAdd })
     }
     stop('update timeline item summary filter contexts')

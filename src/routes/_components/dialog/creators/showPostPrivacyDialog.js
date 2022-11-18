@@ -5,6 +5,6 @@ export default function showPostPrivacyDialog (realm) {
   return showDialog(PostPrivacyDialog, {
     label: 'intl.postPrivacy',
     title: 'intl.postPrivacy',
-    realm: realm
+    realm
   })
 }

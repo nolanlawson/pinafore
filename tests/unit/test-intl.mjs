@@ -4,7 +4,7 @@
 /* global describe it */
 
 import enIntl from '../../src/intl/en-US.js'
-import globby from 'globby'
+import { globby } from 'globby'
 import path from 'path'
 import { promisify } from 'util'
 import fs from 'fs'

@@ -5,6 +5,6 @@ export default function showStatusOptionsDialog (status) {
   return showDialog(StatusOptionsDialog, {
     label: 'intl.statusOptions',
     title: '',
-    status: status
+    status
   })
 }

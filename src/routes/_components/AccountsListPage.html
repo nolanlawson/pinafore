@@ -68,7 +68,7 @@
       async refreshAccounts () {
         const { accountsFetcher } = this.get()
         const accounts = await accountsFetcher()
-        this.set({ accounts: accounts })
+        this.set({ accounts })
       }
     }
   }

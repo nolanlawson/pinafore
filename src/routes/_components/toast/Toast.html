@@ -75,7 +75,7 @@
       onNewToast (text) {
         this._queue = this._queue.then(() => {
           this.set({
-            text: text,
+            text,
             shown: true
           })
           return new Promise(resolve => {

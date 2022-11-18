@@ -1,5 +1,4 @@
-import indexedDB from 'fake-indexeddb'
-import IDBKeyRange from 'fake-indexeddb/build/FDBKeyRange.js'
+import { indexedDB, IDBKeyRange } from 'fake-indexeddb'
 
 global.indexedDB = indexedDB
-global.IDBKeyRange = IDBKeyRange.default
+global.IDBKeyRange = IDBKeyRange

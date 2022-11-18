@@ -32,6 +32,6 @@ export function getAccessTokenFromAuthCode (instanceName, clientId, clientSecret
     client_secret: clientSecret,
     redirect_uri: redirectUri,
     grant_type: 'authorization_code',
-    code: code
+    code
   }, null, { timeout: WRITE_TIMEOUT })
 }

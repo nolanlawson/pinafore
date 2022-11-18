@@ -105,10 +105,10 @@ async function registerNewInstance (code) {
     instanceNameInSearch: '',
     currentRegisteredInstanceName: null,
     currentRegisteredInstance: null,
-    loggedInInstances: loggedInInstances,
+    loggedInInstances,
     currentInstance: currentRegisteredInstanceName,
-    loggedInInstancesInOrder: loggedInInstancesInOrder,
-    instanceThemes: instanceThemes
+    loggedInInstancesInOrder,
+    instanceThemes
   })
   store.save()
   const { enableGrayscale } = store.get()

@@ -14,7 +14,7 @@ async function syncLists (instanceName, syncMethod) {
     lists => {
       const { instanceLists } = store.get()
       instanceLists[instanceName] = lists
-      store.set({ instanceLists: instanceLists })
+      store.set({ instanceLists })
     }
   )
 }
