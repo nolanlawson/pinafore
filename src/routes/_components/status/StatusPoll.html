@@ -364,6 +364,8 @@
             const { polls } = this.store.get()
             polls[pollId] = poll
             this.store.set({ polls })
+            // the height of the status changes after you vote on the poll
+            requestAnimationFrame(() => this.fire('recalculateHeight'))
           }
         } finally {
           this.set({ loading: false })
