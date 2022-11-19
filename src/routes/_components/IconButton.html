@@ -25,10 +25,14 @@
   }
 
   :global(.icon-button-svg) {
+    --svg-bg-color: transparent;
     width: 24px;
     height: 24px;
     fill: var(--action-button-fill-color);
     pointer-events: none; /* hack for Edge */
+    border-radius: 0.1%;
+    background: var(--svg-bg-color);
+    box-shadow: 0 0 0 5px var(--svg-bg-color);
   }
 
   :global(.icon-button.big-icon .icon-button-svg) {
@@ -39,26 +43,23 @@
   /*
    * regular styles
    */
-
   :global(.icon-button:hover .icon-button-svg) {
-    fill: var(--action-button-fill-color-hover);
+    --svg-bg-color: var(--action-button-bg-color-hover);
   }
-
-  :global(.icon-button.not-pressable:active .icon-button-svg,
-  .icon-button.same-pressed:active .icon-button-svg) {
-    fill: var(--action-button-fill-color-active);
+  :global(.icon-button:active .icon-button-svg) {
+    --svg-bg-color: var(--action-button-bg-color-active);
   }
-
+  :global(.icon-button.pressed .icon-button-svg) {
+    --svg-bg-color: var(--action-button-bg-color-pressed);
+  }
+  :global(.icon-button.pressed:hover .icon-button-svg) {
+    --svg-bg-color: var(--action-button-bg-color-pressed-hover);
+  }
+  :global(.icon-button.pressed:active .icon-button-svg) {
+    --svg-bg-color: var(--action-button-bg-color-pressed-active);
+  }
   :global(.icon-button.pressed.not-same-pressed .icon-button-svg) {
     fill: var(--action-button-fill-color-pressed);
-  }
-
-  :global(.icon-button.pressed.not-same-pressed:hover .icon-button-svg) {
-    fill: var(--action-button-fill-color-pressed-hover);
-  }
-
-  :global(.icon-button.pressed.not-same-pressed:active .icon-button-svg) {
-    fill: var(--action-button-fill-color-pressed-active);
   }
 
   /*
