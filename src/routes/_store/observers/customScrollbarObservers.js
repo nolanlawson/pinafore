@@ -10,5 +10,5 @@ export function customScrollbarObservers () {
 
     // disables or enables the style
     theScrollbarStyle.setAttribute('media', disableCustomScrollbars ? 'only x' : 'all')
-  }, { init: false })
+  }, { init: false }) // init:false because the inline script takes care of it
 }

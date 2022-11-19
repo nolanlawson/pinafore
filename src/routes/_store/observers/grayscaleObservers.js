@@ -12,5 +12,5 @@ export function grayscaleObservers (store) {
     const theme = instanceThemes && instanceThemes[currentInstance]
     style.setAttribute('media', enableGrayscale ? 'all' : 'only x') // disable or enable the style
     switchToTheme(theme, enableGrayscale)
-  })
+  }, { init: false }) // init:false because the inline script takes care of it
 }
