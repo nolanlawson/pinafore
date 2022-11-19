@@ -32,6 +32,15 @@
 
   <!-- inline CSS -->
 
+  <style id="theBottomNavStyle" media="only x">
+    :root {
+      --nav-top: calc(100vh - var(--nav-total-height));
+      --nav-bottom: 0px;
+      --main-content-pad-top: 0px;
+      --main-content-pad-bottom: var(--main-content-pad-vertical);
+    }
+  </style>
+
   <style id="theGrayscaleStyle" media="only x">
     /* Firefox doesn't seem to like applying filter: grayscale() to
      * the entire body, so we apply individually.

@@ -21,6 +21,7 @@ body {
 .main-content {
   contain: content; // see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content
   padding-top: var(--main-content-pad-top);
+  padding-bottom: var(--main-content-pad-bottom);
 
   @supports not (contain: content) {
     // For browsers which don't support the "contain" CSS property,

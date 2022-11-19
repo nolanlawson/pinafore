@@ -16,6 +16,7 @@ const {
   currentInstance,
   instanceThemes,
   disableCustomScrollbars,
+  bottomNav,
   enableGrayscale,
   pushSubscription,
   loggedInInstancesInOrder,
@@ -51,6 +52,11 @@ if (!currentInstance) {
 if (disableCustomScrollbars) {
   document.getElementById('theScrollbarStyle')
     .setAttribute('media', 'only x') // disables the style
+}
+
+if (bottomNav) {
+  document.getElementById('theBottomNavStyle')
+    .setAttribute('media', 'all') // enables the style
 }
 
 if (centerNav) {

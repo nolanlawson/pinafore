@@ -62,6 +62,11 @@
              bind:checked="$centerNav" on:change="onChange(event)">
       {intl.centerNav}
     </label>
+    <label class="setting-group">
+      <input type="checkbox" id="choice-bottom-nav"
+             bind:checked="$bottomNav" on:change="onChange(event)">
+      {intl.bottomNav}
+    </label>
   </form>
 
   <h2>{intl.accessibility}</h2>
