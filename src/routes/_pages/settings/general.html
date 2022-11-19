@@ -33,11 +33,6 @@
   <h2>UI</h2>
   <form class="ui-settings">
     <label class="setting-group">
-      <input type="checkbox" id="choice-bottom-nav"
-             bind:checked="$bottomNav" on:change="onChange(event)">
-      {intl.bottomNav}
-    </label>
-    <label class="setting-group">
       <input type="checkbox" id="choice-disable-custom-scrollbars"
              bind:checked="$disableCustomScrollbars" on:change="onChange(event)">
       {intl.disableCustomScrollbars}
@@ -66,6 +61,11 @@
       <input type="checkbox" id="choice-center-nav"
              bind:checked="$centerNav" on:change="onChange(event)">
       {intl.centerNav}
+    </label>
+    <label class="setting-group">
+      <input type="checkbox" id="choice-bottom-nav"
+             bind:checked="$bottomNav" on:change="onChange(event)">
+      {intl.bottomNav}
     </label>
   </form>
 

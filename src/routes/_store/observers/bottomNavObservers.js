@@ -1,8 +1,12 @@
+const style = process.browser && document.getElementById('theBottomNavStyle')
+
 export function bottomNavObservers (store) {
+  if (!process.browser) {
+    return
+  }
+
   store.observe('bottomNav', bottomNav => {
     // disables or enables the style
-    document.body.classList.toggle('bottom-nav', bottomNav);
-    document.querySelector('.main-content').classList.toggle('bottom-nav', bottomNav);
-    document.getElementById('main-nav').classList.toggle('bottom-nav', bottomNav);
-  }, { init: false })
+    style.setAttribute('media', bottomNav ? 'all' : 'only x') // disable or enable the style
+  }, { init: false }) // init: false because the inline script takes care of it
 }

@@ -35,10 +35,12 @@
   );
 
   --main-content-gap-top: 20px;
-  --main-content-pad-top: calc(
+  --main-content-pad-vertical: calc(
     var(--nav-total-height) +
     var(--main-content-gap-top)
   );
+  --main-content-pad-top: var(--main-content-pad-vertical);
+  --main-content-pad-bottom: 0px;
 
   --main-margin-bottom: 15px;
   --main-border-size: 1px;
@@ -59,6 +61,11 @@
     --nav-icon-pad-v: 10px;
     --nav-icon-pad-h: 0px;
   }
+
+  // Used for moving the nav bar to the bottom
+  --nav-top: 0px;
+  --nav-bottom: initial;
+
 
   //
   // focus outline

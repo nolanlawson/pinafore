@@ -54,7 +54,10 @@ if (disableCustomScrollbars) {
     .setAttribute('media', 'only x') // disables the style
 }
 
-document.body.classList.toggle('bottom-nav', bottomNav);
+if (bottomNav) {
+  document.getElementById('theBottomNavStyle')
+    .setAttribute('media', 'all') // enables the style
+}
 
 if (centerNav) {
   document.getElementById('theCenterNavStyle')

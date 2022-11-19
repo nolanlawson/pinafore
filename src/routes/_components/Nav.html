@@ -1,4 +1,4 @@
-<nav id="main-nav" class="main-nav{bottomNav ? ' bottom-nav' : ''}">
+<nav id="main-nav" class="main-nav">
 	<ul class="main-nav-ul">
     {#each $navPages as navPage (navPage.href)}
       <li class="main-nav-li">
@@ -25,15 +25,11 @@
 		position: fixed;
 		left: 0;
 		right: 0;
-		top: 0;
+		top: var(--nav-top);
+    bottom: var(--nav-bottom);
 		z-index: 100;
     contain: content; /* see https://www.w3.org/TR/2018/CR-css-contain-1-20181108/#valdef-contain-content */
 	}
-
-  .main-nav.bottom-nav {
-    top: calc(100vh - 52px);
-    bottom: 0;
-  }
 
   .main-nav-ul {
 		margin: 0;

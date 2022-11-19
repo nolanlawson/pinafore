@@ -15,7 +15,6 @@ export function observers (store) {
   onlineObservers(store)
   nowObservers(store)
   navObservers(store)
-  bottomNavObservers(store);
   pageVisibilityObservers(store)
   resizeObservers(store)
   touchObservers(store)
@@ -23,5 +22,6 @@ export function observers (store) {
   focusRingObservers(store)
   grayscaleObservers(store)
   leftRightFocusObservers(store)
+  bottomNavObservers(store)
   setupLoggedInObservers(store)
 }

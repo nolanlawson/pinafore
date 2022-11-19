@@ -383,7 +383,7 @@ export default {
   themeForInstance: 'Theme for {instance}',
   disableCustomScrollbars: 'Disable custom scrollbars',
   bottomNav: 'Place the navigation bar at the bottom of the screen',
-  centerNav: 'Center the navigation header',
+  centerNav: 'Center the navigation bar',
   preferences: 'Preferences',
   hotkeySettings: 'Hotkey settings',
   disableHotkeys: 'Disable all hotkeys',
