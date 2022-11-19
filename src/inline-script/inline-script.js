@@ -34,12 +34,13 @@ if (currentInstance) {
   document.head.appendChild(link)
 }
 
-if (theme !== INLINE_THEME) {
+if (theme !== INLINE_THEME || enableGrayscale) {
   // switch theme ASAP to minimize flash of default theme
   switchToTheme(theme, enableGrayscale)
 }
 
 if (enableGrayscale) {
+  // set the grayscale style on every img, svg, etc.
   document.getElementById('theGrayscaleStyle')
     .setAttribute('media', 'all') // enables the style
 }

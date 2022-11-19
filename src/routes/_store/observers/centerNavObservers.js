@@ -10,5 +10,5 @@ export function centerNavObservers () {
 
     // disables or enables the style
     centerNavStyle.setAttribute('media', centerNav ? 'all' : 'only x')
-  }, { init: false })
+  }, { init: false }) // init:false because the inline script takes care of it
 }
