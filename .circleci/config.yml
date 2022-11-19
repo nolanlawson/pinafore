@@ -165,7 +165,7 @@ jobs:
       - restore_yarn_cache
       - run:
           name: Yarn install
-          command: yarn install --immutable
+          command: yarn install --frozen-lockfile
       - save_yarn_cache
       - run:
           name: Lint
