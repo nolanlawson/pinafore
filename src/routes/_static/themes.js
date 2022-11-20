@@ -3,7 +3,7 @@ const themes = [
     name: 'default',
     label: 'intl.themeRoyal',
     dark: false,
-    color: 'royalblue'
+    color: '#295df9'
   },
   {
     name: 'scarlet',
