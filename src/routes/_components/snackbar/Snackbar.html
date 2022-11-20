@@ -21,14 +21,14 @@
 <style>
   .snackbar-modal {
     position: fixed;
-    bottom: 0;
+    bottom: var(--toast-gap-bottom);
     left: 0;
     right: 0;
     transition: transform 333ms ease-in-out;
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 99000;
+    z-index: 90; /* lower than the Nav.html .main-nav which is 100 */
     transform: translateY(100%);
   }
 
