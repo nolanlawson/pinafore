@@ -1,4 +1,4 @@
-<Title name="{intl.profileWithMedia}" />
+<Title name="{profileName} {intl.profileWithMedia}" />
 
   <LazyPage {pageComponent} {params} />
 
@@ -15,6 +15,11 @@
     },
     data: () => ({
       pageComponent
-    })
+    }),
+    computed: {
+      profileName: ({ $currentAccountProfile }) => {
+        return ($currentAccountProfile && ('@' + $currentAccountProfile.acct)) || ''
+      }
+    }
   }
 </script>
