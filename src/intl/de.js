@@ -170,12 +170,12 @@ export default {
       true {({count})}
       other {}
     }
+    {name}
+    ·
     {showInstanceName, select,
       true {{instanceName}}
       other {Pinafore}
     }
-    ·
-    {name}
   `,
   pinLabel: `{label} {pinnable, select,
     true {
