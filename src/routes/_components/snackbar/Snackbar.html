@@ -28,7 +28,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 90; /* lower than the Nav.html .main-nav which is 100 */
+    /* lower than the Nav.html .main-nav which is 100, but higher than .compose-autosuggest
+      and .status-sensitive-media-shown which are 90 */
+    z-index: 95;
     transform: translateY(100%);
   }
 
