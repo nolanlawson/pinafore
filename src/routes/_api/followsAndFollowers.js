@@ -15,17 +15,14 @@ export async function lookup (instanceName, accountName) {
 }
 
 export async function getFollowers (instanceName, accessToken, accountId, limit = 80) {
-window.console.log(instanceName, accessToken, accountId, limit);
+  return getAccount(instanceName, accessToken, accountId).then(account => {
+    let [accountName, remoteInstanceName] = account.acct.split('@');
 
-return getAccount(instanceName, accessToken, accountId).then(account => {
-  let [accountName, remoteInstanceName] = account.acct.split('@');
-
-  return lookup(remoteInstanceName, accountName).then(remoteAccount => {
-    let url = `${basename(remoteInstanceName)}/api/v1/accounts/${remoteAccount.id}/followers`
-    url += '?' + paramsString({ limit })
-    return get(url, { timeout: DEFAULT_TIMEOUT })
-  });
-
+    return lookup(remoteInstanceName, accountName).then(remoteAccount => {
+      let url = `${basename(remoteInstanceName)}/api/v1/accounts/${remoteAccount.id}/followers`
+      url += '?' + paramsString({ limit })
+      return get(url, { timeout: DEFAULT_TIMEOUT })
+    });
 });
 
 
