@@ -522,8 +522,12 @@ export function getNthStatusOptionsButton (n) {
   return $(`${getNthStatusSelector(n)} .status-toolbar button:nth-child(4)`)
 }
 
+export function getNthStatusAccountLinkSelector (n) {
+  return `${getNthStatusSelector(n)} .status-author-name`
+}
+
 export function getNthStatusAccountLink (n) {
-  return $(`${getNthStatusSelector(n)} .status-author-name`)
+  return $(getNthStatusAccountLinkSelector(n))
 }
 
 export function getNthFavoritedLabel (n) {
