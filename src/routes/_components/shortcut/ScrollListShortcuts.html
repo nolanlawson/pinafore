@@ -119,7 +119,13 @@
         if (!activeElement) {
           return null
         }
-        const activeItem = activeElement.getAttribute('id')
+        // The user might be focused on an element inside a toot. We want to
+        // move relative to that toot.
+        const activeArticle = activeElement.closest('article')
+        if (!activeArticle) {
+          return null
+        }
+        const activeItem = activeArticle.getAttribute('id')
         if (!activeItem) {
           return null
         }
