@@ -117,7 +117,15 @@
             firstTime = false
             const { autoFocus } = this.get()
             if (autoFocus) {
-              requestAnimationFrame(() => textarea.focus({ preventScroll: true }))
+              const { realm } = this.get()
+              if (realm === 'dialog') {
+                // If we're in a dialog, the dialog will be hidden at this
+                // point. Also, the dialog has its own initial focus behavior.
+                // Tell the dialog to focus the textarea.
+                textarea.setAttribute('autofocus', true)
+              } else {
+                requestAnimationFrame(() => textarea.focus({ preventScroll: true }))
+              }
             }
           }
         })
