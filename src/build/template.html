@@ -34,12 +34,18 @@
 
   <style id="theBottomNavStyle" media="only x">
     :root {
-      --nav-top: calc(100vh - var(--nav-total-height));
-      --nav-bottom: 0px;
+      --nav-top: calc(100dvh - var(--nav-total-height));
+      --nav-bottom: initial;
       --main-content-pad-top: 0px;
       --main-content-pad-bottom: var(--main-content-pad-vertical);
       --toast-gap-bottom: var(--nav-total-height);
       --fab-gap-top: 0px;
+    }
+    @supports not (height: 1dvh) {
+      /* In browsers that don't support dvh, use the large-small-dynamic-viewport-units-polyfill */
+      :root {
+        --nav-top: calc((100 * var(--1dvh)) - var(--nav-total-height));
+      }
     }
   </style>
 
