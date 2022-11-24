@@ -39,5 +39,5 @@ export const importIntlListFormat = async () => { // has to be imported serially
 }
 
 export const importDynamicViewportUnitsPolyfill = () => import(
-  /* webpackChunkName: '$polyfill$-dynamic-viewport-units' */ 'large-small-dynamic-viewport-units-polyfill'
+  /* webpackChunkName: '$polyfill$-dynamic-viewport-units' */ '../../_thirdparty/large-small-dynamic-viewport-units-polyfill/dynamic-viewport-utils-polyfill.js'
 )
