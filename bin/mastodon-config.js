@@ -18,7 +18,7 @@ DB_PASS=${DB_PASS}
 BIND=0.0.0.0
 `
 
-export const RUBY_VERSION = '3.0.3'
+export const RUBY_VERSION = '3.0.4'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 export const mastodonDir = path.join(__dirname, '../mastodon')

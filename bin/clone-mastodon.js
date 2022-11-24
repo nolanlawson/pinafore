@@ -11,8 +11,8 @@ const writeFile = promisify(fs.writeFile)
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const dir = __dirname
 
-const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
-const GIT_TAG = 'v3.5.3'
+const GIT_URL = 'https://github.com/mastodon/mastodon.git'
+const GIT_TAG = 'v4.0.2'
 
 const mastodonDir = path.join(dir, '../mastodon')
 
