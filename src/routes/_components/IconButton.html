@@ -12,9 +12,13 @@
         ref:node
 >
   <SvgIcon className="icon-button-svg {svgClassName || ''}" ref:svg {href} />
+  {#if checked}
+    <SvgIcon className="icon-button-svg icon-button-check" ref:check href="#fa-check" />
+  {/if}
 </button>
 <style>
   .icon-button {
+    position: relative;
     padding: 6px 10px;
     background: none;
     border: none;
@@ -29,6 +33,14 @@
     height: 24px;
     fill: var(--action-button-fill-color);
     pointer-events: none; /* hack for Edge */
+  }
+
+  :global(.icon-button-check) {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    height: 12px;
+    width: 12px;
   }
 
   :global(.icon-button.big-icon .icon-button-svg) {
@@ -128,7 +140,8 @@
       className: undefined,
       sameColorWhenPressed: false,
       ariaHidden: false,
-      clickListener: true
+      clickListener: true,
+      checked: false
     }),
     store: () => store,
     computed: {
@@ -144,8 +157,11 @@
       ariaLabel: ({ pressable, pressed, label, pressedLabel }) => ((pressable && pressed) ? pressedLabel : label)
     },
     methods: {
-      animate (animation) {
+      animate (animation, checkmarkAnimation) {
         this.refs.svg.animate(animation)
+        if (checkmarkAnimation && this.get().checked) {
+          this.refs.check.animate(checkmarkAnimation)
+        }
       },
       onClick (e) {
         this.fire('click', e)

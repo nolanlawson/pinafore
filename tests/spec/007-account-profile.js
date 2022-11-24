@@ -41,8 +41,8 @@ test('shows account profile 3', async t => {
     .expect(accountProfileName.innerText).contains('foobar')
     .expect(accountProfileUsername.innerText).contains('@foobar')
     // can't follow or be followed by your own account
-    .expect(accountProfileFollowedBy.innerText).eql('')
-    .expect($('.account-profile .account-profile-follow').innerText).eql('')
+    .expect(accountProfileFollowedBy.innerText).match(/\s*/)
+    .expect($('.account-profile .account-profile-follow').innerText).match(/\s*/)
 })
 
 test('shows account profile statuses', async t => {
