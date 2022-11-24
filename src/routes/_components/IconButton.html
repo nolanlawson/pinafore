@@ -13,7 +13,7 @@
 >
   <SvgIcon className="icon-button-svg {svgClassName || ''}" ref:svg {href} />
   {#if checked}
-  <SvgIcon className="icon-button-svg icon-button-check" href="#fa-check" />
+    <SvgIcon className="icon-button-svg icon-button-check" ref:check href="#fa-check" />
   {/if}
 </button>
 <style>
@@ -157,8 +157,11 @@
       ariaLabel: ({ pressable, pressed, label, pressedLabel }) => ((pressable && pressed) ? pressedLabel : label)
     },
     methods: {
-      animate (animation) {
+      animate (animation, checkmarkAnimation) {
         this.refs.svg.animate(animation)
+        if (checkmarkAnimation && this.get().checked) {
+          this.refs.check.animate(checkmarkAnimation)
+        }
       },
       onClick (e) {
         this.fire('click', e)
