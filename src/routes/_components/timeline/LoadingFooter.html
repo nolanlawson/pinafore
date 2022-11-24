@@ -65,11 +65,30 @@
   }
 </style>
 <script>
+  import { observe } from 'svelte-extras'
   import LoadingSpinner from '../LoadingSpinner.html'
   import { store } from '../../_store/store.js'
   import { fetchMoreItemsAtBottomOfTimeline } from '../../_actions/timeline.js'
+  import { announceAriaLivePolite } from '../../_utils/announceAriaLivePolite.js'
+
+  const SCREEN_READER_ANNOUNCE_DELAY = 1000 // 1 second
 
   export default {
+    oncreate () {
+      // If the new statuses are delayed a significant amount of time, announce to screen readers that we're loading
+      let delayedAriaAnnouncementHandle
+
+      this.observe('showLoading', showLoading => {
+        if (showLoading) {
+          delayedAriaAnnouncementHandle = setTimeout(() => {
+            delayedAriaAnnouncementHandle = undefined
+            announceAriaLivePolite('intl.loadingMore')
+          }, SCREEN_READER_ANNOUNCE_DELAY)
+        } else if (delayedAriaAnnouncementHandle) {
+          clearTimeout(delayedAriaAnnouncementHandle)
+        }
+      })
+    },
     store: () => store,
     computed: {
       shown: ({ $timelineInitialized, $runningUpdate, $disableInfiniteScroll }) => (
@@ -79,6 +98,7 @@
       showLoadButton: ({ $runningUpdate, $disableInfiniteScroll }) => !$runningUpdate && $disableInfiniteScroll
     },
     methods: {
+      observe,
       onClickLoadMore (e) {
         e.preventDefault()
         e.stopPropagation()
