@@ -4352,6 +4352,11 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
+large-small-dynamic-viewport-units-polyfill@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/large-small-dynamic-viewport-units-polyfill/-/large-small-dynamic-viewport-units-polyfill-0.0.4.tgz#5d32499e6dda39aa15ff9b613ad073519d93a7f1"
+  integrity sha512-UmvkvGfb5p2KoXLrW3+y8lP8yNrRpHQUwZ2JkwAX8nYu1u29WMu0yfxg5GZQT3t2BHIC6Im5ARfx0KCPC7Avsg==
+
 levn@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.4.1.tgz#ae4562c007473b932a6200d403268dd2fffc6ade"
