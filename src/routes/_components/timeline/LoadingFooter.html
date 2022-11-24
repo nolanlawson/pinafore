@@ -1,7 +1,6 @@
 <div class="loading-footer {shown ? '' : 'hidden'}">
   <div class="loading-wrapper {showLoading ? 'shown' : ''}"
        aria-hidden={!showLoading}
-       role="alert"
   >
     <!-- Sapper's mousemove event listener schedules style recalculations for the loading spinner in
          Chrome because it's always animating, even when hidden. So disable animations when not visible
