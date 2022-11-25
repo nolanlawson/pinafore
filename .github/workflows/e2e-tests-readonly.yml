@@ -1,0 +1,48 @@
+name: Read-only e2e tests
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:12.2
+        env:
+          POSTGRES_USER: pinafore
+          POSTGRES_PASSWORD: pinafore
+          POSTGRES_DB: pinafore_development
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: 5432
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:5
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'yarn'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0.3'
+      - name: Install Mastodon system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ffmpeg \
+            fonts-noto-color-emoji \
+            imagemagick \
+            libicu-dev \
+            libidn11-dev \
+            libprotobuf-dev \
+            postgresql-contrib \
+            protobuf-compiler
+      - run: yarn --frozen-lockfile
+      - run: yarn build
+      - name: Read-only e2e tests
+        run: yarn test-in-ci-suite0
