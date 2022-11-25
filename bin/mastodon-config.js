@@ -29,7 +29,7 @@ export const mastodonDir = path.join(__dirname, '../mastodon')
 export const env = Object.assign({}, process.env, {
   RAILS_ENV: 'development',
   NODE_ENV: 'development',
-  BUNDLE_PATH: process.env.CI ? path.join(__dirname, '../.bundle-cache') : path.join(mastodonDir, 'vendor/bundle'),
+  BUNDLE_PATH: path.join(mastodonDir, 'vendor/bundle'),
   DB_NAME,
   DB_USER,
   DB_PASS,

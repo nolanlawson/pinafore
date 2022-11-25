@@ -32,9 +32,9 @@ jobs:
       - name: Cache Mastodon bundler
         uses: actions/cache@v3
         with:
-          path: ~/.bundle-cache
+          path: ~/.bundle-vendor-cache
           # cache based on masto version implicitly defined in mastodon-config.js
-          key: masto-bundler-v2-${{ hashFiles('bin/mastodon-config.js') }}
+          key: masto-bundler-v3-${{ hashFiles('bin/mastodon-config.js') }}
       - name: Cache Mastodon's and our yarn
         uses: actions/cache@v3
         with:
@@ -56,5 +56,10 @@ jobs:
             protobuf-compiler
       - run: yarn --frozen-lockfile
       - run: yarn build
+      - run: yarn clone-mastodon
+      - name: Move bundler cache so Mastodon can find it
+        run: mkdir -p ./mastodon/vendor && mv ~/.bundle-vendor-cache ./mastodon/vendor/bundle
       - name: Read-write e2e tests
         run: yarn test-in-ci-suite1
+      - name: Move bundler cache so GitHub Actions can find it
+        run: mv ./mastodon/vendor/bundle ~/.bundle-vendor-cache
