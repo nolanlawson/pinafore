@@ -2,6 +2,8 @@ name: Read-write e2e tests
 on:
   pull_request:
     branches: [ master ]
+env:
+  MASTODON_VERSION: 3.0.3
 jobs:
   test:
     runs-on: ubuntu-18.04
@@ -14,7 +16,6 @@ jobs:
           POSTGRES_DB: pinafore_development
           POSTGRES_HOST: 127.0.0.1
           POSTGRES_PORT: 5432
-          MASTODON_VERSION: 3.0.3
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
