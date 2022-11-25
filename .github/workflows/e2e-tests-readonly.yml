@@ -2,8 +2,6 @@ name: Read-only e2e tests
 on:
   pull_request:
     branches: [ master ]
-env:
-  MASTODON_VERSION: 3.0.3
 jobs:
   test:
     runs-on: ubuntu-18.04
@@ -34,9 +32,9 @@ jobs:
       - name: Cache Mastodon bundler
         uses: actions/cache@v3
         with:
-          path: mastodon/vendor/bundle
+          path: ~/.bundle-cache
           # cache based on masto version implicitly defined in mastodon-config.js
-          key: masto-bundler-v1-${{ hashFiles('bin/mastodon-config.js') }}
+          key: masto-bundler-v2-${{ hashFiles('bin/mastodon-config.js') }}
       - name: Cache Mastodon's and our yarn
         uses: actions/cache@v3
         with:
