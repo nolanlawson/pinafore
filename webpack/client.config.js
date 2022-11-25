@@ -128,7 +128,7 @@ export default {
       requestTimeout: 120000
     }),
     // generates report.html, somewhat expensive to compute, so avoid in CircleCI tests
-    !dev && !process.env.CIRCLECI && new BundleAnalyzerPlugin({
+    !dev && !process.env.CI && new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
       logLevel: 'silent'

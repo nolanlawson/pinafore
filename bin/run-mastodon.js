@@ -15,7 +15,7 @@ async function runMastodon () {
   const cwd = mastodonDir
   const promise = spawn('foreman', ['start'], { cwd, env })
   // don't bother writing to mastodon.log in CI; we can't read the file anyway
-  const logFile = process.env.CIRCLECI ? '/dev/null' : 'mastodon.log'
+  const logFile = process.env.CI ? '/dev/null' : 'mastodon.log'
   const log = fs.createWriteStream(logFile, { flags: 'a' })
   childProc = promise.childProcess
   childProc.stdout.pipe(log)

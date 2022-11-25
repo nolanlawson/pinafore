@@ -29,6 +29,8 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0.3'
+      - name: Setup pinafore Postgres user
+        run: sudo -u postgres psql -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
       - name: Install Mastodon system dependencies
         run: |
           sudo apt-get update
@@ -43,7 +45,7 @@ jobs:
             protobuf-compiler
       - run: yarn --frozen-lockfile
       - run: yarn build
-      - name: Readonly e2e tests
+      - name: Read-only e2e tests
         run: yarn test-in-ci-suite0
       - name: Read-write e2e tests
         run: yarn test-in-ci-suite1
