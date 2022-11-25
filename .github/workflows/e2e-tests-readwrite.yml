@@ -35,10 +35,10 @@ jobs:
           path: mastodon/vendor/bundle
           key: masto-bundler-v1-${{ hashFiles('mastodon/Gemfile.lock') }}
       - name: Cache Mastodon's and our yarn
-          uses: actions/cache@v3
-          with:
-            path: ~/.cache/yarn
-            key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ hashFiles('mastodon/yarn.lock') }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/yarn
+          key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ hashFiles('mastodon/yarn.lock') }}
       - name: Install Mastodon system dependencies
         run: |
           sudo apt-get update
