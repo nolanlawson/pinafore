@@ -4,7 +4,7 @@ on:
     branches: [ master ]
 jobs:
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     services:
       postgres:
         image: postgres:12.2
@@ -28,7 +28,7 @@ jobs:
           node-version: '14'
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0.3'
+          ruby-version: '3.0.4'
       - name: Cache Mastodon bundler
         uses: actions/cache@v3
         with:
