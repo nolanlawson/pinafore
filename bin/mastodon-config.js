@@ -18,6 +18,9 @@ DB_PASS=${DB_PASS}
 BIND=0.0.0.0
 `
 
+export const GIT_URL = 'https://github.com/tootsuite/mastodon.git'
+export const GIT_TAG = 'v3.5.3'
+
 export const RUBY_VERSION = '3.0.3'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)

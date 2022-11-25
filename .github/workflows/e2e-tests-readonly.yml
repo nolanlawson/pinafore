@@ -1,0 +1,65 @@
+name: Read-only e2e tests
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:12.2
+        env:
+          POSTGRES_USER: pinafore
+          POSTGRES_PASSWORD: pinafore
+          POSTGRES_DB: pinafore_development
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: 5432
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:5
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0.3'
+      - name: Cache Mastodon bundler
+        uses: actions/cache@v3
+        with:
+          path: ~/.bundle-vendor-cache
+          # cache based on masto version implicitly defined in mastodon-config.js
+          key: masto-bundler-v3-${{ hashFiles('bin/mastodon-config.js') }}
+      - name: Cache Mastodon's and our yarn
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/yarn
+          # cache based on our version and masto version implicitly defined in mastodon-config.js
+          # because we share the yarn cache
+          key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ hashFiles('bin/mastodon-config.js') }}
+      - name: Install Mastodon system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ffmpeg \
+            fonts-noto-color-emoji \
+            imagemagick \
+            libicu-dev \
+            libidn11-dev \
+            libprotobuf-dev \
+            postgresql-contrib \
+            protobuf-compiler
+      - run: yarn --frozen-lockfile
+      - run: yarn build
+      - run: yarn clone-mastodon
+      - name: Move bundler cache so Mastodon can find it
+        run: if [ -d ~/.bundle-vendor-cache ]; then mkdir -p ./mastodon/vendor && mv ~/.bundle-vendor-cache ./mastodon/vendor/bundle; fi
+      - name: Read-only e2e tests
+        run: yarn test-in-ci-suite0
+      - name: Move bundler cache so GitHub Actions can find it
+        run: mv ./mastodon/vendor/bundle ~/.bundle-vendor-cache

@@ -1,4 +1,4 @@
-# Pinafore [![Build status](https://circleci.com/gh/nolanlawson/pinafore.svg?style=svg)](https://app.circleci.com/pipelines/gh/nolanlawson/pinafore)
+# Pinafore
 
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 
