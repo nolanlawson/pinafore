@@ -26,23 +26,22 @@
   --form-border: #{darken($border-color, 10%)};
 
   --nav-bg: #{$main-theme-color};
-  --nav-active-bg: #{lighten($main-theme-color, 9%)};
+  --nav-active-bg: #{lighten($main-theme-color, 6%)};
   --nav-border: #{darken($main-theme-color, 10%)};
   --nav-a-border: #{$main-theme-color};
+  --nav-a-border-hover: #{rgba($secondary-text-color, 0.6)};
+  --nav-a-bg-hover: #{lighten($main-theme-color, 3%)};
   --nav-a-selected-border: #{$secondary-text-color};
-  --nav-a-selected-bg: #{lighten($main-theme-color, 10%)};
-  --nav-a-selected-active-bg: #{lighten($main-theme-color, 17%)};
-  --nav-svg-fill: #{$secondary-text-color};
-  --nav-text-color: #{$secondary-text-color};
-  --nav-indicator-bg: #{rgba($secondary-text-color, 0.8)};
-  --nav-indicator-bg-hover: #{rgba($secondary-text-color, 0.85)};
-
+  --nav-a-selected-bg: #{lighten($main-theme-color, 3%)};
+  --nav-a-selected-bg-hover: #{lighten($main-theme-color, 6%)};
   --nav-a-selected-border-hover: #{$secondary-text-color};
-  --nav-a-selected-bg-hover: #{lighten($main-theme-color, 15%)};
-  --nav-a-bg-hover: #{lighten($main-theme-color, 5%)};
-  --nav-a-border-hover: #{$main-theme-color};
+  --nav-a-selected-active-bg: var(--nav-a-selected-bg-hover);
+  --nav-svg-fill: #{$secondary-text-color};
   --nav-svg-fill-hover: #{$secondary-text-color};
+  --nav-text-color: #{$secondary-text-color};
   --nav-text-color-hover: #{$secondary-text-color};
+  --nav-indicator-bg: #{rgba($secondary-text-color, 0.8)};
+  --nav-indicator-bg-hover: #{rgba($secondary-text-color, 0.6)};
 
   --action-button-fill-color: #{lighten($deemphasized-color, 16%)};
   --action-button-bg-color-hover: #{fade-out($main-text-color, 0.94)};
