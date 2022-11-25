@@ -207,3 +207,13 @@ textarea {
 .inline-emoji {
   font-family: CountryFlagEmojiPolyfill, PinaforeEmoji, sans-serif;
 }
+
+.invisible {
+  /* copied from Mastodon */
+  font-size: 0;
+  line-height: 0;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
