@@ -1,4 +1,5 @@
 import json from '@rollup/plugin-json'
+import nodeResolve from '@rollup/plugin-node-resolve'
 
 // We have to build this as webpack.config.cjs so that Sapper can require() it correctly,
 // since Sapper is designed to only work with CommonJS
@@ -7,6 +8,7 @@ const createConfig = (input) => {
   return {
     input,
     plugins: [
+      nodeResolve(),
       json()
     ],
     output: {

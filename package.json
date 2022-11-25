@@ -55,6 +55,7 @@
     "@formatjs/intl-pluralrules": "^5.1.4",
     "@formatjs/intl-relativetimeformat": "^11.1.4",
     "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^2.4.2",
     "@stdlib/utils-noop": "^0.0.13",
     "arrow-key-navigation": "^1.2.0",
