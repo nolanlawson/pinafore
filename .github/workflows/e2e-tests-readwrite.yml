@@ -14,6 +14,7 @@ jobs:
           POSTGRES_DB: pinafore_development
           POSTGRES_HOST: 127.0.0.1
           POSTGRES_PORT: 5432
+          MASTODON_VERSION: 3.0.3
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -33,12 +34,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: mastodon/vendor/bundle
-          key: masto-bundler-v1-${{ hashFiles('mastodon/Gemfile.lock') }}
+          key: masto-bundler-v1-${{ env.MASTODON_VERSION }}
       - name: Cache Mastodon's and our yarn
         uses: actions/cache@v3
         with:
           path: ~/.cache/yarn
-          key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ hashFiles('mastodon/yarn.lock') }}
+          key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ env.MASTODON_VERSION }}
       - name: Install Mastodon system dependencies
         run: |
           sudo apt-get update
