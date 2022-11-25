@@ -13,6 +13,7 @@ jobs:
           POSTGRES_PASSWORD: pinafore
           POSTGRES_DB: pinafore_development
           POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: 5432
         ports:
           - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
