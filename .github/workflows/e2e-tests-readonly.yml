@@ -26,10 +26,19 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-          cache: 'yarn'
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0.3'
+      - name: Cache Mastodon bundler
+        uses: actions/cache@v3
+        with:
+          path: mastodon/vendor/bundle
+          key: masto-bundler-v1-${{ hashFiles('mastodon/Gemfile.lock') }}
+      - name: Cache Mastodon's and our yarn
+          uses: actions/cache@v3
+          with:
+            path: ~/.cache/yarn
+            key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ hashFiles('mastodon/yarn.lock') }}
       - name: Install Mastodon system dependencies
         run: |
           sudo apt-get update
