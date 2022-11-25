@@ -36,6 +36,7 @@
     "test-unit": "NODE_ENV=test mocha -r bin/browser-shim.js tests/unit/",
     "test-in-ci-suite0": "cross-env BROWSER=chrome:headless run-p --race run-mastodon start test-mastodon-suite0",
     "test-in-ci-suite1": "cross-env BROWSER=chrome:headless run-p --race run-mastodon start test-mastodon-suite1",
+    "test-vercel-json-unchanged": "./bin/test-vercel-json-unchanged.sh",
     "wait-for-mastodon-to-start": "node bin/wait-for-mastodon-to-start.js",
     "wait-for-mastodon-data": "node bin/wait-for-mastodon-data.js",
     "backup-mastodon-data": "./bin/backup-mastodon-data.sh",
