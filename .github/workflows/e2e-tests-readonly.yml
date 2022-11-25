@@ -35,12 +35,15 @@ jobs:
         uses: actions/cache@v3
         with:
           path: mastodon/vendor/bundle
-          key: masto-bundler-v1-${{ env.MASTODON_VERSION }}
+          # cache based on masto version implicitly defined in mastodon-config.js
+          key: masto-bundler-v1-${{ hashFiles('bin/mastodon-config.js') }}
       - name: Cache Mastodon's and our yarn
         uses: actions/cache@v3
         with:
           path: ~/.cache/yarn
-          key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ env.MASTODON_VERSION }}
+          # cache based on our version and masto version implicitly defined in mastodon-config.js
+          # because we share the yarn cache
+          key: masto-yarn-v1-${{ hashFiles('yarn.lock') }}-${{ hashFiles('bin/mastodon-config.js') }}
       - name: Install Mastodon system dependencies
         run: |
           sudo apt-get update
