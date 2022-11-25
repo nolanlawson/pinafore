@@ -14,6 +14,7 @@
     pressedLabel="Unboost"
     pressable={!reblogDisabled}
     pressed={reblogged}
+    checked={reblogged}
     disabled={reblogDisabled}
     href={reblogIcon}
     clickListener={false}
@@ -25,6 +26,7 @@
     pressedLabel="{intl.unfavorite}"
     pressable={true}
     pressed={favorited}
+    checked={favorited}
     href="#fa-star"
     clickListener={false}
     elementId={favoriteKey}
@@ -75,7 +77,7 @@
   import { setReblogged } from '../../_actions/reblog.js'
   import { importShowStatusOptionsDialog } from '../dialog/asyncDialogs/importShowStatusOptionsDialog.js'
   import { updateProfileAndRelationship } from '../../_actions/accounts.js'
-  import { FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations.js'
+  import { CHECKMARK_ANIMATION, FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations.js'
   import { on } from '../../_utils/eventBus.js'
   import { announceAriaLivePolite } from '../../_utils/announceAriaLivePolite.js'
 
@@ -118,7 +120,7 @@
         const newFavoritedValue = !favorited
         /* no await */ setFavorited(originalStatusId, newFavoritedValue)
         if (newFavoritedValue) {
-          this.refs.favoriteIcon.animate(FAVORITE_ANIMATION)
+          this.refs.favoriteIcon.animate(FAVORITE_ANIMATION, CHECKMARK_ANIMATION)
         }
         if (announce) {
           announceAriaLivePolite(newFavoritedValue ? 'intl.favorited' : 'intl.unfavorited')
@@ -129,7 +131,7 @@
         const newRebloggedValue = !reblogged
         /* no await */ setReblogged(originalStatusId, newRebloggedValue)
         if (newRebloggedValue) {
-          this.refs.reblogIcon.animate(REBLOG_ANIMATION)
+          this.refs.reblogIcon.animate(REBLOG_ANIMATION, CHECKMARK_ANIMATION)
         }
         if (announce) {
           announceAriaLivePolite(newRebloggedValue ? 'intl.reblogged' : 'intl.unreblogged')

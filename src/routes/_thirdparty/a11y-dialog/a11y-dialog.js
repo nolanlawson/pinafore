@@ -108,7 +108,7 @@ A11yDialog.prototype.show = function (event) {
   // it later, then set the focus to the first focusable child of the dialog
   // element
   focusedBeforeDialog = document.activeElement
-  setFocusToFirstItem(this.node)
+  setInitialFocus(this.node)
 
   // Bind a focus event listener to the body element to make sure the focus
   // stays trapped inside the dialog while open, and start listening for some
@@ -281,7 +281,7 @@ A11yDialog.prototype._maintainFocus = function (event) {
   // If the dialog is shown and the focus is not within the dialog element,
   // move it back to its first focusable child
   if (this.shown && !this.node.contains(event.target)) {
-    setFocusToFirstItem(this.node)
+    setInitialFocus(this.node)
   }
 }
 
@@ -333,9 +333,17 @@ function collect (target) {
    *
    * @param {Element} node
    */
-function setFocusToFirstItem (node) {
+function setInitialFocus (node) {
   const focusableChildren = getFocusableChildren(node)
 
+  // If there's an element with an autofocus attribute, focus that.
+  for (const child of focusableChildren) {
+    if (child.getAttribute('autofocus')) {
+      child.focus()
+      return
+    }
+  }
+  // Otherwise, focus the first focusable element.
   if (focusableChildren.length) {
     focusableChildren[0].focus()
   }

@@ -1,4 +1,5 @@
 import {
+  importDynamicViewportUnitsPolyfill,
   importIntlListFormat,
   importIntlLocale, importIntlPluralRules, importIntlRelativeTimeFormat,
   importRequestIdleCallback
@@ -25,7 +26,8 @@ export async function loadPolyfills () {
   mark('loadPolyfills')
   await Promise.all([
     typeof requestIdleCallback !== 'function' && importRequestIdleCallback(),
-    loadIntlPolyfillsIfNecessary()
+    loadIntlPolyfillsIfNecessary(),
+    !CSS.supports('height: 1dvh') && importDynamicViewportUnitsPolyfill()
   ])
   stop('loadPolyfills')
 }

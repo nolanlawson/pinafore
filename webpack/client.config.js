@@ -127,8 +127,8 @@ export default {
     dev && new webpack.HotModuleReplacementPlugin({
       requestTimeout: 120000
     }),
-    // generates report.html, somewhat expensive to compute, so avoid in CircleCI tests
-    !dev && !process.env.CIRCLECI && new BundleAnalyzerPlugin({
+    // generates report.html, somewhat expensive to compute, so avoid in CI tests
+    !dev && !process.env.CI && new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
       logLevel: 'silent'

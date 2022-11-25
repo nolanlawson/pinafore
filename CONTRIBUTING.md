@@ -120,8 +120,8 @@ or
 
 1. Run `rm -fr mastodon` to clear out all Mastodon data
 1. Comment out `await restoreMastodonData()` in `run-mastodon.js` to avoid actually populating the database with statuses/favorites/etc.
-2. Update the `GIT_TAG_OR_BRANCH` in `clone-mastodon.js` to whatever you want
-3. If the Ruby version changed (check Mastodon's `.ruby-version`), install it and update `RUBY_VERSION` in `mastodon-config.js` as well as the Ruby version in `.circleci/config.yml`.
+2. Update the `GIT_TAG` in `mastodon-config.js` to whatever you want
+3. If the Ruby version changed (check Mastodon's `.ruby-version`), install it and update `RUBY_VERSION` in `mastodon-config.js` as well as the Ruby version in `.github/workflows`.
 4. Run `yarn run-mastodon`
 5. Run `yarn backup-mastodon-data` to overwrite the data in `fixtures/`
 6. Uncomment `await restoreMastodonData()` in `run-mastodon.js`

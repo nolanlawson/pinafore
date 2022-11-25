@@ -37,3 +37,7 @@ export const importIntlListFormat = async () => { // has to be imported serially
     /* webpackChunkName: '$polyfill$-internationalization' */ '@formatjs/intl-listformat/locale-data/en.js'
   )
 }
+
+export const importDynamicViewportUnitsPolyfill = () => import(
+  /* webpackChunkName: '$polyfill$-dynamic-viewport-units' */ '../../_thirdparty/large-small-dynamic-viewport-units-polyfill/dynamic-viewport-utils-polyfill.js'
+)

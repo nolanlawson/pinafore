@@ -7,9 +7,17 @@ import {
   getNthStatusMediaImg,
   getNthStatusSensitiveMediaButton,
   getNthStatusSpoiler,
-  getUrl, modalDialog,
+  getUrl,
+  modalDialog,
   scrollToStatus,
-  isNthStatusActive, getActiveElementRectTop, scrollToTop, isActiveStatusPinned, getFirstModalMedia
+  isNthStatusActive,
+  getActiveElementRectTop,
+  scrollToTop,
+  isActiveStatusPinned,
+  getFirstModalMedia,
+  getNthStatusAccountLink,
+  getNthStatusAccountLinkSelector,
+  focus
 } from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
@@ -215,4 +223,14 @@ test('Shortcut j/k change the active status on pinned statuses', async t => {
     .pressKey('k')
     .expect(isNthStatusActive(1)()).ok()
     .expect(isActiveStatusPinned()).eql(true)
+})
+
+test('Shortcut down makes next status active when focused inside of a status', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatusAccountLink(1).exists).ok()
+  await focus(getNthStatusAccountLinkSelector(1))()
+  await t
+    .pressKey('down')
+    .expect(isNthStatusActive(2)()).ok()
 })
