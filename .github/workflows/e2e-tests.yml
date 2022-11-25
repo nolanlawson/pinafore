@@ -30,8 +30,8 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0.3'
-      - name: Setup pinafore Postgres user
-        run: sudo -u postgres psql -h 127.0.0.1 -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+#      - name: Setup pinafore Postgres user
+#        run: sudo -u postgres psql -h 127.0.0.1 -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
       - name: Install Mastodon system dependencies
         run: |
           sudo apt-get update
