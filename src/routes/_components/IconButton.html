@@ -52,25 +52,16 @@
    * regular styles
    */
 
-  :global(.icon-button:hover .icon-button-svg) {
-    fill: var(--action-button-fill-color-hover);
+  .icon-button:hover {
+    background: var(--action-button-bg-color-hover);
   }
 
-  :global(.icon-button.not-pressable:active .icon-button-svg,
-  .icon-button.same-pressed:active .icon-button-svg) {
-    fill: var(--action-button-fill-color-active);
+  .icon-button:active {
+    background: var(--action-button-bg-color-active);
   }
 
   :global(.icon-button.pressed.not-same-pressed .icon-button-svg) {
     fill: var(--action-button-fill-color-pressed);
-  }
-
-  :global(.icon-button.pressed.not-same-pressed:hover .icon-button-svg) {
-    fill: var(--action-button-fill-color-pressed-hover);
-  }
-
-  :global(.icon-button.pressed.not-same-pressed:active .icon-button-svg) {
-    fill: var(--action-button-fill-color-pressed-active);
   }
 
   /*
@@ -81,25 +72,8 @@
     fill: var(--action-button-deemphasized-fill-color);
   }
 
-  :global(.icon-button.muted-style:hover .icon-button-svg) {
-    fill: var(--action-button-deemphasized-fill-color-hover);
-  }
-
-  :global(.icon-button.muted-style.not-pressable:active .icon-button-svg,
-  .icon-button.muted-style.same-pressed:active .icon-button-svg) {
-    fill: var(--action-button-deemphasized-fill-color-active);
-  }
-
   :global(.icon-button.muted-style.pressed.not-same-pressed .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color-pressed);
-  }
-
-  :global(.icon-button.muted-style.pressed.not-same-pressed:hover .icon-button-svg) {
-    fill: var(--action-button-deemphasized-fill-color-pressed-hover);
-  }
-
-  :global(.icon-button.muted-style.pressed.not-same-pressed:active .icon-button-svg) {
-    fill: var(--action-button-deemphasized-fill-color-pressed-active);
   }
 
 </style>

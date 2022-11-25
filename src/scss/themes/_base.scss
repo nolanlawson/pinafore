@@ -44,19 +44,13 @@
   --nav-svg-fill-hover: #{$secondary-text-color};
   --nav-text-color-hover: #{$secondary-text-color};
 
-  --action-button-fill-color: #{lighten($main-theme-color, 18%)};
-  --action-button-fill-color-hover: #{lighten($main-theme-color, 22%)};
-  --action-button-fill-color-active: #{lighten($main-theme-color, 5%)};
-  --action-button-fill-color-pressed: #{darken($main-theme-color, 7%)};
-  --action-button-fill-color-pressed-hover: #{darken($main-theme-color, 2%)};
-  --action-button-fill-color-pressed-active: #{darken($main-theme-color, 15%)};
+  --action-button-fill-color: #{lighten($deemphasized-color, 16%)};
+  --action-button-bg-color-hover: #{fade-out($main-text-color, 0.94)};
+  --action-button-bg-color-active: #{fade-out($main-text-color, 0.9)};
+  --action-button-fill-color-pressed: #{saturate($main-theme-color, 10%)};
 
   --action-button-deemphasized-fill-color: #{$deemphasized-color};
-  --action-button-deemphasized-fill-color-hover: #{lighten($deemphasized-color, 22%)};
-  --action-button-deemphasized-fill-color-active: #{lighten($deemphasized-color, 5%)};
   --action-button-deemphasized-fill-color-pressed: #{darken($deemphasized-color, 7%)};
-  --action-button-deemphasized-fill-color-pressed-hover: #{darken($deemphasized-color, 2%)};
-  --action-button-deemphasized-fill-color-pressed-active: #{darken($deemphasized-color, 15%)};
 
   --settings-list-item-bg: #{$main-bg-color};
   --settings-list-item-text: #{$main-theme-color};

@@ -1,12 +1,10 @@
 :root {
   $deemphasized-color: lighten($main-bg-color, 54%);
 
+  --action-button-fill-color: #{darken($deemphasized-color, 2%)};
+  --action-button-fill-color-pressed: #{lighten($main-theme-color, 5%)};
   --action-button-deemphasized-fill-color: #{$deemphasized-color};
-  --action-button-deemphasized-fill-color-hover: #{lighten($deemphasized-color, 22%)};
-  --action-button-deemphasized-fill-color-active: #{lighten($deemphasized-color, 5%)};
   --action-button-deemphasized-fill-color-pressed: #{darken($deemphasized-color, 7%)};
-  --action-button-deemphasized-fill-color-pressed-hover: #{darken($deemphasized-color, 2%)};
-  --action-button-deemphasized-fill-color-pressed-active: #{darken($deemphasized-color, 15%)};
 
   --loading-bg: #{#222};
 
