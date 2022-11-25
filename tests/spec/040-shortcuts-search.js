@@ -1,7 +1,7 @@
 import {
   getActiveElementTagName,
   getUrl,
-  searchButton, searchInput, searchNavButton
+  searchButton, searchInput, searchNavButton, sleep
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -40,6 +40,8 @@ test('Pressing / without logging in just goes to the search page', async t => {
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect($('.main-content h1').innerText).eql('Pinafore')
+  await sleep(500) // wait for keyboard shortcuts to be active
+  await t
     .pressKey('/')
     .expect(getUrl()).contains('/search')
     .expect(getActiveElementTagName()).notMatch(/input/i)
