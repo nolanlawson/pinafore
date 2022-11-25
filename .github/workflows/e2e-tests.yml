@@ -1,9 +1,9 @@
-name: Tests
+name: End-to-end tests
 on:
   pull_request:
     branches: [ master ]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-18.04
     services:
       postgres:
@@ -21,12 +21,12 @@ jobs:
         ports:
           - 6379/tcp
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '14'
           cache: 'yarn'
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0.3'
       - name: Install Mastodon system dependencies
