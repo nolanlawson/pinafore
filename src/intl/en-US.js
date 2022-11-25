@@ -384,6 +384,7 @@ export default {
   disableCustomScrollbars: 'Disable custom scrollbars',
   bottomNav: 'Place the navigation bar at the bottom of the screen',
   centerNav: 'Center the navigation bar',
+  hideCheckmark: 'Hide chechmark on favorite/boost buttons',
   preferences: 'Preferences',
   hotkeySettings: 'Hotkey settings',
   disableHotkeys: 'Disable all hotkeys',

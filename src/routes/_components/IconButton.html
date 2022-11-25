@@ -12,7 +12,7 @@
         ref:node
 >
   <SvgIcon className="icon-button-svg {svgClassName || ''}" ref:svg {href} />
-  {#if checked}
+  {#if showCheckmark}
     <SvgIcon className="icon-button-svg icon-button-check" ref:check href="#fa-check" />
   {/if}
 </button>
@@ -154,12 +154,13 @@
         sameColorWhenPressed ? 'same-pressed' : 'not-same-pressed',
         className
       )),
-      ariaLabel: ({ pressable, pressed, label, pressedLabel }) => ((pressable && pressed) ? pressedLabel : label)
+      ariaLabel: ({ pressable, pressed, label, pressedLabel }) => ((pressable && pressed) ? pressedLabel : label),
+      showCheckmark: ({ checked, $hideCheckmark }) => (!$hideCheckmark && checked)
     },
     methods: {
       animate (animation, checkmarkAnimation) {
         this.refs.svg.animate(animation)
-        if (checkmarkAnimation && this.get().checked) {
+        if (checkmarkAnimation && this.get().showCheckmark) {
           this.refs.check.animate(checkmarkAnimation)
         }
       },

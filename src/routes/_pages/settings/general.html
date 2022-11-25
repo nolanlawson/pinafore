@@ -67,6 +67,11 @@
              bind:checked="$bottomNav" on:change="onChange(event)">
       {intl.bottomNav}
     </label>
+    <label class="setting-group">
+      <input type="checkbox" id="choice-hide-checkmark"
+             bind:checked="$hideCheckmark" on:change="onChange(event)">
+      {intl.hideCheckmark}
+    </label>
   </form>
 
   <h2>{intl.accessibility}</h2>

@@ -27,6 +27,7 @@ const persistedState = {
   disableTapOnStatus: false,
   enableGrayscale: false,
   hideCards: false,
+  hideCheckmark: false,
   largeInlineMedia: false,
   leftRightChangesFocus: isKaiOS(),
   instanceNameInSearch: '',
