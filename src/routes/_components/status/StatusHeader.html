@@ -1,6 +1,13 @@
 <div class="status-header {isStatusInNotification ? 'status-in-notification' : ''} {notificationType === 'follow' ? 'header-is-follow' : ''}">
   <div class="status-header-avatar {timelineType === 'pinned' || notificationType === 'poll' ? 'hidden' : ''}">
-    <Avatar {account} size="extra-small"/>
+    <a id={elementId}
+       href="/accounts/{accountId}"
+       rel="prefetch"
+       class="status-header-author"
+       title="{'@' + account.acct}"
+    >
+      <Avatar {account} size="extra-small"/>
+    </a>
   </div>
   <SvgIcon className="status-header-svg" href={icon} />
 
