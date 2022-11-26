@@ -3,7 +3,8 @@
     <a id={elementId}
        href="/accounts/{accountId}"
        rel="prefetch"
-       title="{'@' + account.acct}"
+       aria-hidden="true"
+       tabindex="-1"
     >
       <Avatar {account} size="extra-small"/>
     </a>
