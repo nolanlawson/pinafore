@@ -1,6 +1,13 @@
 <div class="status-header {isStatusInNotification ? 'status-in-notification' : ''} {notificationType === 'follow' ? 'header-is-follow' : ''}">
   <div class="status-header-avatar {timelineType === 'pinned' || notificationType === 'poll' ? 'hidden' : ''}">
-    <Avatar {account} size="extra-small"/>
+    <a id={avatarElementId}
+       href="/accounts/{accountId}"
+       rel="prefetch"
+       aria-hidden="true"
+       tabindex="-1"
+    >
+      <Avatar {account} size="extra-small"/>
+    </a>
   </div>
   <SvgIcon className="status-header-svg" href={icon} />
 
@@ -10,7 +17,7 @@
         {intl.pinnedStatus}
       </span>
     {:elseif notificationType !== 'poll'}
-      <a id={elementId}
+      <a id={authorElementId}
          href="/accounts/{accountId}"
          rel="prefetch"
          class="status-header-author"
@@ -114,7 +121,8 @@
     },
     store: () => store,
     computed: {
-      elementId: ({ uuid }) => `status-header-${uuid}`,
+      authorElementId: ({ uuid }) => `status-header-author-${uuid}`,
+      avatarElementId: ({ uuid }) => `status-header-avatar-${uuid}`,
       notificationType: ({ notification }) => notification && notification.type,
       icon: ({ notificationType, status, timelineType }) => {
         if (timelineType === 'pinned') {

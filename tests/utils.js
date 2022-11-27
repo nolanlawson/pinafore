@@ -169,6 +169,10 @@ export const getActiveElementInnerText = exec(() =>
   (document.activeElement && document.activeElement.innerText) || ''
 )
 
+export const getActiveElementId = exec(() =>
+  (document.activeElement && document.activeElement.id) || ''
+)
+
 export const getActiveElementRectTop = exec(() => (
   (document.activeElement && document.activeElement.getBoundingClientRect().top) || -1
 ))
