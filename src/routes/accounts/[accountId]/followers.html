@@ -1,4 +1,5 @@
-<Title name="{intl.followers}" />
+<!-- TODO: this should probably be formatted as intl rather than concatenated -->
+<Title name="{profileName}{intl.followers}" />
 
   <LazyPage {pageComponent} {params} />
 
@@ -15,6 +16,11 @@
     },
     data: () => ({
       pageComponent
-    })
+    }),
+    computed: {
+      profileName: ({ $currentAccountProfile }) => {
+        return ($currentAccountProfile && ('@' + $currentAccountProfile.acct + ' · ')) || ''
+      }
+    }
   }
 </script>

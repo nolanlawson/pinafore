@@ -12,7 +12,7 @@ test('shows unread notification', async t => {
   await loginAsFoobar(t)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-    .expect(getTitleText()).eql('localhost:3000 · Home')
+    .expect(getTitleText()).eql('Home · localhost:3000')
     .expect(getNthStatusContent(1).innerText).contains('somebody please favorite this to validate me', {
       timeout: 20000
     })
@@ -21,17 +21,17 @@ test('shows unread notification', async t => {
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (1 notification)', {
       timeout: 20000
     })
-    .expect(getTitleText()).eql('(1) localhost:3000 · Home')
+    .expect(getTitleText()).eql('(1) Home · localhost:3000')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (current page)')
-    .expect(getTitleText()).eql('localhost:3000 · Notifications')
+    .expect(getTitleText()).eql('Notifications · localhost:3000')
     .expect(getNthStatus(1).innerText).contains('somebody please favorite this to validate me')
     .expect(getNthStatus(1).innerText).match(/admin\s+favorited your toot/)
   await t
     .click(homeNavButton)
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-    .expect(getTitleText()).eql('localhost:3000 · Home')
+    .expect(getTitleText()).eql('Home · localhost:3000')
 })
 
 test('shows unread notifications, more than one', async t => {
@@ -39,7 +39,7 @@ test('shows unread notifications, more than one', async t => {
   await loginAsFoobar(t)
   await t
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-    .expect(getTitleText()).eql('localhost:3000 · Home')
+    .expect(getTitleText()).eql('Home · localhost:3000')
     .expect(getNthStatusContent(1).innerText).contains('I need lots of favorites on this one', {
       timeout: 20000
     })
@@ -49,14 +49,14 @@ test('shows unread notifications, more than one', async t => {
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (2 notifications)', {
       timeout: 20000
     })
-    .expect(getTitleText()).eql('(2) localhost:3000 · Home')
+    .expect(getTitleText()).eql('(2) Home · localhost:3000')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications (current page)')
-    .expect(getTitleText()).eql('localhost:3000 · Notifications')
+    .expect(getTitleText()).eql('Notifications · localhost:3000')
     .expect(getNthStatus(1).innerText).contains('I need lots of favorites on this one')
   await t
     .click(homeNavButton)
     .expect(notificationsNavButton.getAttribute('aria-label')).eql('Notifications')
-    .expect(getTitleText()).eql('localhost:3000 · Home')
+    .expect(getTitleText()).eql('Home · localhost:3000')
 })
