@@ -59,7 +59,7 @@ test('timeline link preserves focus', async t => {
   await loginAsFoobar(t)
   await t
     .expect(getNthStatus(1).exists).ok({ timeout: 20000 })
-    .click($(`${getNthStatusSelector(1)} .status-header a`))
+    .click($(`${getNthStatusSelector(1)} .status-header-author`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).eql('http://localhost:4002/')
@@ -78,7 +78,7 @@ test('notification timeline preserves focus', async t => {
   await t
     .navigateTo('/notifications')
   await scrollToStatus(t, 6)
-  await t.click($(`${getNthStatusSelector(6)} .status-header a`))
+  await t.click($(`${getNthStatusSelector(6)} .status-header-author`))
     .expect(getUrl()).contains('/accounts/')
     .click(goBackButton)
     .expect(getUrl()).contains('/notifications')
