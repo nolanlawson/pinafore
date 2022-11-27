@@ -14,7 +14,7 @@ import {
   getActiveElementTagName,
   getActiveElementClassList,
   getNthStatusSensitiveMediaButton,
-  getActiveElementAriaLabel, settingsNavButton, getActiveElementHref, communityNavButton
+  getActiveElementAriaLabel, settingsNavButton, getActiveElementHref, communityNavButton, getActiveElementId
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { Selector as $ } from 'testcafe'
@@ -71,6 +71,22 @@ test('timeline link preserves focus', async t => {
     .expect(getUrl()).eql('http://localhost:4002/')
     .expect(getActiveElementClassList()).contains('status-sidebar')
     .expect(getActiveElementInsideNthStatus()).eql('1')
+})
+
+test('timeline link preserves focus - reblogger avatar', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatus(1).exists).ok({ timeout: 20000 })
+
+  const avatar = `${getNthStatusSelector(1)} .status-header-avatar a`
+  const id = await $(avatar).getAttribute('id')
+  await t
+    .click($(avatar))
+    .expect(getUrl()).contains('/accounts/')
+    .click(goBackButton)
+    .expect(getUrl()).eql('http://localhost:4002/')
+    .expect(getNthStatus(1).exists).ok()
+    .expect(getActiveElementId()).eql(id)
 })
 
 test('notification timeline preserves focus', async t => {
