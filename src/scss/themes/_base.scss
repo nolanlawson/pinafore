@@ -20,7 +20,7 @@
   --body-bg: #{$body-bg-color};
   --body-text-color: #{$main-text-color};
   --main-border: #{$border-color};
-  --svg-fill: #{$main-theme-color};
+  --svg-fill: #{$main-text-color};
 
   --form-bg: #{darken($main-bg-color, 3%)};
   --form-border: #{darken($border-color, 10%)};
