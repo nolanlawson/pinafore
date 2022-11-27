@@ -1,4 +1,4 @@
-$main-theme-color: #5263af;
+$main-theme-color: saturate(#5263af, 10%);
 $body-bg-color: #0f1427;
 $main-bg-color: #212433;
 $anchor-color: lighten($main-theme-color, 20%);
