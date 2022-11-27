@@ -23,4 +23,7 @@ $scrollbar-face-active: #{lighten($main-theme-color, 1%)};
 
 :root {
   accent-color: #{darken($main-theme-color, 12%)};
+
+  --button-primary-bg: #{$main-theme-color};
+  --button-primary-text: #141414;
 }
