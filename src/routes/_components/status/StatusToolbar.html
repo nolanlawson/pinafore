@@ -171,7 +171,9 @@
       },
       bookmark () {
         const { originalStatus, originalStatusId } = this.get()
-        /* no await */ setStatusBookmarkedOrUnbookmarked(originalStatusId, !originalStatus.bookmarked)
+        const newBookmarkedValue = !originalStatus.bookmarked
+        /* no await */ setStatusBookmarkedOrUnbookmarked(originalStatusId, newBookmarkedValue)
+        announceAriaLivePolite(newBookmarkedValue ? 'intl.bookmarked' : 'intl.unbookmarked')
       }
     },
     data: () => ({

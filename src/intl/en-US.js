@@ -153,6 +153,7 @@ export default {
     <li><kbd>f</kbd> to favorite</li>
     <li><kbd>b</kbd> to boost</li>
     <li><kbd>r</kbd> to reply</li>
+    <li><kbd>a</kbd> to bookmark</li>
     <li><kbd>i</kbd> to open images, video, or audio</li>
     <li><kbd>y</kbd> to show or hide sensitive media</li>
     <li><kbd>m</kbd> to mention the author</li>
@@ -688,5 +689,7 @@ export default {
   statusesThread: 'Statuses: thread',
   statusesAccountTimeline: 'Statuses: account timeline',
   statusesList: 'Statuses: list',
-  notificationsOnInstance: 'Notifications on {instance}'
+  notificationsOnInstance: 'Notifications on {instance}',
+  bookmarked: 'Bookmarked',
+  unbookmarked: 'Unbookmarked'
 }
