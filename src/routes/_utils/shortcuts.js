@@ -172,15 +172,22 @@ function unmapKeys (keyMap, keys, component) {
 
 function acceptShortcutEvent (event) {
   const { target } = event
-  return !(
+  if (
     event.altKey ||
     event.metaKey ||
     event.ctrlKey ||
-    (event.shiftKey && event.key !== '?') || // '?' is a special case - it is allowed
-    (target && (
-      target.isContentEditable ||
+    (event.shiftKey && event.key !== '?') // '?' is a special case - it is allowed
+  ) {
+    return false
+  }
+  if (event.key === 'Escape') {
+    // Allow escape everywhere.
+    return true
+  }
+  // Don't allow other keys in text boxes.
+  return !(target && (
+    target.isContentEditable ||
         ['TEXTAREA', 'SELECT'].includes(target.tagName) ||
         (target.tagName === 'INPUT' && !['radio', 'checkbox'].includes(target.getAttribute('type')))
-    ))
-  )
+  ))
 }
