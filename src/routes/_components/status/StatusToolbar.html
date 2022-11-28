@@ -43,6 +43,7 @@
   <Shortcut scope={shortcutScope} key="f" on:pressed="toggleFavorite(true)"/>
   <Shortcut scope={shortcutScope} key="r" on:pressed="reply()"/>
   <Shortcut scope={shortcutScope} key="b" on:pressed="reblog(true)"/>
+  <Shortcut scope={shortcutScope} key="a" on:pressed="bookmark()"/>
 {/if}
 <style>
   .status-toolbar {
@@ -80,6 +81,7 @@
   import { CHECKMARK_ANIMATION, FAVORITE_ANIMATION, REBLOG_ANIMATION } from '../../_static/animations.js'
   import { on } from '../../_utils/eventBus.js'
   import { announceAriaLivePolite } from '../../_utils/announceAriaLivePolite.js'
+  import { setStatusBookmarkedOrUnbookmarked } from '../../_actions/bookmark.js'
 
   export default {
     oncreate () {
@@ -166,6 +168,10 @@
           // return status to the reply button after posting a reply
           this.refs.node.querySelector('.status-toolbar-reply-button').focus({ preventScroll: true })
         } catch (e) { /* ignore */ }
+      },
+      bookmark () {
+        const { originalStatus, originalStatusId } = this.get()
+        /* no await */ setStatusBookmarkedOrUnbookmarked(originalStatusId, !originalStatus.bookmarked)
       }
     },
     data: () => ({
