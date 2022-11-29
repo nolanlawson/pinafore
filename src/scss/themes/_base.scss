@@ -83,8 +83,8 @@
   --deemphasized-text-color: #{$deemphasized-color};
   --focus-outline: #{$focus-outline};
 
-  --very-deemphasized-link-color: #{rgba($anchor-color, 0.6)};
-  --very-deemphasized-text-color: #{rgba(#666, 0.6)};
+  --very-deemphasized-text-color: #757575;
+  --very-deemphasized-link-color: var(--very-deemphasized-link-color);
 
   --status-direct-background: #{darken($body-bg-color, 5%)};
   --main-theme-color: #{$main-theme-color};
