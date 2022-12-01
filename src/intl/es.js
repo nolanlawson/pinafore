@@ -154,7 +154,7 @@ export default {
     <li><kbd>b</kbd> para difundir</li>
     <li><kbd>r</kbd> para responder</li>
     <li><kbd>i</kbd> para abrir imágenes, vídeo o audio</li>
-    <li><kbd>y</kbd> para mostrar u ocultar multimedia que puede herir la sensibilidad</li>
+    <li><kbd>y</kbd> para mostrar u ocultar multimedia sensible</li>
     <li><kbd>m</kbd> para mencionar al autor</li>
     <li><kbd>p</kbd> para abrir el perfil del autor</li>
     <li><kbd>l</kbd> para abrir el enlace de la publicación en una nueva pestaña</li>
@@ -206,7 +206,7 @@ export default {
   delete: 'Borrar',
   description: 'Descripción',
   descriptionLabel: 'Describir para las personas con discapacidad visual (imagen, vídeo) o con discapacidad auditiva (audio, vídeo)',
-  markAsSensitive: 'Indicar que el multimedia puede herir la sensibilidad',
+  markAsSensitive: 'Marcar multimedia como sensible',
   // Polls
   createPoll: 'Crear encuesta',
   removePollChoice: 'Eliminar opción {index}',
@@ -253,15 +253,15 @@ export default {
   navigateMedia: 'Navegar por elementos multimedia',
   showPreviousMedia: 'Mostrar multimedia anterior',
   showNextMedia: 'Mostrar multimedia siguiente',
-  enterPinchZoom: 'Pinch-zoom mode',
+  enterPinchZoom: 'Modo encoger',
   exitPinchZoom: 'Exit pinch-zoom mode',
   showMedia: `Show {index, select,
-    1 {first}
-    2 {second}
-    3 {third}
-    other {fourth}
+    1 {primero}
+    2 {segundo}
+    3 {tercero}
+    other {cuarto}
   } media {current, select,
-    true {(current)}
+    true {(actual)}
     other {}
   }`,
   previewFocalPoint: 'Preview (focal point)',
