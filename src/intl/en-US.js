@@ -689,7 +689,5 @@ export default {
   statusesThread: 'Statuses: thread',
   statusesAccountTimeline: 'Statuses: account timeline',
   statusesList: 'Statuses: list',
-  notificationsOnInstance: 'Notifications on {instance}',
-  bookmarked: 'Bookmarked',
-  unbookmarked: 'Unbookmarked'
+  notificationsOnInstance: 'Notifications on {instance}'
 }
