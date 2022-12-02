@@ -151,10 +151,7 @@
         const { replyShown } = this.get()
         if (replyShown) {
           this.reply()
-          try {
-            // return focus to the article.
-            this.refs.node.closest('article').focus({ preventScroll: true })
-          } catch (e) { /* ignore */ }
+          this.fire('focusArticle')
         }
       },
       async onOptionsClick () {
