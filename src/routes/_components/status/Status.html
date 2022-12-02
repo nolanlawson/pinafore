@@ -273,6 +273,7 @@
       mediaAttachments: ({ originalStatus }) => (
         originalStatus.media_attachments
       ),
+      sensitiveShown: ({ $sensitivesShown, uuid }) => !!$sensitivesShown[uuid],
       sensitive: ({ originalStatus, $markMediaAsSensitive, $neverMarkMediaAsSensitive }) => (
         !$neverMarkMediaAsSensitive && ($markMediaAsSensitive || originalStatus.sensitive)
       ),
@@ -294,12 +295,12 @@
       ariaLabel: ({
         originalAccount, account, plainTextContent, shortInlineFormattedDate, spoilerText,
         showContent, reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels,
-        showMedia, sensitive, mediaAttachments, showPoll
+        showMedia, sensitive, sensitiveShown, mediaAttachments, showPoll
       }) => (
         getAccessibleLabelForStatus(originalAccount, account, plainTextContent,
           shortInlineFormattedDate, spoilerText, showContent,
           reblog, notification, visibility, $omitEmojiInDisplayNames, $disableLongAriaLabels,
-          showMedia, sensitive, mediaAttachments, showPoll
+          showMedia, sensitive, sensitiveShown, mediaAttachments, showPoll
         )
       ),
       showHeader: ({ notification, status, timelineType }) => (

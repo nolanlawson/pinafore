@@ -37,13 +37,13 @@ function cleanupText (text) {
 export function getAccessibleLabelForStatus (originalAccount, account, plainTextContent,
   shortInlineFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames,
-  disableLongAriaLabels, showMedia, sensitive, mediaAttachments, showPoll) {
+  disableLongAriaLabels, showMedia, sensitive, sensitiveShown, mediaAttachments, showPoll) {
   const originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
   const contentTextToShow = (showContent || !spoilerText)
     ? cleanupText(plainTextContent)
     : formatIntl('intl.contentWarningContent', { spoiler: cleanupText(spoilerText) })
   const mediaTextToShow = showMedia && 'intl.hasMedia'
-  const mediaDescText = (showMedia && !sensitive)
+  const mediaDescText = (showMedia && (!sensitive || sensitiveShown))
     ? mediaAttachments.map(media => media.description)
     : []
   const pollTextToShow = showPoll && 'intl.hasPoll'
