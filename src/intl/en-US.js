@@ -206,7 +206,7 @@ export default {
   edit: 'Edit',
   delete: 'Delete',
   description: 'Description',
-  descriptionLabel: 'Describe for the visually impaired (image, video) or auditorily impaired (audio, video)',
+  descriptionLabel: 'Describe for visually impaired (image, video) or auditorily impaired (audio, video) people',
   markAsSensitive: 'Mark media as sensitive',
   // Polls
   createPoll: 'Create poll',
@@ -230,7 +230,7 @@ export default {
   postPrivacyLabel: 'Adjust privacy (currently {label})',
   addContentWarning: 'Add content warning',
   removeContentWarning: 'Remove content warning',
-  altLabel: 'Describe for the visually impaired',
+  altLabel: 'Describe for visually impaired people',
   extractText: 'Extract text from image',
   extractingText: 'Extracting text…',
   extractingTextCompletion: 'Extracting text ({percent}% complete)…',
