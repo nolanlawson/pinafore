@@ -39,7 +39,7 @@
   {#if isStatusInOwnThread}
     <StatusDetails {...params} {...timestampParams} />
   {/if}
-  <StatusToolbar {...params} {replyShown} on:recalculateHeight />
+  <StatusToolbar {...params} {replyShown} on:recalculateHeight on:focusArticle="focusArticle()" />
   {#if replyShown}
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
@@ -133,6 +133,7 @@
   import { composeNewStatusMentioning } from '../../_actions/mention.js'
   import { createStatusOrNotificationUuid } from '../../_utils/createStatusOrNotificationUuid.js'
   import { addEmojiTooltips } from '../../_utils/addEmojiTooltips.js'
+  import { tryToFocusElement } from '../../_utils/tryToFocusElement.js'
 
   const INPUT_TAGS = new Set(['a', 'button', 'input', 'textarea', 'label'])
   const isUserInputElement = node => INPUT_TAGS.has(node.localName)
@@ -213,6 +214,10 @@
       async mentionAuthor () {
         const { accountForShortcut } = this.get()
         await composeNewStatusMentioning(accountForShortcut)
+      },
+      focusArticle () {
+        const { elementId } = this.get()
+        tryToFocusElement(elementId, /* scroll */ true)
       }
     },
     computed: {

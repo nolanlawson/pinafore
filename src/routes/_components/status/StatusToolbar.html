@@ -42,6 +42,7 @@
 {#if enableShortcuts}
   <Shortcut scope={shortcutScope} key="f" on:pressed="toggleFavorite(true)"/>
   <Shortcut scope={shortcutScope} key="r" on:pressed="reply()"/>
+  <Shortcut scope={shortcutScope} key="escape" on:pressed="dismiss()"/>
   <Shortcut scope={shortcutScope} key="b" on:pressed="reblog(true)"/>
 {/if}
 <style>
@@ -145,6 +146,13 @@
           this.store.set({ repliesShown })
           this.fire('recalculateHeight')
         })
+      },
+      dismiss () {
+        const { replyShown } = this.get()
+        if (replyShown) {
+          this.reply()
+          this.fire('focusArticle')
+        }
       },
       async onOptionsClick () {
         const { originalStatus, originalAccountId } = this.get()
