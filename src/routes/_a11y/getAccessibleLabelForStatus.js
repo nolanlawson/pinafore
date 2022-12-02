@@ -37,12 +37,15 @@ function cleanupText (text) {
 export function getAccessibleLabelForStatus (originalAccount, account, plainTextContent,
   shortInlineFormattedDate, spoilerText, showContent,
   reblog, notification, visibility, omitEmojiInDisplayNames,
-  disableLongAriaLabels, showMedia, showPoll) {
+  disableLongAriaLabels, showMedia, sensitive, sensitiveShown, mediaAttachments, showPoll) {
   const originalAccountDisplayName = getAccountAccessibleName(originalAccount, omitEmojiInDisplayNames)
   const contentTextToShow = (showContent || !spoilerText)
     ? cleanupText(plainTextContent)
     : formatIntl('intl.contentWarningContent', { spoiler: cleanupText(spoilerText) })
   const mediaTextToShow = showMedia && 'intl.hasMedia'
+  const mediaDescText = (showMedia && (!sensitive || sensitiveShown))
+    ? mediaAttachments.map(media => media.description)
+    : []
   const pollTextToShow = showPoll && 'intl.hasPoll'
   const privacyText = getPrivacyText(visibility)
 
@@ -57,6 +60,7 @@ export function getAccessibleLabelForStatus (originalAccount, account, plainText
     originalAccountDisplayName,
     contentTextToShow,
     mediaTextToShow,
+    ...mediaDescText,
     pollTextToShow,
     shortInlineFormattedDate,
     `@${originalAccount.acct}`,
