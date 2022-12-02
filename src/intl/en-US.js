@@ -154,6 +154,7 @@ export default {
     <li><kbd>b</kbd> to boost</li>
     <li><kbd>r</kbd> to reply</li>
     <li><kbd>Escape</kbd> to close reply</li>
+    <li><kbd>a</kbd> to bookmark</li>
     <li><kbd>i</kbd> to open images, video, or audio</li>
     <li><kbd>y</kbd> to show or hide sensitive media</li>
     <li><kbd>m</kbd> to mention the author</li>
