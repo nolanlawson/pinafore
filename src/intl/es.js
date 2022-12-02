@@ -151,7 +151,7 @@ export default {
     <li><kbd>.</kbd> para mostrar más y desplazarse al principio</li>
     <li><kbd>o</kbd> para abrir</li>
     <li><kbd>f</kbd> para marcar como favorito</li>
-    <li><kbd>b</kbd> para difundir</li>
+    <li><kbd>b</kbd> para impulsar</li>
     <li><kbd>r</kbd> para responder</li>
     <li><kbd>i</kbd> para abrir imágenes, vídeo o audio</li>
     <li><kbd>y</kbd> para mostrar u ocultar multimedia sensible</li>
@@ -241,8 +241,8 @@ export default {
   unblockAccount: 'Desbloquear a {account}',
   muteAccount: 'Silenciar a {account}',
   unmuteAccount: 'Dejar de silenciar a Unmute {account}',
-  showReblogsFromAccount: 'Mostrar difusiones de {account}',
-  hideReblogsFromAccount: 'Ocultar difusiones de {account}',
+  showReblogsFromAccount: 'Mostrar toots reenviados por {account}',
+  hideReblogsFromAccount: 'Ocultar toots reenviados por {account}',
   showDomain: 'Dejar de ocultar {domain}',
   hideDomain: 'Ocultar {domain}',
   reportAccount: 'Denunciar a {account}',
@@ -264,30 +264,30 @@ export default {
     true {(actual)}
     other {}
   }`,
-  previewFocalPoint: 'Preview (focal point)',
-  enterFocalPoint: 'Enter the focal point (X, Y) for this media',
-  muteNotifications: 'Mute notifications as well',
-  muteAccountConfirm: 'Mute {account}?',
-  mute: 'Mute',
-  unmute: 'Unmute',
-  zoomOut: 'Zoom out',
-  zoomIn: 'Zoom in',
+  previewFocalPoint: 'Previsualizar (punto focal)',
+  enterFocalPoint: 'Introducir el punto focal (X, Y) para este multimedia',
+  muteNotifications: 'Silenciar también las notificaciones',
+  muteAccountConfirm: '¿Silenciar a {account}?',
+  mute: 'Silenciar',
+  unmute: 'Dejar de silenciar',
+  zoomOut: 'Alejar',
+  zoomIn: 'Acercar',
   // Reporting
-  reportingLabel: 'You are reporting {account} to the moderators of {instance}.',
-  additionalComments: 'Additional comments',
-  forwardDescription: 'Forward to the moderators of {instance} as well?',
-  forwardLabel: 'Forward to {instance}',
-  unableToLoadStatuses: 'Unable to load recent toots: {error}',
-  report: 'Report',
-  noContent: '(No content)',
-  noStatuses: 'No toots to report',
+  reportingLabel: 'Estás denunciando a {account} a los moderadores de {instance}.',
+  additionalComments: 'Comentarios adicionales',
+  forwardDescription: '?Reenviar también a los moderadores de {instance}?',
+  forwardLabel: 'Reenviar a {instance}',
+  unableToLoadStatuses: 'No se pueden cargar los toots recientes: {error}',
+  report: 'Denunciar',
+  noContent: '(Sin contenido)',
+  noStatuses: 'No hay toots para denunciar',
   // Status options
   unpinFromProfile: 'Unpin from profile',
   pinToProfile: 'Pin to profile',
   muteConversation: 'Mute conversation',
   unmuteConversation: 'Unmute conversation',
   bookmarkStatus: 'Bookmark toot',
-  unbookmarkStatus: 'Unbookmark toot',
+  unbookmarkStatus: 'Unbookmark toot',Comentarios adicionales
   deleteAndRedraft: 'Delete and redraft',
   reportStatus: 'Report toot',
   shareStatus: 'Share toot',
