@@ -38,7 +38,8 @@ const addFilter = async (t, phrase, tweak) => {
     .expect(modalDialog.exists).notOk()
 }
 
-test('Can filter basic words', async t => {
+// TODO: test broken by Mastodon v4 bug https://github.com/mastodon/mastodon/issues/21965
+test.skip('Can filter basic words', async t => {
   await postAs('admin', 'do not filter me!')
   await postAs('admin', 'filterMeOut okay!')
   await postAs('admin', 'filterMeOutTooEvenThoughItIsOneBigWord!')
