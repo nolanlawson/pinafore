@@ -38,7 +38,7 @@ running on `localhost:3000`.
 ### Running integration tests
 
 The integration tests require running Mastodon itself,
-meaning the [Mastodon development guide](https://docs.joinmastodon.org/development/overview/)
+meaning the [Mastodon development guide](https://docs.joinmastodon.org/dev/setup/)
 is relevant here. In particular, you'll need a recent
 version of Ruby, Redis, and Postgres running. For a full list of deps, see `bin/setup-mastodon-in-travis.sh`.
 
