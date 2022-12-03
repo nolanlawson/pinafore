@@ -12,8 +12,8 @@
     />
     <span class="nav-link-label">{label}</span>
   </div>
-  <div class="nav-indicator-wrapper {animationClass}" ref:wrapper>
-    <div class="nav-indicator {animationClass}" ref:indicator></div>
+  <div class="nav-indicator-wrapper {animationClasses}">
+    <div class="nav-indicator" ref:indicator></div>
   </div>
 </a>
 <style>
@@ -57,7 +57,7 @@
     background: var(--nav-indicator-bg);
   }
 
-  .nav-indicator.animate {
+  .nav-indicator-wrapper.animating > .nav-indicator {
     transition: transform 333ms ease-in-out;
     will-change: transform;
   }
@@ -72,11 +72,11 @@
 
   /* Desktop/mouse only https://medium.com/@mezoistvan/finally-a-css-only-solution-to-hover-on-touchscreens-c498af39c31c */
   @media(hover: hover) and (pointer: fine) {
-    .main-nav-link:hover .nav-indicator-wrapper.animate {
+    .main-nav-link:hover .nav-indicator-wrapper.animating {
       background: var(--nav-indicator-bg-hover);
     }
 
-    .main-nav-link:hover .nav-indicator-wrapper.pre-animate {
+    .main-nav-link:hover .nav-indicator-wrapper.pre-animating {
       background: var(--nav-indicator-bg-hover);
     }
   }
@@ -177,9 +177,9 @@
       badgeNumber: ({ name, $numberOfNotifications, $numberOfFollowRequests }) => (
         (name === 'notifications' && $numberOfNotifications) || (name === 'community' && $numberOfFollowRequests) || 0
       ),
-      animationClass: ({ animating, preAnimating }) => classname(
-        animating && 'animate',
-        preAnimating && 'pre-animate'
+      animationClasses: ({ animating, preAnimating }) => classname(
+        animating && 'animating',
+        preAnimating && 'pre-animating'
       )
     },
     methods: {
@@ -213,7 +213,7 @@
           this.set({ animating: false, preAnimating: false })
         }
         indicator.addEventListener('transitionend', onTransitionEnd)
-        this.set({ preAnimating: true })
+        this.set({ preAnimating: true }) // avoids a flicker before the doubleRAF
         doubleRAF(() => {
           this.set({ animating: true })
           indicator.style.transform = ''
