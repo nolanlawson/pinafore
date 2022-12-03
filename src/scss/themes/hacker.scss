@@ -17,5 +17,5 @@ $compose-background: lighten($main-theme-color, 52%);
 @import "_dark_scrollbars.scss";
 
 :root {
-  --nav-indicator-bg-theme: #{$main-theme-color}; // special override on the nav indicator color
+  --nav-indicator-bg: #{$main-theme-color}; // special override on the nav indicator color
 }

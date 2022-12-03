@@ -25,5 +25,5 @@ $compose-background: lighten($main-theme-color, 52%);
   --action-button-fill-color-pressed-hover: #{darken($anchor-color, 2%)};
   --action-button-fill-color-pressed-active: #{darken($anchor-color, 15%)};
 
-  --nav-indicator-bg-theme: #{$main-theme-color}; // special override on the nav indicator color
+  --nav-indicator-bg: #{$main-theme-color}; // special override on the nav indicator color
 }
