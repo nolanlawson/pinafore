@@ -394,6 +394,10 @@ export function getNthStatusPollVoteCount (n) {
   return $(`${getNthStatusSelector(n)} .poll .poll-stat:nth-child(1) .poll-stat-text`)
 }
 
+export function getNthStatusPollExpiry (n) {
+  return $(`${getNthStatusSelector(n)} .poll .poll-stat-expiry`)
+}
+
 export function getComposePollNthInput (n) {
   return $(`.compose-poll input[type="text"]:nth-of-type(${n})`)
 }
