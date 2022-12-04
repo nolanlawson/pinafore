@@ -12,7 +12,7 @@
     />
     <span class="nav-link-label">{label}</span>
   </div>
-  <div class="nav-indicator-wrapper">
+  <div class="nav-indicator-wrapper {animationClasses}">
     <div class="nav-indicator" ref:indicator></div>
   </div>
 </a>
@@ -45,35 +45,36 @@
   .nav-indicator-wrapper {
     width: 100%;
     height: var(--nav-indicator-height);
-    background: var(--nav-a-border);
     display: flex;
   }
 
   .nav-indicator {
     flex: 1;
-    background: var(--nav-a-border);
     transform-origin: left;
   }
 
-  .nav-indicator.animate {
+  .nav-indicator {
+    background: var(--nav-indicator-bg);
+  }
+
+  .nav-indicator-wrapper.animating > .nav-indicator {
     transition: transform 333ms ease-in-out;
     will-change: transform;
   }
 
   .main-nav-link:hover .nav-indicator {
-    background: var(--nav-a-border-hover);
-  }
-
-  .main-nav-link.selected .nav-indicator-wrapper {
-    background: var(--nav-a-border-hover);
+    background: var(--nav-indicator-bg-hover);
   }
 
   .main-nav-link.selected .nav-indicator {
-    background: var(--nav-indicator-bg);
+    background: var(--nav-indicator-bg-active);
   }
 
-  .main-nav-link.selected:hover .nav-indicator {
-    background: var(--nav-indicator-bg-hover);
+  /* Desktop/mouse only https://medium.com/@mezoistvan/finally-a-css-only-solution-to-hover-on-touchscreens-c498af39c31c */
+  @media(hover: hover) and (pointer: fine) {
+    .main-nav-link:hover .nav-indicator-wrapper.pre-animating {
+      background: var(--nav-indicator-bg-hover);
+    }
   }
 
   .main-nav-link:hover {
@@ -129,6 +130,7 @@
   import { scrollToTop } from '../_utils/scrollToTop.js'
   import { normalizePageName } from '../_utils/normalizePageName.js'
   import { formatIntl } from '../_utils/formatIntl.js'
+  import { classname } from '../_utils/classname.js'
 
   export default {
     oncreate () {
@@ -148,6 +150,10 @@
       })
     },
     store: () => store,
+    data: () => ({
+      preAnimating: false,
+      animating: false
+    }),
     computed: {
       selected: ({ page, name }) => name === normalizePageName(page),
       ariaLabel: ({ selected, name, label, $numberOfNotifications, $numberOfFollowRequests }) => {
@@ -166,6 +172,10 @@
       ),
       badgeNumber: ({ name, $numberOfNotifications, $numberOfFollowRequests }) => (
         (name === 'notifications' && $numberOfNotifications) || (name === 'community' && $numberOfFollowRequests) || 0
+      ),
+      animationClasses: ({ animating, preAnimating }) => classname(
+        animating && 'animating',
+        preAnimating && 'pre-animating'
       )
     },
     methods: {
@@ -187,7 +197,7 @@
         emit('animateNavPart2', { fromRect, toPage })
       },
       animatePart2 ({ fromRect }) {
-        const indicator = this.refs.indicator
+        const { indicator } = this.refs
         mark('animateNavPart2 gBCR')
         const toRect = indicator.getBoundingClientRect()
         stop('animateNavPart2 gBCR')
@@ -196,11 +206,12 @@
         indicator.style.transform = `translateX(${translateX}px) scaleX(${scaleX})`
         const onTransitionEnd = () => {
           indicator.removeEventListener('transitionend', onTransitionEnd)
-          indicator.classList.remove('animate')
+          this.set({ animating: false, preAnimating: false })
         }
         indicator.addEventListener('transitionend', onTransitionEnd)
+        this.set({ preAnimating: true }) // avoids a flicker before the doubleRAF
         doubleRAF(() => {
-          indicator.classList.add('animate')
+          this.set({ animating: true })
           indicator.style.transform = ''
         })
       }

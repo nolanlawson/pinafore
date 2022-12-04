@@ -28,19 +28,17 @@
   --nav-bg: #{$main-theme-color};
   --nav-active-bg: #{lighten($main-theme-color, 3%)};
   --nav-border: #{darken($main-theme-color, 10%)};
-  --nav-a-border: #{$main-theme-color};
-  --nav-a-selected-border: #{$secondary-text-color};
   --nav-a-selected-bg: #{lighten($main-theme-color, 3%)};
   --nav-a-selected-active-bg: var(--nav-a-selected-bg-hover);
   --nav-svg-fill: #{$secondary-text-color};
   --nav-text-color: #{$secondary-text-color};
-  --nav-indicator-bg: #{rgba($secondary-text-color, 0.8)};
-  --nav-indicator-bg-hover: #{rgba($secondary-text-color, 0.6)};
+  --nav-indicator-bg: #{$main-theme-color};
+  --nav-indicator-bg-active: #{mix($secondary-text-color, $main-theme-color, 90%)};
+  --nav-indicator-bg-hover: #{mix($secondary-text-color, $main-theme-color, 60%)};
 
   --nav-a-selected-border-hover: #{$secondary-text-color};
   --nav-a-selected-bg-hover: #{lighten($main-theme-color, 4.5%)};
   --nav-a-bg-hover: #{lighten($main-theme-color, 1.5%)};
-  --nav-a-border-hover: #{rgba($secondary-text-color, 0.6)};
   --nav-svg-fill-hover: #{$secondary-text-color};
   --nav-text-color-hover: #{$secondary-text-color};
 
