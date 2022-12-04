@@ -39,7 +39,9 @@
   {#if isStatusInOwnThread}
     <StatusDetails {...params} {...timestampParams} />
   {/if}
-  <StatusToolbar {...params} {replyShown} on:recalculateHeight on:focusArticle="focusArticle()" />
+  {#if !isStatusInNotificationIncludingMentions}
+    <StatusToolbar {...params} {replyShown} on:recalculateHeight on:focusArticle="focusArticle()" />
+  {/if}
   {#if replyShown}
     <StatusComposeBox {...params} on:recalculateHeight />
   {/if}
@@ -254,9 +256,11 @@
       isStatusInOwnThread: ({ timelineType, timelineValue, originalStatusId }) => (
         (timelineType === 'status' || timelineType === 'reply') && timelineValue === originalStatusId
       ),
-      isStatusInNotification: ({ originalStatusId, notification }) => (
-        notification && notification.status &&
-          notification.type !== 'mention' && notification.status.id === originalStatusId
+      isStatusInNotificationIncludingMentions: ({ originalStatusId, notification }) => (
+        notification && notification.status && notification.status.id === originalStatusId
+      ),
+      isStatusInNotification: ({ isStatusInNotificationIncludingMentions, notification }) => (
+        isStatusInNotificationIncludingMentions && notification.type !== 'mention'
       ),
       spoilerShown: ({ $spoilersShown, uuid }) => !!$spoilersShown[uuid],
       replyShown: ({ $repliesShown, uuid }) => !!$repliesShown[uuid],
