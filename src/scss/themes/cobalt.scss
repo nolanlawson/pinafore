@@ -32,7 +32,6 @@ $compose-background: lighten($main-theme-color, 32%);
   --nav-text-color: #{$main-text-color};
   --nav-svg-fill-hover: #{$main-text-color};
   --nav-text-color-hover: #{$main-text-color};
-  --nav-a-selected-border: #{$anchor-color};
   --nav-a-selected-border-hover: #{$anchor-color};
 
   accent-color: #{lighten($main-theme-color, 15%)};
