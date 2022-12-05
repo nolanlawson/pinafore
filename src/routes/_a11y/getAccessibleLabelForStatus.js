@@ -11,6 +11,8 @@ function getNotificationText (notification, omitEmojiInDisplayNames) {
     return formatIntl('intl.accountRebloggedYou', { account: notificationAccountDisplayName })
   } else if (notification.type === 'favourite') {
     return formatIntl('intl.accountFavoritedYou', { account: notificationAccountDisplayName })
+  } else if (notification.type === 'update') {
+    return formatIntl('intl.accountEdited', { account: notificationAccountDisplayName })
   }
 }
 

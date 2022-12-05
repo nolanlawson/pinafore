@@ -137,6 +137,8 @@
           return '#fa-comment'
         } else if (notificationType === 'admin.sign_up') {
           return '#fa-user-plus'
+        } else if (notificationType === 'update') {
+          return '#fa-pencil'
         }
         return '#fa-star'
       },
@@ -159,6 +161,8 @@
           }
         } else if (status && status.reblog) {
           return 'intl.reblogged'
+        } else if (notificationType === 'update') {
+          return 'intl.edited'
         } else {
           return ''
         }
