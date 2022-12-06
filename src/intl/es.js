@@ -282,94 +282,94 @@ export default {
   noContent: '(Sin contenido)',
   noStatuses: 'No hay toots para denunciar',
   // Status options
-  unpinFromProfile: 'Unpin from profile',
-  pinToProfile: 'Pin to profile',
-  muteConversation: 'Mute conversation',
-  unmuteConversation: 'Unmute conversation',
-  bookmarkStatus: 'Bookmark toot',
-  unbookmarkStatus: 'Unbookmark toot',Comentarios adicionales
-  deleteAndRedraft: 'Delete and redraft',
-  reportStatus: 'Report toot',
-  shareStatus: 'Share toot',
-  copyLinkToStatus: 'Copy link to toot',
+  unpinFromProfile: 'Dejar de fijar en el perfil',
+  pinToProfile: 'Fijar en el perfil',
+  muteConversation: 'Silenciar conversación',
+  unmuteConversation: 'Dejar de silenciar conversación',
+  bookmarkStatus: 'Poner marcador al toot',
+  unbookmarkStatus: 'Quitar marcador al toot',
+  deleteAndRedraft: 'Borrar y volver a redactar',
+  reportStatus: 'Denunciar toot',
+  shareStatus: 'Compartir toot',
+  copyLinkToStatus: 'Copiar enlace al toot',
   // Account profile
-  profileForAccount: 'Profile for {account}',
-  statisticsAndMoreOptions: 'Stats and more options',
+  profileForAccount: 'Perfil para {account}',
+  statisticsAndMoreOptions: 'Estadísticas y más opciones',
   statuses: 'Toots',
-  follows: 'Follows',
-  followers: 'Followers',
-  moreOptions: 'More options',
-  followersLabel: 'Followed by {count}',
-  followingLabel: 'Follows {count}',
-  followLabel: `Follow {requested, select,
-    true {(follow requested)}
+  follows: 'Siguiendo',
+  followers: 'Seguidores',
+  moreOptions: 'Más opciones',
+  followersLabel: '{count} te ha seguido',
+  followingLabel: 'Has seguido a {count}',
+  followLabel: `Seguimiento {requested, select,
+    true {(solicitud de seguimiento)}
     other {}
   }`,
-  unfollowLabel: `Unfollow {requested, select,
-    true {(follow requested)}
+  unfollowLabel: `Dejar de seguir {requested, select,
+    true {(solicitud de seguimiento)}
     other {}
   }`,
-  notify: 'Subscribe to {account}',
-  denotify: 'Unsubscribe from {account}',
-  subscribedAccount: 'Subscribed to account',
-  unsubscribedAccount: 'Unsubscribed from account',
-  unblock: 'Unblock',
-  nameAndFollowing: 'Name and following',
-  clickToSeeAvatar: 'Click to see avatar',
-  opensInNewWindow: '{label} (opens in new window)',
-  blocked: 'Blocked',
-  domainHidden: 'Domain hidden',
-  muted: 'Muted',
-  followsYou: 'Follows you',
-  avatarForAccount: 'Avatar for {account}',
-  fields: 'Fields',
-  accountHasMoved: '{account} has moved:',
-  profilePageForAccount: 'Profile page for {account}',
+  notify: 'Suscribirse a {account}',
+  denotify: 'Cancelar suscripción a {account}',
+  subscribedAccount: 'Te has suscrito a la cuenta',
+  unsubscribedAccount: 'Has cancelado tu suscripción a la cuenta',
+  unblock: 'Desbloquear',
+  nameAndFollowing: 'Nombre y seguimientos',
+  clickToSeeAvatar: 'Haz clic para ver el avatar',
+  opensInNewWindow: '{label} (Se abre en nueva ventana)',
+  blocked: 'Bloqueado',
+  domainHidden: 'Dominio oculto',
+  muted: 'Silenciado',
+  followsYou: 'Te está siguiendo',
+  avatarForAccount: 'Avatar para {account}',
+  fields: 'Campos',
+  accountHasMoved: '{account} se ha trasladado:',
+  profilePageForAccount: 'Página de perfil para {account}',
   // About page
-  about: 'About',
-  aboutApp: 'About Pinafore',
+  about: 'Acerca de',
+  aboutApp: 'Acerca de Pinafore',
   aboutAppDescription: `
   <p>
-    Pinafore is
+    Pinafore es
     <a rel="noopener" target="_blank"
-       href="https://github.com/nolanlawson/pinafore">free and open-source software</a>
-    created by
+       href="https://github.com/nolanlawson/pinafore">software libre y de código abierto</a>
+    creado por
     <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
-    and distributed under the
+    y distribuido bajo la
     <a rel="noopener" target="_blank"
        href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">GNU Affero General Public License</a>.
   </p>
 
-  <h2 id="privacy-policy">Privacy Policy</h2>
+  <h2 id="privacy-policy">Política de privacidad</h2>
 
   <p>
-    Pinafore does not store any personal information on its servers,
-    including but not limited to names, email addresses,
-    IP addresses, posts, and photos.
+    Pinafore no almacena ninguna información personal en sus servidores,
+    incluyendo, pero no limitándose a nombres, direcciones de correo electrónico,
+    direcciones IP, posts y fotos.
   </p>
 
   <p>
-    Pinafore is a static site. All data is stored locally in your browser and shared with the fediverse
-    instance(s) you connect to.
+    Pinafore es un sitio estático. Todos los datos son almacenados en tu navegador y compartidos con las instancias del fediverso
+    a las que te conectas.
   </p>
 
-  <h2>Credits</h2>
+  <h2>Créditos</h2>
 
   <p>
-    Icons provided by <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.
+    Iconos proporcionados por <a rel="noopener" target="_blank" href="http://fontawesome.io/">Font Awesome</a>.
   </p>
 
   <p>
-    Logo thanks to "sailboat" by Gregor Cresnar from
+    Logo gracias a "sailboat" por Gregor Cresnar, de
     <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.
   </p>`,
   // Settings
-  settings: 'Settings',
+  settings: 'Opciones de configuración',
   general: 'General',
-  generalSettings: 'General settings',
-  showSensitive: 'Show sensitive media by default',
-  showPlain: 'Show a plain gray color for sensitive media',
-  allSensitive: 'Treat all media as sensitive',
+  generalSettings: 'Opciones generales',
+  showSensitive: 'Mostrar multimedia sensible por defecto',
+  showPlain: 'Mostrar un color gris liso para multimedia sensible',
+  allSensitive: 'Tratar todo el multimedia como sensible',
   largeMedia: 'Show large inline images and videos',
   autoplayGifs: 'Autoplay animated GIFs',
   hideCards: 'Hide link preview cards',
