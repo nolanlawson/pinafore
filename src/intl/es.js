@@ -87,7 +87,7 @@ export default {
   pinnableTimelines: 'Cronologías que puedes fijar',
   timelines: 'Cronologías',
   lists: 'Listas',
-  instanceSettings: 'Configuración de instancia',
+  instanceSettings: 'Opciones para instancia',
   notificationMentions: 'Notificación de menciones',
   profileWithMedia: 'Perfil con multimedia',
   profileWithReplies: 'Perfil con respuestas',
@@ -151,7 +151,7 @@ export default {
     <li><kbd>.</kbd> para mostrar más y desplazarse al principio</li>
     <li><kbd>o</kbd> para abrir</li>
     <li><kbd>f</kbd> para marcar como favorito</li>
-    <li><kbd>b</kbd> para impulsar</li>
+    <li><kbd>b</kbd> para reenviar</li>
     <li><kbd>r</kbd> para responder</li>
     <li><kbd>i</kbd> para abrir imágenes, vídeo o audio</li>
     <li><kbd>y</kbd> para mostrar u ocultar multimedia sensible</li>
@@ -370,52 +370,52 @@ export default {
   showSensitive: 'Mostrar multimedia sensible por defecto',
   showPlain: 'Mostrar un color gris liso para multimedia sensible',
   allSensitive: 'Tratar todo el multimedia como sensible',
-  largeMedia: 'Show large inline images and videos',
-  autoplayGifs: 'Autoplay animated GIFs',
-  hideCards: 'Hide link preview cards',
-  underlineLinks: 'Underline links in toots and profiles',
-  accessibility: 'Accessibility',
-  reduceMotion: 'Reduce motion in UI animations',
-  disableTappable: 'Disable tappable area on entire toot',
-  removeEmoji: 'Remove emoji from user display names',
-  shortAria: 'Use short article ARIA labels',
-  theme: 'Theme',
-  themeForInstance: 'Theme for {instance}',
-  disableCustomScrollbars: 'Disable custom scrollbars',
-  bottomNav: 'Place the navigation bar at the bottom of the screen',
-  centerNav: 'Center the navigation bar',
-  preferences: 'Preferences',
-  hotkeySettings: 'Hotkey settings',
-  disableHotkeys: 'Disable all hotkeys',
-  leftRightArrows: 'Left/right arrow keys change focus rather than columns/media',
-  guide: 'Guide',
-  reload: 'Reload',
+  largeMedia: 'Mostrar imágenes y vídeos grandes incrustados',
+  autoplayGifs: 'Reproducir automáticamente GIFs animados',
+  hideCards: 'Ocultar paneles de previsualización de enlaces',
+  underlineLinks: 'Subrayar enlaces en toots y perfiles',
+  accessibility: 'Accesibilidad',
+  reduceMotion: 'Reducir movimiento en animaciones de la interfaz',
+  disableTappable: 'Deshabilitar área para tocar en todo el toot',
+  removeEmoji: 'Eliminar emoji de nombres de usuario',
+  shortAria: 'Usar etiquetas ARIA cortas para artículos',
+  theme: 'Diseño visual',
+  themeForInstance: 'Diseño visual para {instance}',
+  disableCustomScrollbars: 'Deshabilitar barras deslizantes personalizadas',
+  bottomNav: 'Situar la barra de navegación al final de la pantalla',
+  centerNav: 'Centrar la barra de navegación',
+  preferences: 'Preferencias',
+  hotkeySettings: 'Opciones para atajos de teclado',
+  disableHotkeys: 'Deshabilitar todos los atajos de teclado',
+  leftRightArrows: 'Las flechas izquierda/derecha cambian el foco en vez de columnas/multimedia',
+  guide: 'Guía',
+  reload: 'Recargar',
   // Wellness settings
-  wellness: 'Wellness',
-  wellnessSettings: 'Wellness settings',
-  wellnessDescription: `Wellness settings are designed to reduce the addictive or anxiety-inducing aspects of social media.
-    Choose any options that work well for you.`,
-  enableAll: 'Enable all',
-  metrics: 'Metrics',
-  hideFollowerCount: 'Hide follower counts (capped at 10)',
-  hideReblogCount: 'Hide boost counts',
-  hideFavoriteCount: 'Hide favorite counts',
-  hideUnread: 'Hide unread notifications count (i.e. the red dot)',
+  wellness: 'Bienestar',
+  wellnessSettings: 'Opciones para el bienestar',
+  wellnessDescription: `Las opciones para el bienestar están diseñadas para reducir los aspectos que inducen adicción o ansiedad en las redes sociales.
+    Elige cualquier opción que vaya bien para ti.`,
+  enableAll: 'Habilitar todos',
+  metrics: 'Métricas',
+  hideFollowerCount: 'Ocultar recuento de seguidores (hasta 10)',
+  hideReblogCount: 'Ocultar recuento de reenvíos',
+  hideFavoriteCount: 'Ocultar recuento de favoritos',
+  hideUnread: 'Ocultar recuento de notificaciones sin leer (es decir, el punto rojo)',
   // The quality that makes something seem important or interesting because it seems to be happening now
-  immediacy: 'Immediacy',
-  showAbsoluteTimestamps: 'Show absolute timestamps (e.g. "March 3rd") instead of relative timestamps (e.g. "5 minutes ago")',
-  ui: 'UI',
-  grayscaleMode: 'Grayscale mode',
-  wellnessFooter: `These settings are partly based on guidelines from the
+  immediacy: 'Inmediatez',
+  showAbsoluteTimestamps: 'Mostrar marcas de tiempo absolutas (p.ej., "3 de marzo") en vez de marcas de tiempo relativas (p. ej., "hace 5 minutos")',
+  ui: 'Interfaz',
+  grayscaleMode: 'Modo escala de grises',
+  wellnessFooter: `Estas opciones están parcialmente basadas en pautas del
     <a rel="noopener" target="_blank" href="https://humanetech.com">Center for Humane Technology</a>.`,
   // This is a link: "You can filter or disable notifications in the _instance settings_"
-  filterNotificationsPre: 'You can filter or disable notifications in the',
-  filterNotificationsText: 'instance settings',
+  filterNotificationsPre: 'Puedes filtrar o deshabilitar notificaciones en',
+  filterNotificationsText: 'opciones para instancia',
   filterNotificationsPost: '',
   // Custom tooltips, like "Disable _infinite scroll_", where you can click _infinite scroll_
   // to see a description. It's hard to properly internationalize, so we just break up the strings.
-  disableInfiniteScrollPre: 'Disable',
-  disableInfiniteScrollText: 'infinite scroll',
+  disableInfiniteScrollPre: 'Deshabilitar',
+  disableInfiniteScrollText: 'desplazamiento infinito',
   disableInfiniteScrollDescription: `When infinite scroll is disabled, new toots will not automatically appear at
              the bottom or top of the timeline. Instead, buttons will allow you to
              load more content on demand.`,
