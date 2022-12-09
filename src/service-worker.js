@@ -185,8 +185,10 @@ self.addEventListener('push', event => {
 
 async function showSimpleNotification (data) {
   await self.registration.showNotification(data.title, {
+    badge: '/icon-push-badge.png',
     icon: data.icon,
     body: data.body,
+    tag: data.notification_id,
     data: {
       url: `${self.origin}/notifications`
     }
