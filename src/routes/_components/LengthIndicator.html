@@ -42,6 +42,7 @@
     computed: {
       lengthToDisplay: ({ length, max }) => max - length,
       lengthVerbosity: ({ lengthToDisplayDeferred }) => {
+        // When approaching the limit, notify screen reader users
         if (lengthToDisplayDeferred > 10) {
           return 'off'
         } else {
