@@ -194,8 +194,6 @@ export default {
   }`,
   pinPage: 'Pin {label}',
   // Status composition
-  overLimit: '{count} {count, plural, =1 {character} other {characters}} over limit',
-  underLimit: '{count} {count, plural, =1 {character} other {characters}} remaining',
   composeStatus: 'Compose toot',
   postStatus: 'Toot!',
   contentWarning: 'Content warning',
