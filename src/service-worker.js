@@ -171,6 +171,7 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
   event.waitUntil((async () => {
     const data = event.data.json()
+    // If there is only once instance, then we know for sure that the push notification came from it
     const knownInstances = await getKnownInstances()
     if (knownInstances.length !== 1) {
       // TODO: find a way to determine the pushing instance from the PushEvent
