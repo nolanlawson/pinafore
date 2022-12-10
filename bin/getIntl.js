@@ -4,12 +4,14 @@ import { DEFAULT_LOCALE, LOCALE } from '../src/routes/_static/intl.js'
 import enUS from '../src/intl/en-US.js'
 import fr from '../src/intl/fr.js'
 import de from '../src/intl/de.js'
+import es from '../src/intl/es.js'
 
 // TODO: make it so we don't have to explicitly list these out
 const locales = {
   'en-US': enUS,
   fr,
-  de
+  de,
+  es
 }
 
 const intl = locales[LOCALE]
