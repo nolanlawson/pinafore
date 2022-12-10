@@ -174,7 +174,10 @@ self.addEventListener('push', event => {
     // If there is only once instance, then we know for sure that the push notification came from it
     const knownInstances = await getKnownInstances()
     if (knownInstances.length !== 1) {
-      // TODO: find a way to determine the pushing instance from the PushEvent
+      // TODO: Mastodon currently does not tell us which instance the push notification came from.
+      // So we have to guess and currently just choose the first one. We _could_ locally store the instance that
+      // currently has push notifications enabled, but this would only work for one instance at a time.
+      // See: https://github.com/mastodon/mastodon/issues/22183
       await showSimpleNotification(data)
       return
     }
