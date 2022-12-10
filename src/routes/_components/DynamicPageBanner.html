@@ -8,7 +8,10 @@
   <button type="button"
           class="dynamic-page-go-back"
           aria-label="{intl.goBack}"
-          on:click|preventDefault="onGoBack()">{intl.back}</button>
+          on:click|preventDefault="onGoBack()">
+    <SvgIcon className="dynamic-page-go-back-icon" href="#fa-arrow-left" />
+    {intl.back}
+  </button>
 </div>
 <Shortcut key="Backspace" on:pressed="onGoBack()"/>
 <style>
@@ -34,19 +37,25 @@
     text-overflow: ellipsis;
   }
   .dynamic-page-go-back {
-    font-size: 1.3em;
+    display: inline-flex;
+    align-items: center;
+    justify-self: flex-end;
+    font-size: 1.2857142857142858em;
     color: var(--anchor-text);
     border: 0;
     padding: 0;
     background: none;
-    justify-self: flex-end;
   }
   .dynamic-page-go-back:hover {
     text-decoration: underline;
   }
-  .dynamic-page-go-back::before {
-    content: '←';
-    margin-right: 5px;
+  :global(.dynamic-page-go-back-icon) {
+    position: relative;
+    bottom: 0.06em;
+    margin-right: 0.2em;
+    height: 0.66666666em;
+    width: 0.66666666em;
+    fill: currentColor;
   }
   @media (max-width: 767px) {
     .dynamic-page-banner {
