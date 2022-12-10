@@ -511,6 +511,7 @@ export default {
   rebloggedYou: 'boosted your toot',
   favoritedYou: 'favorited your toot',
   followedYou: 'followed you',
+  edited: 'edited their toot',
   signedUp: 'signed up',
   posted: 'posted',
   pollYouCreatedEnded: 'A poll you created has ended',
@@ -526,6 +527,7 @@ export default {
   // Accessible status labels
   accountRebloggedYou: '{account} boosted your toot',
   accountFavoritedYou: '{account} favorited your toot',
+  accountEdited: '{account} edited their toot',
   rebloggedByAccount: 'Boosted by {account}',
   contentWarningContent: 'Content warning: {spoiler}',
   hasMedia: 'has media',
