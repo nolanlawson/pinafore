@@ -5,6 +5,8 @@ import {
 } from '../__sapper__/service-worker.js'
 import { get, post } from './routes/_utils/ajax.js'
 import { setWebShareData, closeKeyValIDBConnection } from './routes/_database/webShare.js'
+import { getKnownInstances } from './routes/_database/knownInstances.js'
+import { basename } from './routes/_api/utils.js'
 
 const timestamp = process.env.SAPPER_TIMESTAMP
 const ASSETS = `assets_${timestamp}`
@@ -169,8 +171,18 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
   event.waitUntil((async () => {
     const data = event.data.json()
-    const { origin } = event.target
+    // If there is only once instance, then we know for sure that the push notification came from it
+    const knownInstances = await getKnownInstances()
+    if (knownInstances.length !== 1) {
+      // TODO: Mastodon currently does not tell us which instance the push notification came from.
+      // So we have to guess and currently just choose the first one. We _could_ locally store the instance that
+      // currently has push notifications enabled, but this would only work for one instance at a time.
+      // See: https://github.com/mastodon/mastodon/issues/22183
+      await showSimpleNotification(data)
+      return
+    }
 
+    const origin = basename(knownInstances[0])
     try {
       const notification = await get(`${origin}/api/v1/notifications/${data.notification_id}`, {
         Authorization: `Bearer ${data.access_token}`
