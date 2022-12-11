@@ -1,11 +1,9 @@
----
 version: "3"
+
 services:
   pinafore:
+    container_name: pinafore
+    image: nolanlawson/pinafore:latest
     restart: unless-stopped
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: pinafore:latest
     ports:
-      - 4002:4002
+      - "4002:4002"
