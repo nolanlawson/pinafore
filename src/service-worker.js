@@ -215,6 +215,7 @@ async function showRichNotification (data, notification) {
 
   switch (notification.type) {
     case 'follow':
+    case 'follow_request':
     case 'admin.sign_up': {
       await self.registration.showNotification(data.title, {
         badge,
