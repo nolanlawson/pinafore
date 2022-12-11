@@ -66,7 +66,7 @@ export async function getTimeline (instanceName, accessToken, timeline, maxId, s
   }
 
   if (timeline === 'notifications/mentions') {
-    params.exclude_types = ['follow', 'favourite', 'reblog', 'poll', 'admin.sign_up']
+    params.exclude_types = ['follow', 'favourite', 'reblog', 'poll', 'admin.sign_up', 'update', 'follow_request']
   }
 
   url += '?' + paramsString(params)

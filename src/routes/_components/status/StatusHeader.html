@@ -139,6 +139,8 @@
           return '#fa-user-plus'
         } else if (notificationType === 'update') {
           return '#fa-pencil'
+        } else if (notificationType === 'follow_request') {
+          return '#fa-hourglass'
         }
         return '#fa-star'
       },
@@ -163,6 +165,8 @@
           return 'intl.reblogged'
         } else if (notificationType === 'update') {
           return 'intl.edited'
+        } else if (notificationType === 'follow_request') {
+          return 'intl.requestedFollow'
         } else {
           return ''
         }
