@@ -78,6 +78,8 @@
           return formatIntl('intl.accountSignedUp', params)
         } else if (notificationType === 'follow_request') {
           return formatIntl('intl.accountRequestedFollow', params)
+        } else if (notificationType === 'admin.report') {
+          return formatIntl('intl.accountReported', params)
         } else { // 'follow'
           return formatIntl('intl.accountFollowedYou', params)
         }
