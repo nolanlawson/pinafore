@@ -141,6 +141,8 @@
           return '#fa-pencil'
         } else if (notificationType === 'follow_request') {
           return '#fa-hourglass'
+        } else if (notificationType === 'admin.report') {
+          return '#fa-flag'
         }
         return '#fa-star'
       },
@@ -167,6 +169,8 @@
           return 'intl.edited'
         } else if (notificationType === 'follow_request') {
           return 'intl.requestedFollow'
+        } else if (notificationType === 'admin.report') {
+          return 'intl.reported'
         } else {
           return ''
         }
