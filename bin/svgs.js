@@ -9,6 +9,7 @@ export default [
   { id: 'fa-reply', src: 'src/thirdparty/font-awesome-svg-png/white/svg/reply.svg' },
   { id: 'fa-reply-all', src: 'src/thirdparty/font-awesome-svg-png/white/svg/reply-all.svg' },
   { id: 'fa-retweet', src: 'src/thirdparty/font-awesome-svg-png/white/svg/retweet.svg' },
+  { id: 'fa-retweet-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/retweet-o.svg' },
   { id: 'fa-star', src: 'src/thirdparty/font-awesome-svg-png/white/svg/star.svg' },
   { id: 'fa-star-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/star-o.svg' },
   { id: 'fa-ellipsis-h', src: 'src/thirdparty/font-awesome-svg-png/white/svg/ellipsis-h.svg' },

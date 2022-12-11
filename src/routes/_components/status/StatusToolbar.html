@@ -14,7 +14,6 @@
     pressedLabel="Unboost"
     pressable={!reblogDisabled}
     pressed={reblogged}
-    checked={reblogged}
     disabled={reblogDisabled}
     href={reblogIcon}
     clickListener={false}
@@ -26,8 +25,7 @@
     pressedLabel="{intl.unfavorite}"
     pressable={true}
     pressed={favorited}
-    checked={favorited}
-    href="#fa-star"
+    href={favorited ? '#fa-star' : '#fa-star-o'}
     clickListener={false}
     elementId={favoriteKey}
     ref:favoriteIcon
@@ -201,14 +199,14 @@
             return 'intl.reblog'
         }
       },
-      reblogIcon: ({ visibility }) => {
+      reblogIcon: ({ reblogged, visibility }) => {
         switch (visibility) {
           case 'private':
             return '#fa-lock'
           case 'direct':
             return '#fa-envelope'
           default:
-            return '#fa-retweet'
+            return reblogged ? '#fa-retweet' : '#fa-retweet-o'
         }
       },
       reblogDisabled: ({ visibility }) => {
