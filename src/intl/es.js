@@ -466,7 +466,7 @@ export default {
   logOutOfInstanceConfirm: '¿Cerrar sesión en {instance}?',
   notificationFilterSettings: 'Opciones para filtros de notificaciones',
   // Push notifications
-  browserDoesNotSupportPush: 'Tu navegador no admite notificaciones Push.,
+  browserDoesNotSupportPush: 'Tu navegador no admite notificaciones Push.',
   deniedPush: 'Has denegado el permiso para mostrar notificaciones.',
   pushNotificationsNote: 'Observa que solo puedes recibir notificaciones Push para una instancia al mismo tiempo.',
   pushSettings: 'Opciones para notificaciones Push',
