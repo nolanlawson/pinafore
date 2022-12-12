@@ -199,7 +199,7 @@ export default {
   contentWarning: 'Advertencia de contenido',
   dropToUpload: 'Soltar para subir',
   invalidFileType: 'Tipo de fichero no válido',
-  composeLabel: "¿En qué estás pensando?",
+  composeLabel: '¿En qué estás pensando?',
   autocompleteDescription: 'Cuando haya disponibles resultados de autocompletado, pulsa las flechas arriba o abajo y enter para seleccionar.',
   mediaUploads: 'Subidas multimedia',
   edit: 'Editar',
@@ -432,14 +432,14 @@ export default {
   enterInstanceName: 'Introducir nombre de instancia',
   instanceColon: 'Instancia:',
   // Custom tooltip, concatenated together
-  getAnInstancePre: "¿No tienes una",
+  getAnInstancePre: '¿No tienes una',
   getAnInstanceText: 'instancia',
   getAnInstanceDescription: 'Una instancia es tu servidor de inicio de Mastodon, por ejemplo, mastodon.social o cybre.space.',
   getAnInstancePost: '?',
   joinMastodon: '¡Unirse a Mastodon!',
-  instancesYouveLoggedInTo: "Instancias en las que has iniciado sesión:",
+  instancesYouveLoggedInTo: 'Instancias en las que has iniciado sesión:',
   addAnotherInstance: 'Añadir otra instancia',
-  youreNotLoggedIn: "No has iniciado sesión en ninguna instancia.",
+  youreNotLoggedIn: 'No has iniciado sesión en ninguna instancia.',
   currentInstanceLabel: `{instance} {current, select,
     true {(instancia actual)}
     other {}
@@ -466,7 +466,7 @@ export default {
   logOutOfInstanceConfirm: '¿Cerrar sesión en {instance}?',
   notificationFilterSettings: 'Opciones para filtros de notificaciones',
   // Push notifications
-  browserDoesNotSupportPush: "Tu navegador no admite notificaciones Push.",
+  browserDoesNotSupportPush: 'Tu navegador no admite notificaciones Push.,
   deniedPush: 'Has denegado el permiso para mostrar notificaciones.',
   pushNotificationsNote: 'Observa que solo puedes recibir notificaciones Push para una instancia al mismo tiempo.',
   pushSettings: 'Opciones para notificaciones Push',
