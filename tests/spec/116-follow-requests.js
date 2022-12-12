@@ -2,8 +2,16 @@ import { loginAsLockedAccount } from '../roles'
 import { followAs, unfollowAs } from '../serverActions'
 import {
   avatarInComposeBox,
-  communityNavButton, followersButton, getNthSearchResult, getSearchResultByHref, getUrl, goBack,
-  homeNavButton, sleep
+  communityNavButton,
+  followersButton,
+  getNthSearchResult,
+  getNthStatus,
+  getSearchResultByHref,
+  getUrl,
+  goBack,
+  homeNavButton,
+  notificationsNavButton,
+  sleep
 } from '../utils'
 import { users } from '../users'
 import { Selector as $ } from 'testcafe'
@@ -93,6 +101,9 @@ test('Shows unresolved follow requests', async t => {
 
   await t
     .expect(communityNavButton.getAttribute('aria-label')).eql('Community (2 follow requests)')
+    .click(notificationsNavButton)
+    .expect(getUrl()).contains('/notifications')
+    .expect(getNthStatus(1).innerText).contains('requested to follow you')
     .click(communityNavButton)
     .expect(requestsButton.innerText).contains('Follow requests (2)')
     .click(requestsButton)

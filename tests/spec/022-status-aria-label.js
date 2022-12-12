@@ -2,7 +2,7 @@ import { loginAsFoobar } from '../roles'
 import {
   generalSettingsButton,
   getNthShowOrHideButton,
-  getNthStatus, getNthStatusRelativeDateTime, homeNavButton,
+  getNthStatus, getNthStatusAndSensitiveButton, getNthStatusRelativeDateTime, homeNavButton,
   notificationsNavButton,
   scrollToStatus,
   settingsNavButton
@@ -39,6 +39,7 @@ test('aria-labels for CWed statuses', async t => {
     .expect(getNthStatus(1 + kittenIdx).getAttribute('aria-label')).match(
       /foobar, Content warning: kitten CW, .* ago, @foobar, Public/i
     )
+    // toggle the CW button
     .click(getNthShowOrHideButton(1 + kittenIdx))
     .expect(getNthStatus(1 + kittenIdx).getAttribute('aria-label')).match(
       /foobar, here's a kitten with a CW, .* ago, @foobar, Public/i
@@ -46,6 +47,26 @@ test('aria-labels for CWed statuses', async t => {
     .click(getNthShowOrHideButton(1 + kittenIdx))
     .expect(getNthStatus(1 + kittenIdx).getAttribute('aria-label')).match(
       /foobar, Content warning: kitten CW, .* ago, @foobar, Public/i
+    )
+    // toggle the "show sensitive media" button
+    .click(getNthStatusAndSensitiveButton(1 + kittenIdx, 1))
+    .expect(getNthStatus(1 + kittenIdx).getAttribute('aria-label')).match(
+      /foobar, Content warning: kitten CW, has media, kitten, .* ago, @foobar, Public/i
+    )
+    .click(getNthStatusAndSensitiveButton(1 + kittenIdx, 1))
+    .expect(getNthStatus(1 + kittenIdx).getAttribute('aria-label')).match(
+      /foobar, Content warning: kitten CW, .* ago, @foobar, Public/i
+    )
+})
+
+test('aria-labels for two media attachments', async t => {
+  await loginAsFoobar(t)
+  const twoKittensIdx = homeTimeline.findIndex(_ => _.content === 'here\'s 2 kitten photos')
+  await scrollToStatus(t, 1 + twoKittensIdx)
+  await t
+    .hover(getNthStatus(1 + twoKittensIdx))
+    .expect(getNthStatus(1 + twoKittensIdx).getAttribute('aria-label')).match(
+      /foobar, here's 2 kitten photos, has media, kitten, kitten, .* ago, @foobar, Public/i
     )
 })
 

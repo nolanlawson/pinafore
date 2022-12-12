@@ -153,6 +153,8 @@ export default {
     <li><kbd>f</kbd> to favorite</li>
     <li><kbd>b</kbd> to boost</li>
     <li><kbd>r</kbd> to reply</li>
+    <li><kbd>Escape</kbd> to close reply</li>
+    <li><kbd>a</kbd> to bookmark</li>
     <li><kbd>i</kbd> to open images, video, or audio</li>
     <li><kbd>y</kbd> to show or hide sensitive media</li>
     <li><kbd>m</kbd> to mention the author</li>
@@ -192,8 +194,6 @@ export default {
   }`,
   pinPage: 'Pin {label}',
   // Status composition
-  overLimit: '{count} {count, plural, =1 {character} other {characters}} over limit',
-  underLimit: '{count} {count, plural, =1 {character} other {characters}} remaining',
   composeStatus: 'Compose toot',
   postStatus: 'Toot!',
   contentWarning: 'Content warning',
@@ -205,7 +205,7 @@ export default {
   edit: 'Edit',
   delete: 'Delete',
   description: 'Description',
-  descriptionLabel: 'Describe for the visually impaired (image, video) or auditorily impaired (audio, video)',
+  descriptionLabel: 'Describe for visually impaired (image, video) or auditorily impaired (audio, video) people',
   markAsSensitive: 'Mark media as sensitive',
   // Polls
   createPoll: 'Create poll',
@@ -229,7 +229,7 @@ export default {
   postPrivacyLabel: 'Adjust privacy (currently {label})',
   addContentWarning: 'Add content warning',
   removeContentWarning: 'Remove content warning',
-  altLabel: 'Describe for the visually impaired',
+  altLabel: 'Describe for visually impaired people',
   extractText: 'Extract text from image',
   extractingText: 'Extracting text…',
   extractingTextCompletion: 'Extracting text ({percent}% complete)…',
@@ -497,6 +497,8 @@ export default {
   }: {description}`,
   accountFollowedYou: '{name} followed you, {account}',
   accountSignedUp: '{name} signed up, {account}',
+  accountRequestedFollow: '{name} requested to follow you, {account}',
+  accountReported: '{name} filed a report, {account}',
   reblogCountsHidden: 'Boost counts hidden',
   favoriteCountsHidden: 'Favorite counts hidden',
   rebloggedTimes: `Boosted {count, plural,
@@ -511,6 +513,9 @@ export default {
   rebloggedYou: 'boosted your toot',
   favoritedYou: 'favorited your toot',
   followedYou: 'followed you',
+  edited: 'edited their toot',
+  requestedFollow: 'requested to follow you',
+  reported: 'filed a report',
   signedUp: 'signed up',
   posted: 'posted',
   pollYouCreatedEnded: 'A poll you created has ended',
@@ -526,6 +531,7 @@ export default {
   // Accessible status labels
   accountRebloggedYou: '{account} boosted your toot',
   accountFavoritedYou: '{account} favorited your toot',
+  accountEdited: '{account} edited their toot',
   rebloggedByAccount: 'Boosted by {account}',
   contentWarningContent: 'Content warning: {spoiler}',
   hasMedia: 'has media',

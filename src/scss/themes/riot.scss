@@ -18,4 +18,5 @@ $compose-background: lighten($main-theme-color, 52%);
 
 :root {
   accent-color: #{darken($main-theme-color, 5%)};
+  --nav-indicator-bg: #{$main-theme-color}; // special override on the nav indicator color
 }

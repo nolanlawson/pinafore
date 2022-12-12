@@ -7,7 +7,7 @@ import {
   sleep,
   getNthStatusPollRefreshButton,
   getNthStatusPollVoteCount,
-  getNthStatusRelativeDate, getUrl, goBack, getNthStatusSpoiler, getNthShowOrHideButton
+  getNthStatusRelativeDate, getUrl, goBack, getNthStatusSpoiler, getNthShowOrHideButton, getNthStatusPollExpiry
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 import { createPollAs, voteOnPollAs } from '../serverActions'
@@ -22,6 +22,7 @@ test('Can vote on polls', async t => {
   await t
     .expect(getNthStatusContent(1).innerText).contains('vote on my cool poll')
     .expect(getNthStatusPollVoteCount(1).innerText).eql('0 votes')
+    .expect(getNthStatusPollExpiry(1).innerText).match(/Ends in .*/)
   await sleep(1000)
   await t
     .click(getNthStatusPollOption(1, 2))
@@ -32,6 +33,7 @@ test('Can vote on polls', async t => {
     .expect(getNthStatusPollResult(1, 1).innerText).eql('0% yes')
     .expect(getNthStatusPollResult(1, 2).innerText).eql('100% no')
     .expect(getNthStatusPollVoteCount(1).innerText).eql('1 vote')
+    .expect(getNthStatusPollExpiry(1).innerText).match(/Ends in .*/)
 })
 
 test('Can vote on multiple-choice polls', async t => {

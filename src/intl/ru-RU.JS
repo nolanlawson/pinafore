@@ -17,7 +17,7 @@ export default {
   logIn: 'Войти',
   footer: `
     <p>
-      Pinafore — это 
+      Pinafore — это
       <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore">программное обеспечение с открытым исходным кодом</a>
       созданное
       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>
@@ -192,8 +192,6 @@ export default {
   }`,
   pinPage: 'Закрепить {label}',
   // Status composition
-  overLimit: '{count} {count, plural, =1 {символ} other {символов}} сверх лимита',
-  underLimit: '{count} {count, plural, =1 {символ} other {символов}} осталось',
   composeStatus: 'Создать запись',
   postStatus: 'Опубликовать!',
   contentWarning: 'Предупреждение о содержимом',

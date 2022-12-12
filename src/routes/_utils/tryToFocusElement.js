@@ -4,7 +4,7 @@ import { scheduleIdleTask } from './scheduleIdleTask.js'
 const RETRIES = 5
 const TIMEOUT = 50
 
-export async function tryToFocusElement (id) {
+export async function tryToFocusElement (id, scroll) {
   for (let i = 0; i < RETRIES; i++) {
     if (i > 0) {
       await new Promise(resolve => setTimeout(resolve, TIMEOUT))
@@ -13,7 +13,7 @@ export async function tryToFocusElement (id) {
     const element = document.getElementById(id)
     if (element) {
       try {
-        element.focus({ preventScroll: true })
+        element.focus({ preventScroll: !scroll })
         console.log('focused element', id)
         return
       } catch (e) {

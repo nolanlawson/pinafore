@@ -307,7 +307,10 @@
       expired: ({ poll }) => poll.expired,
       expiresAt: ({ poll }) => poll.expires_at,
       // Misskey can have polls that never end. These give expiresAt as null
-      expiresAtTS: ({ expiresAt }) => typeof expiresAt === 'number' ? new Date(expiresAt).getTime() : null,
+      // Also, Mastodon v4+ uses ISO strings, whereas Mastodon pre-v4 used numbers
+      expiresAtTS: ({ expiresAt }) => (
+        (typeof expiresAt === 'number' || typeof expiresAt === 'string') ? new Date(expiresAt).getTime() : null
+      ),
       expiresAtTimeagoFormatted: ({ expiresAtTS, expired, $now }) => (
         expired ? formatTimeagoDate(expiresAtTS, $now) : formatTimeagoFutureDate(expiresAtTS, $now)
       ),

@@ -11,7 +11,7 @@ test('aria-labels for statuses with no content text', async t => {
   await t
     .hover(getNthStatus(1))
     .expect(getNthStatus(1).getAttribute('aria-label')).match(
-      /foobar, has media, (.+ ago|just now), @foobar, Public/i
+      /foobar, has media, kitteh, (.+ ago|just now), @foobar, Public/i
     )
 })
 
