@@ -189,8 +189,6 @@ export default {
   }`,
   pinPage: 'Epingler {label}',
   // Status composition
-  overLimit: '{count} {count, plural, =1 {caractère} other {caractères}} en dessus de la limite',
-  underLimit: '{count} {count, plural, =1 {caractère} other {caractères}} qui reste',
   composeStatus: 'Ecrire un pouet',
   postStatus: 'Pouet!',
   contentWarning: 'Avertissement',

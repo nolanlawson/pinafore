@@ -17,7 +17,7 @@ import {
   getFirstModalMedia,
   getNthStatusAccountLink,
   getNthStatusAccountLinkSelector,
-  focus
+  focus, getNthComposeReplyInput, getActiveElementId, getActiveElementClassList
 } from '../utils'
 import { homeTimeline } from '../fixtures'
 import { loginAsFoobar } from '../roles'
@@ -233,4 +233,20 @@ test('Shortcut down makes next status active when focused inside of a status', a
   await t
     .pressKey('down')
     .expect(isNthStatusActive(2)()).ok()
+})
+
+test('Press r to reply, press Esc to close reply', async t => {
+  await loginAsFoobar(t)
+  await t
+    .expect(getNthStatus(1).exists).ok()
+  await activateStatus(t, 0)
+  const id = await getActiveElementId()
+  await t
+    .expect(getNthComposeReplyInput(1).exists).notOk()
+    .pressKey('r')
+    .expect(getNthComposeReplyInput(1).exists).ok()
+    .expect(getActiveElementClassList()).contains('compose-box-input')
+    .pressKey('esc')
+    .expect(getNthComposeReplyInput(1).exists).notOk()
+    .expect(getActiveElementId()).eql(id)
 })

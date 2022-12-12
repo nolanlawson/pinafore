@@ -1,5 +1,6 @@
 <span class="length-indicator {overLimit ? 'over-char-limit' : ''}"
-      aria-label={lengthLabel}
+      aria-live={lengthVerbosity}
+      aria-atomic='true'
       {style}
 >{lengthToDisplayDeferred}</span>
 <style>
@@ -17,9 +18,10 @@
   import { store } from '../_store/store.js'
   import { observe } from 'svelte-extras'
   import { throttleTimer } from '../_utils/throttleTimer.js'
-  import { formatIntl } from '../_utils/formatIntl.js'
-
   const updateDisplayedLength = process.browser && throttleTimer(requestAnimationFrame)
+
+  // How many chars within the limit to start warning at
+  const WARN_THRESHOLD = 10
 
   export default {
     oncreate () {
@@ -42,11 +44,12 @@
     store: () => store,
     computed: {
       lengthToDisplay: ({ length, max }) => max - length,
-      lengthLabel: ({ overLimit, lengthToDisplayDeferred }) => {
-        if (overLimit) {
-          return formatIntl('intl.overLimit', { count: -lengthToDisplayDeferred })
+      lengthVerbosity: ({ lengthToDisplayDeferred }) => {
+        // When approaching the limit, notify screen reader users
+        if (lengthToDisplayDeferred > WARN_THRESHOLD) {
+          return 'off'
         } else {
-          return formatIntl('intl.underLimit', { count: lengthToDisplayDeferred })
+          return 'polite'
         }
       }
     },

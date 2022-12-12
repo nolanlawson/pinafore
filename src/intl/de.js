@@ -188,8 +188,6 @@ export default {
   }`,
   pinPage: 'Hefte {label} an',
   // Status composition
-  overLimit: '{count} {count, plural, =1 {Zeichen} other {Zeichen}} über der Beschränkung',
-  underLimit: '{count} {count, plural, =1 {Zeichen} other {Zeichen}} übrig',
   composeStatus: 'Tröt erstellen',
   postStatus: 'Tröt!',
   contentWarning: 'Inhaltswarnung',
