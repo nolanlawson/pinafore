@@ -451,7 +451,7 @@ export default {
   // Another custom tooltip
   showRingPre: 'Mostrar siempre',
   showRingText: 'anillo del foco',
-  showRingDescription: `El anillo del foco es el contorno que muestra el elemento que actualmente tiene el foco. Por defecto solo semuestra cuando se usa el teclado (no el ratón o un dispositivo táctil), pero puedes elegir mostrarlo siempre.`,
+  showRingDescription: 'El anillo del foco es el contorno que muestra el elemento que actualmente tiene el foco. Por defecto solo se muestra cuando se usa el teclado (no el ratón o un dispositivo táctil), pero puedes elegir mostrarlo siempre.',
   showRingPost: '',
   instances: 'Instancias',
   addInstance: 'Añadir instancia',
