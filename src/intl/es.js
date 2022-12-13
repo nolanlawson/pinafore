@@ -153,6 +153,8 @@ export default {
     <li><kbd>f</kbd> para marcar como favorito</li>
     <li><kbd>b</kbd> para reenviar</li>
     <li><kbd>r</kbd> para responder</li>
+    <li><kbd>Escape</kbd> para cerrar respuesta</li>
+    <li><kbd>a</kbd> para marcador</li>
     <li><kbd>i</kbd> para abrir imágenes, vídeo o audio</li>
     <li><kbd>y</kbd> para mostrar u ocultar multimedia sensible</li>
     <li><kbd>m</kbd> para mencionar al autor</li>
@@ -192,8 +194,6 @@ export default {
   }`,
   pinPage: 'Fijar {label}',
   // Status composition
-  overLimit: '{count} {count, plural, =1 {carácter} other {caracteres}} más de la cuenta',
-  underLimit: '{count} {count, plural, =1 {carácter} other {caracteres}} para el máximo',
   composeStatus: 'Redactar toot',
   postStatus: 'Toot!',
   contentWarning: 'Advertencia de contenido',
@@ -495,6 +495,8 @@ export default {
   }: {description}`,
   accountFollowedYou: '{name} te siguió, {account}',
   accountSignedUp: '{name} inició sesión, {account}',
+  accountRequestedFollow: '{name} solicitó seguirte, {account}',
+  accountReported: '{name} creó una denuncia, {account}',
   reblogCountsHidden: 'Recuento de reenvíos oculto',
   favoriteCountsHidden: 'Recuento de favoritos oculto',
   rebloggedTimes: `Reenviado {count, plural,
@@ -509,6 +511,9 @@ export default {
   rebloggedYou: 'reenvió tu toot',
   favoritedYou: 'marcó como favorito tu toot',
   followedYou: 'te siguió',
+  edited: 'editó su toot',
+  requestedFollow: 'solicitó seguirte',
+  reported: 'creó una denuncia',
   signedUp: 'sesión iniciada',
   posted: 'publicado',
   pollYouCreatedEnded: 'Una encuesta que creaste ha finalizado',
@@ -524,6 +529,7 @@ export default {
   // Accessible status labels
   accountRebloggedYou: '{account} reenvió tu toot',
   accountFavoritedYou: '{account} marcó como favorito tu toot',
+  accountEdited: '{account} editó su toot',
   rebloggedByAccount: 'reenviado por {account}',
   contentWarningContent: 'Advertencia de contenido: {spoiler}',
   hasMedia: 'tiene multimedia',
