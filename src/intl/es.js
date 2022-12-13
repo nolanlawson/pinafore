@@ -489,9 +489,9 @@ export default {
     true {animated}
     other {}
   } imagen: {description}`,
-  playVideoOrAudio: `Reproducir audio, select,
+  playVideoOrAudio: `Reproducir {audio, select,
     true {audio}
-    other {video}
+    other {vídeo}
   }: {description}`,
   accountFollowedYou: '{name} te siguió, {account}',
   accountSignedUp: '{name} inició sesión, {account}',
