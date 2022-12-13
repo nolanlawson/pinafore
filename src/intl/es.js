@@ -223,7 +223,7 @@ export default {
   sevenDays: '7 días',
   never: 'Nunca',
   addEmoji: 'Insertar emoji',
-  addMedia: 'Añadir media (imágenes, vídeo, audio)',
+  addMedia: 'Añadir multimedia (imágenes, vídeo, audio)',
   addPoll: 'Añadir encuesta',
   removePoll: 'Eliminar encuesta',
   postPrivacyLabel: 'Ajustar privacidad (actualmente {label})',
@@ -260,7 +260,7 @@ export default {
     2 {segundo}
     3 {tercero}
     other {cuarto}
-  } media {current, select,
+  } multimedia {current, select,
     true {(actual)}
     other {}
   }`,
