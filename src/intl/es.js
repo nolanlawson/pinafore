@@ -254,8 +254,8 @@ export default {
   showPreviousMedia: 'Mostrar multimedia anterior',
   showNextMedia: 'Mostrar multimedia siguiente',
   enterPinchZoom: 'Modo encoger',
-  exitPinchZoom: 'Exit pinch-zoom mode',
-  showMedia: `Show {index, select,
+  exitPinchZoom: 'Salir del modo encoger',
+  showMedia: `Mostrar {index, select,
     1 {primero}
     2 {segundo}
     3 {tercero}
