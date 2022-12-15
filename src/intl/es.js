@@ -168,7 +168,7 @@ export default {
   `,
   // Community page, tabs
   tabLabel: `{label} {current, select,
-    true {(Current)}
+    true {(Actual)}
     other {}
   }`,
   pageTitle: `
@@ -299,7 +299,7 @@ export default {
   follows: 'Siguiendo',
   followers: 'Seguidores',
   moreOptions: 'Más opciones',
-  followersLabel: '{count} te ha seguido',
+  followersLabel: 'Te han seguido {count}',
   followingLabel: 'Has seguido a {count}',
   followLabel: `Seguimiento {requested, select,
     true {(solicitud de seguimiento)}
