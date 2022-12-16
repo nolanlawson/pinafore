@@ -253,8 +253,8 @@ export default {
   navigateMedia: 'Navegar por elementos multimedia',
   showPreviousMedia: 'Mostrar multimedia anterior',
   showNextMedia: 'Mostrar multimedia siguiente',
-  enterPinchZoom: 'Modo encoger',
-  exitPinchZoom: 'Salir del modo encoger',
+  enterPinchZoom: 'Modo pinch-zoom',
+  exitPinchZoom: 'Salir del modo pinch-zoom',
   showMedia: `Mostrar {index, select,
     1 {primero}
     2 {segundo}
