@@ -256,7 +256,7 @@ export default {
   enterPinchZoom: 'Modo pinch-zoom',
   exitPinchZoom: 'Salir del modo pinch-zoom',
   showMedia: `Mostrar {index, select,
-    1 {primero}
+    1 {primer}
     2 {segundo}
     3 {tercero}
     other {cuarto}
