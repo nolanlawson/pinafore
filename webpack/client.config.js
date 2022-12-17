@@ -12,8 +12,9 @@ import urlRegex from '../src/routes/_utils/urlRegexSource.js'
 // TODO: make it so we don't have to list these out explicitly
 import fr from 'emoji-picker-element/i18n/fr.js'
 import de from 'emoji-picker-element/i18n/de.js'
+import es from 'emoji-picker-element/i18n/es.js'
 
-const emojiPickerLocales = { fr, de }
+const emojiPickerLocales = { fr, de, es }
 
 const emojiPickerI18n = LOCALE !== DEFAULT_LOCALE && emojiPickerLocales[LOCALE]
 
