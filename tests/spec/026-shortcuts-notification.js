@@ -1,10 +1,10 @@
 import {
   closeDialogButton,
   composeModalInput,
-  getNthFavoritedLabel,
   getNthStatus,
   getUrl, modalDialog, notificationsNavButton,
-  isNthStatusActive, goBack
+  isNthStatusActive, goBack,
+  getNthFavoritedLabel
 } from '../utils'
 import { loginAsFoobar } from '../roles'
 
@@ -12,16 +12,22 @@ fixture`026-shortcuts-notification.js`
   .page`http://localhost:4002`
 
 test('Shortcut f toggles favorite status in notification', async t => {
-  const idx = 0
+  const idx = 6 // "hello foobar"
   await loginAsFoobar(t)
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
     .click(notificationsNavButton)
     .expect(getUrl()).contains('/notifications')
-    .expect(getNthStatus(1 + idx).exists).ok({ timeout: 30000 })
+    .expect(getNthStatus(1).exists).ok({ timeout: 30000 })
+
+  for (let i = 0; i < idx + 1; i++) {
+    await t.pressKey('j')
+      .expect(getNthStatus(1 + i).exists).ok()
+      .expect(isNthStatusActive(1 + i)()).ok()
+  }
+
+  await t
     .expect(getNthFavoritedLabel(1 + idx)).eql('Favorite')
-    .pressKey('j '.repeat(idx + 1))
-    .expect(isNthStatusActive(1 + idx)()).ok()
     .pressKey('f')
     .expect(getNthFavoritedLabel(1 + idx)).eql('Unfavorite')
     .pressKey('f')

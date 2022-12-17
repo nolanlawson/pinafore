@@ -1,5 +1,5 @@
 :root {
-  $deemphasized-color: lighten($main-bg-color, 45%);
+  $deemphasized-color: lighten($main-bg-color, 54%);
 
   --action-button-deemphasized-fill-color: #{$deemphasized-color};
   --action-button-deemphasized-fill-color-hover: #{lighten($deemphasized-color, 22%)};
@@ -12,8 +12,8 @@
 
   --deemphasized-text-color: #{$deemphasized-color};
 
-  --very-deemphasized-link-color: #{rgba($anchor-color, 0.8)};
-  --very-deemphasized-text-color: #{lighten($main-bg-color, 32%)};
+  --very-deemphasized-text-color: #{lighten($main-bg-color, 44%)};
+  --very-deemphasized-link-color: var(--very-deemphasized-text-color);
 
   --status-direct-background: #{darken($body-bg-color, 5%)};
   --main-theme-color: #{$main-theme-color};

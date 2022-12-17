@@ -35,3 +35,10 @@ test('shows direct vs followers-only vs regular in notifications', async t => {
     .eql('Cannot be boosted because this is a direct message')
     .expect($(`${getNthStatusSelector(5)} .status-toolbar button:nth-child(2)`).hasAttribute('disabled')).ok()
 })
+
+test('hides status toolbar on notification page', async t => {
+  await loginAsFoobar(t)
+  await t
+    .navigateTo('/notifications')
+    .expect($(`${getNthStatusSelector(1)} .status-toolbar`).exists).notOk()
+})
