@@ -2,7 +2,7 @@ import { favoriteStatus } from '../src/routes/_api/favorite.js'
 import fetch from 'node-fetch'
 import FileApi from 'file-api'
 import { users } from './users.js'
-import { postStatus } from '../src/routes/_api/statuses.js'
+import { postStatus, putStatus } from '../src/routes/_api/statuses.js'
 import { deleteStatus } from '../src/routes/_api/delete.js'
 import { authorizeFollowRequest, getFollowRequests } from '../src/routes/_api/followRequests.js'
 import { followAccount, unfollowAccount } from '../src/routes/_api/follow.js'
@@ -30,6 +30,11 @@ export async function reblogStatusAs (username, statusId) {
 
 export async function postAs (username, text) {
   return postStatus(instanceName, users[username].accessToken, text,
+    null, null, false, null, 'public')
+}
+
+export async function putAs (username, text, statusId) {
+  return putStatus(instanceName, users[username].accessToken, statusId, text,
     null, null, false, null, 'public')
 }
 

@@ -2,8 +2,9 @@ import { mark, stop } from '../../_utils/marks.js'
 import { deleteStatus } from '../deleteStatuses.js'
 import { addStatusOrNotification } from '../addStatusOrNotification.js'
 import { emit } from '../../_utils/eventBus.js'
+import { updateStatus } from '../updateStatus.js'
 
-const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation', 'filters_changed']
+const KNOWN_EVENTS = ['update', 'delete', 'notification', 'conversation', 'filters_changed', 'status.update']
 
 export function processMessage (instanceName, timelineName, message) {
   let { event, payload } = (message || {})
@@ -12,7 +13,7 @@ export function processMessage (instanceName, timelineName, message) {
     return
   }
   mark('processMessage')
-  if (['update', 'notification', 'conversation'].includes(event)) {
+  if (['update', 'notification', 'conversation', 'status.update'].includes(event)) {
     payload = JSON.parse(payload) // only these payloads are JSON-encoded for some reason
   }
 
@@ -42,6 +43,9 @@ export function processMessage (instanceName, timelineName, message) {
       break
     case 'filters_changed':
       emit('wordFiltersChanged', instanceName)
+      break
+    case 'status.update':
+      updateStatus(instanceName, payload)
       break
   }
   stop('processMessage')
