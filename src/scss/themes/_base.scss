@@ -45,9 +45,9 @@
   --action-button-fill-color: #{lighten($main-theme-color, 11.5%)};
   --action-button-fill-color-hover: #{lighten($main-theme-color, 6%)};
   --action-button-fill-color-active: #{$main-theme-color};
-  --action-button-fill-color-pressed: #{saturate($main-theme-color, 5%)};
-  --action-button-fill-color-pressed-hover: #{darken(saturate($main-theme-color, 5%), 4%)};
-  --action-button-fill-color-pressed-active: #{darken(saturate($main-theme-color, 5%), 8%)};
+  --action-button-fill-color-pressed: #{darken(saturate($main-theme-color, 5%), 6%)};
+  --action-button-fill-color-pressed-hover: #{darken(saturate($main-theme-color, 5%), 12%)};
+  --action-button-fill-color-pressed-active: #{darken(saturate($main-theme-color, 5%), 15%)};
 
   --action-button-deemphasized-fill-color: #{$deemphasized-color};
   --action-button-deemphasized-fill-color-hover: #{lighten($deemphasized-color, 22%)};
