@@ -5,5 +5,10 @@
     "takeOnFails": false
   },
   "skipJsErrors": true,
-  "stopOnFirstFail": true
+  "stopOnFirstFail": true,
+  "clientScripts": [
+    {
+      "module": "axe-core/axe.min.js"
+    }
+  ]
 }
