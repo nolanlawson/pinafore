@@ -42,12 +42,12 @@
   --nav-svg-fill-hover: #{$secondary-text-color};
   --nav-text-color-hover: #{$secondary-text-color};
 
-  --action-button-fill-color: #{lighten($main-theme-color, 18%)};
-  --action-button-fill-color-hover: #{lighten($main-theme-color, 22%)};
-  --action-button-fill-color-active: #{lighten($main-theme-color, 5%)};
-  --action-button-fill-color-pressed: #{darken($main-theme-color, 7%)};
-  --action-button-fill-color-pressed-hover: #{darken($main-theme-color, 2%)};
-  --action-button-fill-color-pressed-active: #{darken($main-theme-color, 15%)};
+  --action-button-fill-color: #{lighten($main-theme-color, 11.5%)};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 6%)};
+  --action-button-fill-color-active: #{$main-theme-color};
+  --action-button-fill-color-pressed: #{darken(saturate($main-theme-color, 5%), 6%)};
+  --action-button-fill-color-pressed-hover: #{darken(saturate($main-theme-color, 5%), 12%)};
+  --action-button-fill-color-pressed-active: #{darken(saturate($main-theme-color, 5%), 15%)};
 
   --action-button-deemphasized-fill-color: #{$deemphasized-color};
   --action-button-deemphasized-fill-color-hover: #{lighten($deemphasized-color, 22%)};
