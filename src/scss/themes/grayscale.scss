@@ -12,3 +12,10 @@ $compose-background: lighten($main-theme-color, 17%);
 
 @import "_base.scss";
 @import "_light_scrollbars.scss";
+
+:root {
+  // make the action buttons a bit lighter
+  --action-button-fill-color: #{lighten($main-theme-color, 17%)};
+  --action-button-fill-color-hover: #{lighten($main-theme-color, 10%)};
+  --action-button-fill-color-active: #{lighten($main-theme-color, 5%)};
+}
