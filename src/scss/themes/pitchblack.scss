@@ -39,4 +39,6 @@ $compose-background: darken($main-theme-color, 12%);
   --action-button-fill-color-pressed: #{lighten($main-theme-color, 85%)};
   --action-button-fill-color-pressed-hover: #{lighten($main-theme-color, 100%)};
   --action-button-fill-color-pressed-active: #{lighten($main-theme-color, 80%)};
+
+  --svg-fill: #{lighten($main-theme-color, 50%)};
 }
