@@ -21,7 +21,7 @@ const JSON_TEMPLATE = {
   github: {
     silent: true
   },
-  "buildCommand": "yarn build",
+  buildCommand: 'yarn build',
   routes: [
     {
       src: '^/service-worker\\.js$',
