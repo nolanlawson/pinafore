@@ -22,6 +22,7 @@ const JSON_TEMPLATE = {
     silent: true
   },
   buildCommand: 'yarn build',
+  outputDirectory: '__sapper__/export',
   routes: [
     {
       src: '^/service-worker\\.js$',
