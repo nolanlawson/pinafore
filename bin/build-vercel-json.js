@@ -21,15 +21,8 @@ const JSON_TEMPLATE = {
   github: {
     silent: true
   },
-  builds: [
-    {
-      src: 'package.json',
-      use: '@now/static-build',
-      config: {
-        distDir: '__sapper__/export'
-      }
-    }
-  ],
+  buildCommand: 'yarn build',
+  outputDirectory: '__sapper__/export',
   routes: [
     {
       src: '^/service-worker\\.js$',
