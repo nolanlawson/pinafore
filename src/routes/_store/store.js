@@ -35,6 +35,7 @@ const persistedState = {
   loggedInInstances: {},
   loggedInInstancesInOrder: [],
   markMediaAsSensitive: false,
+  showAllSpoilers: false,
   neverMarkMediaAsSensitive: false,
   ignoreBlurhash: false,
   omitEmojiInDisplayNames: undefined,

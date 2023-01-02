@@ -9,6 +9,11 @@
       {intl.showSensitive}
     </label>
     <label class="setting-group">
+      <input type="checkbox" id="choice-show-all-spoilers"
+             bind:checked="$showAllSpoilers" on:change="onChange(event)">
+      {intl.showAllSpoilers}
+    </label>
+    <label class="setting-group">
       <input type="checkbox" id="choice-use-blurhash"
               bind:checked="$ignoreBlurhash" on:change="onChange(event)">
       {intl.showPlain}
