@@ -12,7 +12,7 @@ import { loginAsFoobar } from '../roles'
 import { homeTimeline } from '../fixtures.js'
 import { Selector as $ } from 'testcafe'
 
-fixture`043-spoilers.js`
+fixture`043-content-warnings.js`
   .page`http://localhost:4002`
 
 test('Can set content warnings to auto-expand', async t => {
