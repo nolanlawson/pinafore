@@ -1,4 +1,6 @@
-# Pinafore
+# Pinafore [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+_**Note:** Pinafore is unmaintained. Read [this](https://nolanlawson.com/2023/01/09/retiring-pinafore/). Original documentation follows._
 
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 
