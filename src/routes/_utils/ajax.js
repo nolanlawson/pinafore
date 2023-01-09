@@ -51,7 +51,7 @@ async function _fetch (url, fetchOptions, options) {
 async function _putOrPostOrPatch (method, url, body, headers, options) {
   const fetchOptions = makeFetchOptions(method, headers, options)
   if (body) {
-    if (body instanceof FormData) {
+    if (body instanceof FormData || body instanceof URLSearchParams) {
       fetchOptions.body = body
     } else {
       fetchOptions.body = JSON.stringify(body)
