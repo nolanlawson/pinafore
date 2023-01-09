@@ -27,6 +27,8 @@ export function generateAuthLink(instanceName, clientId, redirectUri) {
 
 export function getAccessTokenFromAuthCode(instanceName, clientId, clientSecret, code, redirectUri) {
   const url = `${basename(instanceName)}/oauth/token`
+  // Using URLSearchParams here guarantees a content type of application/x-www-form-urlencoded
+  // See https://fetch.spec.whatwg.org/#bodyinit-unions
   return post(url, new URLSearchParams({
     client_id: clientId,
     client_secret: clientSecret,
