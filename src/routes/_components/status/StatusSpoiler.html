@@ -76,8 +76,9 @@
     methods: {
       toggleSpoilers (shown) {
         const { uuid } = this.get()
-        const { spoilersShown } = this.store.get()
-        spoilersShown[uuid] = typeof shown === 'undefined' ? !spoilersShown[uuid] : !!shown
+        const { spoilersShown, showAllSpoilers } = this.store.get()
+        const currentValue = typeof spoilersShown[uuid] === 'undefined' ? !!showAllSpoilers : spoilersShown[uuid]
+        spoilersShown[uuid] = typeof shown === 'undefined' ? !currentValue : !!shown
         this.store.set({ spoilersShown })
         requestAnimationFrame(() => {
           mark('clickSpoilerButton')
