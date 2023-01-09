@@ -46,14 +46,33 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            autoconf \
+            bison \
+            build-essential \
             ffmpeg \
-            fonts-noto-color-emoji \
+            file \
+            g++ \
+            gcc \
             imagemagick \
+            libffi-dev \
+            libgdbm-dev \
             libicu-dev \
             libidn11-dev \
+            libjemalloc-dev \
+            libncurses5-dev \
+            libpq-dev \
             libprotobuf-dev \
+            libreadline6-dev \
+            libssl-dev \
+            libxml2-dev \
+            libxslt1-dev \
+            libyaml-dev \
+            pkg-config \
             postgresql-contrib \
-            protobuf-compiler
+            protobuf-compiler \
+            redis-server \
+            redis-tools \
+            zlib1g-dev
       - run: yarn --frozen-lockfile
       - run: yarn build
       - run: yarn clone-mastodon
