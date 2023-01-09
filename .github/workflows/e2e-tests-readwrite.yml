@@ -51,6 +51,7 @@ jobs:
             build-essential \
             ffmpeg \
             file \
+            fonts-noto-color-emoji \
             g++ \
             gcc \
             imagemagick \
