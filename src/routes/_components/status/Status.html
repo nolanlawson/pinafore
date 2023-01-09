@@ -260,7 +260,7 @@
         notification && notification.status &&
           notification.type !== 'mention' && notification.status.id === originalStatusId
       ),
-      spoilerShown: ({ $spoilersShown, uuid }) => !!$spoilersShown[uuid],
+      spoilerShown: ({ $spoilersShown, uuid, $showAllSpoilers }) => (typeof $spoilersShown[uuid] === 'undefined' ? !!$showAllSpoilers : !!$spoilersShown[uuid]),
       replyShown: ({ $repliesShown, uuid }) => !!$repliesShown[uuid],
       showCard: ({ originalStatus, isStatusInNotification, showMedia, $hideCards }) => (
         !$hideCards &&

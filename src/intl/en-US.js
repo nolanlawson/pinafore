@@ -368,6 +368,7 @@ export default {
   general: 'General',
   generalSettings: 'General settings',
   showSensitive: 'Show sensitive media by default',
+  showAllSpoilers: 'Expand content warnings by default',
   showPlain: 'Show a plain gray color for sensitive media',
   allSensitive: 'Treat all media as sensitive',
   largeMedia: 'Show large inline images and videos',
