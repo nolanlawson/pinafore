@@ -5,7 +5,7 @@ const WEBSITE = 'https://pinafore.social'
 const SCOPES = 'read write follow push'
 const CLIENT_NAME = 'Pinafore'
 
-export function registerApplication(instanceName, redirectUri) {
+export function registerApplication (instanceName, redirectUri) {
   const url = `${basename(instanceName)}/api/v1/apps`
   return post(url, {
     client_name: CLIENT_NAME,
@@ -15,7 +15,7 @@ export function registerApplication(instanceName, redirectUri) {
   }, null, { timeout: WRITE_TIMEOUT })
 }
 
-export function generateAuthLink(instanceName, clientId, redirectUri) {
+export function generateAuthLink (instanceName, clientId, redirectUri) {
   const params = paramsString({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -25,7 +25,7 @@ export function generateAuthLink(instanceName, clientId, redirectUri) {
   return `${basename(instanceName)}/oauth/authorize?${params}`
 }
 
-export function getAccessTokenFromAuthCode(instanceName, clientId, clientSecret, code, redirectUri) {
+export function getAccessTokenFromAuthCode (instanceName, clientId, clientSecret, code, redirectUri) {
   const url = `${basename(instanceName)}/oauth/token`
   // Using URLSearchParams here guarantees a content type of application/x-www-form-urlencoded
   // See https://fetch.spec.whatwg.org/#bodyinit-unions
