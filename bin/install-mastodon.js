@@ -43,8 +43,8 @@ async function setupMastodonDatabase () {
 async function installMastodonDependencies () {
   const cwd = mastodonDir
   const installCommands = [
-    'gem update --system',
-    'gem install bundler foreman',
+    'gem install bundler -v 2.3.26 --no-document',
+    'gem install foreman -v 0.87.2 --no-document',
     'bundle config set --local frozen \'true\'',
     'bundle install',
     'yarn --pure-lockfile'
