@@ -16,5 +16,4 @@ or
 
     LOCALE=fr yarn dev
 
-There is also an experimental `LOCALE_DIRECTION` environment variable for the direction (LTR versus RTL) which is
-exposed to the source code while building.
+To host a localized version of Pinafore using Vercel, you can see this example: [buildCommand in vercel.json for Spanish](https://github.com/nvdaes/vercelPinafore/blob/45c70fb2088fe5f2380a729dab83e6f3ab4e6291/vercel.json#L9).
