@@ -1,5 +1,5 @@
 # Changelog
 
-For full release notes, see [GitHub releases](https://github.com/nolanlawson/pinafore/releases).
+For full release notes, see [GitHub releases](https://github.com/semaphore-social/semaphore/releases).
 
-For breaking changes, see [BREAKING_CHANGES.md](https://github.com/nolanlawson/pinafore/blob/master/BREAKING_CHANGES.md).
+For breaking changes, see [BREAKING_CHANGES.md](https://github.com/semaphore-social/semaphore/blob/master/BREAKING_CHANGES.md).

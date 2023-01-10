@@ -163,9 +163,9 @@ branch deploys to `pinafore.social`.
 
 ## Architecture
 
-See [Architecture.md](https://github.com/nolanlawson/pinafore/blob/master/docs/Architecture.md).
+See [Architecture.md](https://github.com/semaphore-social/semaphore/blob/master/docs/Architecture.md).
 
 ## Internationalization
 
-See [Internationalization.md](https://github.com/nolanlawson/pinafore/blob/master/docs/Internationalization.md).
+See [Internationalization.md](https://github.com/semaphore-social/semaphore/blob/master/docs/Internationalization.md).
 

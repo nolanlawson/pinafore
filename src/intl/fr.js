@@ -18,12 +18,12 @@ export default {
   footer: `
     <p>
       Pinafore est
-      <a rel="noopener" target="_blank" href="https://github.com/nolanlawson/pinafore">logiciel open-source</a>
+      <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">logiciel open-source</a>
       créé par
       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
       et distribué sous la
       <a rel="noopener" target="_blank"
-         href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">License AGPL</a>.
+         href="https://github.com/semaphore-social/semaphore/blob/master/LICENSE">License AGPL</a>.
       Lire la <a href="/settings/about#privacy-policy" rel="prefetch">politique de confidentialité</a>.
     </p>
   `,
@@ -321,12 +321,12 @@ export default {
   <p>
     Pinafore est un logiciel
     <a rel="noopener" target="_blank"
-       href="https://github.com/nolanlawson/pinafore">gratuit et open-source</a>
+       href="https://github.com/semaphore-social/semaphore">gratuit et open-source</a>
     créé par
     <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
     et distribué sous le
     <a rel="noopener" target="_blank"
-       href="https://github.com/nolanlawson/pinafore/blob/master/LICENSE">License GNU Affero General Public (AGPL)</a>.
+       href="https://github.com/semaphore-social/semaphore/blob/master/LICENSE">License GNU Affero General Public (AGPL)</a>.
   </p>
 
   <h2 id="privacy-policy">Politique de confidentialité</h2>
