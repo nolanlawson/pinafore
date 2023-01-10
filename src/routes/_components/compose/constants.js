@@ -16,7 +16,7 @@ export const USERNAME_LOWERCASE = '__semaphore_acct_lc'
 
 export const DB_VERSION_INITIAL = 9
 export const DB_VERSION_SEARCH_ACCOUNTS = 10
-export const DB_VERSION_SNOWFLAKE_IDS = 12 // 11 skipped because of mistake deployed to dev.semaphore.social
+export const DB_VERSION_SNOWFLAKE_IDS = 12 // 11 skipped because of mistake deployed to beta.semaphore.social
 
 // Using an object for these so that unit tests can change them
 export const DB_VERSION_CURRENT = { version: 12 }

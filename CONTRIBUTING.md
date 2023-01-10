@@ -148,17 +148,17 @@ To disable minification in a production build (for debugging purposes), you can 
 
 The Webpack Bundle Analyzer `report.html` and `stats.json` are available publicly via e.g.:
 
-- [dev.semaphore.social/report.html](https://dev.semaphore.social/report.html)
-- [dev.semaphore.social/stats.json](https://dev.semaphore.social/stats.json)
+- [beta.semaphore.social/report.html](https://beta.semaphore.social/report.html)
+- [beta.semaphore.social/stats.json](https://beta.semaphore.social/stats.json)
 
 This is also available locally after `yarn run build` at `.sapper/client/report.html`.
 
 ## Deploying
 
-This section only applies to `dev.semaphore.social` and `semaphore.social`, not if you're hosting your own version of
+This section only applies to `beta.semaphore.social` and `semaphore.social`, not if you're hosting your own version of
 Semaphore.
 
-The site uses [Vercel](https://vercel.com). The `master` branch publishes to `dev.semaphore.social` and the `production`
+The site uses [Vercel](https://vercel.com). The `master` branch publishes to `beta.semaphore.social` and the `production`
 branch deploys to `semaphore.social`.
 
 ## Architecture

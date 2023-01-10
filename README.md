@@ -8,7 +8,7 @@ Credit must go to Nolan and the original contributors for their excellent work.
 
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 
-Semaphore is available at [semaphore.social](https://semaphore.social). Beta releases are at [dev.semaphore.social](https://dev.semaphore.social).
+Semaphore is available at [semaphore.social](https://semaphore.social). Beta releases are at [beta.semaphore.social](https://beta.semaphore.social).
 
 See the [user guide](https://github.com/nolanlawson/semaphore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/nolanlawson/semaphore/blob/master/docs/Admin-Guide.md) if Semaphore cannot connect to your instance.
 
