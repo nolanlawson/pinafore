@@ -1,8 +1,8 @@
 # Semaphore ⛳
 
 > Continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore). To keep from burning out it will have restricted input from wider community, more details will follow.
-
-Credit must go to Nolan and the original contributors for their excellent work.
+> 
+> Credit must go to Nolan and the original contributors for their excellent work.
 
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 
