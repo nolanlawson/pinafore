@@ -9,22 +9,21 @@ export default {
       diseñado para ser rápido y sencillo.
     </p>
     <p>
-      Lee el
-      <a rel="noopener" target="_blank"
-         href="https://nolanlawson.com/2018/04/09/introducing-pinafore-for-mastodon/">artículo introductorio en el blog</a>,
-      o comienza iniciando sesión en una instancia:
+      Comienza iniciando sesión en una instancia:
     </p>`,
   logIn: 'Iniciar sesión',
   footer: `
     <p>
       Semaphore es
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">software de código abierto</a>
-      creado por
-      <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+      mantenido por
+      <a rel="noopener" target="_blank" href="https://nickcolley.co.uk"Nick Colley</a>
       y distribuido bajo la
       <a rel="noopener" target="_blank"
          href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">Licencia AGPL</a>.
       Aquí está la <a href="/settings/about#privacy-policy" rel="prefetch">política de privacidad</a>.
+      Es una continuación de Pinafore creado por
+        <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
     </p>
   `,
   // Manifest
@@ -332,12 +331,15 @@ export default {
   <p>
     Semaphore es
     <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore">software libre y de código abierto</a>
-    creado por
-    <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+      href="https://github.com/semaphore-social/semaphore">software de código abierto</a>
+    mantenido por
+    <a rel="noopener" target="_blank" href="https://nickcolley.co.uk"Nick Colley</a>
     y distribuido bajo la
     <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">GNU Affero General Public License</a>.
+      href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">Licencia AGPL</a>.
+    Aquí está la <a href="/settings/about#privacy-policy" rel="prefetch">política de privacidad</a>.
+    Es una continuación de Pinafore creado por
+      <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
   </p>
 
   <h2 id="privacy-policy">Política de privacidad</h2>

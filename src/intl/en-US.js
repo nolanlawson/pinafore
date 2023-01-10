@@ -9,22 +9,20 @@ export default {
       designed for speed and simplicity.
     </p>
     <p>
-      Read the
-      <a rel="noopener" target="_blank"
-         href="https://nolanlawson.com/2018/04/09/introducing-pinafore-for-mastodon/">introductory blog post</a>,
-      or get started by logging in to an instance:
+      Get started by logging in to an instance:
     </p>`,
   logIn: 'Log in',
   footer: `
     <p>
       Semaphore is
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">open-source software</a>
-      created by
-      <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+      maintained by
+      <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley</a>
       and distributed under the
       <a rel="noopener" target="_blank"
          href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL License</a>.
-      Here is the <a href="/settings/about#privacy-policy" rel="prefetch">privacy policy</a>.
+      C'est une continuation du projet Pinafore created by
+         <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
     </p>
   `,
   // Manifest
@@ -331,13 +329,13 @@ export default {
   aboutAppDescription: `
   <p>
     Semaphore is
-    <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore">free and open-source software</a>
-    created by
-    <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+    <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">free and open-source software</a> 
+    maintained by <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley</a>
     and distributed under the
     <a rel="noopener" target="_blank"
        href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">GNU Affero General Public License</a>.
+    It is a continuation of the Pinafore project created by
+       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
   </p>
 
   <h2 id="privacy-policy">Privacy Policy</h2>
