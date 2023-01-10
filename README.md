@@ -1,6 +1,8 @@
-# Semaphore
+# Semaphore ⛳
 
 Continuation of the Pinafore project. To keep from burning out it will have restricted input from wider community, more details will follow.
+
+**[Semaphore.social](https://semaphore.social)**
 
 Credit must go to Nolan and the original contributors for their excellent work.
 
