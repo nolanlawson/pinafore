@@ -1,10 +1,10 @@
 export default {
   // Home page, basic <title> and <description>
-  appName: 'Pinafore',
+  appName: 'Semaphore',
   appDescription: 'Un client alternatif pour Mastodon, concentré sur la vitesse et la simplicité',
   homeDescription: `
     <p>
-      Pinafore est un client web pour
+      Semaphore est un client web pour
       <a rel="noopener" target="_blank" href="https://joinmastodon.org">Mastodon</a>,
       dessiné pour la vitesse et la simplicité.
     </p>
@@ -17,7 +17,7 @@ export default {
   logIn: 'Se connecter',
   footer: `
     <p>
-      Pinafore est
+      Semaphore est
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">logiciel open-source</a>
       créé par
       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
@@ -175,7 +175,7 @@ export default {
     ·
     {showInstanceName, select,
       true {{instanceName}}
-      other {Pinafore}
+      other {Semaphore}
     }
   `,
   pinLabel: `{label} {pinnable, select,
@@ -316,10 +316,10 @@ export default {
   profilePageForAccount: 'Page de profil pour {account}',
   // About page
   about: 'Infos',
-  aboutApp: 'Infos sur Pinafore',
+  aboutApp: 'Infos sur Semaphore',
   aboutAppDescription: `
   <p>
-    Pinafore est un logiciel
+    Semaphore est un logiciel
     <a rel="noopener" target="_blank"
        href="https://github.com/semaphore-social/semaphore">gratuit et open-source</a>
     créé par
@@ -332,12 +332,12 @@ export default {
   <h2 id="privacy-policy">Politique de confidentialité</h2>
 
   <p>
-    Pinafore ne garde pas d'informations personelles dans ses serveurs,
+    Semaphore ne garde pas d'informations personelles dans ses serveurs,
     y compris les noms, addresses courriel, addresses IP, messages, et photos.
   </p>
 
   <p>
-    Pinafore est un site statique. Tous données sont gardées en locale dans le navigateur, et sont partagée qu'avec
+    Semaphore est un site statique. Tous données sont gardées en locale dans le navigateur, et sont partagée qu'avec
     les instances auxquelles vous vous connectez.
   </p>
 
@@ -409,8 +409,8 @@ export default {
   notificationFilters: 'Filtres de notifications',
   pushNotifications: 'Filtres de notifications push',
   // Add instance page
-  storageError: `Il semble que Pinafore ne peut pas stocker les données en locale. Est-ce que votre navigateur
-          est en mode privé, ou est-ce qu'il bloque les cookies? Pinafore garde tous ses données en locale et
+  storageError: `Il semble que Semaphore ne peut pas stocker les données en locale. Est-ce que votre navigateur
+          est en mode privé, ou est-ce qu'il bloque les cookies? Semaphore garde tous ses données en locale et
           ne peut pas fonctionner sans LocalStorage ou IndexedDB.`,
   javaScriptError: 'Le JavaScript devrait être activé pour continuer.',
   enterInstanceName: "Saisir le nom d'instance",
@@ -431,7 +431,7 @@ export default {
   // Link text
   logInToAnInstancePre: '',
   logInToAnInstanceText: 'Se connecter à une instance',
-  logInToAnInstancePost: 'pour utiliser Pinafore.',
+  logInToAnInstancePost: 'pour utiliser Semaphore.',
   // Another custom tooltip
   showRingPre: 'Afficher toujours',
   showRingText: "l'anneau de focus",

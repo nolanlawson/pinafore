@@ -1,10 +1,10 @@
 export default {
   // Home page, basic <title> and <description>
-  appName: 'Pinafore',
+  appName: 'Semaphore',
   appDescription: 'Альтернативный веб-клиент для Mastodon, ориентированный на скорость и простоту.',
   homeDescription: `
     <p>
-    Pinafore — веб-клиент для
+    Semaphore — веб-клиент для
       <a rel="noopener" target="_blank" href="https://joinmastodon.org">Mastodon</a>,
       разработан для скорости и простоты.
     </p>
@@ -17,7 +17,7 @@ export default {
   logIn: 'Войти',
   footer: `
     <p>
-      Pinafore — это
+      Semaphore — это
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">программное обеспечение с открытым исходным кодом</a>
       созданное
       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>
@@ -28,7 +28,7 @@ export default {
     </p>
   `,
   // Manifest
-  longAppName: 'Pinafore для Mastodon',
+  longAppName: 'Semaphore для Mastodon',
   newStatus: 'Новая запись',
   // Generic UI
   loading: 'Загрузка',
@@ -176,7 +176,7 @@ export default {
     }
     {showInstanceName, select,
       true {{instanceName}}
-      other {Pinafore}
+      other {Semaphore}
     }
     ·
     {name}
@@ -325,10 +325,10 @@ export default {
   profilePageForAccount: 'Страница профиля для {account}',
   // About page
   about: 'О нас',
-  aboutApp: 'О Pinafore',
+  aboutApp: 'О Semaphore',
   aboutAppDescription: `
   <p>
-  Pinafore — это
+  Semaphore — это
     <a rel="noopener" target="_blank"
        href="https://github.com/semaphore-social/semaphore">бесплатное программное обеспечение с открытым исходным кодом</a>
        создано
@@ -341,13 +341,13 @@ export default {
   <h2 id="privacy-policy">Политика конфиденциальности</h2>
 
   <p>
-    Pinafore не хранит никакой личной информации на своих серверах,
+    Semaphore не хранит никакой личной информации на своих серверах,
     включая, помимо прочего, имена, адреса электронной почты,
     IP-адреса, сообщения и фотографии.
   </p>
 
   <p>
-  Pinafore — это статический сайт. Все данные хранятся локально в вашем браузере и передаются через Федиверс
+  Semaphore — это статический сайт. Все данные хранятся локально в вашем браузере и передаются через Федиверс
     инстансы, к которым вы подключаетесь.
   </p>
 
@@ -424,8 +424,8 @@ export default {
   notificationFilters: 'Фильтры уведомлений',
   pushNotifications: 'Всплывающее уведомление',
   // Add instance page
-  storageError: `Похоже, Pinafore не может хранить данные локально. Ваш браузер находится в приватном режиме
-          или блокирует файлов cookie? Pinafore хранит все данные локально, и для этого требуется LocalStorage и
+  storageError: `Похоже, Semaphore не может хранить данные локально. Ваш браузер находится в приватном режиме
+          или блокирует файлов cookie? Semaphore хранит все данные локально, и для этого требуется LocalStorage и
           IndexedDB для корректной работы.`,
   javaScriptError: 'Вы должны включить JavaScript, чтобы войти в систему.',
   enterInstanceName: 'Введите имя инстанса',
@@ -446,7 +446,7 @@ export default {
   // Link text
   logInToAnInstancePre: '',
   logInToAnInstanceText: 'Войти в инстанс',
-  logInToAnInstancePost: 'чтобы начать использовать Pinafore.',
+  logInToAnInstancePost: 'чтобы начать использовать Semaphore.',
   // Another custom tooltip
   showRingPre: 'Всегда показывать',
   showRingText: 'кольцо фокусировки',

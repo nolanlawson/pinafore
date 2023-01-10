@@ -6,7 +6,7 @@ FROM node:16-alpine
 WORKDIR /app
 COPY . /app
 
-# Install Pinafore
+# Install Semaphore
 RUN yarn --production --pure-lockfile && \
     yarn build && \
     yarn cache clean && \

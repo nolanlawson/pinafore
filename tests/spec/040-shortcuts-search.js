@@ -39,7 +39,7 @@ test('Pressing / focuses the search input if we are already on the search page',
 test('Pressing / without logging in just goes to the search page', async t => {
   await t
     .expect(getUrl()).eql('http://localhost:4002/')
-    .expect($('.main-content h1').innerText).eql('Pinafore')
+    .expect($('.main-content h1').innerText).eql('Semaphore')
   await sleep(500) // wait for keyboard shortcuts to be active
   await t
     .pressKey('/')

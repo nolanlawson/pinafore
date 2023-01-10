@@ -5,16 +5,16 @@ Basically think of it as a "lay of the land" as well as "weird unusual stuff tha
 
 ## Overview
 
-Pinafore uses [SvelteJS](https://svelte.technology) v2 and [SapperJS](https://sapper.svelte.technology). Most of it is a fairly typical Svelte/Sapper project, but there
+Semaphore uses [SvelteJS](https://svelte.technology) v2 and [SapperJS](https://sapper.svelte.technology). Most of it is a fairly typical Svelte/Sapper project, but there
 are some quirks, which are described below. This list of quirks is non-exhaustive.
 
 ## Why Svelte v2 / Sapper ?
 
-There is [no upgrade path from Svelte v2 to v3](https://github.com/sveltejs/svelte/issues/2462). Doing so would require manually migrating every component over. And in the end, it would probably not change the UX (user experience) of Pinafore – only the DX (developer experience).
+There is [no upgrade path from Svelte v2 to v3](https://github.com/sveltejs/svelte/issues/2462). Doing so would require manually migrating every component over. And in the end, it would probably not change the UX (user experience) of Semaphore – only the DX (developer experience).
 
-Similarly, [Sapper would need to be migrated to SvelteKit](https://kit.svelte.dev/docs/migrating). Since Pinafore generates static files, there is probably not much benefit in moving from Sapper to SvelteKit.
+Similarly, [Sapper would need to be migrated to SvelteKit](https://kit.svelte.dev/docs/migrating). Since Semaphore generates static files, there is probably not much benefit in moving from Sapper to SvelteKit.
 
-For this reason, Pinafore has been stuck on Svelte v2 and Sapper for a long time. Migrating it is not something I've considered. The [v2 Svelte docs](https://v2.svelte.dev/) are still online, and share many similarities with Svelte v3.
+For this reason, Semaphore has been stuck on Svelte v2 and Sapper for a long time. Migrating it is not something I've considered. The [v2 Svelte docs](https://v2.svelte.dev/) are still online, and share many similarities with Svelte v3.
 
 ## Prebuild process
 
@@ -37,7 +37,7 @@ as a bundled custom element, not as a Svelte component.
 
 For various reasons, `a11y-dialog`, `autosize`, and `timeago` are forked and bundled into the source code.
 This was either because something needed to be tweaked or fixed, or I was trimming unused code and didn't
-see much value in contributing it back, because it was too Pinafore-specific.
+see much value in contributing it back, because it was too Semaphore-specific.
 
 ## Every Sapper page is "duplicated"
 

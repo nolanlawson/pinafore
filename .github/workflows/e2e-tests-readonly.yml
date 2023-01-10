@@ -9,9 +9,9 @@ jobs:
       postgres:
         image: postgres:12.2
         env:
-          POSTGRES_USER: pinafore
-          POSTGRES_PASSWORD: pinafore
-          POSTGRES_DB: pinafore_development
+          POSTGRES_USER: semaphore
+          POSTGRES_PASSWORD: semaphore
+          POSTGRES_DB: semaphore_development
           POSTGRES_HOST: 127.0.0.1
           POSTGRES_PORT: 5432
         ports:

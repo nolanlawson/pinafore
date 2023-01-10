@@ -6,28 +6,17 @@ Continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore).
 
 Credit must go to Nolan and the original contributors for their excellent work.
 
-
-## What's with the name?
-
-Semaphore is a fork of Pinafore and apparently they were going to call the boat H.M.S Semaphore but thought Pinafore was more fun.
-Bonus - semaphore is an old communication method.
-
-<details>
-<summary>Original Pinafore readme</summary>
-
-_**Note:** Pinafore is unmaintained. Read [this](https://nolanlawson.com/2023/01/09/retiring-pinafore/). Original documentation follows._
-
 An alternative web client for [Mastodon](https://joinmastodon.org), focused on speed and simplicity.
 
-Pinafore is available at [pinafore.social](https://pinafore.social). Beta releases are at [dev.pinafore.social](https://dev.pinafore.social).
+Semaphore is available at [semaphore.social](https://semaphore.social). Beta releases are at [dev.semaphore.social](https://dev.semaphore.social).
 
-See the [user guide](https://github.com/nolanlawson/pinafore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/nolanlawson/pinafore/blob/master/docs/Admin-Guide.md) if Pinafore cannot connect to your instance.
+See the [user guide](https://github.com/nolanlawson/semaphore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/nolanlawson/semaphore/blob/master/docs/Admin-Guide.md) if Semaphore cannot connect to your instance.
 
-For updates and support, follow [@pinafore@fosstodon.org](https://fosstodon.org/@pinafore).
+For updates and support, follow [@semaphore@fosstodon.org](https://fosstodon.org/@semaphore).
 
 ## Browser support
 
-Pinafore supports the latest versions of the following browsers:
+Semaphore supports the latest versions of the following browsers:
 
 - Chrome
 - Edge
@@ -69,9 +58,9 @@ Compatible versions of each (Opera, Brave, Samsung, etc.) should be fine.
 
 ## Building
 
-Pinafore requires [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com).
+Semaphore requires [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com).
 
-To build Pinafore for production, first install dependencies:
+To build Semaphore for production, first install dependencies:
 
     yarn --production --pure-lockfile
 
@@ -90,7 +79,7 @@ To build a Docker image for production:
     docker build .
     docker run -d -p 4002:4002 [your-image]
 
-Now Pinafore is running at `localhost:4002`.
+Now Semaphore is running at `localhost:4002`.
 
 ### docker-compose
 
@@ -102,13 +91,13 @@ The image will build and start, then detach from the terminal running at `localh
 
 ### Updating
 
-To keep your version of Pinafore up to date, you can use `git` to check out the latest tag:
+To keep your version of Semaphore up to date, you can use `git` to check out the latest tag:
 
     git checkout $(git tag -l | sort -Vr | head -n 1)
 
 ### Exporting
 
-Pinafore is a static site. When you run `yarn build`, static files will be
+Semaphore is a static site. When you run `yarn build`, static files will be
 written to `__sapper__/export`.
 
 It is _not_ recommended to directly expose these files when self-hosting. Instead, you should use `node server.js` (e.g. with an
@@ -117,21 +106,21 @@ nginx or Apache proxy in front). This adds several things you don't get from the
 - [CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (important for security)
 - Certain dynamic routes (less important because of Service Worker managing routing, but certain things could break if Service Workers are disabled in the user's browser)
 
-Having an [nginx config generator](https://github.com/nolanlawson/pinafore/issues/1878) is currently an open issue.
+Having an [nginx config generator](https://github.com/nolanlawson/semaphore/issues/1878) is currently an open issue.
 
 ## Developing and testing
 
-See [CONTRIBUTING.md](https://github.com/nolanlawson/pinafore/blob/master/CONTRIBUTING.md) for
-how to run Pinafore in dev mode and run tests.
+See [CONTRIBUTING.md](https://github.com/nolanlawson/semaphore/blob/master/CONTRIBUTING.md) for
+how to run Semaphore in dev mode and run tests.
 
 ## Changelog
 
-For a changelog, see the [GitHub releases](http://github.com/nolanlawson/pinafore/releases/).
+For a changelog, see the [GitHub releases](http://github.com/nolanlawson/semaphore/releases/).
 
-For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/nolanlawson/pinafore/blob/master/BREAKING_CHANGES.md).
+For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/nolanlawson/semaphore/blob/master/BREAKING_CHANGES.md).
+
 
 ## What's with the name?
 
-Pinafore is named after the [Gilbert and Sullivan play](https://en.wikipedia.org/wiki/Hms_pinafore). The [soundtrack](https://www.allmusic.com/album/gilbert-sullivan-hms-pinafore-1949-mw0001830483) is very good.
-
-</summary>
+Semaphore is a fork of Pinafore and apparently they were going to call the boat H.M.S Semaphore but thought Pinafore was more fun.
+Bonus - semaphore is an old communication method.

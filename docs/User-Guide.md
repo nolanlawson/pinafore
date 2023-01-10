@@ -1,6 +1,6 @@
-# Pinafore user guide
+# Semaphore user guide
 
-This will walk you through the basic usage of Pinafore and its major differences with the Mastodon web UI.
+This will walk you through the basic usage of Semaphore and its major differences with the Mastodon web UI.
 
 * [Home page](#home-page)
 * [Community page](#community-page)

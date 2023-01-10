@@ -1,10 +1,10 @@
 export default {
   // Home page, basic <title> and <description>
-  appName: 'Pinafore',
+  appName: 'Semaphore',
   appDescription: 'Un cliente web alternativo para Mastodon, centrado en la velocidad y la sencillez.',
   homeDescription: `
     <p>
-      Pinafore es un cliente web para
+      Semaphore es un cliente web para
       <a rel="noopener" target="_blank" href="https://joinmastodon.org">Mastodon</a>,
       diseñado para ser rápido y sencillo.
     </p>
@@ -17,7 +17,7 @@ export default {
   logIn: 'Iniciar sesión',
   footer: `
     <p>
-      Pinafore es
+      Semaphore es
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">software de código abierto</a>
       creado por
       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
@@ -28,7 +28,7 @@ export default {
     </p>
   `,
   // Manifest
-  longAppName: 'Pinafore para Mastodon',
+  longAppName: 'Semaphore para Mastodon',
   newStatus: 'Nuevo toot',
   // Generic UI
   loading: 'Cargando',
@@ -180,7 +180,7 @@ export default {
     ·
     {showInstanceName, select,
       true {{instanceName}}
-      other {Pinafore}
+      other {Semaphore}
     }
   `,
   pinLabel: `{label} {pinnable, select,
@@ -327,10 +327,10 @@ export default {
   profilePageForAccount: 'Página de perfil para {account}',
   // About page
   about: 'Acerca de',
-  aboutApp: 'Acerca de Pinafore',
+  aboutApp: 'Acerca de Semaphore',
   aboutAppDescription: `
   <p>
-    Pinafore es
+    Semaphore es
     <a rel="noopener" target="_blank"
        href="https://github.com/semaphore-social/semaphore">software libre y de código abierto</a>
     creado por
@@ -343,13 +343,13 @@ export default {
   <h2 id="privacy-policy">Política de privacidad</h2>
 
   <p>
-    Pinafore no almacena ninguna información personal en sus servidores,
+    Semaphore no almacena ninguna información personal en sus servidores,
     incluyendo, pero no limitándose a nombres, direcciones de correo electrónico,
     direcciones IP, posts y fotos.
   </p>
 
   <p>
-    Pinafore es un sitio estático. Todos los datos son almacenados en tu navegador y compartidos con las instancias del fediverso
+    Semaphore es un sitio estático. Todos los datos son almacenados en tu navegador y compartidos con las instancias del fediverso
     a las que te conectas.
   </p>
 
@@ -425,8 +425,8 @@ export default {
   notificationFilters: 'Filtros para notificaciones',
   pushNotifications: 'Notificaciones Push',
   // Add instance page
-  storageError: `Parece que Pinafore no puede almacenar datos localmente. ¿Está tu navegador en modo privado
-          o bloqueando las cookies? Pinafore almacena todos los datos localmente, y requiere LocalStorage e
+  storageError: `Parece que Semaphore no puede almacenar datos localmente. ¿Está tu navegador en modo privado
+          o bloqueando las cookies? Semaphore almacena todos los datos localmente, y requiere LocalStorage e
           IndexedDB para funcionar correctamente.`,
   javaScriptError: 'Debes habilitar JavaScript para iniciar sesión.',
   enterInstanceName: 'Introducir nombre de instancia',
@@ -447,7 +447,7 @@ export default {
   // Link text
   logInToAnInstancePre: '',
   logInToAnInstanceText: 'Inicia sesión en una instancia',
-  logInToAnInstancePost: 'para empezar a usar Pinafore.',
+  logInToAnInstancePost: 'para empezar a usar Semaphore.',
   // Another custom tooltip
   showRingPre: 'Mostrar siempre',
   showRingText: 'anillo del foco',

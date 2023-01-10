@@ -1,8 +1,8 @@
 import path from 'path'
 
-export const DB_NAME = 'pinafore_development'
-export const DB_USER = 'pinafore'
-export const DB_PASS = 'pinafore'
+export const DB_NAME = 'semaphore_development'
+export const DB_USER = 'semaphore'
+export const DB_PASS = 'semaphore'
 export const DB_PORT = process.env.PGPORT || 5432
 export const DB_HOST = '127.0.0.1'
 

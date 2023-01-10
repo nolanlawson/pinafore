@@ -1,5 +1,5 @@
 {
-  "name": "pinafore",
+  "name": "semaphore",
   "description": "Alternative web client for Mastodon",
   "version": "2.6.0",
   "type": "module",

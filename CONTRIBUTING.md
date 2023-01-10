@@ -1,4 +1,4 @@
-# Contributing to Pinafore
+# Contributing to semaphore
 
 ## Installing
 
@@ -20,7 +20,7 @@ because of [this issue](https://github.com/paulmillr/chokidar/issues/237).
 
 ## Linting
 
-Pinafore uses [JavaScript Standard Style](https://standardjs.com/).
+semaphore uses [JavaScript Standard Style](https://standardjs.com/).
 
 Lint:
 
@@ -61,7 +61,7 @@ If the script isn't able to set up the Postgres database, try running:
 
 Then:
 
-    psql -d template1 -c "CREATE USER pinafore WITH PASSWORD 'pinafore' CREATEDB;"
+    psql -d template1 -c "CREATE USER semaphore WITH PASSWORD 'semaphore' CREATEDB;"
 
 ### Testing in development mode
 
@@ -71,7 +71,7 @@ In separate terminals:
 
     yarn run run-mastodon
 
-2\. Run a Pinafore dev server:
+2\. Run a Semaphore dev server:
 
     yarn run dev
 
@@ -148,18 +148,18 @@ To disable minification in a production build (for debugging purposes), you can 
 
 The Webpack Bundle Analyzer `report.html` and `stats.json` are available publicly via e.g.:
 
-- [dev.pinafore.social/report.html](https://dev.pinafore.social/report.html)
-- [dev.pinafore.social/stats.json](https://dev.pinafore.social/stats.json)
+- [dev.semaphore.social/report.html](https://dev.semaphore.social/report.html)
+- [dev.semaphore.social/stats.json](https://dev.semaphore.social/stats.json)
 
 This is also available locally after `yarn run build` at `.sapper/client/report.html`.
 
 ## Deploying
 
-This section only applies to `dev.pinafore.social` and `pinafore.social`, not if you're hosting your own version of
-Pinafore.
+This section only applies to `dev.semaphore.social` and `semaphore.social`, not if you're hosting your own version of
+Semaphore.
 
-The site uses [Vercel](https://vercel.com). The `master` branch publishes to `dev.pinafore.social` and the `production`
-branch deploys to `pinafore.social`.
+The site uses [Vercel](https://vercel.com). The `master` branch publishes to `dev.semaphore.social` and the `production`
+branch deploys to `semaphore.social`.
 
 ## Architecture
 

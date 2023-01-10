@@ -1,6 +1,6 @@
 ## Theming
 
-This document describes how to write your own theme for Pinafore.
+This document describes how to write your own theme for Semaphore.
 
 First, create a file `scss/themes/foobar.scss`, write some SCSS inside and add
 the following at the bottom of `scss/themes/foobar.scss`.

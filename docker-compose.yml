@@ -1,11 +1,11 @@
 ---
 version: "3"
 services:
-  pinafore:
+  semaphore:
     restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile
-    image: pinafore:latest
+    image: semaphore:latest
     ports:
       - 4002:4002

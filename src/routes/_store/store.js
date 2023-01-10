@@ -73,17 +73,17 @@ const nonPersistedState = {
 const state = Object.assign({}, persistedState, nonPersistedState)
 const keysToStoreInLocalStorage = new Set(Object.keys(persistedState))
 
-export class PinaforeStore extends LocalStorageStore {
+export class SemaphoreStore extends LocalStorageStore {
   constructor (state) {
     super(state, keysToStoreInLocalStorage)
   }
 }
 
-PinaforeStore.prototype.observe = observe
+SemaphoreStore.prototype.observe = observe
 
-export const store = new PinaforeStore(state)
+export const store = new SemaphoreStore(state)
 
-mixins(PinaforeStore)
+mixins(SemaphoreStore)
 computations(store)
 observers(store)
 
