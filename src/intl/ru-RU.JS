@@ -23,7 +23,7 @@ export default {
       <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>
       и распространяемое под лицензией
       <a rel="noopener" target="_blank"
-         href="https://github.com/semaphore-social/semaphore/blob/master/LICENSE">AGPL License</a>.
+         href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL License</a>.
       Здесь <a href="/settings/about#privacy-policy" rel="prefetch">политика конфиденциальности</a>.
     </p>
   `,
@@ -335,7 +335,7 @@ export default {
     <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>
     и распространяется под
     <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore/blob/master/LICENSE">GNU Affero General Public License</a>.
+       href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">GNU Affero General Public License</a>.
   </p>
 
   <h2 id="privacy-policy">Политика конфиденциальности</h2>

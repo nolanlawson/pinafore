@@ -8,7 +8,7 @@ An alternative web client for [Mastodon](https://joinmastodon.org), focused on s
 
 Semaphore is available at [semaphore.social](https://semaphore.social). Beta releases are at [beta.semaphore.social](https://beta.semaphore.social).
 
-See the [user guide](https://github.com/semaphore-social/semaphore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/semaphore-social/semaphore/blob/master/docs/Admin-Guide.md) if Semaphore cannot connect to your instance.
+See the [user guide](https://github.com/semaphore-social/semaphore/blob/main/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/semaphore-social/semaphore/blob/main/docs/Admin-Guide.md) if Semaphore cannot connect to your instance.
 
 For updates and support, follow [@semaphore@fosstodon.org](https://fosstodon.org/@semaphore).
 
@@ -108,14 +108,14 @@ Having an [nginx config generator](https://github.com/semaphore-social/semaphore
 
 ## Developing and testing
 
-See [CONTRIBUTING.md](https://github.com/semaphore-social/semaphore/blob/master/CONTRIBUTING.md) for
+See [CONTRIBUTING.md](https://github.com/semaphore-social/semaphore/blob/main/CONTRIBUTING.md) for
 how to run Semaphore in dev mode and run tests.
 
 ## Changelog
 
 For a changelog, see the [GitHub releases](http://github.com/semaphore-social/semaphore/releases/).
 
-For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/semaphore-social/semaphore/blob/master/BREAKING_CHANGES.md).
+For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/semaphore-social/semaphore/blob/main/BREAKING_CHANGES.md).
 
 
 ## What's with the name?
