@@ -21,7 +21,7 @@ export default {
       and distributed under the
       <a rel="noopener" target="_blank"
          href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL License</a>.
-      C'est une continuation du projet Pinafore created by
+      It is a continuation of the Pinafore project created by
          <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
     </p>
   `,
