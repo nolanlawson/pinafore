@@ -1,8 +1,6 @@
 # Semaphore ⛳
 
-Continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore). To keep from burning out it will have restricted input from wider community, more details will follow.
-
-**[Semaphore.social](https://semaphore.social)**
+> Continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore). To keep from burning out it will have restricted input from wider community, more details will follow.
 
 Credit must go to Nolan and the original contributors for their excellent work.
 
@@ -10,7 +8,7 @@ An alternative web client for [Mastodon](https://joinmastodon.org), focused on s
 
 Semaphore is available at [semaphore.social](https://semaphore.social). Beta releases are at [beta.semaphore.social](https://beta.semaphore.social).
 
-See the [user guide](https://github.com/nolanlawson/semaphore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/nolanlawson/semaphore/blob/master/docs/Admin-Guide.md) if Semaphore cannot connect to your instance.
+See the [user guide](https://github.com/semaphore-social/semaphore/blob/master/docs/User-Guide.md) for basic usage. See the [admin guide](https://github.com/semaphore-social/semaphore/blob/master/docs/Admin-Guide.md) if Semaphore cannot connect to your instance.
 
 For updates and support, follow [@semaphore@fosstodon.org](https://fosstodon.org/@semaphore).
 
@@ -106,18 +104,18 @@ nginx or Apache proxy in front). This adds several things you don't get from the
 - [CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (important for security)
 - Certain dynamic routes (less important because of Service Worker managing routing, but certain things could break if Service Workers are disabled in the user's browser)
 
-Having an [nginx config generator](https://github.com/nolanlawson/semaphore/issues/1878) is currently an open issue.
+Having an [nginx config generator](https://github.com/semaphore-social/semaphore/issues/1878) is currently an open issue.
 
 ## Developing and testing
 
-See [CONTRIBUTING.md](https://github.com/nolanlawson/semaphore/blob/master/CONTRIBUTING.md) for
+See [CONTRIBUTING.md](https://github.com/semaphore-social/semaphore/blob/master/CONTRIBUTING.md) for
 how to run Semaphore in dev mode and run tests.
 
 ## Changelog
 
-For a changelog, see the [GitHub releases](http://github.com/nolanlawson/semaphore/releases/).
+For a changelog, see the [GitHub releases](http://github.com/semaphore-social/semaphore/releases/).
 
-For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/nolanlawson/semaphore/blob/master/BREAKING_CHANGES.md).
+For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/semaphore-social/semaphore/blob/master/BREAKING_CHANGES.md).
 
 
 ## What's with the name?
