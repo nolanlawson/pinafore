@@ -1,4 +1,17 @@
-# Pinafore [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+# Semaphore
+
+Continuation of the Pinafore project. To keep from burning out it will have restricted input from wider community, more details will follow.
+
+Credit must go to Nolan and the original contributors for their excellent work.
+
+
+## What's with the name?
+
+Semaphore is a fork of Pinafore and apparently they were going to call the boat H.M.S Semaphore but thought Pinafore was more fun.
+Bonus - semaphore is an old communication method.
+
+<details>
+<summary>Original Pinafore readme</summary>
 
 _**Note:** Pinafore is unmaintained. Read [this](https://nolanlawson.com/2023/01/09/retiring-pinafore/). Original documentation follows._
 
@@ -118,3 +131,5 @@ For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/nol
 ## What's with the name?
 
 Pinafore is named after the [Gilbert and Sullivan play](https://en.wikipedia.org/wiki/Hms_pinafore). The [soundtrack](https://www.allmusic.com/album/gilbert-sullivan-hms-pinafore-1949-mw0001830483) is very good.
+
+</summary>
