@@ -19,12 +19,12 @@ export default {
     <p>
       Semaphore — это
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">программное обеспечение с открытым исходным кодом</a>
-      созданное
-      <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>
+      поддерживается <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley/a>.
       и распространяемое под лицензией
       <a rel="noopener" target="_blank"
          href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL License</a>.
       Здесь <a href="/settings/about#privacy-policy" rel="prefetch">политика конфиденциальности</a>.
+      Это продолжение проекта Pinafore, созданного <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>.
     </p>
   `,
   // Manifest
@@ -328,14 +328,13 @@ export default {
   aboutApp: 'О Semaphore',
   aboutAppDescription: `
   <p>
-  Semaphore — это
+    Semaphore — это
+    <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">программное обеспечение с открытым исходным кодом</a>
+    поддерживается <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley/a>.
+    и распространяемое под лицензией
     <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore">бесплатное программное обеспечение с открытым исходным кодом</a>
-       создано
-    <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>
-    и распространяется под
-    <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">GNU Affero General Public License</a>.
+      href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL License</a>.
+    Это продолжение проекта Pinafore, созданного <a rel="noopener" target="_blank" href="https://nolanlawson.com">Ноланом Лоусоном</a>.
   </p>
 
   <h2 id="privacy-policy">Политика конфиденциальности</h2>

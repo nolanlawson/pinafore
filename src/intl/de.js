@@ -9,21 +9,19 @@ export default {
       der für Geschwindigkeit und einfache Bedienung konzipiert wurde.
     </p>
     <p>
-      Lies den
-      <a rel="noopener" target="_blank"
-         href="https://nolanlawson.com/2018/04/09/introducing-pinafore-for-mastodon/">einführenden Blogbeitrag</a> (auf englisch)
-      oder lege los, indem Du Dich bei einer Instanz anmeldest:
+      Dich bei einer Instanz anmeldest:
     </p>`,
   logIn: 'Anmelden',
   footer: `
     <p>
       Semaphore ist
       <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">quelloffene Software</a>,
-      erstellt von <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+      gepflegt von <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley</a>
       und verteilt unter der
       <a rel="noopener" target="_blank"
          href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL Lizenz</a>.
       Hier ist die <a href="/settings/about#privacy-policy" rel="prefetch">Datenschutzerklärung</a>.
+      Es ist eine Fortsetzung des Pinafore-Projekts von <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
     </p>
   `,
   // Generic UI
@@ -319,13 +317,12 @@ export default {
   aboutAppDescription: `
   <p>
     Semaphore ist
-    <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore">freie und quelloffene Software</a>
-    erstellt von
-    <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>
+    <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">quelloffene Software</a>,
+    gepflegt von <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley</a>
     und verteilt unter der
     <a rel="noopener" target="_blank"
-       href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">GNU Affero General Public License</a>.
+      href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL Lizenz</a>.
+    Es ist eine Fortsetzung des Pinafore-Projekts von <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
   </p>
 
   <h2 id="privacy-policy">Datenschutzerklärung</h2>
