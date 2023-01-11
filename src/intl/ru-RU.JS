@@ -357,8 +357,8 @@ export default {
   </p>
 
   <p>
-    Благодарим за логотип «парусника» Грегора Креснара из
-    <a rel="noopener" target="_blank" href="https://thenounproject.com/"> Noun Project</a>.
+    Logo thanks to "Flag" by AFY Studio from
+    <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.
   </p>`,
   // Settings
   settings: 'Настройки',

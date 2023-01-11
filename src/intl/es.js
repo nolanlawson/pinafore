@@ -362,7 +362,7 @@ export default {
   </p>
 
   <p>
-    Logo gracias a "sailboat" por Gregor Cresnar, de
+    Logo gracias a "Flag" por AFY Studio, de
     <a rel="noopener" target="_blank" href="https://thenounproject.com/">the Noun Project</a>.
   </p>`,
   // Settings
