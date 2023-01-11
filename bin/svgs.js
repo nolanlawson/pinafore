@@ -1,5 +1,5 @@
 export default [
-  { id: 'semaphore-logo', src: 'src/static/sailboat.svg', inline: true },
+  { id: 'semaphore-logo', src: 'src/static/logo.svg', inline: true },
   { id: 'fa-arrow-left', src: 'src/thirdparty/font-awesome-svg-png/white/svg/arrow-left.svg' },
   { id: 'fa-bell', src: 'src/thirdparty/font-awesome-svg-png/white/svg/bell.svg', inline: true },
   { id: 'fa-bell-o', src: 'src/thirdparty/font-awesome-svg-png/white/svg/bell-o.svg' },

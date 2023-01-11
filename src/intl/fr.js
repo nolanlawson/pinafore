@@ -348,7 +348,7 @@ export default {
   </p>
 
   <p>
-    Logo grâce à Gregor Cresnar du
+    Logo grâce à AFY Studio du
     <a rel="noopener" target="_blank" href="https://thenounproject.com/">Noun Project</a>.
   </p>`,
   // Settings
