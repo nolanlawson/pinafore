@@ -1,4 +1,6 @@
-# Semaphore ⛳
+<img height="100" width="100" src="https://user-images.githubusercontent.com/2445413/213867232-8bd90121-8812-446e-8c2f-d4000388d449.png" alt=""/> 
+
+# Semaphore
 
 > Continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore). To keep from burning out it will have restricted input from wider community, more details will follow.
 > 
