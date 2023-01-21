@@ -14,7 +14,7 @@ See the [user guide](https://github.com/semaphore-social/semaphore/blob/main/doc
 
 This is a continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore).
 
-Credit goes go to Nolan and the original contributors for their excellent work.
+Credit goes go to [Nolan Lawson](https://nolanlawson.com/) and the original contributors for their excellent work.
 
 ## Changelog
 
