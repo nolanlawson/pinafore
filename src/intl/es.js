@@ -543,7 +543,7 @@ export default {
   followersOnly: 'Solo seguidores',
   direct: 'Directo',
   // Themes
-  themeRoyal: 'Royal',
+  themeRoyal: 'Light',
   themeScarlet: 'Escarlata',
   themeSeafoam: 'Espuma de mar',
   themeHotpants: 'Hotpants',
@@ -551,7 +551,7 @@ export default {
   themeMajesty: 'Majesty',
   themeGecko: 'Gecko',
   themeGrayscale: 'Escala de grises',
-  themeOzark: 'Ozark',
+  themeDark: 'Dark',
   themeCobalt: 'Cobalto',
   themeSorcery: 'Sorcery',
   themePunk: 'Punk',
