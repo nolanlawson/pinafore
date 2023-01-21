@@ -1,10 +1,13 @@
 <div class={computedClass} aria-busy={loading} >
   {#if voted || expired }
     <ul class="poll-choices" aria-label="{intl.pollResults}">
-      {#each options as option}
+      {#each options as option, i}
         <li class="poll-choice option">
           <div class="option-text">
-            <strong>{option.share}%</strong> <span>{@html cleanTitle(option.title)}</span>
+            <strong>{option.share}%</strong><span>{@html cleanTitle(option.title)}</span>
+            {#if own_votes == i || Object.values(own_votes).includes(i)}
+            <SvgIcon className="poll-icon" href="#fa-check" />
+             {/if}
           </div>
           <svg aria-hidden="true">
             <line x1="0" y1="0" x2="{option.share}%" y2="0" />
@@ -109,6 +112,8 @@
     word-wrap: break-word;
     white-space: pre-wrap;
     font-size: 1.1em;
+    display: flex;
+    gap: .5em;
   }
 
   svg {
@@ -303,6 +308,7 @@
       // Misskey reports the "voters_count" as null, so just use the "votes_count"
       votersOrVotesCount: ({ votersCount, votesCount }) => typeof votersCount === 'number' ? votersCount : votesCount,
       voted: ({ poll }) => poll.voted,
+      own_votes: ({ poll }) => poll.own_votes,
       multiple: ({ poll }) => poll.multiple,
       expired: ({ poll }) => poll.expired,
       expiresAt: ({ poll }) => poll.expires_at,
