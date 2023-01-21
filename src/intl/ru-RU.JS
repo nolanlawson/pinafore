@@ -685,5 +685,7 @@ export default {
   statusesThread: 'Записи: треды',
   statusesAccountTimeline: 'Записи: лента аккаунта',
   statusesList: 'Записи: список',
-  notificationsOnInstance: 'Уведомления на {instance}'
+  notificationsOnInstance: 'Уведомления на {instance}',
+  // Details
+  statusEdited: 'Edited'
 }

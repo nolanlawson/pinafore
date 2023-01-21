@@ -613,5 +613,7 @@ export default {
   showingOfflineContent: 'Anforderung übers Internet fehlgeschlagen. Zeige Offline-Inhalte an.',
   youAreOffline: 'Du scheinst keine Verbindung zum Internet zu haben. Du kanst weiterhin Tröts lesen, solange Du offline bist.',
   // Snackbar UI
-  updateAvailable: 'Update der App verfügbar'
+  updateAvailable: 'Update der App verfügbar',
+  // Details
+  statusEdited: 'Edited'
 }
