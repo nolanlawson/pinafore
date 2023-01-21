@@ -7,6 +7,9 @@
     <time datetime={createdAtDate} title={absoluteFormattedDate}>
       {displayAbsoluteFormattedDate}
     </time>
+    {#if editedAt}
+    &nbsp;&ndash;&nbsp;{intl.statusEdited}
+    {/if}
   </ExternalLink>
   {#if applicationName}
     {#if applicationWebsite}
@@ -155,6 +158,7 @@
       overrideNumFavs: undefined
     }),
     computed: {
+      editedAt: ({ originalStatus }) => originalStatus.edited_at,
       originalStatusId: ({ originalStatus }) => originalStatus.id,
       application: ({ originalStatus }) => originalStatus.application,
       applicationName: ({ application }) => (application && application.name),

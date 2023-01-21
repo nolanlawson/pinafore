@@ -694,5 +694,7 @@ export default {
   statusesThread: 'Estados: hilo',
   statusesAccountTimeline: 'Estado: cronología de cuenta',
   statusesList: 'Estado: lista',
-  notificationsOnInstance: 'Notificaciones en {instance}'
+  notificationsOnInstance: 'Notificaciones en {instance}',
+  // Details
+  statusEdited: 'Edited'
 }

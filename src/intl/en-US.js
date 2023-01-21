@@ -693,5 +693,7 @@ export default {
   statusesThread: 'Statuses: thread',
   statusesAccountTimeline: 'Statuses: account timeline',
   statusesList: 'Statuses: list',
-  notificationsOnInstance: 'Notifications on {instance}'
+  notificationsOnInstance: 'Notifications on {instance}',
+  // Details
+  statusEdited: 'Edited'
 }

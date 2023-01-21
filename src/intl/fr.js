@@ -623,5 +623,7 @@ export default {
   showingOfflineContent: "Requête d'internet impossible. Contenu hors de connexion affiché.",
   youAreOffline: 'Il semble que vous êtes hors de connextion. Vous pouvez toujours lire les pouets dans cet état.',
   // Snackbar UI
-  updateAvailable: 'Mise à jour disponible.'
+  updateAvailable: 'Mise à jour disponible.',
+  // Details
+  statusEdited: 'Edited'
 }
