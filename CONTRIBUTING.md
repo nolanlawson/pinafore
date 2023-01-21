@@ -1,5 +1,55 @@
 # Contributing to semaphore
 
+## Building
+
+Semaphore requires [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com).
+
+To build Semaphore for production, first install dependencies:
+
+    yarn --production --pure-lockfile
+
+Then build:
+
+    yarn build
+
+Then run:
+
+    PORT=4002 node server.js
+
+### Docker
+
+To build a Docker image for production:
+
+    docker build .
+    docker run -d -p 4002:4002 [your-image]
+
+Now Semaphore is running at `localhost:4002`.
+
+### docker-compose
+
+Alternatively, use docker-compose to build and serve the image for production:
+
+    docker-compose up --build -d
+
+The image will build and start, then detach from the terminal running at `localhost:4002`.
+
+### Updating
+
+To keep your version of Semaphore up to date, you can use `git` to check out the latest tag:
+
+    git checkout $(git tag -l | sort -Vr | head -n 1)
+
+### Exporting
+
+Semaphore is a static site. When you run `yarn build`, static files will be
+written to `__sapper__/export`.
+
+It is _not_ recommended to directly expose these files when self-hosting. Instead, you should use `node server.js` (e.g. with an
+nginx or Apache proxy in front). This adds several things you don't get from the raw static files:
+
+- [CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (important for security)
+- Certain dynamic routes (less important because of Service Worker managing routing, but certain things could break if Service Workers are disabled in the user's browser)
+
 ## Installing
 
 To install with dev dependencies, run:
