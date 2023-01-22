@@ -1,6 +1,6 @@
 ---
 name: 🐛 Report something broken
-about: Create a report to help us improve
+about: If something is not working how it should, not for new features or ideas.
 title: ''
 labels: ''
 assignees: ''
