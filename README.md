@@ -12,7 +12,7 @@ See the [user guide](https://github.com/semaphore-social/semaphore/blob/main/doc
 
 ## With thanks to
 
-This is a continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore), this could not be possible without the exemplary work from of [Nolan Lawson](https://nolanlawson.com/) and the original contributors.
+This is a continuation of the [Pinafore project](https://github.com/nolanlawson/pinafore), this project would not exist without the exemplary work of [Nolan Lawson](https://nolanlawson.com/) and the original contributors.
 
 ## Changelog
 
