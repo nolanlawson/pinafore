@@ -2,8 +2,8 @@
 name: ♿ Report an accessibility issue
 about: Access issues are treated as high priority
 title: ''
-labels: ''
-assignees: ''
+labels: '♿ accessibility'
+assignees: 'NickColley'
 
 ---
 
