@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ✨ Feature Request / ideas
+    url: https://github.com/semaphore-social/semaphore/discussions/new?category=ideas
+    about: Missing something in Semaphore? Let us know.
