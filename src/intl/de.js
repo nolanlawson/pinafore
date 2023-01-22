@@ -15,11 +15,11 @@ export default {
   footer: `
     <p>
       Semaphore ist
-      <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">quelloffene Software</a>,
+      <a rel="noopener" target="_blank" href="https://github.com/NickColley/semaphore">quelloffene Software</a>,
       gepflegt von <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley</a>
       und verteilt unter der
       <a rel="noopener" target="_blank"
-         href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL Lizenz</a>.
+         href="https://github.com/NickColley/semaphore/blob/main/LICENSE">AGPL Lizenz</a>.
       Hier ist die <a href="/settings/about#privacy-policy" rel="prefetch">Datenschutzerklärung</a>.
       Es ist eine Fortsetzung des Pinafore-Projekts von <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
     </p>
@@ -317,11 +317,11 @@ export default {
   aboutAppDescription: `
   <p>
     Semaphore ist
-    <a rel="noopener" target="_blank" href="https://github.com/semaphore-social/semaphore">quelloffene Software</a>,
+    <a rel="noopener" target="_blank" href="https://github.com/NickColley/semaphore">quelloffene Software</a>,
     gepflegt von <a rel="noopener" target="_blank" href="https://nickcolley.co.uk">Nick Colley</a>
     und verteilt unter der
     <a rel="noopener" target="_blank"
-      href="https://github.com/semaphore-social/semaphore/blob/main/LICENSE">AGPL Lizenz</a>.
+      href="https://github.com/NickColley/semaphore/blob/main/LICENSE">AGPL Lizenz</a>.
     Es ist eine Fortsetzung des Pinafore-Projekts von <a rel="noopener" target="_blank" href="https://nolanlawson.com">Nolan Lawson</a>.
   </p>
 

@@ -186,15 +186,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/semaphore-social/semaphore.git"
+    "url": "git+https://github.com/NickColley/semaphore.git"
   },
   "keywords": [],
   "author": "Nolan Lawson <nolan@nolanlawson.com>",
   "license": "AGPL-3.0-only",
   "bugs": {
-    "url": "https://github.com/semaphore-social/semaphore/issues"
+    "url": "https://github.com/NickColley/semaphore/issues"
   },
-  "homepage": "https://github.com/semaphore-social/semaphore#readme",
+  "homepage": "https://github.com/NickColley/semaphore#readme",
   "lint-staged": {
     "*.js": "standard --fix",
     "*.html": "standard --fix --plugin html 'src/routes/**/*.html'"

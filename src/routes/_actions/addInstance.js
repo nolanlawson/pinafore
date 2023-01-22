@@ -12,7 +12,7 @@ const GENERIC_ERROR = `
   Is this a valid Mastodon instance? Is a browser extension
   blocking the request? Are you in private browsing mode?
   If you believe this is a problem with your instance, please send
-  <a href="https://github.com/semaphore-social/semaphore/blob/main/docs/Admin-Guide.md"
+  <a href="https://github.com/NickColley/semaphore/blob/main/docs/Admin-Guide.md"
     target="_blank" rel="noopener">this link</a> to the administrator of your instance.`
 
 function createKnownError (message) {

@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💡 Suggest a new feature or idea
-    url: https://github.com/semaphore-social/semaphore/discussions/categories/new-features-and-ideas
+    url: https://github.com/NickColley/semaphore/discussions/categories/new-features-and-ideas
     about: Missing something in Semaphore? Accessibility related features and ideas will be prioritised.
   - name: ❔ Ask a question
     url: https://fosstodon.org/@semaphore

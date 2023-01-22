@@ -213,9 +213,9 @@ branch deploys to `semaphore.social`.
 
 ## Architecture
 
-See [Architecture.md](https://github.com/semaphore-social/semaphore/blob/main/docs/Architecture.md).
+See [Architecture.md](https://github.com/NickColley/semaphore/blob/main/docs/Architecture.md).
 
 ## Internationalization
 
-See [Internationalization.md](https://github.com/semaphore-social/semaphore/blob/main/docs/Internationalization.md).
+See [Internationalization.md](https://github.com/NickColley/semaphore/blob/main/docs/Internationalization.md).
 
