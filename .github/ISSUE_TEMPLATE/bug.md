@@ -1,5 +1,5 @@
 ---
-name: Report something broken
+name: 🐛 Report something broken
 about: Create a report to help us improve
 title: ''
 labels: ''
