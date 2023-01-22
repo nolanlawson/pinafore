@@ -1,14 +1,14 @@
 ---
-name: 🐛 Report something broken
+name: 💥 Report something broken
 about: If something is not working how it should, not for new features or ideas.
 title: ''
-labels: ''
+labels: '💥 broken'
 assignees: ''
 
 ---
 
 ## Description of the issue
-A clear and concise description of what the bug is.
+A clear and concise description of what is not working.
 
 ## How you found the issue
 Steps to reproduce the behavior:
