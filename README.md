@@ -24,8 +24,3 @@ For a list of breaking changes, see [BREAKING_CHANGES.md](https://github.com/sem
 
 See [CONTRIBUTING.md](https://github.com/semaphore-social/semaphore/blob/main/CONTRIBUTING.md) for
 how to run Semaphore in dev mode and run tests.
-
-## What's with the name?
-
-Semaphore is a fork of Pinafore and apparently they were going to call the boat H.M.S Semaphore but thought Pinafore was more fun.
-Bonus - semaphore is an old communication method.
