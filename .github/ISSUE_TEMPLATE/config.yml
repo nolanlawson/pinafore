@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: ✨ Suggest a new feature or idea
+  - name: 💡 Suggest a new feature or idea
     url: https://github.com/semaphore-social/semaphore/discussions/new?category=ideas
     about: Missing something in Semaphore? Accessibility related features and ideas will be prioritised.
