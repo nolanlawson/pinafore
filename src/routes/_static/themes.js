@@ -3,7 +3,7 @@ const themes = [
     name: 'default',
     label: 'intl.themeRoyal',
     dark: false,
-    color: '#5D3FD3'
+    color: '#6248CA'
   },
   {
     name: 'scarlet',
@@ -51,7 +51,7 @@ const themes = [
     name: 'ozark',
     label: 'intl.themeDark',
     dark: true,
-    color: '#5D3FD3'
+    color: '#6248CA'
   },
   {
     name: 'cobalt',
