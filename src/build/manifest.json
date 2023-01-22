@@ -1,6 +1,6 @@
 {
-  "background_color": "#ffffff",
-  "theme_color": "#4169e1",
+  "background_color": "#6248CA",
+  "theme_color": "#6248CA",
   "name": "{intl.longAppName}",
   "short_name": "{intl.appName}",
   "description": "{intl.appDescription}",
