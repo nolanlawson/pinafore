@@ -2,7 +2,7 @@
 
 # Semaphore
 
-An alternative web client for [Mastodon](https://joinmastodon.org), focused on accessibility.
+Accessible, simple and fast web client for [Mastodon](https://joinmastodon.org).
 
 Semaphore is available at [semaphore.social](https://semaphore.social). Beta releases are at [beta.semaphore.social](https://beta.semaphore.social).
 
