@@ -96,13 +96,19 @@ input[type=search] {
 input, textarea {
   background: inherit;
   color: inherit;
+  border-radius: var(--input-border-radius-size);
+  padding: 5px 8px;
+}
+
+::placeholder {
+  color: var(--input-placeholder-color);
 }
 
 button, .button {
   font-size: 1.2em;
   background: var(--button-bg);
-  border-radius: 2px;
-  padding: 10px 15px;
+  border-radius: var(--input-border-radius-size);
+  padding: 12px 15px;
   border: 1px solid var(--button-border);
   cursor: pointer;
   color: var(--button-text);

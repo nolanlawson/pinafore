@@ -14,7 +14,9 @@
   --button-bg-hover: #{darken($main-bg-color, 5%)};
 
   --input-border: #{$border-color};
+  --input-border-radius-size: 4px;
   --input-bg: #{$main-bg-color};
+  --input-placeholder-color: #{$deemphasized-color};
   --anchor-text: #{$anchor-color};
   --main-bg: #{$main-bg-color};
   --body-bg: #{$body-bg-color};
