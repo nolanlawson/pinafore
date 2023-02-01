@@ -6,17 +6,9 @@
      - If a follow is requested, then the button is pressed but shows as "follow requested" with
        a different icon.
   -->
-  <IconButton
-    className="account-profile-follow-icon-button"
-    {label}
-    {pressedLabel}
-    {href}
-    {pressable}
-    {pressed}
-    big={!$isVeryTinyMobileSize}
-    on:click="onFollowButtonClick(event)"
-    ref:icon
-  />
+  <button class="account-profile-follow-button" on:click="onFollowButtonClick(event)">
+    {pressed ? pressedLabel : label}
+  </button>
 </div>
 <style>
   .account-profile-follow {
@@ -32,6 +24,12 @@
     .account-profile-follow {
       justify-self: flex-end;
     }
+  }
+
+  .account-profile-follow-button {
+    padding: 0.6em;
+    font-size: 1.1em;
+    min-width: 10ch;
   }
 </style>
 <script>
@@ -98,17 +96,6 @@
       },
       pressedLabel: ({ requested }) => {
         return formatIntl('intl.unfollowLabel', { requested })
-      },
-      href: ({ blocking, following, followRequested }) => {
-        if (blocking) {
-          return '#fa-unlock'
-        } else if (following) {
-          return '#fa-user-times'
-        } else if (followRequested) {
-          return '#fa-hourglass'
-        } else {
-          return '#fa-user-plus'
-        }
       },
       shown: ({ verifyCredentials, relationship }) => (
         verifyCredentials && relationship && verifyCredentials.id !== relationship.id
