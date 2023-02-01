@@ -1,11 +1,11 @@
 <h2 class="sr-only">{intl.statisticsAndMoreOptions}</h2>
 <div class="account-profile-details">
   <div class="account-profile-details-item">
-    <span class="account-profile-details-item-title">
-      {intl.statuses}
-    </span>
     <span class="account-profile-details-item-datum">
       {numStatusesDisplay}
+    </span>
+    <span class="account-profile-details-item-title">
+      {intl.statuses}
     </span>
   </div>
   <a class="account-profile-details-item"
@@ -13,11 +13,11 @@
      aria-label={followingLabel}
      rel="prefetch"
   >
-    <span class="account-profile-details-item-title">
-      {intl.follows}
-    </span>
     <span class="account-profile-details-item-datum">
       {numFollowingDisplay}
+    </span>
+    <span class="account-profile-details-item-title">
+      {intl.follows}
     </span>
   </a>
   <a class="account-profile-details-item"
@@ -25,11 +25,11 @@
      aria-label={followersLabel}
      rel="prefetch"
   >
-    <span class="account-profile-details-item-title">
-      {intl.followers}
-    </span>
     <span class="account-profile-details-item-datum">
       {numFollowersDisplay}
+    </span>
+    <span class="account-profile-details-item-title">
+      {intl.followers}
     </span>
   </a>
   <!-- TODO: re-enable this when we support profile editing -->
@@ -61,24 +61,23 @@
     font-size: 1.1em;
   }
 
-  .account-profile-details-item:hover {
+  .account-profile-details-item[href]:hover {
     text-decoration: none;
     background: var(--button-bg-hover);
     cursor: pointer;
   }
 
-  .account-profile-details-item:active {
+  .account-profile-details-item[href]:active {
     background: var(--button-bg-active);
   }
 
   .account-profile-details-item-title {
     color: var(--deemphasized-text-color);
-    margin-right: 5px;
   }
 
   .account-profile-details-item-datum {
     color: var(--body-text-color);
-    margin-left: 5px;
+    margin-right: 5px;
     font-weight: 600;
   }
 
