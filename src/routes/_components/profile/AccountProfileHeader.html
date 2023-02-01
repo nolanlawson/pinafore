@@ -7,20 +7,15 @@
   </button>
 </div>
 <div class="account-profile-name">
-  <ExternalLink
-    className="account-profile-name-link focus-fix"
-    href={account.url}
-    showIcon="true"
-    normalIconColor="true"
-    ariaLabel={externalLinkLabel}>
-    <AccountDisplayName {account} />
-  </ExternalLink>
+  <AccountDisplayName {account} />
 </div>
 {#if label}
   <Label {label} className="account-profile-label" />
 {/if}
 <div class="account-profile-username">
-  {'@' + account.acct}
+  <ExternalLink className="focus-fix" href={account.url}>
+    {'@' + account.acct}
+  </ExternalLink>
 </div>
 <div class="account-profile-followed-by">
   {#if relationship && relationship.blocking}
