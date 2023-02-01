@@ -1,6 +1,12 @@
 :root {
   $deemphasized-color: lighten($main-bg-color, 54%);
 
+  --button-bg: #{lighten($main-bg-color, 6%)};
+  --button-text: #{$main-text-color};
+  --button-border: #{lighten($border-color, 6%)};
+  --button-bg-active: #{lighten($main-bg-color, 0%)};
+  --button-bg-hover: #{lighten($main-bg-color, 3%)};
+
   --input-placeholder-color: #{$deemphasized-color};
 
   --action-button-deemphasized-fill-color: #{$deemphasized-color};
