@@ -323,6 +323,7 @@ export default {
   fields: 'Fields',
   accountHasMoved: '{account} has moved:',
   profilePageForAccount: 'Profile page for {account}',
+  verified: 'Verified',
   // About page
   about: 'About',
   aboutApp: 'About Semaphore',

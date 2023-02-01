@@ -311,6 +311,7 @@ export default {
   fields: 'Felder',
   accountHasMoved: '{account} ist umgezogen:',
   profilePageForAccount: 'Profilseite für {account}',
+  verified: 'Verified',
   // About page
   about: 'Über',
   aboutApp: 'Über Semaphore',

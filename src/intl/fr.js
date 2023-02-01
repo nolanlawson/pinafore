@@ -313,6 +313,7 @@ export default {
   fields: 'Champs',
   accountHasMoved: '{account} a déménagé',
   profilePageForAccount: 'Page de profil pour {account}',
+  verified: 'Verified',
   // About page
   about: 'Infos',
   aboutApp: 'Infos sur Semaphore',

@@ -17,9 +17,16 @@
       >
         {@html field.value}
       </div>
-      <div class="account-profile-meta-cell account-profile-meta-verified">
+      <div class="account-profile-meta-cell">
         {#if field.verified}
-          <SvgIcon className="account-profile-meta-verified-svg" href="#fa-check" />
+          <span class="account-profile-meta-verified">
+            <SvgIcon
+              ariaLabel="verified"
+              className="account-profile-meta-verified-svg"
+              href="#fa-check"
+            />
+            {intl.verified}
+          </span>
         {/if}
       </div>
     {/each}
@@ -50,12 +57,6 @@
     white-space: pre-wrap;
     text-overflow: ellipsis;
     font-size: 1.1em;
-  }
-
-  :global(.account-profile-meta-verified-svg) {
-    width: 24px;
-    height: 24px;
-    fill: var(--svg-fill);
   }
 
   .account-profile-meta-name {
@@ -97,6 +98,31 @@
     .account-profile-meta-value {
       padding: 5px 10px 5px 10px;
     }
+  }
+
+  .account-profile-meta-verified {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    gap: 0.2em;
+    margin-left: 0.5em;
+    padding: 2px 0;
+    padding-left: 4px;
+    padding-right: 5px;
+    font-size: 0.9em;
+    color: var(--verified-text-color);
+    background: var(--verified-bg-color);
+    border: 1px solid var(--verified-border-color, currentColor);
+    border-radius: 4px;
+  }
+
+  :global(.account-profile-meta-verified-svg) {
+    display: inline-block;
+    width: .9em;
+    height: .9em;
+    fill: currentColor;
+    opacity: 0.95;
   }
 </style>
 <script>

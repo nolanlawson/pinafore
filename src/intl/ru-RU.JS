@@ -323,6 +323,7 @@ export default {
   fields: 'Поля',
   accountHasMoved: '{account} переехал:',
   profilePageForAccount: 'Страница профиля для {account}',
+  verified: 'Verified',
   // About page
   about: 'О нас',
   aboutApp: 'О Semaphore',
