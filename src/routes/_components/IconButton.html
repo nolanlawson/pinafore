@@ -15,6 +15,9 @@
   {#if checked}
     <SvgIcon className="icon-button-svg icon-button-check" ref:check href="#fa-check" />
   {/if}
+  {#if count}
+    <span class="icon-button-count">{count}</span>
+  {/if}
 </button>
 <style>
   .icon-button {
@@ -26,6 +29,11 @@
     align-items: center;
     justify-content: center;
     pointer-events: auto;
+  }
+
+  :global(.icon-button-count) {
+    margin-left: 10px;
+    color: var(--action-button-fill-color);
   }
 
   :global(.icon-button-svg) {
@@ -76,6 +84,10 @@
   /*
    * muted
    */
+
+  :global(.icon-button.muted-style .icon-button-count) {
+    color: var(--action-button-deemphasized-fill-color);
+  }
 
   :global(.icon-button.muted-style .icon-button-svg) {
     fill: var(--action-button-deemphasized-fill-color);
@@ -141,7 +153,8 @@
       sameColorWhenPressed: false,
       ariaHidden: false,
       clickListener: true,
-      checked: false
+      checked: false,
+      count: 0
     }),
     store: () => store,
     computed: {

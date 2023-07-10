@@ -8,6 +8,7 @@
     href={replyIcon}
     clickListener={false}
     elementId={replyKey}
+    count={repliesCount}
     />
   <IconButton
     label={reblogLabel}
@@ -19,6 +20,7 @@
     href={reblogIcon}
     clickListener={false}
     elementId={reblogKey}
+    count={reblogsCount}
     ref:reblogIcon
   />
   <IconButton
@@ -30,6 +32,7 @@
     href="#fa-star"
     clickListener={false}
     elementId={favoriteKey}
+    count={favoritesCount}
     ref:favoriteIcon
     />
   <IconButton
@@ -119,22 +122,28 @@
     store: () => store,
     methods: {
       toggleFavorite (announce) {
-        const { originalStatusId, favorited } = this.get()
+        const { originalStatusId, favorited, originalStatus } = this.get()
         const newFavoritedValue = !favorited
         /* no await */ setFavorited(originalStatusId, newFavoritedValue)
         if (newFavoritedValue) {
           this.refs.favoriteIcon.animate(FAVORITE_ANIMATION, CHECKMARK_ANIMATION)
+          originalStatus.favourites_count++
+        } else {
+          originalStatus.favourites_count--
         }
         if (announce) {
           announceAriaLivePolite(newFavoritedValue ? 'intl.favorited' : 'intl.unfavorited')
         }
       },
       reblog (announce) {
-        const { originalStatusId, reblogged } = this.get()
+        const { originalStatusId, reblogged, originalStatus } = this.get()
         const newRebloggedValue = !reblogged
         /* no await */ setReblogged(originalStatusId, newRebloggedValue)
         if (newRebloggedValue) {
           this.refs.reblogIcon.animate(REBLOG_ANIMATION, CHECKMARK_ANIMATION)
+          originalStatus.reblogs_count++
+        } else {
+          originalStatus.reblogs_count--
         }
         if (announce) {
           announceAriaLivePolite(newRebloggedValue ? 'intl.reblogged' : 'intl.unreblogged')
@@ -166,12 +175,14 @@
       onPostedStatus (realm, inReplyToUuid) {
         const {
           originalStatusId,
-          uuid
+          uuid,
+          originalStatus
         } = this.get()
         if (realm !== originalStatusId ||
             inReplyToUuid !== uuid) {
           return
         }
+        originalStatus.replies_count++
         try {
           // return status to the reply button after posting a reply
           this.refs.node.querySelector('.status-toolbar-reply-button').focus({ preventScroll: true })
@@ -229,7 +240,10 @@
       favoriteKey: ({ uuid }) => `fav-${uuid}`,
       reblogKey: ({ uuid }) => `reblog-${uuid}`,
       replyKey: ({ uuid }) => `reply-${uuid}`,
-      optionsKey: ({ uuid }) => `options-${uuid}`
+      optionsKey: ({ uuid }) => `options-${uuid}`,
+      repliesCount: ({ originalStatus }) => originalStatus.replies_count,
+      reblogsCount: ({ originalStatus }) => originalStatus.reblogs_count,
+      favoritesCount: ({ originalStatus }) => originalStatus.favourites_count
     }
   }
 </script>
