@@ -8,6 +8,7 @@
     href={replyIcon}
     clickListener={false}
     elementId={replyKey}
+    count={repliesCount}
     />
   <IconButton
     label={reblogLabel}
@@ -19,6 +20,7 @@
     href={reblogIcon}
     clickListener={false}
     elementId={reblogKey}
+    count={reblogsCount}
     ref:reblogIcon
   />
   <IconButton
@@ -30,6 +32,7 @@
     href="#fa-star"
     clickListener={false}
     elementId={favoriteKey}
+    count={favoritesCount}
     ref:favoriteIcon
     />
   <IconButton
@@ -229,7 +232,10 @@
       favoriteKey: ({ uuid }) => `fav-${uuid}`,
       reblogKey: ({ uuid }) => `reblog-${uuid}`,
       replyKey: ({ uuid }) => `reply-${uuid}`,
-      optionsKey: ({ uuid }) => `options-${uuid}`
+      optionsKey: ({ uuid }) => `options-${uuid}`,
+      repliesCount: ({ originalStatus }) => originalStatus.replies_count,
+      reblogsCount: ({ originalStatus }) => originalStatus.reblogs_count,
+      favoritesCount: ({ originalStatus }) => originalStatus.favourites_count
     }
   }
 </script>
