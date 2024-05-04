@@ -50,7 +50,7 @@ const JSON_TEMPLATE = {
       }
     },
     {
-      src: '^/.*\\.(svg|css|json|map|txt|gz|webapp|woff|woff2)$',
+      src: '^/.*\\.(css|json|svg|map|txt|gz|webapp|woff|woff2)$',
       headers: {
         'cache-control': 'public,max-age=3600'
       }
