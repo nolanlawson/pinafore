@@ -44,13 +44,13 @@ const JSON_TEMPLATE = {
       }
     },
     {
-      src: '^/.*\\.(png|svg|jpe?g)$',
+      src: '^/.*\\.(png|jpe?g)$',
       headers: {
         'cache-control': 'public,max-age=31536000,immutable'
       }
     },
     {
-      src: '^/.*\\.(css|json|map|txt|gz|webapp|woff|woff2)$',
+      src: '^/.*\\.(svg|css|json|map|txt|gz|webapp|woff|woff2)$',
       headers: {
         'cache-control': 'public,max-age=3600'
       }
