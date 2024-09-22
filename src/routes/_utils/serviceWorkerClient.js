@@ -15,7 +15,10 @@ function onUpdateFound (registration) {
     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
       snackbar.announce('intl.updateAvailable', 'intl.reload', async () => {
         await skipWaiting()
-        document.location.reload(true)
+        // Slight delay since otherwise Chrome loads infinitely for some reason
+        setTimeout(() => {
+          document.location.reload(true)
+        }, 200)
       })
     }
   })

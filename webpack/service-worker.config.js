@@ -37,7 +37,8 @@ export default {
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.SAPPER_TIMESTAMP': process.env.SAPPER_TIMESTAMP || Date.now(),
       'process.env.LOCALE': JSON.stringify(LOCALE),
-      'process.env.IS_SERVICE_WORKER': 'true'
+      'process.env.IS_SERVICE_WORKER': 'true',
+      'process.env.IS_CLOUDFLARE': JSON.stringify(!!process.env.IS_CLOUDFLARE),
     })
   ].filter(Boolean)
 }

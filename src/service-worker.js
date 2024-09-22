@@ -38,6 +38,8 @@ const ON_DEMAND_CACHE = [
 // `static` is an array of everything in the `static` directory
 const assets = __assets__
   .map(file => file.startsWith('/') ? file : `/${file}`)
+  // Fix for Cloudflare 308 redirects of /service-worker-index.html to /service-worker
+  .map(file => file === '/service-worker-index.html' && process.env.IS_CLOUDFLARE ? '/service-worker-index' : file)
   .filter(filename => !filename.endsWith('.map'))
   .filter(filename => filename !== '/robots.txt')
   .filter(filename => !filename.includes('traineddata.gz')) // cache on-demand
@@ -156,7 +158,10 @@ self.addEventListener('fetch', event => {
       // for routes, serve the /service-worker-index.html file from the most recent
       // static cache
       if (routes.find(route => route.pattern.test(url.pathname))) {
-        const response = await caches.match('/service-worker-index.html')
+        const response = await caches.match(
+          // Fix for Cloudflare 308 redirects of /service-worker-index.html to /service-worker
+          process.env.IS_CLOUDFLARE ? '/service-worker-index' : '/service-worker-index.html'
+        )
         if (response) {
           return response
         }
