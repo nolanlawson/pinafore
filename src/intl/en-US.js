@@ -255,6 +255,8 @@ export default {
   showNextMedia: 'Show next media',
   enterPinchZoom: 'Pinch-zoom mode',
   exitPinchZoom: 'Exit pinch-zoom mode',
+  showFullImageDescription: 'Show full image description',
+  hideFullImageDescription: 'Hide full image description',
   showMedia: `Show {index, select,
     1 {first}
     2 {second}

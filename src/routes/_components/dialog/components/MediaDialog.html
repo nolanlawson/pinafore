@@ -25,8 +25,24 @@
         </li>
       {/each}
     </ul>
+    {#if hasDescription }
+    <div class="media-description-outside {showFullImageDescription ? 'expanded' : ''}">
+      {mediaItem.description}
+    </div>
+    {/if}
     <div class="media-controls-outside" on:click="onMediaControlsClick(event)">
-      {#if canPinchZoom}
+      {#if hasDescription }
+        <IconButton
+          className="media-control-button"
+          svgClassName="media-control-button-svg"
+          pressable={hasDescription}
+          pressed={showFullImageDescription}
+          pressedLabel="{intl.hideFullImageDescription}"
+          href="#fa-info-circle"
+          label="{intl.showFullImageDescription}"
+          on:click="toggleFullImageDescription()"
+        />
+      {:elseif canPinchZoom }
         <IconButton
           className="media-control-button media-control-button-dummy-spacer"
           svgClassName="media-control-button-svg"
@@ -77,16 +93,25 @@
             </li>
         </ul>
       {/if}
-      {#if canPinchZoom}
+      {#if canPinchZoom }
         <IconButton
           className="media-control-button"
           svgClassName="media-control-button-svg"
-          pressable={true}
+          pressable={canPinchZoom}
           pressed={pinchZoomMode}
           label="{intl.enterPinchZoom}"
           pressedLabel="{intl.exitPinchZoom}"
           href="#fa-search"
           on:click="togglePinchZoomMode()"
+          ariaHidden={!canPinchZoom}
+        />
+      {:elseif hasDescription }
+        <IconButton
+          className="media-control-button media-control-button-dummy-spacer"
+          svgClassName="media-control-button-svg"
+          href="#fa-search"
+          label=""
+          ariaHidden={true}
         />
       {/if}
     </div>
@@ -140,6 +165,20 @@
     height: calc(100% - 20px); /* 15px padding top + 5px padding bottom */
     width: calc(100% - 10px); /* 5px padding left + 5px padding right */
     padding: 15px 5px 5px 5px;
+  }
+
+  .media-description-outside {
+    margin: 5px 15px;
+    max-height: 1.5em;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .media-description-outside.expanded {
+    max-height: none;
+    white-space: normal;
   }
 
   .media-controls-outside {
@@ -263,12 +302,14 @@
     },
     store: () => store,
     data: () => ({
-      pinchZoomMode: false
+      pinchZoomMode: false,
+      showFullImageDescription: false
     }),
     computed: {
       length: ({ mediaItems }) => mediaItems.length,
       dots: ({ length }) => times(length, i => ({ i })),
       canPinchZoom: ({ mediaItems }) => !mediaItems.some(media => ['video', 'audio'].includes(media.type)),
+      hasDescription: ({ mediaItem }) => mediaItem.description,
       mediaItem: ({ mediaItems, scrolledItem }) => mediaItems[scrolledItem],
       nativeWidth: ({ mediaItem }) => get(mediaItem, ['meta', 'original', 'width'], 300), // TODO: Pleroma placeholder
       nativeHeight: ({ mediaItem }) => get(mediaItem, ['meta', 'original', 'height'], 200) // TODO: Pleroma placeholder
@@ -354,6 +395,9 @@
       },
       togglePinchZoomMode () {
         this.set({ pinchZoomMode: !this.get().pinchZoomMode })
+      },
+      toggleFullImageDescription () {
+        this.set({ showFullImageDescription: !this.get().showFullImageDescription })
       },
       onImageClick (e) {
         const { nativeWidth, nativeHeight, pinchZoomMode } = this.get()
