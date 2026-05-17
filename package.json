@@ -114,7 +114,7 @@
     "tesseract.js-core": "^2.2.0",
     "text-encoding": "^0.7.0",
     "tiny-queue": "^0.2.1",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-bundle-analyzer": "^4.7.0",
     "worker-loader": "^3.0.8"
   },
